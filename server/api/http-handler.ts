@@ -21,6 +21,11 @@ import {
   type CommunityVisibility,
 } from "./community-templates";
 import {
+  WorkflowEngine,
+  WorkflowInputError,
+  workflowCatalog,
+} from "./workflows";
+import {
   canEditWorkspace,
   canManageMembers,
   canViewWorkspace,
@@ -78,6 +83,8 @@ export interface ApiHandlerOptions {
   assets?: AssetStore;
   /** Templates published to the community by their authors. */
   community?: CommunityTemplateStore;
+  /** The workflow recipes and the runs they produce. */
+  workflows?: WorkflowEngine;
   canAccessProject?(principal: ApiPrincipal, projectId: string): Promise<boolean>;
   corsOrigin?: string;
 }
@@ -816,6 +823,48 @@ export function createApiHandler(options: ApiHandlerOptions): (request: Request)
           return json({ ok: true }, 200, options.corsOrigin);
         }
         return json({ error: "Method not allowed." }, 405, options.corsOrigin);
+      }
+
+      if (options.workflows) {
+        const workflowListPath = url.pathname.match(/^\/api\/workflows$/);
+        if (workflowListPath && request.method === "GET") {
+          return json({ workflows: workflowCatalog() }, 200, options.corsOrigin);
+        }
+        const workflowRunPath = url.pathname.match(/^\/api\/workflows\/([a-z0-9-]{3,60})\/runs$/);
+        if (workflowRunPath && request.method === "POST") {
+          const body = await readJson(request, 400_000);
+          const inputs = {
+            fields: body.fields && typeof body.fields === "object" ? (body.fields as Record<string, unknown>) : {},
+            files: body.files && typeof body.files === "object" ? (body.files as Record<string, { assetId: string }>) : {},
+          };
+          try {
+            const run = await options.workflows.start(principal.id, workflowRunPath[1], inputs);
+            return json({ run }, 202, options.corsOrigin);
+          } catch (error) {
+            if (error instanceof WorkflowInputError) return json({ error: error.message }, 400, options.corsOrigin);
+            throw error;
+          }
+        }
+        const workflowRunsPath = url.pathname.match(/^\/api\/workflow-runs$/);
+        if (workflowRunsPath && request.method === "GET") {
+          return json({ runs: options.workflows.list(principal.id) }, 200, options.corsOrigin);
+        }
+        const workflowRunIdPath = url.pathname.match(/^\/api\/workflow-runs\/([A-Za-z0-9_-]{6,64})$/);
+        if (workflowRunIdPath && request.method === "GET") {
+          const run = options.workflows.get(principal.id, workflowRunIdPath[1]);
+          if (!run) return json({ error: "没有这次工作流运行记录。" }, 404, options.corsOrigin);
+          return json({ run }, 200, options.corsOrigin);
+        }
+        const workflowRetryPath = url.pathname.match(/^\/api\/workflow-runs\/([A-Za-z0-9_-]{6,64})\/steps\/([A-Za-z0-9_-]{1,60})\/retry$/);
+        if (workflowRetryPath && request.method === "POST") {
+          try {
+            const run = await options.workflows.retryStep(principal.id, workflowRetryPath[1], workflowRetryPath[2]);
+            return json({ run }, 202, options.corsOrigin);
+          } catch (error) {
+            if (error instanceof WorkflowInputError) return json({ error: error.message }, 400, options.corsOrigin);
+            throw error;
+          }
+        }
       }
 
       const communityListPath = url.pathname.match(/^\/api\/community\/templates$/);

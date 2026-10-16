@@ -21,6 +21,7 @@ import { PluginRegistry } from "./api/plugin-registry";
 import { ProjectShareStore } from "./api/project-shares";
 import { AssetStore } from "./api/assets";
 import { CommunityTemplateStore } from "./api/community-templates";
+import { WorkflowEngine } from "./api/workflows";
 import { ScheduleRunner } from "./api/scheduler";
 
 const host = process.env.DESIGNBUDDY_HOST || "0.0.0.0";
@@ -50,6 +51,8 @@ const plugins = new PluginRegistry();
 const projectShares = new ProjectShareStore();
 const assets = new AssetStore();
 const community = new CommunityTemplateStore();
+// Workflows reuse the real skill service, the asset library and the task list.
+const workflows = new WorkflowEngine(skills, assets, tasks);
 setAiUsageRecorder((ownerId, record) => {
   try {
     tasks.recordAiUsage(ownerId, record);
@@ -71,6 +74,7 @@ const api = createApiHandler({
   shares: projectShares,
   assets,
   community,
+  workflows,
   workspaces,
   authenticate: async (request) =>
     trustedToken(request) ? { id: "local-user" } : workspace.principal(request),
