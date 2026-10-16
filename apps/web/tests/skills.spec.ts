@@ -54,6 +54,26 @@ test("skill details expose real file limits and launch the matching executor", a
   await expect(workbench.getByLabel("执行技能")).toHaveValue("social.carousel");
 });
 
+test("every skill states the tool permissions it really uses", async ({ page }) => {
+  const browserCard = page.getByRole("article", { name: "网页生成与浏览器验证" });
+  await browserCard.getByRole("button", { name: "查看技能：网页生成与浏览器验证" }).click();
+  const browserDialog = page.getByRole("dialog", { name: "网页生成与浏览器验证" });
+  const permissions = browserDialog.getByRole("region", { name: "所需权限" });
+  await expect(permissions).toBeVisible();
+  await expect(permissions.getByRole("listitem")).toHaveCount(4);
+  await expect(permissions).toContainText("访问网络地址");
+  await expect(permissions).toContainText("启动本机子进程");
+  await browserDialog.getByRole("button", { name: "关闭技能详情" }).click();
+
+  const localCard = page.getByRole("article", { name: "杂志风格长文排版" });
+  await localCard.getByRole("button", { name: "查看技能：杂志风格长文排版" }).click();
+  const localDialog = page.getByRole("dialog", { name: "杂志风格长文排版" });
+  const localPermissions = localDialog.getByRole("region", { name: "所需权限" });
+  await expect(localPermissions.getByRole("listitem")).toHaveCount(2);
+  await expect(localPermissions).toContainText("读取本机上传文件");
+  await expect(localPermissions).not.toContainText("访问网络地址");
+});
+
 test("capabilities that still miss a server credential never gain a run button", async ({ page }) => {
   await page.getByRole("button", { name: /未接入（/ }).click();
   const card = page.getByRole("article", { name: "生成式图片与商品抠图" });

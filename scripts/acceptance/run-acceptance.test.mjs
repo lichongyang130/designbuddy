@@ -31,11 +31,12 @@ test('acceptance harness executes real browser checks and refuses to count missi
         { id: 'click-flow', type: 'click', path: '/', selector: '#go', expectText: '已完成' },
         { id: 'shot', type: 'screenshot', path: '/' },
         { id: 'absent-selector', type: 'assertVisible', path: '/', selector: '#nope' },
+        { id: 'script-run', type: 'evaluate', path: '/', script: "async () => { return { status: 200, text: document.title }; }", expectStatus: 200, expectText: '验收样例' },
       ],
     }));
     const { manifest, bundleDir, ok } = await runAcceptance({ suitePath, outDir: join(dir, 'evidence') });
-    assert.equal(manifest.counts.total, 6);
-    assert.equal(manifest.counts.passed, 5);
+    assert.equal(manifest.counts.total, 7);
+    assert.equal(manifest.counts.passed, 6);
     assert.equal(manifest.counts.notVerified, 1);
     assert.equal(manifest.counts.failed, 0);
     assert.equal(ok, false, 'a not_verified check must not be reported as a clean run');
@@ -62,6 +63,7 @@ test('acceptance harness rejects suites without an explicit target or with malfo
     await assert.rejects(async () => runAcceptance({ suitePath: await write({ ...base, baseUrl: 'not-a-url' }) }), /baseUrl/);
     await assert.rejects(async () => runAcceptance({ suitePath: await write({ ...base, checks: [{ id: 'a', type: 'teleport', path: '/' }] }) }), /Check type/);
     await assert.rejects(async () => runAcceptance({ suitePath: await write({ ...base, checks: [{ id: 'a', type: 'assertText', path: '/' }] }) }), /selector/);
+    await assert.rejects(async () => runAcceptance({ suitePath: await write({ ...base, checks: [{ id: 'a', type: 'evaluate', path: '/' }] }) }), /script/);
     await assert.rejects(async () => runAcceptance({ suitePath: await write({ ...base, viewports: [{ name: 'd', width: 10, height: 800 }] }) }), /width/);
   } finally {
     await rm(dir, { recursive: true, force: true });

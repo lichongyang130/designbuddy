@@ -47,7 +47,7 @@ function parseArgs(argv) {
   return { suitePath: resolve(suite), outDir: out ? resolve(out) : '' };
 }
 
-const checkTypes = new Set(['http', 'assertText', 'assertVisible', 'click', 'fill', 'screenshot']);
+const checkTypes = new Set(['http', 'assertText', 'assertVisible', 'click', 'fill', 'screenshot', 'evaluate']);
 
 function validateSuite(suite) {
   if (!suite || typeof suite !== 'object' || Array.isArray(suite)) throw Error('Suite must be an object.');
@@ -70,6 +70,12 @@ function validateSuite(suite) {
       if (typeof check.path !== 'string' || !check.path.startsWith('/')) throw Error('http checks need a path starting with "/".');
       if (check.expectStatus !== undefined && (!Number.isInteger(check.expectStatus) || check.expectStatus < 100 || check.expectStatus > 599)) throw Error('expectStatus must be a valid HTTP status.');
     }
+    if (check.type === 'evaluate') {
+      if (typeof check.path !== 'string' || !check.path.startsWith('/')) throw Error('evaluate checks need a path starting with "/".');
+      if (typeof check.script !== 'string' || !check.script.trim()) throw Error('evaluate checks need a script.');
+      if (check.expectStatus !== undefined && (!Number.isInteger(check.expectStatus) || check.expectStatus < 100 || check.expectStatus > 599)) throw Error('expectStatus must be a valid HTTP status.');
+      if (check.expectText !== undefined && typeof check.expectText !== 'string') throw Error('expectText must be a string.');
+    }
     if (['assertText', 'assertVisible', 'click', 'fill', 'screenshot'].includes(check.type)) {
       if (typeof check.path !== 'string' || !check.path.startsWith('/')) throw Error(`${check.type} checks need a path starting with "/".`);
       if (check.type !== 'screenshot' && (typeof check.selector !== 'string' || !check.selector)) throw Error(`${check.type} checks need a selector.`);
@@ -77,6 +83,7 @@ function validateSuite(suite) {
       if (check.type === 'assertText' && (typeof check.contains !== 'string' || !check.contains)) throw Error('assertText checks need the expected text.');
       if (check.type === 'fill' && typeof check.value !== 'string') throw Error('fill checks need a string value.');
       if (check.waitFor !== undefined && (typeof check.waitFor !== 'string' || !check.waitFor)) throw Error('waitFor must be a non-empty selector.');
+      if (check.waitForText !== undefined && typeof check.waitForText !== 'boolean') throw Error('waitForText must be a boolean.');
       if (check.expectSelector !== undefined && (typeof check.expectSelector !== 'string' || !check.expectSelector)) throw Error('expectSelector must be a non-empty selector.');
       if (check.reload !== undefined && typeof check.reload !== 'boolean') throw Error('reload must be a boolean.');
     }
@@ -112,8 +119,16 @@ async function runCheck(page, request, check, viewport, bundleDir, target, logs)
         const locator = page.locator(check.selector).first();
         if (await locator.count() === 0) { record.status = 'not_verified'; record.detail = `selector not found: ${check.selector}`; }
         else {
-          const text = (await locator.innerText()).replace(/\s+/g, ' ').trim();
-          if (!text.includes(check.contains)) { record.status = 'failed'; record.detail = `text did not contain ${JSON.stringify(check.contains)}`; }
+          // The page may still be settling after the previous step, so give the
+          // expected text a short window to appear instead of failing on the first read.
+          const deadline = Date.now() + (check.waitForText === false ? 0 : 8000);
+          let text = '';
+          for (;;) {
+            text = (await locator.innerText()).replace(/\s+/g, ' ').trim();
+            if (text.includes(check.contains) || Date.now() >= deadline) break;
+            await page.waitForTimeout(200);
+          }
+          if (!text.includes(check.contains)) { record.status = 'failed'; record.detail = `text did not contain ${JSON.stringify(check.contains)} (saw ${JSON.stringify(text.slice(0, 120))})`; }
           else { record.status = 'passed'; record.detail = `text matched (${text.length} chars)`; }
         }
       } else if (check.type === 'click') {
@@ -141,6 +156,20 @@ async function runCheck(page, request, check, viewport, bundleDir, target, logs)
           record.status = 'passed';
           record.detail = `filled ${check.value.length} characters`;
         }
+      } else if (check.type === 'evaluate') {
+        // The script runs in the page, so the evidence comes from the real browser session.
+        const outcome = await page.evaluate(async (source) => {
+          const run = new Function(`return (${source})`)();
+          const value = await run();
+          if (value === null || value === undefined) return { status: 0, text: '' };
+          if (typeof value === 'object') return { status: Number(value.status || 0), text: String(value.text ?? JSON.stringify(value)) };
+          return { status: 0, text: String(value) };
+        }, check.script);
+        const problems = [];
+        if (check.expectStatus !== undefined && outcome.status !== check.expectStatus) problems.push(`expected status ${check.expectStatus}, got ${outcome.status}`);
+        if (check.expectText !== undefined && !outcome.text.includes(check.expectText)) problems.push(`text did not contain ${JSON.stringify(check.expectText)}`);
+        if (problems.length) { record.status = 'failed'; record.detail = problems.join('; ').slice(0, 400); }
+        else { record.status = 'passed'; record.detail = `script ran (status ${outcome.status})`; }
       } else if (check.type === 'screenshot') {
         const directory = join(bundleDir, 'screenshots', viewport.name);
         await mkdir(directory, { recursive: true });

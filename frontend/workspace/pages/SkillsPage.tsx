@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
-import type { RuntimeSkill } from "../../../shared/skillRuntime";
+import { skillPermissionLabels, type RuntimeSkill } from "../../../shared/skillRuntime";
 import { apiPublicJSON } from "../../../apps/web/src/api/client";
 import { HomeIcon, type HomeIconName } from "../../../apps/web/src/components/HomeIcon";
 import { WorkBuddySidebar } from "../../../apps/web/src/components/WorkBuddySidebar";
@@ -35,6 +35,13 @@ const areaCopy: Record<SkillArea, string> = {
   "设计制作": "用真实输入材料完成设计检查、素材排版与视觉文件导出。",
   "网页应用": "生成静态页面并执行明确的结构检查；未接入的构建和浏览器验证会单独标注。",
 };
+/** The rights that go beyond reading the uploaded file and writing the result. */
+function elevatedPermissions(skill: RuntimeSkill): string[] {
+  return (skill.permissions ?? []).filter(
+    (permission) => permission !== "local.read" && permission !== "local.write",
+  );
+}
+
 function skillArea(skill: RuntimeSkill): SkillArea {
   for (const id of skill.expertIds) {
     const category = expertCatalog.find(expert => expert.id === id)?.category;
@@ -63,6 +70,7 @@ function SkillCard({ skill, favorite, onFavorite, onOpen, onRun }: { skill: Runt
       {skill.outputs.length > 3 && <span>等 {skill.outputs.length} 项交付</span>}
       {!skill.accepts.length && skill.status !== "ready" && <span>暂无可执行输入</span>}
       {skill.requires?.length ? <span title="需要你提供的材料或凭据">需提供 {skill.requires.length} 项</span> : null}
+      {elevatedPermissions(skill).length ? <span title="该技能会使用的系统权限">{elevatedPermissions(skill).length} 项系统权限</span> : null}
     </div>
     <dl className="skill-card-facts">
       <div><dt>执行状态</dt><dd><i className="skill-state-dot" />{skill.status === "ready" ? "服务端已接入" : skill.executorState === "connected" ? "执行器已接入，缺服务端凭据" : "未接入后台执行器"}</dd></div>
@@ -150,7 +158,7 @@ export default function SkillsPage(_props: { pathname: string }) {
         {selectedExecutor && <section ref={workbenchRef} className="skills-execution-panel" aria-label="技能执行工作台"><div className="skills-execution-heading"><div><span>真实后台执行器</span><h2>运行：{selectedExecutor.name}</h2><p>目录信息来自服务端技能注册表；文件选择、参数、同意和真实运行记录由执行工作台处理。</p></div><button type="button" onClick={() => setRunSkillId("")}>收起</button></div><SkillWorkbench key={`skill-run-${selectedExecutor.id}`} expertId={selectedExecutor.expertIds[0]} allowedSkillIds={[selectedExecutor.id]} initialSkillId={selectedExecutor.id} /></section>}
       </div>
     </main>
-    {selectedSkill && <div className="skill-detail-backdrop" role="presentation" onMouseDown={event => { if (event.target === event.currentTarget) setSelectedSkill(null); }}><section className="skill-detail-dialog" role="dialog" aria-modal="true" aria-labelledby="skill-detail-title"><button className="skill-detail-close" type="button" aria-label="关闭技能详情" onClick={() => setSelectedSkill(null)}>×</button><div className="skill-detail-kicker">{selectedSkill.status === "ready" ? "真实后台执行器" : selectedSkill.executorState === "connected" ? "执行器已接入 · 缺服务端凭据" : "尚未接入"}</div><h2 id="skill-detail-title">{selectedSkill.name}</h2><p className="skill-detail-description">{selectedSkill.description}</p><div className="skill-detail-meta"><div><small>输入格式</small><strong>{selectedSkill.accepts.length ? selectedSkill.accepts.join("、") : "暂无可执行输入"}</strong></div><div><small>真实交付</small><strong>{selectedSkill.outputs.length ? selectedSkill.outputs.join("、") : "尚未接通"}</strong></div><div><small>执行专家</small><strong>{selectedSkill.expertIds.map(id => expertCatalog.find(expert => expert.id === id)?.name || id).join("、")}</strong></div></div><details className="skill-detail-limits" open><summary>执行边界</summary><p>{selectedSkill.limits}</p></details>{selectedSkill.requires?.length ? <section className="skill-detail-requires" aria-label="需要你提供"><h3>需要你提供</h3><ul>{selectedSkill.requires.map(item => <li key={`${item.kind}-${item.label}`}><b>{item.label}</b><i>{requirementKindLabel[item.kind] || item.kind}</i><span>{item.detail}</span></li>)}</ul><p>这些材料与凭据无法由平台自行获取；补齐后该能力才能真正接通，不会用模拟结果代替。</p></section> : null}{selectedSkill.status === "ready" ? <button className="skill-detail-run" type="button" onClick={() => { setRunSkillId(selectedSkill.id); setSelectedSkill(null); }}>打开执行工作台</button> : <p className="skill-detail-unavailable">{selectedSkill.executorState === "connected" ? "执行器已经接入，但服务端还没配置它需要的凭据或环境，因此暂不提供运行入口；补齐后即可真实执行，不会用模拟结果代替。" : "此能力尚未接入后台执行器，因此不提供运行入口。"}</p>}</section></div>}
+    {selectedSkill && <div className="skill-detail-backdrop" role="presentation" onMouseDown={event => { if (event.target === event.currentTarget) setSelectedSkill(null); }}><section className="skill-detail-dialog" role="dialog" aria-modal="true" aria-labelledby="skill-detail-title"><button className="skill-detail-close" type="button" aria-label="关闭技能详情" onClick={() => setSelectedSkill(null)}>×</button><div className="skill-detail-kicker">{selectedSkill.status === "ready" ? "真实后台执行器" : selectedSkill.executorState === "connected" ? "执行器已接入 · 缺服务端凭据" : "尚未接入"}</div><h2 id="skill-detail-title">{selectedSkill.name}</h2><p className="skill-detail-description">{selectedSkill.description}</p><div className="skill-detail-meta"><div><small>输入格式</small><strong>{selectedSkill.accepts.length ? selectedSkill.accepts.join("、") : "暂无可执行输入"}</strong></div><div><small>真实交付</small><strong>{selectedSkill.outputs.length ? selectedSkill.outputs.join("、") : "尚未接通"}</strong></div><div><small>执行专家</small><strong>{selectedSkill.expertIds.map(id => expertCatalog.find(expert => expert.id === id)?.name || id).join("、")}</strong></div></div><details className="skill-detail-limits" open><summary>执行边界</summary><p>{selectedSkill.limits}</p></details><section className="skill-detail-permissions" aria-label="所需权限"><h3>所需权限</h3><ul>{(selectedSkill.permissions ?? []).map(permission => <li key={permission} data-permission={permission}>{skillPermissionLabels[permission] || permission}</li>)}</ul><p>这些是服务端按执行器真实行为登记的权限；标注"第三方"的需要你在执行时单次授权，未授权不会外发任何内容。</p></section>{selectedSkill.requires?.length ? <section className="skill-detail-requires" aria-label="需要你提供"><h3>需要你提供</h3><ul>{selectedSkill.requires.map(item => <li key={`${item.kind}-${item.label}`}><b>{item.label}</b><i>{requirementKindLabel[item.kind] || item.kind}</i><span>{item.detail}</span></li>)}</ul><p>这些材料与凭据无法由平台自行获取；补齐后该能力才能真正接通，不会用模拟结果代替。</p></section> : null}{selectedSkill.status === "ready" ? <button className="skill-detail-run" type="button" onClick={() => { setRunSkillId(selectedSkill.id); setSelectedSkill(null); }}>打开执行工作台</button> : <p className="skill-detail-unavailable">{selectedSkill.executorState === "connected" ? "执行器已经接入，但服务端还没配置它需要的凭据或环境，因此暂不提供运行入口；补齐后即可真实执行，不会用模拟结果代替。" : "此能力尚未接入后台执行器，因此不提供运行入口。"}</p>}</section></div>}
     {showAddInfo && <div className="skill-detail-backdrop" role="presentation" onMouseDown={event => { if (event.target === event.currentTarget) setShowAddInfo(false); }}><section className="skill-add-dialog" role="dialog" aria-modal="true" aria-labelledby="skill-add-title"><button className="skill-detail-close" type="button" aria-label="关闭添加技能说明" onClick={() => setShowAddInfo(false)}>×</button><h2 id="skill-add-title">添加真实技能</h2><p>技能必须先在服务端注册实际执行器、输入与输出格式、权限边界和测试。此目录不会把提示词、未验证脚本或外部模板伪装成可执行技能。</p><p>接入完成并通过测试后，刷新目录即可发现新技能。当前页面没有客户端安装外部技能包的功能。</p><button type="button" className="skill-add-close" onClick={() => setShowAddInfo(false)}>知道了</button></section></div>}
   </div>;
 }

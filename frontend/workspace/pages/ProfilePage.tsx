@@ -11,6 +11,15 @@ import {
   forgetProfile,
   type ProfileSnapshot,
 } from "../api/profile";
+import {
+  changeAccountPassword,
+  deleteAccount,
+  fetchAccount,
+  fetchAccountAudit,
+  updateAccountProfile,
+  type AccountAuditEntry,
+  type AccountIdentity,
+} from "../api/account";
 import { usePreferenceSync } from "../settingsStore";
 import { navigateTo } from "../workspaceRoutes";
 import "./profile.css";
@@ -35,6 +44,14 @@ export default function ProfilePage() {
   const [memory, setMemory] = useState("");
   const [consent, setConsent] = useState(false);
   const [forgetConfirmed, setForgetConfirmed] = useState(false);
+  const [account, setAccount] = useState<AccountIdentity | null>(null);
+  const [audit, setAudit] = useState<AccountAuditEntry[]>([]);
+  const [displayName, setDisplayName] = useState("");
+  const [email, setEmail] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [deleteConfirmed, setDeleteConfirmed] = useState(false);
+  const [deletePassword, setDeletePassword] = useState("");
 
   const load = useCallback(async () => {
     try {
@@ -43,6 +60,19 @@ export default function ProfilePage() {
     } catch (cause) {
       setProfile(null);
       setError(cause instanceof Error && cause.message.length < 200 ? cause.message : "账号数据服务暂不可用，请确认后端已启动。");
+    }
+    try {
+      const me = await fetchAccount();
+      setAccount(me);
+      setDisplayName((current) => current || me.displayName || "");
+      setEmail((current) => current || me.email || "");
+    } catch {
+      setAccount(null);
+    }
+    try {
+      setAudit(await fetchAccountAudit());
+    } catch {
+      setAudit([]);
     }
   }, []);
 
@@ -135,6 +165,76 @@ export default function ProfilePage() {
     }
   }
 
+  async function saveAccountProfile() {
+    setBusy(true);
+    try {
+      const updated = await updateAccountProfile({ displayName: displayName.trim(), email: email.trim() });
+      setAccount(updated);
+      setNotice("账号资料已更新，并记入账号审计。");
+      setError("");
+      setAudit(await fetchAccountAudit());
+      // Let the account menu pick up the new display name.
+      window.dispatchEvent(new Event("designbuddy:server-identity"));
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "账号资料保存失败。");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function rotatePassword() {
+    if (!currentPassword) {
+      setError("修改密码需要先输入当前密码。");
+      return;
+    }
+    if (newPassword.length < 10) {
+      setError("新密码至少 10 位。");
+      return;
+    }
+    setBusy(true);
+    try {
+      await changeAccountPassword({ currentPassword, newPassword });
+      setCurrentPassword("");
+      setNewPassword("");
+      setNotice("密码已修改，其他设备的登录会话已失效。");
+      setError("");
+      setAudit(await fetchAccountAudit());
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "修改密码失败。");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function removeAccount() {
+    if (!deleteConfirmed) {
+      setError("注销账号需要先勾选确认。");
+      return;
+    }
+    if (!deletePassword) {
+      setError("注销账号需要输入当前密码。");
+      return;
+    }
+    setBusy(true);
+    try {
+      // Clear the account's own data first, then drop the account row.
+      const cleared = await forgetProfile();
+      const trail = await deleteAccount({ currentPassword: deletePassword, confirm: true });
+      setAudit(trail);
+      setAccount(null);
+      setDeleteConfirmed(false);
+      setDeletePassword("");
+      setNotice(
+        `账号已注销：已清除 ${cleared.memories} 条记忆与 ${cleared.preferences} 项偏好，并注销登录身份。`,
+      );
+      setError("");
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "注销账号失败。");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   return (
     <div className="workbuddy-app profile-workspace">
       <WorkBuddySidebar active="plugins" go={navigateTo} setNotice={setNotice} projectCount={0} />
@@ -153,6 +253,91 @@ export default function ProfilePage() {
           </section>
 
           {(error || notice) && <p className={error ? "profile-message is-error" : "profile-message"} role="status">{error || notice}</p>}
+
+          <section className="profile-card" aria-label="账号资料">
+            <h2>账号资料</h2>
+            <p className="profile-note">
+              {account?.kind === "account"
+                ? `登录用户名：${account.username}`
+                : "当前是游客会话：没有账号可编辑，注册账号后即可保存资料与密码。"}
+            </p>
+            <div className="profile-form-grid">
+              <label>
+                显示名
+                <input
+                  aria-label="显示名"
+                  value={displayName}
+                  maxLength={40}
+                  placeholder="团队里怎么称呼你"
+                  onChange={(event) => setDisplayName(event.target.value)}
+                />
+              </label>
+              <label>
+                邮箱
+                <input
+                  aria-label="邮箱"
+                  type="email"
+                  value={email}
+                  maxLength={120}
+                  placeholder="name@example.com"
+                  onChange={(event) => setEmail(event.target.value)}
+                />
+              </label>
+            </div>
+            <div className="profile-actions">
+              <button className="profile-button is-primary" type="button" disabled={busy || account?.kind !== "account"} onClick={() => void saveAccountProfile()}>
+                保存账号资料
+              </button>
+            </div>
+
+            <h3 className="profile-subhead">修改密码</h3>
+            <div className="profile-form-grid">
+              <label>
+                当前密码
+                <input
+                  aria-label="当前密码"
+                  type="password"
+                  value={currentPassword}
+                  autoComplete="current-password"
+                  onChange={(event) => setCurrentPassword(event.target.value)}
+                />
+              </label>
+              <label>
+                新密码
+                <input
+                  aria-label="新密码"
+                  type="password"
+                  value={newPassword}
+                  autoComplete="new-password"
+                  placeholder="至少 10 位"
+                  onChange={(event) => setNewPassword(event.target.value)}
+                />
+              </label>
+            </div>
+            <div className="profile-actions">
+              <button className="profile-button" type="button" disabled={busy || account?.kind !== "account"} onClick={() => void rotatePassword()}>
+                修改密码
+              </button>
+            </div>
+
+            <h3 className="profile-subhead">账号审计</h3>
+            {audit.length > 0 ? (
+              <table className="profile-table">
+                <thead><tr><th>动作</th><th>说明</th><th>时间</th></tr></thead>
+                <tbody>
+                  {audit.map((entry) => (
+                    <tr key={entry.id} data-audit={entry.action}>
+                      <td><code>{entry.action}</code></td>
+                      <td>{entry.detail || "—"}</td>
+                      <td>{time(entry.createdAt)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <p className="profile-note">还没有账号审计记录。</p>
+            )}
+          </section>
 
           <section className="profile-card" aria-label="账号概览">
             <h2>账号概览</h2>
@@ -258,6 +443,30 @@ export default function ProfilePage() {
             <p className="profile-note">
               <HomeIcon name="help" size={12} /> 清除只影响本账号在服务端的记忆与已同步偏好；浏览器本地设置不会被自动改动。
             </p>
+
+            <h3 className="profile-subhead">注销账号</h3>
+            <p className="profile-note">
+              注销会先清除本账号的长期记忆与已同步偏好，再删除账号并让所有设备退出登录；账号审计记录会保留在服务端作为操作凭证。
+            </p>
+            <label className="profile-consent">
+              <input type="checkbox" aria-label="确认注销账号" checked={deleteConfirmed} onChange={(event) => setDeleteConfirmed(event.target.checked)} />
+              我确认注销这个账号，且不再需要其中的数据
+            </label>
+            <label className="profile-field">
+              当前登录密码
+              <input
+                aria-label="当前登录密码"
+                type="password"
+                value={deletePassword}
+                autoComplete="current-password"
+                onChange={(event) => setDeletePassword(event.target.value)}
+              />
+            </label>
+            <div className="profile-actions">
+              <button className="profile-button is-danger" type="button" disabled={busy || account?.kind !== "account"} onClick={() => void removeAccount()}>
+                注销账号
+              </button>
+            </div>
           </section>
         </div>
       </main>

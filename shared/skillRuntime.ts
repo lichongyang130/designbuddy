@@ -1,6 +1,32 @@
 import { posterExample } from "./posterLayout";
 /** Shared contracts, not authority: the server registry decides what can execute. */
 export type SkillRequirement = { kind: "credential" | "environment" | "material" | "decision" | "account"; label: string; detail: string };
+/**
+ * What a skill is allowed to touch. The server declares these from the real
+ * executor behaviour, so a person can see before running what a skill will read,
+ * write, launch or send away. "external.*" permissions need a single-run consent.
+ */
+export type SkillPermission =
+  | "local.read"
+  | "local.write"
+  | "network"
+  | "subprocess"
+  | "external.ai"
+  | "external.image"
+  | "external.calendar"
+  | "external.email";
+export const skillPermissionLabels: Record<SkillPermission, string> = {
+  "local.read": "读取本机上传文件",
+  "local.write": "在本机写出成果文件",
+  network: "访问网络地址",
+  subprocess: "启动本机子进程",
+  "external.ai": "把内容发给第三方 AI 模型",
+  "external.image": "把提示词发给第三方图像模型",
+  "external.calendar": "写入第三方日历",
+  "external.email": "写入第三方邮箱",
+};
+/** Permissions that hand content to a third party; they need an explicit per-run consent. */
+export const externalSkillPermissions: SkillPermission[] = ["external.ai", "external.image", "external.calendar", "external.email"];
 export type RuntimeSkill = {
   id: string; version: string; name: string; expertIds: string[];
   manualOnly?: boolean;
@@ -10,6 +36,8 @@ export type RuntimeSkill = {
   exampleFile?: { filename: string; path: string; hint: string; buttonLabel?: string; licensePath?: string };
   example?: { filename: string; content: string };
   status: "ready" | "unavailable"; accepts: string[]; outputs: string[]; description: string; limits: string;
+  /** The system capabilities this skill really uses. */
+  permissions?: SkillPermission[];
   /** Whether a real executor is wired up. "missing" means the platform has no executor for this skill at all. */
   executorState?: "connected" | "missing";
 };
@@ -92,6 +120,8 @@ export type RunStatus = "queued" | "running" | "succeeded" | "failed" | "cancell
 export type SkillArtifact = { id: string; name: string; mime: string; size: number; sha256: string };
 export type SkillRun = {
   id: string; expertId: string; skillId: string; version: string; status: RunStatus;
+  /** The tool permissions this run was granted, kept with the version for governance. */
+  permissions?: SkillPermission[];
   taskId?: string; recoveryAttempts?: number;
   filename: string; inputHash: string; createdAt: string; updatedAt: string;
   options: { deduplicate: boolean; parameters?: Record<string, string> }; events: { at: string; message: string }[];

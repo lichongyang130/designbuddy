@@ -255,6 +255,43 @@
 - 没有席位与计费，也没有邀请邮件：加入方式只有"把加入码交给对方"，加入码可被转发，所以它更接近口令而不是邀请。
 - 迁移项目归属只能由项目所有者直接改，没有审批与回收站。
 
+## 第七轮复盘（2026-10-16 账号资料、密码轮换、账号审计与注销）
+
+- [x] **服务端账号资料**（`server/api/workspace-backend.ts`）：`workspace_accounts` 增加 `display_name` / `email`
+  两列（老库自动 ALTER 迁移）；`PATCH /api/auth/profile` 改显示名与邮箱（邮箱格式校验，显示名 ≤40 字），
+  `POST /api/auth/password` 轮换密码（校验当前密码、新密码 10–128 位、改密后踢掉同账号的其它设备会话、
+  当前会话保留），`DELETE /api/auth/account` 注销账号（必须 `confirm=true` 且当前密码正确）。
+- [x] **账号审计轨迹**：新增 `workspace_account_audit` 表，逐条记录 `account.register` /
+  `account.profile.update` / `account.password.change` / `account.delete`，`GET /api/auth/audit` 可读；
+  审计内容**不写资料正文**（服务端用例断言审计里不出现邮箱）。
+- [x] **前端「账号与数据」页新增账号资料卡片**（`frontend/workspace/pages/ProfilePage.tsx` +
+  `frontend/workspace/api/account.ts`）：改显示名/邮箱、改密码、账号审计表、注销账号
+  （注销按"先清除本账号长期记忆与已同步偏好 → 再删账号"的顺序执行）。
+- [x] **账号菜单用真实身份**（`apps/web/src/components/AccountMenu.tsx`）：昵称优先取服务端显示名，
+  其次取登录用户名，只有游客才回落到参考号码；改完资料会广播 `designbuddy:server-identity` 立即刷新。
+- [x] **验收工具新增 `evaluate` 检查类型**（`scripts/acceptance/run-acceptance.mjs`）：
+  在真实页面上下文里跑脚本并校验返回的 status/text，`assertText` 改为最多等 8 秒等目标文本出现
+  （修掉"点击后立刻断言，读到旧提示"的竞态）。
+- [x] **本轮回归数字**：服务端 `node --test server/skills/*.test.cjs server/api/*.test.cjs` = **282/282**
+  （上轮 277/277；本轮新增 1 组账号用例 + 4 项技能权限用例）；浏览器全站套件 = **531 通过 / 0 失败 / 1 跳过**
+  （32.6 分钟，532 项）；浏览器专项 `apps/web/tests/account-profile.spec.ts` = **1/1**、
+  技能 + 账号 + 账号数据专项 = **20/20**；验收包 `docs/verification/account-2026-10-16/` = **40/40**、
+  `docs/verification/skill-permissions-2026-10-16/` = **18/18**（各视口各一半）。
+
+- [x] **技能工具权限模型与版本治理**（P07）：服务端按执行器真实行为给每个技能登记权限
+  （`server/skills/skill-permissions.ts`），技能详情页逐条展示；第三方权限（AI / 图像模型 / 日历 / 邮箱）
+  必须单次授权，未授权直接拒绝执行；每次运行记录技能版本 + 本次授予的权限集合（`server/skills/service.ts`），
+  按账号隔离、跨账号不可读；服务端 4/4 新用例、浏览器 1/1 新用例。
+
+### 仍然诚实的边界
+
+- 这**不是**生产身份系统：没有邮箱/手机号验证、没有找回密码、没有二次身份核验、没有设备级会话管理页面。
+- 技能权限目前由服务端代码固定，没有可配置的白名单策略，也没有技能包升级/回滚与兼容矩阵；
+  权限登记描述的是执行器会做什么，不是操作系统级沙箱。
+- 账号审计只写在本机 SQLite，没有组织级留存策略，也没有异地备份。
+- 订阅/支付/权益/积分账本**仍未接入**：菜单里仍显示"未接入"，本轮没有伪造余额、没有产生扣费记录。
+- 注销账号不清理工作空间成员表里的历史行，也不删除工作空间里的项目数据。
+
 ## 当前优先级与最新结果
 
 用户随后明确要求完成第4项全部高级能力，已切换到该优先级，不再沿用此前优先做对话云端恢复的顺序。所有原任务仍保留，不删除欠账。

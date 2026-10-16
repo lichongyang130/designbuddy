@@ -1,0 +1,339 @@
+{
+  "tool": "run-acceptance",
+  "suite": "designbuddy-account",
+  "baseUrl": "http://127.0.0.1:5173",
+  "ranAt": "2026-10-16T17:55:19.427Z",
+  "viewports": [
+    "desktop 1440x900",
+    "mobile 390x844"
+  ],
+  "counts": {
+    "total": 40,
+    "passed": 40,
+    "failed": 0,
+    "notVerified": 0
+  },
+  "results": [
+    {
+      "id": "account-guest",
+      "type": "evaluate",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "script ran (status 200)",
+      "durationMs": 2163
+    },
+    {
+      "id": "account-card",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 2883
+    },
+    {
+      "id": "account-register",
+      "type": "evaluate",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "script ran (status 201)",
+      "durationMs": 167
+    },
+    {
+      "id": "account-display-name",
+      "type": "fill",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "filled 2 characters",
+      "durationMs": 44
+    },
+    {
+      "id": "account-email",
+      "type": "fill",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "filled 14 characters",
+      "durationMs": 71
+    },
+    {
+      "id": "account-save",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 107
+    },
+    {
+      "id": "account-save-notice",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (16 chars)",
+      "durationMs": 18
+    },
+    {
+      "id": "account-audit-row",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 7
+    },
+    {
+      "id": "account-current-password",
+      "type": "fill",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "filled 23 characters",
+      "durationMs": 19
+    },
+    {
+      "id": "account-new-password",
+      "type": "fill",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "filled 23 characters",
+      "durationMs": 20
+    },
+    {
+      "id": "account-rotate",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 122
+    },
+    {
+      "id": "account-rotate-notice",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (19 chars)",
+      "durationMs": 208
+    },
+    {
+      "id": "account-rotate-audit",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 6
+    },
+    {
+      "id": "account-menu-name",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 3067
+    },
+    {
+      "id": "account-delete-confirm",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 3472
+    },
+    {
+      "id": "account-delete-password",
+      "type": "fill",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "filled 23 characters",
+      "durationMs": 22
+    },
+    {
+      "id": "account-delete",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 130
+    },
+    {
+      "id": "account-delete-notice",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (31 chars)",
+      "durationMs": 65
+    },
+    {
+      "id": "account-session-gone",
+      "type": "evaluate",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "script ran (status 401)",
+      "durationMs": 16
+    },
+    {
+      "id": "account-screenshot",
+      "type": "screenshot",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "screenshot saved as screenshots/desktop/account-screenshot.png",
+      "durationMs": 543
+    },
+    {
+      "id": "account-guest",
+      "type": "evaluate",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "script ran (status 200)",
+      "durationMs": 2210
+    },
+    {
+      "id": "account-card",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 2269
+    },
+    {
+      "id": "account-register",
+      "type": "evaluate",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "script ran (status 201)",
+      "durationMs": 114
+    },
+    {
+      "id": "account-display-name",
+      "type": "fill",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "filled 2 characters",
+      "durationMs": 39
+    },
+    {
+      "id": "account-email",
+      "type": "fill",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "filled 14 characters",
+      "durationMs": 98
+    },
+    {
+      "id": "account-save",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 160
+    },
+    {
+      "id": "account-save-notice",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (16 chars)",
+      "durationMs": 16
+    },
+    {
+      "id": "account-audit-row",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 7
+    },
+    {
+      "id": "account-current-password",
+      "type": "fill",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "filled 23 characters",
+      "durationMs": 22
+    },
+    {
+      "id": "account-new-password",
+      "type": "fill",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "filled 23 characters",
+      "durationMs": 21
+    },
+    {
+      "id": "account-rotate",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 63
+    },
+    {
+      "id": "account-rotate-notice",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (19 chars)",
+      "durationMs": 208
+    },
+    {
+      "id": "account-rotate-audit",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 8
+    },
+    {
+      "id": "account-menu-name",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 2548
+    },
+    {
+      "id": "account-delete-confirm",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 2404
+    },
+    {
+      "id": "account-delete-password",
+      "type": "fill",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "filled 23 characters",
+      "durationMs": 28
+    },
+    {
+      "id": "account-delete",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 130
+    },
+    {
+      "id": "account-delete-notice",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (31 chars)",
+      "durationMs": 23
+    },
+    {
+      "id": "account-session-gone",
+      "type": "evaluate",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "script ran (status 401)",
+      "durationMs": 8
+    },
+    {
+      "id": "account-screenshot",
+      "type": "screenshot",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "screenshot saved as screenshots/mobile/account-screenshot.png",
+      "durationMs": 345
+    }
+  ],
+  "policy": "只有真实访问目标并通过断言的检查才记为 passed；选择器缺失记为 not_verified 并写明原因；失败项保留控制台与网络记录。本工具不代表被测目标已完成业务验收，只证明声明的检查项在声明的视口下实际执行过。"
+}

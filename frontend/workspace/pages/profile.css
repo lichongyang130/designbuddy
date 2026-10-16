@@ -252,3 +252,58 @@
     overflow-x: auto;
   }
 }
+
+.profile-subhead {
+  margin: 20px 0 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2f3a33;
+}
+
+.profile-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.profile-form-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: #55625a;
+}
+
+.profile-form-grid input {
+  border: 1px solid #d9e0d8;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 14px;
+  background: #fff;
+  color: #22301f;
+}
+
+.profile-form-grid input:focus-visible {
+  outline: 2px solid #7aa87f;
+  outline-offset: 1px;
+}
+
+.profile-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 10px 0;
+  font-size: 13px;
+  color: #55625a;
+  max-width: 320px;
+}
+
+.profile-field input {
+  border: 1px solid #d9e0d8;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 14px;
+  background: #fff;
+  color: #22301f;
+}
