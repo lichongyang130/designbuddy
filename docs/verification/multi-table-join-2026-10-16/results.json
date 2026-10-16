@@ -1,0 +1,187 @@
+{
+  "date": "2026-10-16",
+  "branch": "arena/5a5e7967-new",
+  "baseCommit": "edb66d8c847542692ba6b71286dcbf1be327013d",
+  "skill": "table.join-multi@1.0.0",
+  "implementedTools": 22,
+  "readyWithoutOptionalAsr": 21,
+  "readyWithOptionalAsr": 22,
+  "tests": {
+    "multiJoinBackend": {
+      "pass": 11,
+      "fail": 0,
+      "skip": 0
+    },
+    "nonAsrBackendAndApiRegression": {
+      "pass": 147,
+      "fail": 0,
+      "skip": 0
+    },
+    "realBrowserWorkflow": {
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "scope": "single real multi-file join workflow"
+    },
+    "catalog": {
+      "pass": 9,
+      "fail": 0,
+      "skip": 0
+    },
+    "frontendAndBackendTypeScript": "passed",
+    "productionBuild": "passed; existing large main bundle and fflate warning remain",
+    "gitDiffCheck": "passed"
+  },
+  "execution": {
+    "threeCsvFiles": true,
+    "twoSequentialJoinSteps": true,
+    "inputZipSHA256": "c889a33eee7bcd14d748f9afe57c6f8a4e479af1ec60d6ce2ae48a04c5a00c36",
+    "actualServiceWorker": true,
+    "artifacts": [
+      {
+        "name": "multi-joined.xlsx",
+        "size": 7965,
+        "sha256": "319612947084a17f9ccd2eefe774d8625c0957c229a3562754ef18b9c42d088d"
+      },
+      {
+        "name": "multi-join-report.json",
+        "size": 2002,
+        "sha256": "b24f5cd025b7ab60ac48fe0c570849791caddbc8b2878d6f1efe434a5c819769"
+      },
+      {
+        "name": "execution-receipt.json",
+        "size": 1877,
+        "sha256": "978fff780dc85024085c978e963469805afadcbc35beb285ebf8eae352d21f22"
+      }
+    ],
+    "foreignOwner404": true,
+    "database": "isolated in-memory only"
+  },
+  "limits": [
+    "exact UTF-8 text key joins only",
+    "right-side nonblank key unique; no one-to-many expansion",
+    "no semantic business-rule inference",
+    "no real business acceptance or full-site browser regression",
+    "not deployed"
+  ],
+  "sourceFiles": {
+    "README.md": {
+      "bytes": 60764,
+      "sha256": "117128439363015095da8edde33aa0122c529a00cc03c06111028091f52e930c"
+    },
+    "apps/web/public/skill-examples/multi-table-join-example.zip": {
+      "bytes": 798,
+      "sha256": "c889a33eee7bcd14d748f9afe57c6f8a4e479af1ec60d6ce2ae48a04c5a00c36"
+    },
+    "apps/web/tests/multi-join.spec.ts": {
+      "bytes": 2207,
+      "sha256": "9e2665421a124fe42b422495a6ea62b247584fed599a59a4036bf800800e3ad6"
+    },
+    "docs/plans/advanced-experts-execution.md": {
+      "bytes": 13992,
+      "sha256": "d5a953903b1fd84476c00dd3ec7dc2feec3c8694bc34432a7a934c66257a4c28"
+    },
+    "docs/plans/multi-file-table-join.md": {
+      "bytes": 4362,
+      "sha256": "1c5c148f7a3557c78dbe900b607c4b92d3fbb97b2ba44c8d21898e68667d7881"
+    },
+    "docs/plans/remaining-work-ledger.md": {
+      "bytes": 10483,
+      "sha256": "1411be9bb16c9c3e585a3b96f216167a9a5b9fbfb626479a4684326eeaa1a507"
+    },
+    "docs/verification/multi-table-join-2026-10-16/README.md": {
+      "bytes": 1391,
+      "sha256": "a13c16820b77dcc36d2dec64061aab803bbb91ed4d0e2273d17be745e93a6c54"
+    },
+    "scripts/verify-multi-table-join.cjs": {
+      "bytes": 2520,
+      "sha256": "3a1e057409a1c25e201152647a92bd86a0b53b8f100f6ad20a50993a00e80355"
+    },
+    "server/skills/contracts.ts": {
+      "bytes": 3935,
+      "sha256": "973aedf10721432a02a37e6d9600fa6531b6706cf32287473f7ac3d22e4ba69d"
+    },
+    "server/skills/executors.ts": {
+      "bytes": 15931,
+      "sha256": "9bfa7f2a7d03e11e2a9e3e4970d663bf29207f0c1b6e2cd50b283417ed049bde"
+    },
+    "server/skills/office.ts": {
+      "bytes": 3203,
+      "sha256": "a91689475e361cf8af90b18382429ad30cf534dba5ebb2eea6fe77ad9751cbf7"
+    },
+    "server/skills/service.test.cjs": {
+      "bytes": 11651,
+      "sha256": "c763616185851df7a6a45ade4f9e020516f8e9c247db7294f17778be8c86f5eb"
+    },
+    "server/skills/service.ts": {
+      "bytes": 22193,
+      "sha256": "a89a351ddc149c162df5e720d472c32b9a0de1db279707b9ba8844df93c9c52e"
+    },
+    "server/skills/table-join-multi.test.cjs": {
+      "bytes": 8950,
+      "sha256": "849ce6507cd0aa7e74156774136a18db0f4096cacb528235f10cf27ad103d767"
+    },
+    "server/skills/table-join-multi.ts": {
+      "bytes": 12100,
+      "sha256": "2117436f786e8f42386ef82657cf567c0738bfd59bb21286696516492a149e05"
+    },
+    "shared/skillRuntime.ts": {
+      "bytes": 23761,
+      "sha256": "07a0d6fe095e333ccacf3f172a5d94f358a3f3d875f184a19b3a5b5f4730887f"
+    },
+    "server/skills/planner.ts": {
+      "bytes": 11027,
+      "sha256": "d3d2e99f75efc284f9cb066f3c738c8b2174a65dc6c09f70e4bc52d77d533420"
+    },
+    "shared/expertRouting.ts": {
+      "bytes": 19201,
+      "sha256": "9434b0f130e65e5d0c349fb42d72afa13f75ce9caf382d92949fd597ee13ee28"
+    }
+  },
+  "evidenceFiles": {
+    "README.md": {
+      "bytes": 1391,
+      "sha256": "a13c16820b77dcc36d2dec64061aab803bbb91ed4d0e2273d17be745e93a6c54"
+    },
+    "artifacts/execution-receipt.json": {
+      "bytes": 1877,
+      "sha256": "978fff780dc85024085c978e963469805afadcbc35beb285ebf8eae352d21f22"
+    },
+    "artifacts/input-example.zip": {
+      "bytes": 798,
+      "sha256": "c889a33eee7bcd14d748f9afe57c6f8a4e479af1ec60d6ce2ae48a04c5a00c36"
+    },
+    "artifacts/multi-join-report.json": {
+      "bytes": 2002,
+      "sha256": "b24f5cd025b7ab60ac48fe0c570849791caddbc8b2878d6f1efe434a5c819769"
+    },
+    "artifacts/multi-joined.xlsx": {
+      "bytes": 7965,
+      "sha256": "319612947084a17f9ccd2eefe774d8625c0957c229a3562754ef18b9c42d088d"
+    },
+    "artifacts/verification-report.json": {
+      "bytes": 958,
+      "sha256": "cc751944c81e9e0bfdf68a0b7d8649c9b3290757421d20c58f5820de49c8a1cf"
+    },
+    "logs/backend-no-asr.log": {
+      "bytes": 41582,
+      "sha256": "3aaf19c321653addace7ac2388cbbecd6988dd05a7973a22dabf01e6926071a3"
+    },
+    "logs/browser.log": {
+      "bytes": 213,
+      "sha256": "9454663d7ae7867c101f2d607082b6f5e4efd74e4ac82de07b475869389c2085"
+    },
+    "logs/build.log": {
+      "bytes": 19427,
+      "sha256": "6e387a0231ae53a63fe0fd2689774ba6c34efc0a3e21faa0fae20a40f0f0032f"
+    },
+    "logs/catalog.log": {
+      "bytes": 2625,
+      "sha256": "6d5c6f6eed1ec04732bbe7775aca9c16adfa713dc4e5018478d7c7d8e082b8d9"
+    },
+    "logs/service-worker.log": {
+      "bytes": 1126,
+      "sha256": "f381a558816ccbbdef50197ad7a9325b4f6582729f65f6ee60b200534bb92392"
+    }
+  }
+}

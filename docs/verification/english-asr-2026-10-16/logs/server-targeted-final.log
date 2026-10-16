@@ -1,0 +1,72 @@
+TAP version 13
+# (node:59767) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: REAL offline recognizer reads two different actual recordings with native word timing and low-score evidence
+ok 1 - REAL offline recognizer reads two different actual recordings with native word timing and low-score evidence
+  ---
+  duration_ms: 1363.242742
+  type: 'test'
+  ...
+# Subtest: actual leading silence and separated utterances retain original-audio time positions, not per-segment zero
+ok 2 - actual leading silence and separated utterances retain original-audio time positions, not per-segment zero
+  ---
+  duration_ms: 1238.581002
+  type: 'test'
+  ...
+# Subtest: strict WAV rejects wrong rates/channels/encoding, invalid lengths, multiple data and overlong recordings
+ok 3 - strict WAV rejects wrong rates/channels/encoding, invalid lengths, multiple data and overlong recordings
+  ---
+  duration_ms: 5.799937
+  type: 'test'
+  ...
+# Subtest: silence fails without a made-up transcript and metadata cannot be interpreted as audio or instructions
+ok 4 - silence fails without a made-up transcript and metadata cannot be interpreted as audio or instructions
+  ---
+  duration_ms: 8.162542
+  type: 'test'
+  ...
+# Subtest: language declaration is mandatory, additional parameters and model-generated confirmation are rejected
+ok 5 - language declaration is mandatory, additional parameters and model-generated confirmation are rejected
+  ---
+  duration_ms: 5.706712
+  type: 'test'
+  ...
+# Subtest: missing installation and same-size corrupted assets make catalog unavailable and block HTTP execution
+ok 6 - missing installation and same-size corrupted assets make catalog unavailable and block HTTP execution
+  ---
+  duration_ms: 181.624873
+  type: 'test'
+  ...
+# Subtest: real broker persists seven owner-only artifacts; unsupported WAV fails atomically
+ok 7 - real broker persists seven owner-only artifacts; unsupported WAV fails atomically
+  ---
+  duration_ms: 2466.71124
+  type: 'test'
+  ...
+# Subtest: actual cancellation kills and reaps API-owned decoder, leaves zero artifacts, and permits explicit reupload
+ok 8 - actual cancellation kills and reaps API-owned decoder, leaves zero artifacts, and permits explicit reupload
+  ---
+  duration_ms: 1866.658326
+  type: 'test'
+  ...
+# Subtest: worker crash, service shutdown and decoder deadline do not leave orphan native processes
+ok 9 - worker crash, service shutdown and decoder deadline do not leave orphan native processes
+  ---
+  duration_ms: 1800.512134
+  type: 'test'
+  ...
+# Subtest: malformed decoder words and missing recognition never become an apparently valid partial transcript
+ok 10 - malformed decoder words and missing recognition never become an apparently valid partial transcript
+  ---
+  duration_ms: 0.940566
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 9526.245248

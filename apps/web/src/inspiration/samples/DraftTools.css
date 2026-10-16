@@ -1,0 +1,46 @@
+.draft-history {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 12px 20px;
+  background: #f1f0eb;
+  border-bottom: 1px solid #dbded4;
+  font-size: 12px;
+}
+.draft-history > span {
+  margin-right: auto;
+}
+.draft-history input,
+.draft-history select,
+.draft-history button {
+  max-width: 100%;
+  font: inherit;
+  padding: 8px;
+  border: 1px solid #cbd0c4;
+  background: #fff;
+  border-radius: 4px;
+}
+.draft-history input {
+  width: 150px;
+}
+@media (max-width: 600px) {
+  :is(.roots-work, .daylight-work) > .sample-top {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 12px;
+    padding: 16px;
+  }
+  :is(.roots-work, .daylight-work) .sample-top > div:nth-child(2) {
+    min-width: 0;
+  }
+  :is(.roots-work, .daylight-work) .sample-top strong {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  :is(.roots-work, .daylight-work) .sample-top-actions {
+    grid-column: 1/-1;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+}

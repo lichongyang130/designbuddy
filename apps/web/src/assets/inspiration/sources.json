@@ -1,0 +1,121 @@
+[
+  {
+    "id": 1,
+    "path": "jpg/gps/DSCN0010.jpg",
+    "source": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/jpg/gps/DSCN0010.jpg",
+    "license": "CC BY-SA 4.0",
+    "credit": "ianare/exif-samples contributors",
+    "file": "photo-01.webp",
+    "label": "山城花园",
+    "changes": "EXIF orientation normalized, resized and converted to WebP; metadata removed. UI may crop for display.",
+    "upstream": "http://www.gaia-gis.it/spatialite-2.3.1/resources.html"
+  },
+  {
+    "id": 2,
+    "path": "jpg/gps/DSCN0012.jpg",
+    "source": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/jpg/gps/DSCN0012.jpg",
+    "license": "CC BY-SA 4.0",
+    "credit": "ianare/exif-samples contributors",
+    "file": "photo-02.webp",
+    "label": "林荫步道",
+    "changes": "EXIF orientation normalized, resized and converted to WebP; metadata removed. UI may crop for display.",
+    "upstream": "http://www.gaia-gis.it/spatialite-2.3.1/resources.html"
+  },
+  {
+    "id": 3,
+    "path": "jpg/gps/DSCN0021.jpg",
+    "source": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/jpg/gps/DSCN0021.jpg",
+    "license": "CC BY-SA 4.0",
+    "credit": "ianare/exif-samples contributors",
+    "file": "photo-03.webp",
+    "label": "公园雕塑",
+    "changes": "EXIF orientation normalized, resized and converted to WebP; metadata removed. UI may crop for display.",
+    "upstream": "http://www.gaia-gis.it/spatialite-2.3.1/resources.html"
+  },
+  {
+    "id": 4,
+    "path": "jpg/gps/DSCN0025.jpg",
+    "source": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/jpg/gps/DSCN0025.jpg",
+    "license": "CC BY-SA 4.0",
+    "credit": "ianare/exif-samples contributors",
+    "file": "photo-04.webp",
+    "label": "意大利街道",
+    "changes": "EXIF orientation normalized, resized and converted to WebP; metadata removed. UI may crop for display.",
+    "upstream": "http://www.gaia-gis.it/spatialite-2.3.1/resources.html"
+  },
+  {
+    "id": 5,
+    "path": "jpg/gps/DSCN0027.jpg",
+    "source": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/jpg/gps/DSCN0027.jpg",
+    "license": "CC BY-SA 4.0",
+    "credit": "ianare/exif-samples contributors",
+    "file": "photo-05.webp",
+    "label": "古城广场",
+    "changes": "EXIF orientation normalized, resized and converted to WebP; metadata removed. UI may crop for display.",
+    "upstream": "http://www.gaia-gis.it/spatialite-2.3.1/resources.html"
+  },
+  {
+    "id": 6,
+    "path": "jpg/gps/DSCN0029.jpg",
+    "source": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/jpg/gps/DSCN0029.jpg",
+    "license": "CC BY-SA 4.0",
+    "credit": "ianare/exif-samples contributors",
+    "file": "photo-06.webp",
+    "label": "街角巷道",
+    "changes": "EXIF orientation normalized, resized and converted to WebP; metadata removed. UI may crop for display.",
+    "upstream": "http://www.gaia-gis.it/spatialite-2.3.1/resources.html"
+  },
+  {
+    "id": 7,
+    "path": "jpg/gps/DSCN0038.jpg",
+    "source": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/jpg/gps/DSCN0038.jpg",
+    "license": "CC BY-SA 4.0",
+    "credit": "ianare/exif-samples contributors",
+    "file": "photo-07.webp",
+    "label": "彩色建筑",
+    "changes": "EXIF orientation normalized, resized and converted to WebP; metadata removed. UI may crop for display.",
+    "upstream": "http://www.gaia-gis.it/spatialite-2.3.1/resources.html"
+  },
+  {
+    "id": 8,
+    "path": "jpg/gps/DSCN0040.jpg",
+    "source": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/jpg/gps/DSCN0040.jpg",
+    "license": "CC BY-SA 4.0",
+    "credit": "ianare/exif-samples contributors",
+    "file": "photo-08.webp",
+    "label": "教堂广场",
+    "changes": "EXIF orientation normalized, resized and converted to WebP; metadata removed. UI may crop for display.",
+    "upstream": "http://www.gaia-gis.it/spatialite-2.3.1/resources.html"
+  },
+  {
+    "id": 9,
+    "path": "jpg/gps/DSCN0042.jpg",
+    "source": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/jpg/gps/DSCN0042.jpg",
+    "license": "CC BY-SA 4.0",
+    "credit": "ianare/exif-samples contributors",
+    "file": "photo-09.webp",
+    "label": "城市立面",
+    "changes": "EXIF orientation normalized, resized and converted to WebP; metadata removed. UI may crop for display.",
+    "upstream": "http://www.gaia-gis.it/spatialite-2.3.1/resources.html"
+  },
+  {
+    "id": 10,
+    "path": "jpg/hdr/canon_hdr_NO.jpg",
+    "source": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/jpg/hdr/canon_hdr_NO.jpg",
+    "license": "CC BY-SA 4.0",
+    "credit": "Jesus Cea, via ianare/exif-samples",
+    "file": "photo-10.webp",
+    "label": "夜色路灯",
+    "changes": "EXIF orientation normalized, resized and converted to WebP; metadata removed. UI may crop for display."
+  },
+  {
+    "id": 11,
+    "path": "jpg/mobile/jolla.jpg",
+    "source": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/jpg/mobile/jolla.jpg",
+    "license": "CC BY-SA 4.0",
+    "credit": "ianare/exif-samples contributors",
+    "file": "photo-11.webp",
+    "label": "秋叶纹理",
+    "changes": "EXIF orientation normalized, resized and converted to WebP; metadata removed. UI may crop for display."
+  }
+]

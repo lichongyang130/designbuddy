@@ -1,0 +1,10 @@
+{
+  "name": "@designbuddy/plugin-runtime",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "Permission-aware plugin runtime primitives for DesignBuddy",
+  "exports": {
+    ".": "./src/index.ts"
+  }
+}

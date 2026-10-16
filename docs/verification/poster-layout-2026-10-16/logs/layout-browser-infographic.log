@@ -1,0 +1,11 @@
+
+Running 6 tests using 1 worker
+
+  ✓  1 tests/infographic.spec.ts:15:1 › downloaded JSON sample requires consent and produces real PNG/SVG, matching hashes and reloadable artifacts (8.2s)
+  ✓  2 tests/infographic.spec.ts:22:1 › actual trend preserves source record positions and proportional date spacing in report and preview (4.1s)
+  ✓  3 tests/infographic.spec.ts:25:1 › actual confirmed composition retains zero category and discloses rounded 99.99 percent total (4.0s)
+  ✓  4 tests/infographic.spec.ts:28:1 › invalid purpose, missing unit, impossible date and unconfirmed composition fail visibly with no artifacts (7.8s)
+  ✓  5 tests/infographic.spec.ts:37:30 › infographic upload and actual preview remain usable at 320px without page overflow (3.9s)
+  ✓  6 tests/infographic.spec.ts:37:30 › infographic upload and actual preview remain usable at 390px without page overflow (3.9s)
+
+  6 passed (32.5s)

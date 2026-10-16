@@ -1,0 +1,84 @@
+TAP version 13
+# (node:40765) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: REAL SVG and PNG infographic contains actual values, source hashes and disclosed rule selection
+ok 1 - REAL SVG and PNG infographic contains actual values, source hashes and disclosed rule selection
+  ---
+  duration_ms: 319.514294
+  type: 'test'
+  ...
+# Subtest: comparison uses a real shared zero baseline for negative values and retains source order
+ok 2 - comparison uses a real shared zero baseline for negative values and retains source order
+  ---
+  duration_ms: 41.6056
+  type: 'test'
+  ...
+# Subtest: trend sorts actual dates while preserving provenance and plots elapsed time instead of ordinal spacing
+ok 3 - trend sorts actual dates while preserving provenance and plots elapsed time instead of ordinal spacing
+  ---
+  duration_ms: 58.084593
+  type: 'test'
+  ...
+# Subtest: zero/negative base dates produce no invented percentage or misleading artificial nonzero observations
+ok 4 - zero/negative base dates produce no invented percentage or misleading artificial nonzero observations
+  ---
+  duration_ms: 94.042379
+  type: 'test'
+  ...
+# Subtest: composition uses actual decimal total, preserves zero shares and discloses rounded share sum
+ok 5 - composition uses actual decimal total, preserves zero shares and discloses rounded share sum
+  ---
+  duration_ms: 56.038223
+  type: 'test'
+  ...
+# Subtest: schema rejects unconfirmed composition, negatives, invalid dates, duplicate categories and missing/mixed-unit data
+ok 6 - schema rejects unconfirmed composition, negatives, invalid dates, duplicate categories and missing/mixed-unit data
+  ---
+  duration_ms: 1.005195
+  type: 'test'
+  ...
+# Subtest: resource/cardinality and label limits fail without silently truncating input
+ok 7 - resource/cardinality and label limits fail without silently truncating input
+  ---
+  duration_ms: 0.372112
+  type: 'test'
+  ...
+# Subtest: boundary-sized labels and values render all data rows within image dimension bounds
+ok 8 - boundary-sized labels and values render all data rows within image dimension bounds
+  ---
+  duration_ms: 303.650012
+  type: 'test'
+  ...
+# Subtest: untrusted markup is escaped in metadata and rendered as glyphs, not executable SVG or remote content
+ok 9 - untrusted markup is escaped in metadata and rendered as glyphs, not executable SVG or remote content
+  ---
+  duration_ms: 43.749435
+  type: 'test'
+  ...
+# Subtest: actual bounded worker persists artifacts and source receipt with owner-only downloads; malformed data gets no artifact
+ok 10 - actual bounded worker persists artifacts and source receipt with owner-only downloads; malformed data gets no artifact
+  ---
+  duration_ms: 1194.390888
+  type: 'test'
+  ...
+# Subtest: planner does not substitute this explicit JSON workflow for arbitrary CSV, prose or another expert
+ok 11 - planner does not substitute this explicit JSON workflow for arbitrary CSV, prose or another expert
+  ---
+  duration_ms: 0.634277
+  type: 'test'
+  ...
+# Subtest: JSON numeric lexemes preserve decimal precision and reject silently rounded or underflowed values
+ok 12 - JSON numeric lexemes preserve decimal precision and reject silently rounded or underflowed values
+  ---
+  duration_ms: 50.561905
+  type: 'test'
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 12
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2620.836665

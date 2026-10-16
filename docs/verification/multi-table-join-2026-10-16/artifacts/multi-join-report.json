@@ -1,0 +1,72 @@
+{
+  "schema": "designbuddy.multi-table-join/1",
+  "sourceArchiveSHA256": "c889a33eee7bcd14d748f9afe57c6f8a4e479af1ec60d6ce2ae48a04c5a00c36",
+  "tables": [
+    {
+      "filename": "orders.csv",
+      "rows": 3,
+      "headers": [
+        "orders.csv.order_id",
+        "orders.csv.customer_id",
+        "orders.csv.sku",
+        "orders.csv.qty"
+      ]
+    },
+    {
+      "filename": "customers.csv",
+      "rows": 3,
+      "headers": [
+        "customers.csv.id",
+        "customers.csv.name",
+        "customers.csv.region"
+      ]
+    },
+    {
+      "filename": "products.csv",
+      "rows": 3,
+      "headers": [
+        "products.csv.sku",
+        "products.csv.name",
+        "products.csv.unit_price"
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "left": "orders.csv",
+      "right": "customers.csv",
+      "leftKey": "customer_id",
+      "rightKey": "id",
+      "type": "left",
+      "as": "orders_customers",
+      "rows": 3
+    },
+    {
+      "left": "orders_customers",
+      "right": "products.csv",
+      "leftKey": "orders.csv.sku",
+      "rightKey": "sku",
+      "type": "left",
+      "as": "sales_detail",
+      "rows": 3
+    }
+  ],
+  "output": "sales_detail",
+  "outputRows": 3,
+  "outputColumns": [
+    "orders.csv.order_id",
+    "orders.csv.customer_id",
+    "orders.csv.sku",
+    "orders.csv.qty",
+    "customers.csv.id",
+    "customers.csv.name",
+    "customers.csv.region",
+    "products.csv.sku",
+    "products.csv.name",
+    "products.csv.unit_price"
+  ],
+  "provenanceSheet": "来源行号",
+  "policy": "仅对CSV明确指定的字段按UTF-8文本逐字精确关联；不去空格、不改大小写、不把字符串转为数字、不推断业务语义。右表非空键必须唯一；空键不匹配；左表重复键可以保留但本实现不做一对多右侧展开。所有CSV来源行号写入来源工作表。没有执行公式、语义分类、隐私删除或真实性核验。结果需由业务负责人核对。",
+  "requiresReview": true,
+  "atomicDelivery": true
+}

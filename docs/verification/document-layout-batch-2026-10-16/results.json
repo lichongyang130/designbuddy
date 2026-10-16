@@ -1,0 +1,116 @@
+{
+  "date": "2026-10-16",
+  "branch": "arena/5a5e7967-new",
+  "work": "document complex-layout partial improvements and wider bounded PDF batch OCR",
+  "implemented": {
+    "docxDirectFormatting": [
+      "left/right/first-line/hanging indentation where valid",
+      "paragraph before/after spacing and auto/exact line spacing",
+      "keep-with-next hint",
+      "table grid column widths",
+      "explicit RGB cell shading",
+      "cell vertical alignment"
+    ],
+    "pdfBatchLimits": {
+      "pdfCount": "2–4",
+      "totalPages": 8,
+      "workerTimeoutSeconds": 120,
+      "atomicDelivery": true,
+      "requiresReview": true
+    }
+  },
+  "tests": {
+    "documentFocused": {
+      "pass": 21,
+      "fail": 0,
+      "skip": 0,
+      "composition": {
+        "docxStructure": 12,
+        "pdfBatch": 5,
+        "documentSummary": 4
+      }
+    },
+    "nonAsrServerApiRegression": {
+      "pass": 152,
+      "fail": 0,
+      "skip": 0
+    },
+    "catalog": {
+      "pass": 9,
+      "fail": 0,
+      "skip": 0
+    },
+    "frontendTypeScript": "passed",
+    "backendTypeScript": "passed",
+    "productionBuild": "passed; pre-existing large main bundle and fflate dynamic/static import warnings",
+    "gitDiffCheck": "passed",
+    "realDocxBrowserWorkflow": {
+      "pass": 7,
+      "fail": 0,
+      "skip": 0,
+      "scope": "DOCX structure flow and synthetic formatting fixture; not a native Word render"
+    }
+  },
+  "realWorkerEvidence": "../pdf-batch-expansion-2026-10-16/results.json",
+  "notCompleted": [
+    "faithful DOCX/PDF page layout and pagination",
+    "multi-column layout, headers/footers, floating image wrap, inherited styles/borders and native-renderer comparison",
+    "larger/unbounded OCR batches, resumable/background jobs",
+    "real cloud-model summary verification",
+    "real browser workflow for this extension"
+  ],
+  "sourceFiles": {
+    "server/skills/docx-structure.ts": {
+      "bytes": 29178,
+      "sha256": "5d3bcf0756fe96bb588c363fdd864123c515f95e7bb9fc5fe7499d4d71179c29"
+    },
+    "server/skills/docx-structure.test.cjs": {
+      "bytes": 12142,
+      "sha256": "a4e0f4972d7ee0850bcbae7a450c354af1105c7fc48a8fd7a2072dd2c7d7a1d8"
+    },
+    "server/skills/pdf-batch.ts": {
+      "bytes": 6162,
+      "sha256": "7659751077a88d5b06c02dcb0c444db55b0418685e864d6860d6bc7334045a39"
+    },
+    "server/skills/pdf-batch.test.cjs": {
+      "bytes": 6010,
+      "sha256": "14eccd7cb78383cc593cb3c74ebccfc3417984bed6620f5e6fde838f44632cc1"
+    },
+    "server/skills/service.ts": {
+      "bytes": 22529,
+      "sha256": "760e2a89df73187e958cb0678adde14ffff21f5010942f82f29d47d217faa2f9"
+    },
+    "server/skills/executors.ts": {
+      "bytes": 20611,
+      "sha256": "79aecd8c841c2dbe076a5921dd4330024c36a241618e28e6c5c6acafc521a0ae"
+    },
+    "server/skills/document-summary.test.cjs": {
+      "bytes": 4925,
+      "sha256": "fd5aecd8febdfd0675ec28f4ab50f36cb2414b6ec921258f093a01a1030270ac"
+    },
+    "shared/skillRuntime.ts": {
+      "bytes": 24956,
+      "sha256": "325b709c97eb75b9ebd0d84bb921b5dd3ebe7b06ababcfa3451c51c9a9dc1ca0"
+    },
+    "apps/web/tests/docx-structure.spec.ts": {
+      "bytes": 8601,
+      "sha256": "9fb15aaf4a40ca1614793c437903eaf633353ad049af688e9a0ba78c4cd731a3"
+    },
+    "docs/plans/document-semantic-summary.md": {
+      "bytes": 3879,
+      "sha256": "ed31937bfce920c091fcb99930e3c267b4ac0264e7bf13854b9acb15dfa50a0d"
+    },
+    "docs/plans/docx-structure-execution.md": {
+      "bytes": 8757,
+      "sha256": "9feee027f06fba3c6d77f480364dfec91e0459e4f10879ffa1d088b1b56a8b3f"
+    },
+    "docs/plans/remaining-work-ledger.md": {
+      "bytes": 11140,
+      "sha256": "0aa140fc1c6eb4dab3eb77db62ce20aa1c4180dab15dfb8d11ad32f637d43349"
+    },
+    "README.md": {
+      "bytes": 62969,
+      "sha256": "0618a54600e519aa72aa38188e55d17b7e2616f0cefd747c260d87ea2bba9ac0"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+(node:6818) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+{
+  "status": "succeeded",
+  "skillId": "table.join-multi",
+  "version": "1.0.0",
+  "sourceArchiveSHA256": "c889a33eee7bcd14d748f9afe57c6f8a4e479af1ec60d6ce2ae48a04c5a00c36",
+  "sourceZipBytes": 798,
+  "summary": "实际完成3份CSV、2步关联，输出3行、10列；XLSX含逐行来源文件及原始行号。只按指定文本键精确匹配，不推断业务口径；请复核关联条件。",
+  "artifacts": [
+    {
+      "name": "multi-joined.xlsx",
+      "size": 7965,
+      "sha256": "319612947084a17f9ccd2eefe774d8625c0957c229a3562754ef18b9c42d088d"
+    },
+    {
+      "name": "multi-join-report.json",
+      "size": 2002,
+      "sha256": "b24f5cd025b7ab60ac48fe0c570849791caddbc8b2878d6f1efe434a5c819769"
+    },
+    {
+      "name": "execution-receipt.json",
+      "size": 1877,
+      "sha256": "978fff780dc85024085c978e963469805afadcbc35beb285ebf8eae352d21f22"
+    }
+  ],
+  "ownerIsolation": "all three downloads returned 404 to foreign owner"
+}

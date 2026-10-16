@@ -1,0 +1,13 @@
+
+Running 8 tests using 1 worker
+
+  ✓  1 tests/poster-layout.spec.ts:19:1 › edited multiline text and a real local image produce six backend artifacts with matching hashes, preview and JSON round-trip (6.7s)
+  ✓  2 tests/poster-layout.spec.ts:30:1 › real pointer drag/resize, keyboard nudging, undo/redo and locks change actual exported geometry (2.8s)
+  ✓  3 tests/poster-layout.spec.ts:37:1 › layer add, ordering, visibility, copying, deletion and canvas presets survive editable export (2.5s)
+  ✓  4 tests/poster-layout.spec.ts:42:1 › each edit and identity change invalidates staged bytes and previous consent; Enter in source never submits (2.2s)
+  ✓  5 tests/poster-layout.spec.ts:47:1 › malformed and URL-based imports fail locally without remote requests or stale prepared consent (2.1s)
+  ✓  6 tests/poster-layout.spec.ts:51:1 › visible text overflow actually fails backend execution with zero partial artifacts (4.0s)
+  ✓  7 tests/poster-layout.spec.ts:55:30 › editor, coordinate controls and real generated image fit 320px without overflow (4.2s)
+  ✓  8 tests/poster-layout.spec.ts:55:30 › editor, coordinate controls and real generated image fit 390px without overflow (4.2s)
+
+  8 passed (29.8s)

@@ -1,0 +1,43 @@
+.home27 .home-attach-secondary.is-expert-assistant { width: min(360px, calc(100vw - 24px)); overflow-y: auto; overscroll-behavior: contain; }
+.expert-match-panel { padding: 8px; font-size: 13px; line-height: 1.65; color: #505050; }
+/* The heading and close control share a row; neither relies on font-glyph offsets.
+   Keep this row visible while long expert details scroll inside the popup. */
+.expert-match-panel .expert-match-header {
+  position: sticky; top: -8px; z-index: 2; display: flex; flex-direction: row;
+  align-items: flex-start; justify-content: space-between; gap: 12px;
+  margin-top: -8px; padding: 8px 0 12px; border-bottom: 1px solid #eee; background: #fff;
+}
+.expert-match-heading { flex: 1; min-width: 0; }
+.expert-match-heading b { display: block; overflow-wrap: anywhere; }
+.expert-match-panel header b { font-size: 14px; color: #333; }
+.expert-match-panel h3 { font-size: 15px; color: #333; margin: 14px 0 6px; }
+.expert-match-panel h4 { font-size: 13px; margin: 12px 0 4px; }
+.expert-match-panel p { margin: 8px 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.expert-match-panel small { display: block; color: #888; font-size: 11px; line-height: 1.65; }
+.expert-match-panel ul { padding-left: 20px; margin: 6px 0 12px; }
+.expert-match-panel li { padding: 2px 0; overflow-wrap: anywhere; }
+.expert-match-panel button { border: 1px solid #ddd; border-radius: 8px; padding: 7px 10px; background: #fafafa; color: #444; font: inherit; cursor: pointer; }
+.expert-match-panel button:hover { background: #eee; }
+.expert-match-panel button:focus-visible, .expert-match-panel input:focus-visible { outline: 2px solid #777; outline-offset: 2px; }
+.expert-match-panel button:disabled { opacity: .45; cursor: default; }
+.expert-match-panel footer, .expert-match-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.expert-match-panel footer { border-top: 1px solid #eee; padding-top: 12px; }
+.expert-match-panel .expert-match-boundary { font-size: 11px; color: #888; }
+.expert-match-note, .expert-match-fallback { background: #f6f6f6; padding: 10px; border-radius: 9px; margin: 12px 0; }
+.expert-match-options { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+.expert-match-panel input { width: 100%; box-sizing: border-box; border: 1px solid #ddd; border-radius: 6px; padding: 7px; margin: 5px 0 8px; background: white; color: #333; font: inherit; }
+.expert-match-panel details { margin: 12px 0; }
+.expert-match-panel summary { cursor: pointer; }
+.expert-match-consent button { margin: 6px 0; }
+.expert-match-panel .expert-match-close {
+  position: static; display: inline-flex; flex: 0 0 28px; align-items: center; justify-content: center;
+  box-sizing: border-box; width: 28px; height: 28px; min-width: 28px; min-height: 28px;
+  margin: 0; padding: 0; border: 0; border-radius: 6px; background: transparent;
+  color: #666; line-height: 1; cursor: pointer;
+}
+.expert-match-panel .expert-match-close > svg { display: block; width: 16px; height: 16px; flex: 0 0 16px; pointer-events: none; }
+.expert-match-panel .expert-match-close:hover { background: #f0f0f0; color: #333; }
+.expert-match-panel .expert-match-close:focus-visible { outline: 2px solid #777; outline-offset: 1px; }
+
+.expert-match-panel .expert-match-identity { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.expert-match-panel .expert-match-avatar { display: block; width: 32px; height: 32px; flex: 0 0 32px; border-radius: 50%; object-fit: cover; }

@@ -1,0 +1,12 @@
+
+Running 7 tests using 1 worker
+
+  ✓  1 tests/docx-structure.spec.ts:14:1 › real downloadable DOCX sample produces actual merged XLSX, original image ZIP and durable source report (5.2s)
+  ✓  2 tests/docx-structure.spec.ts:20:1 › actual HTML preview renders merged cells, embedded image and local Chinese fonts while source scripts stay inert (3.9s)
+  ✓  3 tests/docx-structure.spec.ts:25:1 › unsupported merge/field content is a visible failure with no fictional partial extraction (2.5s)
+  ✓  4 tests/docx-structure.spec.ts:28:1 › ordinary DOCX gets actual text and no made-up table/image exports (3.4s)
+  ✓  5 tests/docx-structure.spec.ts:31:1 › DOCX layout attributes survive the complete browser upload, worker and preview flow (3.7s)
+  ✓  6 tests/docx-structure.spec.ts:35:30 › DOCX upload and real preview remain usable at 320px without page overflow (3.5s)
+  ✓  7 tests/docx-structure.spec.ts:35:30 › DOCX upload and real preview remain usable at 390px without page overflow (3.7s)
+
+  7 passed (27.0s)

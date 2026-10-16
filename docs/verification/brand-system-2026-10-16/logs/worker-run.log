@@ -1,0 +1,58 @@
+(node:4618) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+{
+  "date": "2026-10-16",
+  "status": "succeeded",
+  "skillId": "brand.system",
+  "version": "1.0.0",
+  "inputSHA256": "ed2b6a9ca43165528f112aefa08e2e1e389eee7a099797f2f03b17a8632d4849",
+  "ownerIsolation": "all nine files return 404 to a foreign owner",
+  "summary": "为“林间来信”实际生成标志构形、3色设计变量、字体层级、响应式品牌规范和PNG图标，共8份成果。属于模板化品牌系统草案；未做AI创意、商标/版权检索或市场验收。",
+  "artifacts": [
+    {
+      "name": "logo-symbol.svg",
+      "size": 374,
+      "sha256": "ea73e2e457edf3e31c00ef1bc80d073fea47b2fc0f0b40fdd907838a0195155d"
+    },
+    {
+      "name": "logo-lockup.svg",
+      "size": 8687,
+      "sha256": "1513a616fc0500129c866a37dfec7b6114ad12ba0f8b0bfc09ee32ab1377c4ec"
+    },
+    {
+      "name": "brand-icon-64.png",
+      "size": 1567,
+      "sha256": "af327aedf750fa1464e9527b198a7f833e911cc3abc6797765433f9ca0edf46e"
+    },
+    {
+      "name": "brand-avatar-512.png",
+      "size": 15901,
+      "sha256": "398571edc4965bd312ab08f4099f89cce8b0fbb64fbd172b563c264feca096d8"
+    },
+    {
+      "name": "brand-system.json",
+      "size": 2250,
+      "sha256": "b04cc6e4b62e6af69c084bbe46c38a6f8ef9fa28e6dc77ff51a05b6b287103f0"
+    },
+    {
+      "name": "brand-system.css",
+      "size": 246,
+      "sha256": "f5729ec218640f530ea0a01b0ec46e391fc02d0c1e3fc3ff83cb6c1940a806c5"
+    },
+    {
+      "name": "brand-guidelines.html",
+      "size": 667302,
+      "sha256": "717eb2ed544865a0f70f8d7a8e910fe97c412e761de5f502f5ee94b58a7693f4"
+    },
+    {
+      "name": "font-license.txt",
+      "size": 4314,
+      "sha256": "18aabf190848725e2576eefb5c29ba06aac1029d02132252a7f312eac2e50cf3"
+    },
+    {
+      "name": "execution-receipt.json",
+      "size": 1346,
+      "sha256": "6bab3c0300886e8cf2bad29b9b0917e63c7aacd40b3f1a973f734962762f0d55"
+    }
+  ]
+}

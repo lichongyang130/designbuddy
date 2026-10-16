@@ -1,0 +1,102 @@
+{
+  "engine": "pocketsphinx",
+  "version": "5.1.1",
+  "platform": "linux-x64",
+  "pythonVersion": "3.11",
+  "wheelURL": "https://files.pythonhosted.org/packages/74/34/d9db696560de8ea7347f630630b9f9e988093dc52ff02ea6bf1b6d41f21c/pocketsphinx-5.1.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+  "wheelSHA256": "bb8fd0fc7fb08dd8f85da21f5121f34ebf4186a5bee91ce85e2d358e69a448bf",
+  "files": {
+    "pocketsphinx/__init__.py": {
+      "size": 10108,
+      "sha256": "fc864c288b322e2e62d4d573079040d2ae30ac468cce952020034587b1b3d44e"
+    },
+    "pocketsphinx/_pocketsphinx.cpython-311-x86_64-linux-gnu.so": {
+      "size": 1234960,
+      "sha256": "aefebe6574100e440a16827740062b1c9ca44e8563891e24f74d73d4acbcf1e8"
+    },
+    "pocketsphinx/lm.py": {
+      "size": 12395,
+      "sha256": "20afcc181d1b0e52cb4fde7e56b9656bb365c2ae064a3498d7a7a1a3a87edf11"
+    },
+    "pocketsphinx/segmenter.py": {
+      "size": 3609,
+      "sha256": "5a630b3c61cb13f5349019346f5ad67b4494c153bd522a05f9c583d8a5ec1f29"
+    },
+    "pocketsphinx/to_textgrid.py": {
+      "size": 8246,
+      "sha256": "8c09d10a9ed8f18228f8d9280ba654d2370a92e1f6629a860d078729d3143269"
+    },
+    "pocketsphinx/model/CMakeLists.txt": {
+      "size": 85,
+      "sha256": "7d9096c5c3f7d2b18997784c19cb3371d111e12fd3703b1658cd6705fc1c389d"
+    },
+    "pocketsphinx/model/en-us/cmudict-en-us.dict": {
+      "size": 3275645,
+      "sha256": "20b5c293e1f311fb375fe067e500ec5636f4fc7af5594967263696def9b23bfe"
+    },
+    "pocketsphinx/model/en-us/en-us-phone.lm.bin": {
+      "size": 857195,
+      "sha256": "c57e0fa4191b096b1279cfe3a77927f52568fdecfc6624ddb5cec9527c763a54"
+    },
+    "pocketsphinx/model/en-us/en-us.lm.bin": {
+      "size": 27114385,
+      "sha256": "db21d0642286677699e6dbc859d2e5395570222361999387ce60f6e1d01995d6"
+    },
+    "pocketsphinx/model/en-us/en-us/README": {
+      "size": 1617,
+      "sha256": "8b88de980568509c646d0527b8414beef136964391903b40996d32f737bf752e"
+    },
+    "pocketsphinx/model/en-us/en-us/feat.params": {
+      "size": 164,
+      "sha256": "c982c5f75e2a30c34d2c9ef1f6b129a5a00e67e3e927565076b58664cc2404c9"
+    },
+    "pocketsphinx/model/en-us/en-us/mdef": {
+      "size": 2959176,
+      "sha256": "2360f9a86889c1cfee8bd618a0269387911e5fb2920a594f506b18b8c79683b0"
+    },
+    "pocketsphinx/model/en-us/en-us/means": {
+      "size": 838732,
+      "sha256": "832019e32cac12eb318964f96f469034acb12d0348eeddc3831831a100cb4dd4"
+    },
+    "pocketsphinx/model/en-us/en-us/noisedict": {
+      "size": 56,
+      "sha256": "7295b07df2c204c4f87c6782b6be1a3859d7006d4e3864181c955d6dab105a33"
+    },
+    "pocketsphinx/model/en-us/en-us/sendump": {
+      "size": 1969024,
+      "sha256": "8c9564c0d5bef69ca9d9bf1014abe162f071644cf02cf1fa8a483c3dc165a7a8"
+    },
+    "pocketsphinx/model/en-us/en-us/transition_matrices": {
+      "size": 2080,
+      "sha256": "c1f7f28ea43177be734be1f88bd7f1b9a853d0e660f8599c67c6eaeca8bb539a"
+    },
+    "pocketsphinx/model/en-us/en-us/variances": {
+      "size": 838732,
+      "sha256": "b00d696f85e96834fc10f8e5f06428d8c4db6bffdbe5845b6f69bf6efbc48fa5"
+    },
+    "pocketsphinx-5.1.1.dist-info/METADATA": {
+      "size": 6734,
+      "sha256": "57fd9c27d450924c1f0954ca23912becd8574975503cf59876ecc506045681da"
+    },
+    "pocketsphinx-5.1.1.dist-info/WHEEL": {
+      "size": 195,
+      "sha256": "adef34f873271a2c943233dd9bd6d7a3f87d14b1588091d2cdf5f534783fdc70"
+    },
+    "pocketsphinx-5.1.1.dist-info/entry_points.txt": {
+      "size": 115,
+      "sha256": "ddbd59746dd663ee3bebc4ac4d74814c45a520176526dba6229fa92208f48e32"
+    },
+    "pocketsphinx-5.1.1.dist-info/RECORD": {
+      "size": 2163,
+      "sha256": "b5992e1f574838beb93615445f9ee00cf2a4af43362799c29bc50d79d18c6cd4"
+    },
+    "pocketsphinx-5.1.1.dist-info/licenses/AUTHORS": {
+      "size": 210,
+      "sha256": "29aea431a745401b1ef814a98097224d3e9ec04a447fe5978f22ff9b3c463885"
+    },
+    "pocketsphinx-5.1.1.dist-info/licenses/LICENSE": {
+      "size": 6697,
+      "sha256": "1c3b5c5529d7360c927aa034eea28010c59558c1f67fb722d8d8b5d69cb98a23"
+    }
+  }
+}

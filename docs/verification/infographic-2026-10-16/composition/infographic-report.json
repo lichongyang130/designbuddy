@@ -1,0 +1,117 @@
+{
+  "sourceSHA256": "9d1003739090cdc9cf38712cb0cddfcb8feb1ca0d845c2dad5bf8a57bfc1c981",
+  "title": "渠道收入构成",
+  "metric": "确认收入",
+  "unit": "万元",
+  "scope": "2026年9月已确认收入，各渠道采用相同记账口径",
+  "source": "演示样例，未独立验证业务事实",
+  "purpose": "composition",
+  "chartType": "100-percent-stacked-bar",
+  "selectionReason": "用户明确确认互斥完整构成，使用100%堆叠条形图；份额由实际总量计算。",
+  "selectionMethod": "explicit-purpose deterministic rules, not AI semantic understanding",
+  "userDeclaredPartsCompleteAndDisjoint": true,
+  "sourceIndependentlyVerified": false,
+  "calculationPolicy": "decimal.js 40位有效数字；原始数值不超过6位小数，图形坐标为双精度近似，变化率等除法结果可能舍入。",
+  "rowReference": "sourceRow为输入data数组从1开始的记录序号，不是JSON物理行号或外部数据源行号。",
+  "kpis": [
+    {
+      "label": "总体合计",
+      "value": "454.1"
+    },
+    {
+      "label": "类别数量",
+      "value": "4"
+    },
+    {
+      "label": "最大份额",
+      "value": "34.27%"
+    }
+  ],
+  "rows": [
+    {
+      "label": "线上直营",
+      "value": "128.5",
+      "sourceRow": 1,
+      "shareDecimal": "28.29773177714159876679145562651398370403",
+      "shareDisplay": "28.30%",
+      "color": "#087f8c"
+    },
+    {
+      "label": "线下门店",
+      "value": "96.2",
+      "sourceRow": 2,
+      "shareDecimal": "21.1847610658445276370843426558026866329",
+      "shareDisplay": "21.18%",
+      "color": "#d17c36"
+    },
+    {
+      "label": "合作渠道",
+      "value": "73.8",
+      "sourceRow": 3,
+      "shareDecimal": "16.25192688835058357190046245320414005726",
+      "shareDisplay": "16.25%",
+      "color": "#6f68ab"
+    },
+    {
+      "label": "企业客户",
+      "value": "155.6",
+      "sourceRow": 4,
+      "shareDecimal": "34.26558026866329002422373926447918960581",
+      "shareDisplay": "34.27%",
+      "color": "#497a51"
+    }
+  ],
+  "geometry": [
+    {
+      "sourceRow": 1,
+      "label": "线上直营",
+      "x": 86,
+      "width": 290.9006826690156,
+      "shareDecimal": "28.29773177714159876679145562651398370403",
+      "color": "#087f8c"
+    },
+    {
+      "sourceRow": 2,
+      "label": "线下门店",
+      "x": 376.9006826690156,
+      "width": 217.77934375688176,
+      "shareDecimal": "21.1847610658445276370843426558026866329",
+      "color": "#d17c36"
+    },
+    {
+      "sourceRow": 3,
+      "label": "合作渠道",
+      "x": 594.6800264258974,
+      "width": 167.06980841224402,
+      "shareDecimal": "16.25192688835058357190046245320414005726",
+      "color": "#6f68ab"
+    },
+    {
+      "sourceRow": 4,
+      "label": "企业客户",
+      "x": 761.7498348381414,
+      "width": 352.25016516185866,
+      "shareDecimal": "34.26558026866329002422373926447918960581",
+      "color": "#497a51"
+    }
+  ],
+  "domain": {
+    "min": "0",
+    "max": "100",
+    "unit": "%"
+  },
+  "total": "454.1",
+  "displayedSharesSum": "100.00",
+  "render": {
+    "width": 1200,
+    "height": 1193,
+    "svgSHA256": "f799ff0b43f5f6c6ee05f3432bf3f612f0780b7719cd9291647334a8ea2e705a",
+    "pngSHA256": "f5e8a92e3aa24f7695e2865f168783f11aaef7699432431275ec627061c5d55e"
+  },
+  "notes": [
+    "单位、统计口径和来源均由用户声明，未独立核实。",
+    "图形坐标与PNG为近似呈现；完整数值及记录序号见下方明细和JSON。",
+    "份额按两位小数展示，四舍五入后不一定恰好为100%；极小份额请查看明细。"
+  ],
+  "requiresReview": true
+}

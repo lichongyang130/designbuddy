@@ -1,0 +1,11 @@
+
+Running 6 tests using 1 worker
+
+  ✓  1 tests/audio-transcribe.spec.ts:16:1 › actual recorded sample requires upload consent plus language declaration and yields real text, SRT, source hashes and durable artifacts (6.0s)
+  ✓  2 tests/audio-transcribe.spec.ts:21:1 › sandboxed review contains real playable audio, native word times, low-score highlighting and no executable source (4.5s)
+  ✓  3 tests/audio-transcribe.spec.ts:24:1 › selecting a different recording clears both language declaration and upload consent; switching tools drops audio parameters (1.7s)
+  ✓  4 tests/audio-transcribe.spec.ts:27:1 › silence and unsupported sampling rate visibly fail with no fabricated transcript artifacts (3.4s)
+  ✓  5 tests/audio-transcribe.spec.ts:30:30 › language consent and real audio review fit 320px without page overflow (3.6s)
+  ✓  6 tests/audio-transcribe.spec.ts:30:30 › language consent and real audio review fit 390px without page overflow (3.8s)
+
+  6 passed (23.8s)

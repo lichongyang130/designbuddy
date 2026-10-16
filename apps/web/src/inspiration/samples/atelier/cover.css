@@ -1,0 +1,47 @@
+.at-cover {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  background: #691c29;
+  color: #fff5eb;
+}
+.at-cover img {
+  position: absolute;
+  right: 0;
+  width: 68%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 45%;
+}
+.at-cover > div {
+  position: absolute;
+  inset: 0;
+  padding: 7%;
+  background: linear-gradient(
+    90deg,
+    #651c29 2%,
+    #651c29e6 26%,
+    transparent 74%
+  );
+}
+.at-cover > div > span,
+.at-cover small {
+  font-size: 7px;
+  letter-spacing: 1.5px;
+}
+.at-cover h2 {
+  font:
+    clamp(22px, 2.8vw, 38px) / 1 Georgia,
+    serif;
+  letter-spacing: -1.5px;
+  margin: 12% 0 9%;
+}
+.at-cover h2 span {
+  display: block;
+  font:
+    clamp(16px, 1.9vw, 25px) / 1.4 "Noto Sans SC",
+    sans-serif;
+  letter-spacing: 0;
+  margin-top: 10%;
+}

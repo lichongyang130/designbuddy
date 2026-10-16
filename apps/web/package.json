@@ -1,0 +1,42 @@
+{
+  "name": "designbuddy-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "test:home": "playwright test home.spec.ts home-reference.spec.ts model-menu.spec.ts attach-menu.spec.ts scenes.spec.ts workspace.spec.ts",
+    "test:experts": "playwright test experts.spec.ts",
+    "test:ui": "playwright test",
+    "test:plugins": "playwright test plugins.spec.ts",
+    "test:skills": "node scripts/run-playwright.mjs test tests/skills.spec.ts",
+    "test:connectors": "playwright test connectors.spec.ts",
+    "test:conversation": "playwright test conversation.spec.ts",
+    "test:account": "playwright test account.spec.ts",
+    "test:scenes": "playwright test scenes.spec.ts workspace.spec.ts",
+    "test:settings": "playwright test account.spec.ts settings.spec.ts",
+    "test:sidebar": "playwright test sidebar.spec.ts",
+    "test:inspiration": "playwright test inspiration",
+    "test:backend": "playwright test backend.spec.ts"
+  },
+  "dependencies": {
+    "fflate": "^0.8.3",
+    "pptxgenjs": "^4.0.1",
+    "react": "latest",
+    "react-dom": "latest",
+    "react-markdown": "^10.1.0",
+    "zustand": "latest"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.0",
+    "@sparticuz/chromium": "153.0.0",
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "@vitejs/plugin-react": "latest",
+    "typescript": "latest",
+    "vite": "latest"
+  }
+}

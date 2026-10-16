@@ -1,0 +1,6 @@
+
+Running 1 test using 1 worker
+
+  ✓  1 tests/multi-join.spec.ts:5:1 › data expert uploads three actual CSV files, executes a two-step backend join and downloads source-traceable XLSX (2.8s)
+
+  1 passed (3.9s)

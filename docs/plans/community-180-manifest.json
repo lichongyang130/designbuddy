@@ -1,0 +1,1467 @@
+{
+  "scope": "180 additional templates; every template has 20–30 substantive pages including media categories",
+  "baseline": 13,
+  "addedTarget": 180,
+  "targetTotal": 193,
+  "notes": "Only verified implemented entries may be published. Planned titles are a production backlog, not working templates; their detailed page outlines and assets are not yet designed.",
+  "entries": [
+    {
+      "id": "forme",
+      "category": "原型",
+      "title": "FORME · 家具选配与空间采购",
+      "targetPages": 24,
+      "status": "verified",
+      "route": "/inspiration/forme",
+      "implementedPages": 24,
+      "imageCount": 5,
+      "verification": "24-page navigation; procurement workflow; 320/375/768/1440px; persistence/copies/undo/versions; offline export; CJK visual review. 12 FORME tests passed."
+    },
+    {
+      "id": "atelier",
+      "category": "原型",
+      "title": "ATELIER · 独立服饰订制",
+      "targetPages": 24,
+      "status": "verified",
+      "route": "/inspiration/atelier",
+      "implementedPages": 24,
+      "imageCount": 5,
+      "verification": "24 distinct pages; 5 dedicated AI concept images (508462 bytes); quote math; input validation; immutable local confirmation snapshot; sequential production; copy/undo/versions; JSON/CSV/SVG/24-chapter offline HTML; embedded CJK fonts; 320/375/768/1440px; actual server account restore. 13 ATELIER tests; combined community/backend 101/101 passed."
+    },
+    {
+      "id": "roots",
+      "category": "原型",
+      "title": "ROOTS · 植物与花园规划",
+      "targetPages": 24,
+      "status": "verified",
+      "route": "/inspiration/roots",
+      "implementedPages": 24,
+      "imageCount": 5,
+      "verification": "24 distinct pages; 5 dedicated AI images; garden geometry, soil volume/bag ceiling, rain tank cap, plant filters, light checks, coordinates, care log, sequential checks, frozen local review. Local persistence/copies/undo/versions; JSON/CSV/font-embedded SVG/24-chapter offline HTML; actual account and separate-browser restore; all pages at 320/375/768/1440px; CJK desktop/mobile/offline visual inspection. 27 combined specialist tests (ROOTS 12, DAYLIGHT 15); 128/128 community/backend browser regression; 12 domain tests; 8 backend Node tests. Specialist suite rerun after mobile header refinement: 27/27."
+    },
+    {
+      "id": "daylight",
+      "category": "原型",
+      "title": "DAYLIGHT · 联合办公空间",
+      "targetPages": 24,
+      "status": "verified",
+      "route": "/inspiration/daylight",
+      "implementedPages": 24,
+      "imageCount": 5,
+      "verification": "24 distinct pages; 5 dedicated AI images; half-hour occupancy and exclusive-room conflicts, unique seating, local attendance, service/pass/booking math, frozen estimate, real focus timer, energy scenario and RFC5545 ICS timezone/escaping/folding. Local persistence/copies/undo/versions; JSON/CSV/font-embedded SVG/24-chapter offline HTML; actual account and separate-browser restore; all pages at 320/375/768/1440px; CJK desktop/mobile/offline visual inspection. 27 combined specialist tests (ROOTS 12, DAYLIGHT 15); 128/128 community/backend browser regression; 12 domain tests; 8 backend Node tests. Specialist suite rerun after mobile header refinement: 27/27."
+    },
+    {
+      "id": "tide",
+      "category": "原型",
+      "title": "TIDE · 帆船俱乐部会员",
+      "targetPages": 24,
+      "status": "verified",
+      "route": "/inspiration/tide",
+      "implementedPages": 24,
+      "imageCount": 5,
+      "verification": "24 substantive pages; five dedicated AI images; 320/375/768/1440px; distinct desktop/mobile visual review; JSON/CSV/font-embedded SVG/24-chapter offline HTML; actual account and separate-browser recovery; local history/versions/copies. 14 specialist tests: boat/time conflicts, per-month hour quota, preserved over-quota records after downgrade, monthly fee/coach/material math, non-geographic route diagram, manual weather notes without safety approval, weighted personal pace, independent logs, frozen discussion and unverified contact TXT. Combined browser regression 157/157 passed (12.1 min); 24 domain tests (12 new + 12 previous); backend Node 8/8; web/API builds pass. No actual subscriptions, payments, shipping, bookings, marine navigation or sailing clearance."
+    },
+    {
+      "id": "morrow",
+      "category": "原型",
+      "title": "MORROW · 精品咖啡订阅",
+      "targetPages": 24,
+      "status": "verified",
+      "route": "/inspiration/morrow",
+      "implementedPages": 24,
+      "imageCount": 5,
+      "verification": "24 substantive pages; five dedicated AI images; 320/375/768/1440px; distinct desktop/mobile visual review; JSON/CSV/font-embedded SVG/24-chapter offline HTML; actual account and separate-browser recovery; local history/versions/copies. 15 specialist tests: weighted blends and 100% gating, frozen cart, four dated cycles and independent rotation/skip/pause, exact water allocation and chart order, inventory prevents negative balance, post-discount shipping thresholds, date differences, private tasting and frozen estimate. Combined browser regression 157/157 passed (12.1 min); 24 domain tests (12 new + 12 previous); backend Node 8/8; web/API builds pass. No actual subscriptions, payments, shipping, bookings, marine navigation or sailing clearance."
+    },
+    {
+      "id": "prototype-07",
+      "category": "原型",
+      "title": "STUDIO NINE · 摄影棚排期",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "prototype-08",
+      "category": "原型",
+      "title": "WELLSPRING · 运动课程管理",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "prototype-09",
+      "category": "原型",
+      "title": "CIRCUIT · 二手数码检测交易",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "prototype-10",
+      "category": "原型",
+      "title": "PAPERHOUSE · 独立书店选书",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "prototype-11",
+      "category": "原型",
+      "title": "CAMPUS · 成人教育学习平台",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "prototype-12",
+      "category": "原型",
+      "title": "PAWS · 宠物护理服务",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "prototype-13",
+      "category": "原型",
+      "title": "HARVEST · 农场食材配送",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "prototype-14",
+      "category": "原型",
+      "title": "LOOM · 纺织面料采购",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "prototype-15",
+      "category": "原型",
+      "title": "COVE · 社区活动策划",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "prototype-16",
+      "category": "原型",
+      "title": "REPAIR · 家电维修工作台",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "prototype-17",
+      "category": "原型",
+      "title": "LENS · 摄影器材租赁",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "prototype-18",
+      "category": "原型",
+      "title": "GATHER · 婚礼执行协作",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "prototype-19",
+      "category": "原型",
+      "title": "MILESTONE · 求职作品集",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "prototype-20",
+      "category": "原型",
+      "title": "CANOPY · 营地路线规划",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "slides-01",
+      "category": "幻灯片",
+      "title": "储能商业化投资提案",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "slides-02",
+      "category": "幻灯片",
+      "title": "海洋保护年度报告",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "slides-03",
+      "category": "幻灯片",
+      "title": "城市慢行系统规划",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "slides-04",
+      "category": "幻灯片",
+      "title": "精品餐饮品牌发布",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "slides-05",
+      "category": "幻灯片",
+      "title": "开源开发者大会演讲",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "slides-06",
+      "category": "幻灯片",
+      "title": "设计人才招聘宣讲",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "slides-07",
+      "category": "幻灯片",
+      "title": "机器人教育课程说明",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "slides-08",
+      "category": "幻灯片",
+      "title": "社区医疗服务设计",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "slides-09",
+      "category": "幻灯片",
+      "title": "独立电影融资提案",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "slides-10",
+      "category": "幻灯片",
+      "title": "新材料研发成果发布",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "slides-11",
+      "category": "幻灯片",
+      "title": "宠物食品品牌路演",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "slides-12",
+      "category": "幻灯片",
+      "title": "物流数字化转型规划",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "slides-13",
+      "category": "幻灯片",
+      "title": "数字博物馆策展方案",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "slides-14",
+      "category": "幻灯片",
+      "title": "远程团队文化手册演示",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "slides-15",
+      "category": "幻灯片",
+      "title": "可循环包装产品发布",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "slides-16",
+      "category": "幻灯片",
+      "title": "公益助学项目复盘",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "slides-17",
+      "category": "幻灯片",
+      "title": "户外装备渠道招商",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "slides-18",
+      "category": "幻灯片",
+      "title": "企业网络安全培训",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "slides-19",
+      "category": "幻灯片",
+      "title": "地方文化旅游推介",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "slides-20",
+      "category": "幻灯片",
+      "title": "游戏发行市场策略",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "document-01",
+      "category": "文档",
+      "title": "精品酒店运营手册",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "document-02",
+      "category": "文档",
+      "title": "社区花园共建指南",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "document-03",
+      "category": "文档",
+      "title": "软件产品研究报告",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "document-04",
+      "category": "文档",
+      "title": "创意机构项目交付规范",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "document-05",
+      "category": "文档",
+      "title": "食品工厂质量管理手册",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "document-06",
+      "category": "文档",
+      "title": "摄影展览策展手册",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "document-07",
+      "category": "文档",
+      "title": "个人理财知识读本",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "document-08",
+      "category": "文档",
+      "title": "无障碍活动执行指南",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "document-09",
+      "category": "文档",
+      "title": "零售门店培训手册",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "document-10",
+      "category": "文档",
+      "title": "社区灾害准备手册",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "document-11",
+      "category": "文档",
+      "title": "开源项目贡献者指南",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "document-12",
+      "category": "文档",
+      "title": "咖啡产地风味读本",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "document-13",
+      "category": "文档",
+      "title": "电影短片制作手册",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "document-14",
+      "category": "文档",
+      "title": "公共空间观察报告",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "document-15",
+      "category": "文档",
+      "title": "小型企业采购制度",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "document-16",
+      "category": "文档",
+      "title": "设计系统组件说明书",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "document-17",
+      "category": "文档",
+      "title": "年度公益影响报告",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "document-18",
+      "category": "文档",
+      "title": "博物馆教育工作册",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "document-19",
+      "category": "文档",
+      "title": "轻量旅行装备指南",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "document-20",
+      "category": "文档",
+      "title": "家庭数字安全手册",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "artwork-01",
+      "category": "图片",
+      "title": "城市爵士音乐节视觉",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "artwork-02",
+      "category": "图片",
+      "title": "山野装备品牌视觉",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "artwork-03",
+      "category": "图片",
+      "title": "独立香氛包装系列",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "artwork-04",
+      "category": "图片",
+      "title": "植物园四季展览画板",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "artwork-05",
+      "category": "图片",
+      "title": "儿童科学馆宣传系列",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "artwork-06",
+      "category": "图片",
+      "title": "现代面包房品牌系统",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "artwork-07",
+      "category": "图片",
+      "title": "海岸摄影节海报集",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "artwork-08",
+      "category": "图片",
+      "title": "社区图书馆导视系列",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "artwork-09",
+      "category": "图片",
+      "title": "女性运动品牌视觉",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "artwork-10",
+      "category": "图片",
+      "title": "新锐建筑事务所画册",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "artwork-11",
+      "category": "图片",
+      "title": "精品茶具产品画板",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "artwork-12",
+      "category": "图片",
+      "title": "独立书籍封面系列",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "artwork-13",
+      "category": "图片",
+      "title": "有机农产品包装体系",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "artwork-14",
+      "category": "图片",
+      "title": "实验电子音乐视觉",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "artwork-15",
+      "category": "图片",
+      "title": "城市骑行赛事画板",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "artwork-16",
+      "category": "图片",
+      "title": "可持续材料展导视",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "artwork-17",
+      "category": "图片",
+      "title": "现代手工陶瓷品牌",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "artwork-18",
+      "category": "图片",
+      "title": "电影短片宣传画板",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "artwork-19",
+      "category": "图片",
+      "title": "宠物领养公益海报",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "artwork-20",
+      "category": "图片",
+      "title": "深夜食堂品牌视觉",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "hyperframes-01",
+      "category": "HyperFrames",
+      "title": "运动鞋新品动态发布",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "hyperframes-02",
+      "category": "HyperFrames",
+      "title": "建筑展览动态导览",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "hyperframes-03",
+      "category": "HyperFrames",
+      "title": "咖啡风味动态图谱",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "hyperframes-04",
+      "category": "HyperFrames",
+      "title": "数据新闻动效专题",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "hyperframes-05",
+      "category": "HyperFrames",
+      "title": "音乐节舞台视觉分镜",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "hyperframes-06",
+      "category": "HyperFrames",
+      "title": "城市地标文字动画",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "hyperframes-07",
+      "category": "HyperFrames",
+      "title": "旅行品牌动态故事",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "hyperframes-08",
+      "category": "HyperFrames",
+      "title": "电影片头设计实验",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "hyperframes-09",
+      "category": "HyperFrames",
+      "title": "金融知识动态讲解",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "hyperframes-10",
+      "category": "HyperFrames",
+      "title": "天文教育动态展陈",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "hyperframes-11",
+      "category": "HyperFrames",
+      "title": "健康生活习惯动效",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "hyperframes-12",
+      "category": "HyperFrames",
+      "title": "新材质品牌动态宣言",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "hyperframes-13",
+      "category": "HyperFrames",
+      "title": "游戏角色动效介绍",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "hyperframes-14",
+      "category": "HyperFrames",
+      "title": "艺术品拍卖动态预展",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "hyperframes-15",
+      "category": "HyperFrames",
+      "title": "出版品牌动态书单",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "hyperframes-16",
+      "category": "HyperFrames",
+      "title": "公益项目影响动效",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "hyperframes-17",
+      "category": "HyperFrames",
+      "title": "新能源汽车功能分镜",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "hyperframes-18",
+      "category": "HyperFrames",
+      "title": "食物制作流程动画",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "hyperframes-19",
+      "category": "HyperFrames",
+      "title": "服装工艺动态解构",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "hyperframes-20",
+      "category": "HyperFrames",
+      "title": "软件产品交互动效",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "video-01",
+      "category": "视频",
+      "title": "城市清晨视觉日记",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "video-02",
+      "category": "视频",
+      "title": "陶艺工坊制作影像",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "video-03",
+      "category": "视频",
+      "title": "海岸徒步视频指南",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "video-04",
+      "category": "视频",
+      "title": "精品咖啡产品短片",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "video-05",
+      "category": "视频",
+      "title": "家具工艺视频展厅",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "video-06",
+      "category": "视频",
+      "title": "运动装备发布影集",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "video-07",
+      "category": "视频",
+      "title": "自然观察视频手册",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "video-08",
+      "category": "视频",
+      "title": "建筑空间光影档案",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "video-09",
+      "category": "视频",
+      "title": "旅行住宿概念影集",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "video-10",
+      "category": "视频",
+      "title": "花园四季视频日志",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "video-11",
+      "category": "视频",
+      "title": "博物馆藏品导览影集",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "video-12",
+      "category": "视频",
+      "title": "独立书店阅读影像",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "video-13",
+      "category": "视频",
+      "title": "美食制作步骤影集",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "video-14",
+      "category": "视频",
+      "title": "包装材质动态展示",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "video-15",
+      "category": "视频",
+      "title": "珠宝设计微距展厅",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "video-16",
+      "category": "视频",
+      "title": "户外露营安全影集",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "video-17",
+      "category": "视频",
+      "title": "社区志愿活动影像",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "video-18",
+      "category": "视频",
+      "title": "慢生活品牌视频集",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "video-19",
+      "category": "视频",
+      "title": "环保材料科普短片",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "video-20",
+      "category": "视频",
+      "title": "城市交通教育影集",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "audio-01",
+      "category": "音频",
+      "title": "安静工作声音实验室",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "audio-02",
+      "category": "音频",
+      "title": "展览空间声音导览",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "audio-03",
+      "category": "音频",
+      "title": "原创游戏界面音效库",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "audio-04",
+      "category": "音频",
+      "title": "品牌声音识别手册",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "audio-05",
+      "category": "音频",
+      "title": "自然声景合成实验",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "audio-06",
+      "category": "音频",
+      "title": "节奏训练听觉课程",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "audio-07",
+      "category": "音频",
+      "title": "乐器音色对比实验",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "audio-08",
+      "category": "音频",
+      "title": "科幻场景环境音库",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "audio-09",
+      "category": "音频",
+      "title": "冥想计时声音工具",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "audio-10",
+      "category": "音频",
+      "title": "产品提示音设计集",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "audio-11",
+      "category": "音频",
+      "title": "儿童听觉探索课程",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "audio-12",
+      "category": "音频",
+      "title": "电子音乐节奏草图",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "audio-13",
+      "category": "音频",
+      "title": "无障碍提示音指南",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "audio-14",
+      "category": "音频",
+      "title": "播客节目包装音库",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "audio-15",
+      "category": "音频",
+      "title": "城市抽象声音地图",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "audio-16",
+      "category": "音频",
+      "title": "运动间歇提示音库",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "audio-17",
+      "category": "音频",
+      "title": "空间声学听感实验",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "audio-18",
+      "category": "音频",
+      "title": "原创电影氛围音集",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "audio-19",
+      "category": "音频",
+      "title": "语言学习节拍工具",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "audio-20",
+      "category": "音频",
+      "title": "数字装置声音互动",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "live-01",
+      "category": "实时产物",
+      "title": "餐厅备料与成本台",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "live-02",
+      "category": "实时产物",
+      "title": "展览排期与预算台",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "live-03",
+      "category": "实时产物",
+      "title": "活动座位与报名规划",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "live-04",
+      "category": "实时产物",
+      "title": "招聘评分与面试日程",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "live-05",
+      "category": "实时产物",
+      "title": "家庭节能估算工具",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "live-06",
+      "category": "实时产物",
+      "title": "摄影项目报价工作台",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "live-07",
+      "category": "实时产物",
+      "title": "营销活动数据分析台",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "live-08",
+      "category": "实时产物",
+      "title": "出版项目进度规划",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "live-09",
+      "category": "实时产物",
+      "title": "零售库存补货模拟",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "live-10",
+      "category": "实时产物",
+      "title": "学习目标与复习规划",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "live-11",
+      "category": "实时产物",
+      "title": "旅行团队费用分摊",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "live-12",
+      "category": "实时产物",
+      "title": "建筑面积与用料估算",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "live-13",
+      "category": "实时产物",
+      "title": "软件发布风险评估",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "live-14",
+      "category": "实时产物",
+      "title": "广告投放预算模拟",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "live-15",
+      "category": "实时产物",
+      "title": "农场种植排程工具",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "live-16",
+      "category": "实时产物",
+      "title": "社群内容日历工作台",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "live-17",
+      "category": "实时产物",
+      "title": "公益项目捐赠预算",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "live-18",
+      "category": "实时产物",
+      "title": "小型工厂产能排程",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "live-19",
+      "category": "实时产物",
+      "title": "产品定价毛利实验",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "live-20",
+      "category": "实时产物",
+      "title": "运动训练负荷记录",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "webgl-01",
+      "category": "WebGL",
+      "title": "现代灯具光照实验室",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "webgl-02",
+      "category": "WebGL",
+      "title": "模块家具空间装配",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "webgl-03",
+      "category": "WebGL",
+      "title": "地形等高线探索馆",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "webgl-04",
+      "category": "WebGL",
+      "title": "陶瓷器型参数工作室",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "webgl-05",
+      "category": "WebGL",
+      "title": "珠宝几何构成实验",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "webgl-06",
+      "category": "WebGL",
+      "title": "天体轨道教育馆",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "webgl-07",
+      "category": "WebGL",
+      "title": "建筑立面遮阳实验",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "webgl-08",
+      "category": "WebGL",
+      "title": "包装结构折叠展厅",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "webgl-09",
+      "category": "WebGL",
+      "title": "工业零件剖面展厅",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "webgl-10",
+      "category": "WebGL",
+      "title": "抽象雕塑材质博物馆",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "webgl-11",
+      "category": "WebGL",
+      "title": "服饰配件形态研究",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "webgl-12",
+      "category": "WebGL",
+      "title": "植物形态程序生成",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "webgl-13",
+      "category": "WebGL",
+      "title": "城市街区体量推演",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "webgl-14",
+      "category": "WebGL",
+      "title": "声波可视化装置馆",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "webgl-15",
+      "category": "WebGL",
+      "title": "机械传动交互展厅",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "webgl-16",
+      "category": "WebGL",
+      "title": "液体容器体积实验",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "webgl-17",
+      "category": "WebGL",
+      "title": "拓扑曲面数学展馆",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "webgl-18",
+      "category": "WebGL",
+      "title": "无人机路径三维规划",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "webgl-19",
+      "category": "WebGL",
+      "title": "可循环材料纹理实验",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    },
+    {
+      "id": "webgl-20",
+      "category": "WebGL",
+      "title": "桥梁结构受力示意馆",
+      "targetPages": 24,
+      "status": "planned",
+      "route": null
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+TAP version 13
+# (node:10887) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: real DOCX preserves body order, title hierarchy, literal text, direct formatting and explicit omissions
+ok 1 - real DOCX preserves body order, title hierarchy, literal text, direct formatting and explicit omissions
+  ---
+  duration_ms: 301.92494
+  type: 'test'
+  ...
+# Subtest: real merged tables map exact grid locations and export literal strings, not guessed currency or formulas
+ok 2 - real merged tables map exact grid locations and export literal strings, not guessed currency or formulas
+  ---
+  duration_ms: 48.206145
+  type: 'test'
+  ...
+# Subtest: inline image delivery preserves actual original bytes and normalized preview provenance
+ok 3 - inline image delivery preserves actual original bytes and normalized preview provenance
+  ---
+  duration_ms: 58.276113
+  type: 'test'
+  ...
+# Subtest: direct outline levels, lists, page markers and content controls retain structure without inventing pagination
+ok 4 - direct outline levels, lists, page markers and content controls retain structure without inventing pagination
+  ---
+  duration_ms: 50.295918
+  type: 'test'
+  ...
+# Subtest: broken merge geometry is rejected instead of dropping content or guessing table structure
+ok 5 - broken merge geometry is rejected instead of dropping content or guessing table structure
+  ---
+  duration_ms: 93.255153
+  type: 'test'
+  ...
+# Subtest: revisions, fields, notes, text boxes, unsupported drawings and namespace rebinding fail closed
+ok 6 - revisions, fields, notes, text boxes, unsupported drawings and namespace rebinding fail closed
+  ---
+  duration_ms: 52.385961
+  type: 'test'
+  ...
+# Subtest: missing/invalid images and external relationships are rejected without network calls
+ok 7 - missing/invalid images and external relationships are rejected without network calls
+  ---
+  duration_ms: 25.635122
+  type: 'test'
+  ...
+# Subtest: resource bounds and invalid XML are rejected, including oversized image placement multiplication
+ok 8 - resource bounds and invalid XML are rejected, including oversized image placement multiplication
+  ---
+  duration_ms: 86.561369
+  type: 'test'
+  ...
+# Subtest: valid ordinary DOCX without tables/images delivers no invented table or image files
+ok 9 - valid ordinary DOCX without tables/images delivers no invented table or image files
+  ---
+  duration_ms: 20.025807
+  type: 'test'
+  ...
+# Subtest: real worker persists artifacts behind owner checks and failure yields no partial outputs
+ok 10 - real worker persists artifacts behind owner checks and failure yields no partial outputs
+  ---
+  duration_ms: 1054.07568
+  type: 'test'
+  ...
+# Subtest: planner candidate, scope and no-parameters contract reflect a DOCX structural tool, not PDF or AI summary
+ok 11 - planner candidate, scope and no-parameters contract reflect a DOCX structural tool, not PDF or AI summary
+  ---
+  duration_ms: 0.643411
+  type: 'test'
+  ...
+# Subtest: direct paragraph spacing/indent and table grid width, shading and vertical alignment survive safe DOCX reflow
+ok 12 - direct paragraph spacing/indent and table grid width, shading and vertical alignment survive safe DOCX reflow
+  ---
+  duration_ms: 38.542703
+  type: 'test'
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 12
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2250.922349

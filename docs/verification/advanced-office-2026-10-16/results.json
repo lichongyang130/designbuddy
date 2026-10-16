@@ -1,0 +1,56 @@
+{
+  "date": "2026-10-16",
+  "branch": "arena/5a5e7967-new",
+  "baseCommit": "edb66d8c847542692ba6b71286dcbf1be327013d",
+  "sourceState": "local working tree, not committed or pushed",
+  "results": {
+    "server": {
+      "passed": 75,
+      "failed": 0,
+      "skipped": 0,
+      "newTests": 12
+    },
+    "browser": {
+      "passed": 143,
+      "failed": 0,
+      "skipped": 0,
+      "newTests": 8
+    },
+    "catalog": {
+      "passed": 9,
+      "failed": 0
+    },
+    "backendTypeScript": "passed",
+    "frontendTypeScriptAndBuild": "passed",
+    "diffCheck": "passed"
+  },
+  "realEngines": [
+    "PDF.js rasterization",
+    "Tesseract Chinese + English OCR",
+    "ExcelJS exact typed-value joins",
+    "SQLite and worker_threads",
+    "Chromium via Playwright and real file downloads"
+  ],
+  "modelProposal": "test double; live supplier accuracy not verified",
+  "allAdvancedCapabilitiesComplete": false,
+  "osSandboxValidated": false,
+  "sourceSHA256": {
+    "server/skills/office.ts": "c17cd9a31fec5c555090c3edfe58459ae7c31af57cf996e2a9a026df9693bf80",
+    "server/skills/local-ocr.ts": "c14f2fbad930f0698d6449221522727c4c488b3d70fe78ac7e77318b4e70fe97",
+    "server/skills/table-join.ts": "4f1c06296c8fc14596c853b997294a04370f20bf41a6f23e436be698c71f574a",
+    "server/skills/pdf-ocr.ts": "dfec60dfc10b9fc465cd49102fc2b2c630ebbee4fd6a3ede880ef6f7f1fbb2c6",
+    "server/skills/executors.ts": "b151dd685778335d58080fb95269a2a8576ef698b7e434760691c10c599309fd",
+    "server/skills/images.ts": "90199520b0f153b17478e18fc47a6060dbc13f9a1c5616fe19118a418ead1ba3",
+    "server/skills/contracts.ts": "39a7ebc11b69c3475ec499b4e570b0081e659f3143b5c7517ac1bccfc38e71b2",
+    "server/skills/planner.ts": "262c11d4ef14ca85eef4a6eeb889b87541568cd1d193ff8e8d73959e47e3638e",
+    "server/skills/plan-store.ts": "7222ab4586f24690a48987bcfa526bcdda8d4c463c53405108ad56a532787c06",
+    "shared/skillRuntime.ts": "7afb54a4b6520f4a8c40322142bb6dc9e182fa74ec783a3c182a2d1c34d318fc",
+    "shared/expertRouting.ts": "48181defb27f925d369497d86f8966c2f08f0b00d7140236c34eb351149775de",
+    "frontend/workspace/SkillWorkbench.tsx": "f069cb4dc025d8e19f342208553aa9f2d9c6987db0542f26c7be4d4cfc6426d2",
+    "frontend/workspace/SmartSkillPlanner.tsx": "9feecfffc1363d8a74f7dc653f4774c449959ff0e11f0f9561c728921f4880c4",
+    "server/skills/advanced-office.test.cjs": "20516980da51a0e1f07fb1ce85f844d8cd375de6f3c95f353c9e28624e11bb65",
+    "server/skills/testing/advanced-fixtures.cjs": "7363c25824bb82eb5c6707cb088addbae7286b8d6ce8949a82e8c72135a681c0",
+    "apps/web/tests/advanced-office.spec.ts": "da3281338d5588dc85d5bce70e01cd66b7620a110e48da5a70dcca1d130c51c7",
+    "apps/web/public/skill-examples/table-join-example.xlsx": "a3c2ca7d2b4cf7cf54c9547cf32c1f93d780203d84e3953fd98e73499af3e2b2"
+  }
+}

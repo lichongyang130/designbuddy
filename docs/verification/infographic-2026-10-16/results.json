@@ -1,0 +1,192 @@
+{
+  "date": "2026-10-16",
+  "branch": "arena/5a5e7967-new",
+  "baseCommit": "edb66d8c847542692ba6b71286dcbf1be327013d",
+  "sourceState": "local working tree; not pushed or deployed",
+  "runtimeSkillCount": 18,
+  "tests": {
+    "newServerTests": 12,
+    "newBrowserTests": 6,
+    "finalServer": {
+      "passed": 113,
+      "failed": 0,
+      "skipped": 0
+    },
+    "finalCatalog": {
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0
+    },
+    "browserFirstExpandedRunBeforeNumericLexemeFix": {
+      "total": 479,
+      "passed": 475,
+      "failed": 3,
+      "skipped": 1,
+      "failures": [
+        "plugins.spec.ts: outdated design category name (two cases)",
+        "sidebar.spec.ts: ambiguous global status selector"
+      ],
+      "skippedTest": "backend.spec.ts real FFmpeg MP4 export; FFmpeg not configured"
+    },
+    "browserFinalRecheckAfterNumericFixAndTestCorrections": {
+      "files": [
+        "infographic.spec.ts",
+        "plugins.spec.ts",
+        "sidebar.spec.ts"
+      ],
+      "passed": 28,
+      "failed": 0,
+      "skipped": 0
+    },
+    "singlePassWholeBrowserSuiteClean": false,
+    "sequenceNote": "Final 28 rechecks include the three corrected assertions and all six infographic tests. Counts are not additive. Numeric precision fix has a new server case and actual HTTP upload coverage. Full browser suite was not rerun after this final fix."
+  },
+  "checks": {
+    "backendTypeScript": "passed",
+    "frontendTypeScriptAndBuild": "passed",
+    "diffCheck": "passed",
+    "savedExamplesMatchFinalExecutorBytes": true
+  },
+  "limitations": {
+    "aiBusinessSemanticsImplemented": false,
+    "allAdvancedCapabilitiesComplete": false,
+    "liveModelAccuracyVerified": false,
+    "generalQaExpertImplemented": false,
+    "ffmpegExportVerifiedThisBatch": false,
+    "productionIsolationVerified": false,
+    "driveBackupUpdated": false
+  },
+  "visualReview": [
+    "comparison, date-proportional trend and composition PNG",
+    "24-record boundary image (not a universal no-clipping guarantee)",
+    "real browser composition with displayed share sum 99.99% and zero category",
+    "390px preview/download controls; thumbnail scales down and full-resolution download is needed for fine text"
+  ],
+  "sourceSHA256": {
+    "server/skills/infographic.ts": "c6ca7bf1e4897434ff9e94a3ea46ce4b1544e1a73f8d5e4528f15ad5ca173970",
+    "server/skills/infographic.test.cjs": "3cbcf7c2368694f767a9e1ef2d7ec4090a6dbe8d85d82ca5daeb2606bc9686cc",
+    "server/skills/testing/infographic-fixtures.cjs": "4bc9d891b9e15b4bf14ba1a02319b688210d6eee6bf48224120e893743dc5cab",
+    "server/skills/executors.ts": "8c262047a30df8dab0f6d5bdb52b32583c5a4dd851f75b2c7ab772e6dfd04673",
+    "server/skills/planner.ts": "4679e9ae79e10362ea9d1efbc6161262f8fb19d91551da4b23a5105346498353",
+    "server/skills/service.test.cjs": "68d237d0f8d1238c8b01f2116c46c7a0e43c57ddcfe44fe0d8d40534a824258a",
+    "server/skills/fonts.ts": "4f4311d773068199e92d5f498bea71b10a249c93418d2689e9b303cc4aeeffb6",
+    "shared/skillRuntime.ts": "fe83dfed7f019d289f17c97ac9e7b5a893edb94fd48b664a41a15a5315fd0111",
+    "shared/expertRouting.ts": "3d4e9cdc949835a5822eb6eb50285b6f947f9a8e4773bc3f0ca3fd3a76671c02",
+    "frontend/workspace/SkillWorkbench.tsx": "92f7c1db0857d9ce9b9d27f81d8549cfdea28def0d54ce0a0228b0adccd9e518",
+    "apps/web/tests/infographic.spec.ts": "0d4adeccf980afb3aaf0003e3637cf1b0edeb34a3ec6c62ae887bb852b63cbd4",
+    "apps/web/tests/plugins.spec.ts": "d1afd637524dfecdb6f0c52630da6cd95dfc247e6877c0548e4d5db7a46e3887",
+    "apps/web/tests/sidebar.spec.ts": "d5699577de9c40d65109d71d97cd5d6751acf0cf723b9b176b8102b35bfa089a",
+    "apps/web/src/assets/fonts/manifest.json": "151834efa7c7683f02a6b6099e06565ed658cf12117927918ce913b8f34689e2",
+    "apps/web/src/assets/fonts/OFL.txt": "18aabf190848725e2576eefb5c29ba06aac1029d02132252a7f312eac2e50cf3",
+    "docs/plans/infographic-execution.md": "5f40d8811ebe4dbbb1725369653abc847e94c02d7b9679538837e2557f152d22",
+    "docs/plans/advanced-experts-execution.md": "8af0d35a589d39427594d5bfbb62ca67033b95c19d8220542ed1e23a08dfa907",
+    "docs/plans/remaining-work-ledger.md": "65f1252f8a25798094bbdbbcd959b606f7f5d9b0caf479555351a62d79791df0",
+    "README.md": "b327c5aa57d8cffb9471f318a3da1d1b0b36fd8d425d931280ce68efd77bdd39"
+  },
+  "evidenceFiles": {
+    "boundary-24-records.png": {
+      "bytes": 377993,
+      "sha256": "1d8ba3831fc9cac513613c420096d1defd8b33bd526836d6670376a4889c9889"
+    },
+    "comparison/font-license.txt": {
+      "bytes": 4314,
+      "sha256": "18aabf190848725e2576eefb5c29ba06aac1029d02132252a7f312eac2e50cf3"
+    },
+    "comparison/infographic-report.json": {
+      "bytes": 2574,
+      "sha256": "0414fc96777e35da7ee7bc7918a95331a0225849b95f755cbd0255e85b7435ba"
+    },
+    "comparison/infographic.png": {
+      "bytes": 112420,
+      "sha256": "ed643004931bba38beccd9fd4952ce55e908c387d29883f82b676f7f74798752"
+    },
+    "comparison/infographic.svg": {
+      "bytes": 219338,
+      "sha256": "e2065a1f9bf2904cc0b29913472968d173fb7313d3d2b2c199ac9178486fdf92"
+    },
+    "comparison/input.json": {
+      "bytes": 528,
+      "sha256": "14d7b4a6fad2e46707773c797e4e0777aff01da0af412a223e10a8b44bc170ab"
+    },
+    "composition/font-license.txt": {
+      "bytes": 4314,
+      "sha256": "18aabf190848725e2576eefb5c29ba06aac1029d02132252a7f312eac2e50cf3"
+    },
+    "composition/infographic-report.json": {
+      "bytes": 3619,
+      "sha256": "2260d632d8a678bf53020ee816608d07ba32bb3ece22afdf760c2f93adb9f381"
+    },
+    "composition/infographic.png": {
+      "bytes": 112679,
+      "sha256": "f5e8a92e3aa24f7695e2865f168783f11aaef7699432431275ec627061c5d55e"
+    },
+    "composition/infographic.svg": {
+      "bytes": 241424,
+      "sha256": "f799ff0b43f5f6c6ee05f3432bf3f612f0780b7719cd9291647334a8ea2e705a"
+    },
+    "composition/input.json": {
+      "bytes": 561,
+      "sha256": "9d1003739090cdc9cf38712cb0cddfcb8feb1ca0d845c2dad5bf8a57bfc1c981"
+    },
+    "logs/browser-final-recheck.log": {
+      "bytes": 3527,
+      "sha256": "e50ff699687d5454b9202502f7adaf67b94acb4639505c4d10e19f0ad21dded9"
+    },
+    "logs/browser-first-full.log": {
+      "bytes": 64696,
+      "sha256": "f7d0f681d83894d59c0c766b5ec777c8a963adbfd9856c8e12eda132a9299c51"
+    },
+    "logs/build-final.log": {
+      "bytes": 19427,
+      "sha256": "454de97d7b2ca505dcdc39e46ffb26d4159d821cfbd13b583bdaa064b6566177"
+    },
+    "logs/catalog-final.log": {
+      "bytes": 2625,
+      "sha256": "0bdc0ba41ba8d4205164272169bc330b94f83152fa4e796033e66d834f7fd908"
+    },
+    "logs/infographic-server-final.log": {
+      "bytes": 3490,
+      "sha256": "f857e11062c8237a90f63364051215ff51bddc22aa483d413a5c037d0a63fdca"
+    },
+    "logs/server-final.log": {
+      "bytes": 32297,
+      "sha256": "38940d070866795088c40c99d1060b1250ac0a6e374e445cb17be68a9c727477"
+    },
+    "preview-390.png": {
+      "bytes": 51922,
+      "sha256": "a94a82b8cc74a3d6e30fc2e55a579035119597b4a02d445c45407ed00a784c7b"
+    },
+    "preview-comparison.png": {
+      "bytes": 52972,
+      "sha256": "285605d24b3b4cbdeb99fcf87932296c4dc29bcb17c864edf022d0055f64e659"
+    },
+    "preview-composition-rounding.png": {
+      "bytes": 51947,
+      "sha256": "a39dd3cae7490996bb15e77ab64c4287eda055e3949155e1dcadba4a4802bbad"
+    },
+    "preview-trend.png": {
+      "bytes": 56117,
+      "sha256": "f962ee9bc7a8ad1184bd9253fc5b169b050f40aa9c7c382a8c7c0e34eafaf8a7"
+    },
+    "trend/font-license.txt": {
+      "bytes": 4314,
+      "sha256": "18aabf190848725e2576eefb5c29ba06aac1029d02132252a7f312eac2e50cf3"
+    },
+    "trend/infographic-report.json": {
+      "bytes": 2471,
+      "sha256": "dae6763e02d08f75dbd3873c522e7ba95768941ad355202fddfc015d6d8520a3"
+    },
+    "trend/infographic.png": {
+      "bytes": 111397,
+      "sha256": "fd388a10c7af67b30d2716b42485c0cddd2d92fc300b7f80cb612450fcf86702"
+    },
+    "trend/infographic.svg": {
+      "bytes": 232911,
+      "sha256": "2f50f825e573da71c0c3087743c36ea19949dc05fed785f9a0387f28b206f8db"
+    },
+    "trend/input.json": {
+      "bytes": 446,
+      "sha256": "0cfca3c9aac6865cd784fadad1e39f21e057f2ab719d5a609edcc28ff0cb8307"
+    }
+  }
+}

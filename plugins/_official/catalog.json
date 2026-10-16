@@ -1,0 +1,6365 @@
+[
+  {
+    "id": "plugin-01",
+    "name": "Figma 文件桥接",
+    "category": "design",
+    "description": "读取 Figma 文件元数据与节点，支持导入前预览",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "network:allowlisted",
+      "workspace:read"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-02",
+    "name": "截图转界面",
+    "category": "design",
+    "description": "将截图分析为组件树与可编辑页面草稿",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-03",
+    "name": "设计 Token 同步",
+    "category": "design",
+    "description": "同步颜色、字体、间距与圆角变量",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-04",
+    "name": "网页采集器",
+    "category": "research",
+    "description": "保存网页参考图、标题、链接和色彩线索",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-05",
+    "name": "GitHub 仓库",
+    "category": "developer",
+    "description": "读取仓库、创建分支并整理变更摘要",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-06",
+    "name": "Pull Request 助手",
+    "category": "developer",
+    "description": "生成 PR 描述、风险清单和测试建议",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-07",
+    "name": "终端任务桥",
+    "category": "developer",
+    "description": "在用户确认后执行受控的开发命令",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-08",
+    "name": "浏览器预览器",
+    "category": "developer",
+    "description": "打开本地预览并采集控制台错误",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "network:allowlisted",
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-09",
+    "name": "Playwright 测试",
+    "category": "quality",
+    "description": "生成与执行页面交互测试",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-10",
+    "name": "无障碍审计",
+    "category": "quality",
+    "description": "检查语义、键盘路径与对比度",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-11",
+    "name": "响应式审计",
+    "category": "quality",
+    "description": "检查常见视口下的布局溢出",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-12",
+    "name": "视觉回归",
+    "category": "quality",
+    "description": "比较基线截图并标注差异",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-13",
+    "name": "API 文档读取器",
+    "category": "developer",
+    "description": "读取 OpenAPI 并生成接口调用说明",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-14",
+    "name": "数据库只读查询",
+    "category": "data",
+    "description": "使用授权连接执行只读查询",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-15",
+    "name": "CSV 数据分析",
+    "category": "data",
+    "description": "分析字段、缺失值并生成图表建议",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "network:allowlisted",
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-16",
+    "name": "表格导出",
+    "category": "office",
+    "description": "导出 CSV/XLSX 并保留字段类型",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-17",
+    "name": "文档生成",
+    "category": "office",
+    "description": "生成结构化 PRD、方案和会议纪要",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-18",
+    "name": "PDF 阅读器",
+    "category": "office",
+    "description": "提取 PDF 内容并定位引用页码",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-19",
+    "name": "演示文稿生成",
+    "category": "office",
+    "description": "生成有一致版式的演示文稿大纲",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-20",
+    "name": "图片生成工作流",
+    "category": "media",
+    "description": "构建图片生成提示词与资产记录",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-21",
+    "name": "图片编辑工作流",
+    "category": "media",
+    "description": "管理裁切、背景和版本记录",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-22",
+    "name": "视频分镜规划",
+    "category": "media",
+    "description": "生成分镜、镜头提示与素材清单",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "network:allowlisted",
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-23",
+    "name": "音频脚本助手",
+    "category": "media",
+    "description": "将脚本转为旁白与音效计划",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-24",
+    "name": "品牌资产库",
+    "category": "design",
+    "description": "集中管理品牌色、Logo 与图像规范",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-25",
+    "name": "组件目录",
+    "category": "design",
+    "description": "浏览组件变体并复制示例代码",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-26",
+    "name": "通知中心",
+    "category": "workflow",
+    "description": "向工作区展示任务完成和失败事件",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-27",
+    "name": "任务计划器",
+    "category": "workflow",
+    "description": "将目标拆解为有依赖关系的步骤",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-28",
+    "name": "Memory 检索",
+    "category": "workflow",
+    "description": "检索项目决策、用户偏好与代码上下文",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-29",
+    "name": "发布到 Vercel",
+    "category": "deploy",
+    "description": "准备部署配置并检查必需环境变量",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "network:allowlisted",
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-30",
+    "name": "Docker 打包",
+    "category": "deploy",
+    "description": "生成容器配置与健康检查",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-31",
+    "name": "变更日志生成",
+    "category": "developer",
+    "description": "根据提交差异生成面向用户的变更说明",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-32",
+    "name": "Issue 分诊",
+    "category": "developer",
+    "description": "归类缺陷、复现步骤和优先级",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-33",
+    "name": "设计评审",
+    "category": "quality",
+    "description": "按一致性、层级和可用性给出建议",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-34",
+    "name": "竞品研究",
+    "category": "research",
+    "description": "收集公开资料并生成可追溯对比",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-35",
+    "name": "SEO 检查",
+    "category": "marketing",
+    "description": "检查标题、描述、结构与语义链接",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-36",
+    "name": "转化率评审",
+    "category": "marketing",
+    "description": "检查 CTA、信任线索与表单摩擦",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "network:allowlisted",
+      "workspace:read"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-37",
+    "name": "本地化检查",
+    "category": "quality",
+    "description": "发现硬编码文案和翻译缺失",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-38",
+    "name": "安全扫描",
+    "category": "quality",
+    "description": "检查密钥误提交与危险配置模式",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-39",
+    "name": "项目脚手架",
+    "category": "developer",
+    "description": "按选定模板生成目录与约定文件",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-40",
+    "name": "发布清单",
+    "category": "deploy",
+    "description": "检查测试、版本、资产和回滚步骤",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-41",
+    "name": "客服知识库",
+    "category": "support",
+    "description": "从批准的知识源检索答复",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-42",
+    "name": "日历连接",
+    "category": "workflow",
+    "description": "管理预约、时间块与提醒",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-43",
+    "name": "邮件草稿",
+    "category": "office",
+    "description": "起草邮件并在发送前要求确认",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "network:allowlisted",
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-44",
+    "name": "Slack/飞书消息",
+    "category": "workflow",
+    "description": "在用户授权后发送工作流通知",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-45",
+    "name": "云存储",
+    "category": "data",
+    "description": "读写明确授权的对象存储路径",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-46",
+    "name": "MCP 服务器桥",
+    "category": "developer",
+    "description": "连接已配置 MCP 工具并校验权限",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-47",
+    "name": "自定义 HTTP API",
+    "category": "developer",
+    "description": "配置经过白名单限制的外部 API",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-48",
+    "name": "工作流 Webhook",
+    "category": "workflow",
+    "description": "接收签名校验后的自动化事件",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-049",
+    "name": "增长营销 · 结果校验 5",
+    "category": "marketing",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-050",
+    "name": "部署运维 · 结果校验 5",
+    "category": "deploy",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-051",
+    "name": "AI 工作流 · 审计记录 6",
+    "category": "workflow",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-052",
+    "name": "产品运营 · 审计记录 6",
+    "category": "product",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-053",
+    "name": "设计协作 · 审计记录 6",
+    "category": "design",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-054",
+    "name": "开发工具 · 审计记录 6",
+    "category": "developer",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-055",
+    "name": "质量保障 · 审计记录 6",
+    "category": "quality",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-056",
+    "name": "数据工具 · 审计记录 6",
+    "category": "data",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-057",
+    "name": "办公文档 · 审计记录 6",
+    "category": "office",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-058",
+    "name": "多媒体制作 · 审计记录 6",
+    "category": "media",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-059",
+    "name": "增长营销 · 审计记录 6",
+    "category": "marketing",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-060",
+    "name": "部署运维 · 审计记录 6",
+    "category": "deploy",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-061",
+    "name": "AI 工作流 · 差异比较 7",
+    "category": "workflow",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-062",
+    "name": "产品运营 · 差异比较 7",
+    "category": "product",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-063",
+    "name": "设计协作 · 差异比较 7",
+    "category": "design",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-064",
+    "name": "开发工具 · 差异比较 7",
+    "category": "developer",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-065",
+    "name": "质量保障 · 差异比较 7",
+    "category": "quality",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-066",
+    "name": "数据工具 · 差异比较 7",
+    "category": "data",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-067",
+    "name": "办公文档 · 差异比较 7",
+    "category": "office",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-068",
+    "name": "多媒体制作 · 差异比较 7",
+    "category": "media",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-069",
+    "name": "增长营销 · 差异比较 7",
+    "category": "marketing",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-070",
+    "name": "部署运维 · 差异比较 7",
+    "category": "deploy",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-071",
+    "name": "AI 工作流 · 工作流触发 8",
+    "category": "workflow",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-072",
+    "name": "产品运营 · 工作流触发 8",
+    "category": "product",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-073",
+    "name": "设计协作 · 工作流触发 8",
+    "category": "design",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-074",
+    "name": "开发工具 · 工作流触发 8",
+    "category": "developer",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-075",
+    "name": "质量保障 · 工作流触发 8",
+    "category": "quality",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-076",
+    "name": "数据工具 · 工作流触发 8",
+    "category": "data",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-077",
+    "name": "办公文档 · 工作流触发 8",
+    "category": "office",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-078",
+    "name": "多媒体制作 · 工作流触发 8",
+    "category": "media",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-079",
+    "name": "增长营销 · 工作流触发 8",
+    "category": "marketing",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-080",
+    "name": "部署运维 · 工作流触发 8",
+    "category": "deploy",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-081",
+    "name": "AI 工作流 · 回滚准备 9",
+    "category": "workflow",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-082",
+    "name": "产品运营 · 回滚准备 9",
+    "category": "product",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-083",
+    "name": "设计协作 · 回滚准备 9",
+    "category": "design",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-084",
+    "name": "开发工具 · 回滚准备 9",
+    "category": "developer",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-085",
+    "name": "质量保障 · 回滚准备 9",
+    "category": "quality",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-086",
+    "name": "数据工具 · 回滚准备 9",
+    "category": "data",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-087",
+    "name": "办公文档 · 回滚准备 9",
+    "category": "office",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-088",
+    "name": "多媒体制作 · 回滚准备 9",
+    "category": "media",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-089",
+    "name": "增长营销 · 回滚准备 9",
+    "category": "marketing",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-090",
+    "name": "部署运维 · 回滚准备 9",
+    "category": "deploy",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-091",
+    "name": "AI 工作流 · 报告导出 10",
+    "category": "workflow",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-092",
+    "name": "产品运营 · 报告导出 10",
+    "category": "product",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-093",
+    "name": "设计协作 · 报告导出 10",
+    "category": "design",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-094",
+    "name": "开发工具 · 报告导出 10",
+    "category": "developer",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-095",
+    "name": "质量保障 · 报告导出 10",
+    "category": "quality",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-096",
+    "name": "数据工具 · 报告导出 10",
+    "category": "data",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-097",
+    "name": "办公文档 · 报告导出 10",
+    "category": "office",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-098",
+    "name": "多媒体制作 · 报告导出 10",
+    "category": "media",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-099",
+    "name": "增长营销 · 报告导出 10",
+    "category": "marketing",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-100",
+    "name": "部署运维 · 报告导出 10",
+    "category": "deploy",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-101",
+    "name": "AI 工作流 · 上下文采集 11",
+    "category": "workflow",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-102",
+    "name": "产品运营 · 上下文采集 11",
+    "category": "product",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-103",
+    "name": "设计协作 · 上下文采集 11",
+    "category": "design",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-104",
+    "name": "开发工具 · 上下文采集 11",
+    "category": "developer",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-105",
+    "name": "质量保障 · 上下文采集 11",
+    "category": "quality",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-106",
+    "name": "数据工具 · 上下文采集 11",
+    "category": "data",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-107",
+    "name": "办公文档 · 上下文采集 11",
+    "category": "office",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-108",
+    "name": "多媒体制作 · 上下文采集 11",
+    "category": "media",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-109",
+    "name": "增长营销 · 上下文采集 11",
+    "category": "marketing",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-110",
+    "name": "部署运维 · 上下文采集 11",
+    "category": "deploy",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-111",
+    "name": "AI 工作流 · 变更规划 12",
+    "category": "workflow",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-112",
+    "name": "产品运营 · 变更规划 12",
+    "category": "product",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-113",
+    "name": "设计协作 · 变更规划 12",
+    "category": "design",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-114",
+    "name": "开发工具 · 变更规划 12",
+    "category": "developer",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-115",
+    "name": "质量保障 · 变更规划 12",
+    "category": "quality",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-116",
+    "name": "数据工具 · 变更规划 12",
+    "category": "data",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-117",
+    "name": "办公文档 · 变更规划 12",
+    "category": "office",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-118",
+    "name": "多媒体制作 · 变更规划 12",
+    "category": "media",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-119",
+    "name": "增长营销 · 变更规划 12",
+    "category": "marketing",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-120",
+    "name": "部署运维 · 变更规划 12",
+    "category": "deploy",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-121",
+    "name": "AI 工作流 · 状态同步 13",
+    "category": "workflow",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-122",
+    "name": "产品运营 · 状态同步 13",
+    "category": "product",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-123",
+    "name": "设计协作 · 状态同步 13",
+    "category": "design",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-124",
+    "name": "开发工具 · 状态同步 13",
+    "category": "developer",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-125",
+    "name": "质量保障 · 状态同步 13",
+    "category": "quality",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-126",
+    "name": "数据工具 · 状态同步 13",
+    "category": "data",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-127",
+    "name": "办公文档 · 状态同步 13",
+    "category": "office",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-128",
+    "name": "多媒体制作 · 状态同步 13",
+    "category": "media",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-129",
+    "name": "增长营销 · 状态同步 13",
+    "category": "marketing",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-130",
+    "name": "部署运维 · 状态同步 13",
+    "category": "deploy",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-131",
+    "name": "AI 工作流 · 资产索引 14",
+    "category": "workflow",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-132",
+    "name": "产品运营 · 资产索引 14",
+    "category": "product",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-133",
+    "name": "设计协作 · 资产索引 14",
+    "category": "design",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-134",
+    "name": "开发工具 · 资产索引 14",
+    "category": "developer",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-135",
+    "name": "质量保障 · 资产索引 14",
+    "category": "quality",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-136",
+    "name": "数据工具 · 资产索引 14",
+    "category": "data",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-137",
+    "name": "办公文档 · 资产索引 14",
+    "category": "office",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-138",
+    "name": "多媒体制作 · 资产索引 14",
+    "category": "media",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-139",
+    "name": "增长营销 · 资产索引 14",
+    "category": "marketing",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-140",
+    "name": "部署运维 · 资产索引 14",
+    "category": "deploy",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-141",
+    "name": "AI 工作流 · 结果校验 15",
+    "category": "workflow",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-142",
+    "name": "产品运营 · 结果校验 15",
+    "category": "product",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-143",
+    "name": "设计协作 · 结果校验 15",
+    "category": "design",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-144",
+    "name": "开发工具 · 结果校验 15",
+    "category": "developer",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-145",
+    "name": "质量保障 · 结果校验 15",
+    "category": "quality",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-146",
+    "name": "数据工具 · 结果校验 15",
+    "category": "data",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-147",
+    "name": "办公文档 · 结果校验 15",
+    "category": "office",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-148",
+    "name": "多媒体制作 · 结果校验 15",
+    "category": "media",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-149",
+    "name": "增长营销 · 结果校验 15",
+    "category": "marketing",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-150",
+    "name": "部署运维 · 结果校验 15",
+    "category": "deploy",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-151",
+    "name": "AI 工作流 · 审计记录 16",
+    "category": "workflow",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-152",
+    "name": "产品运营 · 审计记录 16",
+    "category": "product",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-153",
+    "name": "设计协作 · 审计记录 16",
+    "category": "design",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-154",
+    "name": "开发工具 · 审计记录 16",
+    "category": "developer",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-155",
+    "name": "质量保障 · 审计记录 16",
+    "category": "quality",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-156",
+    "name": "数据工具 · 审计记录 16",
+    "category": "data",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-157",
+    "name": "办公文档 · 审计记录 16",
+    "category": "office",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-158",
+    "name": "多媒体制作 · 审计记录 16",
+    "category": "media",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-159",
+    "name": "增长营销 · 审计记录 16",
+    "category": "marketing",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-160",
+    "name": "部署运维 · 审计记录 16",
+    "category": "deploy",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-161",
+    "name": "AI 工作流 · 差异比较 17",
+    "category": "workflow",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-162",
+    "name": "产品运营 · 差异比较 17",
+    "category": "product",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-163",
+    "name": "设计协作 · 差异比较 17",
+    "category": "design",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-164",
+    "name": "开发工具 · 差异比较 17",
+    "category": "developer",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-165",
+    "name": "质量保障 · 差异比较 17",
+    "category": "quality",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-166",
+    "name": "数据工具 · 差异比较 17",
+    "category": "data",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-167",
+    "name": "办公文档 · 差异比较 17",
+    "category": "office",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-168",
+    "name": "多媒体制作 · 差异比较 17",
+    "category": "media",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-169",
+    "name": "增长营销 · 差异比较 17",
+    "category": "marketing",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-170",
+    "name": "部署运维 · 差异比较 17",
+    "category": "deploy",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-171",
+    "name": "AI 工作流 · 工作流触发 18",
+    "category": "workflow",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-172",
+    "name": "产品运营 · 工作流触发 18",
+    "category": "product",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-173",
+    "name": "设计协作 · 工作流触发 18",
+    "category": "design",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-174",
+    "name": "开发工具 · 工作流触发 18",
+    "category": "developer",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-175",
+    "name": "质量保障 · 工作流触发 18",
+    "category": "quality",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-176",
+    "name": "数据工具 · 工作流触发 18",
+    "category": "data",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-177",
+    "name": "办公文档 · 工作流触发 18",
+    "category": "office",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-178",
+    "name": "多媒体制作 · 工作流触发 18",
+    "category": "media",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-179",
+    "name": "增长营销 · 工作流触发 18",
+    "category": "marketing",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-180",
+    "name": "部署运维 · 工作流触发 18",
+    "category": "deploy",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-181",
+    "name": "AI 工作流 · 回滚准备 19",
+    "category": "workflow",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-182",
+    "name": "产品运营 · 回滚准备 19",
+    "category": "product",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-183",
+    "name": "设计协作 · 回滚准备 19",
+    "category": "design",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-184",
+    "name": "开发工具 · 回滚准备 19",
+    "category": "developer",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-185",
+    "name": "质量保障 · 回滚准备 19",
+    "category": "quality",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-186",
+    "name": "数据工具 · 回滚准备 19",
+    "category": "data",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-187",
+    "name": "办公文档 · 回滚准备 19",
+    "category": "office",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-188",
+    "name": "多媒体制作 · 回滚准备 19",
+    "category": "media",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-189",
+    "name": "增长营销 · 回滚准备 19",
+    "category": "marketing",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-190",
+    "name": "部署运维 · 回滚准备 19",
+    "category": "deploy",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-191",
+    "name": "AI 工作流 · 报告导出 20",
+    "category": "workflow",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-192",
+    "name": "产品运营 · 报告导出 20",
+    "category": "product",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-193",
+    "name": "设计协作 · 报告导出 20",
+    "category": "design",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-194",
+    "name": "开发工具 · 报告导出 20",
+    "category": "developer",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-195",
+    "name": "质量保障 · 报告导出 20",
+    "category": "quality",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-196",
+    "name": "数据工具 · 报告导出 20",
+    "category": "data",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-197",
+    "name": "办公文档 · 报告导出 20",
+    "category": "office",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-198",
+    "name": "多媒体制作 · 报告导出 20",
+    "category": "media",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-199",
+    "name": "增长营销 · 报告导出 20",
+    "category": "marketing",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-200",
+    "name": "部署运维 · 报告导出 20",
+    "category": "deploy",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-201",
+    "name": "AI 工作流 · 上下文采集 21",
+    "category": "workflow",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-202",
+    "name": "产品运营 · 上下文采集 21",
+    "category": "product",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-203",
+    "name": "设计协作 · 上下文采集 21",
+    "category": "design",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-204",
+    "name": "开发工具 · 上下文采集 21",
+    "category": "developer",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-205",
+    "name": "质量保障 · 上下文采集 21",
+    "category": "quality",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-206",
+    "name": "数据工具 · 上下文采集 21",
+    "category": "data",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-207",
+    "name": "办公文档 · 上下文采集 21",
+    "category": "office",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-208",
+    "name": "多媒体制作 · 上下文采集 21",
+    "category": "media",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-209",
+    "name": "增长营销 · 上下文采集 21",
+    "category": "marketing",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-210",
+    "name": "部署运维 · 上下文采集 21",
+    "category": "deploy",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-211",
+    "name": "AI 工作流 · 变更规划 22",
+    "category": "workflow",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-212",
+    "name": "产品运营 · 变更规划 22",
+    "category": "product",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-213",
+    "name": "设计协作 · 变更规划 22",
+    "category": "design",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-214",
+    "name": "开发工具 · 变更规划 22",
+    "category": "developer",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-215",
+    "name": "质量保障 · 变更规划 22",
+    "category": "quality",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-216",
+    "name": "数据工具 · 变更规划 22",
+    "category": "data",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-217",
+    "name": "办公文档 · 变更规划 22",
+    "category": "office",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-218",
+    "name": "多媒体制作 · 变更规划 22",
+    "category": "media",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-219",
+    "name": "增长营销 · 变更规划 22",
+    "category": "marketing",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-220",
+    "name": "部署运维 · 变更规划 22",
+    "category": "deploy",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-221",
+    "name": "AI 工作流 · 状态同步 23",
+    "category": "workflow",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-222",
+    "name": "产品运营 · 状态同步 23",
+    "category": "product",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-223",
+    "name": "设计协作 · 状态同步 23",
+    "category": "design",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-224",
+    "name": "开发工具 · 状态同步 23",
+    "category": "developer",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-225",
+    "name": "质量保障 · 状态同步 23",
+    "category": "quality",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-226",
+    "name": "数据工具 · 状态同步 23",
+    "category": "data",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-227",
+    "name": "办公文档 · 状态同步 23",
+    "category": "office",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-228",
+    "name": "多媒体制作 · 状态同步 23",
+    "category": "media",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-229",
+    "name": "增长营销 · 状态同步 23",
+    "category": "marketing",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-230",
+    "name": "部署运维 · 状态同步 23",
+    "category": "deploy",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-231",
+    "name": "AI 工作流 · 资产索引 24",
+    "category": "workflow",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-232",
+    "name": "产品运营 · 资产索引 24",
+    "category": "product",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-233",
+    "name": "设计协作 · 资产索引 24",
+    "category": "design",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-234",
+    "name": "开发工具 · 资产索引 24",
+    "category": "developer",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-235",
+    "name": "质量保障 · 资产索引 24",
+    "category": "quality",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-236",
+    "name": "数据工具 · 资产索引 24",
+    "category": "data",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-237",
+    "name": "办公文档 · 资产索引 24",
+    "category": "office",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-238",
+    "name": "多媒体制作 · 资产索引 24",
+    "category": "media",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-239",
+    "name": "增长营销 · 资产索引 24",
+    "category": "marketing",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-240",
+    "name": "部署运维 · 资产索引 24",
+    "category": "deploy",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-241",
+    "name": "AI 工作流 · 结果校验 25",
+    "category": "workflow",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-242",
+    "name": "产品运营 · 结果校验 25",
+    "category": "product",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-243",
+    "name": "设计协作 · 结果校验 25",
+    "category": "design",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-244",
+    "name": "开发工具 · 结果校验 25",
+    "category": "developer",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-245",
+    "name": "质量保障 · 结果校验 25",
+    "category": "quality",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-246",
+    "name": "数据工具 · 结果校验 25",
+    "category": "data",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-247",
+    "name": "办公文档 · 结果校验 25",
+    "category": "office",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-248",
+    "name": "多媒体制作 · 结果校验 25",
+    "category": "media",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-249",
+    "name": "增长营销 · 结果校验 25",
+    "category": "marketing",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-250",
+    "name": "部署运维 · 结果校验 25",
+    "category": "deploy",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-251",
+    "name": "AI 工作流 · 审计记录 26",
+    "category": "workflow",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-252",
+    "name": "产品运营 · 审计记录 26",
+    "category": "product",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-253",
+    "name": "设计协作 · 审计记录 26",
+    "category": "design",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-254",
+    "name": "开发工具 · 审计记录 26",
+    "category": "developer",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-255",
+    "name": "质量保障 · 审计记录 26",
+    "category": "quality",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-256",
+    "name": "数据工具 · 审计记录 26",
+    "category": "data",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-257",
+    "name": "办公文档 · 审计记录 26",
+    "category": "office",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-258",
+    "name": "多媒体制作 · 审计记录 26",
+    "category": "media",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-259",
+    "name": "增长营销 · 审计记录 26",
+    "category": "marketing",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-260",
+    "name": "部署运维 · 审计记录 26",
+    "category": "deploy",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-261",
+    "name": "AI 工作流 · 差异比较 27",
+    "category": "workflow",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-262",
+    "name": "产品运营 · 差异比较 27",
+    "category": "product",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-263",
+    "name": "设计协作 · 差异比较 27",
+    "category": "design",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-264",
+    "name": "开发工具 · 差异比较 27",
+    "category": "developer",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-265",
+    "name": "质量保障 · 差异比较 27",
+    "category": "quality",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-266",
+    "name": "数据工具 · 差异比较 27",
+    "category": "data",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-267",
+    "name": "办公文档 · 差异比较 27",
+    "category": "office",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-268",
+    "name": "多媒体制作 · 差异比较 27",
+    "category": "media",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-269",
+    "name": "增长营销 · 差异比较 27",
+    "category": "marketing",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-270",
+    "name": "部署运维 · 差异比较 27",
+    "category": "deploy",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-271",
+    "name": "AI 工作流 · 工作流触发 28",
+    "category": "workflow",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-272",
+    "name": "产品运营 · 工作流触发 28",
+    "category": "product",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-273",
+    "name": "设计协作 · 工作流触发 28",
+    "category": "design",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-274",
+    "name": "开发工具 · 工作流触发 28",
+    "category": "developer",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-275",
+    "name": "质量保障 · 工作流触发 28",
+    "category": "quality",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-276",
+    "name": "数据工具 · 工作流触发 28",
+    "category": "data",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-277",
+    "name": "办公文档 · 工作流触发 28",
+    "category": "office",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-278",
+    "name": "多媒体制作 · 工作流触发 28",
+    "category": "media",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-279",
+    "name": "增长营销 · 工作流触发 28",
+    "category": "marketing",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-280",
+    "name": "部署运维 · 工作流触发 28",
+    "category": "deploy",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-281",
+    "name": "AI 工作流 · 回滚准备 29",
+    "category": "workflow",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-282",
+    "name": "产品运营 · 回滚准备 29",
+    "category": "product",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-283",
+    "name": "设计协作 · 回滚准备 29",
+    "category": "design",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-284",
+    "name": "开发工具 · 回滚准备 29",
+    "category": "developer",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-285",
+    "name": "质量保障 · 回滚准备 29",
+    "category": "quality",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-286",
+    "name": "数据工具 · 回滚准备 29",
+    "category": "data",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-287",
+    "name": "办公文档 · 回滚准备 29",
+    "category": "office",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-288",
+    "name": "多媒体制作 · 回滚准备 29",
+    "category": "media",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-289",
+    "name": "增长营销 · 回滚准备 29",
+    "category": "marketing",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-290",
+    "name": "部署运维 · 回滚准备 29",
+    "category": "deploy",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-291",
+    "name": "AI 工作流 · 报告导出 30",
+    "category": "workflow",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-292",
+    "name": "产品运营 · 报告导出 30",
+    "category": "product",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-293",
+    "name": "设计协作 · 报告导出 30",
+    "category": "design",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-294",
+    "name": "开发工具 · 报告导出 30",
+    "category": "developer",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-295",
+    "name": "质量保障 · 报告导出 30",
+    "category": "quality",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-296",
+    "name": "数据工具 · 报告导出 30",
+    "category": "data",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-297",
+    "name": "办公文档 · 报告导出 30",
+    "category": "office",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-298",
+    "name": "多媒体制作 · 报告导出 30",
+    "category": "media",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-299",
+    "name": "增长营销 · 报告导出 30",
+    "category": "marketing",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-300",
+    "name": "部署运维 · 报告导出 30",
+    "category": "deploy",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-301",
+    "name": "AI 工作流 · 上下文采集 31",
+    "category": "workflow",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-302",
+    "name": "产品运营 · 上下文采集 31",
+    "category": "product",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-303",
+    "name": "设计协作 · 上下文采集 31",
+    "category": "design",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-304",
+    "name": "开发工具 · 上下文采集 31",
+    "category": "developer",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-305",
+    "name": "质量保障 · 上下文采集 31",
+    "category": "quality",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-306",
+    "name": "数据工具 · 上下文采集 31",
+    "category": "data",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-307",
+    "name": "办公文档 · 上下文采集 31",
+    "category": "office",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-308",
+    "name": "多媒体制作 · 上下文采集 31",
+    "category": "media",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-309",
+    "name": "增长营销 · 上下文采集 31",
+    "category": "marketing",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-310",
+    "name": "部署运维 · 上下文采集 31",
+    "category": "deploy",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-311",
+    "name": "AI 工作流 · 变更规划 32",
+    "category": "workflow",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-312",
+    "name": "产品运营 · 变更规划 32",
+    "category": "product",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-313",
+    "name": "设计协作 · 变更规划 32",
+    "category": "design",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-314",
+    "name": "开发工具 · 变更规划 32",
+    "category": "developer",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-315",
+    "name": "质量保障 · 变更规划 32",
+    "category": "quality",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-316",
+    "name": "数据工具 · 变更规划 32",
+    "category": "data",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-317",
+    "name": "办公文档 · 变更规划 32",
+    "category": "office",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-318",
+    "name": "多媒体制作 · 变更规划 32",
+    "category": "media",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-319",
+    "name": "增长营销 · 变更规划 32",
+    "category": "marketing",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-320",
+    "name": "部署运维 · 变更规划 32",
+    "category": "deploy",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-321",
+    "name": "AI 工作流 · 状态同步 33",
+    "category": "workflow",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-322",
+    "name": "产品运营 · 状态同步 33",
+    "category": "product",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-323",
+    "name": "设计协作 · 状态同步 33",
+    "category": "design",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-324",
+    "name": "开发工具 · 状态同步 33",
+    "category": "developer",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-325",
+    "name": "质量保障 · 状态同步 33",
+    "category": "quality",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-326",
+    "name": "数据工具 · 状态同步 33",
+    "category": "data",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-327",
+    "name": "办公文档 · 状态同步 33",
+    "category": "office",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-328",
+    "name": "多媒体制作 · 状态同步 33",
+    "category": "media",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-329",
+    "name": "增长营销 · 状态同步 33",
+    "category": "marketing",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-330",
+    "name": "部署运维 · 状态同步 33",
+    "category": "deploy",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-331",
+    "name": "AI 工作流 · 资产索引 34",
+    "category": "workflow",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-332",
+    "name": "产品运营 · 资产索引 34",
+    "category": "product",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-333",
+    "name": "设计协作 · 资产索引 34",
+    "category": "design",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-334",
+    "name": "开发工具 · 资产索引 34",
+    "category": "developer",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-335",
+    "name": "质量保障 · 资产索引 34",
+    "category": "quality",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-336",
+    "name": "数据工具 · 资产索引 34",
+    "category": "data",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-337",
+    "name": "办公文档 · 资产索引 34",
+    "category": "office",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-338",
+    "name": "多媒体制作 · 资产索引 34",
+    "category": "media",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-339",
+    "name": "增长营销 · 资产索引 34",
+    "category": "marketing",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-340",
+    "name": "部署运维 · 资产索引 34",
+    "category": "deploy",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-341",
+    "name": "AI 工作流 · 结果校验 35",
+    "category": "workflow",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-342",
+    "name": "产品运营 · 结果校验 35",
+    "category": "product",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-343",
+    "name": "设计协作 · 结果校验 35",
+    "category": "design",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-344",
+    "name": "开发工具 · 结果校验 35",
+    "category": "developer",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-345",
+    "name": "质量保障 · 结果校验 35",
+    "category": "quality",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-346",
+    "name": "数据工具 · 结果校验 35",
+    "category": "data",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-347",
+    "name": "办公文档 · 结果校验 35",
+    "category": "office",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-348",
+    "name": "多媒体制作 · 结果校验 35",
+    "category": "media",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-349",
+    "name": "增长营销 · 结果校验 35",
+    "category": "marketing",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-350",
+    "name": "部署运维 · 结果校验 35",
+    "category": "deploy",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-351",
+    "name": "AI 工作流 · 审计记录 36",
+    "category": "workflow",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-352",
+    "name": "产品运营 · 审计记录 36",
+    "category": "product",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-353",
+    "name": "设计协作 · 审计记录 36",
+    "category": "design",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-354",
+    "name": "开发工具 · 审计记录 36",
+    "category": "developer",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-355",
+    "name": "质量保障 · 审计记录 36",
+    "category": "quality",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-356",
+    "name": "数据工具 · 审计记录 36",
+    "category": "data",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-357",
+    "name": "办公文档 · 审计记录 36",
+    "category": "office",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-358",
+    "name": "多媒体制作 · 审计记录 36",
+    "category": "media",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-359",
+    "name": "增长营销 · 审计记录 36",
+    "category": "marketing",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-360",
+    "name": "部署运维 · 审计记录 36",
+    "category": "deploy",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-361",
+    "name": "AI 工作流 · 差异比较 37",
+    "category": "workflow",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-362",
+    "name": "产品运营 · 差异比较 37",
+    "category": "product",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-363",
+    "name": "设计协作 · 差异比较 37",
+    "category": "design",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-364",
+    "name": "开发工具 · 差异比较 37",
+    "category": "developer",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-365",
+    "name": "质量保障 · 差异比较 37",
+    "category": "quality",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-366",
+    "name": "数据工具 · 差异比较 37",
+    "category": "data",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-367",
+    "name": "办公文档 · 差异比较 37",
+    "category": "office",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-368",
+    "name": "多媒体制作 · 差异比较 37",
+    "category": "media",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-369",
+    "name": "增长营销 · 差异比较 37",
+    "category": "marketing",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-370",
+    "name": "部署运维 · 差异比较 37",
+    "category": "deploy",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-371",
+    "name": "AI 工作流 · 工作流触发 38",
+    "category": "workflow",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-372",
+    "name": "产品运营 · 工作流触发 38",
+    "category": "product",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-373",
+    "name": "设计协作 · 工作流触发 38",
+    "category": "design",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-374",
+    "name": "开发工具 · 工作流触发 38",
+    "category": "developer",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-375",
+    "name": "质量保障 · 工作流触发 38",
+    "category": "quality",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-376",
+    "name": "数据工具 · 工作流触发 38",
+    "category": "data",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-377",
+    "name": "办公文档 · 工作流触发 38",
+    "category": "office",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-378",
+    "name": "多媒体制作 · 工作流触发 38",
+    "category": "media",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-379",
+    "name": "增长营销 · 工作流触发 38",
+    "category": "marketing",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-380",
+    "name": "部署运维 · 工作流触发 38",
+    "category": "deploy",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-381",
+    "name": "AI 工作流 · 回滚准备 39",
+    "category": "workflow",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-382",
+    "name": "产品运营 · 回滚准备 39",
+    "category": "product",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-383",
+    "name": "设计协作 · 回滚准备 39",
+    "category": "design",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-384",
+    "name": "开发工具 · 回滚准备 39",
+    "category": "developer",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-385",
+    "name": "质量保障 · 回滚准备 39",
+    "category": "quality",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-386",
+    "name": "数据工具 · 回滚准备 39",
+    "category": "data",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-387",
+    "name": "办公文档 · 回滚准备 39",
+    "category": "office",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-388",
+    "name": "多媒体制作 · 回滚准备 39",
+    "category": "media",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-389",
+    "name": "增长营销 · 回滚准备 39",
+    "category": "marketing",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-390",
+    "name": "部署运维 · 回滚准备 39",
+    "category": "deploy",
+    "description": "生成变更回滚点与恢复说明。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-391",
+    "name": "AI 工作流 · 报告导出 40",
+    "category": "workflow",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-392",
+    "name": "产品运营 · 报告导出 40",
+    "category": "product",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-393",
+    "name": "设计协作 · 报告导出 40",
+    "category": "design",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-394",
+    "name": "开发工具 · 报告导出 40",
+    "category": "developer",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-395",
+    "name": "质量保障 · 报告导出 40",
+    "category": "quality",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-396",
+    "name": "数据工具 · 报告导出 40",
+    "category": "data",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-397",
+    "name": "办公文档 · 报告导出 40",
+    "category": "office",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-398",
+    "name": "多媒体制作 · 报告导出 40",
+    "category": "media",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-399",
+    "name": "增长营销 · 报告导出 40",
+    "category": "marketing",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-400",
+    "name": "部署运维 · 报告导出 40",
+    "category": "deploy",
+    "description": "将执行结果导出为结构化报告。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-401",
+    "name": "AI 工作流 · 上下文采集 41",
+    "category": "workflow",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-402",
+    "name": "产品运营 · 上下文采集 41",
+    "category": "product",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-403",
+    "name": "设计协作 · 上下文采集 41",
+    "category": "design",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-404",
+    "name": "开发工具 · 上下文采集 41",
+    "category": "developer",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-405",
+    "name": "质量保障 · 上下文采集 41",
+    "category": "quality",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-406",
+    "name": "数据工具 · 上下文采集 41",
+    "category": "data",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-407",
+    "name": "办公文档 · 上下文采集 41",
+    "category": "office",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-408",
+    "name": "多媒体制作 · 上下文采集 41",
+    "category": "media",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-409",
+    "name": "增长营销 · 上下文采集 41",
+    "category": "marketing",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-410",
+    "name": "部署运维 · 上下文采集 41",
+    "category": "deploy",
+    "description": "收集经授权的项目上下文并生成结构化摘要。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-411",
+    "name": "AI 工作流 · 变更规划 42",
+    "category": "workflow",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-412",
+    "name": "产品运营 · 变更规划 42",
+    "category": "product",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-413",
+    "name": "设计协作 · 变更规划 42",
+    "category": "design",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-414",
+    "name": "开发工具 · 变更规划 42",
+    "category": "developer",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-415",
+    "name": "质量保障 · 变更规划 42",
+    "category": "quality",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-416",
+    "name": "数据工具 · 变更规划 42",
+    "category": "data",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-417",
+    "name": "办公文档 · 变更规划 42",
+    "category": "office",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-418",
+    "name": "多媒体制作 · 变更规划 42",
+    "category": "media",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-419",
+    "name": "增长营销 · 变更规划 42",
+    "category": "marketing",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-420",
+    "name": "部署运维 · 变更规划 42",
+    "category": "deploy",
+    "description": "将用户目标转化为可审核的操作计划。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-421",
+    "name": "AI 工作流 · 状态同步 43",
+    "category": "workflow",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-422",
+    "name": "产品运营 · 状态同步 43",
+    "category": "product",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-423",
+    "name": "设计协作 · 状态同步 43",
+    "category": "design",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-424",
+    "name": "开发工具 · 状态同步 43",
+    "category": "developer",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-425",
+    "name": "质量保障 · 状态同步 43",
+    "category": "quality",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-426",
+    "name": "数据工具 · 状态同步 43",
+    "category": "data",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-427",
+    "name": "办公文档 · 状态同步 43",
+    "category": "office",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-428",
+    "name": "多媒体制作 · 状态同步 43",
+    "category": "media",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-429",
+    "name": "增长营销 · 状态同步 43",
+    "category": "marketing",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-430",
+    "name": "部署运维 · 状态同步 43",
+    "category": "deploy",
+    "description": "向工作区同步状态、进度和可恢复错误。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-431",
+    "name": "AI 工作流 · 资产索引 44",
+    "category": "workflow",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-432",
+    "name": "产品运营 · 资产索引 44",
+    "category": "product",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-433",
+    "name": "设计协作 · 资产索引 44",
+    "category": "design",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-434",
+    "name": "开发工具 · 资产索引 44",
+    "category": "developer",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-435",
+    "name": "质量保障 · 资产索引 44",
+    "category": "quality",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-436",
+    "name": "数据工具 · 资产索引 44",
+    "category": "data",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-437",
+    "name": "办公文档 · 资产索引 44",
+    "category": "office",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-438",
+    "name": "多媒体制作 · 资产索引 44",
+    "category": "media",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-439",
+    "name": "增长营销 · 资产索引 44",
+    "category": "marketing",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-440",
+    "name": "部署运维 · 资产索引 44",
+    "category": "deploy",
+    "description": "建立可检索的资产元数据与引用关系。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-441",
+    "name": "AI 工作流 · 结果校验 45",
+    "category": "workflow",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-442",
+    "name": "产品运营 · 结果校验 45",
+    "category": "product",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-443",
+    "name": "设计协作 · 结果校验 45",
+    "category": "design",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-444",
+    "name": "开发工具 · 结果校验 45",
+    "category": "developer",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-445",
+    "name": "质量保障 · 结果校验 45",
+    "category": "quality",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-446",
+    "name": "数据工具 · 结果校验 45",
+    "category": "data",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-447",
+    "name": "办公文档 · 结果校验 45",
+    "category": "office",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-448",
+    "name": "多媒体制作 · 结果校验 45",
+    "category": "media",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-449",
+    "name": "增长营销 · 结果校验 45",
+    "category": "marketing",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-450",
+    "name": "部署运维 · 结果校验 45",
+    "category": "deploy",
+    "description": "在输出前验证格式、完整性与约束。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-451",
+    "name": "AI 工作流 · 审计记录 46",
+    "category": "workflow",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-452",
+    "name": "产品运营 · 审计记录 46",
+    "category": "product",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-453",
+    "name": "设计协作 · 审计记录 46",
+    "category": "design",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-454",
+    "name": "开发工具 · 审计记录 46",
+    "category": "developer",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-455",
+    "name": "质量保障 · 审计记录 46",
+    "category": "quality",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-456",
+    "name": "数据工具 · 审计记录 46",
+    "category": "data",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-457",
+    "name": "办公文档 · 审计记录 46",
+    "category": "office",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-458",
+    "name": "多媒体制作 · 审计记录 46",
+    "category": "media",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-459",
+    "name": "增长营销 · 审计记录 46",
+    "category": "marketing",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-460",
+    "name": "部署运维 · 审计记录 46",
+    "category": "deploy",
+    "description": "记录操作者、权限、资源和执行结果。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-461",
+    "name": "AI 工作流 · 差异比较 47",
+    "category": "workflow",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-462",
+    "name": "产品运营 · 差异比较 47",
+    "category": "product",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-463",
+    "name": "设计协作 · 差异比较 47",
+    "category": "design",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-464",
+    "name": "开发工具 · 差异比较 47",
+    "category": "developer",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-465",
+    "name": "质量保障 · 差异比较 47",
+    "category": "quality",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-466",
+    "name": "数据工具 · 差异比较 47",
+    "category": "data",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-467",
+    "name": "办公文档 · 差异比较 47",
+    "category": "office",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-468",
+    "name": "多媒体制作 · 差异比较 47",
+    "category": "media",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-469",
+    "name": "增长营销 · 差异比较 47",
+    "category": "marketing",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-470",
+    "name": "部署运维 · 差异比较 47",
+    "category": "deploy",
+    "description": "比较两个版本并突出关键变化。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-471",
+    "name": "AI 工作流 · 工作流触发 48",
+    "category": "workflow",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-472",
+    "name": "产品运营 · 工作流触发 48",
+    "category": "product",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-473",
+    "name": "设计协作 · 工作流触发 48",
+    "category": "design",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-474",
+    "name": "开发工具 · 工作流触发 48",
+    "category": "developer",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  },
+  {
+    "id": "plugin-475",
+    "name": "质量保障 · 工作流触发 48",
+    "category": "quality",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "✦"
+  },
+  {
+    "id": "plugin-476",
+    "name": "数据工具 · 工作流触发 48",
+    "category": "data",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "⌘"
+  },
+  {
+    "id": "plugin-477",
+    "name": "办公文档 · 工作流触发 48",
+    "category": "office",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read",
+      "workspace:write:approval"
+    ],
+    "risk": "需要用户确认",
+    "icon": "◈"
+  },
+  {
+    "id": "plugin-478",
+    "name": "多媒体制作 · 工作流触发 48",
+    "category": "media",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "↗"
+  },
+  {
+    "id": "plugin-479",
+    "name": "增长营销 · 工作流触发 48",
+    "category": "marketing",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "▤"
+  },
+  {
+    "id": "plugin-480",
+    "name": "部署运维 · 工作流触发 48",
+    "category": "deploy",
+    "description": "基于显式事件触发可观察的工作流。默认只读，写入、网络或外部副作用需要明确审批。",
+    "version": "1.0.0",
+    "status": "catalog",
+    "permissions": [
+      "workspace:read"
+    ],
+    "risk": "低风险",
+    "icon": "◎"
+  }
+]

@@ -1,0 +1,7 @@
+Command: corepack pnpm exec tsc -p server/tsconfig.local.json && node --test server/skills/table-join-multi.test.cjs
+Result: TypeScript passed; focused multi-join suite 11 passed, 0 failed, 0 skipped. Case 10 verifies ZIP candidate routing and planner decision validation with no invented file/join parameters.
+
+Command: corepack pnpm exec tsc --noEmit -p apps/web/tsconfig.json
+Result: passed.
+
+Planner prompt contract: ZIP contents are opaque to the planner; only user-provided joins.json defines operations; no extra inferred parameters, and missing relationships must be clarified or declined.

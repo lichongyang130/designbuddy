@@ -1,0 +1,38 @@
+.td-cover {
+  height: 100%;
+  position: relative;
+  background: #142e45;
+  color: #fbefda;
+  overflow: hidden;
+}
+.td-cover img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+.td-cover > div {
+  position: absolute;
+  inset: 0;
+  padding: 7%;
+  background: linear-gradient(90deg, #0a243ae6, transparent);
+}
+.td-cover small,
+.td-cover b {
+  font: 7px sans-serif;
+  letter-spacing: 1px;
+}
+.td-cover h2 {
+  font:
+    clamp(35px, 4vw, 60px) / 1 Georgia,
+    serif;
+  letter-spacing: 5px;
+  margin: 10% 0;
+}
+.td-cover h2 span {
+  font:
+    12px/2 "Noto Sans SC",
+    sans-serif;
+  display: block;
+  letter-spacing: 0;
+  margin-top: 10px;
+}

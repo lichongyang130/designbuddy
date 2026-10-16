@@ -1,0 +1,521 @@
+.settings-window {
+  width: min(900px, calc(100vw - 32px));
+  height: min(680px, calc(100dvh - 32px));
+  max-width: none;
+  max-height: none;
+  padding: 0;
+  margin: auto;
+  border: 1px solid #dedede;
+  border-radius: 14px;
+  background: #f7f7f7;
+  color: #282828;
+  box-shadow: 0 16px 60px #0002;
+  font-family: inherit;
+  overflow: hidden;
+}
+.settings-window::backdrop {
+  background: #25252536;
+}
+.settings-window *,
+.settings-window *::before,
+.settings-window *::after {
+  box-sizing: border-box;
+}
+.settings-window button,
+.settings-window input,
+.settings-window select {
+  font: inherit;
+}
+.settings-window button {
+  cursor: pointer;
+}
+.settings-window button:disabled,
+.settings-window select:disabled {
+  cursor: not-allowed;
+}
+.settings-window button:focus-visible,
+.settings-window input:focus-visible,
+.settings-window select:focus-visible,
+.settings-window summary:focus-visible {
+  outline: 2px solid #8b8b8b;
+  outline-offset: 2px;
+}
+.settings-layout {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+}
+.settings-close {
+  position: absolute;
+  z-index: 2;
+  left: 6px;
+  top: 4px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  border-radius: 5px;
+}
+.settings-close > span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ff625c;
+}
+.settings-close:hover > span {
+  background: #e74c48;
+}
+.settings-sidebar {
+  flex: 0 0 210px;
+  min-width: 0;
+  padding: 33px 11px 14px;
+  overflow: auto;
+  scrollbar-width: thin;
+}
+.settings-search {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 33px;
+  padding: 0 9px;
+  border-radius: 8px;
+  background: #ececec;
+  color: #8c8c8c;
+}
+.settings-search input {
+  min-width: 0;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  color: #414141;
+  background: transparent;
+  font-size: 13px;
+}
+.settings-search input::placeholder {
+  color: #a3a3a3;
+}
+.settings-search button {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #777;
+  font-size: 17px;
+}
+.settings-sidebar nav section {
+  margin-top: 16px;
+}
+.settings-sidebar nav h2 {
+  margin: 0 12px 7px;
+  color: #999;
+  font-size: 12px;
+  font-weight: 400;
+}
+.settings-sidebar nav button {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  min-height: 34px;
+  padding: 7px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #373737;
+  text-align: left;
+  font-size: 14px;
+}
+.settings-sidebar nav button .home-icon {
+  flex-shrink: 0;
+}
+.settings-sidebar nav button > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.settings-sidebar nav button:hover {
+  background: #f0f0f0;
+}
+.settings-sidebar nav button.is-active {
+  background: #ebebeb;
+  color: #171717;
+}
+.settings-search-empty {
+  padding: 12px 7px;
+  color: #888;
+  font-size: 12px;
+}
+.settings-content {
+  flex: 1;
+  min-width: 0;
+  padding: 35px 28px 26px 18px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #ccc transparent;
+}
+.settings-section-label {
+  margin: 0 8px 10px;
+  color: #959595;
+  font-size: 13px;
+  font-weight: 400;
+}
+.settings-content > section + section {
+  margin-top: 16px;
+}
+.settings-card {
+  border-radius: 13px;
+  background: #fff;
+  padding: 5px 16px;
+}
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 61px;
+  padding: 10px 0;
+}
+.settings-row > div:first-child {
+  min-width: 0;
+}
+.settings-row label,
+.settings-row strong {
+  font-weight: 500;
+  font-size: 14px;
+  color: #222;
+}
+.settings-row p {
+  margin: 4px 0 0;
+  color: #969696;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.settings-row > select {
+  flex: 0 0 120px;
+  width: 120px;
+  min-width: 0;
+  height: 33px;
+  padding: 4px 8px;
+  border: 1px solid #e3e3e3;
+  border-radius: 8px;
+  color: #424242;
+  background: #fff;
+  font-size: 13px;
+}
+.settings-row > select:disabled {
+  color: #999;
+  background: #fafafa;
+  opacity: 1;
+}
+.settings-row .settings-font-help {
+  font-size: 11px;
+}
+.settings-font-control {
+  flex: 0 1 225px;
+  min-width: 120px;
+}
+.settings-font-control > input {
+  width: 100%;
+  margin: 0;
+  height: 15px;
+  accent-color: #777;
+}
+.settings-font-control > div {
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+  color: #aaa;
+  gap: 26px;
+}
+.settings-font-control > div > span:last-child {
+  margin-left: auto;
+}
+.settings-font-control button {
+  padding: 0;
+  border: 0;
+  color: #999;
+  font-size: 11px;
+  background: transparent;
+}
+.settings-switch {
+  display: block;
+  flex: 0 0 34px;
+  position: relative;
+  width: 34px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  border-radius: 11px;
+  background: #e5e5e5;
+}
+.settings-switch span {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+}
+.settings-button {
+  padding: 7px 12px;
+  min-height: 32px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  color: #303030;
+  font-size: 13px !important;
+  white-space: nowrap;
+}
+.settings-button:hover {
+  background: #f4f4f4;
+}
+.settings-button.is-primary {
+  color: #fff;
+  background: #424242;
+  border-color: #424242;
+}
+.settings-button.is-primary:hover {
+  background: #2e2e2e;
+}
+.settings-model-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 15px 17px;
+}
+.settings-model-heading h2,
+.settings-info h2 {
+  margin: 0;
+  color: #222;
+  font-size: 14px;
+  font-weight: 550;
+}
+.settings-model-heading p {
+  margin: 5px 0 0;
+  color: #888;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.settings-model-form {
+  margin-top: 16px;
+  padding: 18px;
+}
+.settings-model-form h3 {
+  margin: 0 0 17px;
+  font-size: 15px;
+  font-weight: 600;
+}
+.settings-model-form > label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-top: 14px;
+  color: #555;
+  font-size: 13px;
+}
+.settings-model-form > label > input {
+  width: 100%;
+  height: 36px;
+  border: 1px solid #ddd;
+  border-radius: 7px;
+  padding: 7px 10px;
+  color: #333;
+  background: #fff;
+}
+.settings-model-form > p {
+  color: #888;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.settings-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 16px;
+}
+.settings-model-form .db-ai-provider-settings {
+  margin: 15px 0;
+  font-size: 12px;
+}
+.settings-model-form .db-ai-provider-settings > div {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.settings-model-form .db-ai-provider-settings label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.settings-model-form .db-ai-provider-settings input,
+.settings-model-form .db-ai-provider-settings select {
+  width: 100%;
+  max-width: 100%;
+  min-height: 32px;
+}
+.settings-model-form .db-ai-provider-settings small {
+  color: #888;
+  line-height: 1.7;
+}
+.settings-error {
+  color: #a64040 !important;
+  font-size: 12px;
+  line-height: 1.8;
+  padding: 9px 12px;
+  border: 1px solid #eedcdc;
+  border-radius: 8px;
+  background: #fffafa;
+}
+.settings-notice {
+  color: #666;
+  font-size: 12px;
+  line-height: 1.7;
+}
+.settings-model-list {
+  margin-top: 16px;
+}
+.settings-model-list article {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 14px 0;
+}
+.settings-model-list article + article {
+  border-top: 1px solid #eee;
+}
+.settings-model-list article > div {
+  flex: 1;
+  min-width: 0;
+}
+.settings-model-list strong {
+  display: block;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+.settings-model-list code {
+  display: block;
+  margin-top: 5px;
+  color: #888;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.settings-info {
+  padding: 20px;
+}
+.settings-info p {
+  color: #888;
+  font-size: 13px;
+  line-height: 1.9;
+}
+.settings-info dl {
+  margin: 18px 0 0;
+  font-size: 13px;
+}
+.settings-info dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+.settings-info dd {
+  margin: 0;
+  color: #888;
+  text-align: right;
+}
+.home27-content .composer-main textarea,
+.task-main .task-reply-markdown,
+.task-main .task-composer textarea {
+  font-size: var(--db-user-font-size, 15px);
+}
+@media (max-width: 680px) {
+  .settings-window {
+    width: calc(100vw - 16px);
+    height: calc(100dvh - 16px);
+    border-radius: 12px;
+  }
+  .settings-sidebar {
+    flex-basis: 126px;
+    padding: 33px 7px 12px;
+  }
+  .settings-search {
+    padding: 0 6px;
+    gap: 4px;
+  }
+  .settings-search input {
+    font-size: 11px;
+  }
+  .settings-sidebar nav button {
+    padding: 7px 6px;
+    gap: 6px;
+    font-size: 12px;
+  }
+  .settings-sidebar nav h2 {
+    margin-left: 7px;
+    font-size: 11px;
+  }
+  .settings-content {
+    padding: 35px 12px 20px 6px;
+  }
+  .settings-card {
+    padding: 5px 12px;
+  }
+  .settings-row {
+    flex-wrap: wrap;
+    gap: 9px;
+    min-height: 74px;
+    padding: 14px 0;
+  }
+  .settings-row > div:first-child {
+    flex-basis: 100%;
+  }
+  .settings-row > select {
+    width: 100%;
+    flex-basis: 100%;
+  }
+  .settings-row label,
+  .settings-row strong {
+    font-size: 13px;
+  }
+  .settings-row p {
+    font-size: 11px;
+  }
+  .settings-font-control {
+    flex-basis: 100%;
+    min-width: 0;
+    width: 100%;
+  }
+  .settings-model-heading {
+    padding: 14px 12px;
+    flex-wrap: wrap;
+  }
+  .settings-model-heading p {
+    font-size: 12px;
+    overflow-wrap: anywhere;
+  }
+  .settings-model-form {
+    padding: 14px 10px;
+  }
+  .settings-model-list article {
+    flex-wrap: wrap;
+  }
+  .settings-model-list article > div {
+    flex-basis: 100%;
+  }
+  .settings-info {
+    padding: 14px 12px;
+  }
+  .settings-info dl > div {
+    flex-direction: column;
+  }
+  .settings-info dd {
+    text-align: left;
+  }
+}

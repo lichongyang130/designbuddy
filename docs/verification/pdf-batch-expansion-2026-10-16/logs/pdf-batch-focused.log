@@ -1,0 +1,62 @@
+TAP version 13
+# (node:10850) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Estimating resolution as 428
+# Estimating resolution as 428
+# Estimating resolution as 441
+# Subtest: REAL two-file PDF OCR preserves source mapping, per-file evidence/hashes and mixed blank warnings inside downloadable ZIP
+ok 1 - REAL two-file PDF OCR preserves source mapping, per-file evidence/hashes and mixed blank warnings inside downloadable ZIP
+  ---
+  duration_ms: 1746.267191
+  type: 'test'
+  ...
+# Estimating resolution as 428
+# Estimating resolution as 430
+# Estimating resolution as 428
+# Estimating resolution as 430
+# Estimating resolution as 428
+# Estimating resolution as 430
+# Estimating resolution as 428
+# Estimating resolution as 430
+# Subtest: four files and eight total pages are all processed, not silently truncated
+ok 2 - four files and eight total pages are all processed, not silently truncated
+  ---
+  duration_ms: 2803.987563
+  type: 'test'
+  ...
+# Subtest: ZIP rejects file count, paths, non-PDF files, declared oversize, encrypted flags, length/CRC damage
+ok 3 - ZIP rejects file count, paths, non-PDF files, declared oversize, encrypted flags, length/CRC damage
+  ---
+  duration_ms: 2.532549
+  type: 'test'
+  ...
+# Subtest: fake PDFs and more than eight total pages fail before OCR instead of processing only a subset
+ok 4 - fake PDFs and more than eight total pages fail before OCR instead of processing only a subset
+  ---
+  duration_ms: 10.367802
+  type: 'test'
+  ...
+# Estimating resolution as 428
+# Estimating resolution as 428
+# Estimating resolution as 430
+# Estimating resolution as 428
+# Estimating resolution as 430
+# Estimating resolution as 428
+# Estimating resolution as 430
+# Estimating resolution as 428
+# Estimating resolution as 430
+# Subtest: real worker uses atomic delivery: a blank second file discards first-file outputs; successful batch remains owner-only
+ok 5 - real worker uses atomic delivery: a blank second file discards first-file outputs; successful batch remains owner-only
+  ---
+  duration_ms: 4985.684417
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 10052.116962

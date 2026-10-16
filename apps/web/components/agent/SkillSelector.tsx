@@ -1,0 +1,1 @@
+export default function SkillSelector(){return <div>Skill Selector</div>}

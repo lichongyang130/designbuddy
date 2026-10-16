@@ -1,0 +1,105 @@
+{
+  "sourceSHA256": "1d2716525ece9aafebba0787ce91f3e8eb5a4006e35239753fa68207e1d776f4",
+  "engine": "DesignBuddy bounded grammar v1 / decimal.js 40-digit precision",
+  "formulaCount": 6,
+  "operations": 37,
+  "cells": [
+    {
+      "sheet": "明细",
+      "cell": "D2",
+      "formula": "B2*C2",
+      "decimalResult": "0.3",
+      "result": 0.3,
+      "dependencies": [
+        {
+          "sheet": "明细",
+          "address": "B2"
+        },
+        {
+          "sheet": "明细",
+          "address": "C2"
+        }
+      ],
+      "cachedValueUsed": false
+    },
+    {
+      "sheet": "明细",
+      "cell": "D3",
+      "formula": "ROUND(B3*C3,2)",
+      "decimalResult": "25",
+      "result": 25,
+      "dependencies": [
+        {
+          "sheet": "明细",
+          "address": "B3"
+        },
+        {
+          "sheet": "明细",
+          "address": "C3"
+        }
+      ],
+      "cachedValueUsed": false
+    },
+    {
+      "sheet": "汇总",
+      "cell": "B2",
+      "formula": "SUM('明细'!D2:D3)",
+      "decimalResult": "25.3",
+      "result": 25.3,
+      "dependencies": [
+        {
+          "sheet": "明细",
+          "address": "D2",
+          "end": "D3"
+        }
+      ],
+      "cachedValueUsed": false
+    },
+    {
+      "sheet": "汇总",
+      "cell": "B3",
+      "formula": "AVERAGE('明细'!B2:B3)",
+      "decimalResult": "6.3",
+      "result": 6.3,
+      "dependencies": [
+        {
+          "sheet": "明细",
+          "address": "B2",
+          "end": "B3"
+        }
+      ],
+      "cachedValueUsed": false
+    },
+    {
+      "sheet": "汇总",
+      "cell": "B4",
+      "formula": "SUM('明细'!C2:C3)",
+      "decimalResult": "5",
+      "result": 5,
+      "dependencies": [
+        {
+          "sheet": "明细",
+          "address": "C2",
+          "end": "C3"
+        }
+      ],
+      "cachedValueUsed": false
+    },
+    {
+      "sheet": "汇总",
+      "cell": "B5",
+      "formula": "ROUND(B2*90%,2)",
+      "decimalResult": "22.77",
+      "result": 22.77,
+      "dependencies": [
+        {
+          "sheet": "汇总",
+          "address": "B2"
+        }
+      ],
+      "cachedValueUsed": false
+    }
+  ],
+  "requiresReview": true,
+  "policy": "仅支持+ - * /、一元正负、百分号、括号、A1/绝对/跨表引用及SUM/AVERAGE/MIN/MAX/COUNT/ROUND/ABS。聚合忽略引用中的文本/布尔/空白，日期拒绝；普通数值运算空白按0，文本/布尔/日期拒绝。ROUND中点远离零。Decimal40位有效数字，非精确有理数/Excel二进制兼容；XLSX数值及JSON result转为双精度近似，decimalResult保留引擎十进制结果。全部缓存忽略；任何不支持或错误均整次失败。不保留格式/隐藏状态/图表/原公式。"
+}

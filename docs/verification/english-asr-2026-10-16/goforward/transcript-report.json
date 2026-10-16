@@ -1,0 +1,160 @@
+{
+  "skill": "audio.transcribe-en",
+  "version": "1.0.0",
+  "sourceSHA256": "97ec638609b9c7eeb616764b4e5713d7ed2d0a8e1a2f8246631d9074d47aaf11",
+  "pcmSHA256": "f15c60ec54059d8b66e410d0064945a0b0a04ea56e1ddca1958e493c0cf70e71",
+  "audio": {
+    "durationSeconds": 2.78625,
+    "samples": 44580,
+    "sampleRate": 16000,
+    "channels": 1,
+    "bitsPerSample": 16,
+    "rms": 926.7332893391246,
+    "peak": 6730,
+    "clippedSampleFraction": 0,
+    "ignoredMetadataChunks": []
+  },
+  "userDeclaredLanguage": "en",
+  "languageAutomaticallyVerified": false,
+  "engine": {
+    "name": "pocketsphinx",
+    "version": "5.1.1",
+    "wheelSHA256": "bb8fd0fc7fb08dd8f85da21f5121f34ebf4186a5bee91ce85e2d358e69a448bf",
+    "modelSHA256": {
+      "pocketsphinx/model/CMakeLists.txt": "7d9096c5c3f7d2b18997784c19cb3371d111e12fd3703b1658cd6705fc1c389d",
+      "pocketsphinx/model/en-us/cmudict-en-us.dict": "20b5c293e1f311fb375fe067e500ec5636f4fc7af5594967263696def9b23bfe",
+      "pocketsphinx/model/en-us/en-us-phone.lm.bin": "c57e0fa4191b096b1279cfe3a77927f52568fdecfc6624ddb5cec9527c763a54",
+      "pocketsphinx/model/en-us/en-us.lm.bin": "db21d0642286677699e6dbc859d2e5395570222361999387ce60f6e1d01995d6",
+      "pocketsphinx/model/en-us/en-us/README": "8b88de980568509c646d0527b8414beef136964391903b40996d32f737bf752e",
+      "pocketsphinx/model/en-us/en-us/feat.params": "c982c5f75e2a30c34d2c9ef1f6b129a5a00e67e3e927565076b58664cc2404c9",
+      "pocketsphinx/model/en-us/en-us/mdef": "2360f9a86889c1cfee8bd618a0269387911e5fb2920a594f506b18b8c79683b0",
+      "pocketsphinx/model/en-us/en-us/means": "832019e32cac12eb318964f96f469034acb12d0348eeddc3831831a100cb4dd4",
+      "pocketsphinx/model/en-us/en-us/noisedict": "7295b07df2c204c4f87c6782b6be1a3859d7006d4e3864181c955d6dab105a33",
+      "pocketsphinx/model/en-us/en-us/sendump": "8c9564c0d5bef69ca9d9bf1014abe162f071644cf02cf1fa8a483c3dc165a7a8",
+      "pocketsphinx/model/en-us/en-us/transition_matrices": "c1f7f28ea43177be734be1f88bd7f1b9a853d0e660f8599c67c6eaeca8bb539a",
+      "pocketsphinx/model/en-us/en-us/variances": "b00d696f85e96834fc10f8e5f06428d8c4db6bffdbe5845b6f69bf6efbc48fa5"
+    },
+    "networkUsed": false,
+    "frameRate": 100
+  },
+  "wordCount": 4,
+  "lowConfidenceWordCount": 1,
+  "confidenceIsAccuracy": false,
+  "reviewThreshold": 0.8,
+  "words": [
+    {
+      "word": "go",
+      "rawWord": "go",
+      "region": 1,
+      "startSeconds": 0.51,
+      "endSeconds": 0.64,
+      "startFrame": 3,
+      "endFrameInclusive": 15,
+      "posteriorApprox": 0.91833251214099,
+      "displayConfidence": 0.91833251214099,
+      "lowConfidence": false,
+      "endClampedToAudio": false,
+      "requiresReview": true
+    },
+    {
+      "word": "forward",
+      "rawWord": "forward",
+      "region": 1,
+      "startSeconds": 0.64,
+      "endSeconds": 1.17,
+      "startFrame": 16,
+      "endFrameInclusive": 68,
+      "posteriorApprox": 0.9911399287938976,
+      "displayConfidence": 0.9911399287938976,
+      "lowConfidence": false,
+      "endClampedToAudio": false,
+      "requiresReview": true
+    },
+    {
+      "word": "ten",
+      "rawWord": "ten",
+      "region": 1,
+      "startSeconds": 1.17,
+      "endSeconds": 1.53,
+      "startFrame": 69,
+      "endFrameInclusive": 104,
+      "posteriorApprox": 0.5900348820222062,
+      "displayConfidence": 0.5900348820222062,
+      "lowConfidence": true,
+      "endClampedToAudio": false,
+      "requiresReview": true
+    },
+    {
+      "word": "meters",
+      "rawWord": "meters",
+      "region": 1,
+      "startSeconds": 1.53,
+      "endSeconds": 2.12,
+      "startFrame": 105,
+      "endFrameInclusive": 163,
+      "posteriorApprox": 1.0001,
+      "displayConfidence": 1,
+      "lowConfidence": false,
+      "endClampedToAudio": false,
+      "requiresReview": true
+    }
+  ],
+  "cues": [
+    {
+      "index": 1,
+      "startSeconds": 0.51,
+      "endSeconds": 2.12,
+      "text": "go forward ten meters",
+      "speechStart": 0.4800000000000002,
+      "speechEnd": 2.429999999999999,
+      "nativeHypothesis": "go forward ten meters",
+      "nativeSegments": [
+        {
+          "rawWord": "<s>",
+          "startFrame": 0,
+          "endFrameInclusive": 2,
+          "posteriorApprox": 1.00020001
+        },
+        {
+          "rawWord": "go",
+          "startFrame": 3,
+          "endFrameInclusive": 15,
+          "posteriorApprox": 0.91833251214099
+        },
+        {
+          "rawWord": "forward",
+          "startFrame": 16,
+          "endFrameInclusive": 68,
+          "posteriorApprox": 0.9911399287938976
+        },
+        {
+          "rawWord": "ten",
+          "startFrame": 69,
+          "endFrameInclusive": 104,
+          "posteriorApprox": 0.5900348820222062
+        },
+        {
+          "rawWord": "meters",
+          "startFrame": 105,
+          "endFrameInclusive": 163,
+          "posteriorApprox": 1.0001
+        },
+        {
+          "rawWord": "</s>",
+          "startFrame": 164,
+          "endFrameInclusive": 193,
+          "posteriorApprox": 1
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "仅美式英语离线模型；用户语言声明未经自动检测。中文、音乐、噪声、口音、姓名及数字可能被误识别。",
+    "词级分数不是准确率或已校准置信度；所有文字都须与原音频核对，低于0.8仅作为优先复核提示。",
+    "模型近似后验分数可能略大于1；报告保留原值，显示值限于0–1。",
+    "时间来自VAD起点加100Hz解码帧；帧末为含端点，导出取下一帧边界并按毫秒舍入，必要时限于录音末尾。",
+    "未自动加标点、摘要、翻译、分离说话人或处理长会议；VAD之外的声音未转写。",
+    "核对音频保留原文件字节及元数据；分享前请自行核对权限和隐私。"
+  ],
+  "requiresReview": true
+}

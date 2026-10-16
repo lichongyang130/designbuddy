@@ -1,0 +1,97 @@
+{
+  "sourceSHA256": "14d7b4a6fad2e46707773c797e4e0777aff01da0af412a223e10a8b44bc170ab",
+  "title": "渠道收入对比",
+  "metric": "确认收入",
+  "unit": "万元",
+  "scope": "2026年9月已确认收入，各渠道采用相同记账口径",
+  "source": "演示样例，未独立验证业务事实",
+  "purpose": "comparison",
+  "chartType": "zero-baseline-bars",
+  "selectionReason": "用户明确选择类别比较，使用共享零基线条形图，保留输入顺序。",
+  "selectionMethod": "explicit-purpose deterministic rules, not AI semantic understanding",
+  "userDeclaredPartsCompleteAndDisjoint": false,
+  "sourceIndependentlyVerified": false,
+  "calculationPolicy": "decimal.js 40位有效数字；原始数值不超过6位小数，图形坐标为双精度近似，变化率等除法结果可能舍入。",
+  "rowReference": "sourceRow为输入data数组从1开始的记录序号，不是JSON物理行号或外部数据源行号。",
+  "kpis": [
+    {
+      "label": "最低值",
+      "value": "73.8"
+    },
+    {
+      "label": "最高值",
+      "value": "155.6"
+    },
+    {
+      "label": "类别数量",
+      "value": "4"
+    }
+  ],
+  "rows": [
+    {
+      "label": "线上直营",
+      "value": "128.5",
+      "sourceRow": 1
+    },
+    {
+      "label": "线下门店",
+      "value": "96.2",
+      "sourceRow": 2
+    },
+    {
+      "label": "合作渠道",
+      "value": "73.8",
+      "sourceRow": 3
+    },
+    {
+      "label": "企业客户",
+      "value": "155.6",
+      "sourceRow": 4
+    }
+  ],
+  "geometry": [
+    {
+      "sourceRow": 1,
+      "label": "线上直营",
+      "zeroX": 352,
+      "valueX": 781.4344473007712,
+      "y": 480
+    },
+    {
+      "sourceRow": 2,
+      "label": "线下门店",
+      "zeroX": 352,
+      "valueX": 673.491002570694,
+      "y": 530
+    },
+    {
+      "sourceRow": 3,
+      "label": "合作渠道",
+      "zeroX": 352,
+      "valueX": 598.6323907455013,
+      "y": 580
+    },
+    {
+      "sourceRow": 4,
+      "label": "企业客户",
+      "zeroX": 352,
+      "valueX": 872,
+      "y": 630
+    }
+  ],
+  "domain": {
+    "min": "0",
+    "max": "155.6"
+  },
+  "render": {
+    "width": 1200,
+    "height": 1363,
+    "svgSHA256": "e2065a1f9bf2904cc0b29913472968d173fb7313d3d2b2c199ac9178486fdf92",
+    "pngSHA256": "ed643004931bba38beccd9fd4952ce55e908c387d29883f82b676f7f74798752"
+  },
+  "notes": [
+    "单位、统计口径和来源均由用户声明，未独立核实。",
+    "图形坐标与PNG为近似呈现；完整数值及记录序号见下方明细和JSON。"
+  ],
+  "requiresReview": true
+}

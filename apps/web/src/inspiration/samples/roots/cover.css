@@ -1,0 +1,36 @@
+.roots-cover {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  background: #e4e9de;
+  color: #2e483a;
+}
+.roots-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.roots-cover > div {
+  position: absolute;
+  inset: 0;
+  padding: 7%;
+  background: linear-gradient(90deg, #edf1e8eb, transparent 90%);
+}
+.roots-cover small,
+.roots-cover b {
+  font: 7px/1.5 sans-serif;
+  letter-spacing: 1px;
+}
+.roots-cover h2 {
+  font:
+    clamp(25px, 3vw, 42px) / 1.2 Georgia,
+    serif;
+  margin: 12% 0;
+}
+.roots-cover h2 span {
+  display: block;
+  font:
+    13px/2 "Noto Sans SC",
+    sans-serif;
+  letter-spacing: 1px;
+}

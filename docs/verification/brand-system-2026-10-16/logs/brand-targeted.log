@@ -1,0 +1,72 @@
+TAP version 13
+# (node:4440) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: validated brand brief emits real outlined SVG, two decoded PNGs, CSS, provenance-rich system and responsive guideline
+ok 1 - validated brand brief emits real outlined SVG, two decoded PNGs, CSS, provenance-rich system and responsive guideline
+  ---
+  duration_ms: 192.929308
+  type: 'test'
+  ...
+# Subtest: all three finite geometric mark recipes produce valid self-contained SVG and raster assets
+ok 2 - all three finite geometric mark recipes produce valid self-contained SVG and raster assets
+  ---
+  duration_ms: 35.184509
+  type: 'test'
+  ...
+# Subtest: escapes untrusted text in report and emits safe outlined logo without active markup
+ok 3 - escapes untrusted text in report and emits safe outlined logo without active markup
+  ---
+  duration_ms: 20.606396
+  type: 'test'
+  ...
+# Subtest: rejects malformed UTF-8 JSON shape, missing/unknown keys, and invalid geometry choices
+ok 4 - rejects malformed UTF-8 JSON shape, missing/unknown keys, and invalid geometry choices
+  ---
+  duration_ms: 1.022307
+  type: 'test'
+  ...
+# Subtest: rejects duplicate/invalid palette hexes, roles, count, and non-object color entries
+ok 5 - rejects duplicate/invalid palette hexes, roles, count, and non-object color entries
+  ---
+  duration_ms: 0.686356
+  type: 'test'
+  ...
+# Subtest: rejects oversized fields, controls, and unpaired/bidi manipulation characters
+ok 6 - rejects oversized fields, controls, and unpaired/bidi manipulation characters
+  ---
+  duration_ms: 0.288254
+  type: 'test'
+  ...
+# Subtest: generated raster bytes are actual alpha-preserving PNGs and outputs are safely bounded
+ok 7 - generated raster bytes are actual alpha-preserving PNGs and outputs are safely bounded
+  ---
+  duration_ms: 10.474338
+  type: 'test'
+  ...
+# Subtest: changed brand language affects actual vectors, tokens and generated usage system deterministically
+ok 8 - changed brand language affects actual vectors, tokens and generated usage system deterministically
+  ---
+  duration_ms: 22.346179
+  type: 'test'
+  ...
+# Subtest: brand expert registry binds the new real skill and unknown client/file types remain rejected
+ok 9 - brand expert registry binds the new real skill and unknown client/file types remain rejected
+  ---
+  duration_ms: 0.596489
+  type: 'test'
+  ...
+# Subtest: in-memory real queue delivers eight assets plus receipt and denies another owner every download
+ok 10 - in-memory real queue delivers eight assets plus receipt and denies another owner every download
+  ---
+  duration_ms: 632.58904
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1365.584428

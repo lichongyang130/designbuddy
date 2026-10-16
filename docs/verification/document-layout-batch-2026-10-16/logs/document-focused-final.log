@@ -1,0 +1,160 @@
+TAP version 13
+# Subtest: document summary requires a separate third-party processing consent and a server identity
+ok 1 - document summary requires a separate third-party processing consent and a server identity
+  ---
+  duration_ms: 3.91947
+  type: 'test'
+  ...
+# Subtest: document summary sends text only after consent, records source references and explicit third-party processing
+ok 2 - document summary sends text only after consent, records source references and explicit third-party processing
+  ---
+  duration_ms: 18.318027
+  type: 'test'
+  ...
+# Subtest: document summary rejects invented paragraph references and does not return partial artifacts
+ok 3 - document summary rejects invented paragraph references and does not return partial artifacts
+  ---
+  duration_ms: 0.995224
+  type: 'test'
+  ...
+# Subtest: document summary does not create a deterministic fake result when the server AI provider is missing
+ok 4 - document summary does not create a deterministic fake result when the server AI provider is missing
+  ---
+  duration_ms: 0.512513
+  type: 'test'
+  ...
+# (node:11075) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: real DOCX preserves body order, title hierarchy, literal text, direct formatting and explicit omissions
+ok 5 - real DOCX preserves body order, title hierarchy, literal text, direct formatting and explicit omissions
+  ---
+  duration_ms: 297.313581
+  type: 'test'
+  ...
+# Subtest: real merged tables map exact grid locations and export literal strings, not guessed currency or formulas
+ok 6 - real merged tables map exact grid locations and export literal strings, not guessed currency or formulas
+  ---
+  duration_ms: 59.464654
+  type: 'test'
+  ...
+# Subtest: inline image delivery preserves actual original bytes and normalized preview provenance
+ok 7 - inline image delivery preserves actual original bytes and normalized preview provenance
+  ---
+  duration_ms: 59.572389
+  type: 'test'
+  ...
+# Subtest: direct outline levels, lists, page markers and content controls retain structure without inventing pagination
+ok 8 - direct outline levels, lists, page markers and content controls retain structure without inventing pagination
+  ---
+  duration_ms: 71.171844
+  type: 'test'
+  ...
+# Subtest: broken merge geometry is rejected instead of dropping content or guessing table structure
+ok 9 - broken merge geometry is rejected instead of dropping content or guessing table structure
+  ---
+  duration_ms: 97.656071
+  type: 'test'
+  ...
+# Subtest: revisions, fields, notes, text boxes, unsupported drawings and namespace rebinding fail closed
+ok 10 - revisions, fields, notes, text boxes, unsupported drawings and namespace rebinding fail closed
+  ---
+  duration_ms: 63.912727
+  type: 'test'
+  ...
+# Subtest: missing/invalid images and external relationships are rejected without network calls
+ok 11 - missing/invalid images and external relationships are rejected without network calls
+  ---
+  duration_ms: 30.509031
+  type: 'test'
+  ...
+# Subtest: resource bounds and invalid XML are rejected, including oversized image placement multiplication
+ok 12 - resource bounds and invalid XML are rejected, including oversized image placement multiplication
+  ---
+  duration_ms: 72.076888
+  type: 'test'
+  ...
+# Subtest: valid ordinary DOCX without tables/images delivers no invented table or image files
+ok 13 - valid ordinary DOCX without tables/images delivers no invented table or image files
+  ---
+  duration_ms: 17.997372
+  type: 'test'
+  ...
+# Subtest: real worker persists artifacts behind owner checks and failure yields no partial outputs
+ok 14 - real worker persists artifacts behind owner checks and failure yields no partial outputs
+  ---
+  duration_ms: 1081.524923
+  type: 'test'
+  ...
+# Subtest: planner candidate, scope and no-parameters contract reflect a DOCX structural tool, not PDF or AI summary
+ok 15 - planner candidate, scope and no-parameters contract reflect a DOCX structural tool, not PDF or AI summary
+  ---
+  duration_ms: 0.616394
+  type: 'test'
+  ...
+# Subtest: direct paragraph spacing/indent and table grid width, shading and vertical alignment survive safe DOCX reflow
+ok 16 - direct paragraph spacing/indent and table grid width, shading and vertical alignment survive safe DOCX reflow
+  ---
+  duration_ms: 53.831773
+  type: 'test'
+  ...
+# (node:11094) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Estimating resolution as 428
+# Estimating resolution as 428
+# Estimating resolution as 441
+# Subtest: REAL two-file PDF OCR preserves source mapping, per-file evidence/hashes and mixed blank warnings inside downloadable ZIP
+ok 17 - REAL two-file PDF OCR preserves source mapping, per-file evidence/hashes and mixed blank warnings inside downloadable ZIP
+  ---
+  duration_ms: 1561.120341
+  type: 'test'
+  ...
+# Estimating resolution as 428
+# Estimating resolution as 430
+# Estimating resolution as 428
+# Estimating resolution as 430
+# Estimating resolution as 428
+# Estimating resolution as 430
+# Estimating resolution as 428
+# Estimating resolution as 430
+# Subtest: four files and eight total pages are all processed, not silently truncated
+ok 18 - four files and eight total pages are all processed, not silently truncated
+  ---
+  duration_ms: 2541.216857
+  type: 'test'
+  ...
+# Subtest: ZIP rejects file count, paths, non-PDF files, declared oversize, encrypted flags, length/CRC damage
+ok 19 - ZIP rejects file count, paths, non-PDF files, declared oversize, encrypted flags, length/CRC damage
+  ---
+  duration_ms: 3.348774
+  type: 'test'
+  ...
+# Subtest: fake PDFs and more than eight total pages fail before OCR instead of processing only a subset
+ok 20 - fake PDFs and more than eight total pages fail before OCR instead of processing only a subset
+  ---
+  duration_ms: 10.148874
+  type: 'test'
+  ...
+# Estimating resolution as 428
+# Estimating resolution as 428
+# Estimating resolution as 430
+# Estimating resolution as 428
+# Estimating resolution as 430
+# Estimating resolution as 428
+# Estimating resolution as 430
+# Estimating resolution as 428
+# Estimating resolution as 430
+# Subtest: real worker uses atomic delivery: a blank second file discards first-file outputs; successful batch remains owner-only
+ok 21 - real worker uses atomic delivery: a blank second file discards first-file outputs; successful batch remains owner-only
+  ---
+  duration_ms: 4721.61975
+  type: 'test'
+  ...
+1..21
+# tests 21
+# suites 0
+# pass 21
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 12145.151722

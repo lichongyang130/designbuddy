@@ -1,0 +1,194 @@
+/* Reference 5: a compact upward-opening menu, scoped to the homepage only. */
+.home27 .model-menu-popover.home-model-menu {
+  width: min(340px, calc(100vw - 24px));
+  padding: 8px;
+  border: 1px solid #dedee0;
+  border-radius: 17px;
+  background: #fff;
+  color: #242526;
+  box-shadow:
+    0 5px 16px #1616210a,
+    0 1px 3px #16162106;
+  overflow: hidden;
+  font-size: 14px;
+}
+.home27 .home-model-menu .model-menu-max-row {
+  flex: 0 0 auto;
+  min-height: 36px;
+  padding: 0 8px;
+  gap: 8px;
+  border-bottom: 1px solid #efeff0;
+  font-size: 14px;
+}
+.home27 .home-model-menu .model-menu-max-row b {
+  font-weight: 450;
+}
+.home27 .home-model-menu .model-menu-max-icon {
+  display: flex;
+  color: #727572;
+}
+.home27 .home-model-menu .model-toggle {
+  width: 26px;
+  height: 16px;
+  background: #e7e7e8;
+}
+.home27 .home-model-menu .model-toggle.is-on {
+  background: #32b89b;
+}
+.home27 .home-model-menu .model-toggle.is-on i {
+  transform: translateX(10px);
+}
+.home27 .home-model-menu-scroll {
+  min-height: 0;
+  max-height: 279px;
+  flex: 1 1 auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #dededf transparent;
+}
+.home27 .home-model-menu-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.home27 .home-model-menu-scroll::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  background: #dededf;
+}
+.home27 .home-model-menu .model-menu-reasoning {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+  border: 0;
+}
+.home27 .home-model-menu .model-menu-reasoning button {
+  display: flex;
+  flex: 0 0 31px;
+  align-items: center;
+  height: 31px;
+  min-height: 31px;
+  padding: 0 8px;
+  gap: 8px;
+  border: 0;
+  border-radius: 8px;
+  background: #fff;
+  color: #292b2d;
+  font-size: 14px;
+}
+.home27 .home-model-menu .model-menu-reasoning b {
+  font-weight: 450;
+}
+.home27 .home-model-menu .model-menu-reasoning small {
+  margin-left: auto;
+  margin-right: 23px;
+  color: #8a8b8e;
+  font-size: 12px;
+  font-weight: 400;
+}
+.home27 .home-model-menu .model-menu-list {
+  display: flex;
+  flex-direction: column;
+  max-height: none;
+  overflow: visible;
+  padding: 0;
+  gap: 0;
+}
+.home27 .home-model-menu .model-menu-option {
+  display: flex;
+  align-items: center;
+  flex: 0 0 31px;
+  height: 31px;
+  min-height: 31px;
+  padding: 0 8px;
+  gap: 6px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #26282a;
+}
+.home27 .home-model-menu .model-menu-option b {
+  flex: 0 1 auto;
+  min-width: 0;
+  font-weight: 450;
+}
+.home27 .home-model-menu .model-menu-option.is-selected {
+  background: #f5f6f6;
+}
+.home27 .home-model-menu .model-menu-option.is-selected b {
+  font-weight: 650;
+}
+.home27 .home-model-menu .model-menu-option:hover,
+.home27 .home-model-menu .model-menu-reasoning button:hover {
+  background: #f6f7f7;
+}
+.home27 .home-model-menu .model-option-badge {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 3px;
+  padding: 1px 5px;
+  border-radius: 8px;
+  background: #e6f4f1;
+  color: #079c87;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 16px;
+  white-space: nowrap;
+}
+.home27 .home-model-menu .model-option-badge.badge-warm {
+  background: #fcf0e7;
+  color: #c77936;
+}
+.home27 .home-model-menu .model-menu-option > small {
+  flex: 0 0 auto;
+  margin-left: auto;
+  font-size: 12px;
+  color: #8a8b8e;
+  font-variant-numeric: tabular-nums;
+}
+.home27 .home-model-menu .model-option-check {
+  display: grid;
+  place-items: center;
+  flex: 0 0 13px;
+  width: 13px;
+  margin-left: 3px;
+  color: #00b58e;
+}
+.home27 .home-model-glyph {
+  display: block;
+  flex: 0 0 16px;
+  color: #363a38;
+}
+.home27 .home-model-menu .model-custom-config {
+  flex: 0 0 auto;
+  min-height: 35px;
+  padding: 0 8px;
+  gap: 8px;
+  border-top: 1px solid #efeff0;
+  color: #303233;
+  font-size: 14px;
+}
+.home27 .home-model-menu .model-custom-config:hover {
+  color: #6051ba;
+  background: #fafafa;
+  border-radius: 0 0 9px 9px;
+}
+.home27 .home-model-menu button:focus-visible {
+  outline: 2px solid #8b7ec4;
+  outline-offset: -2px;
+}
+@media (max-width: 360px) {
+  .home27 .home-model-menu .model-menu-option {
+    padding: 0 5px;
+    gap: 5px;
+    font-size: 12px;
+  }
+  .home27 .home-model-menu .model-option-badge {
+    padding: 1px 4px;
+    gap: 2px;
+    font-size: 10px;
+  }
+  .home27 .home-model-menu .model-menu-option > small {
+    font-size: 11px;
+  }
+}

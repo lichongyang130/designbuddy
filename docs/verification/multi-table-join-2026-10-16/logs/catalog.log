@@ -1,0 +1,69 @@
+TAP version 13
+# (node:7125) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///home/user/new/shared/expertRouting.ts is not specified and it doesn't parse as CommonJS.
+# Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+# To eliminate this warning, add "type": "module" to /home/user/new/package.json.
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: one catalog contains exactly 12 task-focused experts, four per homepage area
+ok 1 - one catalog contains exactly 12 task-focused experts, four per homepage area
+  ---
+  duration_ms: 2.115169
+  type: 'test'
+  ...
+# Subtest: all 30 homepage categories are covered and 36 examples reuse complete existing tasks
+ok 2 - all 30 homepage categories are covered and 36 examples reuse complete existing tasks
+  ---
+  duration_ms: 2.260002
+  type: 'test'
+  ...
+# Subtest: every expert has concrete inputs, methods, deliverables, checks and honest tool limits
+ok 3 - every expert has concrete inputs, methods, deliverables, checks and honest tool limits
+  ---
+  duration_ms: 0.536286
+  type: 'test'
+  ...
+# Minimum Chinese characters: 432
+# Subtest: catalog has independent mode categories, meaningful subgroups and unique IDs
+ok 4 - catalog has independent mode categories, meaningful subgroups and unique IDs
+  ---
+  duration_ms: 2.007232
+  type: 'test'
+  ...
+# Subtest: every prompt has at least 200 Chinese characters and complete task instructions
+ok 5 - every prompt has at least 200 Chinese characters and complete task instructions
+  ---
+  duration_ms: 22.035572
+  type: 'test'
+  ...
+# Subtest: query relevance and saved usage affect ordering without mutating source tasks
+ok 6 - query relevance and saved usage affect ordering without mutating source tasks
+  ---
+  duration_ms: 1.347701
+  type: 'test'
+  ...
+# Subtest: every subgroup rotates through all tasks with no adjacent-batch overlap
+ok 7 - every subgroup rotates through all tasks with no adjacent-batch overlap
+  ---
+  duration_ms: 6.893498
+  type: 'test'
+  ...
+# Subtest: corrupt or unavailable recommendation storage does not block prompt use
+ok 8 - corrupt or unavailable recommendation storage does not block prompt use
+  ---
+  duration_ms: 0.408431
+  type: 'test'
+  ...
+# Subtest: approved taxonomy contains exactly the thirty named categories and stable featured five
+ok 9 - approved taxonomy contains exactly the thirty named categories and stable featured five
+  ---
+  duration_ms: 0.270937
+  type: 'test'
+  ...
+1..9
+# tests 9
+# suites 0
+# pass 9
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 309.347664

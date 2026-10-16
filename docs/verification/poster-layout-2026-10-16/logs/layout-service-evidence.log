@@ -1,0 +1,42 @@
+(node:65212) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+{
+  "folder": "/home/user/new/.cache/layout-service-artifacts",
+  "status": "succeeded",
+  "sourceSHA256": "429026f7af4274f634e4eb1fbe2a50d0be5838b12865bcf62a492522174aedab",
+  "artifacts": [
+    {
+      "name": "poster.png",
+      "size": 76708,
+      "sha256": "5de59aaf7a307a5cca0489824235afa00eb269e323a8bf8d65e845cc39b10072"
+    },
+    {
+      "name": "poster.svg",
+      "size": 57026,
+      "sha256": "520cb10baffdcd488e7d698ffce02b179426745bc212171c6919c10c1b002a35"
+    },
+    {
+      "name": "poster-project.json",
+      "size": 2046,
+      "sha256": "429026f7af4274f634e4eb1fbe2a50d0be5838b12865bcf62a492522174aedab"
+    },
+    {
+      "name": "poster-report.json",
+      "size": 4939,
+      "sha256": "37c15be34decaaaf35e131c2d78647783a157aca03ca53e13daab3f622ef4a26"
+    },
+    {
+      "name": "font-license.txt",
+      "size": 4314,
+      "sha256": "18aabf190848725e2576eefb5c29ba06aac1029d02132252a7f312eac2e50cf3"
+    },
+    {
+      "name": "execution-receipt.json",
+      "size": 1696,
+      "sha256": "d1de39aa48f06fbff4fafc2629361f26b35cc8e69bc02c5ac81fd196e22efbe4"
+    }
+  ],
+  "foreignOwnerDownload": 404,
+  "generatedImagery": false,
+  "published": false
+}

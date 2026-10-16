@@ -1,0 +1,90 @@
+TAP version 13
+# (node:60720) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: real layered poster exports Chinese glyph paths, actual PNG and a round-trippable editable project
+ok 1 - real layered poster exports Chinese glyph paths, actual PNG and a round-trippable editable project
+  ---
+  duration_ms: 356.788762
+  type: 'test'
+  ...
+# Subtest: actual pixels obey layer order, opacity, visibility and transparent background rather than only recording geometry
+ok 2 - actual pixels obey layer order, opacity, visibility and transparent background rather than only recording geometry
+  ---
+  duration_ms: 29.203947
+  type: 'test'
+  ...
+# Subtest: actual image contain/cover pixels match reported source crop and reused assets are embedded once
+ok 3 - actual image contain/cover pixels match reported source crop and reused assets are embedded once
+  ---
+  duration_ms: 18.807585
+  type: 'test'
+  ...
+# Subtest: real JPEG EXIF orientation and WebP assets normalize with actual source and normalized dimensions
+ok 4 - real JPEG EXIF orientation and WebP assets normalize with actual source and normalized dimensions
+  ---
+  duration_ms: 35.043755
+  type: 'test'
+  ...
+# Subtest: closed schema rejects unknown fields, CSS/URLs, missing assets, duplicate IDs and off-canvas coordinates
+ok 5 - closed schema rejects unknown fields, CSS/URLs, missing assets, duplicate IDs and off-canvas coordinates
+  ---
+  duration_ms: 2.844992
+  type: 'test'
+  ...
+# Subtest: cardinality, input/pixel and hidden-asset budgets reject rather than silently truncate
+ok 6 - cardinality, input/pixel and hidden-asset budgets reject rather than silently truncate
+  ---
+  duration_ms: 37.942936
+  type: 'test'
+  ...
+# Subtest: SVG disguised as PNG, MIME mismatches, animation markers and malformed base64 cannot reach an external renderer
+ok 7 - SVG disguised as PNG, MIME mismatches, animation markers and malformed base64 cannot reach an external renderer
+  ---
+  duration_ms: 2.030683
+  type: 'test'
+  ...
+# Subtest: visible text overflow and unsupported glyphs fail; hidden content remains explicit only in editable source
+ok 8 - visible text overflow and unsupported glyphs fail; hidden content remains explicit only in editable source
+  ---
+  duration_ms: 27.841953
+  type: 'test'
+  ...
+# Subtest: boundary canvas and layer count really render at 2000 by 2000 with all 24 declared layers
+ok 9 - boundary canvas and layer count really render at 2000 by 2000 with all 24 declared layers
+  ---
+  duration_ms: 42.194775
+  type: 'test'
+  ...
+# Subtest: actual worker persists six owner-only artifacts and a text overflow yields zero partial files
+ok 10 - actual worker persists six owner-only artifacts and a text overflow yields zero partial files
+  ---
+  duration_ms: 2230.849063
+  type: 'test'
+  ...
+# Subtest: planning only admits existing JSON rendering for the authorized marketing expert, not raw image generation
+ok 11 - planning only admits existing JSON rendering for the authorized marketing expert, not raw image generation
+  ---
+  duration_ms: 1.149529
+  type: 'test'
+  ...
+# Subtest: header-valid corrupt PNG fails native decode, and aggregate byte/pixel budgets include unused assets
+ok 12 - header-valid corrupt PNG fails native decode, and aggregate byte/pixel budgets include unused assets
+  ---
+  duration_ms: 299.386835
+  type: 'test'
+  ...
+# Subtest: markup in title remains escaped metadata and text is rendered as glyph outlines, not executable SVG
+ok 13 - markup in title remains escaped metadata and text is rendered as glyph outlines, not executable SVG
+  ---
+  duration_ms: 76.169276
+  type: 'test'
+  ...
+1..13
+# tests 13
+# suites 0
+# pass 13
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3775.26507

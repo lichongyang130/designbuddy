@@ -1,0 +1,26 @@
+[
+  {
+    "id": "meeting-summary",
+    "name": "会议纪要专家",
+    "description": "整理会议内容并生成行动项",
+    "type": "skill",
+    "category": "office",
+    "version": "1.0.0"
+  },
+  {
+    "id": "ppt-business-plan",
+    "name": "商业计划书PPT",
+    "description": "根据需求生成商业演示文稿结构",
+    "type": "skill",
+    "category": "presentation",
+    "version": "1.0.0"
+  },
+  {
+    "id": "excel-analysis",
+    "name": "数据分析助手",
+    "description": "分析表格并生成可视化报告",
+    "type": "skill",
+    "category": "data",
+    "version": "1.0.0"
+  }
+]

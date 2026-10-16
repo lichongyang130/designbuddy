@@ -1,0 +1,49 @@
+{
+  "readyCount": 20,
+  "readyIds": [
+    "table.analyze",
+    "infographic.compose",
+    "table.calculate",
+    "table.join",
+    "document.format",
+    "document.structure",
+    "slides.compose",
+    "pdf.extract",
+    "pdf.ocr-batch",
+    "pdf.ocr",
+    "image.ocr",
+    "audio.transcribe-en",
+    "collaboration.schedule",
+    "brand.assets",
+    "image.marketing",
+    "image.layout",
+    "image.product",
+    "requirements.check",
+    "web.audit",
+    "code.inspect"
+  ],
+  "layout": {
+    "id": "image.layout",
+    "version": "1.0.0",
+    "name": "图层自由排版与真实导出",
+    "expertIds": [
+      "visual"
+    ],
+    "status": "ready",
+    "accepts": [
+      ".json"
+    ],
+    "outputs": [
+      "实际PNG",
+      "转曲SVG",
+      "可再编辑JSON",
+      "图层/素材来源报告"
+    ],
+    "description": "在本页画布编辑文字、色块与实际图片的位置、尺寸、层级、透明度；准备并授权上传后，由后台实际校验、合成PNG/SVG。不是AI生图或智能改图。",
+    "limits": "JSON≤2MB；画布边长320–2000、最多400万像素；1–24层、最多6张PNG/基线或渐进JPEG/静态WebP。单图≤400万像素/4000边长，素材原字节合计≤130万、像素合计≤800万。文字每层≤500、总计≤2000字，字号8–160；须手动换行，可见文字越界/缺字失败。不接受远程URL、SVG素材、脚本、旋转/分组/特效或PSD。不核验素材权利。SVG文字转曲，重新编辑须导入JSON；JSON保留隐藏层/原图及元数据，SVG裁剪仍保留完整规范图片，不能用于脱敏。草稿仅在本页内存，离开前下载JSON；不是自动云端保存。",
+    "example": {
+      "filename": "poster-project.json",
+      "content": "{\n  \"version\": 1,\n  \"title\": \"自由排版示例\",\n  \"width\": 960,\n  \"height\": 1200,\n  \"background\": \"#f3f0e7\",\n  \"assets\": [],\n  \"layers\": [\n    {\n      \"id\": \"accent\",\n      \"name\": \"橙色圆形\",\n      \"type\": \"rect\",\n      \"x\": 608,\n      \"y\": 80,\n      \"width\": 272,\n      \"height\": 272,\n      \"opacity\": 100,\n      \"visible\": true,\n      \"locked\": false,\n      \"color\": \"#d47749\",\n      \"radius\": 136\n    },\n    {\n      \"id\": \"panel\",\n      \"name\": \"绿色底板\",\n      \"type\": \"rect\",\n      \"x\": 64,\n      \"y\": 520,\n      \"width\": 832,\n      \"height\": 520,\n      \"opacity\": 100,\n      \"visible\": true,\n      \"locked\": false,\n      \"color\": \"#294f43\",\n      \"radius\": 24\n    },\n    {\n      \"id\": \"eyebrow\",\n      \"name\": \"上方说明\",\n      \"type\": \"text\",\n      \"x\": 64,\n      \"y\": 64,\n      \"width\": 480,\n      \"height\": 64,\n      \"opacity\": 100,\n      \"visible\": true,\n      \"locked\": false,\n      \"text\": \"DESIGNBUDDY / LAYOUT STUDIO\",\n      \"fontSize\": 20,\n      \"color\": \"#294f43\"\n    },\n    {\n      \"id\": \"title\",\n      \"name\": \"主标题\",\n      \"type\": \"text\",\n      \"x\": 64,\n      \"y\": 178,\n      \"width\": 680,\n      \"height\": 264,\n      \"opacity\": 100,\n      \"visible\": true,\n      \"locked\": false,\n      \"text\": \"把想法\\n变成画面。\",\n      \"fontSize\": 84,\n      \"color\": \"#243d34\"\n    },\n    {\n      \"id\": \"body\",\n      \"name\": \"说明文字\",\n      \"type\": \"text\",\n      \"x\": 112,\n      \"y\": 616,\n      \"width\": 720,\n      \"height\": 300,\n      \"opacity\": 100,\n      \"visible\": true,\n      \"locked\": false,\n      \"text\": \"文字、图片、色块\\n自由移动与调整层级\\n从你的实际素材开始\",\n      \"fontSize\": 42,\n      \"color\": \"#f3f0e7\"\n    },\n    {\n      \"id\": \"footer\",\n      \"name\": \"样例声明\",\n      \"type\": \"text\",\n      \"x\": 64,\n      \"y\": 1096,\n      \"width\": 832,\n      \"height\": 64,\n      \"opacity\": 100,\n      \"visible\": true,\n      \"locked\": false,\n      \"text\": \"版式示例 · 非真实活动 · 请替换内容后导出\",\n      \"fontSize\": 22,\n      \"color\": \"#647368\"\n    }\n  ]\n}"
+    }
+  }
+}

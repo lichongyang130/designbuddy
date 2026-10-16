@@ -1,0 +1,2 @@
+# TIDE concept images
+Five independent AI-generated images created for TIDE on 2026-10-15: harbor, keelboat, dinghy, deck and clubhouse. These fictional concepts are not real club inventory, navigation evidence, equipment inspections or endorsements. No imagery was reused from another template. Generated PNGs are retained only in ignored cache. Repository delivery uses compressed WebP; offline HTML embeds these images and the separately licensed Noto Sans SC font with OFL notice.

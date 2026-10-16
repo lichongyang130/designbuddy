@@ -1,0 +1,71 @@
+{
+  "schema": "designbuddy.brand-system/1",
+  "brandName": "林间来信",
+  "description": "以植物灵感制作日常文具。",
+  "concept": "让每一次书写都留住细小观察。",
+  "tagline": "把日常写进自然",
+  "logo": {
+    "shape": "seed",
+    "markColor": "#294C3B",
+    "wordmarkText": "林间来信",
+    "wordmarkOutlined": true,
+    "usage": "此为基于所选几何构形自动生成的原创示意标志，不含商标检索或独占性审查。"
+  },
+  "palette": [
+    {
+      "name": "森林墨绿",
+      "role": "primary",
+      "hex": "#294C3B",
+      "token": "brand-1",
+      "contrastBlack": 2.19,
+      "contrastWhite": 9.58
+    },
+    {
+      "name": "雾感米白",
+      "role": "surface",
+      "hex": "#F3EFE4",
+      "token": "brand-2",
+      "contrastBlack": 18.28,
+      "contrastWhite": 1.15
+    },
+    {
+      "name": "柿子橙",
+      "role": "accent",
+      "hex": "#D67A4A",
+      "token": "brand-3",
+      "contrastBlack": 6.74,
+      "contrastWhite": 3.11
+    }
+  ],
+  "typography": {
+    "recommended": "Noto Sans SC, Noto Sans, sans-serif",
+    "license": "本工具内嵌字体许可见 font-license.txt；CSS字体需本机安装/加载，不打包字体文件。",
+    "scale": {
+      "display": "48px/1.1",
+      "heading": "32px/1.25",
+      "body": "16px/1.7",
+      "caption": "12px/1.5"
+    }
+  },
+  "voice": {
+    "attributes": "安静、明朗、具体，不夸张承诺。",
+    "tagline": "把日常写进自然"
+  },
+  "usage": {
+    "clearSpace": "至少一个图形标志半径的留白（视觉建议）",
+    "minimumSymbolPixels": 32,
+    "minimumWordmarkPixels": 180,
+    "backgrounds": "浅色/白底优先；需在目标尺寸重新检查对比度",
+    "doNot": [
+      "不压扁或拉伸标志",
+      "不将强调色用作长段正文",
+      "不把自动构形称作商标注册或版权核验"
+    ]
+  },
+  "limitations": [
+    "确定性模板资产生成，不是AI创意设计或商标检索。",
+    "不验证品牌名可注册性、商标冲突、市场差异或目标受众。",
+    "颜色对比度仅为数学参考；完整产品无障碍需另行验收。",
+    "使用前应由品牌负责人审阅文字、文化语境、版权与适用性。"
+  ]
+}

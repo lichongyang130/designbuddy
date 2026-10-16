@@ -1,0 +1,2 @@
+Offline English ASR verified and configured at /home/user/new/data/skill-models/asr-en-v1
+Model files remain in ignored data/. Run this setup on each deployment; no runtime downloads.

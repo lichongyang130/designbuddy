@@ -1,0 +1,202 @@
+[
+  {
+    "group": "museum",
+    "file": "museum-1.webp",
+    "label": "历史绘画陈列",
+    "credit": "ianare/exif-samples contributors",
+    "license": "CC BY-SA 4.0",
+    "source": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/jpg/tests/42_IndexError.jpg",
+    "licenseEvidence": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/README.rst",
+    "changes": "EXIF orientation applied; resized and converted to WebP. Metadata removed. Layout crops are adaptations under CC BY-SA 4.0."
+  },
+  {
+    "group": "museum",
+    "file": "museum-2.webp",
+    "label": "历史器物与建筑",
+    "credit": "ianare/exif-samples contributors",
+    "license": "CC BY-SA 4.0",
+    "source": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/jpg/exif-org/nikon-e950.jpg",
+    "licenseEvidence": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/README.rst",
+    "changes": "EXIF orientation applied; resized and converted to WebP. Metadata removed. Layout crops are adaptations under CC BY-SA 4.0."
+  },
+  {
+    "group": "museum",
+    "file": "museum-3.webp",
+    "label": "海岸灯塔",
+    "credit": "ianare/exif-samples contributors",
+    "license": "CC BY-SA 4.0",
+    "source": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/jpg/tests/28-hex_value.jpg",
+    "licenseEvidence": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/README.rst",
+    "changes": "EXIF orientation applied; resized and converted to WebP. Metadata removed. Layout crops are adaptations under CC BY-SA 4.0."
+  },
+  {
+    "group": "museum",
+    "file": "museum-4.webp",
+    "label": "城市建筑细部",
+    "credit": "ianare/exif-samples contributors",
+    "license": "CC BY-SA 4.0",
+    "source": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/jpg/tests/87_OSError.jpg",
+    "licenseEvidence": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/README.rst",
+    "changes": "EXIF orientation applied; resized and converted to WebP. Metadata removed. Layout crops are adaptations under CC BY-SA 4.0."
+  },
+  {
+    "group": "museum",
+    "file": "museum-5.webp",
+    "label": "日常器物空间",
+    "credit": "ianare/exif-samples contributors",
+    "license": "CC BY-SA 4.0",
+    "source": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/heic/mobile/iphone_13_pro_max.HEIC",
+    "licenseEvidence": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/README.rst",
+    "changes": "EXIF orientation applied; resized and converted to WebP. Metadata removed. Layout crops are adaptations under CC BY-SA 4.0."
+  },
+  {
+    "group": "city",
+    "file": "city-1.webp",
+    "label": "林间公共步道",
+    "credit": "ianare/exif-samples contributors",
+    "license": "CC BY-SA 4.0",
+    "source": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/heic/IMG_5250.jpeg",
+    "licenseEvidence": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/README.rst",
+    "changes": "EXIF orientation applied; resized and converted to WebP. Metadata removed. Layout crops are adaptations under CC BY-SA 4.0."
+  },
+  {
+    "group": "city",
+    "file": "city-2.webp",
+    "label": "日落城市路口",
+    "credit": "ianare/exif-samples contributors",
+    "license": "CC BY-SA 4.0",
+    "source": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/heic/mobile/HMD_Nokia_8.3_5G_hdr.heif",
+    "licenseEvidence": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/README.rst",
+    "changes": "EXIF orientation applied; resized and converted to WebP. Metadata removed. Layout crops are adaptations under CC BY-SA 4.0."
+  },
+  {
+    "group": "city",
+    "file": "city-3.webp",
+    "label": "港口城市轮廓",
+    "credit": "ianare/exif-samples contributors",
+    "license": "CC BY-SA 4.0",
+    "source": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/jpg/exif-org/sanyo-vpcg250.jpg",
+    "licenseEvidence": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/README.rst",
+    "changes": "EXIF orientation applied; resized and converted to WebP. Metadata removed. Layout crops are adaptations under CC BY-SA 4.0."
+  },
+  {
+    "group": "city",
+    "file": "city-4.webp",
+    "label": "冬日林地步行",
+    "credit": "ianare/exif-samples contributors",
+    "license": "CC BY-SA 4.0",
+    "source": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/jpg/Reconyx_HC500_Hyperfire.jpg",
+    "licenseEvidence": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/README.rst",
+    "changes": "EXIF orientation applied; resized and converted to WebP. Metadata removed. Layout crops are adaptations under CC BY-SA 4.0."
+  },
+  {
+    "group": "city",
+    "file": "city-5.webp",
+    "label": "街头饮食与日常",
+    "credit": "ianare/exif-samples contributors",
+    "license": "CC BY-SA 4.0",
+    "source": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/jpg/exif-org/sony-d700.jpg",
+    "licenseEvidence": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/README.rst",
+    "changes": "EXIF orientation applied; resized and converted to WebP. Metadata removed. Layout crops are adaptations under CC BY-SA 4.0."
+  },
+  {
+    "group": "handbook",
+    "file": "handbook-1.webp",
+    "label": "旅途餐食制作",
+    "credit": "ianare/exif-samples contributors",
+    "license": "CC BY-SA 4.0",
+    "source": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/jpg/exif-org/fujifilm-dx10.jpg",
+    "licenseEvidence": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/README.rst",
+    "changes": "EXIF orientation applied; resized and converted to WebP. Metadata removed. Layout crops are adaptations under CC BY-SA 4.0."
+  },
+  {
+    "group": "handbook",
+    "file": "handbook-2.webp",
+    "label": "山地旅行停靠",
+    "credit": "ianare/exif-samples contributors",
+    "license": "CC BY-SA 4.0",
+    "source": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/jpg/exif-org/olympus-c960.jpg",
+    "licenseEvidence": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/README.rst",
+    "changes": "EXIF orientation applied; resized and converted to WebP. Metadata removed. Layout crops are adaptations under CC BY-SA 4.0."
+  },
+  {
+    "group": "handbook",
+    "file": "handbook-3.webp",
+    "label": "公路与能源景观",
+    "credit": "ianare/exif-samples contributors",
+    "license": "CC BY-SA 4.0",
+    "source": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/jpg/tests/30-type_error.jpg",
+    "licenseEvidence": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/README.rst",
+    "changes": "EXIF orientation applied; resized and converted to WebP. Metadata removed. Layout crops are adaptations under CC BY-SA 4.0."
+  },
+  {
+    "group": "handbook",
+    "file": "handbook-4.webp",
+    "label": "海港与轮船",
+    "credit": "ianare/exif-samples contributors",
+    "license": "CC BY-SA 4.0",
+    "source": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/jpg/mobile/HMD_Nokia_8.3_5G.jpg",
+    "licenseEvidence": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/README.rst",
+    "changes": "EXIF orientation applied; resized and converted to WebP. Metadata removed. Layout crops are adaptations under CC BY-SA 4.0."
+  },
+  {
+    "group": "handbook",
+    "file": "handbook-5.webp",
+    "label": "餐桌与饮食选择",
+    "credit": "ianare/exif-samples contributors",
+    "license": "CC BY-SA 4.0",
+    "source": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/jpg/exif-org/sanyo-vpcsx550.jpg",
+    "licenseEvidence": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/README.rst",
+    "changes": "EXIF orientation applied; resized and converted to WebP. Metadata removed. Layout crops are adaptations under CC BY-SA 4.0."
+  },
+  {
+    "group": "nature",
+    "file": "nature-1.webp",
+    "label": "盛放的庭院花序",
+    "credit": "ianare/exif-samples contributors",
+    "license": "CC BY-SA 4.0",
+    "source": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/jpg/hdr/iphone_hdr_YES.jpg",
+    "licenseEvidence": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/README.rst",
+    "changes": "EXIF orientation applied; resized and converted to WebP. Metadata removed. Layout crops are adaptations under CC BY-SA 4.0."
+  },
+  {
+    "group": "nature",
+    "file": "nature-2.webp",
+    "label": "林下紫色野花",
+    "credit": "ianare/exif-samples contributors",
+    "license": "CC BY-SA 4.0",
+    "source": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/heic/IMG_5195.HEIC",
+    "licenseEvidence": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/README.rst",
+    "changes": "EXIF orientation applied; resized and converted to WebP. Metadata removed. Layout crops are adaptations under CC BY-SA 4.0."
+  },
+  {
+    "group": "nature",
+    "file": "nature-3.webp",
+    "label": "热带花叶",
+    "credit": "ianare/exif-samples contributors",
+    "license": "CC BY-SA 4.0",
+    "source": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/jpg/Canon_PowerShot_S40.jpg",
+    "licenseEvidence": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/README.rst",
+    "changes": "EXIF orientation applied; resized and converted to WebP. Metadata removed. Layout crops are adaptations under CC BY-SA 4.0."
+  },
+  {
+    "group": "nature",
+    "file": "nature-4.webp",
+    "label": "室内绿色植物",
+    "credit": "ianare/exif-samples contributors",
+    "license": "CC BY-SA 4.0",
+    "source": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/jpg/exif-org/ricoh-rdc5300.jpg",
+    "licenseEvidence": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/README.rst",
+    "changes": "EXIF orientation applied; resized and converted to WebP. Metadata removed. Layout crops are adaptations under CC BY-SA 4.0."
+  },
+  {
+    "group": "nature",
+    "file": "nature-5.webp",
+    "label": "冬日庭院",
+    "credit": "ianare/exif-samples contributors",
+    "license": "CC BY-SA 4.0",
+    "source": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/jpg/tests/36-memory_error.jpg",
+    "licenseEvidence": "https://github.com/ianare/exif-samples/blob/5332a9cf0220e9c6c93f88a187daa90808051e10/README.rst",
+    "changes": "EXIF orientation applied; resized and converted to WebP. Metadata removed. Layout crops are adaptations under CC BY-SA 4.0."
+  }
+]
