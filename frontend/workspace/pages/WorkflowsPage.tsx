@@ -82,6 +82,18 @@ export default function WorkflowsPage() {
     void load();
   }, [load]);
 
+  // A scene on the home page can send the person straight to one recipe.
+  useEffect(() => {
+    const wanted = new URLSearchParams(window.location.search).get("workflow");
+    if (!wanted) return;
+    void listWorkflows().then((list) => {
+      const recipe = list.find((workflow) => workflow.id === wanted);
+      if (recipe) start(recipe);
+    });
+    // Only once, when the page opens.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   /** Follow a run until the server says it is finished. */
   const follow = useCallback(async (runId: string) => {
     for (let attempt = 0; attempt < 180; attempt += 1) {

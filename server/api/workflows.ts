@@ -250,6 +250,89 @@ export function builtinWorkflows(): Workflow[] {
       ],
     },
     {
+      id: "landing-page",
+      version: "1.0.0",
+      name: "网页落地页",
+      goal: "写清楚卖点，生成可部署的响应式静态站点（HTML/CSS/JS + ZIP）",
+      icon: "code",
+      minutes: 4,
+      expertId: "web-design",
+      requires: [],
+      outputs: ["静态站点 ZIP", "index.html", "styles.css", "app.js", "生成报告 JSON"],
+      fields: [
+        { key: "title", label: "站点名称", type: "text", required: true, placeholder: "例如：林间工作室" },
+        { key: "description", label: "一句话介绍", type: "text", required: true, placeholder: "例如：为社区空间提供真实的导视与设计服务" },
+        { key: "language", label: "页面语言", type: "text", required: true, default: "zh-CN", help: "简短语言代码，例如 zh-CN 或 en。" },
+        { key: "primary", label: "主色", type: "text", required: true, default: "#335C4A" },
+        { key: "surface", label: "背景色", type: "text", required: true, default: "#F5F4EF" },
+        { key: "text", label: "文字色", type: "text", required: true, default: "#202720" },
+        { key: "accent", label: "强调色", type: "text", required: true, default: "#D8774A" },
+        { key: "heroTitle", label: "首屏标题", type: "text", required: true, placeholder: "例如：设计清晰的数字体验" },
+        { key: "heroEyebrow", label: "首屏小标题", type: "text", placeholder: "例如：DESIGN STUDIO" },
+        { key: "heroBody", label: "首屏说明", type: "textarea", required: true, placeholder: "介绍你实际提供的服务。" },
+        { key: "heroButton", label: "首屏按钮文字", type: "text", required: true, placeholder: "例如：了解服务" },
+        { key: "featuresTitle", label: "服务区块标题", type: "text", required: true, placeholder: "例如：服务项目" },
+        {
+          key: "rows", label: "服务条目", type: "rows", required: true, minRows: 1, maxRows: 12,
+          columns: [
+            { key: "title", label: "条目标题", type: "text" },
+            { key: "body", label: "条目说明", type: "text" },
+          ],
+          help: "至少 1 条；每条都要有标题和说明。",
+        },
+        { key: "navFeatures", label: "导航：服务", type: "text", default: "服务" },
+        { key: "contactTitle", label: "联系区块标题", type: "text", required: true, placeholder: "例如：联系我们" },
+        { key: "contactBody", label: "联系说明", type: "textarea", required: true, placeholder: "请在此提供真实联系方式。" },
+        { key: "contactEmail", label: "联系邮箱", type: "text", placeholder: "例如：studio@example.com" },
+        { key: "navContact", label: "导航：联系", type: "text", default: "联系" },
+      ],
+      steps: [
+        {
+          id: "scaffold",
+          title: "生成响应式静态站点",
+          skill: "web.scaffold",
+          expertId: "web-design",
+          source: { kind: "form", builder: "landing" },
+          outputs: ["静态站点 ZIP", "index.html", "styles.css", "app.js", "生成报告 JSON"],
+        },
+      ],
+    },
+    {
+      id: "social-card",
+      version: "1.0.0",
+      name: "社媒封面卡片",
+      goal: "写好标题与要点，渲染一张 1080×1440 的 3:4 封面 PNG",
+      icon: "palette",
+      minutes: 2,
+      expertId: "visual",
+      requires: [],
+      outputs: ["1080×1440 PNG 封面", "生成报告 JSON"],
+      fields: [
+        { key: "title", label: "主标题", type: "text", required: true, placeholder: "最多 30 字" },
+        { key: "subtitle", label: "副标题", type: "text", placeholder: "最多 44 字" },
+        { key: "category", label: "角标", type: "text", placeholder: "例如：设计笔记" },
+        { key: "brand", label: "署名", type: "text", placeholder: "例如：林间工作室" },
+        { key: "background", label: "背景色", type: "text", required: true, default: "#F4F1E9" },
+        { key: "ink", label: "文字色", type: "text", required: true, default: "#264C3B" },
+        { key: "accent", label: "强调色", type: "text", required: true, default: "#C96D42" },
+        {
+          key: "rows", label: "要点", type: "rows", required: true, minRows: 2, maxRows: 5,
+          columns: [{ key: "point", label: "要点文字", type: "text" }],
+          help: "2 至 5 条，每条最多 42 字；文案由你提供，程序不生成文案。",
+        },
+      ],
+      steps: [
+        {
+          id: "card",
+          title: "渲染封面卡片",
+          skill: "social.card",
+          expertId: "visual",
+          source: { kind: "form", builder: "socialCard" },
+          outputs: ["1080×1440 PNG 封面", "生成报告 JSON"],
+        },
+      ],
+    },
+    {
       id: "doc-brief",
       version: "1.0.0",
       name: "文档要点与成品",
@@ -339,6 +422,63 @@ const builders: Record<string, (values: Record<string, unknown>, rows: Record<st
       data,
     };
     return purpose === "composition" ? { ...base, compositionConfirmed: true } : base;
+  },
+  landing: (values, rows) => {
+    const featuresTitle = String(values.featuresTitle ?? "");
+    const contactTitle = String(values.contactTitle ?? "");
+    const navigation: { label: string; section: string }[] = [];
+    if (featuresTitle) navigation.push({ label: String(values.navFeatures ?? "服务"), section: featuresTitle });
+    if (contactTitle) navigation.push({ label: String(values.navContact ?? "联系"), section: contactTitle });
+    const email = String(values.contactEmail ?? "").trim();
+    return {
+      title: String(values.title ?? ""),
+      description: String(values.description ?? ""),
+      language: String(values.language ?? "zh-CN"),
+      theme: {
+        primary: String(values.primary ?? ""),
+        surface: String(values.surface ?? ""),
+        text: String(values.text ?? ""),
+        accent: String(values.accent ?? ""),
+      },
+      navigation,
+      sections: [
+        {
+          type: "hero",
+          title: String(values.heroTitle ?? ""),
+          eyebrow: String(values.heroEyebrow ?? ""),
+          body: String(values.heroBody ?? ""),
+          button: String(values.heroButton ?? ""),
+        },
+        {
+          type: "features",
+          title: featuresTitle,
+          items: rows.map((row) => ({ title: String(row.title ?? ""), body: String(row.body ?? "") })),
+        },
+        {
+          type: "contact",
+          title: contactTitle,
+          body: String(values.contactBody ?? ""),
+          ...(email ? { email } : {}),
+        },
+      ],
+    };
+  },
+  socialCard: (values, rows) => {
+    const subtitle = String(values.subtitle ?? "").trim();
+    const category = String(values.category ?? "").trim();
+    const brand = String(values.brand ?? "").trim();
+    return {
+      title: String(values.title ?? ""),
+      ...(subtitle ? { subtitle } : {}),
+      ...(category ? { category } : {}),
+      ...(brand ? { brand } : {}),
+      points: rows.map((row) => String(row.point ?? "")),
+      palette: {
+        background: String(values.background ?? ""),
+        ink: String(values.ink ?? ""),
+        accent: String(values.accent ?? ""),
+      },
+    };
   },
   faq: (values, rows) => {
     const brand = String(values.brand ?? "").trim();

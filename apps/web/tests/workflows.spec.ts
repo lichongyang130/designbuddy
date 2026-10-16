@@ -23,7 +23,7 @@ test("a workflow runs the real skills and lists the artifacts", async ({ page })
   await page.goto("/workflows");
   await expect(page.getByRole("heading", { name: "工作流", exact: true })).toBeVisible();
   const cards = page.locator(".wf-recipe");
-  await expect(cards).toHaveCount(5);
+  await expect(cards).toHaveCount(7);
   await expect(cards.filter({ hasText: "业务对比信息图" })).toBeVisible();
 
   // Step 1: the answers.
@@ -134,4 +134,18 @@ test("a finished artifact can be opened in the editor or kept in the asset libra
   await page.locator(".wf-artifacts li").filter({ hasText: ".html" }).getByRole("button", { name: "继续编辑" }).click();
   await expect(page).toHaveURL(/\/editor\//);
   await expect(page.locator("body")).toContainText("faq-page.html");
+});
+
+test("a home scene with a recipe opens that workflow", async ({ page }) => {
+  const username = "wfscene_" + crypto.randomUUID().slice(0, 8);
+  await page.goto("/");
+  await account(page, username);
+  await page.getByRole("tab", { name: "办公提效", exact: true }).click();
+  if (!await page.locator(".home-example-library").evaluate((el) => (el as HTMLDetailsElement).open))
+    await page.locator(".home-example-library > summary").click();
+  const scene = page.locator(".home27-scene").filter({ hasText: "表格分析" });
+  await expect(scene.getByRole("button", { name: /用工作流：表格清洗与统计/ })).toBeVisible();
+  await scene.getByRole("button", { name: /用工作流：表格清洗与统计/ }).click();
+  await expect(page).toHaveURL(/\/workflows/);
+  await expect(page.getByRole("heading", { name: "表格清洗与统计" })).toBeVisible();
 });

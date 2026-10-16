@@ -1592,3 +1592,22 @@
     font-size: 32px;
   }
 }
+
+/* The workflow entry sits above the card overlay so it can be clicked. */
+.home27-scenes-gallery .scene-workflow-link {
+  position: relative;
+  z-index: 2;
+  margin-top: 10px;
+  padding: 5px 10px;
+  border: 1px solid #d8d8d8;
+  border-radius: 8px;
+  background: #fff;
+  color: #555;
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+.home27-scenes-gallery .scene-workflow-link:hover {
+  border-color: #858585;
+  color: #222;
+}

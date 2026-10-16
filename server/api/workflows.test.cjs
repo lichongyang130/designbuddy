@@ -45,7 +45,7 @@ const request = (path, method = "GET", body, user = "alice") =>
 test("the catalogue lists real recipes and says which steps cannot run here", () => {
   const catalog = workflowCatalog();
   const ids = catalog.map((workflow) => workflow.id);
-  for (const expected of ["business-infographic", "faq-page", "table-insights", "doc-structure", "doc-brief"]) {
+  for (const expected of ["business-infographic", "faq-page", "table-insights", "doc-structure", "doc-brief", "landing-page", "social-card"]) {
     assert.ok(ids.includes(expected), `missing workflow ${expected}`);
   }
   for (const workflow of catalog) {
@@ -308,5 +308,65 @@ test("the http api starts, reads and retries workflow runs", async () => {
     await engine.waitFor("alice", run.id);
     const unknown = await handler(request(`/api/workflow-runs/${run.id}/steps/nope/retry`, "POST"));
     assert.equal(unknown.status, 400);
+  });
+});
+
+test("the landing page and the social card really build their files", async () => {
+  await withEngine(async ({ engine, skills }) => {
+    const site = await engine.start("alice", "landing-page", {
+      fields: {
+        title: "林间工作室",
+        description: "为社区空间提供真实的导视与设计服务",
+        language: "zh-CN",
+        primary: "#335C4A",
+        surface: "#F5F4EF",
+        text: "#202720",
+        accent: "#D8774A",
+        heroTitle: "设计清晰的数字体验",
+        heroEyebrow: "DESIGN STUDIO",
+        heroBody: "介绍你实际提供的服务。",
+        heroButton: "了解服务",
+        featuresTitle: "服务项目",
+        navFeatures: "服务",
+        contactTitle: "联系我们",
+        contactBody: "请在此提供真实联系方式。",
+        contactEmail: "studio@example.com",
+        navContact: "联系",
+        rows: [{ title: "网页设计", body: "响应式前端设计与交付。" }],
+      },
+    });
+    const finished = await engine.waitFor("alice", site.id);
+    assert.equal(finished.status, "succeeded", finished.error);
+    const step = finished.steps[0];
+    const names = step.outputs.map((artifact) => artifact.name);
+    assert.ok(names.includes("index.html"), names.join(","));
+    assert.ok(names.includes("styles.css"), names.join(","));
+    assert.ok(names.includes("app.js"), names.join(","));
+    const html = step.outputs.find((artifact) => artifact.name === "index.html");
+    const response = await skills.handle(
+      new Request(`http://local/api/skill-runs/${step.skillRunId}/artifacts/${html.id}`),
+      "alice",
+    );
+    const text = Buffer.from(await response.arrayBuffer()).toString();
+    assert.match(text, /林间工作室/);
+    assert.match(text, /studio@example.com/);
+
+    const card = await engine.start("alice", "social-card", {
+      fields: {
+        title: "让日常多一点观察",
+        subtitle: "把细小灵感整理成可实践的方法。",
+        category: "设计笔记",
+        brand: "林间工作室",
+        background: "#F4F1E9",
+        ink: "#264C3B",
+        accent: "#C96D42",
+        rows: [{ point: "先观察真实使用场景" }, { point: "把问题说得清晰具体" }],
+      },
+    });
+    const cardRun = await engine.waitFor("alice", card.id);
+    assert.equal(cardRun.status, "succeeded", cardRun.error);
+    const png = cardRun.steps[0].outputs.find((artifact) => artifact.name.endsWith(".png"));
+    assert.ok(png);
+    assert.equal(png.mime, "image/png");
   });
 });

@@ -27,6 +27,13 @@ export type HomeScene = HomeShortcut & {
   description: string;
   testHint: string;
   tag: string;
+  /**
+   * The workflow recipe that really produces something for this scene.
+   * Only the scenes with a working recipe carry one; the others keep the
+   * conversation route instead of pretending a workflow exists.
+   */
+  workflowId?: string;
+  workflowName?: string;
 };
 export const modeLabels: Record<HomeMode, string> = {
   office: "办公提效",
@@ -149,6 +156,8 @@ export const scenesByMode: Record<HomeMode, HomeScene[]> = {
         "请将以下会议文本整理为会议纪要，列出决策、负责人和待办事项，不补造未提及的信息。会议文本：",
       ),
       id: "meeting",
+      workflowId: "doc-brief",
+      workflowName: "文档要点与成品",
       description: "独立评审文档、决策记录与责任到人的行动表",
       testHint:
         "编辑讨论与决策，分配行动负责人和日期；交付中心可下载 DOCX 或打印 PDF。",
@@ -175,6 +184,8 @@ export const scenesByMode: Record<HomeMode, HomeScene[]> = {
         "请分析我提供的 CSV 数据，检查字段与缺失值，整理趋势与可视化建议。CSV 数据：",
       ),
       id: "data",
+      workflowId: "table-insights",
+      workflowName: "表格清洗与统计",
       description: "可导入自己数据的销售表与联动分析报表",
       testHint:
         "导入 CSV / XLSX，编辑单元格并筛选分析；支持 CSV 与 XLSX 交付。",
@@ -216,6 +227,8 @@ export const scenesByMode: Record<HomeMode, HomeScene[]> = {
         "请开发一个响应式企业官网，包含介绍、服务与联系页面以及表单校验。企业背景：",
       ),
       id: "website",
+      workflowId: "landing-page",
+      workflowName: "网页落地页",
       description: "新能源企业的摄影型官网与项目案例",
       testHint:
         "编辑首页标题、简介与主视觉，浏览项目和联系页；可下载独立 HTML 前端。",
@@ -296,6 +309,8 @@ export const scenesByMode: Record<HomeMode, HomeScene[]> = {
         "请设计一个品牌官网界面，包含首页、作品与关于页面，提供配色和响应式规范。品牌是：",
       ),
       id: "interface",
+      workflowId: "landing-page",
+      workflowName: "网页落地页",
       description: "建筑工作室的摄影作品集与项目详情",
       testHint:
         "直接改标题与项目内容，换图、调整焦点和区块顺序；支持独立 HTML 交付。",
@@ -309,6 +324,8 @@ export const scenesByMode: Record<HomeMode, HomeScene[]> = {
         "请设计活动海报方案，给出主题、排版、配色与视觉元素建议。活动信息：",
       ),
       id: "poster",
+      workflowId: "social-card",
+      workflowName: "社媒封面卡片",
       description: "可直接编辑、拖动与导出的摄影海报画布",
       testHint:
         "点击文字编辑，拖动手柄或用方向键移动；换图裁切、多尺寸，导出 PNG / SVG。",
