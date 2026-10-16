@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { HomeIcon } from "../../../apps/web/src/components/HomeIcon";
 import { WorkBuddySidebar } from "../../../apps/web/src/components/WorkBuddySidebar";
 import { MarketNavigation } from "../MarketNavigation";
@@ -39,6 +39,17 @@ export default function ProfilePage() {
   const syncStatus = usePreferenceSync((state) => state.status);
   const syncError = usePreferenceSync((state) => state.error);
   const [error, setError] = useState("");
+  // A background load must not wipe the message of an action the person just
+  // triggered, so an action error survives the next load.
+  const actionError = useRef(false);
+  const fail = (message: string) => {
+    actionError.current = true;
+    setError(message);
+  };
+  const clearError = () => {
+    actionError.current = false;
+    setError("");
+  };
   const [notice, setNotice] = useState("");
   const [busy, setBusy] = useState(false);
   const [memory, setMemory] = useState("");
@@ -56,10 +67,10 @@ export default function ProfilePage() {
   const load = useCallback(async () => {
     try {
       setProfile(await fetchProfile());
-      setError("");
+      if (!actionError.current) setError("");
     } catch (cause) {
       setProfile(null);
-      setError(cause instanceof Error && cause.message.length < 200 ? cause.message : "账号数据服务暂不可用，请确认后端已启动。");
+      if (!actionError.current) setError(cause instanceof Error && cause.message.length < 200 ? cause.message : "账号数据服务暂不可用，请确认后端已启动。");
     }
     try {
       const me = await fetchAccount();
@@ -82,7 +93,7 @@ export default function ProfilePage() {
 
   async function addMemory() {
     if (!consent) {
-      setError("写入长期记忆需要先勾选同意。");
+      fail("写入长期记忆需要先勾选同意。");
       return;
     }
     setBusy(true);
@@ -91,10 +102,10 @@ export default function ProfilePage() {
       setMemory("");
       setConsent(false);
       setNotice("已写入一条长期记忆。");
-      setError("");
+      clearError();
       await load();
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "写入失败。");
+      fail(cause instanceof Error ? cause.message : "写入失败。");
     } finally {
       setBusy(false);
     }
@@ -107,7 +118,7 @@ export default function ProfilePage() {
       setNotice("已删除该条记忆。");
       await load();
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "删除失败。");
+      fail(cause instanceof Error ? cause.message : "删除失败。");
     } finally {
       setBusy(false);
     }
@@ -120,7 +131,7 @@ export default function ProfilePage() {
       setNotice("已清空全部长期记忆。");
       await load();
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "清空失败。");
+      fail(cause instanceof Error ? cause.message : "清空失败。");
     } finally {
       setBusy(false);
     }
@@ -139,9 +150,9 @@ export default function ProfilePage() {
       link.remove();
       URL.revokeObjectURL(url);
       setNotice("已导出当前账号的偏好、记忆与设备记录。");
-      setError("");
+      clearError();
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "导出失败。");
+      fail(cause instanceof Error ? cause.message : "导出失败。");
     } finally {
       setBusy(false);
     }
@@ -149,7 +160,7 @@ export default function ProfilePage() {
 
   async function forget() {
     if (!forgetConfirmed) {
-      setError("清除数据需要先勾选确认。");
+      fail("清除数据需要先勾选确认。");
       return;
     }
     setBusy(true);
@@ -159,7 +170,7 @@ export default function ProfilePage() {
       setForgetConfirmed(false);
       await load();
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "清除失败。");
+      fail(cause instanceof Error ? cause.message : "清除失败。");
     } finally {
       setBusy(false);
     }
@@ -171,12 +182,12 @@ export default function ProfilePage() {
       const updated = await updateAccountProfile({ displayName: displayName.trim(), email: email.trim() });
       setAccount(updated);
       setNotice("账号资料已更新，并记入账号审计。");
-      setError("");
+      clearError();
       setAudit(await fetchAccountAudit());
       // Let the account menu pick up the new display name.
       window.dispatchEvent(new Event("designbuddy:server-identity"));
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "账号资料保存失败。");
+      fail(cause instanceof Error ? cause.message : "账号资料保存失败。");
     } finally {
       setBusy(false);
     }
@@ -184,11 +195,11 @@ export default function ProfilePage() {
 
   async function rotatePassword() {
     if (!currentPassword) {
-      setError("修改密码需要先输入当前密码。");
+      fail("修改密码需要先输入当前密码。");
       return;
     }
     if (newPassword.length < 10) {
-      setError("新密码至少 10 位。");
+      fail("新密码至少 10 位。");
       return;
     }
     setBusy(true);
@@ -197,10 +208,10 @@ export default function ProfilePage() {
       setCurrentPassword("");
       setNewPassword("");
       setNotice("密码已修改，其他设备的登录会话已失效。");
-      setError("");
+      clearError();
       setAudit(await fetchAccountAudit());
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "修改密码失败。");
+      fail(cause instanceof Error ? cause.message : "修改密码失败。");
     } finally {
       setBusy(false);
     }
@@ -208,11 +219,11 @@ export default function ProfilePage() {
 
   async function removeAccount() {
     if (!deleteConfirmed) {
-      setError("注销账号需要先勾选确认。");
+      fail("注销账号需要先勾选确认。");
       return;
     }
     if (!deletePassword) {
-      setError("注销账号需要输入当前密码。");
+      fail("注销账号需要输入当前密码。");
       return;
     }
     setBusy(true);
@@ -227,9 +238,9 @@ export default function ProfilePage() {
       setNotice(
         `账号已注销：已清除 ${cleared.memories} 条记忆与 ${cleared.preferences} 项偏好，并注销登录身份。`,
       );
-      setError("");
+      clearError();
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "注销账号失败。");
+      fail(cause instanceof Error ? cause.message : "注销账号失败。");
     } finally {
       setBusy(false);
     }

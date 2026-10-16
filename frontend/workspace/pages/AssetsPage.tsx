@@ -35,11 +35,22 @@ export default function AssetsPage() {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const fileInput = useRef<HTMLInputElement>(null);
+  // A background load must not wipe the message of an action the person just
+  // triggered, so an action error survives the next load.
+  const actionError = useRef(false);
+  const fail = (message: string) => {
+    actionError.current = true;
+    setError(message);
+  };
+  const clearError = () => {
+    actionError.current = false;
+    setError("");
+  };
 
   const load = useCallback(async () => {
     try {
       setAssets(await listAssets());
-      setError("");
+      if (!actionError.current) setError("");
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "素材库服务暂不可用。");
     }
@@ -55,16 +66,16 @@ export default function AssetsPage() {
     try {
       await action();
       setNotice(success);
-      setError("");
+      clearError();
       await load();
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "操作失败。");
+      fail(cause instanceof Error ? cause.message : "操作失败。");
     } finally {
       setBusy(false);
     }
   }
 
-  async function upload(files: FileList | null) {
+  async function upload(files: File[]) {
     const selected = Array.from(files ?? []);
     if (!selected.length) return;
     await run(async () => {
@@ -81,7 +92,7 @@ export default function AssetsPage() {
       setTexts((current) => ({ ...current, [asset.id]: text }));
       setError("");
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "读取文件内容失败。");
+      fail(cause instanceof Error ? cause.message : "读取文件内容失败。");
     }
   }
 
@@ -91,7 +102,7 @@ export default function AssetsPage() {
       setEvents((current) => ({ ...current, [asset.id]: list }));
       setError("");
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "读取操作记录失败。");
+      fail(cause instanceof Error ? cause.message : "读取操作记录失败。");
     }
   }
 

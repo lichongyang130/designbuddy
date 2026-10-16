@@ -13,7 +13,13 @@ import { proxyAIStream } from "./ai-proxy";
 import { streamTaskChat, TaskChatValidationError, type TaskChatRequest } from "./chat";
 import { changedFiles, type ProjectVersionStore, type VersionConflict } from "./project-versions";
 import { ProjectShareStore } from "./project-shares";
-import { AssetInputError, AssetLimitError, AssetStore, type Asset, type AssetVisibility } from "./assets";
+import { AssetInputError, AssetLimitError, AssetStore, type AssetVisibility } from "./assets";
+import {
+  CommunityInputError,
+  CommunityLimitError,
+  CommunityTemplateStore,
+  type CommunityVisibility,
+} from "./community-templates";
 import {
   canEditWorkspace,
   canManageMembers,
@@ -70,6 +76,8 @@ export interface ApiHandlerOptions {
   workspaces?: WorkspaceStore;
   /** Server side asset library for uploaded files. */
   assets?: AssetStore;
+  /** Templates published to the community by their authors. */
+  community?: CommunityTemplateStore;
   canAccessProject?(principal: ApiPrincipal, projectId: string): Promise<boolean>;
   corsOrigin?: string;
 }
@@ -805,6 +813,67 @@ export function createApiHandler(options: ApiHandlerOptions): (request: Request)
         if (!assetPath[2] && request.method === "DELETE") {
           if (asset.ownerId !== principal.id) return json({ error: "只有素材的所有者可以删除它。" }, 403, options.corsOrigin);
           options.assets.remove(asset.id, principal.id);
+          return json({ ok: true }, 200, options.corsOrigin);
+        }
+        return json({ error: "Method not allowed." }, 405, options.corsOrigin);
+      }
+
+      const communityListPath = url.pathname.match(/^\/api\/community\/templates$/);
+      if (communityListPath && options.community) {
+        if (request.method === "GET") {
+          return json({ templates: options.community.list(principal.id, workspacePeerIds(principal.id)) }, 200, options.corsOrigin);
+        }
+        if (request.method === "POST") {
+          const body = await readJson(request, 400_000);
+          const sample = typeof body.sample === "string" ? body.sample : "";
+          const title = typeof body.title === "string" ? body.title : "";
+          const description = typeof body.description === "string" ? body.description : "";
+          const visibility = body.visibility === "workspace" || body.visibility === "public" || body.visibility === "private" ? body.visibility : "private";
+          if (!body.state || typeof body.state !== "object") {
+            return json({ error: "请先保存模板内容再发布。" }, 400, options.corsOrigin);
+          }
+          try {
+            const template = options.community.publish(principal.id, {
+              sample, title, description, visibility: visibility as CommunityVisibility, state: body.state,
+            });
+            return json({ template }, 201, options.corsOrigin);
+          } catch (error) {
+            if (error instanceof CommunityLimitError) return json({ error: error.message }, 413, options.corsOrigin);
+            if (error instanceof CommunityInputError) return json({ error: error.message }, 400, options.corsOrigin);
+            throw error;
+          }
+        }
+        return json({ error: "Method not allowed." }, 405, options.corsOrigin);
+      }
+
+      const communityPath = url.pathname.match(/^\/api\/community\/templates\/([a-f0-9]{20})(?:\/(events|state))?$/);
+      if (communityPath && options.community) {
+        const template = options.community.get(communityPath[1]);
+        if (communityPath[2] === "events" && request.method === "GET") {
+          return json({ events: options.community.events(communityPath[1], principal.id) }, 200, options.corsOrigin);
+        }
+        if (!template) return json({ error: "模板不存在。" }, 404, options.corsOrigin);
+        const peers = workspacePeerIds(principal.id);
+        const visible = template.ownerId === principal.id || template.visibility === "public" || (template.visibility === "workspace" && peers.includes(template.ownerId));
+        if (!visible) return json({ error: "没有查看这个模板的权限。" }, 403, options.corsOrigin);
+        if (!communityPath[2] && request.method === "GET") {
+          return json({ template }, 200, options.corsOrigin);
+        }
+        if (communityPath[2] === "state" && request.method === "GET") {
+          const stateJson = options.community.state(template.id);
+          if (!stateJson) return json({ error: "模板内容不存在。" }, 404, options.corsOrigin);
+          return json({ template, state: JSON.parse(stateJson) }, 200, options.corsOrigin);
+        }
+        if (!communityPath[2] && request.method === "PATCH") {
+          if (template.ownerId !== principal.id) return json({ error: "只有发布者可以修改可见范围。" }, 403, options.corsOrigin);
+          const body = await readJson(request);
+          const visibility = body.visibility === "workspace" || body.visibility === "public" || body.visibility === "private" ? body.visibility : null;
+          if (!visibility) return json({ error: "可见范围只能是 private、workspace 或 public。" }, 400, options.corsOrigin);
+          return json({ template: options.community.setVisibility(template.id, principal.id, visibility as CommunityVisibility) }, 200, options.corsOrigin);
+        }
+        if (!communityPath[2] && request.method === "DELETE") {
+          if (template.ownerId !== principal.id) return json({ error: "只有发布者可以下架这个模板。" }, 403, options.corsOrigin);
+          options.community.unpublish(template.id, principal.id);
           return json({ ok: true }, 200, options.corsOrigin);
         }
         return json({ error: "Method not allowed." }, 405, options.corsOrigin);
