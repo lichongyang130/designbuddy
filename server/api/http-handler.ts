@@ -12,6 +12,7 @@ import type { ProjectMembershipStore, ProjectMemberRole } from "./project-member
 import { proxyAIStream } from "./ai-proxy";
 import { streamTaskChat, TaskChatValidationError, type TaskChatRequest } from "./chat";
 import { changedFiles, type ProjectVersionStore, type VersionConflict } from "./project-versions";
+import { ProjectShareStore } from "./project-shares";
 import {
   canEditWorkspace,
   canManageMembers,
@@ -56,6 +57,8 @@ export interface ApiHandlerOptions {
   skills?: SkillService;
   authenticate(request: Request): Promise<ApiPrincipal | null>;
   projects: ProjectRepository;
+  /** Server controlled read-only share links. */
+  shares?: ProjectShareStore;
   collaboration?: RealtimeCollaborationHub;
   collaborationStore?: CollaborationEventStore;
   localAgentWorkspaceRoot?: string;
@@ -284,6 +287,28 @@ export function createApiHandler(options: ApiHandlerOptions): (request: Request)
       return options.skills
         ? options.skills.handle(request, "public-catalog")
         : json({ error: "技能执行服务尚未启用。" }, 503);
+    }
+
+    // A share link is public by design: the token decides, and the server still
+    // decides when it stops working. Only a read-only snapshot is handed out.
+    const publicShare = url.pathname.match(/^\/api\/shares\/([A-Za-z0-9_-]{16,64})$/);
+    if (publicShare && request.method === "GET") {
+      if (!options.shares) return json({ error: "分享服务尚未启用。" }, 503, options.corsOrigin);
+      const share = options.shares.get(publicShare[1]);
+      if (!share) return json({ error: "分享链接不存在。" }, 404, options.corsOrigin);
+      if (share.revokedAt) return json({ error: "分享链接已被作者撤销。" }, 410, options.corsOrigin);
+      if (share.expiresAt <= Date.now()) return json({ error: "分享链接已过期。" }, 410, options.corsOrigin);
+      const project = await options.projects.getById(share.ownerId, share.projectId);
+      if (!project) return json({ error: "分享的项目已不存在。" }, 404, options.corsOrigin);
+      options.shares.recordView(share.token);
+      return json(
+        {
+          share: { token: share.token, projectId: share.projectId, createdAt: share.createdAt, expiresAt: share.expiresAt },
+          project: { name: project.name, prompt: project.prompt, files: project.files, designSystemId: project.designSystemId },
+        },
+        200,
+        options.corsOrigin,
+      );
     }
 
     let principal: ApiPrincipal | null;
@@ -677,6 +702,39 @@ export function createApiHandler(options: ApiHandlerOptions): (request: Request)
         }
         collaboration.publish(project.id, principal.id, "document", { updatedAt: saved.updatedAt });
         return json({ saved: true, project: saved, versions: options.versions?.heads(project.id) ?? {} }, 200, options.corsOrigin);
+      }
+
+      const projectSharesPath = url.pathname.match(/^\/api\/projects\/([^/]+)\/shares$/);
+      if (projectSharesPath && options.shares) {
+        const projectId = decodeURIComponent(projectSharesPath[1]);
+        const ownerId = await projectOwnerFor(principal, projectId);
+        if (!ownerId) return json({ error: "Project not found." }, 404, options.corsOrigin);
+        if (request.method === "GET") {
+          // Only the project owner sees the list of links they handed out.
+          if (ownerId !== principal.id) return json({ error: "只有项目所有者可以查看分享链接。" }, 403, options.corsOrigin);
+          return json({ shares: options.shares.listForProject(projectId, principal.id) }, 200, options.corsOrigin);
+        }
+        if (request.method === "POST") {
+          if (!(await canEditProject(principal, ownerId, projectId)))
+            return json({ error: "没有分享这个项目的权限。" }, 403, options.corsOrigin);
+          const body = await readJson(request);
+          const days = typeof body.expiresInDays === "number" ? body.expiresInDays : 7;
+          const share = options.shares.create(ownerId, projectId, days);
+          options.versions?.recordAudit(projectId, principal.id, "project.share.create", `创建只读分享链接，有效期 ${days} 天`);
+          return json({ share }, 201, options.corsOrigin);
+        }
+        return json({ error: "Method not allowed." }, 405, options.corsOrigin);
+      }
+
+      const shareRevokePath = url.pathname.match(/^\/api\/shares\/([A-Za-z0-9_-]{16,64})$/);
+      if (shareRevokePath && options.shares && request.method === "DELETE") {
+        const token = shareRevokePath[1];
+        const share = options.shares.get(token);
+        if (!share) return json({ error: "分享链接不存在。" }, 404, options.corsOrigin);
+        if (share.ownerId !== principal.id) return json({ error: "只有分享者可以撤销这个链接。" }, 403, options.corsOrigin);
+        options.shares.revoke(token, principal.id);
+        options.versions?.recordAudit(share.projectId, principal.id, "project.share.revoke", "撤销只读分享链接");
+        return json({ revoked: true }, 200, options.corsOrigin);
       }
 
       const versionsPath = url.pathname.match(/^\/api\/projects\/([^/]+)\/versions(?:\/([^/]+))?$/);

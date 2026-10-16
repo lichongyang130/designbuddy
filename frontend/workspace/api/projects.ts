@@ -170,3 +170,69 @@ export async function getCloudProject(
     ),
   );
 }
+
+/** A server controlled read-only share link. */
+export type ProjectShare = {
+  token: string;
+  projectId: string;
+  ownerId?: string;
+  createdAt: number;
+  expiresAt: number;
+  revokedAt?: number | null;
+  views?: number;
+  lastViewedAt?: number | null;
+};
+
+/** Create a share link. The server decides the token and the expiry. */
+export async function createProjectShare(
+  projectId: string,
+  expiresInDays = 7,
+): Promise<ProjectShare> {
+  const body = await readJSON<{ share?: ProjectShare }>(
+    await apiFetch(`/projects/${encodeURIComponent(projectId)}/shares`, {
+      method: "POST",
+      headers: { Accept: "application/json", "Content-Type": "application/json" },
+      body: JSON.stringify({ expiresInDays }),
+    }),
+  );
+  if (!body.share) throw Error("服务器没有返回分享链接。");
+  return body.share;
+}
+
+export async function listProjectShares(projectId: string): Promise<ProjectShare[]> {
+  const body = await readJSON<{ shares?: ProjectShare[] }>(
+    await apiFetch(`/projects/${encodeURIComponent(projectId)}/shares`, {
+      headers: { Accept: "application/json" },
+    }),
+  );
+  return Array.isArray(body.shares) ? body.shares : [];
+}
+
+export async function revokeProjectShare(token: string): Promise<void> {
+  await readJSON<{ revoked?: boolean }>(
+    await apiFetch(`/shares/${encodeURIComponent(token)}`, { method: "DELETE" }),
+  );
+}
+
+/** Read a public share. No account is needed: the token decides. */
+export async function fetchPublicShare(token: string): Promise<{
+  share: { token: string; projectId: string; createdAt: number; expiresAt: number };
+  project: { name: string; prompt: string; files: ProjectFile[]; designSystemId?: string };
+}> {
+  const response = await fetch(`/api/shares/${encodeURIComponent(token)}`, {
+    headers: { Accept: "application/json" },
+  });
+  const body = await response.json().catch(() => ({}));
+  if (!response.ok) throw Error(typeof body?.error === "string" ? body.error : "分享链接无效或已过期。");
+  const project = body?.project;
+  if (!project || !Array.isArray(project.files)) throw Error("分享内容格式无效。");
+  return {
+    share: body.share,
+    project: {
+      name: String(project.name ?? "共享项目"),
+      prompt: String(project.prompt ?? ""),
+      files: project.files,
+      designSystemId: typeof project.designSystemId === "string" ? project.designSystemId : undefined,
+    },
+  };
+}

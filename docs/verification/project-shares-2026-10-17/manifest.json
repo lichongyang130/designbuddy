@@ -1,0 +1,259 @@
+{
+  "tool": "run-acceptance",
+  "suite": "designbuddy-project-shares",
+  "baseUrl": "http://127.0.0.1:5173",
+  "ranAt": "2026-10-16T21:48:52.779Z",
+  "viewports": [
+    "desktop 1440x900",
+    "mobile 390x844"
+  ],
+  "counts": {
+    "total": 30,
+    "passed": 30,
+    "failed": 0,
+    "notVerified": 0
+  },
+  "results": [
+    {
+      "id": "unknown-token-404",
+      "type": "http",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "HTTP 404",
+      "durationMs": 14
+    },
+    {
+      "id": "editor-opens",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 2627
+    },
+    {
+      "id": "sync-click",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 273
+    },
+    {
+      "id": "share-dialog-open",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 205
+    },
+    {
+      "id": "share-dialog-visible",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 10
+    },
+    {
+      "id": "share-explains-server",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (92 chars)",
+      "durationMs": 8
+    },
+    {
+      "id": "share-create",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 73
+    },
+    {
+      "id": "share-created-notice",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (35 chars)",
+      "durationMs": 212
+    },
+    {
+      "id": "share-link-listed",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (99 chars)",
+      "durationMs": 7
+    },
+    {
+      "id": "share-expiry-shown",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (32 chars)",
+      "durationMs": 6
+    },
+    {
+      "id": "share-screenshot",
+      "type": "screenshot",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "screenshot saved as screenshots/desktop/share-screenshot.png",
+      "durationMs": 1010
+    },
+    {
+      "id": "share-revoke",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 73
+    },
+    {
+      "id": "share-revoked-notice",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (28 chars)",
+      "durationMs": 33
+    },
+    {
+      "id": "share-revoked-state",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (12 chars)",
+      "durationMs": 7
+    },
+    {
+      "id": "share-close",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 58
+    },
+    {
+      "id": "unknown-token-404",
+      "type": "http",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "HTTP 404",
+      "durationMs": 6
+    },
+    {
+      "id": "editor-opens",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 2402
+    },
+    {
+      "id": "sync-click",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 300
+    },
+    {
+      "id": "share-dialog-open",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 235
+    },
+    {
+      "id": "share-dialog-visible",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 8
+    },
+    {
+      "id": "share-explains-server",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (92 chars)",
+      "durationMs": 6
+    },
+    {
+      "id": "share-create",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 63
+    },
+    {
+      "id": "share-created-notice",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (35 chars)",
+      "durationMs": 213
+    },
+    {
+      "id": "share-link-listed",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (99 chars)",
+      "durationMs": 22
+    },
+    {
+      "id": "share-expiry-shown",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (32 chars)",
+      "durationMs": 13
+    },
+    {
+      "id": "share-screenshot",
+      "type": "screenshot",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "screenshot saved as screenshots/mobile/share-screenshot.png",
+      "durationMs": 234
+    },
+    {
+      "id": "share-revoke",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 65
+    },
+    {
+      "id": "share-revoked-notice",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (28 chars)",
+      "durationMs": 43
+    },
+    {
+      "id": "share-revoked-state",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (12 chars)",
+      "durationMs": 43
+    },
+    {
+      "id": "share-close",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 59
+    }
+  ],
+  "policy": "只有真实访问目标并通过断言的检查才记为 passed；选择器缺失记为 not_verified 并写明原因；失败项保留控制台与网络记录。本工具不代表被测目标已完成业务验收，只证明声明的检查项在声明的视口下实际执行过。"
+}

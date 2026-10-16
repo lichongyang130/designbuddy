@@ -14,8 +14,12 @@ import {
   listProjectVersions,
   restoreProjectVersion,
   saveProjectToCloud,
+  createProjectShare,
+  listProjectShares,
+  revokeProjectShare,
   ProjectConflictError,
   type ProjectAuditEntry,
+  type ProjectShare,
   type ProjectVersion,
   type ProjectVersionConflict,
 } from "../api/projects";
@@ -99,6 +103,10 @@ export default function ProjectEditorPage({ projectId }: { projectId: string }) 
   const [conflicts, setConflicts] = useState<ProjectVersionConflict[]>([]);
   const [versionPreview, setVersionPreview] = useState<ProjectVersion | null>(null);
   const [historyOpen, setHistoryOpen] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
+  const [shares, setShares] = useState<ProjectShare[]>([]);
+  const [shareNotice, setShareNotice] = useState("");
+  const [shareBusy, setShareBusy] = useState(false);
   const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
 
   // The workspaces the account belongs to decide where a synced project lands.
@@ -293,6 +301,62 @@ export default function ProjectEditorPage({ projectId }: { projectId: string }) 
       setNotice("只读分享链接已复制。收件人可预览并导入为自己的本机副本。");
     } catch (cause) {
       setNotice(cause instanceof Error ? cause.message : "复制分享链接失败，请检查浏览器剪贴板权限。");
+    }
+  }
+
+  function shareUrl(token: string): string {
+    return `${window.location.origin}${import.meta.env.BASE_URL}share/${encodeURIComponent(token)}`;
+  }
+
+  async function openShareDialog() {
+    setShareOpen(true);
+    setShareNotice("");
+    try {
+      setShares(await listProjectShares(projectId));
+    } catch (cause) {
+      setShares([]);
+      setShareNotice(cause instanceof Error ? cause.message : "读取分享链接失败。");
+    }
+  }
+
+  async function createShare() {
+    setShareBusy(true);
+    try {
+      const share = await createProjectShare(projectId, 7);
+      setShares((current) => [share, ...current]);
+      setShareNotice("已创建 7 天有效的只读分享链接。");
+      try {
+        await navigator.clipboard.writeText(shareUrl(share.token));
+        setShareNotice("已创建 7 天有效的只读分享链接并复制到剪贴板。");
+      } catch {
+        setShareNotice("已创建 7 天有效的只读分享链接；自动复制失败，请手动复制下面的链接。");
+      }
+    } catch (cause) {
+      setShareNotice(cause instanceof Error ? cause.message : "创建分享链接失败。");
+    } finally {
+      setShareBusy(false);
+    }
+  }
+
+  async function copyShare(token: string) {
+    try {
+      await navigator.clipboard.writeText(shareUrl(token));
+      setShareNotice("分享链接已复制。");
+    } catch (cause) {
+      setShareNotice(cause instanceof Error ? cause.message : "复制分享链接失败，请检查剪贴板权限。");
+    }
+  }
+
+  async function revokeShare(token: string) {
+    setShareBusy(true);
+    try {
+      await revokeProjectShare(token);
+      setShares((current) => current.map((item) => (item.token === token ? { ...item, revokedAt: Date.now() } : item)));
+      setShareNotice("已撤销该分享链接，对方再打开会看到「链接已被作者撤销」。");
+    } catch (cause) {
+      setShareNotice(cause instanceof Error ? cause.message : "撤销分享链接失败。");
+    } finally {
+      setShareBusy(false);
     }
   }
 
@@ -561,6 +625,7 @@ export default function ProjectEditorPage({ projectId }: { projectId: string }) 
           <button className={view === "preview" ? "db-button db-button-secondary is-selected" : "db-button db-button-secondary"} onClick={() => setView("preview")}>◫ 预览</button>
           <button className="db-button db-button-secondary" onClick={downloadZip}>下载 ZIP</button>
           <button className="db-button db-button-secondary" onClick={() => void shareProject()}>分享只读副本</button>
+          <button className="db-button db-button-secondary" onClick={() => void openShareDialog()}>受控分享</button>
           <button className="db-button db-button-secondary" onClick={() => setHistoryOpen(true)}>版本历史</button>
           <button className="db-button db-button-secondary" onClick={() => void syncToCloud()} disabled={cloudBusy}>{cloudBusy ? "同步中…" : "同步云端"}</button>
           {cloudUpdateAvailable && <button className="db-button db-button-secondary" onClick={() => void reloadCloudProject()}>载入团队最新版本</button>}
@@ -648,6 +713,48 @@ export default function ProjectEditorPage({ projectId }: { projectId: string }) 
           <section className="db-review-panel"><h3>项目成员</h3><form onSubmit={(event) => void inviteMember(event)}><input aria-label="成员用户 ID" value={memberUserId} onChange={(event) => setMemberUserId(event.target.value)} placeholder="输入团队成员 user ID"/><select aria-label="成员权限" value={memberRole} onChange={(event) => setMemberRole(event.target.value as ProjectMember["role"])}><option value="editor">可编辑</option><option value="viewer">只读</option></select><button disabled={!memberUserId.trim()}>添加成员</button></form><ul>{members.map((member) => <li key={member.userId}><span>{member.userId} · {member.role === "editor" ? "可编辑" : "只读"}</span><button onClick={() => void revokeMember(member.userId)}>移除</button></li>)}</ul></section>
         </aside>
       </div>
+      {shareOpen && (
+        <div className="db-version-overlay" role="presentation" onClick={() => setShareOpen(false)}>
+          <section className="db-version-dialog" role="dialog" aria-modal="true" aria-label="受控分享" onClick={(event) => event.stopPropagation()}>
+            <header>
+              <strong>受控分享</strong>
+              <button aria-label="关闭受控分享" onClick={() => setShareOpen(false)}>✕</button>
+            </header>
+            <div className="db-review-panel db-version-panel">
+              <h3>受控分享 <small>{shares.length} 条</small></h3>
+              <p className="db-version-notice">
+                链接由服务器托管：任何人拿到链接都能只读预览这个项目，直到链接过期或你撤销它。
+                项目源文件不会写进链接里，撤销后立刻失效。
+              </p>
+              {shareNotice && <p role="status" className="db-version-notice">{shareNotice}</p>}
+              <div className="db-share-actions">
+                <button className="db-button db-button-primary" onClick={() => void createShare()} disabled={shareBusy}>创建 7 天有效链接</button>
+              </div>
+              <ul className="db-share-list">
+                {shares.map((share) => {
+                  const expired = share.expiresAt <= Date.now();
+                  const revoked = Boolean(share.revokedAt);
+                  return <li key={share.token} data-share={share.token}>
+                    <div>
+                      <strong>{shareUrl(share.token)}</strong>
+                      <span>
+                        {revoked ? "已撤销" : expired ? "已过期" : `有效至 ${new Date(share.expiresAt).toLocaleString("zh-CN")}`}
+                        {typeof share.views === "number" ? ` · 访问 ${share.views} 次` : ""}
+                      </span>
+                    </div>
+                    <div>
+                      <button onClick={() => void copyShare(share.token)} disabled={shareBusy}>复制</button>
+                      {!revoked && !expired && <button onClick={() => void revokeShare(share.token)} disabled={shareBusy}>撤销</button>}
+                    </div>
+                  </li>;
+                })}
+                {shares.length === 0 && <li className="db-empty-note">还没有受控分享链接。</li>}
+              </ul>
+            </div>
+          </section>
+        </div>
+      )}
+
       {historyOpen && (
         <div className="db-version-overlay" role="presentation" onClick={() => setHistoryOpen(false)}>
           <section className="db-version-dialog" role="dialog" aria-modal="true" aria-label="版本历史" onClick={(event) => event.stopPropagation()}>

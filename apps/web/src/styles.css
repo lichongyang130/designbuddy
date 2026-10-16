@@ -1134,3 +1134,13 @@ button:disabled { cursor: not-allowed; }
 
 .db-workspace-filter { display: inline-flex; align-items: center; gap: 6px; }
 .db-workspace-filter select { padding: 6px 9px; border: 1px solid #e2e4ec; border-radius: 9px; background: #fff; color: #333a4a; font: inherit; font-size: 11px; }
+
+.db-version-panel .db-share-actions { display: flex; gap: 8px; margin: 10px 0; }
+.db-version-panel .db-share-list { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 6px; }
+.db-version-panel .db-share-list li { display: flex; align-items: center; justify-content: space-between; gap: 8px; border: 1px solid #ececf1; border-radius: 8px; padding: 8px; font-size: 12px; }
+.db-version-panel .db-share-list li div { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.db-version-panel .db-share-list li strong { font-weight: 500; color: #2f3742; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.db-version-panel .db-share-list li span { color: #6b7280; }
+.db-version-panel .db-share-list li > div:last-child { flex-direction: row; align-items: center; gap: 6px; flex: 0 0 auto; }
+.db-version-panel .db-share-list button { border: 1px solid #dcdce4; background: #fff; border-radius: 999px; padding: 2px 9px; font: inherit; font-size: 12px; cursor: pointer; }
+.db-version-panel .db-share-list .db-empty-note { display: block; color: #6b7280; border-style: dashed; }

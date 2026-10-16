@@ -1,7 +1,8 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { DesignProject, ProjectFile } from "../models/project";
 import { navigateTo } from "../workspaceRoutes";
 import { createProject, updateProject } from "../projectStore";
+import { fetchPublicShare } from "../api/projects";
 
 const maxShareBytes = 1_000_000;
 
@@ -30,10 +31,41 @@ function makeReadOnlyPreview(project: DesignProject): string {
   return html.replace(/<head([^>]*)>/i, `<head$1>${policy}<style>${css.replace(/<\/style/gi, "")}</style>`);
 }
 
-export default function ShareProjectPage() {
+export default function ShareProjectPage({ token }: { token?: string } = {}) {
   const [notice, setNotice] = useState("");
-  const project = useMemo(readSharedProject, []);
+  const [remote, setRemote] = useState<DesignProject | null>(null);
+  const [remoteError, setRemoteError] = useState("");
+  // A server controlled share arrives as a token; the older link carries the
+  // source in the URL hash and stays supported.
+  const local = useMemo(() => (token ? null : readSharedProject()), [token]);
+  const project = remote ?? local;
   const preview = useMemo(() => project ? makeReadOnlyPreview(project) : "", [project]);
+
+  useEffect(() => {
+    if (!token) return;
+    let active = true;
+    void fetchPublicShare(token)
+      .then((result) => {
+        if (!active) return;
+        setRemote({
+          id: "shared",
+          name: result.project.name,
+          prompt: result.project.prompt,
+          files: result.project.files,
+          designSystemId: result.project.designSystemId,
+          createdAt: "",
+          updatedAt: "",
+          status: "draft",
+        });
+        setRemoteError("");
+      })
+      .catch((cause: unknown) => {
+        if (!active) return;
+        setRemote(null);
+        setRemoteError(cause instanceof Error ? cause.message : "分享链接无效或已过期。");
+      });
+    return () => { active = false; };
+  }, [token]);
 
   function importProject() {
     if (!project) return;
@@ -46,7 +78,7 @@ export default function ShareProjectPage() {
 
   return <main className="db-share-page">
     <header><button onClick={() => navigateTo("/")}>← 返回工作台</button><strong>DesignBuddy · 项目分享</strong><button disabled={!project} onClick={importProject}>保存到本机并编辑</button></header>
-    {project ? <><section className="db-share-summary"><span>只读分享预览</span><h1>{project.name}</h1><p>{project.prompt}</p><small>此链接携带项目源文件。保存后会在你的浏览器中创建独立副本。</small></section><div className="db-share-frame"><iframe title={`${project.name} 分享预览`} sandbox="" srcDoc={preview} /></div></> : <section className="db-share-invalid"><h1>分享链接无效或已损坏</h1><p>请让分享者重新复制项目分享链接。</p><button onClick={() => navigateTo("/")}>返回工作台</button></section>}
+    {project ? <><section className="db-share-summary"><span>{token ? "服务器受控只读分享" : "只读分享预览"}</span><h1>{project.name}</h1><p>{project.prompt}</p><small>{token ? "链接由服务器托管，到期或被作者撤销后即失效；保存后会在你的浏览器中创建独立副本。" : "此链接携带项目源文件。保存后会在你的浏览器中创建独立副本。"}</small></section><div className="db-share-frame"><iframe title={`${project.name} 分享预览`} sandbox="" srcDoc={preview} /></div></> : <section className="db-share-invalid"><h1>分享链接无效或已损坏</h1><p>{remoteError || "请让分享者重新复制项目分享链接。"}</p><button onClick={() => navigateTo("/")}>返回工作台</button></section>}
     {notice && <p role="alert">{notice}</p>}
   </main>;
 }

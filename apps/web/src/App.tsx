@@ -247,6 +247,8 @@ export default function App() {
   if (currentPath.startsWith("/library")) return <DesignLibrary />;
   if (currentPath === "/studio" || currentPath.startsWith("/studio/")) return <StudioPage />;
   if (currentPath === "/share") return <ShareProjectPage />;
+  const shareMatch = currentPath.match(/^\/share\/([^/]+)$/);
+  if (shareMatch) return <ShareProjectPage token={decodeURIComponent(shareMatch[1])} />;
   if (isWorkspaceHubPath(currentPath)) return <WorkspaceHub />;
   const taskMatch = currentPath.match(/^\/tasks\/([^/]+)$/);
   if (taskMatch) {
