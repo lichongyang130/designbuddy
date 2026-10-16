@@ -1593,3 +1593,27 @@
     gap: 10px;
   }
 }
+
+.pm-lifecycle-compat {
+  margin: 8px 0 0;
+  padding: 8px 10px;
+  border: 1px solid #dce7dc;
+  border-radius: 8px;
+  background: #f6faf6;
+  color: #3d4a42;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.pm-lifecycle-compat.is-error {
+  border-color: #e8cfc2;
+  background: #fff8f3;
+  color: #7c4a2c;
+}
+
+.pm-lifecycle-versions {
+  margin: 6px 0 0;
+  color: #6b716d;
+  font-size: 11px;
+  line-height: 1.6;
+}

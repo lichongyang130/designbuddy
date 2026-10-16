@@ -10,6 +10,7 @@ import {
   type PluginEvent,
 } from "../api/plugins";
 import { HomeIcon } from "../../../apps/web/src/components/HomeIcon";
+import { skillPermissionLabels } from "../../../shared/skillRuntime";
 import "./plugins.css";
 
 /**
@@ -19,6 +20,7 @@ import "./plugins.css";
 export function PluginLifecyclePanel() {
   const [bundles, setBundles] = useState<PluginBundle[]>([]);
   const [installed, setInstalled] = useState<InstalledPlugin[]>([]);
+  const [apiVersion, setApiVersion] = useState("");
   const [events, setEvents] = useState<PluginEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState("");
@@ -30,6 +32,7 @@ export function PluginLifecyclePanel() {
       const [state, log] = await Promise.all([fetchPluginBundles(), fetchPluginEvents()]);
       setBundles(state.bundles);
       setInstalled(state.installed);
+      setApiVersion(state.apiVersion);
       setEvents(log);
       setError("");
     } catch (failure) {
@@ -80,9 +83,18 @@ export function PluginLifecyclePanel() {
             <p>{bundle.description}</p>
             <div className="pm-lifecycle-meta">
               <span>包含 {bundle.skills.length} 个已注册技能</span>
-              <span>权限：{bundle.permissions.join("、")}</span>
+              <span>权限：{bundle.permissions.map((permission) => skillPermissionLabels[permission] || permission).join("、")}</span>
+              <span data-plugin-api={bundle.apiVersion}>插件接口 {bundle.apiVersion}</span>
               {bundle.requires.length > 0 && <span>需要：{bundle.requires.join("；")}</span>}
             </div>
+            <p className={bundle.compatible ? "pm-lifecycle-compat" : "pm-lifecycle-compat is-error"}>
+              {bundle.compatible
+                ? `与当前服务端（插件接口 ${apiVersion}）兼容`
+                : bundle.compatibleReason}
+            </p>
+            {state && state.skillVersions.length > 0 && (
+              <p className="pm-lifecycle-versions">安装时解析到的技能版本：{state.skillVersions.join("、")}</p>
+            )}
             <ul className="pm-lifecycle-skills">
               {bundle.skills.map((skill) => <li key={skill}>{skill}</li>)}
             </ul>
@@ -90,7 +102,7 @@ export function PluginLifecyclePanel() {
               {!state && <button type="button" onClick={() => void run(bundle.id, async () => {
                 await installPluginBundle(bundle.id);
                 return `已安装「${bundle.name}」。`;
-              })} disabled={busy === bundle.id}>安装</button>}
+              })} disabled={busy === bundle.id || !bundle.compatible}>安装</button>}
               {state && state.status === "enabled" && <button type="button" onClick={() => void run(bundle.id, async () => {
                 await setPluginBundleStatus(bundle.id, "disabled");
                 return `已停用「${bundle.name}」。`;

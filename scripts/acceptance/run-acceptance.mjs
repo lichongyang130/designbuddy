@@ -117,6 +117,9 @@ async function runCheck(page, request, check, viewport, bundleDir, target, logs)
         else { record.status = 'passed'; record.detail = 'element visible'; }
       } else if (check.type === 'assertText') {
         const locator = page.locator(check.selector).first();
+        // The element may still be rendering after the previous step, so wait for it.
+        const appear = Date.now() + 8000;
+        while (await locator.count() === 0 && Date.now() < appear) await page.waitForTimeout(200);
         if (await locator.count() === 0) { record.status = 'not_verified'; record.detail = `selector not found: ${check.selector}`; }
         else {
           // The page may still be settling after the previous step, so give the

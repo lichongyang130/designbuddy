@@ -1,25 +1,32 @@
 import { apiFetch, apiJSON } from "../../../apps/web/src/api/client";
+import type { SkillPermission } from "../../../shared/skillRuntime";
 
 /** A plugin bundle the server is willing to install. */
 export type PluginBundle = {
   id: string;
   name: string;
   version: string;
+  apiVersion: string;
   description: string;
   skills: string[];
-  permissions: string[];
+  permissions: SkillPermission[];
   requires: string[];
   installed: boolean;
   status: string;
+  /** Whether this server can run the bundle, and why not when it cannot. */
+  compatible: boolean;
+  compatibleReason: string;
 };
 
 export type InstalledPlugin = {
   id: string;
   name: string;
   version: string;
+  apiVersion: string;
   description: string;
   skills: string[];
-  permissions: string[];
+  skillVersions: string[];
+  permissions: SkillPermission[];
   requires: string[];
   status: "enabled" | "disabled";
   installedAt: number;
@@ -34,9 +41,13 @@ export type PluginEvent = {
   createdAt: number;
 };
 
-export async function fetchPluginBundles(): Promise<{ bundles: PluginBundle[]; installed: InstalledPlugin[] }> {
-  const body = await apiJSON<{ bundles?: PluginBundle[]; installed?: InstalledPlugin[] }>("/plugins");
-  return { bundles: Array.isArray(body.bundles) ? body.bundles : [], installed: Array.isArray(body.installed) ? body.installed : [] };
+export async function fetchPluginBundles(): Promise<{ bundles: PluginBundle[]; installed: InstalledPlugin[]; apiVersion: string }> {
+  const body = await apiJSON<{ bundles?: PluginBundle[]; installed?: InstalledPlugin[]; apiVersion?: string }>("/plugins");
+  return {
+    bundles: Array.isArray(body.bundles) ? body.bundles : [],
+    installed: Array.isArray(body.installed) ? body.installed : [],
+    apiVersion: body.apiVersion ?? "1.0",
+  };
 }
 
 export async function installPluginBundle(id: string): Promise<InstalledPlugin> {

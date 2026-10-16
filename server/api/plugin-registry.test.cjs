@@ -134,3 +134,79 @@ test("the HTTP surface lists, installs, toggles and removes plugins", async () =
     assert.equal(crossSite.status, 403);
   });
 });
+
+test("a bundle that asks for another plugin interface version is refused with the reason", async () => {
+  await withRegistry(async registry => {
+    const future = registry.install("alice", "bundle-future");
+    assert.equal(future.ok, false);
+    assert.match(future.error, /插件接口/);
+    assert.match(future.error, /2\.0/);
+    assert.equal(registry.listInstalled("alice").length, 0);
+  }, [
+    {
+      id: "bundle-future",
+      name: "要求新接口的插件包",
+      version: "1.0.0",
+      apiVersion: "2.0",
+      description: "测试用",
+      skills: ["web.audit"],
+      permissions: ["local.read", "local.write"],
+      requires: [],
+    },
+  ]);
+});
+
+test("a bundle must declare exactly the permissions its skills really use", async () => {
+  await withRegistry(async registry => {
+    const missing = registry.install("alice", "bundle-under");
+    assert.equal(missing.ok, false);
+    assert.match(missing.error, /没有声明它需要的权限/);
+    const extra = registry.install("alice", "bundle-over");
+    assert.equal(extra.ok, false);
+    assert.match(extra.error, /不会使用的权限/);
+    assert.equal(registry.listInstalled("alice").length, 0);
+  }, [
+    {
+      id: "bundle-under",
+      name: "少声明权限的插件包",
+      version: "1.0.0",
+      apiVersion: "1.0",
+      description: "测试用",
+      skills: ["test.browser"],
+      permissions: ["local.read", "local.write"],
+      requires: [],
+    },
+    {
+      id: "bundle-over",
+      name: "多声明权限的插件包",
+      version: "1.0.0",
+      apiVersion: "1.0",
+      description: "测试用",
+      skills: ["web.audit"],
+      permissions: ["local.read", "local.write", "network"],
+      requires: [],
+    },
+  ]);
+});
+
+test("the shipped bundles declare exactly what their skills need and install with resolved versions", async () => {
+  await withRegistry(async registry => {
+    const { skillPermissions } = require("../../dist/local/server/skills/skill-permissions.js");
+    for (const bundle of realBundles()) {
+      const needed = new Set();
+      for (const skill of bundle.skills) for (const permission of skillPermissions(skill)) needed.add(permission);
+      assert.deepEqual(new Set(bundle.permissions), needed, bundle.id + " declares the real permissions");
+      const compatibility = registry.compatibility(bundle);
+      assert.equal(compatibility.compatible, true, bundle.id + " is compatible: " + compatibility.compatibleReason);
+    }
+    const bundle = realBundles()[0];
+    const installed = registry.install("alice", bundle.id);
+    assert.equal(installed.ok, true);
+    assert.equal(installed.plugin.apiVersion, "1.0");
+    assert.equal(installed.plugin.skillVersions.length, bundle.skills.length);
+    for (const entry of installed.plugin.skillVersions) assert.match(entry, /@1\.\d+\.\d+$/);
+    const listed = registry.list("alice");
+    assert.equal(listed.apiVersion, "1.0");
+    assert.ok(listed.bundles.every(item => item.compatible));
+  });
+});
