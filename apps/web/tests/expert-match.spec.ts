@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
-const dataMatch = { kind: "match", expertId: "data", reason: "需要核对报销表的金额与口径，而不是做视觉设计。", responsibilities: ["核对金额与字段口径", "找出重复与缺失记录"], missing: ["报销原始明细"] };
-const slideMatch = { kind: "match", expertId: "slides", reason: "目标是面向管理层的产品演示。", responsibilities: ["组织逐页汇报内容"], missing: [] };
+const dataMatch = { kind: "match", expertId: "data", collaboratorIds: [], reason: "需要核对报销表的金额与口径，而不是做视觉设计。", responsibilities: ["核对金额与字段口径", "找出重复与缺失记录"], missing: ["报销原始明细"] };
+const slideMatch = { kind: "match", expertId: "slides", collaboratorIds: [], reason: "目标是面向管理层的产品演示。", responsibilities: ["组织逐页汇报内容"], missing: [] };
 const sse = 'data: {"choices":[{"delta":{"content":"已收到任务规范。"},"finish_reason":"stop"}]}\n\ndata: [DONE]\n\n';
 const trigger = (page: Page) => page.locator(".home-expert-trigger");
 const input = (page: Page) => page.getByRole("textbox", { name: "任务描述", exact: true });
@@ -240,7 +240,7 @@ test("actual expert task overrides a misleading homepage mode without generating
 
 test("web expert uses the web engine even from office, retaining the contract on follow-up", async ({ page }) => {
   const generated: any[] = [];
-  await page.route("**/api/expert-match", route => route.fulfill({ json: { kind: "match", expertId: "developer", reason: "需要制作企业官网。", responsibilities: ["实现响应式官网"], missing: [] } }));
+  await page.route("**/api/expert-match", route => route.fulfill({ json: { kind: "match", expertId: "developer", collaboratorIds: [], reason: "需要制作企业官网。", responsibilities: ["实现响应式官网"], missing: [] } }));
   await page.route("**/api/generation", route => {
     generated.push(route.request().postDataJSON());
     return route.fulfill({ json: { model: "test-only", files: [{ path: "index.html", content: "<!doctype html><html><body>Test</body></html>", language: "html" }] } });

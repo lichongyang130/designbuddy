@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto';
 import type { SkillInput } from './executors';
 import { openOffice } from './office';
 import { out, json } from './io';
-import { parseFormula, evaluateFormula, addressParts, type Scalar } from './formula-engine';
+import { parseFormula, evaluateFormula, addressParts, isDecimalValue, scalarToCell, type Scalar } from './formula-engine';
 import { validateSkillOptions } from './contracts';
 
 class CalculationError extends Error {}
@@ -66,14 +66,22 @@ export async function calculateWorkbook(input: SkillInput, event: (message: stri
   }
   const cells = [...formulas.values()].map(f => {
     const value = resolve(f.sheet, f.address, 0)!;
-    return { sheet: f.sheet, cell: f.address, formula: f.formula, decimalResult: value.toString(), result: Number(value.toString()), dependencies: f.parsed.dependencies, cachedValueUsed: false };
+    const numeric = isDecimalValue(value) || typeof value === 'number';
+    const exact = isDecimalValue(value) ? value.toString() : numeric ? String(value) : undefined;
+    return {
+      sheet: f.sheet, cell: f.address, formula: f.formula,
+      resultType: numeric ? 'number' : typeof value === 'string' ? 'text' : typeof value === 'boolean' ? 'boolean' : 'blank',
+      ...(exact !== undefined ? { decimalResult: exact } : {}),
+      result: numeric ? Number(exact) : value === null ? 0 : value,
+      dependencies: f.parsed.dependencies, cachedValueUsed: false,
+    };
   });
   const output = new ExcelJS.Workbook(); output.creator = 'DesignBuddy bounded formula calculator';
   for (const sheet of book.worksheets) {
     const target = output.addWorksheet(sheet.name);
     // Deliberately output plain values only; do not carry formulas, external links or macros forward.
     sheet.eachRow(row => row.eachCell(cell => {
-      const id = key(sheet.name, cell.address), value = results.has(id) ? Number(results.get(id)!.toString()) : cell.value;
+      const id = key(sheet.name, cell.address), value = results.has(id) ? scalarToCell(results.get(id)!) : cell.value;
       target.getCell(cell.address).value = value as ExcelJS.CellValue;
     }));
     target.getRow(1).font = { bold: true }; target.columns.forEach(c => { c.width = 20; });
@@ -81,6 +89,6 @@ export async function calculateWorkbook(input: SkillInput, event: (message: stri
   event(`${cells.length}个公式全部实际计算完成；输出为纯值工作簿，原公式和依赖保存在报告，不保留原样式/隐藏状态/图表。`);
   return { summary: `实际重算${cells.length}个受支持公式，覆盖${book.worksheets.length}个表；没有读取缓存结果。交付纯值XLSX及逐单元格报告，不等于完整Excel计算或业务口径验收。`, outputs: [
     out('calculated-values.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', new Uint8Array(await output.xlsx.writeBuffer())),
-    json('formula-report.json', { sourceSHA256: createHash('sha256').update(input.bytes).digest('hex'), engine: 'DesignBuddy bounded grammar v1 / decimal.js 40-digit precision', formulaCount: cells.length, operations, cells, requiresReview: true, policy: '仅支持+ - * /、一元正负、百分号、括号、A1/绝对/跨表引用及SUM/AVERAGE/MIN/MAX/COUNT/ROUND/ABS。聚合忽略引用中的文本/布尔/空白，日期拒绝；普通数值运算空白按0，文本/布尔/日期拒绝。ROUND中点远离零。Decimal40位有效数字，非精确有理数/Excel二进制兼容；XLSX数值及JSON result转为双精度近似，decimalResult保留引擎十进制结果。全部缓存忽略；任何不支持或错误均整次失败。不保留格式/隐藏状态/图表/原公式。' }),
+    json('formula-report.json', { sourceSHA256: createHash('sha256').update(input.bytes).digest('hex'), engine: 'DesignBuddy bounded grammar v2 / decimal.js 40-digit precision', formulaCount: cells.length, operations, cells, requiresReview: true, policy: '支持+ - * /、一元正负、百分号、括号、&拼接、比较运算= <> < <= > >=、双引号文本常量、TRUE/FALSE、A1/绝对/跨表引用；函数白名单：SUM/AVERAGE/MIN/MAX/COUNT/ROUND/ROUNDUP/ROUNDDOWN/ABS/MOD/POWER/INT/SQRT/SIGN/CEILING/FLOOR、IF/IFERROR/AND/OR/NOT、VLOOKUP（仅精确匹配）/INDEX/MATCH（仅精确匹配）/SUMIF/COUNTIF、LEN/LEFT/RIGHT/MID/TRIM/UPPER/LOWER/CONCATENATE。聚合忽略引用中的文本/布尔/空白，日期拒绝；普通数值运算空白按0，文本/布尔/日期拒绝。文本比较不区分大小写；数字与文本永不相等，不做隐式类型转换；空白按0/空串/FALSE参与比较。Decimal40位有效数字，非精确有理数/Excel二进制兼容；XLSX数值及JSON result转为双精度近似，decimalResult保留引擎十进制结果，文本与布尔结果按原类型导出。全部缓存忽略；任何不支持或错误均整次失败。不保留格式/隐藏状态/图表/原公式；仍不支持数组公式、数据表、条件格式、名称、外部链接与Excel日期序列。' }),
   ] };
 }

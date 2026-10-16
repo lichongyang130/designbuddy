@@ -237,6 +237,50 @@ function writeProjects(projects: DesignProject[]): void {
   }
 }
 
+/**
+ * The server version each local file is based on.
+ *
+ * The base version is what makes conflict detection honest: it records the
+ * cloud version a local edit was started from, so a later save can tell the
+ * server that somebody else moved the file forward in the meantime.
+ */
+const BASE_VERSIONS_KEY = "designbuddy.project-base-versions.v1";
+
+function readBaseVersionMap(): Record<string, Record<string, string>> {
+  try {
+    const parsed: unknown = JSON.parse(localStorage.getItem(BASE_VERSIONS_KEY) || "{}");
+    if (!parsed || typeof parsed !== "object") return {};
+    const result: Record<string, Record<string, string>> = {};
+    for (const [projectId, versions] of Object.entries(parsed as Record<string, unknown>)) {
+      if (!versions || typeof versions !== "object") continue;
+      const entry: Record<string, string> = {};
+      for (const [path, version] of Object.entries(versions as Record<string, unknown>)) {
+        if (typeof version === "string") entry[path] = version;
+      }
+      result[projectId] = entry;
+    }
+    return result;
+  } catch {
+    return {};
+  }
+}
+
+/** The base version of every file of a project, keyed by file path. */
+export function readProjectBaseVersions(projectId: string): Record<string, string> {
+  return { ...(readBaseVersionMap()[projectId] ?? {}) };
+}
+
+/** Remember the base version of every file of a project. */
+export function writeProjectBaseVersions(projectId: string, versions: Record<string, string>): void {
+  try {
+    const map = readBaseVersionMap();
+    map[projectId] = { ...versions };
+    localStorage.setItem(BASE_VERSIONS_KEY, JSON.stringify(map));
+  } catch {
+    throw new Error("无法记录项目的云端基线版本，请检查浏览器存储空间。");
+  }
+}
+
 export function listProjects(): DesignProject[] {
   return readProjects().sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
 }

@@ -1377,3 +1377,219 @@
 .pm-permissions p {
   color: #6c7c5d;
 }
+
+/* Real plugin lifecycle panel (server owned install state and log). */
+.pm-lifecycle {
+  margin: 20px 24px 0;
+  padding: 20px 22px 18px;
+  border: 1px solid #e8e8ec;
+  border-radius: 14px;
+  background: #fff;
+}
+
+.pm-lifecycle-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.pm-lifecycle-eyebrow {
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: #8b8f99;
+}
+
+.pm-lifecycle-head h2 {
+  margin: 6px 0 8px;
+  font-size: 19px;
+}
+
+.pm-lifecycle-head p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.8;
+  color: #5d6067;
+  max-width: 72ch;
+}
+
+.pm-lifecycle-refresh {
+  border: 1px solid #dcdce2;
+  background: #fff;
+  border-radius: 999px;
+  padding: 6px 14px;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.pm-lifecycle-state {
+  margin: 12px 0 0;
+  font-size: 13px;
+  color: #6b6f77;
+}
+
+.pm-lifecycle-state.is-error {
+  color: #a36252;
+}
+
+.pm-lifecycle-grid {
+  display: grid;
+  /* min() keeps the track inside narrow viewports instead of forcing a 280px column. */
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.pm-lifecycle-card {
+  border: 1px solid #e8e8ec;
+  border-radius: 12px;
+  padding: 14px 16px 16px;
+  background: #fcfcfd;
+}
+
+.pm-lifecycle-card.is-disabled {
+  background: #f6f6f8;
+  color: #8b8f99;
+}
+
+.pm-lifecycle-card h3 {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0 0 6px;
+  font-size: 15px;
+}
+
+.pm-lifecycle-card h3 span {
+  font-size: 11px;
+  color: #8b8f99;
+}
+
+.pm-lifecycle-card p {
+  margin: 0 0 10px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: #5d6067;
+}
+
+.pm-lifecycle-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: #6b6f77;
+}
+
+.pm-lifecycle-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pm-lifecycle-skills li {
+  font-size: 11px;
+  border: 1px solid #e3e3e8;
+  border-radius: 999px;
+  padding: 2px 8px;
+  color: #6b6f77;
+  background: #fff;
+}
+
+.pm-lifecycle-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.pm-lifecycle-actions button {
+  border: 1px solid #2f6b4f;
+  background: #2f6b4f;
+  color: #fff;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.pm-lifecycle-actions button.is-danger {
+  background: #fff;
+  color: #a36252;
+  border-color: #e0c4bb;
+}
+
+.pm-lifecycle-actions button:disabled {
+  opacity: .55;
+  cursor: default;
+}
+
+.pm-lifecycle-state-tag {
+  font-size: 12px;
+  color: #6b6f77;
+}
+
+.pm-lifecycle-log {
+  margin-top: 16px;
+  border-top: 1px solid #eeeef1;
+  padding-top: 12px;
+}
+
+.pm-lifecycle-log summary {
+  font-size: 13px;
+  color: #5d6067;
+  cursor: pointer;
+}
+
+.pm-lifecycle-log ol {
+  margin: 10px 0 0;
+  padding-left: 18px;
+  font-size: 12px;
+  color: #6b6f77;
+}
+
+.pm-lifecycle-log li {
+  margin-bottom: 6px;
+  line-height: 1.7;
+}
+
+.pm-lifecycle-log b {
+  margin-right: 6px;
+}
+
+.pm-lifecycle-log small {
+  display: block;
+}
+
+.pm-lifecycle-foot {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 14px 0 0;
+  font-size: 12px;
+  color: #8b8f99;
+}
+
+@media (max-width: 680px) {
+  .pm-lifecycle {
+    margin: 16px 12px 0;
+    padding: 16px 14px;
+  }
+}
+
+@media (max-width: 680px) {
+  .pm-lifecycle {
+    margin: 16px 12px 0;
+    padding: 16px 14px 14px;
+  }
+
+  .pm-lifecycle-head {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

@@ -73,7 +73,10 @@ export type SampleId =
   | "roots"
   | "daylight"
   | "tide"
-  | "morrow";
+  | "morrow"
+  | "studio-nine"
+  | "wellspring"
+  | "circuit";
 export const samples: {
   id: SampleId;
   category: string;
@@ -233,6 +236,30 @@ export const samples: {
     title: "MORROW · 精品咖啡订阅",
     description: "24 个咖啡页面 · 拼配、冲煮、四期计划、库存与费用",
     format: "订阅原型 / SVG / CSV / HTML",
+    photos: [],
+  },
+  {
+    id: "studio-nine",
+    category: "原型",
+    title: "STUDIO NINE · 摄影棚排期",
+    description: "24 个影棚页面 · 档期、器材清单、拍摄日与交付流程",
+    format: "影棚排期原型 / SVG / HTML",
+    photos: [],
+  },
+  {
+    id: "wellspring",
+    category: "原型",
+    title: "WELLSPRING · 运动课程管理",
+    description: "24 个课程页面 · 排课冲突、候补递补、教练排班与会员权益",
+    format: "课程管理原型 / SVG / HTML",
+    photos: [],
+  },
+  {
+    id: "circuit",
+    category: "原型",
+    title: "CIRCUIT · 二手数码检测交易",
+    description: "24 个交易页面 · 46 项检测、成色分级、行情定价与质保",
+    format: "二手交易原型 / SVG / HTML",
     photos: [],
   },
 ];

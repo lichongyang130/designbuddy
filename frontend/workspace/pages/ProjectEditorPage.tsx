@@ -1,9 +1,26 @@
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import type { DesignProject, ProjectFile } from "../models/project";
-import { getProject, updateProject } from "../projectStore";
+import {
+  getProject,
+  readProjectBaseVersions,
+  updateProject,
+  writeProjectBaseVersions,
+} from "../projectStore";
 import { navigateTo } from "../workspaceRoutes";
 import { generateProjectWithAI, runLocalCodingAgent, type LocalCodingAgent } from "../api/generation";
-import { getCloudProject, saveProjectToCloud } from "../api/projects";
+import {
+  getCloudProject,
+  listProjectAudit,
+  listProjectVersions,
+  restoreProjectVersion,
+  saveProjectToCloud,
+  ProjectConflictError,
+  type ProjectAuditEntry,
+  type ProjectVersion,
+  type ProjectVersionConflict,
+} from "../api/projects";
+import { listWorkspaces, type Workspace } from "../api/workspaces";
+import { readActiveWorkspace } from "../workspaceStore";
 import { downloadProjectZip } from "../utils/zip";
 import { applyDesignSystemTokens, createDesignContract, designSystems } from "../utils/designSystem";
 import { AIChatPanel, type ChatMessage } from "../AIChatPanel";
@@ -11,29 +28,46 @@ import { CodePreview } from "../CodePreview";
 import { FileExplorer } from "../FileExplorer";
 import { GenerationTimeline, type GenerationStep } from "../GenerationTimeline";
 import { LivePreview } from "../LivePreview";
+import { buildPreviewDocument } from "../previewDocument";
 import { publishProjectEvent, subscribeToProject, type CollaborationEvent } from "../api/collaboration";
 import { addProjectMember, listProjectMembers, removeProjectMember, type ProjectMember } from "../api/memberships";
 import { AIProviderSettings, getAIProviderCredentials } from "../AIProviderSettings";
 
-function buildPreviewDocument(files: ProjectFile[], inspect = true): string {
-  const htmlFile = files.find((file) => file.path === "index.html");
-  const css = files.find((file) => file.path === "src/styles.css")?.content ?? "";
-  const js = files.find((file) => file.path === "src/main.js")?.content ?? "";
-  let html = htmlFile?.content ?? "<!doctype html><html><body><h1>新建页面</h1></body></html>";
-  const safeCss = css.replace(/<\/style/gi, "<\\/style");
-  const safeJs = js.replace(/<\/script/gi, "<\\/script");
-  html = html.replace(/<link[^>]+href=["']\.\/src\/styles\.css["'][^>]*>/i, `<style>${safeCss}</style>`);
-  html = html.replace(/<script[^>]+src=["']\.\/src\/main\.js["'][^>]*><\/script>/i, `<script>${safeJs}<\/script>`);
-  const editorBridge = `<style>[data-db-selected]{outline:2px solid #7458ed!important;outline-offset:2px!important;cursor:crosshair!important}</style><script>(function(){let selected='';function path(el){const parts=[];while(el&&el!==document.body){let part=el.tagName.toLowerCase();if(el.id){part+='#'+CSS.escape(el.id);parts.unshift(part);break}const siblings=el.parentElement?[...el.parentElement.children].filter(x=>x.tagName===el.tagName):[];if(siblings.length>1)part+=':nth-of-type('+(siblings.indexOf(el)+1)+')';parts.unshift(part);el=el.parentElement}return parts.join(' > ')}document.addEventListener('click',function(e){const a=e.target.closest('a');if(a&&a.getAttribute('href')?.startsWith('#'))e.preventDefault();const el=e.target.closest('body *');if(!el)return;e.preventDefault();e.stopPropagation();selected=path(el);document.querySelectorAll('[data-db-selected]').forEach(x=>x.removeAttribute('data-db-selected'));el.setAttribute('data-db-selected','');parent.postMessage({type:'db-select',selector:selected,tag:el.tagName.toLowerCase(),text:(el.innerText||'').slice(0,100)},'*')},true);addEventListener('message',function(e){if(e.data?.type==='db-style'&&selected){const el=document.querySelector(selected);if(el)el.style.setProperty(e.data.property,e.data.value)}});})();<\/script>`;
-  if (inspect) html = html.replace(/<\/body>/i, `${editorBridge}</body>`);
-  return html;
+/**
+ * The base version of every file the server knows about.
+ *
+ * A file whose local content still matches the head is based on that head.
+ * A file that was edited locally keeps the version it was edited from, so the
+ * server can tell that somebody else moved the file forward in the meantime.
+ */
+function resolveBaseVersions(
+  files: ProjectFile[],
+  heads: Record<string, string>,
+  versions: ProjectVersion[],
+  stored: Record<string, string>,
+): Record<string, string> {
+  const base: Record<string, string> = { ...stored };
+  for (const [path, headId] of Object.entries(heads)) {
+    const local = files.find((file) => file.path === path);
+    if (!local) continue;
+    const head = versions.find((item) => item.id === headId);
+    if (head && head.content === local.content) base[path] = headId;
+  }
+  // Every file the server knows about is reported, even when this device has no
+  // base for it: an empty base means "this copy is not based on a server version".
+  const result: Record<string, string> = {};
+  for (const path of Object.keys(heads)) result[path] = base[path] ?? "";
+  for (const [path, version] of Object.entries(stored)) {
+    if (!(path in result)) result[path] = version;
+  }
+  return result;
 }
 
 export default function ProjectEditorPage({ projectId }: { projectId: string }) {
   const [project, setProject] = useState<DesignProject | null>(() => getProject(projectId) ?? null);
   const [activePath, setActivePath] = useState("index.html");
   const [interactivePreview, setInteractivePreview] = useState(false);
-  const [view, setView] = useState<"preview" | "code">("preview");
+  const [view, setView] = useState<"preview" | "code" | "split">("preview");
   const [device, setDevice] = useState<"desktop" | "tablet" | "mobile">("desktop");
   const [notice, setNotice] = useState("");
   const [saveFailed, setSaveFailed] = useState(false);
@@ -57,6 +91,24 @@ export default function ProjectEditorPage({ projectId }: { projectId: string }) 
   const [members, setMembers] = useState<ProjectMember[]>([]);
   const [memberUserId, setMemberUserId] = useState("");
   const [memberRole, setMemberRole] = useState<ProjectMember["role"]>("editor");
+  const [versions, setVersions] = useState<ProjectVersion[]>([]);
+  const [versionHeads, setVersionHeads] = useState<Record<string, string>>({});
+  const [baseVersions, setBaseVersions] = useState<Record<string, string>>(() => readProjectBaseVersions(projectId));
+  const [auditEntries, setAuditEntries] = useState<ProjectAuditEntry[]>([]);
+  const [versionNotice, setVersionNotice] = useState("");
+  const [conflicts, setConflicts] = useState<ProjectVersionConflict[]>([]);
+  const [versionPreview, setVersionPreview] = useState<ProjectVersion | null>(null);
+  const [historyOpen, setHistoryOpen] = useState(false);
+  const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
+
+  // The workspaces the account belongs to decide where a synced project lands.
+  useEffect(() => {
+    let cancelled = false;
+    void listWorkspaces()
+      .then((list) => { if (!cancelled) setWorkspaces(list); })
+      .catch(() => { if (!cancelled) setWorkspaces([]); });
+    return () => { cancelled = true; };
+  }, []);
 
   useEffect(() => {
     setProject(getProject(projectId) ?? null);
@@ -68,6 +120,41 @@ export default function ProjectEditorPage({ projectId }: { projectId: string }) 
   }, [projectId]);
 
   useEffect(() => { void listProjectMembers(projectId).then(setMembers); }, [projectId]);
+
+  // The source history lives on the server; a project that was never synced has none.
+  // The effect only runs when the project changes: reloading the heads after every
+  // local edit would silently accept a version somebody else already replaced.
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      try {
+        const history = await listProjectVersions(projectId);
+        const audit = await listProjectAudit(projectId);
+        if (cancelled) return;
+        setVersions(history.versions);
+        setVersionHeads(history.heads);
+        setAuditEntries(audit);
+        setVersionNotice("");
+        const local = getProject(projectId);
+        const base = resolveBaseVersions(
+          local?.files ?? [],
+          history.heads,
+          history.versions,
+          readProjectBaseVersions(projectId),
+        );
+        writeProjectBaseVersions(projectId, base);
+        setBaseVersions(base);
+      } catch {
+        if (!cancelled) {
+          setVersions([]);
+          setVersionHeads({});
+          setAuditEntries([]);
+          setVersionNotice("云端还没有这个项目的版本历史；先同步一次云端即可开始记录。");
+        }
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [projectId]);
 
   useEffect(() => {
     setSharedComments([]);
@@ -134,6 +221,20 @@ export default function ProjectEditorPage({ projectId }: { projectId: string }) 
         <p>项目可能已删除，或保存在另一个浏览器中。</p>
         <button className="db-button db-button-primary" onClick={() => navigateTo("/projects")}>返回项目列表</button>
       </main>
+    );
+  }
+
+  function renderPreviewStage(extraClass = "") {
+    const current = project;
+    if (!current) return null;
+    return (
+      <div className={`db-live-preview-stage ${extraClass}`.trim()}>
+        <div className={`db-preview-frame db-preview-${device}`}>
+          <LivePreview title={`${current.name} 实时预览`} srcDoc={previewDocument} />
+        </div>
+        <p className="db-preview-caption">沙盒预览 · 不会访问项目之外的本机文件</p>
+        {selectedElement && <div className="db-element-inspector"><strong>元素样式 · &lt;{selectedElement.tag}&gt;</strong><span title={selectedElement.text}>{selectedElement.text || selectedElement.selector}</span><label>文字颜色<input type="color" onChange={(e) => applyElementStyle("color", e.target.value)} /></label><label>背景颜色<input type="color" onChange={(e) => applyElementStyle("background-color", e.target.value)} /></label><label>字号<input type="range" min="10" max="72" defaultValue="16" onChange={(e) => applyElementStyle("font-size", `${e.target.value}px`)} /></label><label>内边距<input type="range" min="0" max="64" defaultValue="0" onChange={(e) => applyElementStyle("padding", `${e.target.value}px`)} /></label><button onClick={() => setSelectedElement(null)}>关闭</button></div>}
+      </div>
     );
   }
 
@@ -265,20 +366,77 @@ export default function ProjectEditorPage({ projectId }: { projectId: string }) 
     } finally { setGenerating(false); }
   }
 
-  async function syncToCloud() {
+  async function syncToCloud(options?: { force?: boolean }) {
     const current = project;
     if (cloudBusy || !current) return;
     setCloudBusy(true);
     setNotice("");
     try {
-      await saveProjectToCloud(current);
+      const base = options?.force
+        ? undefined
+        : resolveBaseVersions(
+            current.files,
+            versionHeads,
+            versions,
+            readProjectBaseVersions(projectId),
+          );
+      // A project that does not belong to a workspace yet joins the workspace in focus.
+      const active = readActiveWorkspace();
+      const target = workspaces.find((item) => item.id === active.id);
+      const assignable = target && target.role !== "viewer" && !current.workspaceId;
+      const payload: DesignProject = assignable
+        ? { ...current, workspaceId: target.id, workspaceName: target.name }
+        : current;
+      const savedHeads = await saveProjectToCloud(payload, base);
+      setConflicts([]);
       setCloudSaved(true);
-      setNotice("云端服务已确认保存该项目。");
+      setVersionHeads(savedHeads);
+      if (Object.keys(savedHeads).length) {
+        writeProjectBaseVersions(projectId, savedHeads);
+        setBaseVersions(savedHeads);
+      }
+      setVersionNotice("");
+      setNotice(options?.force ? "已用你的版本覆盖服务器版本，并把这次覆盖记入历史。" : "云端服务已确认保存该项目。");
+      const history = await listProjectVersions(projectId);
+      setVersions(history.versions);
+      setVersionHeads(history.heads);
+      setAuditEntries(await listProjectAudit(projectId));
     } catch (cause) {
-      setCloudSaved(false);
-      setNotice(cause instanceof Error ? cause.message : "云端同步失败。");
+      const status = (cause as { status?: number } | null)?.status;
+      if (cause instanceof ProjectConflictError) {
+        setConflicts(cause.conflicts);
+        setCloudSaved(false);
+        setNotice("服务器上已有更新的版本：保存被拒绝，你可以载入服务器版本或用你的版本覆盖。");
+      } else if (status === 403) {
+        setCloudSaved(false);
+        setNotice("服务器拒绝了这次保存：你在该工作空间里没有编辑权限（只读成员不能改项目）。");
+      } else {
+        setCloudSaved(false);
+        setNotice(cause instanceof Error ? cause.message : "云端同步失败。");
+      }
     } finally {
       setCloudBusy(false);
+    }
+  }
+
+  async function restoreVersion(version: ProjectVersion) {
+    setVersionNotice("");
+    try {
+      const restored = await restoreProjectVersion(projectId, version.id);
+      const saved = updateProject(restored.project);
+      setProject(saved);
+      setVersionHeads(restored.heads);
+      if (Object.keys(restored.heads).length) {
+        writeProjectBaseVersions(projectId, restored.heads);
+        setBaseVersions(restored.heads);
+      }
+      setConflicts([]);
+      setVersionNotice(`已恢复 ${version.path} 的 v${version.version}，恢复动作本身也记入了历史。`);
+      const history = await listProjectVersions(projectId);
+      setVersions(history.versions);
+      setAuditEntries(await listProjectAudit(projectId));
+    } catch (cause) {
+      setVersionNotice(cause instanceof Error ? cause.message : "恢复失败。");
     }
   }
 
@@ -287,6 +445,17 @@ export default function ProjectEditorPage({ projectId }: { projectId: string }) 
       const remote = await getCloudProject(projectId);
       const saved = updateProject({ ...remote, files: remote.files.map((file) => ({ ...file, language: file.language ?? (file.path.endsWith(".html") ? "html" : file.path.endsWith(".css") ? "css" : file.path.endsWith(".js") ? "javascript" : "text") })) });
       setProject(saved); setCloudSaved(true); setCloudUpdateAvailable(false); setSaveFailed(false);
+      // The server copy is loaded, so the pending conflict is resolved.
+      setConflicts([]);
+      setVersionNotice("");
+      // The loaded copy is the head of every file, so it becomes the new base.
+      try {
+        const history = await listProjectVersions(projectId);
+        setVersions(history.versions);
+        setVersionHeads(history.heads);
+        writeProjectBaseVersions(projectId, history.heads);
+        setBaseVersions(history.heads);
+      } catch { /* the history is optional here */ }
       setNotice("已载入团队成员同步的最新源码。");
     } catch (error) { setNotice(error instanceof Error ? error.message : "重新载入共享项目失败。"); }
   }
@@ -385,13 +554,14 @@ export default function ProjectEditorPage({ projectId }: { projectId: string }) 
         <div className="db-editor-project-name">
           <strong>{project.name}</strong>
           <button onClick={renameProject} aria-label="重命名项目">✎</button>
-          <span className={saveFailed ? "db-save-state is-error" : "db-save-state"}><i />{saveFailed ? "保存失败" : cloudSaved ? "云端已同步" : "已保存在本机"}</span>
+          <span className={saveFailed ? "db-save-state is-error" : cloudSaved ? "db-save-state is-synced" : "db-save-state"}><i />{saveFailed ? "保存失败" : cloudSaved ? "云端已同步" : "已保存在本机"}</span>
         </div>
         <div className="db-editor-header-actions">
           <button className={view === "code" ? "db-button db-button-secondary is-selected" : "db-button db-button-secondary"} onClick={() => setView("code")}>{"</>"} 代码</button>
           <button className={view === "preview" ? "db-button db-button-secondary is-selected" : "db-button db-button-secondary"} onClick={() => setView("preview")}>◫ 预览</button>
           <button className="db-button db-button-secondary" onClick={downloadZip}>下载 ZIP</button>
           <button className="db-button db-button-secondary" onClick={() => void shareProject()}>分享只读副本</button>
+          <button className="db-button db-button-secondary" onClick={() => setHistoryOpen(true)}>版本历史</button>
           <button className="db-button db-button-secondary" onClick={() => void syncToCloud()} disabled={cloudBusy}>{cloudBusy ? "同步中…" : "同步云端"}</button>
           {cloudUpdateAvailable && <button className="db-button db-button-secondary" onClick={() => void reloadCloudProject()}>载入团队最新版本</button>}
           <button className="db-button db-button-primary" onClick={() => void copySource()}>复制源码 <span>↗</span></button>
@@ -415,8 +585,9 @@ export default function ProjectEditorPage({ projectId }: { projectId: string }) 
             <div className="db-canvas-tabs">
               <button className={view === "preview" ? "is-active" : ""} onClick={() => setView("preview")}>设计预览</button>
               <button className={view === "code" ? "is-active" : ""} onClick={() => setView("code")}>源代码</button>
+              <button className={view === "split" ? "is-active" : ""} onClick={() => setView("split")}>右侧预览</button>
             </div>
-            {view === "preview" && (
+            {view !== "code" && (
               <div className="db-device-picker" aria-label="预览设备">
                 <button style={{ width: "auto", padding: "0 9px" }} aria-label="交互模式" aria-pressed={interactivePreview} title="切换页面交互与元素选择；切换会重新加载预览" className={interactivePreview ? "is-active" : ""} onClick={() => { setInteractivePreview(value => !value); setSelectedElement(null); }}>交互模式</button>
                 <button title="桌面" aria-label="桌面预览" className={device === "desktop" ? "is-active" : ""} onClick={() => setDevice("desktop")}>▰</button>
@@ -426,18 +597,34 @@ export default function ProjectEditorPage({ projectId }: { projectId: string }) 
             )}
             <div className="db-design-tools"><select aria-label="设计系统" value={project.designSystemId ?? ""} onChange={(event) => { const system = designSystems.find((item) => item.id === event.target.value); if (system) applyDesignSystem(system); }}><option value="">选择设计系统 · {designSystems.length} 套</option>{designSystems.map((system) => <option value={system.id} key={system.id}>{system.name} · {system.category}</option>)}</select><button onClick={exportStandaloneHtml}>导出 HTML</button><button onClick={exportPdf}>导出 PDF</button></div>
           </div>
-          {view === "preview" ? (
-            <div className="db-live-preview-stage">
-              <div className={`db-preview-frame db-preview-${device}`}>
-                <LivePreview title={`${project.name} 实时预览`} srcDoc={previewDocument} />
+          {view === "split" ? (
+            <div className="db-editor-split">
+              <div className="db-code-editor">
+                <CodePreview path={activeFile?.path ?? "index.html"} language={activeFile?.language ?? "text"} code={activeFile?.content ?? ""} onChange={changeFile} />
+                <p className="db-code-hint">源文件修改后会自动保存在本机，右侧预览立即刷新。</p>
               </div>
-              <p className="db-preview-caption">沙盒预览 · 不会访问项目之外的本机文件</p>
-              {selectedElement && <div className="db-element-inspector"><strong>元素样式 · &lt;{selectedElement.tag}&gt;</strong><span title={selectedElement.text}>{selectedElement.text || selectedElement.selector}</span><label>文字颜色<input type="color" onChange={(e) => applyElementStyle("color", e.target.value)} /></label><label>背景颜色<input type="color" onChange={(e) => applyElementStyle("background-color", e.target.value)} /></label><label>字号<input type="range" min="10" max="72" defaultValue="16" onChange={(e) => applyElementStyle("font-size", `${e.target.value}px`)} /></label><label>内边距<input type="range" min="0" max="64" defaultValue="0" onChange={(e) => applyElementStyle("padding", `${e.target.value}px`)} /></label><button onClick={() => setSelectedElement(null)}>关闭</button></div>}
+              {renderPreviewStage("db-live-preview-stage-split")}
             </div>
+          ) : view === "preview" ? (
+            renderPreviewStage()
           ) : (
             <div className="db-code-editor">
               <CodePreview path={activeFile?.path ?? "index.html"} language={activeFile?.language ?? "text"} code={activeFile?.content ?? ""} onChange={changeFile} />
               <p className="db-code-hint">源文件修改后会自动保存在本机，切换到“设计预览”查看结果。</p>
+            </div>
+          )}
+          {conflicts.length > 0 && (
+            <div className="db-version-conflict" role="alert">
+              <p><strong>保存被拒绝：</strong>服务器上已有更新的版本。</p>
+              <ul>
+                {conflicts.map((conflict) => (
+                  <li key={conflict.path}>
+                    <span>{conflict.path} · 服务器版本由 {conflict.headAuthor} 于 {new Date(conflict.headAt).toLocaleString("zh-CN")} 保存</span>
+                    <button onClick={() => void reloadCloudProject()}>载入服务器版本</button>
+                    <button onClick={() => void syncToCloud({ force: true })}>用我的版本覆盖</button>
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
           {notice && <p className="db-editor-notice" role="status">{notice}</p>}
@@ -461,6 +648,61 @@ export default function ProjectEditorPage({ projectId }: { projectId: string }) 
           <section className="db-review-panel"><h3>项目成员</h3><form onSubmit={(event) => void inviteMember(event)}><input aria-label="成员用户 ID" value={memberUserId} onChange={(event) => setMemberUserId(event.target.value)} placeholder="输入团队成员 user ID"/><select aria-label="成员权限" value={memberRole} onChange={(event) => setMemberRole(event.target.value as ProjectMember["role"])}><option value="editor">可编辑</option><option value="viewer">只读</option></select><button disabled={!memberUserId.trim()}>添加成员</button></form><ul>{members.map((member) => <li key={member.userId}><span>{member.userId} · {member.role === "editor" ? "可编辑" : "只读"}</span><button onClick={() => void revokeMember(member.userId)}>移除</button></li>)}</ul></section>
         </aside>
       </div>
+      {historyOpen && (
+        <div className="db-version-overlay" role="presentation" onClick={() => setHistoryOpen(false)}>
+          <section className="db-version-dialog" role="dialog" aria-modal="true" aria-label="版本历史" onClick={(event) => event.stopPropagation()}>
+            <header>
+              <strong>版本历史</strong>
+              <button aria-label="关闭版本历史" onClick={() => setHistoryOpen(false)}>✕</button>
+            </header>
+            <div className="db-review-panel db-version-panel">
+            <h3>版本历史 <small>{versions.length} 条</small></h3>
+            {versionNotice && <p role="status" className="db-version-notice">{versionNotice}</p>}
+            <p className="db-version-base">
+              <strong>当前编辑基于：</strong>
+              {Object.entries(baseVersions).map(([path, id]) => {
+                const item = versions.find((entry) => entry.id === id);
+                return item ? <span key={path}>{path} v{item.version}</span> : <span key={path}>{path} 未同步</span>;
+              })}
+              {!Object.keys(baseVersions).length && <span>这个项目还没有云端基线</span>}
+            </p>
+            <ul className="db-version-list">
+              {versions.filter((item) => item.path === activePath).map((item) => (
+                <li key={item.id}>
+                  <div>
+                    <strong>v{item.version}</strong>
+                    <span>{item.label || "保存"} · {item.author} · {new Date(item.createdAt).toLocaleString("zh-CN")}</span>
+                  </div>
+                  <button onClick={() => setVersionPreview(item)}>查看</button>
+                  <button onClick={() => void restoreVersion(item)}>恢复</button>
+                </li>
+              ))}
+              {versions.length > 0 && !versions.some((item) => item.path === activePath) && (
+                <li className="db-version-empty">当前文件还没有历史版本。</li>
+              )}
+            </ul>
+            {versionPreview && (
+              <div className="db-version-preview">
+                <p>v{versionPreview.version} · {versionPreview.path}</p>
+                <pre>{versionPreview.content.slice(0, 1200)}</pre>
+                <button onClick={() => setVersionPreview(null)}>关闭</button>
+              </div>
+            )}
+            <details className="db-version-audit">
+              <summary>操作记录（{auditEntries.length}）</summary>
+              <ul>
+                {auditEntries.map((entry) => (
+                  <li key={entry.id}>
+                    <strong>{entry.actor}</strong> · {entry.action} · {entry.detail || "—"} · {new Date(entry.createdAt).toLocaleString("zh-CN")}
+                  </li>
+                ))}
+                {!auditEntries.length && <li>还没有操作记录。</li>}
+              </ul>
+            </details>
+            </div>
+          </section>
+        </div>
+      )}
     </main>
   );
 }

@@ -97,3 +97,41 @@ test('client cancellation reaches upstream fetch', async t => {
   controller.abort();
   await assert.rejects(result, { name: 'AbortError' });
 });
+
+test('the streamed chat records the usage the provider reported', async t => {
+  setup(t);
+  const { setAiUsageRecorder } = require('../../dist/local/server/api/ai.js');
+  const records = [];
+  setAiUsageRecorder((owner, record) => records.push({ owner, record }));
+  t.after(() => setAiUsageRecorder(undefined));
+  global.fetch = async () => new Response(
+    'data: {"choices":[{"delta":{"content":"你好"}}]}\n\ndata: {"choices":[],"usage":{"prompt_tokens":11,"completion_tokens":7,"total_tokens":18}}\n\ndata: [DONE]\n\n',
+    { headers: { 'Content-Type': 'text/event-stream' } },
+  );
+  const handler = createApiHandler({ authenticate: async () => ({ id: 'test-user' }), projects: {} });
+  const response = await handler(post({ messages }));
+  await response.text();
+  assert.equal(records.length, 1);
+  assert.equal(records[0].owner, 'test-user');
+  assert.equal(records[0].record.reported, true);
+  assert.equal(records[0].record.promptTokens, 11);
+  assert.equal(records[0].record.totalTokens, 18);
+  assert.equal(records[0].record.status, 'succeeded');
+  assert.equal(records[0].record.model, 'test-model');
+});
+
+test('a stream without usage data is recorded as unreported, never estimated', async t => {
+  setup(t);
+  const { setAiUsageRecorder } = require('../../dist/local/server/api/ai.js');
+  const records = [];
+  setAiUsageRecorder((owner, record) => records.push({ owner, record }));
+  t.after(() => setAiUsageRecorder(undefined));
+  global.fetch = async () => streamed();
+  const handler = createApiHandler({ authenticate: async () => ({ id: 'test-user' }), projects: {} });
+  const response = await handler(post({ messages }));
+  await response.text();
+  assert.equal(records.length, 1);
+  assert.equal(records[0].record.reported, false);
+  assert.equal(records[0].record.totalTokens, null);
+  assert.equal(records[0].record.promptTokens, null);
+});

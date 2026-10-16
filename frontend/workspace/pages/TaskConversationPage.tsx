@@ -7,7 +7,8 @@ import { PromptInput } from "../PromptInput";
 import { generateProjectWithAI } from "../api/generation";
 import { streamTaskReply } from "../api/taskChat";
 import { getProject, listProjects, updateProject } from "../projectStore";
-import { loadTaskConversation, pendingTaskKey, projectTaskPath, saveTaskConversation, type TaskConversation, type TaskMessage } from "../taskConversation";
+import { PreviewSidePanel } from "../PreviewSidePanel";
+import { applyServerConversation, loadServerConversation, loadTaskConversation, pendingTaskKey, projectTaskPath, saveTaskConversation, type TaskConversation, type TaskMessage } from "../taskConversation";
 import { useModelOptions } from "../settingsStore";
 import { navigateTo } from "../workspaceRoutes";
 import { TaskClarificationCard } from "../TaskClarificationCard";
@@ -32,6 +33,7 @@ export default function TaskConversationPage({ projectId }: { projectId: string 
   const [tick, setTick] = useState(0);
   const [attachments, setAttachments] = useState<Attachment[]>([]);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(() => (loadTaskConversation(projectId)?.messages.some((message) => message.artifact) ?? false));
   const [historyOpen, setHistoryOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -43,6 +45,8 @@ export default function TaskConversationPage({ projectId }: { projectId: string 
   const persistTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
   const scroller = useRef<HTMLDivElement>(null);
+  const workspaceRef = useRef<HTMLDivElement>(null);
+  const composerRef = useRef<HTMLDivElement>(null);
   const followBottom = useRef(true);
   const busy = activeId !== null;
 
@@ -85,6 +89,43 @@ export default function TaskConversationPage({ projectId }: { projectId: string 
       window.speechSynthesis?.cancel();
     };
   }, [projectId]);
+
+  useEffect(() => {
+    // The server keeps the task history, so a refresh, another browser or
+    // another device can continue the same conversation.
+    let cancelled = false;
+    void loadServerConversation(projectId)
+      .then((remote) => {
+        if (cancelled || !remote) return;
+        const local = loadTaskConversation(projectId);
+        if (local && local.messages.length >= remote.messages.length) return;
+        const restored = applyServerConversation(remote);
+        taskRef.current = restored;
+        setTask(restored);
+        setSkillsOpen(restored.workflow === "skills");
+        setPreviewOpen(restored.messages.some((message) => message.artifact) ?? false);
+      })
+      .catch(() => undefined);
+    return () => { cancelled = true; };
+  }, [projectId]);
+
+  useEffect(() => {
+    // The narrow-layout preview drawer floats above the page, so it has to know
+    // how tall the composer is: the drawer stops above the composer so the
+    // send button is never covered.
+    const composer = composerRef.current;
+    const workspace = workspaceRef.current;
+    if (!composer || !workspace) return;
+    const apply = () => {
+      const height = Math.ceil(composer.getBoundingClientRect().height);
+      workspace.style.setProperty("--task-composer-h", `${height}px`);
+    };
+    apply();
+    const observer = typeof ResizeObserver === "function" ? new ResizeObserver(apply) : null;
+    observer?.observe(composer);
+    window.addEventListener("resize", apply);
+    return () => { observer?.disconnect(); window.removeEventListener("resize", apply); };
+  }, [skillsOpen]);
 
   useEffect(() => {
     const changed = () => setSkillIdentityChanged(true);
@@ -159,9 +200,10 @@ export default function TaskConversationPage({ projectId }: { projectId: string 
         const extras = latest.files.filter((file) => !generated.some((entry) => entry.path === file.path));
         const saved = updateProject({ ...latest, files: [...generated, ...extras], updatedAt: new Date().toISOString() });
         if (mounted.current) setProject(saved);
-        content = `已根据你的需求生成并保存了 **${generated.length} 个项目文件**。\n\n${generated.map((file) => `- \`${file.path}\``).join("\n")}\n\n可以打开项目编辑器查看预览和源码；如需调整，请继续告诉我。`;
+        content = `已根据你的需求生成并保存了 **${generated.length} 个项目文件**。\n\n${generated.map((file) => `- \`${file.path}\``).join("\n")}\n\n这些文件可以在右侧实时预览里直接查看效果；需要调整请继续告诉我。`;
         actualModel = result.model || "";
         patch(id, { artifact: true });
+        setPreviewOpen(true);
       }
       if (abort.signal.aborted) throw new DOMException("Aborted", "AbortError");
       patch(id, { content, model: actualModel || undefined, status: "complete", elapsedMs: performance.now() - startedAt.current });
@@ -267,9 +309,10 @@ export default function TaskConversationPage({ projectId }: { projectId: string 
   const latestAssistant = [...task.messages].reverse().find((item) => item.role === "assistant")?.id;
   const matches = search.trim() ? task.messages.filter((item) => item.content.toLocaleLowerCase().includes(search.trim().toLocaleLowerCase())) : [];
   const elapsed = (message: TaskMessage) => Math.max(0, Math.floor((activeId === message.id ? performance.now() - startedAt.current : message.elapsedMs || 0) / 1000));
+  const previewSource = task.messages.some((message) => message.artifact) ? "AI 生成结果" : "本机项目草稿";
   void tick;
 
-  return <div className="workbuddy-app task-workspace">
+  return <div className="workbuddy-app task-workspace" ref={workspaceRef}>
     <WorkBuddySidebar active="task" projectCount={listProjects().length} go={navigateTo} setNotice={setNotice} />
     <main className="task-main" aria-label="任务对话">
       <header className="task-topbar"><h1 title={project.name}>{project.name}</h1><div className="task-top-actions">
@@ -277,6 +320,7 @@ export default function TaskConversationPage({ projectId }: { projectId: string 
         <button aria-label="复制分享文本" onClick={() => void copy(task.messages.map((item) => `${item.role === "user" ? "你" : "WorkBuddy"}：${item.content}`).join("\n\n"))}><HomeIcon name="share" /></button>
         <button aria-label="任务历史" aria-expanded={historyOpen} onClick={() => setHistoryOpen((value) => !value)}><HomeIcon name="history" /></button>
         <button aria-label="下载对话" onClick={exportChat}><HomeIcon name="document" /></button>
+        <button aria-label="右侧预览" aria-pressed={previewOpen} onClick={() => setPreviewOpen((value) => !value)}><HomeIcon name="devices" /></button>
         <button aria-label="打开项目编辑器" onClick={() => navigateTo(`/editor/${encodeURIComponent(projectId)}`)}><HomeIcon name="panel" /></button>
       </div></header>
       {searchOpen && <div className="task-search"><input autoFocus aria-label="查找对话内容" placeholder="查找对话内容" value={search} onChange={(event) => setSearch(event.target.value)} /><span>{matches.length} 条匹配</span><button disabled={!matches.length} onClick={() => document.getElementById(`message-${matches[0]?.id}`)?.scrollIntoView({ block: "center" })}>定位</button></div>}
@@ -325,7 +369,7 @@ export default function TaskConversationPage({ projectId }: { projectId: string 
           <p>方案与产物按当前服务端身份保存。对话正文目前仍保存在此浏览器；删除本机任务不会自动删除后台运行，请先在执行台删除不需要的文件。</p>
         </section>}
       </div>
-      {!skillsOpen && <div className="task-composer-area">
+      {!skillsOpen && <div className="task-composer-area" ref={composerRef}>
         {notice && <div className="task-notice" role="status"><span>{notice}</span><button aria-label="关闭提示" onClick={() => setNotice("")}>×</button></div>}
         {settingsOpen && <div className="task-service-settings"><AIProviderSettings /></div>}
         {pendingConfirmation?.clarification ? <TaskClarificationCard key={pendingConfirmation.id} value={pendingConfirmation.clarification} onChange={(value) => updateClarification(pendingConfirmation.id, value)} onSubmit={() => submitClarification(pendingConfirmation.id)} onClose={() => closeClarification(pendingConfirmation.id)} /> : <section className="task-composer" aria-label="继续对话">
@@ -344,5 +388,16 @@ export default function TaskConversationPage({ projectId }: { projectId: string 
         <p className="task-disclaimer">内容由 AI 生成，请核实重要信息</p>
       </div>}
     </main>
+    {previewOpen && !skillsOpen && <PreviewSidePanel
+      className="task-preview-panel"
+      title="实时预览"
+      subtitle="对话中生成或修改的网页会立即显示在这里。"
+      files={project.files}
+      sourceLabel={previewSource}
+      emptyTitle="这个任务还没有网页"
+      emptyHint="用「代码开发」或「设计创意」模式生成网页后，这里会直接显示效果。"
+      onOpenInEditor={() => navigateTo(`/editor/${encodeURIComponent(projectId)}`)}
+      onClose={() => setPreviewOpen(false)}
+    />}
   </div>;
 }

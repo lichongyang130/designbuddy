@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-test("sidebar uses DesignBuddy and the requested five entries in order", async ({
+test("sidebar uses DesignBuddy and the requested entries in order", async ({
   page,
 }) => {
   await page.goto("/");
@@ -9,7 +9,7 @@ test("sidebar uses DesignBuddy and the requested five entries in order", async (
     page.locator(
       ".app-sidebar > .sidebar-nav-item, .sidebar-navigation > .sidebar-nav-item",
     ),
-  ).toHaveText(["首页", "插件", "模版", "定时任务", "更多"]);
+  ).toHaveText(["首页", "插件", "模版", "定时任务", "模型与用量", "账号与数据", "更多"]);
   await expect(
     page.getByRole("button", { name: "首页", exact: true }),
   ).toHaveAttribute("aria-current", "page");
@@ -27,9 +27,10 @@ test("sidebar uses DesignBuddy and the requested five entries in order", async (
     page.getByRole("textbox", { name: "任务描述", exact: true }),
   ).toHaveValue("保留未提交的输入");
   await page.getByRole("button", { name: "定时任务", exact: true }).click();
-  await expect(page.locator('.home-notice[role="status"]')).toContainText(
-    "定时任务入口正在规划中",
-  );
+  await expect(page).toHaveURL(/\/schedules$/);
+  await expect(
+    page.getByRole("heading", { level: 1, name: "定时任务" }),
+  ).toBeVisible();
 });
 
 test("hover reveals three separate rows to the right and allows crossing into the menu", async ({

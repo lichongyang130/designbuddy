@@ -3,7 +3,7 @@
   "baseline": 13,
   "addedTarget": 180,
   "targetTotal": 193,
-  "notes": "Only verified implemented entries may be published. Planned titles are a production backlog, not working templates; their detailed page outlines and assets are not yet designed.",
+  "notes": "Only verified implemented entries may be published. Planned titles are a production backlog, not working templates; their detailed page outlines and assets are not yet designed. 2026-10-16 第三轮：新增数据驱动模板套件（apps/web/src/inspiration/samples/kit），一次性落地 prototype-07/08/09 三套各 24 页模板与 24 张原创 SVG 素材（scripts/generate-kit-art.mjs）。",
   "entries": [
     {
       "id": "forme",
@@ -76,24 +76,33 @@
       "category": "原型",
       "title": "STUDIO NINE · 摄影棚排期",
       "targetPages": 24,
-      "status": "planned",
-      "route": null
+      "status": "verified",
+      "route": "/inspiration/studio-nine",
+      "implementedPages": 24,
+      "imageCount": 8,
+      "verification": "24-page data-driven template set; every page has its own copy and artwork; page-by-page navigation, 375px layout, and content validation (no placeholder copy) verified in a real browser. 7 kit tests passed."
     },
     {
       "id": "prototype-08",
       "category": "原型",
       "title": "WELLSPRING · 运动课程管理",
       "targetPages": 24,
-      "status": "planned",
-      "route": null
+      "status": "verified",
+      "route": "/inspiration/wellspring",
+      "implementedPages": 24,
+      "imageCount": 8,
+      "verification": "24-page data-driven template set; schedule conflict rules, waitlist, coach roster and membership pages all carry real content; page-by-page navigation, 375px layout and content validation verified in a real browser. 7 kit tests passed."
     },
     {
       "id": "prototype-09",
       "category": "原型",
       "title": "CIRCUIT · 二手数码检测交易",
       "targetPages": 24,
-      "status": "planned",
-      "route": null
+      "status": "verified",
+      "route": "/inspiration/circuit",
+      "implementedPages": 24,
+      "imageCount": 8,
+      "verification": "24-page data-driven template set; 46-check inspection standard, grading table, market pricing and warranty rules all written out; page-by-page navigation, 375px layout and content validation verified in a real browser. 7 kit tests passed."
     },
     {
       "id": "prototype-10",

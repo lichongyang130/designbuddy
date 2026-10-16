@@ -62,6 +62,17 @@ export class FileProjectRepository implements ProjectRepository {
     return record ? structuredClone(record.project) : null;
   }
 
+  async findById(projectId: string): Promise<{ ownerId: string; project: ApiProject } | null> {
+    const record = (await this.readAll()).find((entry) => entry.project.id === projectId);
+    return record ? { ownerId: record.ownerId, project: structuredClone(record.project) } : null;
+  }
+
+  async listByWorkspace(workspaceId: string): Promise<Array<{ ownerId: string; project: ApiProject }>> {
+    return (await this.readAll())
+      .filter((record) => record.project.workspaceId === workspaceId)
+      .map((record) => ({ ownerId: record.ownerId, project: structuredClone(record.project) }));
+  }
+
   async save(ownerId: string, project: ApiProject): Promise<ApiProject> {
     return this.updateAll((records) => {
       const index = records.findIndex((item) => item.ownerId === ownerId && item.project.id === project.id);

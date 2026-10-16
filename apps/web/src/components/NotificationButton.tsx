@@ -8,7 +8,7 @@ import { projectTaskPath } from "../../../../frontend/workspace/taskConversation
 import "./notifications.css";
 
 export function NotificationButton({ label = "通知", className = "" }: { label?: string; className?: string }) {
-  const { items, storageFailed } = useNotifications();
+  const { items, storageFailed, serverSynced, serverError } = useNotifications();
   const unread = items.filter((n) => !n.read).length;
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState<"all" | "unread">("all");
@@ -44,9 +44,9 @@ export function NotificationButton({ label = "通知", className = "" }: { label
       {unread > 0 && <span className="notification-unread-dot" aria-label={`${unread} 条未读通知`} />}
     </button>
     {open && createPortal(<div ref={panel} id={id} className="notification-panel" role="dialog" aria-label="通知中心" tabIndex={-1} style={position}>
-      <header><div><h2>通知</h2><span>本机任务动态 · {unread} 条未读</span></div><button className="notification-close" aria-label="关闭通知" onClick={() => close(true)}>×</button></header>
+      <header><div><h2>通知</h2><span>{serverSynced ? "服务器收件箱" : "本机任务动态"} · {unread} 条未读</span></div><button className="notification-close" aria-label="关闭通知" onClick={() => close(true)}>×</button></header>
       <div className="notification-toolbar"><div className="notification-filters" role="group" aria-label="通知筛选"><button aria-pressed={filter === "all"} onClick={() => setFilter("all")}>全部</button><button aria-pressed={filter === "unread"} onClick={() => setFilter("unread")}>未读{unread > 0 ? ` ${unread}` : ""}</button></div><button disabled={!unread} onClick={() => markNotificationRead()}>全部已读</button></div>
-      {(notice || storageFailed) && <p className="notification-notice" role="status">{notice || "浏览器存储不可用，通知暂存于本页，刷新后可能丢失。"}</p>}
+      {(notice || storageFailed || serverError) && <p className="notification-notice" role="status">{notice || serverError || "浏览器存储不可用，通知暂存于本页，刷新后可能丢失。"}</p>}
       <div className="notification-list">
         {visible.length ? <ul>{visible.map((n) => <li key={n.id} className={n.read ? "is-read" : "is-unread"}>
           <button className="notification-entry" onClick={() => {
@@ -56,7 +56,7 @@ export function NotificationButton({ label = "通知", className = "" }: { label
           <div className="notification-item-actions">{!n.read && <button onClick={() => markNotificationRead(n.id)}>标为已读</button>}<button aria-label={`删除通知：${n.title}`} onClick={() => removeNotification(n.id)}>删除</button></div>
         </li>)}</ul> : <div className="notification-empty" role="status"><HomeIcon name="bell" size={28} /><strong>{filter === "unread" ? "没有未读通知" : "暂时没有通知"}</strong><p>任务完成、回复失败或需要确认时，<br />会在这里留下记录。</p></div>}
       </div>
-      <footer><span>仅此浏览器 · 非手机推送</span><button disabled={!items.some((n) => n.read)} onClick={clearReadNotifications}>清除已读</button></footer>
+      <footer><span>{serverSynced ? "已与服务器同步 · 换设备仍可查看 · 非手机推送" : "仅此浏览器 · 非手机推送"}</span><button disabled={!items.some((n) => n.read)} onClick={clearReadNotifications}>清除已读</button></footer>
     </div>, document.body)}
   </>;
 }

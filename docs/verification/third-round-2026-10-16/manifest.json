@@ -1,0 +1,307 @@
+{
+  "tool": "run-acceptance",
+  "suite": "designbuddy-third-round",
+  "baseUrl": "http://127.0.0.1:5173",
+  "ranAt": "2026-10-16T14:16:16.265Z",
+  "viewports": [
+    "desktop 1440x900",
+    "mobile 390x844"
+  ],
+  "counts": {
+    "total": 36,
+    "passed": 36,
+    "failed": 0,
+    "notVerified": 0
+  },
+  "results": [
+    {
+      "id": "home-loads",
+      "type": "http",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "HTTP 200",
+      "durationMs": 11
+    },
+    {
+      "id": "skills-hero",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (13 chars)",
+      "durationMs": 1707
+    },
+    {
+      "id": "skills-ready-cards",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 2579
+    },
+    {
+      "id": "open-credential-skill",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 2338
+    },
+    {
+      "id": "requirements-listed",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (262 chars)",
+      "durationMs": 4
+    },
+    {
+      "id": "requirements-screenshot",
+      "type": "screenshot",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "screenshot saved as screenshots/desktop/requirements-screenshot.png",
+      "durationMs": 621
+    },
+    {
+      "id": "skills-screenshot",
+      "type": "screenshot",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "screenshot saved as screenshots/desktop/skills-screenshot.png",
+      "durationMs": 3659
+    },
+    {
+      "id": "plugin-lifecycle-visible",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 2391
+    },
+    {
+      "id": "plugin-lifecycle-heading",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (140 chars)",
+      "durationMs": 2653
+    },
+    {
+      "id": "plugin-install",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 2333
+    },
+    {
+      "id": "plugin-installed-state",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (201 chars)",
+      "durationMs": 9
+    },
+    {
+      "id": "plugin-lifecycle-screenshot",
+      "type": "screenshot",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "screenshot saved as screenshots/desktop/plugin-lifecycle-screenshot.png",
+      "durationMs": 672
+    },
+    {
+      "id": "plugin-uninstall",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 70
+    },
+    {
+      "id": "schedules-hero",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (4 chars)",
+      "durationMs": 1645
+    },
+    {
+      "id": "schedules-form",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 1633
+    },
+    {
+      "id": "kit-template-counter",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (6 chars)",
+      "durationMs": 1612
+    },
+    {
+      "id": "kit-template-visible",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 1747
+    },
+    {
+      "id": "kit-template-screenshot",
+      "type": "screenshot",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "screenshot saved as screenshots/desktop/kit-template-screenshot.png",
+      "durationMs": 2314
+    },
+    {
+      "id": "home-loads",
+      "type": "http",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "HTTP 200",
+      "durationMs": 5
+    },
+    {
+      "id": "skills-hero",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (13 chars)",
+      "durationMs": 1719
+    },
+    {
+      "id": "skills-ready-cards",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 2159
+    },
+    {
+      "id": "open-credential-skill",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 2054
+    },
+    {
+      "id": "requirements-listed",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (262 chars)",
+      "durationMs": 3
+    },
+    {
+      "id": "requirements-screenshot",
+      "type": "screenshot",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "screenshot saved as screenshots/mobile/requirements-screenshot.png",
+      "durationMs": 384
+    },
+    {
+      "id": "skills-screenshot",
+      "type": "screenshot",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "screenshot saved as screenshots/mobile/skills-screenshot.png",
+      "durationMs": 3054
+    },
+    {
+      "id": "plugin-lifecycle-visible",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 2042
+    },
+    {
+      "id": "plugin-lifecycle-heading",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (140 chars)",
+      "durationMs": 1882
+    },
+    {
+      "id": "plugin-install",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 1922
+    },
+    {
+      "id": "plugin-installed-state",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (201 chars)",
+      "durationMs": 10
+    },
+    {
+      "id": "plugin-lifecycle-screenshot",
+      "type": "screenshot",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "screenshot saved as screenshots/mobile/plugin-lifecycle-screenshot.png",
+      "durationMs": 367
+    },
+    {
+      "id": "plugin-uninstall",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 77
+    },
+    {
+      "id": "schedules-hero",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (4 chars)",
+      "durationMs": 1481
+    },
+    {
+      "id": "schedules-form",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 1363
+    },
+    {
+      "id": "kit-template-counter",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (6 chars)",
+      "durationMs": 1429
+    },
+    {
+      "id": "kit-template-visible",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 1607
+    },
+    {
+      "id": "kit-template-screenshot",
+      "type": "screenshot",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "screenshot saved as screenshots/mobile/kit-template-screenshot.png",
+      "durationMs": 1833
+    }
+  ],
+  "policy": "只有真实访问目标并通过断言的检查才记为 passed；选择器缺失记为 not_verified 并写明原因；失败项保留控制台与网络记录。本工具不代表被测目标已完成业务验收，只证明声明的检查项在声明的视口下实际执行过。"
+}

@@ -54,14 +54,14 @@ test("skill details expose real file limits and launch the matching executor", a
   await expect(workbench.getByLabel("执行技能")).toHaveValue("social.carousel");
 });
 
-test("unavailable capabilities stay clearly unavailable and never gain a run button", async ({ page }) => {
+test("capabilities that still miss a server credential never gain a run button", async ({ page }) => {
   await page.getByRole("button", { name: /未接入（/ }).click();
   const card = page.getByRole("article", { name: "生成式图片与商品抠图" });
   await expect(card).toBeVisible();
-  await expect(card).toContainText("未接入后台执行器");
+  await expect(card).toContainText("执行器已接入，缺服务端凭据");
   await card.getByRole("button", { name: "查看未接入原因：生成式图片与商品抠图" }).click();
   const dialog = page.getByRole("dialog", { name: "生成式图片与商品抠图" });
-  await expect(dialog.getByText("此能力尚未接入后台执行器，因此不提供运行入口。")).toBeVisible();
+  await expect(dialog.getByText("执行器已经接入，但服务端还没配置它需要的凭据或环境，因此暂不提供运行入口；补齐后即可真实执行，不会用模拟结果代替。")).toBeVisible();
   await expect(dialog.getByRole("button", { name: "打开执行工作台" })).toHaveCount(0);
 });
 
@@ -91,10 +91,11 @@ test("generated photo thumbnails load as actual images in their skill cards", as
 
 test("every registered skill card has one matching task icon or generated photo", async ({ page }) => {
   const cards = page.locator(".skill-directory-card");
-  await expect(cards).toHaveCount(45);
-  expect(await page.locator(".skill-role-icon svg, .skill-role-photo").count()).toBe(45);
+  const catalogue = await page.evaluate(async () => (await (await fetch("/api/skill-runtime")).json()).skills.length);
+  await expect(cards).toHaveCount(catalogue);
+  expect(await page.locator(".skill-role-icon svg, .skill-role-photo").count()).toBe(catalogue);
   const ids = await page.locator(".skill-role-icon").evaluateAll(elements => elements.map(element => element.getAttribute("data-skill-id")));
-  expect(new Set(ids).size).toBe(45);
+  expect(new Set(ids).size).toBe(catalogue);
   expect(ids).not.toContain(null);
 });
 
@@ -109,4 +110,20 @@ test("skill card titles never collide with their favorite controls on compact la
     expect(favorite).not.toBeNull();
     expect(title!.x + title!.width).toBeLessThanOrEqual(favorite!.x);
   }
+});
+
+test("the five former placeholders now show their real executor state and what they still need", async ({ page }) => {
+  // The browser and build skills are really executable now.
+  const verify = page.getByRole("article", { name: "网页生成与浏览器验证" });
+  await expect(verify).toContainText("可执行技能");
+  await expect(verify).toContainText("服务端已接入");
+  const build = page.getByRole("article", { name: "隔离构建与全栈运行" });
+  await expect(build).toContainText("可执行技能");
+  await expect(build).toContainText("需提供");
+  // The two that need an external service say so instead of pretending the capability is missing.
+  const image = page.getByRole("article", { name: "生成式图片与商品抠图" });
+  await expect(image).toContainText("执行器已接入 · 缺服务端凭据");
+  await expect(image).toContainText("执行器已接入，缺服务端凭据");
+  const sync = page.getByRole("article", { name: "外部日历与消息同步" });
+  await expect(sync).toContainText("执行器已接入 · 缺服务端凭据");
 });

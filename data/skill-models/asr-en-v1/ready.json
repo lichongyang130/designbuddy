@@ -1,0 +1,9 @@
+{
+  "wheelSHA256": "bb8fd0fc7fb08dd8f85da21f5121f34ebf4186a5bee91ce85e2d358e69a448bf",
+  "python": "/usr/bin/python3.11",
+  "pythonVersion": "3.11",
+  "selfTest": {
+    "hypothesis": "go forward ten meters",
+    "audioSamplesUnchanged": true
+  }
+}

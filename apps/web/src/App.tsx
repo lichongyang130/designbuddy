@@ -13,10 +13,15 @@ import { HomeAttachMenu } from "./components/HomeAttachMenu";
 import { HomeModelMenu, ModelGlyph } from "./components/HomeModelMenu";
 import { WorkBuddySidebar } from "./components/WorkBuddySidebar";
 import PluginsPage from "../../../frontend/workspace/pages/PluginsPage";
+import SchedulesPage from "../../../frontend/workspace/pages/SchedulesPage";
+import ModelsPage from "../../../frontend/workspace/pages/ModelsPage";
+import ProfilePage from "../../../frontend/workspace/pages/ProfilePage";
+import WorkspacesPage from "../../../frontend/workspace/pages/WorkspacesPage";
 import InspirationPage from "./inspiration/InspirationPage";
 import TaskConversationPage from "../../../frontend/workspace/pages/TaskConversationPage";
 import { saveTaskConversation, pendingTaskKey, type TaskConversation } from "../../../frontend/workspace/taskConversation";
-import { openSettings, useModelOptions } from "../../../frontend/workspace/settingsStore";
+import { openSettings, syncPreferencesFromAccount, useModelOptions } from "../../../frontend/workspace/settingsStore";
+import { listWorkspaces } from "../../../frontend/workspace/api/workspaces";
 import "./styles.css";
 import "./home-workspace.css";
 import "./home-reference.css";
@@ -58,6 +63,7 @@ export default function App() {
   const [promptGroupRevision, setPromptGroupRevision] = useState(0);
   const [notice, setNotice] = useState("");
   const [projects, setProjects] = useState<DesignProject[]>(() => listProjects());
+  const [workspaceCount, setWorkspaceCount] = useState(0);
   const [busy, setBusy] = useState(false);
   const [model, setModel] = useState("");
   const [modelMenuOpen, setModelMenuOpen] = useState(false);
@@ -72,6 +78,19 @@ export default function App() {
   const modelMenuRef = useRef<HTMLDivElement>(null);
   const composerRef = useRef<HTMLElement>(null);
   const expertMatch = useExpertMatch({ prompt, mode, model, permission, attachments, selectedExpert, enabled: currentPath === "/" });
+
+  useEffect(() => {
+    void syncPreferencesFromAccount();
+  }, []);
+
+  // The sidebar shows how many workspaces the account belongs to.
+  useEffect(() => {
+    let cancelled = false;
+    void listWorkspaces()
+      .then((list) => { if (!cancelled) setWorkspaceCount(list.length); })
+      .catch(() => { if (!cancelled) setWorkspaceCount(0); });
+    return () => { cancelled = true; };
+  }, [currentPath]);
 
   useEffect(() => {
     const syncPath = () => {
@@ -220,6 +239,10 @@ export default function App() {
   }
 
   if (currentPath === "/plugins") return <PluginsPage />;
+  if (currentPath === "/schedules") return <SchedulesPage />;
+  if (currentPath === "/models") return <ModelsPage />;
+  if (currentPath === "/profile") return <ProfilePage />;
+  if (currentPath === "/workspaces") return <WorkspacesPage />;
   if (currentPath === "/inspiration" || currentPath.startsWith("/inspiration/")) return <InspirationPage pathname={currentPath} />;
   if (currentPath.startsWith("/library")) return <DesignLibrary />;
   if (currentPath === "/studio" || currentPath.startsWith("/studio/")) return <StudioPage />;
@@ -241,7 +264,7 @@ export default function App() {
 
   return (
     <div className="workbuddy-app">
-      <WorkBuddySidebar active="home" projectCount={projects.length} go={go} setNotice={setNotice} />
+      <WorkBuddySidebar active="home" projectCount={projects.length} workspaceCount={workspaceCount} go={go} setNotice={setNotice} />
 
       <main className="main-workspace home-workspace-v2 home27">
         <div className="home-content home-content-v2 home27-content">

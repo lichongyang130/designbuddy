@@ -60,13 +60,18 @@ test('invalid input fails visibly instead of fabricating completed results', asy
   await expect(desk(page)).toContainText('字段名必须非空且唯一');
   await expect(desk(page).getByRole('button', { name: /^下载 / })).toHaveCount(0);
 });
-test('unavailable execution modes cannot be selected and presets are not presented as installation', async ({ page }) => {
-  await page.goto('/experts/qa'); await expect(desk(page).getByText('未支持', { exact: true })).toBeVisible();
-  await expect(desk(page).getByLabel('执行技能')).toHaveValue('web.audit');
-  await expect(desk(page).getByLabel('执行技能').getByRole('option', { name: '浏览器与接口验收' })).toHaveCount(0);
-  await page.goto('/skills'); await expect(desk(page).getByRole('heading', { name: '技能执行与运行记录' })).toBeVisible();
+test('every listed QA skill has a real backend executor and presets are not presented as installation', async ({ page }) => {
+  // All QA skills now have a real executor, so none of them may stay in the
+  // "unsupported" state that used to hide them from the picker.
+  await page.goto('/experts/qa'); await expect(desk(page).getByText('可执行', { exact: true }).first()).toBeVisible();
+  await expect(desk(page).getByText('未支持', { exact: true })).toHaveCount(0);
+  const picker = desk(page).getByLabel('执行技能');
+  await expect(picker.getByRole('option', { name: '浏览器与接口验收' })).toHaveCount(1);
+  await picker.selectOption('web.audit');
+  await expect(picker).toHaveValue('web.audit');
+  await page.goto('/skills'); await expect(page.getByRole('heading', { level: 1, name: '让每项技能，都对应真实交付' })).toBeVisible();
   await expect(page.locator('.skill-tile-stats')).toHaveCount(0);
-  await expect(page.getByRole('button', { name: '添加Word 文档生成', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: '添加技能', exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: /已安装/ })).toHaveCount(0);
 });
 for (const width of [320, 375, 768]) {

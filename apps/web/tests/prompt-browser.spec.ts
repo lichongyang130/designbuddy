@@ -92,7 +92,7 @@ for (const width of [320, 375, 768, 1440]) {
   test(`submenu and recommendation rows fit ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
     await page.getByRole("button", { name: "全部分类", exact: true }).click();
-    await expect(page.getByRole("menu", { name: "办公提效全部分类" }).getByRole("menuitem")).toHaveCount(10);
+    await expect(page.getByRole("menu", { name: "办公提效全部分类" }).getByRole("menuitem")).toHaveCount(11);
     await page.getByRole("menuitem", { name: /^协作跟进/ }).click();
     const menu = page.getByRole("menu", { name: "协作跟进下级栏目" });
     const box = (await menu.boundingBox())!;
@@ -129,10 +129,11 @@ test("all categories support keyboard/back/Escape and retain hidden selection ac
   await trigger.focus();
   await page.keyboard.press("ArrowDown");
   await page.keyboard.press("End");
-  await expect(page.getByRole("menuitem", { name: /^协作跟进/ })).toBeFocused();
+  // "End" lands on the last office category, which is 其他问题.
+  await expect(page.getByRole("menuitem", { name: /^其他问题/ })).toBeFocused();
   await page.keyboard.press("Enter");
   await page.getByRole("menuitem", { name: "返回全部分类", exact: true }).click();
-  await expect(page.getByRole("menuitem")).toHaveCount(10);
+  await expect(page.getByRole("menuitem")).toHaveCount(11);
   await page.getByRole("menuitem", { name: /^协作跟进/ }).click();
   await page.getByRole("menuitem", { name: /变更分歧难以处理/ }).click();
   await expect(trigger).toBeFocused();

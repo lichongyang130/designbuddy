@@ -4,6 +4,17 @@ import ErrorOverlay from "./ErrorOverlay";
 import PreviewToolbar from "./PreviewToolbar";
 import { usePreviewSession, type PreviewFile, type PreviewFramework } from "./usePreviewSession";
 
+/**
+ * Preview panel for the isolated preview worker API (`/api/preview`).
+ *
+ * The local daemon does not mount those routes — they are only exercised by
+ * `server/preview-worker/e2e` — so this panel is not wired into the app and
+ * would report a failed session when it were. The live right-hand preview in
+ * the task conversation and in the project editor is
+ * `frontend/workspace/PreviewSidePanel.tsx`, which renders the current project
+ * files in a sandboxed iframe without a build step or a preview worker.
+ */
+
 export interface PreviewPanelProps {
   projectId: string;
   files: PreviewFile[];

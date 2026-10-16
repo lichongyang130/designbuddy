@@ -1,0 +1,291 @@
+{
+  "tool": "run-acceptance",
+  "suite": "designbuddy-account-data",
+  "baseUrl": "http://127.0.0.1:5173",
+  "ranAt": "2026-10-16T14:13:52.095Z",
+  "viewports": [
+    "desktop 1440x900",
+    "mobile 390x844"
+  ],
+  "counts": {
+    "total": 34,
+    "passed": 34,
+    "failed": 0,
+    "notVerified": 0
+  },
+  "results": [
+    {
+      "id": "profile-overview",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 1547
+    },
+    {
+      "id": "profile-facts",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (30 chars)",
+      "durationMs": 1936
+    },
+    {
+      "id": "profile-memory-card",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 1575
+    },
+    {
+      "id": "profile-memory-input",
+      "type": "fill",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "filled 12 characters",
+      "durationMs": 1615
+    },
+    {
+      "id": "profile-save-without-consent",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 114
+    },
+    {
+      "id": "profile-consent-required",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (14 chars)",
+      "durationMs": 2
+    },
+    {
+      "id": "profile-consent-checkbox",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 43
+    },
+    {
+      "id": "profile-save-with-consent",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 53
+    },
+    {
+      "id": "profile-memory-saved",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (42 chars)",
+      "durationMs": 47
+    },
+    {
+      "id": "profile-delete-memory",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 36
+    },
+    {
+      "id": "profile-memory-empty",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 27
+    },
+    {
+      "id": "profile-memory-removed",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (8 chars)",
+      "durationMs": 6
+    },
+    {
+      "id": "profile-devices",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 2000
+    },
+    {
+      "id": "profile-export-card",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 1567
+    },
+    {
+      "id": "profile-forget-needs-confirm",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 103
+    },
+    {
+      "id": "profile-forget-refused",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (12 chars)",
+      "durationMs": 4
+    },
+    {
+      "id": "profile-screenshot",
+      "type": "screenshot",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "screenshot saved as screenshots/desktop/profile-screenshot.png",
+      "durationMs": 1775
+    },
+    {
+      "id": "profile-overview",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 1400
+    },
+    {
+      "id": "profile-facts",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (30 chars)",
+      "durationMs": 1345
+    },
+    {
+      "id": "profile-memory-card",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 1612
+    },
+    {
+      "id": "profile-memory-input",
+      "type": "fill",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "filled 12 characters",
+      "durationMs": 1683
+    },
+    {
+      "id": "profile-save-without-consent",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 54
+    },
+    {
+      "id": "profile-consent-required",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (14 chars)",
+      "durationMs": 2
+    },
+    {
+      "id": "profile-consent-checkbox",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 51
+    },
+    {
+      "id": "profile-save-with-consent",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 49
+    },
+    {
+      "id": "profile-memory-saved",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (42 chars)",
+      "durationMs": 57
+    },
+    {
+      "id": "profile-delete-memory",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 28
+    },
+    {
+      "id": "profile-memory-empty",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 28
+    },
+    {
+      "id": "profile-memory-removed",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (8 chars)",
+      "durationMs": 6
+    },
+    {
+      "id": "profile-devices",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 1633
+    },
+    {
+      "id": "profile-export-card",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 1549
+    },
+    {
+      "id": "profile-forget-needs-confirm",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 83
+    },
+    {
+      "id": "profile-forget-refused",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (12 chars)",
+      "durationMs": 3
+    },
+    {
+      "id": "profile-screenshot",
+      "type": "screenshot",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "screenshot saved as screenshots/mobile/profile-screenshot.png",
+      "durationMs": 1522
+    }
+  ],
+  "policy": "只有真实访问目标并通过断言的检查才记为 passed；选择器缺失记为 not_verified 并写明原因；失败项保留控制台与网络记录。本工具不代表被测目标已完成业务验收，只证明声明的检查项在声明的视口下实际执行过。"
+}

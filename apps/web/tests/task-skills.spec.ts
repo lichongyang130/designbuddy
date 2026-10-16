@@ -37,7 +37,7 @@ test('home file task does not call chat/model automatically; actual HTTP executi
 });
 test('task model proposal preserves explicit expert/model, omits chat attachment text, then actual worker executes after separate approval',async({page})=>{
  let seen:any;await bridge(page,async input=>{seen=input;return {kind:'plan',expertId:'data',skillId:'table.analyze',reason:'根据描述进行固定统计；未读正文',options:{deduplicate:true}};});
- await page.route('**/api/expert-match',route=>route.fulfill({json:{kind:'match',expertId:'data',reason:'表格数值计算',responsibilities:['核对字段'],missing:[]}}));
+ await page.route('**/api/expert-match',route=>route.fulfill({json:{kind:'match',expertId:'data',collaboratorIds:[],reason:'表格数值计算',responsibilities:['核对字段'],missing:[]}}));
  const url=await openFromHome(page,goal,async()=>{
   await page.locator('input.visually-hidden-input[type=file]').setInputFiles({name:'chat-only.txt',mimeType:'text/plain',buffer:Buffer.from('CHAT_PRIVATE_BODY_MUST_NOT_REACH_SKILL_PLANNER')});
   await page.locator('.home-expert-trigger').click();await page.getByRole('button',{name:'允许并开启自动匹配',exact:true}).click();await page.getByRole('textbox',{name:'任务描述',exact:true}).click();await expect(page.locator('.home-expert-trigger')).toContainText('推荐：数据分析专家');await page.locator('.home-expert-trigger').click();await page.getByRole('button',{name:'使用推荐并锁定',exact:true}).click();

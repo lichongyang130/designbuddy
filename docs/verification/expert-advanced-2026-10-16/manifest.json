@@ -1,0 +1,131 @@
+{
+  "tool": "run-acceptance",
+  "suite": "designbuddy-skills",
+  "baseUrl": "http://127.0.0.1:5173",
+  "ranAt": "2026-10-16T10:30:37.101Z",
+  "viewports": [
+    "desktop 1440x900",
+    "mobile 390x844"
+  ],
+  "counts": {
+    "total": 14,
+    "passed": 14,
+    "failed": 0,
+    "notVerified": 0
+  },
+  "results": [
+    {
+      "id": "home-loads",
+      "type": "http",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "HTTP 200",
+      "durationMs": 12
+    },
+    {
+      "id": "skills-hero",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (13 chars)",
+      "durationMs": 1500
+    },
+    {
+      "id": "unavailable-card-badge",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 2565
+    },
+    {
+      "id": "open-unavailable-skill",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked and expected text present",
+      "durationMs": 2086
+    },
+    {
+      "id": "requirements-listed",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (192 chars)",
+      "durationMs": 19
+    },
+    {
+      "id": "requirements-screenshot",
+      "type": "screenshot",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "screenshot saved as screenshots/desktop/requirements-screenshot.png",
+      "durationMs": 446
+    },
+    {
+      "id": "skills-screenshot",
+      "type": "screenshot",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "screenshot saved as screenshots/desktop/skills-screenshot.png",
+      "durationMs": 3352
+    },
+    {
+      "id": "home-loads",
+      "type": "http",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "HTTP 200",
+      "durationMs": 6
+    },
+    {
+      "id": "skills-hero",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (13 chars)",
+      "durationMs": 1694
+    },
+    {
+      "id": "unavailable-card-badge",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 1969
+    },
+    {
+      "id": "open-unavailable-skill",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked and expected text present",
+      "durationMs": 2202
+    },
+    {
+      "id": "requirements-listed",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (192 chars)",
+      "durationMs": 19
+    },
+    {
+      "id": "requirements-screenshot",
+      "type": "screenshot",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "screenshot saved as screenshots/mobile/requirements-screenshot.png",
+      "durationMs": 485
+    },
+    {
+      "id": "skills-screenshot",
+      "type": "screenshot",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "screenshot saved as screenshots/mobile/skills-screenshot.png",
+      "durationMs": 2773
+    }
+  ],
+  "policy": "只有真实访问目标并通过断言的检查才记为 passed；选择器缺失记为 not_verified 并写明原因；失败项保留控制台与网络记录。本工具不代表被测目标已完成业务验收，只证明声明的检查项在声明的视口下实际执行过。"
+}

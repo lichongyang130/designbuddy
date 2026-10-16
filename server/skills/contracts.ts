@@ -50,6 +50,44 @@ export function validateSkillOptions(skillId: string, value: unknown): SkillOpti
     if (params.aggregation !== "count" && (typeof params.metric !== "string" || !params.metric.trim())) throw new SkillRequestError("sum/average聚合必须指定数值指标字段。");
     return { deduplicate: false, parameters: { groupBy: params.groupBy, metric: typeof params.metric === "string" ? params.metric : "", aggregation: params.aggregation, title: typeof params.title === "string" && params.title.trim() ? params.title : "分组数据报告" } };
   }
+  if (skillId === "web.verify" || skillId === "test.browser") {
+    if (!o.parameters || typeof o.parameters !== "object" || Array.isArray(o.parameters)) throw new SkillRequestError("请填写要验证的站点地址。");
+    const p = o.parameters as Record<string, unknown>;
+    if (Object.keys(p).some(k => k !== "baseUrl")) throw new SkillRequestError("该技能只接受 baseUrl 参数。");
+    if (typeof p.baseUrl !== "string" || !p.baseUrl.trim() || p.baseUrl.length > 200 || /[\x00-\x1f\x7f]/.test(p.baseUrl)) throw new SkillRequestError("站点地址不合法：只填 http/https 主机与端口，最长 200 字。");
+    return { deduplicate: false, parameters: { baseUrl: p.baseUrl.trim() } };
+  }
+  if (skillId === "code.build") {
+    if (o.parameters !== undefined) {
+      if (typeof o.parameters !== "object" || Array.isArray(o.parameters)) throw new SkillRequestError("构建参数格式错误。");
+      const p = o.parameters as Record<string, unknown>;
+      if (Object.keys(p).some(k => k !== "buildCommand")) throw new SkillRequestError("该技能只接受 buildCommand 参数。");
+      if (p.buildCommand !== undefined && (typeof p.buildCommand !== "string" || p.buildCommand.length > 60 || /[\x00-\x1f\x7f|;&$`><]/.test(p.buildCommand))) throw new SkillRequestError("构建命令不合法：最多 60 字且不得包含管道、重定向或链式命令。");
+    }
+    const command = (o.parameters as Record<string, string> | undefined)?.buildCommand;
+    return { deduplicate: false, parameters: command ? { buildCommand: command.trim() } : {} };
+  }
+  if (skillId === "image.generate") {
+    if (!o.parameters || typeof o.parameters !== "object" || Array.isArray(o.parameters)) throw new SkillRequestError("请确认第三方模型授权与出图参数。");
+    const p = o.parameters as Record<string, unknown>;
+    const allowed = ["externalConsent", "size", "count"];
+    if (Object.keys(p).some(k => !allowed.includes(k))) throw new SkillRequestError("该技能只接受 externalConsent、size、count 参数。");
+    if (p.externalConsent !== "yes") throw new SkillRequestError("生成图片会把提示词发送给第三方图像模型；请单次明确授权后再执行。");
+    const sizes = ["256x256", "512x512", "1024x1024", "1024x1536", "1536x1024", "1792x1024", "1024x1792"];
+    if (p.size !== undefined && (typeof p.size !== "string" || !sizes.includes(p.size))) throw new SkillRequestError(`图片尺寸只支持 ${sizes.join("、")}。`);
+    if (p.count !== undefined && (typeof p.count !== "string" || !/^[1-4]$/.test(p.count))) throw new SkillRequestError("一次最多生成 4 张。");
+    return { deduplicate: false, parameters: { externalConsent: "yes", size: typeof p.size === "string" ? p.size : "1024x1024", count: typeof p.count === "string" ? p.count : "1" } };
+  }
+  if (skillId === "collaboration.sync") {
+    if (!o.parameters || typeof o.parameters !== "object" || Array.isArray(o.parameters)) throw new SkillRequestError("请确认本次外发并提供幂等键。");
+    const p = o.parameters as Record<string, unknown>;
+    const allowed = ["externalConsent", "confirmation", "idempotencyKey"];
+    if (Object.keys(p).some(k => !allowed.includes(k))) throw new SkillRequestError("该技能只接受 externalConsent、confirmation、idempotencyKey 参数。");
+    if (p.externalConsent !== "yes") throw new SkillRequestError("该操作会把内容发送到第三方服务；请单次明确授权后再执行。");
+    if (p.confirmation !== "yes") throw new SkillRequestError("每次外发或写入都需要逐次确认。");
+    if (typeof p.idempotencyKey !== "string" || !/^[A-Za-z0-9_-]{8,80}$/.test(p.idempotencyKey)) throw new SkillRequestError("请提供 8–80 位幂等键（仅字母、数字、下划线、连字符）。");
+    return { deduplicate: false, parameters: { externalConsent: "yes", confirmation: "yes", idempotencyKey: p.idempotencyKey } };
+  }
   if (skillId !== "image.marketing") {
     if (o.parameters !== undefined) throw new SkillRequestError("该技能不支持这些参数。");
     return { deduplicate: o.deduplicate };

@@ -138,7 +138,7 @@ test("sidebar and market navigation remain functional", async ({ page }) => {
   await page.getByRole("menuitem", { name: "连接器", exact: true }).click();
   await expect(page).toHaveURL(/\/connectors$/);
   await page.getByRole("navigation", { name: "专家技能连接器导航" }).getByRole("button", { name: "技能", exact: true }).click();
-  await expect(page.getByRole("heading", { name: "精选技能", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "让每项技能，都对应真实交付" })).toBeVisible();
   await page.getByRole("navigation", { name: "专家技能连接器导航" }).getByRole("button", { name: "连接器", exact: true }).click();
   await page.getByRole("button", { name: "首页", exact: true }).click();
   await expect(page.getByRole("heading", { name: /DesignBuddy 让工作更高效/ })).toBeVisible();

@@ -6,6 +6,7 @@ import { AtelierCover } from "./samples/atelier/AtelierCover";
 import { TemplateCloudProvider } from "./TemplateCloud";
 import { ServerLibrary } from "./ServerLibrary";
 import { FormeCover } from "./samples/forme/FormeCover";
+import { kitCover, kitViewer } from "./samples/kit/KitSet";
 import {
   MediaCover,
   mediaIds,
@@ -46,6 +47,13 @@ const AtelierPrototype = lazy(
   () => import("./samples/atelier/AtelierPrototype"),
 );
 const FormePrototype = lazy(() => import("./samples/forme/FormePrototype"));
+
+const StudioNineCover = kitCover("studio-nine");
+const WellspringCover = kitCover("wellspring");
+const CircuitCover = kitCover("circuit");
+const StudioNinePrototype = kitViewer("studio-nine");
+const WellspringPrototype = kitViewer("wellspring");
+const CircuitPrototype = kitViewer("circuit");
 const workCategories: { label: string; icon?: HomeIconName }[] = [
   { label: "全部" },
   { label: "原型", icon: "grid" },
@@ -76,6 +84,12 @@ function Preview({ id }: { id: SampleId }) {
         <AtelierCover />
       ) : id === "forme" ? (
         <FormeCover />
+      ) : id === "studio-nine" ? (
+        <StudioNineCover />
+      ) : id === "wellspring" ? (
+        <WellspringCover />
+      ) : id === "circuit" ? (
+        <CircuitCover />
       ) : id === "museum" ? (
         <MuseumCover />
       ) : id === "city" ? (
@@ -134,6 +148,9 @@ export default function InspirationPage({ pathname }: { pathname: string }) {
     daylight: DaylightPrototype,
     tide: TidePrototype,
     morrow: MorrowPrototype,
+    "studio-nine": StudioNinePrototype,
+    wellspring: WellspringPrototype,
+    circuit: CircuitPrototype,
   };
   const Viewer = sample ? viewers[sample.id] : null;
   const visible = samples.filter(

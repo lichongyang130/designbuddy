@@ -22,7 +22,7 @@ test("original eight entries still have two real works per original format and a
   page,
 }) => {
   await page.goto("/inspiration");
-  await expect(page.locator(".sample-card")).toHaveCount(19);
+  await expect(page.locator(".sample-card")).toHaveCount(22);
   const cover = page.locator(".preview-museum .museum-cover");
   await expect(cover).toBeVisible();
   expect((await cover.boundingBox())!.width).toBeGreaterThan(100);
@@ -33,7 +33,8 @@ test("original eight entries still have two real works per original format and a
       .getByRole("button", { name: category, exact: true })
       .click();
     await expect(page.locator(".sample-card")).toHaveCount(
-      category === "原型" ? 8 : 2,
+      // 原型 now also contains the three data-driven kit templates.
+      category === "原型" ? 11 : 2,
     );
   }
   await page.getByRole("button", { name: "全部", exact: true }).click();

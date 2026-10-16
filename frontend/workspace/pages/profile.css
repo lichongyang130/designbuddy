@@ -1,0 +1,254 @@
+.profile-workspace {
+  display: flex;
+  min-height: 100vh;
+  background: #f6f4ef;
+  color: #1b211d;
+}
+
+.profile-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 28px;
+  border-bottom: 1px solid #e2ded3;
+  background: #fffdf8;
+}
+
+.profile-content {
+  padding: 24px 28px 64px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 1080px;
+}
+
+.profile-hero h1 {
+  margin: 6px 0 4px;
+  font-size: 28px;
+}
+
+.profile-hero p {
+  margin: 0;
+  max-width: 62ch;
+  color: #4c534d;
+  line-height: 1.6;
+}
+
+.profile-eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6d7a6f;
+}
+
+.profile-message {
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: #eef3ee;
+  border: 1px solid #cfdcd0;
+}
+
+.profile-message.is-error {
+  background: #fbeceb;
+  border-color: #e3b7b2;
+  color: #8a2c22;
+}
+
+.profile-card {
+  background: #fffdf8;
+  border: 1px solid #e2ded3;
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.profile-card h2 {
+  margin: 0;
+  font-size: 17px;
+}
+
+.profile-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px 20px;
+  margin: 0;
+}
+
+.profile-facts div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.profile-facts dt {
+  font-size: 12px;
+  color: #6d7a6f;
+}
+
+.profile-facts dd {
+  margin: 0;
+  font-size: 15px;
+  word-break: break-all;
+}
+
+.profile-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.profile-table th,
+.profile-table td {
+  text-align: left;
+  padding: 8px 10px;
+  border-bottom: 1px solid #eceadf;
+  vertical-align: top;
+}
+
+.profile-table th {
+  font-weight: 600;
+  color: #6d7a6f;
+  font-size: 12px;
+}
+
+.profile-table code {
+  font-size: 12px;
+  background: #f1efe7;
+  padding: 1px 6px;
+  border-radius: 6px;
+}
+
+.profile-note {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #5a615b;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.profile-button {
+  border: 1px solid #d8d2c4;
+  background: #fffdf8;
+  color: #1b211d;
+  border-radius: 999px;
+  padding: 7px 15px;
+  font: inherit;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+.profile-button.is-primary {
+  border-color: #264c3b;
+  background: #264c3b;
+  color: #fffdf8;
+}
+
+.profile-button.is-danger {
+  border-color: #a3382c;
+  color: #a3382c;
+}
+
+.profile-button:disabled {
+  opacity: 0.55;
+  cursor: progress;
+}
+
+.profile-memory-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.profile-memory-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  width: 100%;
+}
+
+.profile-memory-form textarea {
+  font: inherit;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid #d8d2c4;
+  background: #fff;
+  resize: vertical;
+}
+
+.profile-consent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.profile-memory-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.profile-memory-list li {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  border: 1px solid #eceadf;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.profile-memory-list p {
+  margin: 0 0 4px;
+  font-size: 14px;
+}
+
+.profile-memory-list small {
+  color: #6d7a6f;
+  font-size: 12px;
+}
+
+.profile-empty {
+  justify-content: center;
+  color: #6d7a6f;
+  font-size: 13px;
+}
+
+.profile-actions {
+  display: flex;
+  gap: 10px;
+}
+
+@media (max-width: 720px) {
+  .profile-content {
+    padding: 18px 16px 48px;
+  }
+
+  .profile-topbar {
+    padding: 12px 16px;
+    flex-wrap: wrap;
+  }
+
+  .profile-table {
+    display: block;
+    overflow-x: auto;
+  }
+}

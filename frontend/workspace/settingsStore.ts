@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { useMemo } from "react";
+import { apiJSON } from "../../apps/web/src/api/client";
 import { modelOptions } from "./taskModels";
 
 export const SETTINGS_KEY = "designbuddy.preferences.v1";
@@ -14,10 +15,19 @@ const validModelId = /^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$/;
 
 function readPreferences(): Preferences {
   try {
-    const raw = JSON.parse(localStorage.getItem(SETTINGS_KEY) || "{}");
+    return sanitizePreferences(JSON.parse(localStorage.getItem(SETTINGS_KEY) || "{}"));
+  } catch {
+    return { ...defaults, models: [] };
+  }
+}
+
+/** Keep only the shapes the settings screens understand. */
+function sanitizePreferences(raw: unknown): Preferences {
+  try {
+    const source = (raw && typeof raw === "object" ? raw : {}) as Record<string, unknown>;
     const models: CustomModel[] = [];
-    if (Array.isArray(raw.models))
-      for (const item of raw.models.slice(0, 20)) {
+    if (Array.isArray(source.models))
+      for (const item of source.models.slice(0, 20)) {
         if (
           !item ||
           typeof item.id !== "string" ||
@@ -40,16 +50,93 @@ function readPreferences(): Preferences {
       }
     return {
       fontSize:
-        typeof raw.fontSize === "number" && Number.isFinite(raw.fontSize)
-          ? Math.min(20, Math.max(12, Math.round(raw.fontSize)))
+        typeof source.fontSize === "number" && Number.isFinite(source.fontSize)
+          ? Math.min(20, Math.max(12, Math.round(source.fontSize)))
           : defaults.fontSize,
-      linkMode: ["smart", "new-tab", "same-tab"].includes(raw.linkMode)
-        ? raw.linkMode
+      linkMode: ["smart", "new-tab", "same-tab"].includes(source.linkMode as string)
+        ? (source.linkMode as Preferences["linkMode"])
         : "smart",
       models,
     };
   } catch {
     return { ...defaults, models: [] };
+  }
+}
+
+/** The key the account preferences are stored under on the server. */
+export const SYNCED_PREFERENCE_KEY = "workspace.preferences";
+
+export type PreferenceSyncState = {
+  status: "idle" | "syncing" | "synced" | "offline";
+  lastSyncedAt: number | null;
+  error: string;
+};
+
+/** The state of the cross-device preference sync. */
+export const usePreferenceSync = create<PreferenceSyncState>(() => ({
+  status: "idle",
+  lastSyncedAt: null,
+  error: "",
+}));
+
+let syncTimer: ReturnType<typeof setTimeout> | undefined;
+
+/** Push the current preferences to the account. Best effort: never breaks the UI. */
+export async function pushPreferencesToAccount(): Promise<void> {
+  usePreferenceSync.setState({
+    status: "syncing",
+    lastSyncedAt: usePreferenceSync.getState().lastSyncedAt,
+    error: "",
+  });
+  try {
+    const body = await apiJSON<{ preference: { updatedAt: number } }>("/profile/preferences", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ key: SYNCED_PREFERENCE_KEY, value: usePreferences.getState() }),
+    });
+    usePreferenceSync.setState({ status: "synced", lastSyncedAt: body.preference.updatedAt, error: "" });
+  } catch {
+    usePreferenceSync.setState({
+      status: "offline",
+      lastSyncedAt: usePreferenceSync.getState().lastSyncedAt,
+      error: "偏好已在本机生效，跨设备同步暂不可用（后端未连接）。",
+    });
+  }
+}
+
+function schedulePreferencePush() {
+  if (syncTimer) clearTimeout(syncTimer);
+  syncTimer = setTimeout(() => {
+    void pushPreferencesToAccount();
+  }, 800);
+}
+
+/** Load the account preferences from the server. The server wins for known keys. */
+export async function syncPreferencesFromAccount(): Promise<void> {
+  usePreferenceSync.setState({
+    status: "syncing",
+    lastSyncedAt: usePreferenceSync.getState().lastSyncedAt,
+    error: "",
+  });
+  try {
+    const body = await apiJSON<{ preferences: { key: string; value: unknown }[] }>("/profile/preferences");
+    const entry = body.preferences.find((item) => item.key === SYNCED_PREFERENCE_KEY);
+    if (entry && entry.value && typeof entry.value === "object") {
+      const merged = sanitizePreferences({ ...readPreferences(), ...(entry.value as Record<string, unknown>) });
+      try {
+        localStorage.setItem(SETTINGS_KEY, JSON.stringify(merged));
+      } catch {
+        /* The local store still works without persistence. */
+      }
+      usePreferences.setState(merged);
+    }
+    usePreferenceSync.setState({ status: "synced", lastSyncedAt: Date.now(), error: "" });
+  } catch {
+    usePreferenceSync.setState({
+      status: "offline",
+      lastSyncedAt: usePreferenceSync.getState().lastSyncedAt,
+      error: "未能从账号读取偏好，当前使用本机设置。",
+    });
   }
 }
 
@@ -62,6 +149,7 @@ function save(next: Preferences) {
     throw new Error("浏览器存储不可用，配置未保存。请检查存储权限或空间。");
   }
   usePreferences.setState(next);
+  schedulePreferencePush();
 }
 export function setFontSize(fontSize: number) {
   save({

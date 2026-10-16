@@ -16,8 +16,12 @@
     "test:skills": "pnpm exec tsc -p server/tsconfig.local.json && node --test server/skills/*.test.cjs",
     "setup:asr": "python3 scripts/setup-asr.py",
     "ocr:benchmark": "node scripts/ocr-accuracy-benchmark.mjs",
-    "test:ocr-benchmark": "node --test scripts/ocr-accuracy-benchmark.test.mjs",
-    "docx:render-reference": "node scripts/render-docx-libreoffice-reference.mjs"
+    "test:ocr-benchmark": "pnpm exec tsc -p server/tsconfig.local.json && node --test scripts/ocr-accuracy-benchmark.test.mjs",
+    "docx:render-reference": "node scripts/render-docx-libreoffice-reference.mjs",
+    "test:formula-corpus": "pnpm exec tsc -p server/tsconfig.local.json && node --test scripts/verify-formula-compat.test.mjs",
+    "test:acceptance": "pnpm exec tsc -p server/tsconfig.local.json && node --test scripts/acceptance/run-acceptance.test.mjs",
+    "acceptance:run": "node scripts/acceptance/run-acceptance.mjs",
+    "test:scripts": "pnpm exec tsc -p server/tsconfig.local.json && node --test scripts/verify-formula-compat.test.mjs scripts/acceptance/run-acceptance.test.mjs scripts/ocr-accuracy-benchmark.test.mjs"
   },
   "packageManager": "pnpm@9.0.0",
   "workspaces": [

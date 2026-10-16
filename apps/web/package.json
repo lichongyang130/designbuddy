@@ -14,6 +14,7 @@
     "test:skills": "node scripts/run-playwright.mjs test tests/skills.spec.ts",
     "test:connectors": "playwright test connectors.spec.ts",
     "test:conversation": "playwright test conversation.spec.ts",
+    "test:right-preview": "node scripts/run-playwright.mjs test tests/right-preview.spec.ts",
     "test:account": "playwright test account.spec.ts",
     "test:scenes": "playwright test scenes.spec.ts workspace.spec.ts",
     "test:settings": "playwright test account.spec.ts settings.spec.ts",
