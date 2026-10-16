@@ -22,3 +22,5 @@ playwright-report/
 data/*.sqlite
 data/*.sqlite-shm
 data/*.sqlite-wal
+# 服务器素材库里的上传文件（运行时数据，不入库）
+data/assets/

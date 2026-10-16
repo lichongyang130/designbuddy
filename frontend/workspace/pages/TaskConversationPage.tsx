@@ -5,6 +5,7 @@ import { WorkBuddySidebar } from "../../../apps/web/src/components/WorkBuddySide
 import { AIProviderSettings, getAIProviderCredentials } from "../AIProviderSettings";
 import { PromptInput } from "../PromptInput";
 import { generateProjectWithAI } from "../api/generation";
+import { uploadAsset } from "../api/assets";
 import { streamTaskReply } from "../api/taskChat";
 import { getProject, listProjects, updateProject } from "../projectStore";
 import { PreviewSidePanel } from "../PreviewSidePanel";
@@ -17,7 +18,7 @@ import "./task-conversation.css";
 import SkillWorkbench from "../SkillWorkbench";
 import { expertCatalog } from "../expertCatalog";
 
-type Attachment = { name: string; text: string };
+type Attachment = { name: string; text: string; assetId?: string };
 const statusLabels = { waiting: "正在思考", streaming: "正在回复", complete: "已完成", error: "回复失败", stopped: "已停止", local: "仅本地 · 未发送", clarifying: "等待你的回答" };
 const newId = () => crypto.randomUUID();
 
@@ -252,7 +253,7 @@ export default function TaskConversationPage({ projectId }: { projectId: string 
     const value = draft.trim();
     const current = taskRef.current;
     if (!value || !current || controller.current || current.messages.at(-1)?.clarification?.state === "pending") return;
-    const attachmentText = attachments.map((file) => `\n\n--- 附件：${file.name} ---\n${file.text}`).join("");
+    const attachmentText = attachments.map((file) => `\n\n--- 附件：${file.name}${file.assetId ? `（服务器素材 ${file.assetId}）` : ""} ---\n${file.text}`).join("");
     const previousUser = [...current.messages].reverse().find((m) => m.role === "user");
     const confirmedBrief = [...current.messages].reverse().find((m) => m.role === "user" && m.requirementsConfirmed)
       || current.messages.find((m) => m.role === "user" && m.requestContent?.includes("本次专家工作规范"));
@@ -268,11 +269,27 @@ export default function TaskConversationPage({ projectId }: { projectId: string 
   async function readAttachments(event: ChangeEvent<HTMLInputElement>) {
     const files = Array.from(event.currentTarget.files || []);
     event.currentTarget.value = "";
+    // The server stores the file in the asset library and parses text files
+    // there. When the server is not reachable the browser still reads small
+    // text files, and files that cannot be read are listed by name only.
     const readable = files.filter((file) => (file.type.startsWith("text/") || /\.(txt|md|json|csv|html|css|js|xml|ya?ml)$/i.test(file.name)) && file.size <= 160_000);
     try {
-      const values = await Promise.all(readable.map(async (file) => ({ name: file.name, text: (await file.text()).slice(0, 80_000) })));
+      const values = await Promise.all(files.map(async (file) => {
+        if (file.size <= 5_000_000) {
+          try {
+            const asset = await uploadAsset(file);
+            if (asset.extracted) return { name: file.name, text: asset.excerpt, assetId: asset.id };
+            return { name: file.name, text: "", assetId: asset.id };
+          } catch { /* the server is not reachable; read the file in the browser */ }
+        }
+        if (!readable.includes(file)) return { name: file.name, text: "" };
+        return { name: file.name, text: (await file.text()).slice(0, 80_000) };
+      }));
       setAttachments((items) => [...items, ...values].slice(-4));
-      if (readable.length !== files.length) setNotice("仅支持每个不超过 160 KB 的文本附件，最多保留 4 个；图片和 PDF 不会被解析。");
+      const stored = values.filter((file) => file.assetId).length;
+      const parsed = values.filter((file) => file.text).length;
+      if (stored) setNotice(`已上传 ${stored} 个附件到服务器素材库，其中 ${parsed} 个由服务器解析出文本。`);
+      else if (readable.length !== files.length) setNotice("仅支持每个不超过 160 KB 的文本附件，最多保留 4 个；图片和 PDF 不会被解析。");
     } catch { setNotice("附件读取失败，请重新选择。"); }
   }
   async function copy(text: string) {

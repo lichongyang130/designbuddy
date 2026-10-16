@@ -19,6 +19,7 @@ import { ProjectVersionStore } from "./api/project-versions";
 import { setAiUsageRecorder } from "./api/ai";
 import { PluginRegistry } from "./api/plugin-registry";
 import { ProjectShareStore } from "./api/project-shares";
+import { AssetStore } from "./api/assets";
 import { ScheduleRunner } from "./api/scheduler";
 
 const host = process.env.DESIGNBUDDY_HOST || "0.0.0.0";
@@ -46,6 +47,7 @@ const scheduler = new ScheduleRunner(tasks);
 if (process.env.SKILL_SCHEDULER_ENABLED !== "false") scheduler.start();
 const plugins = new PluginRegistry();
 const projectShares = new ProjectShareStore();
+const assets = new AssetStore();
 setAiUsageRecorder((ownerId, record) => {
   try {
     tasks.recordAiUsage(ownerId, record);
@@ -65,6 +67,7 @@ const api = createApiHandler({
   memberships,
   versions: projectVersions,
   shares: projectShares,
+  assets,
   workspaces,
   authenticate: async (request) =>
     trustedToken(request) ? { id: "local-user" } : workspace.principal(request),

@@ -13,6 +13,7 @@ import { proxyAIStream } from "./ai-proxy";
 import { streamTaskChat, TaskChatValidationError, type TaskChatRequest } from "./chat";
 import { changedFiles, type ProjectVersionStore, type VersionConflict } from "./project-versions";
 import { ProjectShareStore } from "./project-shares";
+import { AssetInputError, AssetLimitError, AssetStore, type Asset, type AssetVisibility } from "./assets";
 import {
   canEditWorkspace,
   canManageMembers,
@@ -67,6 +68,8 @@ export interface ApiHandlerOptions {
   versions?: ProjectVersionStore;
   /** Workspaces and organisation members. */
   workspaces?: WorkspaceStore;
+  /** Server side asset library for uploaded files. */
+  assets?: AssetStore;
   canAccessProject?(principal: ApiPrincipal, projectId: string): Promise<boolean>;
   corsOrigin?: string;
 }
@@ -121,10 +124,10 @@ function json(data: unknown, status = 200, origin?: string): Response {
   return new Response(JSON.stringify(data), { status, headers });
 }
 
-async function readJson(request: Request): Promise<Record<string, unknown>> {
+async function readJson(request: Request, limit = 2_500_000): Promise<Record<string, unknown>> {
   const type = request.headers.get("content-type") || "";
   if (!type.toLowerCase().includes("application/json")) throw new Error("Content-Type must be application/json.");
-  const raw = await readBytesLimited(request, 2_500_000);
+  const raw = await readBytesLimited(request, limit);
   let body: unknown;
   try { body = JSON.parse(new TextDecoder().decode(raw)); }
   catch { throw new Error("Request body must contain valid JSON."); }
@@ -196,6 +199,15 @@ function asProject(value: Record<string, unknown>): ApiProject {
  */
 export function createApiHandler(options: ApiHandlerOptions): (request: Request) => Promise<Response> {
   const collaboration = options.collaboration ?? new RealtimeCollaborationHub(options.collaborationStore);
+  /** The people who share a workspace with this account. */
+  const workspacePeerIds = (viewerId: string): string[] => {
+    if (!options.workspaces) return [];
+    const peers = new Set<string>();
+    for (const workspace of options.workspaces.listFor(viewerId)) {
+      for (const member of options.workspaces.listMembers(workspace.id)) peers.add(member.userId);
+    }
+    return [...peers];
+  };
   /** The workspace a project belongs to and the role the person has in it. */
   async function workspaceAccessFor(
     principal: ApiPrincipal,
@@ -735,6 +747,67 @@ export function createApiHandler(options: ApiHandlerOptions): (request: Request)
         options.shares.revoke(token, principal.id);
         options.versions?.recordAudit(share.projectId, principal.id, "project.share.revoke", "撤销只读分享链接");
         return json({ revoked: true }, 200, options.corsOrigin);
+      }
+
+      const assetCollectionPath = url.pathname.match(/^\/api\/assets$/);
+      if (assetCollectionPath && options.assets) {
+        if (request.method === "GET") {
+          return json({ assets: options.assets.listVisible(principal.id, workspacePeerIds(principal.id)) }, 200, options.corsOrigin);
+        }
+        if (request.method === "POST") {
+          const body = await readJson(request, 8_000_000);
+          const name = typeof body.name === "string" ? body.name : "";
+          const mime = typeof body.mime === "string" ? body.mime : "application/octet-stream";
+          const dataBase64 = typeof body.dataBase64 === "string" ? body.dataBase64 : "";
+          if (!dataBase64) return json({ error: "请提供文件内容。" }, 400, options.corsOrigin);
+          const bytes = Buffer.from(dataBase64, "base64");
+          // A truncated or mangled payload must not be stored as a valid file.
+          if (!bytes.byteLength || bytes.toString("base64").replace(/=+$/, "") !== dataBase64.replace(/\s+/g, "").replace(/=+$/, "")) {
+            return json({ error: "文件内容不是有效的编码。" }, 400, options.corsOrigin);
+          }
+          const visibility = body.visibility === "workspace" || body.visibility === "public" ? body.visibility : "private";
+          try {
+            const asset = options.assets.create(principal.id, { name, mime, bytes }, visibility as AssetVisibility);
+            return json({ asset }, 201, options.corsOrigin);
+          } catch (error) {
+            if (error instanceof AssetLimitError) return json({ error: error.message }, 413, options.corsOrigin);
+            if (error instanceof AssetInputError) return json({ error: error.message }, 400, options.corsOrigin);
+            throw error;
+          }
+        }
+        return json({ error: "Method not allowed." }, 405, options.corsOrigin);
+      }
+
+      const assetPath = url.pathname.match(/^\/api\/assets\/([A-Za-z0-9_-]{4,64})(?:\/(content|events))?$/);
+      if (assetPath && options.assets) {
+        const asset = options.assets.get(assetPath[1]);
+        if (assetPath[2] === "events" && request.method === "GET") {
+          // The trail of a deleted file stays readable for its owner.
+          return json({ events: options.assets.events(assetPath[1], principal.id) }, 200, options.corsOrigin);
+        }
+        if (!asset) return json({ error: "素材不存在。" }, 404, options.corsOrigin);
+        const peers = workspacePeerIds(principal.id);
+        const visible = asset.ownerId === principal.id || asset.visibility === "public" || (asset.visibility === "workspace" && peers.includes(asset.ownerId));
+        if (!visible) return json({ error: "没有查看这个素材的权限。" }, 403, options.corsOrigin);
+        if (!assetPath[2] && request.method === "GET") return json({ asset }, 200, options.corsOrigin);
+        if (assetPath[2] === "content" && request.method === "GET") {
+          if (!asset.extracted) return json({ error: "这个文件不是文本，服务端没有解析它。" }, 415, options.corsOrigin);
+          return json({ assetId: asset.id, name: asset.name, text: asset.excerpt }, 200, options.corsOrigin);
+        }
+        if (!assetPath[2] && request.method === "PATCH") {
+          if (asset.ownerId !== principal.id) return json({ error: "只有素材的所有者可以修改可见范围。" }, 403, options.corsOrigin);
+          const body = await readJson(request);
+          const visibility = body.visibility === "workspace" || body.visibility === "public" || body.visibility === "private" ? body.visibility : null;
+          if (!visibility) return json({ error: "可见范围只能是 private、workspace 或 public。" }, 400, options.corsOrigin);
+          const updated = options.assets.setVisibility(asset.id, principal.id, visibility as AssetVisibility);
+          return json({ asset: updated }, 200, options.corsOrigin);
+        }
+        if (!assetPath[2] && request.method === "DELETE") {
+          if (asset.ownerId !== principal.id) return json({ error: "只有素材的所有者可以删除它。" }, 403, options.corsOrigin);
+          options.assets.remove(asset.id, principal.id);
+          return json({ ok: true }, 200, options.corsOrigin);
+        }
+        return json({ error: "Method not allowed." }, 405, options.corsOrigin);
       }
 
       const versionsPath = url.pathname.match(/^\/api\/projects\/([^/]+)\/versions(?:\/([^/]+))?$/);

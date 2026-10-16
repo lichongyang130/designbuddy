@@ -21,6 +21,7 @@ type Props = {
   projectCount: number;
   /** How many workspaces the account belongs to. */
   workspaceCount?: number;
+  assetCount?: number;
   go(path: string): void;
   setNotice(message: string): void;
 };
@@ -29,6 +30,7 @@ export function WorkBuddySidebar({
   active,
   projectCount,
   workspaceCount = 0,
+  assetCount = 0,
   go,
   setNotice,
 }: Props) {
@@ -151,6 +153,9 @@ export function WorkBuddySidebar({
         <button onClick={() => go("/projects")}>任务（{projectCount}）</button>
         <button onClick={() => go("/workspaces")}>
           空间（{workspaceCount}）
+        </button>
+        <button onClick={() => go("/assets")}>
+          素材（{assetCount}）
         </button>
       </div>
 
