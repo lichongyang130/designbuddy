@@ -518,7 +518,9 @@ export class WorkflowEngine {
     run.status = "running";
     run.error = undefined;
     this.store.save(run);
-    void this.execute(ownerId, run.id, stepId);
+    // The retried step runs first, the steps that were still waiting continue
+    // after it, so a run can be continued instead of restarted.
+    void this.execute(ownerId, run.id);
     return run;
   }
 
@@ -581,7 +583,7 @@ export class WorkflowEngine {
   }
 
   /** Run the steps of a run, in order. */
-  private async execute(ownerId: string, runId: string, onlyStep?: string) {
+  private async execute(ownerId: string, runId: string) {
     if (this.running.has(runId)) return;
     this.running.add(runId);
     try {
@@ -592,7 +594,6 @@ export class WorkflowEngine {
       for (const step of workflow.steps) {
         const record = run.steps.find((item) => item.id === step.id);
         if (!record) continue;
-        if (onlyStep && step.id !== onlyStep) continue;
         if (record.status !== "pending") continue;
         await this.runStep(ownerId, run, workflow, step);
         this.store.save(run);

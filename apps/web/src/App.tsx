@@ -19,6 +19,7 @@ import ProfilePage from "../../../frontend/workspace/pages/ProfilePage";
 import WorkspacesPage from "../../../frontend/workspace/pages/WorkspacesPage";
 import AssetsPage from "../../../frontend/workspace/pages/AssetsPage";
 import CommunityPage from "../../../frontend/workspace/pages/CommunityPage";
+import WorkflowsPage from "../../../frontend/workspace/pages/WorkflowsPage";
 import { listAssets, uploadAsset } from "../../../frontend/workspace/api/assets";
 import { fetchAccount } from "../../../frontend/workspace/api/account";
 import InspirationPage from "./inspiration/InspirationPage";
@@ -262,6 +263,7 @@ export default function App() {
   if (currentPath === "/workspaces") return <WorkspacesPage />;
   if (currentPath === "/assets") return <AssetsPage />;
   if (currentPath === "/community") return <CommunityPage />;
+  if (currentPath === "/workflows") return <WorkflowsPage />;
   if (currentPath === "/inspiration" || currentPath.startsWith("/inspiration/")) return <InspirationPage pathname={currentPath} />;
   if (currentPath.startsWith("/library")) return <DesignLibrary />;
   if (currentPath === "/studio" || currentPath.startsWith("/studio/")) return <StudioPage />;
@@ -472,6 +474,7 @@ export default function App() {
             <div>{quickActions.filter(action => action.mode === mode).map(action => <button key={action.title} onClick={() => selectHomeScene(action)}><HomeIcon name={action.icon} />{action.title}</button>)}</div>
           </details>
           <button className="home27-explore" onClick={() => go("/plugins")}><span aria-hidden="true">—</span> 探索更多 AI 能力 <span aria-hidden="true">→</span></button>
+          <button className="home27-explore" onClick={() => go("/workflows")}><span aria-hidden="true">—</span> 用工作流点几下完成一件事 <span aria-hidden="true">→</span></button>
         </div>
       </main>
     </div>

@@ -157,6 +157,7 @@ export function WorkBuddySidebar({
         <button onClick={() => go("/assets")}>
           素材（{assetCount}）
         </button>
+        <button onClick={() => go("/workflows")}>工作流</button>
         <button onClick={() => go("/community")}>社区模板</button>
       </div>
 
