@@ -140,3 +140,59 @@ type Workflow = {
 - 依托本轮已完成的：素材库（附件）、社区模板（产物去向）、技能权限（授权）、任务后端（运行记录）、
   技能运行记录（步骤状态）。
 - 不改变既有诚实边界：适配器/入口不算成品，工作流里缺凭据的步骤必须显式不可用。
+
+---
+
+## 6. 实施结果（第十三轮，2026-10-17）
+
+方案已经落地，四个轮次全部交付。**不是入口页，是真的按顺序调用已登记技能并产出真文件。**
+
+### 6.1 交付物
+
+| 层 | 文件 | 做了什么 |
+|---|---|---|
+| 服务端 | `server/api/workflows.ts` | 配方注册表（7 条）、运行记录（SQLite `data/workflows.sqlite`）、编排引擎（合成 multipart → 调 `SkillService.handle()` → 轮询技能运行至终态 → 记录真实状态/耗时/产物引用） |
+| 路由 | `server/api/http-handler.ts`、`server/local-daemon.ts` | `GET /api/workflows`、`POST /api/workflows/:id/runs`、`GET /api/workflow-runs`、`GET /api/workflow-runs/:id`、`POST /api/workflow-runs/:id/steps/:stepId/retry` |
+| 前端 | `frontend/workspace/pages/WorkflowsPage.tsx`、`frontend/workspace/api/workflows.ts`、`frontend/workspace/pages/workflows.css` | `/workflows` 卡片墙 + 三步向导（填写 → 确认 → 结果）+ 运行详情 + 单步重试 + 续跑 |
+| 入口 | `apps/web/src/App.tsx`、`WorkBuddySidebar.tsx`、`HomeDiscovery.tsx`、`homeScenes.ts` | 路由、侧栏入口、首页入口、场景卡上的「用工作流：<配方>」 |
+| 用例 | `server/api/workflows.test.cjs`（12）、`apps/web/tests/workflows.spec.ts`（5）、`scripts/acceptance/suites/designbuddy-workflows.suite.json`（56 项） | 服务端单测、浏览器用例、桌面/移动验收 |
+
+### 6.2 已上线的 7 条配方（全部可离线真跑，除注明外）
+
+| 配方 | 步骤（技能） | 产物 | 备注 |
+|---|---|---|---|
+| 业务对比信息图 | `infographic.compose` | 转曲 SVG、PNG、选图 JSON | 目的（比较/趋势/构成）由人选，程序不猜口径 |
+| FAQ 帮助页 | `faq.page` | HTML、离线 ZIP、报告 | 答案由人提供，程序不核实 |
+| 表格清洗与统计 | `table.analyze` | XLSX、统计 JSON、SVG | 读服务器素材库里的真实文件 |
+| 文档结构提取 | `document.structure` | 正文 JSON/TXT、预览 HTML、XLSX、位图 ZIP | 只处理主文档正文 |
+| 文档要点与成品 | `document.format` → `document.summarize` | 整理稿 DOCX、内嵌字体 PDF → 要点 Markdown | **第 2 步要 `AI_API_KEY`/`OPENAI_API_KEY`；缺了就显式标"不可用"并写明缺什么**，其余步骤照常 |
+| 网页落地页 | `web.scaffold` | 静态站点 ZIP、index.html、styles.css、app.js | 白名单区块，无外部依赖 |
+| 社媒封面卡片 | `social.card` | 1080×1440 PNG、报告 | 确定性排版，不调用图像模型 |
+
+### 6.3 首页场景接入（15 个场景里 5 个有真配方）
+
+| 场景 | 配方 | 其他 10 个场景 |
+|---|---|---|
+| 会议纪要 | 文档要点与成品 | 周报生成、汇报PPT、邮件撰写、管理后台、接口开发、报错排查、单元测试、App原型、品牌视觉、营销策划 **没有对应配方**，仍走原来的对话链路——不放假按钮 |
+
+### 6.4 产物接缝（两条真实接缝，不是社区模板）
+
+- **继续编辑**：文本类产物（HTML/SVG/JSON/MD/CSV）→ 新建项目 → 进编辑器，并同步一份到服务器（版本库可用）。
+- **存为素材**：任意产物 → 上传到服务器素材库（私密），素材页可见。
+- **没有做「存为社区模板」**：社区模板存的是"模板族"的状态（`state` 形如某套交互样例的字段结构），
+  工作流产物是文件，硬塞进去会生成打不开的副本。宁可少一个按钮，也不做半成品入口。
+
+### 6.5 诚实边界（仍然成立）
+
+- 缺凭据/未授权的步骤：`unavailable` / `skipped`，并写明"缺什么"；整条运行状态是 `partial` 或 `failed`，**绝不报成功**。
+- 工作流只是把已登记技能按固定顺序跑一遍：权限、上限、单次授权仍由技能服务判定，配方不能绕过。
+- 不会替用户确认第三方账号、不自动发布、不自动外发、不付款。
+- 用户自建与分享配方**本轮不做**（按第 4 节默认值），避免做半成品入口。
+- 「一键」只覆盖本机与已配置的第三方能力。
+
+### 6.6 可核验数字
+
+- 服务端全量：`node --test server/skills/*.test.cjs server/api/*.test.cjs` = **309/309 通过**（本轮新增 12 项工作流用例）。
+- 浏览器专项：`tests/workflows.spec.ts` = **5/5 通过**。
+- 验收套件 `designbuddy-workflows.suite.json`（1440×900 + 390×844）= **56/56 通过**，证据包
+  `docs/verification/workflows-2026-10-17/`（manifest/console/network/screenshots）。

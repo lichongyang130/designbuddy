@@ -133,6 +133,7 @@ export default function WorkflowsPage() {
     setStage("cards");
     setRun(null);
     setAnswers(EMPTY);
+    setNotice("");
     clearError();
   }
 
@@ -339,7 +340,7 @@ export default function WorkflowsPage() {
                       </p>
                       {blocked.length > 0 && (
                         <p className="wf-blocked">
-                          {blocked.length} 个步骤当前不能执行：{blocked[0].availability.reason}
+                          其中 {blocked.length} 个步骤在当前环境不能执行（其余步骤照常跑）：{blocked[0].availability.reason}
                         </p>
                       )}
                       <button className="wf-button is-primary" type="button" onClick={() => start(workflow)}>
