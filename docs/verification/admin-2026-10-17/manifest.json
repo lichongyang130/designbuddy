@@ -1,0 +1,323 @@
+{
+  "tool": "run-acceptance",
+  "suite": "designbuddy-admin",
+  "baseUrl": "http://127.0.0.1:5173",
+  "ranAt": "2026-10-17T00:14:51.571Z",
+  "viewports": [
+    "desktop 1440x900",
+    "mobile 390x844"
+  ],
+  "counts": {
+    "total": 38,
+    "passed": 38,
+    "failed": 0,
+    "notVerified": 0
+  },
+  "results": [
+    {
+      "id": "admin-page",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 1732
+    },
+    {
+      "id": "admin-boundary",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (95 chars)",
+      "durationMs": 8
+    },
+    {
+      "id": "admin-guest-refused",
+      "type": "evaluate",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "script ran (status 403)",
+      "durationMs": 25
+    },
+    {
+      "id": "admin-guest-account",
+      "type": "evaluate",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "script ran (status 200)",
+      "durationMs": 83
+    },
+    {
+      "id": "admin-operator-login",
+      "type": "evaluate",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "script ran (status 200)",
+      "durationMs": 64
+    },
+    {
+      "id": "admin-stats",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 2528
+    },
+    {
+      "id": "admin-accounts",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (3887 chars)",
+      "durationMs": 6
+    },
+    {
+      "id": "admin-usage",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 2
+    },
+    {
+      "id": "admin-failures",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 1
+    },
+    {
+      "id": "admin-schedules",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 2
+    },
+    {
+      "id": "admin-skills",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (364 chars)",
+      "durationMs": 4
+    },
+    {
+      "id": "admin-audit",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 2
+    },
+    {
+      "id": "admin-disable-guest",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked and expected text present",
+      "durationMs": 112
+    },
+    {
+      "id": "admin-disabled-flag",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (62 chars)",
+      "durationMs": 61
+    },
+    {
+      "id": "admin-audit-disable",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (4648 chars)",
+      "durationMs": 7
+    },
+    {
+      "id": "admin-restore-guest",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked and expected text present",
+      "durationMs": 119
+    },
+    {
+      "id": "admin-overview-api",
+      "type": "http",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "HTTP 200",
+      "durationMs": 17
+    },
+    {
+      "id": "admin-health-api",
+      "type": "http",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "HTTP 200",
+      "durationMs": 3
+    },
+    {
+      "id": "admin-screenshot",
+      "type": "screenshot",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "screenshot saved as screenshots/desktop/admin-screenshot.png",
+      "durationMs": 1888
+    },
+    {
+      "id": "admin-page",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 1615
+    },
+    {
+      "id": "admin-boundary",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (95 chars)",
+      "durationMs": 27
+    },
+    {
+      "id": "admin-guest-refused",
+      "type": "evaluate",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "script ran (status 403)",
+      "durationMs": 283
+    },
+    {
+      "id": "admin-guest-account",
+      "type": "evaluate",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "script ran (status 200)",
+      "durationMs": 66
+    },
+    {
+      "id": "admin-operator-login",
+      "type": "evaluate",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "script ran (status 200)",
+      "durationMs": 55
+    },
+    {
+      "id": "admin-stats",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 1879
+    },
+    {
+      "id": "admin-accounts",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (3887 chars)",
+      "durationMs": 6
+    },
+    {
+      "id": "admin-usage",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 1
+    },
+    {
+      "id": "admin-failures",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 1
+    },
+    {
+      "id": "admin-schedules",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 2
+    },
+    {
+      "id": "admin-skills",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (364 chars)",
+      "durationMs": 4
+    },
+    {
+      "id": "admin-audit",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 1
+    },
+    {
+      "id": "admin-disable-guest",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked and expected text present",
+      "durationMs": 127
+    },
+    {
+      "id": "admin-disabled-flag",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (62 chars)",
+      "durationMs": 58
+    },
+    {
+      "id": "admin-audit-disable",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (4785 chars)",
+      "durationMs": 4
+    },
+    {
+      "id": "admin-restore-guest",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked and expected text present",
+      "durationMs": 73
+    },
+    {
+      "id": "admin-overview-api",
+      "type": "http",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "HTTP 200",
+      "durationMs": 6
+    },
+    {
+      "id": "admin-health-api",
+      "type": "http",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "HTTP 200",
+      "durationMs": 6
+    },
+    {
+      "id": "admin-screenshot",
+      "type": "screenshot",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "screenshot saved as screenshots/mobile/admin-screenshot.png",
+      "durationMs": 754
+    }
+  ],
+  "policy": "只有真实访问目标并通过断言的检查才记为 passed；选择器缺失记为 not_verified 并写明原因；失败项保留控制台与网络记录。本工具不代表被测目标已完成业务验收，只证明声明的检查项在声明的视口下实际执行过。"
+}

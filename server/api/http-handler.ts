@@ -25,6 +25,7 @@ import {
   WorkflowInputError,
   workflowCatalog,
 } from "./workflows";
+import { AdminError, AdminService, isAdmin } from "./admin";
 import {
   canEditWorkspace,
   canManageMembers,
@@ -37,6 +38,8 @@ import {
 
 export interface ApiPrincipal {
   id: string;
+  /** The account name, when the caller signed in with an account. */
+  username?: string;
 }
 
 export interface ApiProject {
@@ -85,6 +88,8 @@ export interface ApiHandlerOptions {
   community?: CommunityTemplateStore;
   /** The workflow recipes and the runs they produce. */
   workflows?: WorkflowEngine;
+  /** The operator console. */
+  admin?: AdminService;
   canAccessProject?(principal: ApiPrincipal, projectId: string): Promise<boolean>;
   corsOrigin?: string;
 }
@@ -823,6 +828,52 @@ export function createApiHandler(options: ApiHandlerOptions): (request: Request)
           return json({ ok: true }, 200, options.corsOrigin);
         }
         return json({ error: "Method not allowed." }, 405, options.corsOrigin);
+      }
+
+      if (options.admin) {
+        // The console is for the operator of this server. A signed in account
+        // that is not on the configured list gets a clear refusal, not a page
+        // with half the data.
+        const allowed = isAdmin(principal);
+        const adminOverviewPath = url.pathname.match(/^\/api\/admin\/overview$/);
+        if (adminOverviewPath && request.method === "GET") {
+          if (!allowed) return json({ error: "只有本机配置的管理员账号可以打开管理后台。" }, 403, options.corsOrigin);
+          return json({ overview: options.admin.overview() }, 200, options.corsOrigin);
+        }
+        const adminAccountPath = url.pathname.match(/^\/api\/admin\/accounts\/([A-Za-z0-9_-]{4,64})\/status$/);
+        if (adminAccountPath && request.method === "POST") {
+          if (!allowed) return json({ error: "只有本机配置的管理员账号可以操作账号。" }, 403, options.corsOrigin);
+          const body = await readJson(request, 2000);
+          if (typeof body.enabled !== "boolean") return json({ error: "enabled 必须是布尔值。" }, 400, options.corsOrigin);
+          try {
+            return json({ account: options.admin.setAccountEnabled(adminAccountPath[1], body.enabled) }, 200, options.corsOrigin);
+          } catch (error) {
+            if (error instanceof AdminError) return json({ error: error.message }, error.status, options.corsOrigin);
+            throw error;
+          }
+        }
+        const adminTaskPath = url.pathname.match(/^\/api\/admin\/tasks\/([A-Za-z0-9_-]{4,64})\/([A-Za-z0-9_-]{4,64})\/retry$/);
+        if (adminTaskPath && request.method === "POST") {
+          if (!allowed) return json({ error: "只有本机配置的管理员账号可以重试任务。" }, 403, options.corsOrigin);
+          try {
+            return json({ task: options.admin.retryTask(adminTaskPath[1], adminTaskPath[2]) }, 200, options.corsOrigin);
+          } catch (error) {
+            if (error instanceof AdminError) return json({ error: error.message }, error.status, options.corsOrigin);
+            throw error;
+          }
+        }
+        const adminSchedulePath = url.pathname.match(/^\/api\/admin\/schedules\/([A-Za-z0-9_-]{4,64})\/([A-Za-z0-9_-]{4,64})\/status$/);
+        if (adminSchedulePath && request.method === "POST") {
+          if (!allowed) return json({ error: "只有本机配置的管理员账号可以操作定时任务。" }, 403, options.corsOrigin);
+          const body = await readJson(request, 2000);
+          if (typeof body.enabled !== "boolean") return json({ error: "enabled 必须是布尔值。" }, 400, options.corsOrigin);
+          try {
+            return json({ schedule: options.admin.setScheduleEnabled(adminSchedulePath[1], adminSchedulePath[2], body.enabled) }, 200, options.corsOrigin);
+          } catch (error) {
+            if (error instanceof AdminError) return json({ error: error.message }, error.status, options.corsOrigin);
+            throw error;
+          }
+        }
       }
 
       if (options.workflows) {

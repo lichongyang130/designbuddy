@@ -20,6 +20,7 @@ import WorkspacesPage from "../../../frontend/workspace/pages/WorkspacesPage";
 import AssetsPage from "../../../frontend/workspace/pages/AssetsPage";
 import CommunityPage from "../../../frontend/workspace/pages/CommunityPage";
 import WorkflowsPage from "../../../frontend/workspace/pages/WorkflowsPage";
+import AdminPage from "../../../frontend/workspace/pages/AdminPage";
 import { listAssets, uploadAsset } from "../../../frontend/workspace/api/assets";
 import { fetchAccount } from "../../../frontend/workspace/api/account";
 import InspirationPage from "./inspiration/InspirationPage";
@@ -264,6 +265,7 @@ export default function App() {
   if (currentPath === "/assets") return <AssetsPage />;
   if (currentPath === "/community") return <CommunityPage />;
   if (currentPath === "/workflows") return <WorkflowsPage />;
+  if (currentPath === "/admin") return <AdminPage />;
   if (currentPath === "/inspiration" || currentPath.startsWith("/inspiration/")) return <InspirationPage pathname={currentPath} />;
   if (currentPath.startsWith("/library")) return <DesignLibrary />;
   if (currentPath === "/studio" || currentPath.startsWith("/studio/")) return <StudioPage />;
