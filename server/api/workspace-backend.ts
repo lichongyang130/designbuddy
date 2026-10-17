@@ -88,6 +88,7 @@ export class WorkspaceBackend {
    CREATE TABLE IF NOT EXISTS workspace_accounts(id TEXT PRIMARY KEY,username TEXT UNIQUE NOT NULL,salt TEXT NOT NULL,password_hash TEXT NOT NULL,created_at TEXT NOT NULL);
    CREATE TABLE IF NOT EXISTS template_snapshots(owner_id TEXT NOT NULL,sample TEXT NOT NULL,draft TEXT NOT NULL,state_json TEXT NOT NULL,revision INTEGER NOT NULL,updated_at TEXT NOT NULL,PRIMARY KEY(owner_id,sample,draft));
    CREATE TABLE IF NOT EXISTS workspace_account_audit(id TEXT PRIMARY KEY,account_id TEXT NOT NULL,actor TEXT NOT NULL,action TEXT NOT NULL,detail TEXT NOT NULL DEFAULT '',created_at INTEGER NOT NULL);
+   CREATE TABLE IF NOT EXISTS oauth_identities(provider TEXT NOT NULL,subject TEXT NOT NULL,account_id TEXT NOT NULL,PRIMARY KEY(provider,subject));
    CREATE INDEX IF NOT EXISTS workspace_account_audit_account ON workspace_account_audit(account_id,created_at);`);
     // Older databases have the account table without the profile columns.
     const accountColumns = this.db.prepare("PRAGMA table_info(workspace_accounts)").all() as Array<{ name: string }>;
@@ -267,6 +268,219 @@ export class WorkspaceBackend {
     }
     return ++entry.count > 30;
   }
+  /** One-time OAuth states. The daemon is a single process, so memory is enough. */
+  private oauthStates = new Map<
+    string,
+    { provider: "google" | "github"; next: string; expires: number }
+  >();
+  private oauthClient(provider: "google" | "github") {
+    const id =
+      provider === "google"
+        ? process.env.GOOGLE_CLIENT_ID
+        : process.env.GITHUB_CLIENT_ID;
+    const secret =
+      provider === "google"
+        ? process.env.GOOGLE_CLIENT_SECRET
+        : process.env.GITHUB_CLIENT_SECRET;
+    if (!id?.trim() || !secret?.trim()) return null;
+    return { id: id.trim(), secret: secret.trim() };
+  }
+  /** The browser-facing origin (through the Vite proxy) used for OAuth redirects. */
+  private publicOrigin(request: Request) {
+    const configured = process.env.DESIGNBUDDY_PUBLIC_ORIGIN?.trim().replace(
+      /\/+$/,
+      "",
+    );
+    if (configured) return configured;
+    const host = request.headers.get("host") || new URL(request.url).host;
+    const forwarded = request.headers
+      .get("x-forwarded-proto")
+      ?.split(",")[0]
+      ?.trim();
+    const protocol =
+      forwarded === "http" || forwarded === "https"
+        ? forwarded
+        : host.endsWith(".e2b.app")
+          ? "https"
+          : new URL(request.url).protocol.replace(":", "");
+    return `${protocol}://${host}`;
+  }
+  /** Only in-app paths survive an OAuth round trip; anything else falls back to home. */
+  private sanitizeNext(value: string | null) {
+    if (!value || value.length > 200 || /[\r\n\\]/.test(value)) return "/";
+    if (!value.startsWith("/") || value.startsWith("//")) return "/";
+    return value;
+  }
+  private async googleProfile(
+    client: { id: string; secret: string },
+    code: string,
+    redirectUri: string,
+  ) {
+    const token = await fetch("https://oauth2.googleapis.com/token", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({
+        code,
+        client_id: client.id,
+        client_secret: client.secret,
+        redirect_uri: redirectUri,
+        grant_type: "authorization_code",
+      }),
+    });
+    if (!token.ok) throw Error("Google token exchange failed.");
+    const { access_token } = (await token.json()) as {
+      access_token?: string;
+    };
+    if (!access_token) throw Error("Google access token missing.");
+    const info = await fetch(
+      "https://openidconnect.googleapis.com/v1/userinfo",
+      { headers: { Authorization: `Bearer ${access_token}` } },
+    );
+    if (!info.ok) throw Error("Google userinfo failed.");
+    const body = (await info.json()) as {
+      sub?: string;
+      email?: string;
+      name?: string;
+    };
+    if (!body.sub) throw Error("Google subject missing.");
+    return {
+      subject: body.sub,
+      email: body.email || "",
+      name: body.name || "",
+      login: "",
+    };
+  }
+  private async githubProfile(
+    client: { id: string; secret: string },
+    code: string,
+    redirectUri: string,
+  ) {
+    const token = await fetch("https://github.com/login/oauth/access_token", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        client_id: client.id,
+        client_secret: client.secret,
+        code,
+        redirect_uri: redirectUri,
+      }),
+    });
+    if (!token.ok) throw Error("GitHub token exchange failed.");
+    const { access_token } = (await token.json()) as {
+      access_token?: string;
+    };
+    if (!access_token) throw Error("GitHub access token missing.");
+    const headers = {
+      Authorization: `Bearer ${access_token}`,
+      Accept: "application/vnd.github+json",
+      "User-Agent": "designbuddy",
+    };
+    const user = await fetch("https://api.github.com/user", { headers });
+    if (!user.ok) throw Error("GitHub user fetch failed.");
+    const body = (await user.json()) as {
+      id?: number;
+      login?: string;
+      name?: string;
+      email?: string;
+    };
+    if (body.id === undefined) throw Error("GitHub subject missing.");
+    let email = body.email || "";
+    if (!email) {
+      const emails = await fetch("https://api.github.com/user/emails", {
+        headers,
+      });
+      if (emails.ok) {
+        const list = (await emails.json()) as Array<{
+          email?: string;
+          primary?: boolean;
+          verified?: boolean;
+        }>;
+        email =
+          list.find((item) => item.primary && item.verified)?.email ||
+          list.find((item) => item.verified)?.email ||
+          "";
+      }
+    }
+    return {
+      subject: String(body.id),
+      email,
+      name: body.name || body.login || "",
+      login: body.login || "",
+    };
+  }
+  /**
+   * Find the account linked to a provider identity, or create one.
+   * OAuth accounts get an unusable random password; they sign in via the provider.
+   * Returns null when the linked account was disabled by an operator.
+   */
+  private oauthAccount(
+    provider: "google" | "github",
+    profile: { subject: string; email: string; name: string; login: string },
+  ): string | null {
+    const link = this.db
+      .prepare("SELECT account_id FROM oauth_identities WHERE provider=? AND subject=?")
+      .get(provider, profile.subject) as { account_id: string } | undefined;
+    if (link) {
+      const row = this.db
+        .prepare("SELECT id,disabled FROM workspace_accounts WHERE id=?")
+        .get(link.account_id) as { id: string; disabled: number } | undefined;
+      if (row && !row.disabled) {
+        if (profile.name || profile.email)
+          this.db
+            .prepare(
+              "UPDATE workspace_accounts SET display_name=CASE WHEN display_name='' THEN ? ELSE display_name END,email=CASE WHEN email='' THEN ? ELSE email END WHERE id=?",
+            )
+            .run(
+              profile.name.slice(0, 40),
+              profile.email.slice(0, 120),
+              row.id,
+            );
+        this.auditAccount(row.id, "account.oauth.login", `${provider} 登录`);
+        return row.id;
+      }
+      if (row?.disabled) return null;
+      this.db
+        .prepare("DELETE FROM oauth_identities WHERE provider=? AND subject=?")
+        .run(provider, profile.subject);
+    }
+    const slug =
+      (profile.login || profile.name || "user")
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "")
+        .slice(0, 24) || "user";
+    let username = `${provider}-${slug}`.slice(0, 40);
+    for (let attempt = 0; attempt < 5; attempt += 1) {
+      const taken = this.db
+        .prepare("SELECT id FROM workspace_accounts WHERE username=?")
+        .get(username);
+      if (!taken) break;
+      username = `${provider}-${slug}-${randomBytes(3).toString("hex")}`.slice(0, 40);
+    }
+    const id = randomUUID(),
+      salt = randomBytes(16).toString("hex");
+    this.db
+      .prepare(
+        "INSERT INTO workspace_accounts(id,username,salt,password_hash,display_name,email,created_at) VALUES(?,?,?,?,?,?,?)",
+      )
+      .run(
+        id,
+        username,
+        salt,
+        scryptSync(randomBytes(32).toString("hex"), salt, 64).toString("hex"),
+        profile.name.slice(0, 40),
+        profile.email.slice(0, 120),
+        new Date().toISOString(),
+      );
+    this.db
+      .prepare("INSERT INTO oauth_identities(provider,subject,account_id) VALUES(?,?,?)")
+      .run(provider, profile.subject, id);
+    this.auditAccount(id, "account.oauth.register", `${provider} 注册并登录`);
+    return id;
+  }
   async handle(request: Request): Promise<Response | null> {
     const url = new URL(request.url),
       path = url.pathname,
@@ -322,6 +536,11 @@ export class WorkspaceBackend {
         return responseJSON({ error: "跨站修改请求已拒绝。" }, 403);
       if (path === "/api/auth/me" && method === "GET")
         return responseJSON({ user: this.identity(principal.id) });
+      if (path === "/api/auth/providers" && method === "GET")
+        return responseJSON({
+          google: this.oauthClient("google") !== null,
+          github: this.oauthClient("github") !== null,
+        });
       if (path === "/api/auth/logout" && method === "POST") {
         this.revoke(request);
         return responseJSON({ ok: true }, 200, {
@@ -460,6 +679,97 @@ export class WorkspaceBackend {
           );
         } catch {
           return responseJSON({ error: "账号删除请求无效，请重试。" }, 400);
+        }
+      }
+      const oauthStart = path.match(/^\/api\/auth\/oauth\/(google|github)$/);
+      if (oauthStart && method === "GET") {
+        const provider = oauthStart[1] as "google" | "github";
+        const client = this.oauthClient(provider);
+        if (!client)
+          return responseJSON(
+            {
+              error: `尚未配置 ${provider === "google" ? "Google" : "GitHub"} 登录，请联系管理员。`,
+              code: "OAUTH_NOT_CONFIGURED",
+            },
+            503,
+          );
+        const now = Date.now();
+        for (const [key, entry] of this.oauthStates)
+          if (entry.expires <= now) this.oauthStates.delete(key);
+        const state = randomBytes(24).toString("base64url");
+        this.oauthStates.set(state, {
+          provider,
+          next: this.sanitizeNext(url.searchParams.get("next")),
+          expires: now + 10 * 60_000,
+        });
+        const redirectUri = `${this.publicOrigin(request)}/api/auth/oauth/${provider}/callback`;
+        const authorize =
+          provider === "google"
+            ? `https://accounts.google.com/o/oauth2/v2/auth?${new URLSearchParams(
+                {
+                  client_id: client.id,
+                  redirect_uri: redirectUri,
+                  response_type: "code",
+                  scope: "openid email profile",
+                  state,
+                },
+              )}`
+            : `https://github.com/login/oauth/authorize?${new URLSearchParams(
+                {
+                  client_id: client.id,
+                  redirect_uri: redirectUri,
+                  scope: "read:user user:email",
+                  state,
+                },
+              )}`;
+        return new Response(null, {
+          status: 302,
+          headers: { Location: authorize, "Cache-Control": "no-store" },
+        });
+      }
+      const oauthCallback = path.match(
+        /^\/api\/auth\/oauth\/(google|github)\/callback$/,
+      );
+      if (oauthCallback && method === "GET") {
+        const provider = oauthCallback[1] as "google" | "github";
+        const fail = (reason: string) =>
+          new Response(null, {
+            status: 302,
+            headers: {
+              Location: `/login?oauth=error&reason=${reason}`,
+              "Cache-Control": "no-store",
+            },
+          });
+        if (url.searchParams.get("error")) return fail("denied");
+        const client = this.oauthClient(provider);
+        const state = url.searchParams.get("state") || "";
+        const entry = this.oauthStates.get(state);
+        if (!client) return fail("not_configured");
+        if (!entry || entry.provider !== provider || entry.expires <= Date.now())
+          return fail("invalid_state");
+        this.oauthStates.delete(state);
+        const code = url.searchParams.get("code") || "";
+        if (!code) return fail("missing_code");
+        if (this.limited(request)) return fail("rate_limited");
+        try {
+          const redirectUri = `${this.publicOrigin(request)}/api/auth/oauth/${provider}/callback`;
+          const profile =
+            provider === "google"
+              ? await this.googleProfile(client, code, redirectUri)
+              : await this.githubProfile(client, code, redirectUri);
+          const accountId = this.oauthAccount(provider, profile);
+          if (!accountId) return fail("disabled");
+          this.revoke(request);
+          return new Response(null, {
+            status: 302,
+            headers: {
+              Location: entry.next,
+              "Cache-Control": "no-store",
+              "Set-Cookie": this.issue(request, accountId),
+            },
+          });
+        } catch {
+          return fail("exchange_failed");
         }
       }
       if (

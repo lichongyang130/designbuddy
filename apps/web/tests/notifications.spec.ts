@@ -1,4 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
+import { freshAccountPage } from "./auth-helpers";
 const key = "designbuddy.notifications.v1";
 async function ask(page: Page, text = "整理今天的工作") {
   await page.goto("/");
@@ -99,16 +100,24 @@ test("read state is synchronized between browser tabs through the sidebar bell",
   await other.close();
 });
 
-test("invalid saved records are ignored; deleted task links show an honest error", async ({ page }) => {
-  await page.goto("/");
-  await page.evaluate((storageKey) => localStorage.setItem(storageKey, JSON.stringify([null, { kind: "bad" }, { id: "missing", projectId: "no-longer-exists", messageId: "reply-1", kind: "error", title: "历史任务失败", description: "已删除的任务", createdAt: new Date().toISOString(), read: false }])), key);
-  await page.reload();
-  await page.getByRole("button", { name: "通知", exact: true }).click();
-  const panel = page.getByRole("dialog", { name: "通知中心" });
-  await expect(panel.locator("li")).toHaveCount(1);
-  await panel.getByRole("button", { name: /历史任务失败/ }).first().click();
-  await expect(panel).toContainText("原任务已不存在");
-  await expect(page).toHaveURL(/\/$/);
+test("invalid saved records are ignored; deleted task links show an honest error", async ({ browser }) => {
+  // The server inbox is the record of truth, so this exact-count assertion
+  // needs a user whose inbox is empty.
+  const owned = await freshAccountPage(browser, `notifications_invalid_${Date.now().toString(36)}`);
+  const page = owned.page;
+  try {
+    await page.goto("/");
+    await page.evaluate((storageKey) => localStorage.setItem(storageKey, JSON.stringify([null, { kind: "bad" }, { id: "missing", projectId: "no-longer-exists", messageId: "reply-1", kind: "error", title: "历史任务失败", description: "已删除的任务", createdAt: new Date().toISOString(), read: false }])), key);
+    await page.reload();
+    await page.getByRole("button", { name: "通知", exact: true }).click();
+    const panel = page.getByRole("dialog", { name: "通知中心" });
+    await expect(panel.locator("li")).toHaveCount(1);
+    await panel.getByRole("button", { name: /历史任务失败/ }).first().click();
+    await expect(panel).toContainText("原任务已不存在");
+    await expect(page).toHaveURL(/\/$/);
+  } finally {
+    await owned.context.close();
+  }
 });
 
 for (const width of [320, 375, 768, 1440]) {

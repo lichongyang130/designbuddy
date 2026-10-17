@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { AUTH_STORAGE } from "./auth-helpers";
 
 test("sidebar uses DesignBuddy and the requested entries in order", async ({
   page,
@@ -9,7 +10,7 @@ test("sidebar uses DesignBuddy and the requested entries in order", async ({
     page.locator(
       ".app-sidebar > .sidebar-nav-item, .sidebar-navigation > .sidebar-nav-item",
     ),
-  ).toHaveText(["首页", "插件", "模版", "定时任务", "模型与用量", "账号与数据", "更多"]);
+  ).toHaveText(["首页", "插件", "模版", "定时任务", "工作流", "更多"]);
   await expect(
     page.getByRole("button", { name: "首页", exact: true }),
   ).toHaveAttribute("aria-current", "page");
@@ -171,6 +172,7 @@ for (const width of [320, 375, 768, 1440]) {
 
 test("touch users can open more without hover", async ({ browser }) => {
   const context = await browser.newContext({
+    storageState: AUTH_STORAGE,
     hasTouch: true,
     viewport: { width: 375, height: 812 },
   });

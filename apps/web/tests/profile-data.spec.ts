@@ -40,8 +40,7 @@ test("forget needs an explicit confirmation", async ({ page }) => {
   await expect(page.locator(".profile-message.is-error")).toContainText("确认");
 });
 
-test("the account page is reachable from the sidebar", async ({ page }) => {
-  await page.goto("/");
-  await page.getByRole("button", { name: "账号与数据" }).click();
+test("the account page opens directly", async ({ page }) => {
+  await page.goto("/profile");
   await expect(page.getByRole("heading", { name: "账号与数据", level: 1 })).toBeVisible();
 });
