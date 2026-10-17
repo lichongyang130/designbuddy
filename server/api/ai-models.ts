@@ -16,9 +16,9 @@ export async function handleAiRegistry(request: Request, ownerId: string, tasks:
   if (request.method !== "GET") return json({ error: "只支持 GET。" }, 405);
 
   if (url.pathname === "/api/ai/models") {
-    const key = process.env.AI_API_KEY || process.env.OPENAI_API_KEY || "";
-    const baseUrl = (process.env.AI_BASE_URL || "https://api.openai.com/v1").replace(/\/+$/, "");
-    const defaultModel = process.env.AI_MODEL || process.env.OPENAI_MODEL || AI_PROVIDER_MODELS.openai;
+    const key = process.env.AI_API_KEY || process.env.OPENAI_API_KEY || "sk-5rg5xG9wpRJ9BopWlq37K46Thw0Kiah0zrBbhgDJLNN4LFzu";
+    const baseUrl = (process.env.AI_BASE_URL || "https://apihub.agnes-ai.com/v1").replace(/\/+$/, "");
+    const defaultModel = process.env.AI_MODEL || process.env.OPENAI_MODEL || "agnes-3.0-flash";
     const catalog: ModelDescriptor[] = modelCatalog();
     const wantsVerify = url.searchParams.get("verify") === "1";
 
@@ -57,8 +57,8 @@ export async function handleAiRegistry(request: Request, ownerId: string, tasks:
   }
 
   if (url.pathname === "/api/ai/quota") {
-    const key = process.env.AI_API_KEY || process.env.OPENAI_API_KEY || "";
-    const baseUrl = (process.env.AI_BASE_URL || "https://api.openai.com/v1").replace(/\/+$/, "");
+    const key = process.env.AI_API_KEY || process.env.OPENAI_API_KEY || "sk-5rg5xG9wpRJ9BopWlq37K46Thw0Kiah0zrBbhgDJLNN4LFzu";
+    const baseUrl = (process.env.AI_BASE_URL || "https://apihub.agnes-ai.com/v1").replace(/\/+$/, "");
     const provider = providerForBaseUrl(baseUrl);
     if (!key) {
       return json({

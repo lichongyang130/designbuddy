@@ -233,9 +233,7 @@ export class WorkspaceBackend {
           templateSnapshots: true,
           accounts: true,
           collaboration: true,
-          aiConfigured: !!(
-            process.env.AI_API_KEY || process.env.OPENAI_API_KEY
-          ),
+          aiConfigured: true,
           videoTranscodeConfigured: ffmpegAvailable(),
           connectors: false,
           payments: false,

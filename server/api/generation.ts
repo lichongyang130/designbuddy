@@ -96,7 +96,7 @@ export async function generateDesignProject(input: GenerationRequest): Promise<G
     userId: input.userId,
     apiKey: input.apiKey,
     provider: input.provider,
-    model: input.model || process.env.AI_MODEL || process.env.OPENAI_MODEL || "gpt-4o-mini",
+    model: input.model || process.env.AI_MODEL || process.env.OPENAI_MODEL || "agnes-3.0-flash",
     systemPrompt,
     prompt: [
       "Project name: " + (input.projectName.trim() || "DesignBuddy project"),

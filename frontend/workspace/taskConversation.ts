@@ -1,6 +1,7 @@
 import { recordTaskNotifications } from "./notifications";
 import { fetchTasks, saveTask } from "./api/tasks";
 import { validClarification, type TaskClarification } from "./taskClarification";
+import type { ThinkingStep } from "./TaskThinkingProcess";
 
 export type TaskReplyStatus = "waiting" | "streaming" | "complete" | "error" | "stopped" | "local" | "clarifying";
 export interface TaskMessage {
@@ -18,6 +19,7 @@ export interface TaskMessage {
   clarification?: TaskClarification;
   requirementsConfirmed?: boolean;
   replyMode?: "chat" | "generation";
+  thinkingSteps?: ThinkingStep[];
 }
 export interface TaskConversation {
   projectId: string;
@@ -26,6 +28,7 @@ export interface TaskConversation {
   permission: string;
   workflow?: "chat" | "skills";
   skillExpertId?: string;
+  suggestedSkillId?: string;
   messages: TaskMessage[];
 }
 const key = (id: string) => `designbuddy.conversation.v1.${id}`;

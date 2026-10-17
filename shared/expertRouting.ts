@@ -528,8 +528,8 @@ export const routingExperts: CoreExpert[] = [
   }
 ];
 export type ExpertMatch =
-  | { kind: "match"; expertId: string; collaboratorIds: string[]; reason: string; responsibilities: string[]; missing: string[] }
-  | { kind: "general"; reason: string }
+  | { kind: "match"; expertId: string; collaboratorIds: string[]; reason: string; responsibilities: string[]; missing: string[]; skillSuggestion?: { skillId: string; reason: string } }
+  | { kind: "general"; reason: string; skillSuggestion?: { skillId: string; reason: string } }
   | { kind: "clarify"; question: string; options: string[] };
 function text(value: unknown, max: number): value is string { return typeof value === "string" && !!value.trim() && value.length <= max; }
 function texts(value: unknown, min: number, max: number, length = 200): value is string[] {
@@ -538,11 +538,16 @@ function texts(value: unknown, min: number, max: number, length = 200): value is
 export function validProfiles(value: unknown): value is ExpertProfile[] {
   return Array.isArray(value) && value.length > 0 && value.length <= 50 && value.every(x => x && text(x.id, 120) && text(x.name, 100) && text(x.description, 1200) && texts(x.method, 1, 6, 400) && texts(x.checks, 1, 6, 400)) && new Set(value.map(x => x.id)).size === value.length;
 }
-export function validExpertMatch(value: unknown, profiles: ExpertProfile[]): value is ExpertMatch {
+function validSkillSuggestion(value: unknown, skillIds: string[]): value is { skillId: string; reason: string } {
   if (!value || typeof value !== "object") return false;
   const v = value as Record<string, unknown>;
-  if (v.kind === "match") return profiles.some(p => p.id === v.expertId) && Array.isArray(v.collaboratorIds) && v.collaboratorIds.length <= 2 && v.collaboratorIds.every(id => typeof id === "string" && id !== v.expertId && profiles.some(p => p.id === id)) && new Set(v.collaboratorIds).size === v.collaboratorIds.length && text(v.reason, 400) && texts(v.responsibilities, 1, 4) && texts(v.missing, 0, 4);
-  if (v.kind === "general") return text(v.reason, 400);
+  return typeof v.skillId === "string" && skillIds.includes(v.skillId) && text(v.reason, 400);
+}
+export function validExpertMatch(value: unknown, profiles: ExpertProfile[], skillIds: string[] = []): value is ExpertMatch {
+  if (!value || typeof value !== "object") return false;
+  const v = value as Record<string, unknown>;
+  if (v.kind === "match") return profiles.some(p => p.id === v.expertId) && Array.isArray(v.collaboratorIds) && v.collaboratorIds.length <= 2 && v.collaboratorIds.every(id => typeof id === "string" && id !== v.expertId && profiles.some(p => p.id === id)) && new Set(v.collaboratorIds).size === v.collaboratorIds.length && text(v.reason, 400) && texts(v.responsibilities, 1, 4) && texts(v.missing, 0, 4) && (v.skillSuggestion === undefined || validSkillSuggestion(v.skillSuggestion, skillIds));
+  if (v.kind === "general") return text(v.reason, 400) && (v.skillSuggestion === undefined || validSkillSuggestion(v.skillSuggestion, skillIds));
   if (v.kind === "clarify") return text(v.question, 200) && texts(v.options, 2, 4, 100) && new Set(v.options.map(s => s.trim())).size === v.options.length;
   return false;
 }
@@ -567,4 +572,43 @@ export function localExpertSuggestion(prompt: string): ExpertProfile | undefined
   else if (/整理.*文档|长文|摘要/.test(prompt)) id = "documents";
   else if (/邮件|催办|客户回复/.test(prompt)) id = "communication";
   return routingExperts.find(p => p.id === id);
+}
+
+/** Keyword-based skill suggestion; returns skill ID, name and accepted file types. */
+export type SkillSuggestion = { skillId: string; name: string; accepts: string[]; hint: string };
+export function suggestSkill(prompt: string): SkillSuggestion | undefined {
+  const p = prompt.toLowerCase();
+  if (/ppt|演示文稿|幻灯片|汇报.*材料|做.*ppt/i.test(p))
+    return { skillId: "slides.compose", name: "材料转可编辑 PPTX", accepts: [".txt", ".md", ".docx"], hint: "上传文字材料，自动分页生成可编辑 PPT" };
+  if (/整理.*文档|文档.*整理|格式.*文档|转.*word|转.*docx/.test(p))
+    return { skillId: "document.format", name: "文档解析与 DOCX/PDF 整理", accepts: [".txt", ".md", ".docx"], hint: "上传文本，生成可编辑 Word 和 PDF" };
+  if (/摘要|提炼.*要点|总结.*文档|归纳.*要点/.test(p))
+    return { skillId: "document.summarize", name: "文档语义摘要", accepts: [".txt", ".md", ".docx"], hint: "上传文档，AI 提炼要点并标注来源" };
+  if (/提取.*word|docx.*结构|word.*表格|word.*图片/.test(p))
+    return { skillId: "document.structure", name: "DOCX 结构提取", accepts: [".docx"], hint: "上传 DOCX，提取正文、表格和图片" };
+  if (/表格.*分析|分析.*表格|csv.*分析|数据.*统计|清洗.*数据/.test(p))
+    return { skillId: "table.analyze", name: "表格清洗与统计", accepts: [".csv", ".xlsx"], hint: "上传表格，自动清洗、统计并出图" };
+  if (/公式.*计算|重算.*公式|excel.*公式/.test(p))
+    return { skillId: "table.calculate", name: "工作簿公式重算", accepts: [".xlsx"], hint: "上传 Excel，自动重算公式并核对" };
+  if (/信息图|图表.*对比|数据.*可视化|趋势图|构成图/.test(p))
+    return { skillId: "infographic.compose", name: "业务信息图", accepts: [".json"], hint: "提供数据，生成对比/趋势/构成信息图" };
+  if (/pdf.*识别|扫描.*pdf|pdf.*文字|ocr/.test(p))
+    return { skillId: "pdf.ocr", name: "扫描 PDF OCR", accepts: [".pdf"], hint: "上传扫描 PDF，逐页识别文字" };
+  if (/pdf.*提取|读取.*pdf|pdf.*文字/.test(p))
+    return { skillId: "pdf.extract", name: "PDF 文本提取", accepts: [".pdf"], hint: "上传 PDF，提取每页文字" };
+  if (/图片.*识别|图片.*文字|图.*ocr/.test(p))
+    return { skillId: "image.ocr", name: "图片中英文 OCR", accepts: [".png", ".jpg", ".jpeg", ".webp"], hint: "上传图片，识别中英文文字" };
+  if (/落地页|官网.*生成|静态.*网站|网页.*生成/.test(p))
+    return { skillId: "web.scaffold", name: "响应式静态页面", accepts: [".json"], hint: "提供配置，生成可部署的静态网站" };
+  if (/网页.*检查|html.*检查|无障碍.*检查/.test(p))
+    return { skillId: "web.audit", name: "HTML 结构检查", accepts: [".html", ".htm"], hint: "上传 HTML，检查结构和可访问性" };
+  if (/海报|社媒.*卡片|封面.*卡片|社交媒体.*图/.test(p))
+    return { skillId: "social.card", name: "社媒封面卡片", accepts: [], hint: "填写标题和要点，渲染 1080×1440 封面" };
+  if (/轮播|多页.*图|社交媒体.*轮播/.test(p))
+    return { skillId: "social.carousel", name: "社媒轮播图", accepts: [".json"], hint: "提供逐页内容，生成 3–10 张轮播图" };
+  if (/长文.*排版|杂志.*排版|文章.*排版/.test(p))
+    return { skillId: "article.magazine", name: "杂志风排版", accepts: [".md", ".txt"], hint: "上传 Markdown，生成杂志风 HTML" };
+  if (/js.*检查|javascript.*检查|代码.*检查/.test(p))
+    return { skillId: "code.inspect", name: "JavaScript 检查", accepts: [".js", ".mjs"], hint: "上传 JS，检查语法和风险" };
+  return undefined;
 }

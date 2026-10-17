@@ -5,6 +5,7 @@ import original from "../../assets/inspiration/sources.json";
 import expansion from "../../assets/expansion/sources.json";
 import added from "../../assets/samples/sources.json";
 import { navigateTo } from "../../../../../frontend/workspace/workspaceRoutes";
+import { generateTemplatePhotos } from "./imageGenerator";
 const files = import.meta.glob<string>(
   [
     "../../assets/inspiration/*.webp",
@@ -73,10 +74,7 @@ export type SampleId =
   | "roots"
   | "daylight"
   | "tide"
-  | "morrow"
-  | "studio-nine"
-  | "wellspring"
-  | "circuit";
+  | "morrow";
 export const samples: {
   id: SampleId;
   category: string;
@@ -156,7 +154,7 @@ export const samples: {
     title: "NEXT FRAME · 品牌动效分镜",
     description: "4 段可编辑动效 · 播放、定位与独立网页",
     format: "HTML / CSS 动效",
-    photos: [],
+    photos: generateTemplatePhotos("hyperframes"),
   },
   {
     id: "film",
@@ -164,7 +162,7 @@ export const samples: {
     title: "LAKESIDE · 慢下来的一天",
     description: "18 秒摄影剪辑 · 播放、章节与字幕编辑",
     format: "MP4 / VTT 字幕",
-    photos: [],
+    photos: generateTemplatePhotos("film"),
   },
   {
     id: "sound",
@@ -172,7 +170,7 @@ export const samples: {
     title: "SOFT SIGNALS · 声音标识实验",
     description: "8 秒原创合成 · 参数调音与真实波形",
     format: "WAV / PCM 音频",
-    photos: [],
+    photos: generateTemplatePhotos("sound"),
   },
   {
     id: "live",
@@ -180,7 +178,7 @@ export const samples: {
     title: "SCOPE · 实时报价工作台",
     description: "即时计算 · 服务清单、税费与交互交付",
     format: "交互 HTML / CSV",
-    photos: [],
+    photos: generateTemplatePhotos("live"),
   },
   {
     id: "webgl",
@@ -188,7 +186,7 @@ export const samples: {
     title: "FORM · 材质与光",
     description: "实时三维 · 旋转、缩放与材质探索",
     format: "WebGL HTML / OBJ",
-    photos: [],
+    photos: generateTemplatePhotos("webgl"),
   },
   {
     id: "forme",
@@ -196,7 +194,7 @@ export const samples: {
     title: "FORME · 家具选配与空间采购",
     description: "24 个业务页面 · 产品选配、空间布局与本地报价",
     format: "家具采购原型 / CSV / HTML",
-    photos: [],
+    photos: generateTemplatePhotos("forme"),
   },
   {
     id: "atelier",
@@ -204,7 +202,7 @@ export const samples: {
     title: "ATELIER · 独立服饰订制",
     description: "24 个内容页面 · 量体、结构配置、试衣与技术档案",
     format: "订制原型 / SVG / CSV / HTML",
-    photos: [],
+    photos: generateTemplatePhotos("atelier"),
   },
   {
     id: "roots",
@@ -212,7 +210,7 @@ export const samples: {
     title: "ROOTS · 植物与花园规划",
     description: "24 个规划页面 · 选种、平面、土水预算与养护",
     format: "花园原型 / SVG / CSV / HTML",
-    photos: [],
+    photos: generateTemplatePhotos("roots"),
   },
   {
     id: "daylight",
@@ -220,7 +218,7 @@ export const samples: {
     title: "DAYLIGHT · 联合办公空间",
     description: "24 个办公页面 · 预约冲突、团队座位、费用与日历",
     format: "空间原型 / ICS / SVG / HTML",
-    photos: [],
+    photos: generateTemplatePhotos("daylight"),
   },
   {
     id: "tide",
@@ -228,7 +226,7 @@ export const samples: {
     title: "TIDE · 帆船俱乐部会员",
     description: "24 个会员页面 · 时间意向、月度时数、学习记录与交付",
     format: "会员原型 / SVG / CSV / HTML",
-    photos: [],
+    photos: generateTemplatePhotos("tide"),
   },
   {
     id: "morrow",
@@ -236,31 +234,7 @@ export const samples: {
     title: "MORROW · 精品咖啡订阅",
     description: "24 个咖啡页面 · 拼配、冲煮、四期计划、库存与费用",
     format: "订阅原型 / SVG / CSV / HTML",
-    photos: [],
-  },
-  {
-    id: "studio-nine",
-    category: "原型",
-    title: "STUDIO NINE · 摄影棚排期",
-    description: "24 个影棚页面 · 档期、器材清单、拍摄日与交付流程",
-    format: "影棚排期原型 / SVG / HTML",
-    photos: [],
-  },
-  {
-    id: "wellspring",
-    category: "原型",
-    title: "WELLSPRING · 运动课程管理",
-    description: "24 个课程页面 · 排课冲突、候补递补、教练排班与会员权益",
-    format: "课程管理原型 / SVG / HTML",
-    photos: [],
-  },
-  {
-    id: "circuit",
-    category: "原型",
-    title: "CIRCUIT · 二手数码检测交易",
-    description: "24 个交易页面 · 46 项检测、成色分级、行情定价与质保",
-    format: "二手交易原型 / SVG / HTML",
-    photos: [],
+    photos: generateTemplatePhotos("morrow"),
   },
 ];
 export type DraftRecord = {

@@ -32,6 +32,7 @@ import "./home-workspace.css";
 import "./home-reference.css";
 import "./home-layout.css";
 import { HomeDiscovery, HomeShortcuts, type HomeScene } from "./components/HomeDiscovery";
+import AuthPage from "./components/AuthPage";
 
 
 type WorkMode = "office" | "code" | "design";
@@ -62,6 +63,7 @@ function isWorkspaceHubPath(path: string) {
 export default function App() {
   const modelOptions = useModelOptions();
   const [currentPath, setCurrentPath] = useState(normalizeAppPath(window.location.pathname));
+  console.log("🔍 Current path:", currentPath, "from URL:", window.location.pathname);
   const [prompt, setPrompt] = useState("");
   const [mode, setMode] = useState<WorkMode>("office");
   const [promptGroups, setPromptGroups] = useState<Record<WorkMode, string>>({ office: "office-documents-1", code: "web-corporate-1", design: "design-posters-1" });
@@ -71,7 +73,7 @@ export default function App() {
   const [workspaceCount, setWorkspaceCount] = useState(0);
   const [assetCount, setAssetCount] = useState(0);
   const [busy, setBusy] = useState(false);
-  const [model, setModel] = useState("");
+  const [model, setModel] = useState("agnes-3.0-flash");
   const [modelMenuOpen, setModelMenuOpen] = useState(false);
   const [maxMode, setMaxMode] = useState(false);
   const [thinkingMode, setThinkingMode] = useState<"balanced" | "extreme">("balanced");
@@ -233,6 +235,7 @@ export default function App() {
       const conversation: TaskConversation = {
         projectId: project.id, mode, model, permission, workflow,
         skillExpertId: (selectedExpert || sameDraft) ? expertMatch.profile?.id : undefined,
+        suggestedSkillId: expertMatch.skillSuggestion?.skillId,
         messages: [{ id: crypto.randomUUID(), role: "user", content: initialPrompt.trim(), requestContent: fullRequest, replyMode: (selectedExpert || sameDraft) ? expertMatch.replyMode : undefined, requirementsConfirmed: !!confirmedContext, createdAt: new Date().toISOString(), status: "complete" }],
       };
       saveTaskConversation(conversation);
@@ -256,6 +259,7 @@ export default function App() {
     }
   }
 
+  if (currentPath === "/auth" || currentPath === "/login" || currentPath === "/register") return <AuthPage />;
   if (currentPath === "/plugins") return <PluginsPage />;
   if (currentPath === "/schedules") return <SchedulesPage />;
   if (currentPath === "/models") return <ModelsPage />;

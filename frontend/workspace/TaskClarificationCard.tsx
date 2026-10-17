@@ -34,10 +34,25 @@ export function TaskClarificationCard({ value, onChange, onSubmit, onClose }: {
       changeAnswer({ option: index });
       event.currentTarget.querySelectorAll<HTMLButtonElement>("[role=radio]")[index]?.focus();
     }}>
-      {q.options.map((option, i) => <button type="button" key={`${q.id}-${i}`} role="radio" aria-checked={answer.option === i} tabIndex={i === (answer.option ?? 0) ? 0 : -1} className="clarification-option" onClick={() => changeAnswer({ option: i })}>
+      {q.options.map((option, i) => {
+        const selectAndAdvance = () => {
+          changeAnswer({ option: i });
+          // Auto-advance to next question or submit if this is the last one
+          if (value.page < value.questions.length - 1) {
+            setTimeout(() => onChange({ ...value, page: value.page + 1, answers: value.answers.map((a, idx) => idx === value.page ? { ...a, option: i } : a) }), 150);
+          } else {
+            // Last question - auto-submit after a brief delay
+            setTimeout(() => {
+              const updatedAnswers = value.answers.map((a, idx) => idx === value.page ? { ...a, option: i } : a);
+              const allComplete = updatedAnswers.every((a, idx) => a.option !== null || (value.kind === "requirements" && !!a.note.trim()));
+              if (allComplete) onSubmit();
+            }, 150);
+          }
+        };
+        return <button type="button" key={`${q.id}-${i}`} role="radio" aria-checked={answer.option === i} tabIndex={i === (answer.option ?? 0) ? 0 : -1} className="clarification-option" onClick={() => changeAnswer({ option: i })}>
         <span className="clarification-number" aria-hidden="true">{i + 1}</span><span className="clarification-option-text">{option}</span>
-        <svg className="clarification-option-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>
-      </button>)}
+        <span className="clarification-option-arrow" role="button" aria-label={`选择"${option}"并继续`} onClick={(e) => { e.stopPropagation(); selectAndAdvance(); }}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg></span>
+      </button>})}
     </div>
     {value.kind === "requirements" && <label className="clarification-note"><span className="clarification-number"><HomeIcon name="pencil" size={15} /></span><input key={q.id} aria-label="其他补充" placeholder="其他补充…" maxLength={2000} value={answer.note} onChange={(event) => changeAnswer({ note: event.target.value })} /></label>}
     <footer className="clarification-footer"><span aria-live="polite">{remaining ? `还有 ${remaining} 项待确认` : ""}</span><button type="button" className="task-send" aria-label="提交确认并继续" title={remaining ? "请先回答全部问题，也可以填写其他补充" : "提交确认并继续"} disabled={remaining > 0} onClick={onSubmit}><HomeIcon name="send" size={19} /></button></footer>

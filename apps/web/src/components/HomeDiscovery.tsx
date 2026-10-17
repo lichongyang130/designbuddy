@@ -7,6 +7,7 @@ import {
 } from "./homeScenes";
 import { SceneDemo } from "./SceneDemo";
 import { ScenePreview } from "./ScenePreview";
+import { WorkflowModal } from "./WorkflowModal";
 import "./home-scenes.css";
 import "./scene-demos/pro-scenes.css";
 import "../assets/fonts/scene-fonts.css";
@@ -15,7 +16,6 @@ export type { HomeScene } from "./homeScenes";
 export { HomeShortcuts } from "./HomePromptBrowser";
 import { PromptRecommendations } from "./HomePromptBrowser";
 import { categoriesForMode } from "./promptLibrary";
-import { navigateTo } from "../../../../frontend/workspace/workspaceRoutes";
 
 /** A scaled rendering of the actual demo, not an unrelated decorative icon/image. */
 function SceneThumbnail({ scene }: { scene: HomeScene }) {
@@ -57,6 +57,7 @@ export function HomeDiscovery({
   const category = categories.find(c => c.groups.some(g => g.id === groupId)) || categories[0];
   const group = category.groups.find(g => g.id === groupId) || category.groups[0];
   const [preview, setPreview] = useState<HomeScene | null>(null);
+  const [workflowModal, setWorkflowModal] = useState<string | null>(null);
   return (
     <>
       <PromptRecommendations key={`${mode}:${group.id}:${selectionVersion}`} group={group} categoryTitle={category.title} prompt={prompt} onSelect={onSelect} />
@@ -76,7 +77,7 @@ export function HomeDiscovery({
                     className="scene-workflow-link"
                     type="button"
                     title={`用工作流「${scene.workflowName}」完成`}
-                    onClick={() => navigateTo(`/workflows?workflow=${encodeURIComponent(scene.workflowId!)}`)}
+                    onClick={() => setWorkflowModal(scene.workflowId!)}
                   >
                     用工作流：{scene.workflowName}
                   </button>
@@ -98,6 +99,12 @@ export function HomeDiscovery({
           scene={preview}
           onClose={() => setPreview(null)}
           onUse={() => onSelect(preview)}
+        />
+      )}
+      {workflowModal && (
+        <WorkflowModal
+          workflowId={workflowModal}
+          onClose={() => setWorkflowModal(null)}
         />
       )}
     </>

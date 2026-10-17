@@ -31,7 +31,8 @@ import BrandGallery, {
   BrandArtwork,
   NatureGallery,
 } from "./samples/BrandGallery";
-import { drafts, samples, type SampleId } from "./samples/shared";
+import GenericTemplate from './samples/GenericTemplate';
+import { drafts, samples, type SampleId, type DraftRecord } from './samples/shared';
 import MuseumPrototype, { MuseumCover } from "./samples/MuseumPrototype";
 import { HandbookPaper } from "./samples/HandbookPaper";
 import { NatureArtwork } from "./samples/NatureArtwork";
@@ -84,12 +85,6 @@ function Preview({ id }: { id: SampleId }) {
         <AtelierCover />
       ) : id === "forme" ? (
         <FormeCover />
-      ) : id === "studio-nine" ? (
-        <StudioNineCover />
-      ) : id === "wellspring" ? (
-        <WellspringCover />
-      ) : id === "circuit" ? (
-        <CircuitCover />
       ) : id === "museum" ? (
         <MuseumCover />
       ) : id === "city" ? (
@@ -148,9 +143,6 @@ export default function InspirationPage({ pathname }: { pathname: string }) {
     daylight: DaylightPrototype,
     tide: TidePrototype,
     morrow: MorrowPrototype,
-    "studio-nine": StudioNinePrototype,
-    wellspring: WellspringPrototype,
-    circuit: CircuitPrototype,
   };
   const Viewer = sample ? viewers[sample.id] : null;
   const visible = samples.filter(
