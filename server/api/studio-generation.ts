@@ -37,7 +37,7 @@ export async function generateStudioArtifact(input: StudioGenerationRequest): Pr
     userId: input.userId,
     apiKey: input.apiKey,
     provider: input.provider,
-    model: input.model || process.env.AI_MODEL || process.env.OPENAI_MODEL || "gpt-4o-mini",
+    model: input.model || process.env.AI_MODEL || process.env.OPENAI_MODEL || "agnes-3.0-flash",
     systemPrompt: `You are a senior visual designer. Create high-quality ${input.kind} content from the brief and brand contract. Return only valid JSON matching this exact shape: ${formats[input.kind]}. Use concise Chinese content when the prompt is Chinese. Do not include markdown fences, external assets, tracking, or claims about unavailable backend features.`,
     prompt: [`Title: ${title}`, `Brief: ${prompt}`, input.designContract ? `DESIGN.md brand contract:\n${input.designContract}` : "No brand contract supplied.", "Generate a polished, specific first draft. JSON only."].join("\n\n"),
   });

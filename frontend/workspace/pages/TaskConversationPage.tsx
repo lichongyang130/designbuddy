@@ -13,7 +13,8 @@ import { applyServerConversation, loadServerConversation, loadTaskConversation, 
 import { useModelOptions } from "../settingsStore";
 import { navigateTo } from "../workspaceRoutes";
 import { TaskClarificationCard } from "../TaskClarificationCard";
-import { answerComplete, clarificationSummary, initialUIQuestions, isClarificationStream, makeClarification, parseClarification, type TaskClarification } from "../taskClarification";
+import { answerComplete, clarificationSummary, extractClarificationIntro, initialUIQuestions, isClarificationStream, makeClarification, parseClarification, type TaskClarification } from "../taskClarification";
+import { TaskThinkingProcess, type ThinkingStep } from "../TaskThinkingProcess";
 import "./task-conversation.css";
 import SkillWorkbench from "../SkillWorkbench";
 import { expertCatalog } from "../expertCatalog";
@@ -39,6 +40,7 @@ export default function TaskConversationPage({ projectId }: { projectId: string 
   const [searchOpen, setSearchOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [speaking, setSpeaking] = useState("");
+  const [skillExecutions, setSkillExecutions] = useState<Array<{ skillId: string; skillName: string; timestamp: number }>>([]);
   const taskRef = useRef(task);
   const mounted = useRef(true);
   const controller = useRef<AbortController | null>(null);
@@ -149,7 +151,49 @@ export default function TaskConversationPage({ projectId }: { projectId: string 
     if (index < 0) return;
     const user = current.messages[index];
     const id = retryId || newId();
-    const reply: TaskMessage = { id, role: "assistant", content: "", createdAt: new Date().toISOString(), status: "waiting", elapsedMs: 0 };
+    const thinkingSteps: ThinkingStep[] = [];
+    
+    // Add expert matching step if expert was matched
+    if (current.skillExpertId) {
+      const expert = expertCatalog.find(e => e.id === current.skillExpertId);
+      if (expert) {
+        thinkingSteps.push({
+          id: crypto.randomUUID(),
+          type: "expert",
+          title: `匹配专家: ${expert.name}`,
+          detail: expert.description,
+          status: "complete",
+          timestamp: Date.now()
+        });
+      }
+    }
+    
+    // Add skill suggestion step if skill was suggested
+    if (current.suggestedSkillId) {
+      thinkingSteps.push({
+        id: crypto.randomUUID(),
+        type: "skill",
+        title: `推荐技能: ${current.suggestedSkillId}`,
+        detail: "根据任务自动推荐的技能",
+        status: "complete",
+        timestamp: Date.now()
+      });
+    }
+    
+    const addStep = (step: Omit<ThinkingStep, "id" | "timestamp">) => {
+      const newStep = { ...step, id: crypto.randomUUID(), timestamp: Date.now() };
+      thinkingSteps.push(newStep);
+      patch(id, { thinkingSteps: [...thinkingSteps] }, false);
+      return newStep;
+    };
+    const updateStep = (stepId: string, updates: Partial<ThinkingStep>) => {
+      const idx = thinkingSteps.findIndex(s => s.id === stepId);
+      if (idx >= 0) {
+        thinkingSteps[idx] = { ...thinkingSteps[idx], ...updates };
+        patch(id, { thinkingSteps: [...thinkingSteps] }, false);
+      }
+    };
+    const reply: TaskMessage = { id, role: "assistant", content: "", createdAt: new Date().toISOString(), status: "waiting", elapsedMs: 0, thinkingSteps: [...thinkingSteps] };
     const history = current.messages.slice(0, index + 1);
     if (current.permission !== "仅本地") {
       const previouslyConfirmed = history.some((m) => m.artifact || (m.clarification?.kind === "requirements" && m.clarification.state === "answered"));
@@ -181,24 +225,58 @@ export default function TaskConversationPage({ projectId }: { projectId: string 
         const messages = history.filter((item) => item.role === "user" || item.status === "complete")
           .map((item) => ({ role: item.role, content: item.requestContent || item.content }));
         if (messages.length > 60) throw new Error("本次对话已达到 60 条上下文限制，请新建任务继续。");
+        
+        const apiStep = addStep({ type: "api-call", title: "调用 AI 对话服务", detail: `模型: ${current.model || "默认"}`, status: "running" });
+        
         await streamTaskReply({ messages, model: current.model || undefined, ...getAIProviderCredentials() }, abort.signal, (delta, model) => {
           content += delta;
           if (model) actualModel = model;
-          patch(id, { content: isClarificationStream(content) ? "" : content, status: "streaming", model: actualModel || undefined, elapsedMs: performance.now() - startedAt.current }, false);
+          // Show intro text but hide the clarification block while streaming
+          const displayContent = isClarificationStream(content) 
+            ? extractClarificationIntro(content) 
+            : content;
+          patch(id, { content: displayContent, status: "streaming", model: actualModel || undefined, elapsedMs: performance.now() - startedAt.current }, false);
         });
+        
+        updateStep(apiStep.id, { status: "complete", detail: `模型: ${actualModel || current.model || "默认"}` });
+        
         if (abort.signal.aborted) throw new DOMException("Aborted", "AbortError");
-        const questions = parseClarification(content);
-        if (questions) {
-          patch(id, { content: "我先确认一下你的意思，避免做偏。", requestContent: questions.map((q) => `${q.title}（${q.options.join(" / ")}）`).join("\n"), status: "clarifying", clarification: makeClarification(user.id, questions), model: actualModel || undefined, elapsedMs: performance.now() - startedAt.current });
+        const clarification = parseClarification(content);
+        if (clarification) {
+          const displayContent = clarification.intro || "我先确认一下你的意思，避免做偏。";
+          patch(id, { 
+            content: displayContent, 
+            requestContent: clarification.questions.map((q) => `${q.title}（${q.options.join(" / ")}）`).join("\n"), 
+            status: "clarifying", 
+            clarification: makeClarification(user.id, clarification.questions), 
+            model: actualModel || undefined, 
+            elapsedMs: performance.now() - startedAt.current,
+            thinkingSteps: [...thinkingSteps] // 保留思考步骤
+          });
           return;
         }
       } else {
         const latest = getProject(projectId);
         if (!latest) throw new Error("项目草稿已不存在，请重新创建任务。");
+        
+        const thinkingStep = addStep({ type: "thinking", title: "分析需求并规划文件", detail: "正在理解你的需求...", status: "running" });
+        await new Promise(resolve => setTimeout(resolve, 500));
+        updateStep(thinkingStep.id, { status: "complete", detail: "需求分析完成" });
+        
+        const apiStep = addStep({ type: "api-call", title: "调用 AI 生成服务", detail: `模型: ${current.model || "默认"}`, status: "running" });
+        
         const result = await generateProjectWithAI({ prompt: user.requestContent || user.content, projectName: latest.name, model: current.model || undefined, ...getAIProviderCredentials(), currentFiles: latest.files }, abort.signal);
+        
+        updateStep(apiStep.id, { status: "complete", detail: `模型: ${result.model || current.model || "默认"}` });
+        
         if (abort.signal.aborted) throw new DOMException("Aborted", "AbortError");
         const generated = result.files.map((file) => ({ ...file, language: file.language ?? (file.path.endsWith(".html") ? "html" as const : file.path.endsWith(".css") ? "css" as const : file.path.endsWith(".js") ? "javascript" as const : "text" as const) }));
         const extras = latest.files.filter((file) => !generated.some((entry) => entry.path === file.path));
+        
+        for (const file of generated) {
+          addStep({ type: "file", title: `生成文件: ${file.path}`, detail: `${file.content.length} 字符`, status: "complete" });
+        }
+        
         const saved = updateProject({ ...latest, files: [...generated, ...extras], updatedAt: new Date().toISOString() });
         if (mounted.current) setProject(saved);
         content = `已根据你的需求生成并保存了 **${generated.length} 个项目文件**。\n\n${generated.map((file) => `- \`${file.path}\``).join("\n")}\n\n这些文件可以在右侧实时预览里直接查看效果；需要调整请继续告诉我。`;
@@ -209,7 +287,13 @@ export default function TaskConversationPage({ projectId }: { projectId: string 
       if (abort.signal.aborted) throw new DOMException("Aborted", "AbortError");
       patch(id, { content, model: actualModel || undefined, status: "complete", elapsedMs: performance.now() - startedAt.current });
     } catch (cause) {
-      patch(id, { content: isClarificationStream(content) ? "" : content, model: actualModel || undefined, status: abort.signal.aborted ? "stopped" : "error", error: abort.signal.aborted ? "已停止本次回复，收到的内容已保留。" : cause instanceof Error ? cause.message : "回复失败，请稍后重试。", elapsedMs: performance.now() - startedAt.current });
+      for (const step of thinkingSteps) {
+        if (step.status === "running") updateStep(step.id, { status: "error" });
+      }
+      const displayContent = isClarificationStream(content) 
+        ? extractClarificationIntro(content) 
+        : content;
+      patch(id, { content: displayContent, model: actualModel || undefined, status: abort.signal.aborted ? "stopped" : "error", error: abort.signal.aborted ? "已停止本次回复，收到的内容已保留。" : cause instanceof Error ? cause.message : "回复失败，请稍后重试。", elapsedMs: performance.now() - startedAt.current });
     } finally {
       if (controller.current === abort) controller.current = null;
       if (mounted.current) setActiveId(null);
@@ -351,7 +435,23 @@ export default function TaskConversationPage({ projectId }: { projectId: string 
           {task.messages.map((message) => message.role === "user" ? <article className="task-user-message" id={`message-${message.id}`} key={message.id} aria-label="你的问题"><p>{message.content}</p></article> : <article className="task-assistant-message" id={`message-${message.id}`} key={message.id} aria-label="WorkBuddy 回复" aria-busy={message.status === "waiting" || message.status === "streaming"}>
             <div className="task-assistant-brand"><span><HomeIcon name="assistant" size={19} /></span><strong>WorkBuddy</strong></div>
             {message.status !== "clarifying" && <details className={`task-progress is-${message.status}`}><summary><span className={message.id === activeId ? "task-pulse" : ""}>{statusLabels[message.status]}{message.status !== "local" && ` ${elapsed(message)}s`}</span><HomeIcon name="chevron" size={10} /></summary><ol><li>已接收你的问题</li><li>{message.status === "local" ? "按本地策略保留草稿，未请求 AI" : message.status === "waiting" ? "已提交 AI 请求，等待服务返回" : message.status === "error" ? "服务返回错误或连接中断" : message.status === "stopped" ? "请求已停止，不会自动重发" : message.status === "streaming" ? "正在接收回复内容" : message.artifact ? "已生成文件并保存到本机项目" : "已接收完整回复"}</li></ol><small>这里显示请求执行状态，不是模型内部思维过程。</small></details>}
-            {message.status !== "clarifying" && <div className="task-thinking-label">{task.mode === "office" ? "深度思考" : "设计生成"}{message.id === activeId && <span aria-hidden="true"> ···</span>}</div>}
+            {(message.thinkingSteps && message.thinkingSteps.length > 0) && <div className="task-thinking-label">{task.mode === "office" ? "深度思考" : "设计生成"}{message.id === activeId && <span aria-hidden="true"> ···</span>}</div>}
+            {message.thinkingSteps && message.thinkingSteps.length > 0 && (
+              <TaskThinkingProcess 
+                steps={[
+                  ...(message.thinkingSteps || []),
+                  ...skillExecutions.map(exec => ({
+                    id: `skill-${exec.timestamp}`,
+                    type: "skill" as const,
+                    title: `执行技能: ${exec.skillName}`,
+                    detail: `技能ID: ${exec.skillId}`,
+                    status: "complete" as const,
+                    timestamp: exec.timestamp
+                  }))
+                ]} 
+                isStreaming={message.status === "streaming"} 
+              />
+            )}
             {message.content && <div className="task-reply-markdown"><TaskMarkdown content={message.content} />{message.status === "streaming" && <span className="task-stream-cursor" aria-hidden="true" />}</div>}
             {message.status === "clarifying" && <p className="task-confirm-wait" role="status">等待你的回答…<span>确认后继续</span></p>}
             {message.clarification?.state === "answered" && <details className="task-confirm-summary"><summary>已确认的问题</summary><pre>{clarificationSummary(message.clarification)}</pre></details>}
@@ -382,7 +482,28 @@ export default function TaskConversationPage({ projectId }: { projectId: string 
           {task.permission === "仅本地" ? <p role="status">当前为仅本地模式：不会打开后台执行台、上传材料或请求规划模型。需要文件处理时请先修改任务权限，再单独确认。</p>
             : skillIdentityChanged ? <div role="status"><p>服务端身份已变化，已关闭此任务的执行入口。请先核对当前账号；方案与产物将按当前账号重新读取，不会自动重新提交。</p><button type="button" onClick={() => setSkillIdentityChanged(false)}>已核对账号，重新打开执行台</button></div>
             : task.skillExpertId && !expertCatalog.some(e => e.id === task.skillExpertId) ? <p role="status">此任务指定的自建专家尚未绑定后台技能，不会自动替换专家。请在首页选择已接通的内置专家后新建任务。</p>
-            : <SkillWorkbench key={`${projectId}-${task.model}-${task.permission}`} taskId={projectId} initialGoal={task.messages.find(m => m.role === "user")?.content || ""} expertId={task.skillExpertId} model={task.model} permission={task.permission} />}
+            : <SkillWorkbench 
+                key={`${projectId}-${task.model}-${task.permission}`} 
+                taskId={projectId} 
+                initialGoal={task.messages.find(m => m.role === "user")?.content || ""} 
+                expertId={task.skillExpertId} 
+                model={task.model} 
+                permission={task.permission} 
+                initialSkillId={task.suggestedSkillId} 
+                autoContent={(() => {
+                  // 如果推荐了技能且有完成的助手消息，自动传递内容
+                  if (task.suggestedSkillId) {
+                    const latestAssistant = task.messages.filter(m => m.role === "assistant" && m.status === "complete").at(-1);
+                    if (latestAssistant && latestAssistant.content && !latestAssistant.artifact) {
+                      return latestAssistant.content;
+                    }
+                  }
+                  return undefined;
+                })()}
+                onSkillExecute={(skillId, skillName) => {
+                  setSkillExecutions(prev => [...prev, { skillId, skillName, timestamp: Date.now() }]);
+                }} 
+              />}
           <p>方案与产物按当前服务端身份保存。对话正文目前仍保存在此浏览器；删除本机任务不会自动删除后台运行，请先在执行台删除不需要的文件。</p>
         </section>}
       </div>

@@ -49,6 +49,12 @@ export function ExpertMatchPanel({ match, onManual, onSelect, onConfigure, onClo
       {match.fallback && <div className="expert-match-fallback"><b>本地规则建议 · 非模型匹配</b><p>{match.fallback.name}：仅按任务词语粗略判断，可能不准确，不会自动用于执行。</p><button onClick={() => onSelect(match.fallback!.name)}>使用本地建议并锁定</button></div>}
     </>}
     {match.answer && <div className="expert-match-note"><b>已确认</b><p>{match.answer}</p><button onClick={match.clearAnswer}>修改确认信息</button></div>}
+    {match.skillSuggestion && <div className="expert-match-skill-suggestion">
+      <b>🔧 推荐技能：{match.skillSuggestion.name}</b>
+      <p>{match.skillSuggestion.hint}</p>
+      {match.skillSuggestion.accepts.length > 0 && <small>支持文件：{match.skillSuggestion.accepts.join("、")}</small>}
+      <small>发送任务后，技能工作台会自动预选此技能，上传文件即可执行。</small>
+    </div>}
     <footer>{onViewDetails && <button onClick={onViewDetails}>查看专家详情</button>}<button onClick={onManual}>{match.manual ? "切换专家" : "手动选择专家"}</button>{match.consent && <button onClick={() => match.changeConsent(false)}>关闭自动匹配</button>}</footer>
     <p className="expert-match-boundary">专家只使用实际可用的材料与工具；未接入服务不假装执行。实际文件处理请进入专家详情的技能执行台，聊天不会自动调用这些工具。匹配失败时仍可直接发送。</p>
   </section>;

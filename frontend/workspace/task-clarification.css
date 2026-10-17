@@ -16,8 +16,32 @@
 .task-workspace .clarification-number { display:grid; place-items:center; width:24px; height:24px; flex-shrink:0; border-radius:7px; background:#f3f3f3; font-size:14px; }
 .task-workspace .clarification-option[aria-checked="true"] .clarification-number { background:#fff; }
 .task-workspace .clarification-option-text { flex:1; min-width:0; line-height:1.6; overflow-wrap:anywhere; }
-.task-workspace .clarification-option-arrow { visibility:hidden; flex-shrink:0; }
-.task-workspace .clarification-option[aria-checked="true"] .clarification-option-arrow { visibility:visible; }
+.task-workspace .clarification-option-arrow {
+  visibility: visible;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: transparent;
+  transition: background 0.2s, transform 0.2s;
+  cursor: pointer;
+}
+.task-workspace .clarification-option-arrow:hover {
+  background: rgba(0, 0, 0, 0.08);
+  transform: translateX(2px);
+}
+.task-workspace .clarification-option-arrow:active {
+  transform: translateX(4px);
+}
+.task-workspace .clarification-option-arrow svg {
+  display: block;
+}
+.task-workspace .clarification-option[aria-checked="true"] .clarification-option-arrow {
+  visibility: visible;
+}
 .task-workspace .clarification-note { display:flex; align-items:center; gap:8px; min-height:40px; margin:0 12px; border-bottom:1px solid #f1f1f1; }
 .task-workspace .clarification-note .clarification-number { margin-left:-4px; }
 .task-workspace .clarification-note input { width:100%; min-width:0; height:40px; padding:0; border:0; background:transparent; color:#333; font:inherit; }

@@ -8,7 +8,7 @@ import SmartSkillPlanner, { identifySkillFile } from "./SmartSkillPlanner";
 
 const labels = { queued: "等待执行", running: "正在执行", succeeded: "执行成功", failed: "执行失败", cancelled: "已取消" };
 const terminal = (run: SkillRun) => !["running", "queued"].includes(run.status);
-export default function SkillWorkbench({ expertId, taskId, initialGoal = "", model, permission, allowedSkillIds, initialSkillId }: { expertId?: string; taskId?: string; initialGoal?: string; model?: string; permission?: string; allowedSkillIds?: string[]; initialSkillId?: string }) {
+export default function SkillWorkbench({ expertId, taskId, initialGoal = "", model, permission, allowedSkillIds, initialSkillId, onSkillExecute, autoContent }: { expertId?: string; taskId?: string; initialGoal?: string; model?: string; permission?: string; allowedSkillIds?: string[]; initialSkillId?: string; onSkillExecute?: (skillId: string, skillName: string) => void; autoContent?: string }) {
   const scopeQuery = taskId ? `?taskId=${encodeURIComponent(taskId)}` : "";
   const mutations = useRef(0);
   const epoch = useRef(0);
@@ -62,6 +62,17 @@ export default function SkillWorkbench({ expertId, taskId, initialGoal = "", mod
     timer = setTimeout(poll, 600);
     return () => { stopped = true; controller.abort(); clearTimeout(timer); };
   }, [pending, taskId, refresh]);
+  
+  // Auto-populate file from AI-generated content
+  useEffect(() => {
+    if (autoContent && !file) {
+      const blob = new Blob([autoContent], { type: 'text/markdown' });
+      const autoFile = new File([blob], 'ai-content.md', { type: 'text/markdown' });
+      setFile(autoFile);
+      setConsent(true); // Auto-consent when content is provided
+    }
+  }, [autoContent, file]);
+  
   useEffect(() => () => { if (preview) URL.revokeObjectURL(preview.url); }, [preview]);
   useEffect(() => { setPreview(null); }, [focusId, expertId]);
   const scoped = catalog.filter(s => (!expertId || s.expertIds.includes(expertId)) && (!allowedSkillIds || allowedSkillIds.includes(s.id)));
@@ -76,6 +87,12 @@ export default function SkillWorkbench({ expertId, taskId, initialGoal = "", mod
     sending.current = true;
     const identity = epoch.current;
     setBusy(true); setError(""); setPreview(null);
+    
+    // Notify parent about skill execution
+    if (onSkillExecute) {
+      onSkillExecute(skill.id, skill.name);
+    }
+    
     try {
       if (file.size > 2000000 || !file.size) throw Error("请选择不超过 2 MB 的非空文件。");
       const metadata = await identifySkillFile(file);
@@ -140,6 +157,12 @@ export default function SkillWorkbench({ expertId, taskId, initialGoal = "", mod
     {loaded && relevant.length > 0 && !available.length && <p className="skill-workbench-note">该类别相关技能目前均未支持执行。不会展示虚假的执行按钮。</p>}
     {loaded && relevant.length > 0 && <SmartSkillPlanner key={`${taskId}-${expertId}-${refresh}`} expertId={expertId} taskId={taskId} initialGoal={initialGoal} model={model} permission={permission} catalog={relevant} skillScope={allowedSkillIds} onRun={run => { if (removedRuns.current.has(run.id) || (taskId && run.taskId !== taskId)) return; mutations.current++; setRuns(old => [run, ...old.filter(r => r.id !== run.id)]); setFocusId(run.id); }} />}
     {available.length > 0 && <form className="skill-runtime-form" onSubmit={e => { e.preventDefault(); void execute(); }}>
+      {autoContent && file && (
+        <div className="skill-auto-content-notice">
+          <strong>✓ AI 已生成内容</strong>
+          <p>内容已自动填充，技能已预选。点击下方按钮即可生成文件。</p>
+        </div>
+      )}
       <label>执行技能<select value={selected} disabled={busy} onChange={e => { setSelected(e.target.value); setFile(null); setConsent(false); setParameters(Object.fromEntries((available.find(s => s.id === e.target.value)?.parameterFields || []).map(f => [f.name, f.defaultValue || ""]))); }}>{available.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}</select></label>
       {selected !== "image.layout" && <label>上传实际材料<input key={`${selected}-${expertId}-${refresh}`} type="file" disabled={busy} accept={skill?.accepts.join(",")} onChange={e => { setFile(e.target.files?.[0] || null); setConsent(false); if(selected === "audio.transcribe-en") setParameters({englishConfirmed:""}); submission.current = null; }} /></label>}
       {selected === "image.layout" && <><PosterLayoutEditor key={`${taskId}-${expertId}-${refresh}`} disabled={busy} onInvalidate={() => { setFile(null); setConsent(false); submission.current = null; }} onPrepare={prepared => { setFile(prepared); setConsent(false); submission.current = null; }} /><p className="skill-workbench-note">{file ? `当前已准备 ${file.name}（${file.size}字节），尚未上传；请核对后勾选同意并执行。` : "尚未准备画布输入；编辑后点击“将当前画布准备为输入”。"}</p></>}

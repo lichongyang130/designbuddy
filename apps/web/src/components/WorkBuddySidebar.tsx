@@ -130,22 +130,6 @@ export function WorkBuddySidebar({
           <HomeIcon name="clock" />
           <span className="sidebar-nav-label">定时任务</span>
         </button>
-        <button
-          className={`sidebar-nav-item ${active === "models" ? "is-active" : ""}`}
-          aria-current={active === "models" ? "page" : undefined}
-          onClick={() => go("/models")}
-        >
-          <HomeIcon name="chart" />
-          <span className="sidebar-nav-label">模型与用量</span>
-        </button>
-        <button
-          className={`sidebar-nav-item ${active === "profile" ? "is-active" : ""}`}
-          aria-current={active === "profile" ? "page" : undefined}
-          onClick={() => go("/profile")}
-        >
-          <HomeIcon name="shield" />
-          <span className="sidebar-nav-label">账号与数据</span>
-        </button>
         <SidebarMoreMenu active={active} go={go} />
       </nav>
 
@@ -154,11 +138,7 @@ export function WorkBuddySidebar({
         <button onClick={() => go("/workspaces")}>
           空间（{workspaceCount}）
         </button>
-        <button onClick={() => go("/assets")}>
-          素材（{assetCount}）
-        </button>
         <button onClick={() => go("/workflows")}>工作流</button>
-        <button onClick={() => go("/community")}>社区模板</button>
       </div>
 
       <div className="sidebar-bottom">

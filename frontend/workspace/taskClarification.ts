@@ -46,16 +46,39 @@ const marker = "```designbuddy-clarification";
 /** Buffer the structured reply until validated; never display protocol JSON as an answer. */
 export function isClarificationStream(content: string): boolean {
   const start = content.trimStart();
-  return !!start && (marker.startsWith(start) || start.startsWith(marker));
+  // Check if content starts with marker OR contains the marker anywhere
+  return !!start && (marker.startsWith(start) || start.startsWith(marker) || start.includes(marker));
 }
-export function parseClarification(content: string): ClarificationQuestion[] | null {
-  if (!content.trimStart().startsWith(marker)) return null;
-  const match = content.trim().match(/^```designbuddy-clarification\s*\n([\s\S]*?)\n```$/);
-  if (!match || content.length > 12_000) throw new Error("确认问题格式无效，请重新生成；没有继续执行任务。");
+
+export function extractClarificationIntro(content: string): string {
+  const trimmed = content.trim();
+  const blockStart = trimmed.indexOf('```designbuddy-clarification');
+  if (blockStart > 0) {
+    return trimmed.substring(0, blockStart).trim();
+  }
+  return "";
+}
+export function parseClarification(content: string): { intro: string; questions: ClarificationQuestion[] } | null {
+  const trimmed = content.trim();
+  
+  // Try to find the clarification block anywhere in the content
+  const blockMatch = trimmed.match(/```designbuddy-clarification\s*\n([\s\S]*?)\n```/);
+  if (!blockMatch || content.length > 12_000) return null;
+  
+  // Extract the intro text before the block
+  const blockStart = trimmed.indexOf('```designbuddy-clarification');
+  const intro = blockStart > 0 ? trimmed.substring(0, blockStart).trim() : "";
+  
   let data;
-  try { data = JSON.parse(match[1]); } catch { throw new Error("确认问题格式无效，请重新生成；没有继续执行任务。"); }
-  if (!data || !validQuestions(data.questions)) throw new Error("确认问题格式无效，请重新生成；没有继续执行任务。");
-  return data.questions;
+  try { 
+    data = JSON.parse(blockMatch[1]); 
+  } catch { 
+    return null; 
+  }
+  
+  if (!data || !validQuestions(data.questions)) return null;
+  
+  return { intro, questions: data.questions };
 }
 
 /** Conservative local guard for a first, genuinely underspecified UI request, not every task. */
