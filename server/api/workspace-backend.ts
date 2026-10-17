@@ -95,6 +95,9 @@ export class WorkspaceBackend {
       this.db.exec("ALTER TABLE workspace_accounts ADD COLUMN display_name TEXT NOT NULL DEFAULT ''");
     if (!accountColumns.some((column) => column.name === "email"))
       this.db.exec("ALTER TABLE workspace_accounts ADD COLUMN email TEXT NOT NULL DEFAULT ''");
+    // An operator can turn an account off; the sessions of a disabled account end.
+    if (!accountColumns.some((column) => column.name === "disabled"))
+      this.db.exec("ALTER TABLE workspace_accounts ADD COLUMN disabled INTEGER NOT NULL DEFAULT 0");
   }
   /** Record what happened to an account. The detail never holds the content itself. */
   private auditAccount(accountId: string, action: string, detail = "") {
@@ -114,6 +117,73 @@ export class WorkspaceBackend {
         createdAt: Number((row as { created_at: number }).created_at),
       }));
   }
+  /** The accounts on this server. Password material never leaves the database. */
+  adminAccounts() {
+    const rows = this.db
+      .prepare(
+        "SELECT id,username,display_name,email,created_at,disabled FROM workspace_accounts ORDER BY created_at ASC",
+      )
+      .all() as Array<{
+      id: string;
+      username: string;
+      display_name: string;
+      email: string;
+      created_at: string;
+      disabled: number;
+    }>;
+    return rows.map((row) => ({
+      id: row.id,
+      username: row.username,
+      displayName: row.display_name || "",
+      email: row.email || "",
+      createdAt: row.created_at,
+      disabled: Boolean(row.disabled),
+    }));
+  }
+
+  /**
+   * Turn an account on or off. A disabled account cannot sign in any more and
+   * every session it had ends immediately.
+   */
+  adminSetAccountEnabled(id: string, enabled: boolean) {
+    const account = this.db
+      .prepare("SELECT id,username FROM workspace_accounts WHERE id=?")
+      .get(id) as { id: string; username: string } | undefined;
+    if (!account) return null;
+    this.db.prepare("UPDATE workspace_accounts SET disabled=? WHERE id=?").run(enabled ? 0 : 1, id);
+    if (!enabled) this.db.prepare("DELETE FROM browser_sessions WHERE user_id=?").run(id);
+    this.auditAccount(
+      id,
+      enabled ? "account.enable" : "account.disable",
+      enabled ? "管理员恢复账号" : "管理员停用账号，已有会话已失效",
+    );
+    return { id, username: account.username, enabled };
+  }
+
+  /** The account audit across every account, newest first. */
+  adminAccountAudit(limit = 100) {
+    const rows = this.db
+      .prepare(
+        "SELECT a.id,a.account_id,a.action,a.detail,a.created_at,coalesce(c.username,'') AS username FROM workspace_account_audit a LEFT JOIN workspace_accounts c ON c.id=a.account_id ORDER BY a.created_at DESC LIMIT ?",
+      )
+      .all(Math.max(1, Math.min(500, limit))) as Array<{
+      id: string;
+      account_id: string;
+      action: string;
+      detail: string;
+      created_at: number;
+      username: string;
+    }>;
+    return rows.map((row) => ({
+      id: row.id,
+      accountId: row.account_id,
+      username: row.username,
+      action: row.action,
+      detail: row.detail || "",
+      createdAt: Number(row.created_at),
+    }));
+  }
+
   private cookieToken(request: Request) {
     return request.headers
       .get("cookie")
@@ -122,15 +192,15 @@ export class WorkspaceBackend {
       .find((p) => p.startsWith("designbuddy_session="))
       ?.slice("designbuddy_session=".length);
   }
-  principal(request: Request): { id: string } | null {
+  principal(request: Request): { id: string; username?: string } | null {
     const token = this.cookieToken(request);
     if (!token || !/^[a-zA-Z0-9_-]{40,60}$/.test(token)) return null;
     const row = this.db
       .prepare(
-        "SELECT user_id FROM browser_sessions WHERE token_hash=? AND expires>?",
+        "SELECT s.user_id AS user_id,coalesce(a.username,'') AS username FROM browser_sessions s LEFT JOIN workspace_accounts a ON a.id=s.user_id WHERE s.token_hash=? AND s.expires>?",
       )
-      .get(hash(token), Date.now()) as { user_id: string } | undefined;
-    return row ? { id: row.user_id } : null;
+      .get(hash(token), Date.now()) as { user_id: string; username: string } | undefined;
+    return row ? { id: row.user_id, ...(row.username ? { username: row.username } : {}) } : null;
   }
   private identity(id: string) {
     const a = this.db
@@ -450,10 +520,10 @@ export class WorkspaceBackend {
           }
           const account = this.db
             .prepare(
-              "SELECT id,salt,password_hash FROM workspace_accounts WHERE username=?",
+              "SELECT id,salt,password_hash,disabled FROM workspace_accounts WHERE username=?",
             )
             .get(username) as
-            | { id: string; salt: string; password_hash: string }
+            | { id: string; salt: string; password_hash: string; disabled: number }
             | undefined;
           const candidate = scryptSync(
             password,
@@ -468,6 +538,11 @@ export class WorkspaceBackend {
             )
           )
             return responseJSON({ error: "用户名或密码不正确。" }, 401);
+          if (account.disabled)
+            return responseJSON(
+              { error: "该账号已被管理员停用，请联系管理员。" },
+              403,
+            );
           this.revoke(request);
           return responseJSON({ user: this.identity(account.id) }, 200, {
             "Set-Cookie": this.issue(request, account.id),
