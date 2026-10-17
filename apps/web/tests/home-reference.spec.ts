@@ -23,7 +23,7 @@ test("reference 27 structure is on the right and shared sidebar remains unchange
     ).toBeVisible();
   }
   await expect(
-    sidebar.getByRole("button", { name: "账号菜单：19932101651" }),
+    sidebar.getByRole("button", { name: /^账号菜单：/ }),
   ).toBeVisible();
   await expect(sidebar).toHaveCSS("background-color", "rgb(242, 242, 242)");
   await expect(page.locator(".home27")).toHaveCSS(

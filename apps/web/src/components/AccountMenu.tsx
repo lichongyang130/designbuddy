@@ -100,8 +100,8 @@ export function AccountMenu() {
     try {
       const result = await apiJSON<{ ok: boolean }>("/auth/logout", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
       if (result.ok !== true) throw Error("服务器未确认退出，请重试。");
-      if (mounted.current) { setIdentity({ username: null, kind: "guest" }); setDetail(null); setMessage("已退出服务器账号，本机草稿仍保留。"); }
       resetAPISession();
+      window.location.assign("/login");
     } catch (error) { if (mounted.current) setMessage(error instanceof Error ? error.message : "退出失败，请稍后重试。"); }
     finally { sending.current = false; if (mounted.current) setBusy(false); }
   }

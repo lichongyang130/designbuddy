@@ -66,8 +66,7 @@ test("the product model list is labelled as an unverified product claim", async 
   await expect(product.locator("tbody tr")).toHaveCount(7);
 });
 
-test("the models page is reachable from the sidebar", async ({ page }) => {
-  await page.goto("/");
-  await page.getByRole("button", { name: "模型与用量" }).click();
+test("the models page opens directly", async ({ page }) => {
+  await page.goto("/models");
   await expect(page.getByRole("heading", { name: "模型与用量", level: 1 })).toBeVisible();
 });

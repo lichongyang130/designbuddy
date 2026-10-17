@@ -33,7 +33,10 @@ import "./home-workspace.css";
 import "./home-reference.css";
 import "./home-layout.css";
 import { HomeDiscovery, HomeShortcuts, type HomeScene } from "./components/HomeDiscovery";
-import AuthPage from "./components/AuthPage";
+import "./components/auth.css";
+import LoginPage from "./components/LoginPage";
+import RegisterPage from "./components/RegisterPage";
+import type { AccountIdentity } from "../../../frontend/workspace/api/account";
 
 
 type WorkMode = "office" | "code" | "design";
@@ -71,6 +74,9 @@ export default function App() {
   const [promptGroupRevision, setPromptGroupRevision] = useState(0);
   const [notice, setNotice] = useState("");
   const [projects, setProjects] = useState<DesignProject[]>(() => listProjects());
+  const [identity, setIdentity] = useState<AccountIdentity | null | undefined>(undefined);
+  const [identityFailed, setIdentityFailed] = useState(false);
+  const [identityAttempt, setIdentityAttempt] = useState(0);
   const [workspaceCount, setWorkspaceCount] = useState(0);
   const [assetCount, setAssetCount] = useState(0);
   const [busy, setBusy] = useState(false);
@@ -91,6 +97,50 @@ export default function App() {
   useEffect(() => {
     void syncPreferencesFromAccount();
   }, []);
+
+  // Every launch starts at the login screen until the server confirms an account.
+  // Shared links stay public; the login and register pages never gate themselves.
+  const publicRoute =
+    currentPath === "/login" ||
+    currentPath === "/register" ||
+    currentPath === "/auth" ||
+    currentPath.startsWith("/share");
+  useEffect(() => {
+    if (publicRoute) return;
+    let cancelled = false;
+    // The first load blocks on the gate. Later in-app navigations keep the
+    // known identity so mounted pages (and their in-flight requests) survive;
+    // a background check only interrupts when the session actually changed.
+    const known = identity;
+    if (known === undefined && !identityFailed) {
+      fetchAccount()
+        .then((user) => {
+          if (!cancelled) setIdentity(user);
+        })
+        .catch(() => {
+          if (!cancelled) {
+            setIdentity(null);
+            setIdentityFailed(true);
+          }
+        });
+    } else {
+      fetchAccount()
+        .then((user) => {
+          if (cancelled) return;
+          if (!known || known.kind !== user.kind || known.id !== user.id) {
+            setIdentity(user);
+            setIdentityFailed(false);
+          }
+        })
+        .catch(() => {
+          // Keep the stale identity; per-feature requests surface outages.
+        });
+    }
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPath, publicRoute, identityAttempt]);
 
   // The sidebar shows how many workspaces the account belongs to.
   useEffect(() => {
@@ -260,7 +310,28 @@ export default function App() {
     }
   }
 
-  if (currentPath === "/auth" || currentPath === "/login" || currentPath === "/register") return <AuthPage />;
+  if (currentPath === "/login" || currentPath === "/auth") return <LoginPage />;
+  if (currentPath === "/register") return <RegisterPage />;
+  if (!publicRoute) {
+    if (identity === undefined && !identityFailed)
+      return (
+        <div className="auth-loading" role="status" aria-label="正在确认登录状态">
+          <span className="auth-loading-spinner" aria-hidden="true" />
+          正在确认登录状态…
+        </div>
+      );
+    if (identityFailed || !identity)
+      return (
+        <div className="auth-loading" role="alert">
+          <p>无法连接后台服务，请确认服务已启动后重试。</p>
+          <button onClick={() => setIdentityAttempt((attempt) => attempt + 1)}>
+            重新连接
+          </button>
+        </div>
+      );
+    if (identity.kind !== "account")
+      return <LoginPage next={currentPath + window.location.search} />;
+  }
   if (currentPath === "/plugins") return <PluginsPage />;
   if (currentPath === "/schedules") return <SchedulesPage />;
   if (currentPath === "/models") return <ModelsPage />;

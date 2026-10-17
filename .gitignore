@@ -10,6 +10,7 @@ coverage/
 # 测试产物
 apps/web/test-results/
 apps/web/playwright-report/
+apps/web/playwright/.auth.json
 playwright-report/
 *.log
 

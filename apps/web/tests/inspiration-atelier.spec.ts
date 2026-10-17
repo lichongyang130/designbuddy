@@ -1,4 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
+import { GUEST_STORAGE, freshAccountPage, loginViaAPI } from "./auth-helpers";
 import { readFile } from "node:fs/promises";
 const nav = (page: Page, i: number) =>
   page
@@ -351,58 +352,46 @@ for (const width of [320, 375, 768, 1440])
   });
 
 test("ATELIER snapshots survive account login and restore in a separate browser", async ({
-  page,
   browser,
 }) => {
   const username = "atelier_" + crypto.randomUUID().slice(0, 8),
     password = "atelier-test-only-2026";
-  async function login(p: Page, register: boolean) {
-    await p.getByRole("button", { name: "工作区状态", exact: true }).click();
-    const dialog = p.getByRole("dialog", { name: "后台连接与账号" });
-    await dialog.getByLabel("服务器用户名").fill(username);
-    await dialog.getByLabel("服务器密码").fill(password);
-    await dialog
-      .getByRole("button", {
-        name: register ? "注册并保留访客数据" : "登录账号",
-        exact: true,
-      })
-      .click();
-    await expect(
-      dialog.getByRole("button", { name: "退出服务器账号" }),
-    ).toBeVisible();
-    await dialog.getByRole("button", { name: "关闭服务器窗口" }).click();
-  }
-  await page.goto("/inspiration/atelier");
-  await login(page, true);
-  await nav(page, 1);
-  await page.getByLabel("项目名称", { exact: true }).fill("跨浏览器订制档案");
-  await nav(page, 9);
-  await page.getByLabel("胸围（cm）", { exact: true }).fill("96");
-  await page.getByRole("button", { name: "保存到服务器", exact: true }).click();
-  await expect(page.locator(".template-cloud")).toContainText("已保存到服务器");
-  const second = await browser.newContext();
+  const owned = await freshAccountPage(browser, username, password);
+  const page = owned.page;
   try {
-    const other = await second.newPage();
-    await other.goto("http://127.0.0.1:5173/inspiration");
-    await login(other, false);
-    await other
-      .getByRole("button", { name: "服务器作品", exact: true })
-      .click();
-    const library = other.getByRole("dialog", { name: "服务器作品" });
-    await expect(library).toContainText("ATELIER");
-    other.once("dialog", (d) => d.accept());
-    await library
-      .getByRole("button", { name: "恢复并打开", exact: true })
-      .click();
-    await expect(other).toHaveURL(/\/atelier$/);
-    await expect(other.getByLabel("胸围（cm）", { exact: true })).toHaveValue(
-      "96",
-    );
-    await nav(other, 1);
-    await expect(other.getByLabel("项目名称", { exact: true })).toHaveValue(
-      "跨浏览器订制档案",
-    );
+    await page.goto("/inspiration/atelier");
+    await nav(page, 1);
+    await page.getByLabel("项目名称", { exact: true }).fill("跨浏览器订制档案");
+    await nav(page, 9);
+    await page.getByLabel("胸围（cm）", { exact: true }).fill("96");
+    await page.getByRole("button", { name: "保存到服务器", exact: true }).click();
+    await expect(page.locator(".template-cloud")).toContainText("已保存到服务器");
+    const second = await browser.newContext({ storageState: GUEST_STORAGE });
+    try {
+      const other = await second.newPage();
+      await other.goto("http://127.0.0.1:5173/inspiration");
+      await loginViaAPI(other, username, password);
+      await other
+        .getByRole("button", { name: "服务器作品", exact: true })
+        .click();
+      const library = other.getByRole("dialog", { name: "服务器作品" });
+      await expect(library).toContainText("ATELIER");
+      other.once("dialog", (d) => d.accept());
+      await library
+        .getByRole("button", { name: "恢复并打开", exact: true })
+        .click();
+      await expect(other).toHaveURL(/\/atelier$/);
+      await expect(other.getByLabel("胸围（cm）", { exact: true })).toHaveValue(
+        "96",
+      );
+      await nav(other, 1);
+      await expect(other.getByLabel("项目名称", { exact: true })).toHaveValue(
+        "跨浏览器订制档案",
+      );
+    } finally {
+      await second.close();
+    }
   } finally {
-    await second.close();
+    await owned.context.close();
   }
 });

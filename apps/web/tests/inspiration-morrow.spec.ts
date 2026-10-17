@@ -1,4 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
+import { GUEST_STORAGE, freshAccountPage, loginViaAPI } from "./auth-helpers";
 import { readFile } from "node:fs/promises";
 const configs = [
   {
@@ -241,53 +242,41 @@ for (const c of configs) {
       });
     });
   test(`${c.title}: actual account login and separate-browser server recovery`, async ({
-    page,
     browser,
   }) => {
     const username = c.id + "_" + crypto.randomUUID().slice(0, 8),
       password = "sample-test-only-2026";
-    async function login(p: Page, register: boolean) {
-      await p.getByRole("button", { name: "工作区状态", exact: true }).click();
-      const d = p.getByRole("dialog", { name: "后台连接与账号" });
-      await d.getByLabel("服务器用户名").fill(username);
-      await d.getByLabel("服务器密码").fill(password);
-      await d
-        .getByRole("button", {
-          name: register ? "注册并保留访客数据" : "登录账号",
-          exact: true,
-        })
-        .click();
-      await expect(
-        d.getByRole("button", { name: "退出服务器账号" }),
-      ).toBeVisible();
-      await d.getByRole("button", { name: "关闭服务器窗口" }).click();
-    }
-    await page.goto("/inspiration/" + c.id);
-    await login(page, true);
-    await nav(page, c.id, 1);
-    await page.getByLabel(c.field, { exact: true }).fill("跨浏览器 " + c.title);
-    await page
-      .getByRole("button", { name: "保存到服务器", exact: true })
-      .click();
-    await expect(page.locator(".template-cloud")).toContainText(
-      "已保存到服务器",
-    );
-    const second = await browser.newContext();
+    const owned = await freshAccountPage(browser, username, password);
+    const page = owned.page;
     try {
-      const p = await second.newPage();
-      await p.goto("http://127.0.0.1:5173/inspiration");
-      await login(p, false);
-      await p.getByRole("button", { name: "服务器作品", exact: true }).click();
-      const d = p.getByRole("dialog", { name: "服务器作品" });
-      await expect(d).toContainText(c.title);
-      p.once("dialog", (d) => d.accept());
-      await d.getByRole("button", { name: "恢复并打开", exact: true }).click();
-      await expect(p).toHaveURL(new RegExp("/" + c.id + "$"));
-      await expect(p.getByLabel(c.field, { exact: true })).toHaveValue(
-        "跨浏览器 " + c.title,
+      await page.goto("/inspiration/" + c.id);
+      await nav(page, c.id, 1);
+      await page.getByLabel(c.field, { exact: true }).fill("跨浏览器 " + c.title);
+      await page
+        .getByRole("button", { name: "保存到服务器", exact: true })
+        .click();
+      await expect(page.locator(".template-cloud")).toContainText(
+        "已保存到服务器",
       );
+      const second = await browser.newContext({ storageState: GUEST_STORAGE });
+      try {
+        const p = await second.newPage();
+        await p.goto("http://127.0.0.1:5173/inspiration");
+        await loginViaAPI(p, username, password);
+        await p.getByRole("button", { name: "服务器作品", exact: true }).click();
+        const d = p.getByRole("dialog", { name: "服务器作品" });
+        await expect(d).toContainText(c.title);
+        p.once("dialog", (d) => d.accept());
+        await d.getByRole("button", { name: "恢复并打开", exact: true }).click();
+        await expect(p).toHaveURL(new RegExp("/" + c.id + "$"));
+        await expect(p.getByLabel(c.field, { exact: true })).toHaveValue(
+          "跨浏览器 " + c.title,
+        );
+      } finally {
+        await second.close();
+      }
     } finally {
-      await second.close();
+      await owned.context.close();
     }
   });
 }

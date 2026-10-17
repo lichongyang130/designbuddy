@@ -1,4 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
+import { GUEST_STORAGE } from "./auth-helpers";
+
+test.use({ storageState: GUEST_STORAGE });
 
 /**
  * Account profile: edit the display name and email, rotate the password,

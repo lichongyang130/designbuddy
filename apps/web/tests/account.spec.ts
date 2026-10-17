@@ -1,5 +1,6 @@
 import { test, expect, type Page } from "@playwright/test";
-const triggerName = "账号菜单：19932101651";
+// Tests run authenticated; the trigger shows the shared setup account, not the guest placeholder.
+const triggerName = /^账号菜单：/;
 async function openSettings(page: Page) {
   await page.getByRole("button", { name: triggerName }).click();
   const menu = page.getByRole("dialog", { name: "账号菜单", exact: true });
