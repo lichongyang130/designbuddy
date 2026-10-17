@@ -193,6 +193,8 @@ type Workflow = {
 ### 6.6 可核验数字
 
 - 服务端全量：`node --test server/skills/*.test.cjs server/api/*.test.cjs` = **310/310 通过**（本轮新增 12 项工作流用例）。
+  （第十四轮复跑：**313/313**。）
 - 浏览器专项：`tests/workflows.spec.ts` = **5/5 通过**；全站套件复跑 = **540 通过 / 0 失败 / 1 跳过**（31.0 分钟，541 项）。
+  （第十四轮复跑：**542 通过 / 0 失败 / 1 跳过**，27.3 分钟，543 项。）
 - 验收套件 `designbuddy-workflows.suite.json`（1440×900 + 390×844）= **56/56 通过**，证据包
   `docs/verification/workflows-2026-10-17/`（manifest/console/network/screenshots）。

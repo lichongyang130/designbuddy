@@ -280,6 +280,127 @@ export class TaskBackend {
     return true;
   }
 
+  /**
+   * The operator view of the AI usage. It reads across accounts on purpose:
+   * only the admin console may call it, and it never returns account secrets.
+   */
+  adminUsageSummary(limit = 500) {
+    const rows = this.db
+      .prepare(
+        "SELECT owner_id,model,provider,count(*) AS calls,sum(prompt_tokens) AS prompt,sum(completion_tokens) AS completion,sum(total_tokens) AS total,sum(latency_ms) AS latency,sum(case when status='error' then 1 else 0 end) AS errors FROM ai_usage GROUP BY owner_id,model,provider ORDER BY total desc",
+      )
+      .all() as Array<{
+      owner_id: string;
+      model: string;
+      provider: string;
+      calls: number;
+      prompt: number | null;
+      completion: number | null;
+      total: number | null;
+      latency: number | null;
+      errors: number | null;
+    }>;
+    const byOwner = new Map<string, { ownerId: string; calls: number; totalTokens: number; errors: number }>();
+    const byModel = new Map<string, { model: string; provider: string; calls: number; totalTokens: number }>();
+    let calls = 0,
+      promptTokens = 0,
+      completionTokens = 0,
+      totalTokens = 0,
+      errors = 0,
+      latency = 0;
+    for (const row of rows) {
+      calls += Number(row.calls || 0);
+      promptTokens += Number(row.prompt || 0);
+      completionTokens += Number(row.completion || 0);
+      totalTokens += Number(row.total || 0);
+      errors += Number(row.errors || 0);
+      latency += Number(row.latency || 0);
+      const owner = byOwner.get(row.owner_id) ?? { ownerId: row.owner_id, calls: 0, totalTokens: 0, errors: 0 };
+      owner.calls += Number(row.calls || 0);
+      owner.totalTokens += Number(row.total || 0);
+      owner.errors += Number(row.errors || 0);
+      byOwner.set(row.owner_id, owner);
+      const key = `${row.provider}:${row.model}`;
+      const model = byModel.get(key) ?? { model: row.model, provider: row.provider, calls: 0, totalTokens: 0 };
+      model.calls += Number(row.calls || 0);
+      model.totalTokens += Number(row.total || 0);
+      byModel.set(key, model);
+    }
+    return {
+      calls,
+      promptTokens,
+      completionTokens,
+      totalTokens,
+      errors,
+      averageLatencyMs: calls ? Math.round(latency / calls) : 0,
+      byOwner: [...byOwner.values()].sort((a, b) => b.totalTokens - a.totalTokens).slice(0, 20),
+      byModel: [...byModel.values()].sort((a, b) => b.totalTokens - a.totalTokens).slice(0, 20),
+      rows: rows.length,
+    };
+  }
+
+  /** The task counts and the newest failures, across accounts. */
+  adminTaskStats(limit = 20) {
+    const byStatus = this.db
+      .prepare("SELECT status,count(*) AS n FROM tasks GROUP BY status")
+      .all() as Array<{ status: string; n: number }>;
+    const byKind = this.db
+      .prepare("SELECT kind,count(*) AS n FROM tasks GROUP BY kind")
+      .all() as Array<{ kind: string; n: number }>;
+    const failures = this.db
+      .prepare("SELECT id,owner_id,project_id,kind,title,error,updated_at FROM tasks WHERE status='failed' ORDER BY updated_at DESC LIMIT ?")
+      .all(Math.max(1, Math.min(100, limit))) as Array<{
+      id: string;
+      owner_id: string;
+      project_id: string;
+      kind: string;
+      title: string;
+      error: string;
+      updated_at: number;
+    }>;
+    return {
+      total: byStatus.reduce((sum, row) => sum + Number(row.n || 0), 0),
+      byStatus: Object.fromEntries(byStatus.map((row) => [row.status, Number(row.n || 0)])),
+      byKind: Object.fromEntries(byKind.map((row) => [row.kind, Number(row.n || 0)])),
+      failures: failures.map((row) => ({
+        id: row.id,
+        ownerId: row.owner_id,
+        projectId: row.project_id,
+        kind: row.kind,
+        title: row.title,
+        error: row.error || "",
+        updatedAt: Number(row.updated_at),
+      })),
+    };
+  }
+
+  /** Every schedule on the server, for the operator console. */
+  adminSchedules() {
+    const rows = this.db
+      .prepare("SELECT * FROM schedules ORDER BY created_at DESC")
+      .all() as Array<Record<string, unknown>>;
+    return rows.map((row) => ({
+      id: String(row.id),
+      ownerId: String(row.owner_id),
+      name: String(row.name),
+      cron: String(row.cron),
+      timezone: String(row.timezone),
+      enabled: Boolean(row.enabled),
+      lastRunAt: Number(row.last_run_at || 0),
+      nextRunAt: Number(row.next_run_at || 0),
+      lastStatus: String(row.last_status || ""),
+      lastDetail: String(row.last_detail || ""),
+    }));
+  }
+
+  /** Turn a schedule on or off, for an operator. */
+  adminSetScheduleEnabled(ownerId: string, id: string, enabled: boolean) {
+    const schedule = this.getSchedule(ownerId, id);
+    if (!schedule) return null;
+    this.db.prepare("UPDATE schedules SET enabled=? WHERE id=? AND owner_id=?").run(enabled ? 1 : 0, id, ownerId);
+    return { ...schedule, enabled };
+  }
+
   listNotifications(ownerId: string): {
     id: string;
     taskId: string | null;

@@ -1,0 +1,159 @@
+{
+  "name": "designbuddy-admin",
+  "baseUrl": "http://127.0.0.1:5173",
+  "viewports": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "checks": [
+    {
+      "id": "admin-page",
+      "type": "assertVisible",
+      "path": "/admin",
+      "selector": "main[aria-label=\"管理后台\"]",
+      "waitFor": "main[aria-label=\"管理后台\"]"
+    },
+    {
+      "id": "admin-boundary",
+      "type": "assertText",
+      "path": "/admin",
+      "reload": false,
+      "selector": ".ad-hero p",
+      "contains": "DESIGNBUDDY_ADMIN_ACCOUNTS"
+    },
+    {
+      "id": "admin-guest-refused",
+      "type": "evaluate",
+      "path": "/admin",
+      "reload": false,
+      "script": "(async () => {\n  const post = (path) => fetch(path, { method: \"POST\", headers: { \"Content-Type\": \"application/json\" }, credentials: \"include\", body: \"{}\" });\n  await post(\"/api/auth/logout\");\n  await post(\"/api/local/session\");\n  const response = await fetch(\"/api/admin/overview\", { credentials: \"include\" });\n  const text = await response.text();\n  return { status: response.status, text: text.slice(0, 300) };\n})",
+      "expectStatus": 403,
+      "expectText": "管理员"
+    },
+    {
+      "id": "admin-guest-account",
+      "type": "evaluate",
+      "path": "/admin",
+      "reload": false,
+      "script": "(async () => {\n  const credentials = { username: \"acceptance_guest\", password: \"acceptance-password-12345\" };\n  const post = (path, body) => fetch(path, { method: \"POST\", headers: { \"Content-Type\": \"application/json\" }, credentials: \"include\", body: JSON.stringify(body) });\n  await post(\"/api/auth/logout\", {});\n  await post(\"/api/local/session\", {});\n  let response = await post(\"/api/auth/register\", credentials);\n  if (response.status === 409) response = await post(\"/api/auth/login\", credentials);\n  const text = await response.text();\n  return { status: response.status, text: text.slice(0, 400) };\n})",
+      "expectText": "acceptance_guest"
+    },
+    {
+      "id": "admin-operator-login",
+      "type": "evaluate",
+      "path": "/admin",
+      "reload": false,
+      "script": "(async () => {\n  const credentials = { username: \"acceptance_admin\", password: \"acceptance-password-12345\" };\n  const post = (path, body) => fetch(path, { method: \"POST\", headers: { \"Content-Type\": \"application/json\" }, credentials: \"include\", body: JSON.stringify(body) });\n  await post(\"/api/auth/logout\", {});\n  await post(\"/api/local/session\", {});\n  let response = await post(\"/api/auth/register\", credentials);\n  if (response.status === 409) response = await post(\"/api/auth/login\", credentials);\n  const text = await response.text();\n  return { status: response.status, text: text.slice(0, 400) };\n})",
+      "expectText": "acceptance_admin"
+    },
+    {
+      "id": "admin-stats",
+      "type": "assertVisible",
+      "path": "/admin",
+      "selector": ".ad-stats",
+      "waitFor": ".ad-stats"
+    },
+    {
+      "id": "admin-accounts",
+      "type": "assertText",
+      "path": "/admin",
+      "reload": false,
+      "selector": "section[aria-label=\"账号\"]",
+      "contains": "acceptance_admin"
+    },
+    {
+      "id": "admin-usage",
+      "type": "assertVisible",
+      "path": "/admin",
+      "reload": false,
+      "selector": "section[aria-label=\"模型用量\"]"
+    },
+    {
+      "id": "admin-failures",
+      "type": "assertVisible",
+      "path": "/admin",
+      "reload": false,
+      "selector": "section[aria-label=\"失败的任务\"]"
+    },
+    {
+      "id": "admin-schedules",
+      "type": "assertVisible",
+      "path": "/admin",
+      "reload": false,
+      "selector": "section[aria-label=\"定时任务\"]"
+    },
+    {
+      "id": "admin-skills",
+      "type": "assertText",
+      "path": "/admin",
+      "reload": false,
+      "selector": "section[aria-label=\"技能健康\"]",
+      "contains": "可执行"
+    },
+    {
+      "id": "admin-audit",
+      "type": "assertVisible",
+      "path": "/admin",
+      "reload": false,
+      "selector": "section[aria-label=\"审计\"]"
+    },
+    {
+      "id": "admin-disable-guest",
+      "type": "click",
+      "path": "/admin",
+      "reload": false,
+      "selector": "li[data-account=\"acceptance_guest\"] button",
+      "expectText": "已停用"
+    },
+    {
+      "id": "admin-disabled-flag",
+      "type": "assertText",
+      "path": "/admin",
+      "reload": false,
+      "selector": "li[data-account=\"acceptance_guest\"]",
+      "contains": "已停用"
+    },
+    {
+      "id": "admin-audit-disable",
+      "type": "assertText",
+      "path": "/admin",
+      "reload": false,
+      "selector": "section[aria-label=\"审计\"]",
+      "contains": "account.disable"
+    },
+    {
+      "id": "admin-restore-guest",
+      "type": "click",
+      "path": "/admin",
+      "reload": false,
+      "selector": "li[data-account=\"acceptance_guest\"] button",
+      "expectText": "已恢复"
+    },
+    {
+      "id": "admin-overview-api",
+      "type": "http",
+      "path": "/api/admin/overview",
+      "expectStatus": 200
+    },
+    {
+      "id": "admin-health-api",
+      "type": "http",
+      "path": "/api/health",
+      "expectStatus": 200
+    },
+    {
+      "id": "admin-screenshot",
+      "type": "screenshot",
+      "path": "/admin",
+      "reload": false
+    }
+  ]
+}
