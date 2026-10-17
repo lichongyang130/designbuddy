@@ -8,6 +8,10 @@ import {
   type ReactNode,
 } from "react";
 import { apiJSON } from "../api/client";
+import {
+  publishCommunityTemplate,
+  type CommunityVisibility,
+} from "../../../../frontend/workspace/api/community";
 import "./template-cloud.css";
 type Binding = { read: () => unknown; restore: (raw: unknown) => void };
 const CloudContext = createContext<{
@@ -61,6 +65,8 @@ export function TemplateCloudControls() {
     [busy, setBusy] = useState(false),
     [message, setMessage] = useState("服务器状态未核验"),
     [available, setAvailable] = useState(false);
+  const [publishTitle, setPublishTitle] = useState("");
+  const [publishVisibility, setPublishVisibility] = useState<CommunityVisibility>("private");
   const current = useRef(0);
   const path = context ? `/templates/${context.sample}/${context.draft}` : "";
   const check = useCallback(async () => {
@@ -152,6 +158,25 @@ export function TemplateCloudControls() {
       setBusy(false);
     }
   };
+  const publish = async () => {
+    if (!context?.binding || !publishTitle.trim()) return;
+    setBusy(true);
+    try {
+      const template = await publishCommunityTemplate({
+        sample: context.sample,
+        title: publishTitle.trim(),
+        visibility: publishVisibility,
+        state: context.binding.read(),
+      });
+      setMessage(
+        `已发布到社区 · 第 ${template.revision} 版 · ${template.visibility === "public" ? "已公开" : template.visibility === "workspace" ? "工作空间可见" : "仅自己可见"}`,
+      );
+    } catch (e) {
+      setMessage((e as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  };
   return (
     <section className="template-cloud" aria-label="模板服务器保存">
       <div>
@@ -176,6 +201,31 @@ export function TemplateCloudControls() {
         </button>
         <button disabled={busy} onClick={() => void check()}>
           检查服务器版本
+        </button>
+      </div>
+      <div className="template-cloud-actions template-cloud-publish">
+        <input
+          aria-label="发布到社区的标题"
+          value={publishTitle}
+          maxLength={80}
+          placeholder="给社区里的这份模板起个标题"
+          onChange={(event) => setPublishTitle(event.target.value)}
+        />
+        <select
+          aria-label="发布到社区的可见范围"
+          value={publishVisibility}
+          onChange={(event) => setPublishVisibility(event.target.value as CommunityVisibility)}
+        >
+          <option value="private">仅自己可见</option>
+          <option value="workspace">工作空间可见</option>
+          <option value="public">已公开</option>
+        </select>
+        <button
+          className="is-primary"
+          disabled={busy || !context.binding || !publishTitle.trim()}
+          onClick={() => void publish()}
+        >
+          发布到社区
         </button>
       </div>
     </section>

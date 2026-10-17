@@ -43,6 +43,8 @@ when no existing dev server is running.
 
 - Homepage requests create a local project immediately and then start an AI first pass. If the API is unavailable, the local starter project remains editable and the editor reports the generation error.
 - The editor can apply the full `design-systems/catalog.json` token set, export HTML/PDF/ZIP, and create a read-only share link that can be imported as a separate local copy.
+- A **right-hand live preview** is available in two places: the task conversation opens it automatically after the assistant generates or updates a web page, and the project editor adds a **右侧预览** split that shows the source on the left and the running page on the right. Both render the current project files in a sandboxed iframe, so they need no build step, no preview worker and no network.
+- **工作流**（`/workflows`）：固定配方的三步向导——填 1–3 个必填项 → 确认要跑什么 → 拿产物。配方由服务端注册表定义，每一步都调用**已登记的真实技能**（`infographic.compose`、`faq.page`、`table.analyze`、`document.format`/`document.summarize`、`document.structure`、`web.scaffold`、`social.card`），所以权限、单次授权、上限和产物都沿用既有规则。缺凭据或没授权的步骤会显式标成“不可用/已跳过”并写明缺什么，不会伪造结果；产物可下载、可“继续编辑”进编辑器、可“存为素材”进素材库。配方详情见 `docs/plans/workflow-plan.md`。
 - Studio sends web, slide, vector-poster, and video-storyboard briefs through the configured AI provider; generated artifacts remain editable and can be exported to HTML/PPTX/PDF/Markdown, SVG/PNG, or WebM/MP4.
 - Text attachments (`txt`, `md`, `json`, `html`, `css`, `js`, `csv`, `xml`, `yaml`) are read in the browser and included in the generation prompt, with per-file size limits. Other formats are not parsed yet.
 - Experts and skills selected from the workspace are carried into the next generation request. Custom experts, skills, connectors, and saved catalog assets persist in browser storage.
@@ -184,6 +186,13 @@ editor remains available from the title bar and generated-file cards.
   as it arrives. Code/design tasks still use project generation and save generated
   files before offering the editor. Conversation state is stored in this browser,
   not synchronized across accounts or devices.
+- The **右侧预览** button in the task title bar opens a live preview panel on the
+  right. It opens by itself when the assistant generates project files and closes
+  again with the panel's × button. The panel renders the project files that are
+  already stored in this browser inside a sandboxed iframe (`allow-scripts`, no
+  same-origin access), so it shows the real page without a build step, a preview
+  worker or network access. Device presets, refresh and “打开编辑器” are available;
+  tasks without web output show an explicit empty state instead of a fake page.
 - The progress row shows request/response status and measured elapsed time, not
   private model reasoning. “深度思考” is reference UI wording, not a guarantee that
   the selected provider exposes or enables a special reasoning mode. Answers,
@@ -204,7 +213,8 @@ editor remains available from the title bar and generated-file cards.
   cannot supply AI replies; missing configuration is shown as an error, not a
   simulated answer. Real external-provider connectivity has not been verified here.
 - Run `pnpm --filter designbuddy-web test:conversation` for conversational UI
-  regressions, `pnpm --filter designbuddy-web test:ui` for all reference pages, and
+  regressions, `pnpm --filter designbuddy-web test:right-preview` for the
+  right-hand live preview (task conversation and editor split), `pnpm --filter designbuddy-web test:ui` for all reference pages, and
   `pnpm test:chat` for server validation, authentication, provider selection,
   streaming and cancellation checks. These tests mock the AI provider.
 

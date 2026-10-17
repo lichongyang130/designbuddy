@@ -1,0 +1,87 @@
+{
+  "name": "designbuddy-skill-permissions",
+  "baseUrl": "http://127.0.0.1:5173",
+  "viewports": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "checks": [
+    {
+      "id": "skills-heading",
+      "type": "assertVisible",
+      "path": "/skills",
+      "selector": "h1",
+      "waitFor": "h1"
+    },
+    {
+      "id": "skill-permission-chip",
+      "type": "assertVisible",
+      "path": "/skills",
+      "reload": false,
+      "selector": ".skill-directory-card span[title=\"该技能会使用的系统权限\"]",
+      "waitFor": ".skill-directory-card span[title=\"该技能会使用的系统权限\"]"
+    },
+    {
+      "id": "open-browser-skill",
+      "type": "click",
+      "path": "/skills",
+      "reload": false,
+      "selector": "button[aria-label=\"查看技能：网页生成与浏览器验证\"]",
+      "expectSelector": "section[aria-label=\"所需权限\"]"
+    },
+    {
+      "id": "browser-skill-permissions",
+      "type": "assertText",
+      "path": "/skills",
+      "reload": false,
+      "selector": "section[aria-label=\"所需权限\"]",
+      "contains": "访问网络地址"
+    },
+    {
+      "id": "browser-skill-subprocess",
+      "type": "assertText",
+      "path": "/skills",
+      "reload": false,
+      "selector": "section[aria-label=\"所需权限\"]",
+      "contains": "启动本机子进程"
+    },
+    {
+      "id": "browser-skill-permission-count",
+      "type": "evaluate",
+      "path": "/skills",
+      "reload": false,
+      "script": "async () => { const region = document.querySelector('section[aria-label=\"所需权限\"]'); const items = region ? region.querySelectorAll('li').length : 0; return { status: items === 4 ? 200 : 400, text: 'items=' + items }; }",
+      "expectStatus": 200
+    },
+    {
+      "id": "close-skill-dialog",
+      "type": "click",
+      "path": "/skills",
+      "reload": false,
+      "selector": "button[aria-label=\"关闭技能详情\"]"
+    },
+    {
+      "id": "local-skill-permissions",
+      "type": "evaluate",
+      "path": "/skills",
+      "reload": false,
+      "script": "async () => { document.querySelector('button[aria-label=\"查看技能：杂志风格长文排版\"]')?.click(); await new Promise(resolve => setTimeout(resolve, 800)); const region = document.querySelector('section[aria-label=\"所需权限\"]'); const items = region ? Array.from(region.querySelectorAll('li')).map(item => item.textContent.replace(/\\s+/g, ' ').trim()) : []; const ok = items.length === 2 && items[0].includes('读取本机上传文件') && items[1].includes('在本机写出成果文件'); return { status: ok ? 200 : 400, text: items.join(' | ') }; }",
+      "expectStatus": 200
+    },
+    {
+      "id": "skill-permission-screenshot",
+      "type": "screenshot",
+      "path": "/skills",
+      "reload": false,
+      "selector": "section[aria-label=\"所需权限\"]"
+    }
+  ]
+}

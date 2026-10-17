@@ -27,7 +27,7 @@ test("community preserves eight original works and adds five playable media samp
 }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/inspiration");
-  await expect(page.locator(".sample-card")).toHaveCount(19);
+  await expect(page.locator(".sample-card")).toHaveCount(22);
   for (const selector of [
     ".travel-cover",
     ".luma-slide",
@@ -50,7 +50,8 @@ test("community preserves eight original works and adds five playable media samp
       .getByRole("button", { name: category, exact: true })
       .click();
     await expect(page.locator(".sample-card")).toHaveCount(
-      category === "原型" ? 8 : 2,
+      // 原型 now also contains the three data-driven kit templates.
+      category === "原型" ? 11 : 2,
     );
   }
   const types = page.getByRole("group", { name: "作品类型" });
@@ -75,7 +76,7 @@ test("community preserves eight original works and adds five playable media samp
     await expect(page.locator(".samples-empty")).toHaveCount(0);
   }
   await types.getByRole("button", { name: "全部", exact: true }).click();
-  await expect(page.locator(".sample-card")).toHaveCount(19);
+  await expect(page.locator(".sample-card")).toHaveCount(22);
   await page.getByRole("button", { name: "全部", exact: true }).click();
   await page.getByRole("textbox", { name: "搜索作品" }).fill("LUMA");
   await expect(page.locator(".sample-card")).toHaveCount(1);

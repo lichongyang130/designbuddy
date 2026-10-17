@@ -14,6 +14,7 @@ import { WorkBuddySidebar } from "../../../apps/web/src/components/WorkBuddySide
 import { listProjects } from "../projectStore";
 import { navigateTo } from "../workspaceRoutes";
 import { useWorkspaceStore } from "../store";
+import { PluginLifecyclePanel } from "./PluginLifecyclePanel";
 import "./plugins.css";
 
 type Plugin = (typeof catalog)[number];
@@ -609,6 +610,7 @@ export default function PluginsPage() {
             </article>
           </section>
         )}
+        <PluginLifecyclePanel />
         <section ref={results} className="pm-results" aria-label="插件目录">
           <div className="pm-category-row">
             <div role="group" aria-label="插件分类">

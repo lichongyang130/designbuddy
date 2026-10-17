@@ -1,17 +1,20 @@
 import { test, expect, type Page } from "@playwright/test";
 import { routingExperts } from "../../../shared/expertRouting";
 const expertCatalog = routingExperts.map(e => ({ ...e, category: { office: "办公提效", design: "设计制作", code: "网页应用" }[e.mode] }));
+// The directory renders one section per task area, so the visible order is grouped by area.
+const areaOrder = ["办公提效", "设计制作", "网页应用"] as const;
+const groupedCatalog = areaOrder.flatMap(area => expertCatalog.filter(e => e.category === area));
 import { allPromptTasks } from "../src/components/promptLibrary";
 async function openExperts(page: Page) {
   await page.getByRole("button", { name: "更多", exact: true }).hover();
   await page.getByRole("menuitem", { name: "专家", exact: true }).click();
 }
 
-test("directory has twelve relevant experts, three task areas and no obsolete promotion", async ({ page }) => {
+test("directory has every routed expert, three task areas and no obsolete promotion", async ({ page }) => {
   await page.goto("/experts");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("为你的工作，找到合适的专家");
-  await expect(page.locator(".expert-directory-card")).toHaveCount(12);
-  await expect(page.locator(".expert-card-heading h3")).toHaveText(expertCatalog.map(e => e.name));
+  await expect(page.locator(".expert-directory-card")).toHaveCount(expertCatalog.length);
+  await expect(page.locator(".expert-card-heading h3")).toHaveText(groupedCatalog.map(e => e.name));
   await expect(page.getByRole("group", { name: "专家分类" }).getByRole("button")).toHaveText(["全部专家", "办公提效", "设计制作", "网页应用", "我的专家"]);
   for (const removed of ["高校创业导师", "升学备考通", "高校求职导师", "资讯每日简报", "腾讯专家", "开学季", "专家团", "最热"]) await expect(page.locator(".experts-main")).not.toContainText(removed);
   await expect(page.locator(".expert-card-popularity,.expert-collections,.expert-team-card")).toHaveCount(0);
@@ -24,7 +27,7 @@ test("category filtering, task search, empty state and keyboard actions work", a
   await page.goto("/experts");
   for (const category of ["办公提效", "设计制作", "网页应用"]) {
     await page.getByRole("button", { name: category, exact: true }).click();
-    await expect(page.locator(".expert-directory-card")).toHaveCount(4);
+    await expect(page.locator(".expert-directory-card")).toHaveCount(expertCatalog.filter(e => e.category === category).length);
     await expect(page.locator(".expert-card-heading h3")).toHaveText(expertCatalog.filter(e => e.category === category).map(e => e.name));
   }
   await page.getByRole("button", { name: "全部专家", exact: true }).click();
@@ -38,7 +41,7 @@ test("category filtering, task search, empty state and keyboard actions work", a
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("营销物料专家");
 });
 
-test("all twelve detail pages show methods, limitations and three actual homepage task examples", async ({ page }) => {
+test("every routed expert detail page shows methods, limitations and three actual homepage task examples", async ({ page }) => {
   test.setTimeout(90000);
   for (const expert of expertCatalog) {
     await page.goto(`/experts/${expert.id}`);
@@ -127,9 +130,9 @@ test("retired built-in links do not resurrect irrelevant experts, closest legacy
   await page.goto("/experts/builtin-developer"); await expect(page.getByRole("heading", { level: 1 })).toHaveText("全栈开发专家");
 });
 
-test("homepage matching candidates exactly match the twelve directory experts, including added roles", async ({ page }) => {
+test("homepage matching candidates exactly match the directory experts, including added roles", async ({ page }) => {
   let body: any;
-  await page.route("**/api/expert-match", route => { body = route.request().postDataJSON(); return route.fulfill({ json: { kind: "match", expertId: "brand", reason: "需要统一品牌识别。", responsibilities: ["建立配色与字体规范"], missing: [] } }); });
+  await page.route("**/api/expert-match", route => { body = route.request().postDataJSON(); return route.fulfill({ json: { kind: "match", expertId: "brand", collaboratorIds: [], reason: "需要统一品牌识别。", responsibilities: ["建立配色与字体规范"], missing: [] } }); });
   await page.goto("/");
   await page.getByRole("textbox", { name: "任务描述", exact: true }).fill("帮我制定品牌配色规范");
   await page.locator(".home-expert-trigger").click();

@@ -30,7 +30,7 @@ test('ZIP rejects file count, paths, non-PDF files, declared oversize, encrypted
  const size=Buffer.from(stored);size.writeUInt32LE(3000000,pos+24);assert.throws(()=>readPDFBatch(size));
  const encrypted=Buffer.from(stored);encrypted.writeUInt16LE(1,pos+8);assert.throws(()=>readPDFBatch(encrypted),/加密/);
  const wrongName=Buffer.from(stored);wrongName[30]='z'.charCodeAt(0);assert.throws(()=>readPDFBatch(wrongName),/文件名/);
- assert.equal(readPDFBatch(stored).length,2);assert.throws(()=>readPDFBatch(stored.subarray(0,stored.length-1)),/ZIP/);
+ assert.equal(readPDFBatch(stored).files.length,2);assert.throws(()=>readPDFBatch(stored.subarray(0,stored.length-1)),/ZIP/);
 });
 test('fake PDFs and more than eight total pages fail before OCR instead of processing only a subset',async()=>{
  await assert.rejects(()=>run(pack({'a.pdf':Buffer.from('fake'),'b.pdf':Buffer.from('fake')})),/不是真实PDF/);
@@ -40,4 +40,30 @@ test('real worker uses atomic delivery: a blank second file discards first-file 
  const service=new SkillService(':memory:');t.after(()=>service.close());const good=await scannedPDF({pages:1}),blank=await scannedPDF({pages:1,blank:true});
  const bad=await(await service.handle(request(pack({'good.pdf':good,'blank.pdf':blank})),'owner')).json();const failed=await finish(service,bad.id);assert.equal(failed.status,'failed');assert.equal(failed.artifacts.length,0);assert.match(failed.error,/文件2.*整批未完成/);assert.ok(failed.events.some(e=>e.message.includes('文件1：第1/1页')));
  const twoPages=await scannedPDF({pages:2}),res=await service.handle(request(pack({'a.pdf':twoPages,'b.pdf':twoPages,'c.pdf':twoPages,'d.pdf':twoPages})),'owner');assert.equal(res.status,202);const q=await res.json(),done=await finish(service,q.id);assert.equal(done.status,'succeeded',done.error);assert.equal(done.artifacts.length,3);const a=done.artifacts.find(a=>a.name==='batch-ocr-results.zip'),url='http://local/api/skill-runs/'+q.id+'/artifacts/'+a.id;assert.equal((await service.handle(new Request(url),'other')).status,404);const contents=unzipSync(new Uint8Array(await(await service.handle(new Request(url),'owner')).arrayBuffer()));assert.ok(contents['document-04/pdf-ocr.txt']);const batch=JSON.parse(Buffer.from(contents['batch-report.json']));assert.equal(batch.fileCount,4);assert.equal(batch.pageCount,8);
+});
+
+test('gold-standard reference text produces a real character error rate and files without a reference are not counted as passing',async()=>{
+ const pdf=await scannedPDF({pages:1});const bytes=pack({'扫描一.pdf':pdf,'扫描二.pdf':pdf,'gold-standard/扫描一.txt':Buffer.from('项目验收 SALES12345','utf8')});
+ const r=await run(bytes);const report=json(r,'batch-report.json');
+ assert.equal(report.accuracy.scoredFiles,1);assert.ok(report.accuracy.totalReferenceCharacters>0);assert.ok(report.accuracy.characterErrorRate>=0);
+ const scored=report.files.find(f=>f.filename==='扫描一.txt'.replace('.txt','.pdf'));
+ assert.ok(scored.accuracy.referenceFile==='gold-standard/扫描一.txt');assert.equal(scored.accuracy.referenceCharacters,scored.accuracy.referenceCharacters);
+ const unscored=report.files.find(f=>f.filename==='扫描二.pdf');
+ assert.equal(unscored.accuracy.referenceFile,'');assert.match(unscored.accuracy.note,/未提供人工参考文本/);
+ assert.equal(report.files.filter(f=>f.accuracy.referenceFile).length,1);
+});
+test('batch caps come from the server environment and stay at the documented defaults otherwise',async()=>{
+ const pdf=await scannedPDF({pages:1});
+ await assert.rejects(()=>run(pack({'a.pdf':pdf,'b.pdf':pdf,'c.pdf':pdf,'d.pdf':pdf,'e.pdf':pdf})),/只含2至4个PDF/);
+ const previous=process.env.SKILL_OCR_BATCH_MAX_FILES;process.env.SKILL_OCR_BATCH_MAX_FILES='6';
+ try{const r=await run(pack({'a.pdf':pdf,'b.pdf':pdf,'c.pdf':pdf}));const report=json(r,'batch-report.json');assert.equal(report.fileCount,3);assert.equal(report.limits.maxFiles,6);assert.deepEqual(report.limits.fromEnvironment,['SKILL_OCR_BATCH_MAX_FILES']);}
+ finally{if(previous===undefined)delete process.env.SKILL_OCR_BATCH_MAX_FILES;else process.env.SKILL_OCR_BATCH_MAX_FILES=previous;}
+ const capped=process.env.SKILL_OCR_BATCH_MAX_FILES;process.env.SKILL_OCR_BATCH_MAX_FILES='2';
+ try{await assert.rejects(()=>run(pack({'a.pdf':pdf,'b.pdf':pdf,'c.pdf':pdf})),/只含2至2个PDF/);}
+ finally{if(capped===undefined)delete process.env.SKILL_OCR_BATCH_MAX_FILES;else process.env.SKILL_OCR_BATCH_MAX_FILES=capped;}
+});
+test('bounded concurrency still produces complete per-file evidence',async()=>{
+ const pdf=await scannedPDF({pages:2});const previous=process.env.SKILL_OCR_BATCH_CONCURRENCY;process.env.SKILL_OCR_BATCH_CONCURRENCY='3';
+ try{const r=await run(pack({'a.pdf':pdf,'b.pdf':pdf,'c.pdf':pdf}));const report=json(r,'batch-report.json');assert.equal(report.fileCount,3);assert.equal(report.limits.concurrency,3);assert.ok(report.files.every(f=>f.pageCount===2&&f.recognizedPages===2));assert.ok(report.files.every(f=>f.folder.startsWith('document-')));}
+ finally{if(previous===undefined)delete process.env.SKILL_OCR_BATCH_CONCURRENCY;else process.env.SKILL_OCR_BATCH_CONCURRENCY=previous;}
 });

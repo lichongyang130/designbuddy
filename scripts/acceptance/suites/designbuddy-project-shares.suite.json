@@ -1,0 +1,136 @@
+{
+  "name": "designbuddy-project-shares",
+  "baseUrl": "http://127.0.0.1:5173",
+  "viewports": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "checks": [
+    {
+      "id": "unknown-token-404",
+      "type": "http",
+      "path": "/api/shares/aaaaaaaaaaaaaaaaaaaaaaaa",
+      "expectStatus": 404
+    },
+    {
+      "id": "editor-opens",
+      "type": "click",
+      "path": "/projects",
+      "selector": "button:has-text(\"＋ 新建项目\")",
+      "waitFor": "button:has-text(\"＋ 新建项目\")"
+    },
+    {
+      "id": "sync-click",
+      "type": "click",
+      "path": "/projects",
+      "reload": false,
+      "selector": "button:has-text(\"同步云端\")",
+      "waitFor": ".db-save-state",
+      "expectSelector": ".db-save-state.is-synced"
+    },
+    {
+      "id": "share-dialog-open",
+      "type": "click",
+      "path": "/projects",
+      "reload": false,
+      "selector": "button:has-text(\"受控分享\")",
+      "waitFor": "button:has-text(\"受控分享\")",
+      "expectSelector": "[role=\"dialog\"][aria-label=\"受控分享\"]"
+    },
+    {
+      "id": "share-dialog-visible",
+      "type": "assertVisible",
+      "path": "/projects",
+      "reload": false,
+      "selector": "[role=\"dialog\"][aria-label=\"受控分享\"]",
+      "waitFor": "[role=\"dialog\"][aria-label=\"受控分享\"]"
+    },
+    {
+      "id": "share-explains-server",
+      "type": "assertText",
+      "path": "/projects",
+      "reload": false,
+      "selector": "[role=\"dialog\"][aria-label=\"受控分享\"] .db-version-panel",
+      "contains": "链接由服务器托管"
+    },
+    {
+      "id": "share-create",
+      "type": "click",
+      "path": "/projects",
+      "reload": false,
+      "selector": "[role=\"dialog\"][aria-label=\"受控分享\"] button:has-text(\"创建 7 天有效链接\")",
+      "waitFor": "[role=\"dialog\"][aria-label=\"受控分享\"] button:has-text(\"创建 7 天有效链接\")"
+    },
+    {
+      "id": "share-created-notice",
+      "type": "assertText",
+      "path": "/projects",
+      "reload": false,
+      "selector": "[role=\"dialog\"][aria-label=\"受控分享\"] p[role=\"status\"]",
+      "contains": "已创建 7 天有效的只读分享链接"
+    },
+    {
+      "id": "share-link-listed",
+      "type": "assertText",
+      "path": "/projects",
+      "reload": false,
+      "selector": "[role=\"dialog\"][aria-label=\"受控分享\"] .db-share-list li",
+      "contains": "/share/"
+    },
+    {
+      "id": "share-expiry-shown",
+      "type": "assertText",
+      "path": "/projects",
+      "reload": false,
+      "selector": "[role=\"dialog\"][aria-label=\"受控分享\"] .db-share-list li span",
+      "contains": "有效至"
+    },
+    {
+      "id": "share-screenshot",
+      "type": "screenshot",
+      "path": "/projects",
+      "reload": false,
+      "selector": "[role=\"dialog\"][aria-label=\"受控分享\"]"
+    },
+    {
+      "id": "share-revoke",
+      "type": "click",
+      "path": "/projects",
+      "reload": false,
+      "selector": "[role=\"dialog\"][aria-label=\"受控分享\"] .db-share-list li button:has-text(\"撤销\")",
+      "waitFor": "[role=\"dialog\"][aria-label=\"受控分享\"] .db-share-list li button:has-text(\"撤销\")"
+    },
+    {
+      "id": "share-revoked-notice",
+      "type": "assertText",
+      "path": "/projects",
+      "reload": false,
+      "selector": "[role=\"dialog\"][aria-label=\"受控分享\"] p[role=\"status\"]",
+      "contains": "已撤销"
+    },
+    {
+      "id": "share-revoked-state",
+      "type": "assertText",
+      "path": "/projects",
+      "reload": false,
+      "selector": "[role=\"dialog\"][aria-label=\"受控分享\"] .db-share-list li span",
+      "contains": "已撤销"
+    },
+    {
+      "id": "share-close",
+      "type": "click",
+      "path": "/projects",
+      "reload": false,
+      "selector": "button[aria-label=\"关闭受控分享\"]",
+      "waitFor": "button[aria-label=\"关闭受控分享\"]"
+    }
+  ]
+}

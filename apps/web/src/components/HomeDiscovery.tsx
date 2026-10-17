@@ -15,6 +15,7 @@ export type { HomeScene } from "./homeScenes";
 export { HomeShortcuts } from "./HomePromptBrowser";
 import { PromptRecommendations } from "./HomePromptBrowser";
 import { categoriesForMode } from "./promptLibrary";
+import { navigateTo } from "../../../../frontend/workspace/workspaceRoutes";
 
 /** A scaled rendering of the actual demo, not an unrelated decorative icon/image. */
 function SceneThumbnail({ scene }: { scene: HomeScene }) {
@@ -70,6 +71,16 @@ export function HomeDiscovery({
                 <small>{scene.tag}</small>
                 <h3>{scene.title}</h3>
                 <span aria-hidden="true">↗</span>
+                {scene.workflowId && (
+                  <button
+                    className="scene-workflow-link"
+                    type="button"
+                    title={`用工作流「${scene.workflowName}」完成`}
+                    onClick={() => navigateTo(`/workflows?workflow=${encodeURIComponent(scene.workflowId!)}`)}
+                  >
+                    用工作流：{scene.workflowName}
+                  </button>
+                )}
               </div>
               <button
                 className="scene-card-open"

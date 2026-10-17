@@ -11,6 +11,8 @@ export interface DesignProject {
   files: ProjectFile[];
   designSystemId?: string;
   workspaceName?: string;
+  /** The workspace this project belongs to on the server. */
+  workspaceId?: string;
   executionPolicy?: string;
   createdAt: string;
   updatedAt: string;

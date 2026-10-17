@@ -86,7 +86,33 @@ export class WorkspaceBackend {
     this.db.exec(`PRAGMA journal_mode=WAL; PRAGMA busy_timeout=5000;
    CREATE TABLE IF NOT EXISTS browser_sessions(token_hash TEXT PRIMARY KEY,user_id TEXT NOT NULL,expires INTEGER NOT NULL);
    CREATE TABLE IF NOT EXISTS workspace_accounts(id TEXT PRIMARY KEY,username TEXT UNIQUE NOT NULL,salt TEXT NOT NULL,password_hash TEXT NOT NULL,created_at TEXT NOT NULL);
-   CREATE TABLE IF NOT EXISTS template_snapshots(owner_id TEXT NOT NULL,sample TEXT NOT NULL,draft TEXT NOT NULL,state_json TEXT NOT NULL,revision INTEGER NOT NULL,updated_at TEXT NOT NULL,PRIMARY KEY(owner_id,sample,draft));`);
+   CREATE TABLE IF NOT EXISTS template_snapshots(owner_id TEXT NOT NULL,sample TEXT NOT NULL,draft TEXT NOT NULL,state_json TEXT NOT NULL,revision INTEGER NOT NULL,updated_at TEXT NOT NULL,PRIMARY KEY(owner_id,sample,draft));
+   CREATE TABLE IF NOT EXISTS workspace_account_audit(id TEXT PRIMARY KEY,account_id TEXT NOT NULL,actor TEXT NOT NULL,action TEXT NOT NULL,detail TEXT NOT NULL DEFAULT '',created_at INTEGER NOT NULL);
+   CREATE INDEX IF NOT EXISTS workspace_account_audit_account ON workspace_account_audit(account_id,created_at);`);
+    // Older databases have the account table without the profile columns.
+    const accountColumns = this.db.prepare("PRAGMA table_info(workspace_accounts)").all() as Array<{ name: string }>;
+    if (!accountColumns.some((column) => column.name === "display_name"))
+      this.db.exec("ALTER TABLE workspace_accounts ADD COLUMN display_name TEXT NOT NULL DEFAULT ''");
+    if (!accountColumns.some((column) => column.name === "email"))
+      this.db.exec("ALTER TABLE workspace_accounts ADD COLUMN email TEXT NOT NULL DEFAULT ''");
+  }
+  /** Record what happened to an account. The detail never holds the content itself. */
+  private auditAccount(accountId: string, action: string, detail = "") {
+    this.db
+      .prepare("INSERT INTO workspace_account_audit(id,account_id,actor,action,detail,created_at) VALUES(?,?,?,?,?,?)")
+      .run(randomUUID(), accountId, accountId, action, detail.slice(0, 300), Date.now());
+  }
+  private listAccountAudit(accountId: string) {
+    return this.db
+      .prepare("SELECT id,actor,action,detail,created_at FROM workspace_account_audit WHERE account_id=? ORDER BY created_at DESC LIMIT 100")
+      .all(accountId)
+      .map((row) => ({
+        id: String((row as { id: string }).id),
+        actor: String((row as { actor: string }).actor),
+        action: String((row as { action: string }).action),
+        detail: String((row as { detail: string }).detail || ""),
+        createdAt: Number((row as { created_at: number }).created_at),
+      }));
   }
   private cookieToken(request: Request) {
     return request.headers
@@ -108,9 +134,16 @@ export class WorkspaceBackend {
   }
   private identity(id: string) {
     const a = this.db
-      .prepare("SELECT username FROM workspace_accounts WHERE id=?")
-      .get(id) as { username: string } | undefined;
-    return { id, username: a?.username ?? null, kind: a ? "account" : "guest" };
+      .prepare("SELECT username,display_name,email,created_at FROM workspace_accounts WHERE id=?")
+      .get(id) as { username: string; display_name: string; email: string; created_at: string } | undefined;
+    return {
+      id,
+      username: a?.username ?? null,
+      displayName: a?.display_name ?? "",
+      email: a?.email ?? "",
+      createdAt: a?.created_at ?? "",
+      kind: a ? "account" : "guest",
+    };
   }
   private sessionCookie(request: Request, token: string, clear = false) {
     const secure =
@@ -227,6 +260,140 @@ export class WorkspaceBackend {
           "Set-Cookie": this.sessionCookie(request, "", true),
         });
       }
+      if (path === "/api/auth/audit" && method === "GET")
+        return responseJSON(this.listAccountAudit(principal.id));
+      if (path === "/api/auth/profile" && method === "PATCH") {
+        const account = this.db
+          .prepare("SELECT id FROM workspace_accounts WHERE id=?")
+          .get(principal.id) as { id: string } | undefined;
+        if (!account)
+          return responseJSON(
+            { error: "游客会话没有可编辑的账号资料。", code: "ACCOUNT_REQUIRED" },
+            403,
+          );
+        try {
+          const body = await this.body(request, 4096);
+          const displayName =
+            typeof body.displayName === "string" ? body.displayName.trim() : "";
+          const email = typeof body.email === "string" ? body.email.trim() : "";
+          if (displayName.length > 40)
+            return responseJSON({ error: "显示名最多 40 个字符。" }, 400);
+          if (email.length > 120 || (email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)))
+            return responseJSON(
+              { error: "邮箱格式不正确，或超过 120 个字符。" },
+              400,
+            );
+          this.db
+            .prepare("UPDATE workspace_accounts SET display_name=?,email=? WHERE id=?")
+            .run(displayName, email, principal.id);
+          this.auditAccount(
+            principal.id,
+            "account.profile.update",
+            `更新显示名/邮箱（显示名 ${displayName ? "已填" : "留空"}）`,
+          );
+          return responseJSON({ user: this.identity(principal.id) });
+        } catch {
+          return responseJSON({ error: "账号资料请求无效，请重试。" }, 400);
+        }
+      }
+      if (path === "/api/auth/password" && method === "POST") {
+        // Password checks are rate limited so a stolen session cannot brute force the password.
+        if (this.limited(request))
+          return responseJSON({ error: "操作过于频繁，请一分钟后重试。" }, 429);
+        const account = this.db
+          .prepare("SELECT id,salt,password_hash FROM workspace_accounts WHERE id=?")
+          .get(principal.id) as
+          | { id: string; salt: string; password_hash: string }
+          | undefined;
+        if (!account)
+          return responseJSON(
+            { error: "游客会话没有可修改的密码。", code: "ACCOUNT_REQUIRED" },
+            403,
+          );
+        try {
+          const body = await this.body(request, 4096);
+          const currentPassword =
+            typeof body.currentPassword === "string" ? body.currentPassword : "";
+          const newPassword =
+            typeof body.newPassword === "string" ? body.newPassword : "";
+          const candidate = scryptSync(
+            currentPassword,
+            account.salt,
+            64,
+          );
+          if (
+            !timingSafeEqual(
+              candidate,
+              Buffer.from(account.password_hash, "hex"),
+            )
+          )
+            return responseJSON({ error: "当前密码不正确。" }, 401);
+          if (newPassword.length < 10 || newPassword.length > 128)
+            return responseJSON(
+              { error: "新密码需 10–128 位。" },
+              400,
+            );
+          const salt = randomBytes(16).toString("hex");
+          this.db
+            .prepare("UPDATE workspace_accounts SET salt=?,password_hash=? WHERE id=?")
+            .run(salt, scryptSync(newPassword, salt, 64).toString("hex"), principal.id);
+          // Other sessions of this account are dropped; the current one stays valid.
+          const token = this.cookieToken(request);
+          this.db
+            .prepare("DELETE FROM browser_sessions WHERE user_id=? AND token_hash<>?")
+            .run(principal.id, token ? hash(token) : "");
+          this.auditAccount(principal.id, "account.password.change", "修改登录密码");
+          return responseJSON({ ok: true, user: this.identity(principal.id) });
+        } catch {
+          return responseJSON({ error: "密码请求无效，请重试。" }, 400);
+        }
+      }
+      if (path === "/api/auth/account" && method === "DELETE") {
+        if (this.limited(request))
+          return responseJSON({ error: "操作过于频繁，请一分钟后重试。" }, 429);
+        const account = this.db
+          .prepare("SELECT id,salt,password_hash FROM workspace_accounts WHERE id=?")
+          .get(principal.id) as
+          | { id: string; salt: string; password_hash: string }
+          | undefined;
+        if (!account)
+          return responseJSON(
+            { error: "游客会话没有可删除的账号。", code: "ACCOUNT_REQUIRED" },
+            403,
+          );
+        try {
+          const body = await this.body(request, 4096);
+          if (body.confirm !== true)
+            return responseJSON(
+              { error: "删除账号需要显式确认（confirm=true）。" },
+              400,
+            );
+          const currentPassword =
+            typeof body.currentPassword === "string" ? body.currentPassword : "";
+          const candidate = scryptSync(currentPassword, account.salt, 64);
+          if (
+            !timingSafeEqual(
+              candidate,
+              Buffer.from(account.password_hash, "hex"),
+            )
+          )
+            return responseJSON({ error: "当前密码不正确。" }, 401);
+          this.db
+            .prepare("DELETE FROM browser_sessions WHERE user_id=?")
+            .run(principal.id);
+          this.db
+            .prepare("DELETE FROM workspace_accounts WHERE id=?")
+            .run(principal.id);
+          this.auditAccount(principal.id, "account.delete", "注销账号并删除账号行");
+          return responseJSON(
+            { ok: true, audit: this.listAccountAudit(principal.id) },
+            200,
+            { "Set-Cookie": this.sessionCookie(request, "", true) },
+          );
+        } catch {
+          return responseJSON({ error: "账号删除请求无效，请重试。" }, 400);
+        }
+      }
       if (
         (path === "/api/auth/register" || path === "/api/auth/login") &&
         method === "POST"
@@ -265,7 +432,9 @@ export class WorkspaceBackend {
             const salt = randomBytes(16).toString("hex"),
               digest = scryptSync(password, salt, 64).toString("hex");
             this.db
-              .prepare("INSERT INTO workspace_accounts VALUES(?,?,?,?,?)")
+              .prepare(
+                "INSERT INTO workspace_accounts(id,username,salt,password_hash,created_at) VALUES(?,?,?,?,?)",
+              )
               .run(
                 principal.id,
                 username,
@@ -274,6 +443,7 @@ export class WorkspaceBackend {
                 new Date().toISOString(),
               );
             this.revoke(request);
+            this.auditAccount(principal.id, "account.register", "创建账号");
             return responseJSON({ user: this.identity(principal.id) }, 201, {
               "Set-Cookie": this.issue(request, principal.id),
             });

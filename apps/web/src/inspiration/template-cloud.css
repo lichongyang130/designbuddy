@@ -3,6 +3,7 @@
   border-bottom: 1px solid #ddd;
   background: #f5f6f4;
   display: flex;
+  flex-wrap: wrap;
   gap: 16px;
   align-items: center;
   justify-content: space-between;
@@ -38,6 +39,27 @@
   cursor: pointer;
   font: inherit;
   color: inherit;
+}
+.template-cloud-publish {
+  width: 100%;
+}
+.template-cloud-publish input,
+.template-cloud-publish select {
+  padding: 8px 10px;
+  border: 1px solid #ccd3c7;
+  border-radius: 4px;
+  background: #fff;
+  font: inherit;
+  color: inherit;
+}
+.template-cloud-publish input {
+  flex: 1 1 220px;
+  min-width: 0;
+}
+.template-cloud button.is-primary {
+  border-color: #517457;
+  background: #517457;
+  color: #fff;
 }
 .template-cloud button:disabled {
   opacity: 0.45;

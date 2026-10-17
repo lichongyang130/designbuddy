@@ -1,0 +1,195 @@
+{
+  "tool": "run-acceptance",
+  "suite": "designbuddy-project-versions",
+  "baseUrl": "http://127.0.0.1:5173",
+  "ranAt": "2026-10-16T16:29:58.533Z",
+  "viewports": [
+    "desktop 1440x900",
+    "mobile 390x844"
+  ],
+  "counts": {
+    "total": 22,
+    "passed": 22,
+    "failed": 0,
+    "notVerified": 0
+  },
+  "results": [
+    {
+      "id": "editor-opens",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 2765
+    },
+    {
+      "id": "sync-click",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 242
+    },
+    {
+      "id": "sync-state",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (5 chars)",
+      "durationMs": 6
+    },
+    {
+      "id": "history-open",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 95
+    },
+    {
+      "id": "history-visible",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 8
+    },
+    {
+      "id": "history-base",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (54 chars)",
+      "durationMs": 9
+    },
+    {
+      "id": "history-versions",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 9
+    },
+    {
+      "id": "history-audit-open",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 41
+    },
+    {
+      "id": "history-audit-save",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (129 chars)",
+      "durationMs": 11
+    },
+    {
+      "id": "history-screenshot",
+      "type": "screenshot",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "screenshot saved as screenshots/desktop/history-screenshot.png",
+      "durationMs": 979
+    },
+    {
+      "id": "history-close",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 67
+    },
+    {
+      "id": "editor-opens",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 2618
+    },
+    {
+      "id": "sync-click",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 243
+    },
+    {
+      "id": "sync-state",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (5 chars)",
+      "durationMs": 4
+    },
+    {
+      "id": "history-open",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 122
+    },
+    {
+      "id": "history-visible",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 8
+    },
+    {
+      "id": "history-base",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (54 chars)",
+      "durationMs": 9
+    },
+    {
+      "id": "history-versions",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 7
+    },
+    {
+      "id": "history-audit-open",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 62
+    },
+    {
+      "id": "history-audit-save",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (129 chars)",
+      "durationMs": 10
+    },
+    {
+      "id": "history-screenshot",
+      "type": "screenshot",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "screenshot saved as screenshots/mobile/history-screenshot.png",
+      "durationMs": 334
+    },
+    {
+      "id": "history-close",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 58
+    }
+  ],
+  "policy": "只有真实访问目标并通过断言的检查才记为 passed；选择器缺失记为 not_verified 并写明原因；失败项保留控制台与网络记录。本工具不代表被测目标已完成业务验收，只证明声明的检查项在声明的视口下实际执行过。"
+}

@@ -1,7 +1,8 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { DesignProject } from "../models/project";
 import { createProject, listProjects, removeProject, updateProject } from "../projectStore";
 import { listCloudProjects } from "../api/projects";
+import { listWorkspaces, type Workspace } from "../api/workspaces";
 import { projectTaskPath, loadTaskConversation } from "../taskConversation";
 import { navigateTo } from "../workspaceRoutes";
 
@@ -16,13 +17,29 @@ export default function ProjectsPage() {
   const [query, setQuery] = useState("");
   const [notice, setNotice] = useState("");
   const [loadingCloud, setLoadingCloud] = useState(false);
+  const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
+  const [workspaceFilter, setWorkspaceFilter] = useState("");
+
+  useEffect(() => {
+    void listWorkspaces().then(setWorkspaces).catch(() => setWorkspaces([]));
+  }, []);
+
+  const workspaceName = (project: DesignProject): string => {
+    if (!project.workspaceId) return "";
+    return workspaces.find((item) => item.id === project.workspaceId)?.name
+      ?? project.workspaceName
+      ?? "";
+  };
 
   const visibleProjects = useMemo(() => {
     const needle = query.trim().toLocaleLowerCase();
-    return needle ? projects.filter((project) =>
+    const searched = needle ? projects.filter((project) =>
       project.name.toLocaleLowerCase().includes(needle) || project.prompt.toLocaleLowerCase().includes(needle)
     ) : projects;
-  }, [projects, query]);
+    if (!workspaceFilter) return searched;
+    if (workspaceFilter === "__none") return searched.filter((project) => !project.workspaceId);
+    return searched.filter((project) => project.workspaceId === workspaceFilter);
+  }, [projects, query, workspaceFilter, workspaces]);
 
   function newProject() {
     try {
@@ -71,6 +88,18 @@ export default function ProjectsPage() {
           <span aria-hidden="true">⌕</span>
           <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索项目名称或需求" aria-label="搜索项目" />
         </label>
+        <label className="db-workspace-filter">
+          <span className="db-muted">工作空间</span>
+          <select
+            aria-label="按工作空间筛选"
+            value={workspaceFilter}
+            onChange={(event) => setWorkspaceFilter(event.target.value)}
+          >
+            <option value="">全部</option>
+            {workspaces.map((workspace) => <option key={workspace.id} value={workspace.id}>{workspace.name}</option>)}
+            <option value="__none">未分组</option>
+          </select>
+        </label>
         <span className="db-muted">{visibleProjects.length} 个项目</span>
       </div>
       {notice && <p className="db-alert" role="alert">{notice}</p>}
@@ -92,6 +121,7 @@ export default function ProjectsPage() {
                 <p>{project.prompt || "从一个空白项目开始设计。"}</p>
                 <div className="db-project-meta">
                   <span><i className="db-status-dot" />草稿</span>
+                  {workspaceName(project) && <span>工作空间：{workspaceName(project)}</span>}
                   <span>更新于 {formatDate(project.updatedAt)}</span>
                 </div>
                 <button className="db-button db-button-secondary db-open-project" onClick={() => navigateTo(projectTaskPath(project.id))}>{loadTaskConversation(project.id) ? "继续对话" : "继续编辑"} <span>→</span></button>

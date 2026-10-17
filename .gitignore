@@ -1,0 +1,26 @@
+# 依赖与构建产物
+node_modules/
+dist/
+build/
+out/
+.cache/
+coverage/
+*.tsbuildinfo
+
+# 测试产物
+apps/web/test-results/
+apps/web/playwright-report/
+playwright-report/
+*.log
+
+# 本地环境变量与凭据（不要提交任何密钥）
+.env
+.env.*
+!.env.example
+
+# 本地运行数据（数据库与 WAL 副产物；模型权重 data/skill-models/ 仍需提交）
+data/*.sqlite
+data/*.sqlite-shm
+data/*.sqlite-wal
+# 服务器素材库里的上传文件（运行时数据，不入库）
+data/assets/

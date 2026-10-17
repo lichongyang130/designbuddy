@@ -409,6 +409,8 @@ function OtherSettings({
     agents: { label: "管理专家", path: "/experts" },
     assistant: { label: "查看插件", path: "/plugins" },
     apps: { label: "管理连接器", path: "/connectors" },
+    data: { label: "账号与数据", path: "/profile" },
+    memory: { label: "账号与数据", path: "/profile" },
   };
   const link = routes[section];
   return (

@@ -1,0 +1,84 @@
+{
+  "name": "designbuddy-community",
+  "baseUrl": "http://127.0.0.1:5173",
+  "viewports": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "checks": [
+    {
+      "id": "community-page",
+      "type": "assertVisible",
+      "path": "/community",
+      "selector": "main[aria-label=\"社区模板\"]",
+      "waitFor": "main[aria-label=\"社区模板\"]"
+    },
+    {
+      "id": "community-list",
+      "type": "assertVisible",
+      "path": "/community",
+      "reload": false,
+      "selector": "section[aria-label=\"社区模板列表\"]",
+      "waitFor": "section[aria-label=\"社区模板列表\"]"
+    },
+    {
+      "id": "community-honest-empty",
+      "type": "assertText",
+      "path": "/community",
+      "reload": false,
+      "selector": ".ct-note",
+      "contains": "这里只显示服务器确认可见的模板"
+    },
+    {
+      "id": "community-hero",
+      "type": "assertText",
+      "path": "/community",
+      "reload": false,
+      "selector": ".ct-hero p",
+      "contains": "复制会在你自己的浏览器里生成独立副本"
+    },
+    {
+      "id": "publish-controls",
+      "type": "assertVisible",
+      "path": "/inspiration/travel",
+      "selector": ".template-cloud-publish",
+      "waitFor": ".template-cloud-publish"
+    },
+    {
+      "id": "publish-title",
+      "type": "assertVisible",
+      "path": "/inspiration/travel",
+      "reload": false,
+      "selector": "input[aria-label=\"发布到社区的标题\"]",
+      "waitFor": "input[aria-label=\"发布到社区的标题\"]"
+    },
+    {
+      "id": "publish-visibility",
+      "type": "assertText",
+      "path": "/inspiration/travel",
+      "reload": false,
+      "selector": ".template-cloud-publish select",
+      "contains": "工作空间可见"
+    },
+    {
+      "id": "community-api",
+      "type": "http",
+      "path": "/api/community/templates",
+      "expectStatus": 200
+    },
+    {
+      "id": "community-screenshot",
+      "type": "screenshot",
+      "path": "/community",
+      "reload": false
+    }
+  ]
+}

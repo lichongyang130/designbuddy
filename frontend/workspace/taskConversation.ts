@@ -1,4 +1,5 @@
 import { recordTaskNotifications } from "./notifications";
+import { fetchTasks, saveTask } from "./api/tasks";
 import { validClarification, type TaskClarification } from "./taskClarification";
 
 export type TaskReplyStatus = "waiting" | "streaming" | "complete" | "error" | "stopped" | "local" | "clarifying";
@@ -47,6 +48,35 @@ export function saveTaskConversation(task: TaskConversation): void {
   const previous = loadTaskConversation(task.projectId);
   localStorage.setItem(key(task.projectId), JSON.stringify(task));
   recordTaskNotifications(task, previous);
+  // The same conversation is stored on the server so a refresh, another browser
+  // or another device can continue the same task.
+  void saveTask({
+    id: `conv-${task.projectId}`.slice(0, 80),
+    projectId: task.projectId,
+    kind: "conversation",
+    title: task.messages.find((m) => m.role === "user")?.content.slice(0, 60) || "任务对话",
+    status: task.messages.some((m) => m.status === "error") ? "failed" : "succeeded",
+    payload: JSON.stringify(task),
+    summary: `${task.messages.length} 条消息`,
+  }).catch(() => undefined);
+}
+
+/** Store a conversation that came from the server into the local mirror. */
+export function applyServerConversation(conversation: TaskConversation): TaskConversation {
+  localStorage.setItem(key(conversation.projectId), JSON.stringify(conversation));
+  return conversation;
+}
+
+/** Read the server copy of a conversation. Returns null when the server has none. */
+export async function loadServerConversation(projectId: string): Promise<TaskConversation | null> {
+  const tasks = await fetchTasks(projectId);
+  const record = tasks.find((item) => item.kind === "conversation" && item.projectId === projectId);
+  if (!record) return null;
+  try {
+    const value = JSON.parse(record.payload) as TaskConversation;
+    if (!value || value.projectId !== projectId || !Array.isArray(value.messages)) return null;
+    return value;
+  } catch { return null; }
 }
 export function projectTaskPath(id: string): string {
   return `${loadTaskConversation(id) ? "/tasks/" : "/editor/"}${encodeURIComponent(id)}`;

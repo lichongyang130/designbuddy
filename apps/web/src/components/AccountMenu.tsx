@@ -6,7 +6,7 @@ import { HomeIcon, type HomeIconName } from "./HomeIcon";
 import avatarImage from "../assets/home-avatar.png";
 import "./account-menu.css";
 
-type Identity = { username: string | null; kind: "account" | "guest" };
+type Identity = { username: string | null; displayName?: string; kind: "account" | "guest" };
 type Detail = "fuel" | "invite" | "growth" | "feedback" | "updates" | "logout";
 const details: Record<Detail, { title: string; text: string }> = {
   fuel: { title: "Buddy加油站", text: "积分服务尚未接入，目前无法领取、充值或消耗积分。菜单不会显示虚构余额，也不会产生扣费。" },
@@ -37,7 +37,8 @@ export function AccountMenu() {
   const [position, setPosition] = useState({ left: 8, top: 8 });
   const trigger = useRef<HTMLButtonElement>(null);
   const panel = useRef<HTMLDivElement>(null);
-  const displayName = identity?.username || "19932101651";
+  // The server's profile wins; the reference phone number is only a guest placeholder.
+  const displayName = identity?.displayName || identity?.username || "19932101651";
   useEffect(() => {
     mounted.current = true;
     let active = true, generation = 0;

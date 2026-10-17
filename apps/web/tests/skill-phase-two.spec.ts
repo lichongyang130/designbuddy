@@ -53,7 +53,7 @@ test('web, developer and QA experts have real static checks without claiming run
   ['developer','code.inspect','source.js','eval(userInput);','javascript-report.json'],
   ['qa','web.audit','page.html','<!doctype html><html><body><button></button></body></html>','html-audit.json'],
  ]){
-  await page.goto(`/experts/${expert}`);await expect(desk(page).getByLabel('执行技能')).toHaveValue(skill);await submit(page,file,Buffer.from(content));const r=JSON.parse((await downloaded(page,report)).toString());expect(r.findings.length).toBeGreaterThan(0);await expect(desk(page).locator('.skill-run-result')).toContainText(/未执行|没有安装/);
+  await page.goto(`/experts/${expert}`);const picker=desk(page).getByLabel('执行技能');await picker.selectOption(skill);await expect(picker).toHaveValue(skill);await submit(page,file,Buffer.from(content));const r=JSON.parse((await downloaded(page,report)).toString());expect(r.findings.length).toBeGreaterThan(0);await expect(desk(page).locator('.skill-run-result')).toContainText(/未执行|没有安装/);
  }
 });
 for(const width of [320,375,768])test(`new skill parameters and results fit ${width}px`,async({page})=>{

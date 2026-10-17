@@ -12,10 +12,21 @@ const parsed=(r,name)=>JSON.parse(decoded(r,name));
 const red=()=>sharp({create:{width:300,height:200,channels:4,background:'#ff0000'}}).png().toBuffer();
 const sample=id=>runtimeSkills.find(s=>s.id===id).example.content;
 
-test('all twelve experts now bind at least one actual ready executor, while external/runtime promises stay unavailable',()=>{
+test('all twelve experts bind a real ready executor; browser/build skills are connected and only credential-bound ones stay unavailable',()=>{
  const experts=['documents','data','slides','communication','brand','visual','product-visual','infographics','product','web-design','developer','qa'];
  for(const id of experts)assert.ok(runtimeSkills.some(s=>s.status==='ready'&&s.expertIds.includes(id)),id);
- for(const id of ['collaboration.sync','image.generate','web.verify','code.build','test.browser'])assert.equal(runtimeSkills.find(s=>s.id===id).status,'unavailable');
+ // The five former placeholders now declare a real executor. The two that need an
+ // external service stay unavailable until the server has that credential.
+ for(const id of ['web.verify','test.browser','code.build']){
+  const skill=runtimeSkills.find(s=>s.id===id);
+  assert.equal(skill.executorState,'connected',id);
+  assert.equal(skill.status,'ready',id);
+ }
+ for(const id of ['collaboration.sync','image.generate']){
+  const skill=runtimeSkills.find(s=>s.id===id);
+  assert.equal(skill.executorState,'connected',id);
+  assert.ok(skill.requires.length>0,id);
+ }
 });
 test('Chinese document produces an actual selectable-text PDF that reads back with page provenance',async()=>{
  const formatted=await run('document.format','notes.md','# 项目验收\n销售金额 120.50 元\nPlease verify the source.');

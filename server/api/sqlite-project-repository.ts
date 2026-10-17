@@ -40,6 +40,22 @@ export class SQLiteProjectRepository implements ProjectRepository {
     return row ? JSON.parse(row.project_json) as ApiProject : null;
   }
 
+  async findById(projectId: string): Promise<{ ownerId: string; project: ApiProject } | null> {
+    await this.ready();
+    const row = this.database
+      .prepare("SELECT owner_id, project_json FROM projects WHERE project_id = ? LIMIT 1")
+      .get(projectId) as { owner_id: string; project_json: string } | undefined;
+    return row ? { ownerId: row.owner_id, project: JSON.parse(row.project_json) as ApiProject } : null;
+  }
+
+  async listByWorkspace(workspaceId: string): Promise<Array<{ ownerId: string; project: ApiProject }>> {
+    await this.ready();
+    const rows = this.database
+      .prepare("SELECT owner_id, project_json FROM projects WHERE json_extract(project_json, '$.workspaceId') = ?")
+      .all(workspaceId) as Array<{ owner_id: string; project_json: string }>;
+    return rows.map((row) => ({ ownerId: row.owner_id, project: JSON.parse(row.project_json) as ApiProject }));
+  }
+
   async save(ownerId: string, project: ApiProject): Promise<ApiProject> {
     await this.ready();
     const collision = this.database.prepare("SELECT owner_id FROM projects WHERE project_id = ? LIMIT 1").get(project.id) as { owner_id: string } | undefined;

@@ -1,0 +1,147 @@
+{
+  "name": "designbuddy-account-data",
+  "baseUrl": "http://127.0.0.1:5173",
+  "viewports": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "checks": [
+    {
+      "id": "profile-overview",
+      "type": "assertVisible",
+      "path": "/profile",
+      "selector": "section[aria-label=\"账号概览\"]",
+      "waitFor": ".models-card, section[aria-label=\"账号概览\"]"
+    },
+    {
+      "id": "profile-facts",
+      "type": "assertText",
+      "path": "/profile",
+      "selector": "section[aria-label=\"账号概览\"] .profile-facts",
+      "contains": "长期记忆"
+    },
+    {
+      "id": "profile-memory-card",
+      "type": "assertVisible",
+      "path": "/profile",
+      "selector": "section[aria-label=\"长期记忆\"]",
+      "waitFor": "section[aria-label=\"长期记忆\"]"
+    },
+    {
+      "id": "profile-memory-input",
+      "type": "fill",
+      "path": "/profile",
+      "selector": "textarea[aria-label=\"要记住的内容\"]",
+      "value": "验收用记忆：汇报先给结论"
+    },
+    {
+      "id": "profile-save-without-consent",
+      "type": "click",
+      "path": "/profile",
+      "reload": false,
+      "selector": "section[aria-label=\"长期记忆\"] button",
+      "waitFor": "textarea[aria-label=\"要记住的内容\"]"
+    },
+    {
+      "id": "profile-consent-required",
+      "type": "assertText",
+      "path": "/profile",
+      "reload": false,
+      "selector": ".profile-message.is-error",
+      "contains": "同意"
+    },
+    {
+      "id": "profile-consent-checkbox",
+      "type": "click",
+      "path": "/profile",
+      "reload": false,
+      "selector": "input[aria-label=\"同意保存这条记忆\"]",
+      "waitFor": "input[aria-label=\"同意保存这条记忆\"]"
+    },
+    {
+      "id": "profile-save-with-consent",
+      "type": "click",
+      "path": "/profile",
+      "reload": false,
+      "selector": "section[aria-label=\"长期记忆\"] button",
+      "waitFor": "input[aria-label=\"同意保存这条记忆\"]"
+    },
+    {
+      "id": "profile-memory-saved",
+      "type": "assertText",
+      "path": "/profile",
+      "reload": false,
+      "selector": ".profile-memory-list",
+      "contains": "验收用记忆",
+      "waitFor": ".profile-memory-list li[data-memory]"
+    },
+    {
+      "id": "profile-delete-memory",
+      "type": "click",
+      "path": "/profile",
+      "reload": false,
+      "selector": ".profile-memory-list li button",
+      "waitFor": ".profile-memory-list li"
+    },
+    {
+      "id": "profile-memory-empty",
+      "type": "assertVisible",
+      "path": "/profile",
+      "reload": false,
+      "selector": "li.profile-empty",
+      "waitFor": "li.profile-empty"
+    },
+    {
+      "id": "profile-memory-removed",
+      "type": "assertText",
+      "path": "/profile",
+      "reload": false,
+      "selector": ".profile-memory-list",
+      "contains": "还没有长期记忆",
+      "waitFor": "li.profile-empty"
+    },
+    {
+      "id": "profile-devices",
+      "type": "assertVisible",
+      "path": "/profile",
+      "selector": "section[aria-label=\"使用过的设备\"]",
+      "waitFor": "section[aria-label=\"使用过的设备\"]"
+    },
+    {
+      "id": "profile-export-card",
+      "type": "assertVisible",
+      "path": "/profile",
+      "selector": "section[aria-label=\"导出与清除\"]",
+      "waitFor": "section[aria-label=\"导出与清除\"]"
+    },
+    {
+      "id": "profile-forget-needs-confirm",
+      "type": "click",
+      "path": "/profile",
+      "reload": false,
+      "selector": "button.is-danger",
+      "waitFor": "button.is-danger"
+    },
+    {
+      "id": "profile-forget-refused",
+      "type": "assertText",
+      "path": "/profile",
+      "reload": false,
+      "selector": ".profile-message.is-error",
+      "contains": "确认"
+    },
+    {
+      "id": "profile-screenshot",
+      "type": "screenshot",
+      "path": "/profile"
+    }
+  ]
+}

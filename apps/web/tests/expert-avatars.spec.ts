@@ -6,9 +6,13 @@ const portraits = [
   ["product", "产品需求专家"], ["web-design", "网页交互专家"], ["developer", "全栈开发专家"], ["qa", "测试验收专家"],
 ];
 
-test("all twelve character portraits are distinct, local, loaded and square", async ({ page }) => {
+test("the twelve character portraits stay distinct, local, loaded and square", async ({ page }) => {
   await page.goto("/experts");
-  await expect(page.locator(".expert-directory-card")).toHaveCount(12);
+  // The directory lists every routed expert; twelve of them carry a character
+  // portrait, the other four fall back to a role icon.
+  await expect(page.locator(".expert-directory-card")).toHaveCount(16);
+  await expect(page.locator(".expert-directory-card .expert-role-icon.has-avatar")).toHaveCount(12);
+  await expect(page.locator(".expert-directory-card .expert-role-icon:not(.has-avatar)")).toHaveCount(4);
   const sources: string[] = [];
   for (const [id, name] of portraits) {
     const card = page.getByRole("article", { name, exact: true });

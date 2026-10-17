@@ -1,0 +1,118 @@
+{
+  "name": "designbuddy-plugin-compat",
+  "baseUrl": "http://127.0.0.1:5173",
+  "viewports": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "checks": [
+    {
+      "id": "plugin-panel",
+      "type": "assertVisible",
+      "path": "/plugins",
+      "selector": "section[aria-label=\"插件生命周期\"]",
+      "waitFor": "section[aria-label=\"插件生命周期\"] .pm-lifecycle-card"
+    },
+    {
+      "id": "plugin-cards",
+      "type": "assertText",
+      "path": "/plugins",
+      "reload": false,
+      "selector": ".pm-lifecycle-grid",
+      "contains": "文档与数据基础包"
+    },
+    {
+      "id": "plugin-api-version",
+      "type": "assertText",
+      "path": "/plugins",
+      "reload": false,
+      "selector": ".pm-lifecycle-card [data-plugin-api]",
+      "contains": "插件接口 1.0"
+    },
+    {
+      "id": "plugin-permission-labels",
+      "type": "assertText",
+      "path": "/plugins",
+      "reload": false,
+      "selector": ".pm-lifecycle-card .pm-lifecycle-meta",
+      "contains": "读取本机上传文件"
+    },
+    {
+      "id": "plugin-compatibility",
+      "type": "assertText",
+      "path": "/plugins",
+      "reload": false,
+      "selector": ".pm-lifecycle-card .pm-lifecycle-compat",
+      "contains": "兼容"
+    },
+    {
+      "id": "plugin-network-permission",
+      "type": "assertText",
+      "path": "/plugins",
+      "reload": false,
+      "selector": ".pm-lifecycle-card:nth-child(3) .pm-lifecycle-meta",
+      "contains": "访问网络地址"
+    },
+    {
+      "id": "plugin-install",
+      "type": "click",
+      "path": "/plugins",
+      "reload": false,
+      "selector": ".pm-lifecycle-card:first-child button:has-text(\"安装\")"
+    },
+    {
+      "id": "plugin-install-notice",
+      "type": "assertText",
+      "path": "/plugins",
+      "reload": false,
+      "selector": ".pm-lifecycle-state",
+      "contains": "已安装"
+    },
+    {
+      "id": "plugin-resolved-versions",
+      "type": "assertVisible",
+      "path": "/plugins",
+      "reload": false,
+      "selector": ".pm-lifecycle-card:first-child .pm-lifecycle-versions",
+      "waitFor": ".pm-lifecycle-card:first-child .pm-lifecycle-versions"
+    },
+    {
+      "id": "plugin-lifecycle-log",
+      "type": "assertText",
+      "path": "/plugins",
+      "reload": false,
+      "selector": ".pm-lifecycle-card:first-child .pm-lifecycle-versions",
+      "contains": "@1.0.0"
+    },
+    {
+      "id": "plugin-uninstall",
+      "type": "click",
+      "path": "/plugins",
+      "reload": false,
+      "selector": ".pm-lifecycle-card:first-child button:has-text(\"卸载\")"
+    },
+    {
+      "id": "plugin-uninstall-notice",
+      "type": "assertText",
+      "path": "/plugins",
+      "reload": false,
+      "selector": ".pm-lifecycle-state",
+      "contains": "已卸载"
+    },
+    {
+      "id": "plugin-screenshot",
+      "type": "screenshot",
+      "path": "/plugins",
+      "reload": false,
+      "selector": ".pm-lifecycle-grid"
+    }
+  ]
+}

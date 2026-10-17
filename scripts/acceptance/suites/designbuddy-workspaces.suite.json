@@ -1,0 +1,81 @@
+{
+  "name": "designbuddy-workspaces",
+  "baseUrl": "http://127.0.0.1:5173",
+  "viewports": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "checks": [
+    {
+      "id": "workspaces-page",
+      "type": "assertVisible",
+      "path": "/workspaces",
+      "selector": "main[aria-label=\"工作空间\"]",
+      "waitFor": "main[aria-label=\"工作空间\"]"
+    },
+    {
+      "id": "workspaces-heading",
+      "type": "assertText",
+      "path": "/workspaces",
+      "selector": ".ws-hero h1",
+      "contains": "工作空间",
+      "waitFor": ".ws-hero h1"
+    },
+    {
+      "id": "workspaces-create",
+      "type": "fill",
+      "path": "/workspaces",
+      "selector": "input[aria-label=\"新工作空间名称\"]",
+      "value": "验收用设计组"
+    },
+    {
+      "id": "workspaces-create-click",
+      "type": "click",
+      "path": "/workspaces",
+      "reload": false,
+      "selector": "button:has-text(\"创建工作空间\")",
+      "waitFor": "button:has-text(\"创建工作空间\")",
+      "expectSelector": ".ws-list li:not(.ws-empty)"
+    },
+    {
+      "id": "workspaces-list",
+      "type": "assertText",
+      "path": "/workspaces",
+      "reload": false,
+      "selector": ".ws-list",
+      "contains": "验收用设计组",
+      "waitFor": ".ws-list li:not(.ws-empty)"
+    },
+    {
+      "id": "workspaces-join-code",
+      "type": "assertVisible",
+      "path": "/workspaces",
+      "reload": false,
+      "selector": ".ws-code code",
+      "waitFor": ".ws-code code"
+    },
+    {
+      "id": "workspaces-members",
+      "type": "assertVisible",
+      "path": "/workspaces",
+      "reload": false,
+      "selector": ".ws-table tbody tr",
+      "waitFor": ".ws-table tbody tr"
+    },
+    {
+      "id": "workspaces-screenshot",
+      "type": "screenshot",
+      "path": "/workspaces",
+      "reload": false,
+      "selector": "main[aria-label=\"工作空间\"]"
+    }
+  ]
+}

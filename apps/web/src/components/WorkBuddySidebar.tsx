@@ -14,8 +14,14 @@ type Props = {
     | "connectors"
     | "task"
     | "plugins"
+    | "schedules"
+    | "models"
+    | "profile"
     | "templates";
   projectCount: number;
+  /** How many workspaces the account belongs to. */
+  workspaceCount?: number;
+  assetCount?: number;
   go(path: string): void;
   setNotice(message: string): void;
 };
@@ -23,6 +29,8 @@ type Props = {
 export function WorkBuddySidebar({
   active,
   projectCount,
+  workspaceCount = 0,
+  assetCount = 0,
   go,
   setNotice,
 }: Props) {
@@ -116,27 +124,41 @@ export function WorkBuddySidebar({
         </button>
         <button
           className="sidebar-nav-item"
-          onClick={() =>
-            setNotice("定时任务入口正在规划中；当前可在首页输入任务需求。")
-          }
+          aria-current={active === "schedules" ? "page" : undefined}
+          onClick={() => go("/schedules")}
         >
           <HomeIcon name="clock" />
           <span className="sidebar-nav-label">定时任务</span>
+        </button>
+        <button
+          className={`sidebar-nav-item ${active === "models" ? "is-active" : ""}`}
+          aria-current={active === "models" ? "page" : undefined}
+          onClick={() => go("/models")}
+        >
+          <HomeIcon name="chart" />
+          <span className="sidebar-nav-label">模型与用量</span>
+        </button>
+        <button
+          className={`sidebar-nav-item ${active === "profile" ? "is-active" : ""}`}
+          aria-current={active === "profile" ? "page" : undefined}
+          onClick={() => go("/profile")}
+        >
+          <HomeIcon name="shield" />
+          <span className="sidebar-nav-label">账号与数据</span>
         </button>
         <SidebarMoreMenu active={active} go={go} />
       </nav>
 
       <div className="sidebar-lists">
         <button onClick={() => go("/projects")}>任务（{projectCount}）</button>
-        <button
-          onClick={() =>
-            setNotice(
-              "当前工作空间：默认工作空间。可在输入框下方切换工作空间。",
-            )
-          }
-        >
-          空间（2）
+        <button onClick={() => go("/workspaces")}>
+          空间（{workspaceCount}）
         </button>
+        <button onClick={() => go("/assets")}>
+          素材（{assetCount}）
+        </button>
+        <button onClick={() => go("/workflows")}>工作流</button>
+        <button onClick={() => go("/community")}>社区模板</button>
       </div>
 
       <div className="sidebar-bottom">

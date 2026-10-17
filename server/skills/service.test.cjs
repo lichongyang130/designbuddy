@@ -8,8 +8,9 @@ const { createApiHandler } = require('../../dist/local/server/api/http-handler.j
 const { mkdtempSync, rmSync } = require('node:fs');
 const { tmpdir } = require('node:os');
 const { join } = require('node:path');
-const upload = (skillId='table.analyze', expertId='data', content='产品,金额\n甲,10\n乙,20\n甲,10', filename='sample.csv', consent=true) => {
+const upload = (skillId='table.analyze', expertId='data', content='产品,金额\n甲,10\n乙,20\n甲,10', filename='sample.csv', consent=true, parameters) => {
  const form=new FormData();form.set('skillId',skillId);form.set('expertId',expertId);form.set('file',new File([content],filename));form.set('consent',String(consent));form.set('deduplicate','true');
+ if(parameters!==undefined)form.set('parameters',JSON.stringify(parameters));
  return new Request('http://local/api/skill-runs',{method:'POST',body:form});
 };
 const req=(path,method='GET')=>new Request('http://local/api/'+path,{method});
@@ -54,11 +55,28 @@ test('PPTX contains actual editable slides and escaped content preview with prov
 test('registry rejects unbound/unavailable skills, wrong formats and missing upload consent',async t=>{
  const s=new SkillService(':memory:');t.after(()=>s.close());
  assert.equal((await s.handle(upload('table.analyze','qa'),'alice')).status,409);
- assert.equal((await s.handle(upload('code.build','developer'),'alice')).status,409);
+ assert.equal((await s.handle(upload('collaboration.sync','communication','{"action":"email.send"}','request.json',true,{externalConsent:'yes',confirmation:'yes',idempotencyKey:'key-abc-123'}),'alice')).status,409);
+ assert.equal((await s.handle(upload('code.build','developer','a,b\n1,2','a.csv'),'alice')).status,400);
  assert.equal((await s.handle(upload('table.analyze','data','bad','fake.pdf'),'alice')).status,400);
  assert.equal((await s.handle(upload('table.analyze','data','a,b\n1,2','a.csv',false),'alice')).status,403);
  assert.equal((await s.handle(upload('table.analyze','data','a'.repeat(2100001)),'alice')).status,413);
- const registry=await (await s.handle(req('skill-runtime'),'alice')).json();assert.equal(registry.skills.filter(s=>s.status==='ready').length,25+(require('../../dist/local/server/skills/asr-config.js').asrConfiguration().ready?1:0));
+ const registry=await (await s.handle(req('skill-runtime'),'alice')).json();
+ const {runtimeSkills}=require('../../dist/local/shared/skillRuntime.js');
+ const {asrConfiguration}=require('../../dist/local/server/skills/asr-config.js');
+ // Five skills that used to be placeholders now have real executors. Three of them
+ // are self-contained and ready; the two that need an external service stay
+ // unavailable until the server has that credential, and say why.
+ const credentialBound=['collaboration.sync','image.generate'];
+ const connected=['web.verify','test.browser','code.build'];
+ assert.equal(registry.skills.length,runtimeSkills.length,'catalogue must expose every declared skill');
+ for(const skill of registry.skills){
+  if(credentialBound.includes(skill.id)){assert.equal(skill.status,'unavailable',skill.id);assert.equal(skill.executorState,'connected',skill.id);assert.ok(skill.requires&&skill.requires.length>0,skill.id+' must declare what it needs');continue;}
+  if(connected.includes(skill.id)){assert.equal(skill.status,'ready',skill.id);assert.equal(skill.executorState,'connected',skill.id);continue;}
+  if(skill.id==='audio.transcribe-en'){assert.equal(skill.status,asrConfiguration().ready?'ready':'unavailable',skill.id);continue;}
+  if(skill.id==='document.summarize'){assert.equal(skill.status,(process.env.AI_API_KEY||process.env.OPENAI_API_KEY)?'ready':'unavailable',skill.id);continue;}
+  assert.equal(skill.status,'ready',skill.id);
+ }
+ assert.equal(registry.skills.filter(s=>s.status==='ready').length+registry.skills.filter(s=>s.status==='unavailable').length,registry.skills.length,'every skill is either ready or explicitly unavailable');
 });
 test('malformed files, duplicate headers and formulas fail honestly without artifacts',async t=>{
  const s=new SkillService(':memory:');t.after(()=>s.close());
@@ -89,9 +107,21 @@ test('unsafe XML entities, archive paths, malformed UTF8 and binary disguises ar
  {filename:'x.txt',bytes:new Uint8Array([0,1,2])},
  ]) await assert.rejects(()=>executeSkill({skillId:'document.format',deduplicate:false,...input}));
 });
-test('public API does not expose skill execution or files without an authenticated principal',async()=>{
- const api=createApiHandler({authenticate:async()=>null,projects:{}});
- assert.equal((await api(req('skill-runtime'))).status,401);assert.equal((await api(upload())).status,401);
+test('public API exposes only a read-only catalogue and never runs skills or serves files without an authenticated principal',async t=>{
+ const service=new SkillService(':memory:');t.after(()=>service.close());
+ const api=createApiHandler({authenticate:async()=>null,projects:{},skills:service});
+ // The catalogue is public product metadata (skill list, limits, what each one still needs). It must not carry any
+ // run, artifact, owner or session data.
+ const catalogue=await api(req('skill-runtime'));
+ assert.equal(catalogue.status,200);
+ const body=await catalogue.json();
+ assert.ok(Array.isArray(body.skills)&&body.skills.length>0);
+ assert.equal(body.runs,undefined);assert.equal(body.artifacts,undefined);
+ assert.ok(!/"(ownerId|inputHash|principal|session|token)"/.test(JSON.stringify(body)));
+ // Execution, uploads, plans and run records stay behind authentication.
+ assert.equal((await api(upload())).status,401);
+ assert.equal((await api(req('skill-runs'))).status,401);
+ assert.equal((await api(req('skill-plans'))).status,401);
 });
 test('decimal arithmetic is computed rather than inferred and unsafe numeric formats remain text',async()=>{
  const r=await executeSkill({skillId:'table.analyze',filename:'decimal.csv',bytes:strToU8('金额,百分比,标识\n0.1,10%,001\n0.2,20%,002'),deduplicate:false});

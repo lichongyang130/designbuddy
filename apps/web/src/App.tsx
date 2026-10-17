@@ -13,10 +13,20 @@ import { HomeAttachMenu } from "./components/HomeAttachMenu";
 import { HomeModelMenu, ModelGlyph } from "./components/HomeModelMenu";
 import { WorkBuddySidebar } from "./components/WorkBuddySidebar";
 import PluginsPage from "../../../frontend/workspace/pages/PluginsPage";
+import SchedulesPage from "../../../frontend/workspace/pages/SchedulesPage";
+import ModelsPage from "../../../frontend/workspace/pages/ModelsPage";
+import ProfilePage from "../../../frontend/workspace/pages/ProfilePage";
+import WorkspacesPage from "../../../frontend/workspace/pages/WorkspacesPage";
+import AssetsPage from "../../../frontend/workspace/pages/AssetsPage";
+import CommunityPage from "../../../frontend/workspace/pages/CommunityPage";
+import WorkflowsPage from "../../../frontend/workspace/pages/WorkflowsPage";
+import { listAssets, uploadAsset } from "../../../frontend/workspace/api/assets";
+import { fetchAccount } from "../../../frontend/workspace/api/account";
 import InspirationPage from "./inspiration/InspirationPage";
 import TaskConversationPage from "../../../frontend/workspace/pages/TaskConversationPage";
 import { saveTaskConversation, pendingTaskKey, type TaskConversation } from "../../../frontend/workspace/taskConversation";
-import { openSettings, useModelOptions } from "../../../frontend/workspace/settingsStore";
+import { openSettings, syncPreferencesFromAccount, useModelOptions } from "../../../frontend/workspace/settingsStore";
+import { listWorkspaces } from "../../../frontend/workspace/api/workspaces";
 import "./styles.css";
 import "./home-workspace.css";
 import "./home-reference.css";
@@ -25,7 +35,7 @@ import { HomeDiscovery, HomeShortcuts, type HomeScene } from "./components/HomeD
 
 
 type WorkMode = "office" | "code" | "design";
-type TaskAttachment = { name: string; text?: string };
+type TaskAttachment = { name: string; text?: string; assetId?: string };
 const textAttachmentExtensions = /\.(txt|md|markdown|json|html|htm|css|js|csv|xml|yaml|yml)$/i;
 
 const quickActions: { title: string; icon: HomeIconName; mode: WorkMode; prompt: string }[] = [
@@ -58,6 +68,8 @@ export default function App() {
   const [promptGroupRevision, setPromptGroupRevision] = useState(0);
   const [notice, setNotice] = useState("");
   const [projects, setProjects] = useState<DesignProject[]>(() => listProjects());
+  const [workspaceCount, setWorkspaceCount] = useState(0);
+  const [assetCount, setAssetCount] = useState(0);
   const [busy, setBusy] = useState(false);
   const [model, setModel] = useState("");
   const [modelMenuOpen, setModelMenuOpen] = useState(false);
@@ -72,6 +84,31 @@ export default function App() {
   const modelMenuRef = useRef<HTMLDivElement>(null);
   const composerRef = useRef<HTMLElement>(null);
   const expertMatch = useExpertMatch({ prompt, mode, model, permission, attachments, selectedExpert, enabled: currentPath === "/" });
+
+  useEffect(() => {
+    void syncPreferencesFromAccount();
+  }, []);
+
+  // The sidebar shows how many workspaces the account belongs to.
+  useEffect(() => {
+    let cancelled = false;
+    void listWorkspaces()
+      .then((list) => { if (!cancelled) setWorkspaceCount(list.length); })
+      .catch(() => { if (!cancelled) setWorkspaceCount(0); });
+    return () => { cancelled = true; };
+  }, [currentPath]);
+
+  // The sidebar shows how many files the account owns in the server library.
+  useEffect(() => {
+    let cancelled = false;
+    void Promise.all([listAssets().catch(() => []), fetchAccount().catch(() => null)])
+      .then(([assets, identity]) => {
+        if (cancelled) return;
+        setAssetCount(identity ? assets.filter((asset) => asset.ownerId === identity.id).length : assets.length);
+      })
+      .catch(() => { if (!cancelled) setAssetCount(0); });
+    return () => { cancelled = true; };
+  }, [currentPath]);
 
   useEffect(() => {
     const syncPath = () => {
@@ -189,7 +226,7 @@ export default function App() {
       const hasModePrefix = [...Object.values(modeLabels), "日常办公", "代码开发", "设计创意"].some(label => initialPrompt.startsWith(`${label}需求：`));
       const task = hasModePrefix ? `${expertPrefix}${skillPrefix}${initialPrompt}` : `${prefix}${expertPrefix}${skillPrefix}${initialPrompt}`;
       const request = `工作空间：${workspace}；执行策略：${permission}。\n${task}`;
-      const attachmentContext = attachments.filter((item) => item.text).map((item) => `\n\n--- 附件：${item.name} ---\n${item.text}`).join("");
+      const attachmentContext = attachments.filter((item) => item.text || item.assetId).map((item) => `\n\n--- 附件：${item.name}${item.assetId ? `（服务器素材 ${item.assetId}）` : ""} ---\n${item.text ?? ""}`).join("");
       const fullRequest = request + confirmedContext + attachmentContext;
       const draft = createProject(fullRequest, projectName || initialPrompt.trim().slice(0, 36));
       const project = updateProject({ ...draft, workspaceName: workspace, executionPolicy: permission });
@@ -220,10 +257,19 @@ export default function App() {
   }
 
   if (currentPath === "/plugins") return <PluginsPage />;
+  if (currentPath === "/schedules") return <SchedulesPage />;
+  if (currentPath === "/models") return <ModelsPage />;
+  if (currentPath === "/profile") return <ProfilePage />;
+  if (currentPath === "/workspaces") return <WorkspacesPage />;
+  if (currentPath === "/assets") return <AssetsPage />;
+  if (currentPath === "/community") return <CommunityPage />;
+  if (currentPath === "/workflows") return <WorkflowsPage />;
   if (currentPath === "/inspiration" || currentPath.startsWith("/inspiration/")) return <InspirationPage pathname={currentPath} />;
   if (currentPath.startsWith("/library")) return <DesignLibrary />;
   if (currentPath === "/studio" || currentPath.startsWith("/studio/")) return <StudioPage />;
   if (currentPath === "/share") return <ShareProjectPage />;
+  const shareMatch = currentPath.match(/^\/share\/([^/]+)$/);
+  if (shareMatch) return <ShareProjectPage token={decodeURIComponent(shareMatch[1])} />;
   if (isWorkspaceHubPath(currentPath)) return <WorkspaceHub />;
   const taskMatch = currentPath.match(/^\/tasks\/([^/]+)$/);
   if (taskMatch) {
@@ -241,7 +287,7 @@ export default function App() {
 
   return (
     <div className="workbuddy-app">
-      <WorkBuddySidebar active="home" projectCount={projects.length} go={go} setNotice={setNotice} />
+      <WorkBuddySidebar active="home" projectCount={projects.length} workspaceCount={workspaceCount} assetCount={assetCount} go={go} setNotice={setNotice} />
 
       <main className="main-workspace home-workspace-v2 home27">
         <div className="home-content home-content-v2 home27-content">
@@ -339,6 +385,16 @@ export default function App() {
                     event.currentTarget.value = "";
                     if (!selected.length) return;
                     void Promise.all(selected.map(async (file): Promise<TaskAttachment> => {
+                      // The server stores the file in the asset library and parses
+                      // text files there, so the task can be continued on another
+                      // device. When the server is not reachable the browser still
+                      // reads small text files.
+                      if (file.size <= 5_000_000) {
+                        try {
+                          const asset = await uploadAsset(file);
+                          return { name: file.name, text: asset.extracted ? asset.excerpt : undefined, assetId: asset.id };
+                        } catch { /* fall back to reading the file in the browser */ }
+                      }
                       if (!textAttachmentExtensions.test(file.name) && !file.type.startsWith("text/")) return { name: file.name };
                       if (file.size > 160_000) return { name: file.name };
                       try { return { name: file.name, text: (await file.text()).slice(0, 80_000) }; }
@@ -346,7 +402,10 @@ export default function App() {
                     })).then((parsed) => {
                       setAttachments((current) => [...current, ...parsed].slice(-4));
                       const readable = parsed.filter((file) => file.text).length;
-                      setNotice(readable ? `已读取 ${readable} 个文本附件；每个文件最多提取 80 KB 文本。PDF 和图片仅附上文件名。` : "已添加附件。当前只会解析文本文件，PDF 与图片内容暂未提取。");
+                      const stored = parsed.filter((file) => file.assetId).length;
+                      setNotice(stored
+                        ? `已上传 ${stored} 个附件到服务器素材库${readable ? `，其中 ${readable} 个由服务器解析出文本` : "（非文本文件只保存不解析）"}。`
+                        : readable ? `已读取 ${readable} 个文本附件；每个文件最多提取 80 KB 文本。PDF 和图片仅附上文件名。` : "已添加附件。当前只会解析文本文件，PDF 与图片内容暂未提取。");
                     });
                   }}
                 />
@@ -415,6 +474,7 @@ export default function App() {
             <div>{quickActions.filter(action => action.mode === mode).map(action => <button key={action.title} onClick={() => selectHomeScene(action)}><HomeIcon name={action.icon} />{action.title}</button>)}</div>
           </details>
           <button className="home27-explore" onClick={() => go("/plugins")}><span aria-hidden="true">—</span> 探索更多 AI 能力 <span aria-hidden="true">→</span></button>
+          <button className="home27-explore" onClick={() => go("/workflows")}><span aria-hidden="true">—</span> 用工作流点几下完成一件事 <span aria-hidden="true">→</span></button>
         </div>
       </main>
     </div>

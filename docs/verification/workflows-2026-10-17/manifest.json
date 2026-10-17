@@ -1,0 +1,467 @@
+{
+  "tool": "run-acceptance",
+  "suite": "designbuddy-workflows",
+  "baseUrl": "http://127.0.0.1:5173",
+  "ranAt": "2026-10-16T23:23:09.054Z",
+  "viewports": [
+    "desktop 1440x900",
+    "mobile 390x844"
+  ],
+  "counts": {
+    "total": 56,
+    "passed": 56,
+    "failed": 0,
+    "notVerified": 0
+  },
+  "results": [
+    {
+      "id": "workflows-page",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 1972
+    },
+    {
+      "id": "workflows-cards",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 51
+    },
+    {
+      "id": "workflows-honest-boundary",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (70 chars)",
+      "durationMs": 54
+    },
+    {
+      "id": "workflows-recipes",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (730 chars)",
+      "durationMs": 62
+    },
+    {
+      "id": "workflows-history-empty",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (27 chars)",
+      "durationMs": 5
+    },
+    {
+      "id": "workflows-start",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 57
+    },
+    {
+      "id": "workflows-missing-answer",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked and expected text present",
+      "durationMs": 138
+    },
+    {
+      "id": "workflows-fill-title",
+      "type": "fill",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "filled 6 characters",
+      "durationMs": 16
+    },
+    {
+      "id": "workflows-fill-metric",
+      "type": "fill",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "filled 4 characters",
+      "durationMs": 15
+    },
+    {
+      "id": "workflows-fill-unit",
+      "type": "fill",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "filled 2 characters",
+      "durationMs": 20
+    },
+    {
+      "id": "workflows-fill-scope",
+      "type": "fill",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "filled 24 characters",
+      "durationMs": 19
+    },
+    {
+      "id": "workflows-fill-source",
+      "type": "fill",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "filled 12 characters",
+      "durationMs": 14
+    },
+    {
+      "id": "workflows-add-row",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 64
+    },
+    {
+      "id": "workflows-add-row-2",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 43
+    },
+    {
+      "id": "workflows-row-1-label",
+      "type": "fill",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "filled 4 characters",
+      "durationMs": 16
+    },
+    {
+      "id": "workflows-row-1-value",
+      "type": "fill",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "filled 5 characters",
+      "durationMs": 19
+    },
+    {
+      "id": "workflows-row-2-label",
+      "type": "fill",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "filled 4 characters",
+      "durationMs": 17
+    },
+    {
+      "id": "workflows-row-2-value",
+      "type": "fill",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "filled 4 characters",
+      "durationMs": 21
+    },
+    {
+      "id": "workflows-confirm",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 85
+    },
+    {
+      "id": "workflows-plan-lists-skill",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (66 chars)",
+      "durationMs": 4
+    },
+    {
+      "id": "workflows-run",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 2335
+    },
+    {
+      "id": "workflows-artifacts",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 7
+    },
+    {
+      "id": "workflows-artifact-svg",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (168 chars)",
+      "durationMs": 5
+    },
+    {
+      "id": "workflows-back-to-list",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 54
+    },
+    {
+      "id": "workflows-history",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (35 chars)",
+      "durationMs": 6
+    },
+    {
+      "id": "workflows-api",
+      "type": "http",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "HTTP 200",
+      "durationMs": 14
+    },
+    {
+      "id": "workflows-runs-api",
+      "type": "http",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "HTTP 200",
+      "durationMs": 5
+    },
+    {
+      "id": "workflows-screenshot",
+      "type": "screenshot",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "screenshot saved as screenshots/desktop/workflows-screenshot.png",
+      "durationMs": 605
+    },
+    {
+      "id": "workflows-page",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 2145
+    },
+    {
+      "id": "workflows-cards",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 22
+    },
+    {
+      "id": "workflows-honest-boundary",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (70 chars)",
+      "durationMs": 144
+    },
+    {
+      "id": "workflows-recipes",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (730 chars)",
+      "durationMs": 43
+    },
+    {
+      "id": "workflows-history-empty",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (43 chars)",
+      "durationMs": 5
+    },
+    {
+      "id": "workflows-start",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 61
+    },
+    {
+      "id": "workflows-missing-answer",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked and expected text present",
+      "durationMs": 52
+    },
+    {
+      "id": "workflows-fill-title",
+      "type": "fill",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "filled 6 characters",
+      "durationMs": 16
+    },
+    {
+      "id": "workflows-fill-metric",
+      "type": "fill",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "filled 4 characters",
+      "durationMs": 17
+    },
+    {
+      "id": "workflows-fill-unit",
+      "type": "fill",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "filled 2 characters",
+      "durationMs": 14
+    },
+    {
+      "id": "workflows-fill-scope",
+      "type": "fill",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "filled 24 characters",
+      "durationMs": 12
+    },
+    {
+      "id": "workflows-fill-source",
+      "type": "fill",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "filled 12 characters",
+      "durationMs": 16
+    },
+    {
+      "id": "workflows-add-row",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 57
+    },
+    {
+      "id": "workflows-add-row-2",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 46
+    },
+    {
+      "id": "workflows-row-1-label",
+      "type": "fill",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "filled 4 characters",
+      "durationMs": 18
+    },
+    {
+      "id": "workflows-row-1-value",
+      "type": "fill",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "filled 5 characters",
+      "durationMs": 17
+    },
+    {
+      "id": "workflows-row-2-label",
+      "type": "fill",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "filled 4 characters",
+      "durationMs": 16
+    },
+    {
+      "id": "workflows-row-2-value",
+      "type": "fill",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "filled 4 characters",
+      "durationMs": 17
+    },
+    {
+      "id": "workflows-confirm",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 113
+    },
+    {
+      "id": "workflows-plan-lists-skill",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (66 chars)",
+      "durationMs": 6
+    },
+    {
+      "id": "workflows-run",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 2341
+    },
+    {
+      "id": "workflows-artifacts",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 16
+    },
+    {
+      "id": "workflows-artifact-svg",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (168 chars)",
+      "durationMs": 4
+    },
+    {
+      "id": "workflows-back-to-list",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 53
+    },
+    {
+      "id": "workflows-history",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (71 chars)",
+      "durationMs": 4
+    },
+    {
+      "id": "workflows-api",
+      "type": "http",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "HTTP 200",
+      "durationMs": 9
+    },
+    {
+      "id": "workflows-runs-api",
+      "type": "http",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "HTTP 200",
+      "durationMs": 8
+    },
+    {
+      "id": "workflows-screenshot",
+      "type": "screenshot",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "screenshot saved as screenshots/mobile/workflows-screenshot.png",
+      "durationMs": 350
+    }
+  ],
+  "policy": "只有真实访问目标并通过断言的检查才记为 passed；选择器缺失记为 not_verified 并写明原因；失败项保留控制台与网络记录。本工具不代表被测目标已完成业务验收，只证明声明的检查项在声明的视口下实际执行过。"
+}

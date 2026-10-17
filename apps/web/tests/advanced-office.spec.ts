@@ -37,8 +37,13 @@ test('downloadable real XLSX example joins through visible required parameters a
 test('ambiguous right-side duplicate keys fail rather than creating misleading expanded rows',async({page})=>{
  await choose(page,'table.join');await fields(page);const {bytes}=await workbook(undefined,[['编号'],['001'],['001']]);await submit(page,'duplicate.xlsx',bytes);await expect(desk(page).getByRole('status')).toHaveText('执行失败',{timeout:15000});await expect(desk(page)).toContainText('右表关联键不唯一');await expect(desk(page).getByRole('button',{name:'下载 joined.xlsx',exact:true})).toHaveCount(0);
 });
-test('generic skill parameter form clears join fields when switching to poster execution',async({page})=>{
- await choose(page,'table.join','/skills');await fields(page,'full');await desk(page).getByLabel('执行技能').selectOption('image.marketing');await expect(desk(page).getByLabel('左表工作表名称',{exact:true})).toHaveCount(0);await desk(page).getByLabel('海报标题',{exact:true}).fill('独立素材');const image=await sharp({create:{width:100,height:100,channels:3,background:'blue'}}).png().toBuffer();await submit(page,'blue.png',image);await expect(desk(page).getByRole('status')).toHaveText('执行成功',{timeout:15000});const receipt=JSON.parse((await download(page,'execution-receipt.json')).toString());expect(receipt.options.parameters).toEqual({title:'独立素材',subtitle:'',action:''});
+test('generic skill parameter form clears the previous skill fields when switching skill',async({page})=>{
+ // table.join and table.calculate both belong to the data expert, so the same
+ // workbench can switch between them; the join fields must not survive.
+ await choose(page,'table.join');await fields(page,'full');await expect(desk(page).getByLabel('左表工作表名称',{exact:true})).toBeVisible();await desk(page).getByLabel('执行技能').selectOption('table.calculate');await expect(desk(page).getByLabel('左表工作表名称',{exact:true})).toHaveCount(0);
+});
+test('poster skill runs with its own parameters and writes a real receipt',async({page})=>{
+ await choose(page,'image.marketing','/experts/visual');await desk(page).getByLabel('海报标题',{exact:true}).fill('独立素材');const image=await sharp({create:{width:100,height:100,channels:3,background:'blue'}}).png().toBuffer();await submit(page,'blue.png',image);await expect(desk(page).getByRole('status')).toHaveText('执行成功',{timeout:15000});const receipt=JSON.parse((await download(page,'execution-receipt.json')).toString());expect(receipt.options.parameters).toEqual({title:'独立素材',subtitle:'',action:''});
 });
 test('model-selected join shows frozen Chinese parameter labels before actual approved execution (model stub only)',async({page})=>{
  const parameters={leftSheet:'订单',rightSheet:'客户',leftKey:'编号',rightKey:'编号',joinType:'full'};

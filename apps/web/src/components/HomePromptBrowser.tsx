@@ -43,7 +43,7 @@ function CategoryMenu({ category, activeGroupId, onSelect, allCategories }: { ca
       const index = buttons.indexOf(document.activeElement as HTMLButtonElement);
       const next = event.key === "ArrowDown" ? (index + 1) % buttons.length : event.key === "ArrowUp" ? (index + buttons.length - 1) % buttons.length : event.key === "Home" ? 0 : event.key === "End" ? buttons.length - 1 : -1;
       if (next >= 0) { event.preventDefault(); buttons[next]?.focus(); }
-    }}><p>{showingAll ? `${modeLabels[category.mode]} · 10 个分类` : current.title}</p>
+    }}><p>{showingAll ? `${modeLabels[category.mode]} · ${allCategories!.length} 个分类` : current.title}</p>
       {allCategories && browsing && <button role="menuitem" onClick={() => setBrowsing(null)}>返回全部分类</button>}
       {showingAll ? allCategories!.map(c => <button key={c.id} role="menuitem" aria-haspopup="menu" aria-current={c.groups.some(g => g.id === activeGroupId) ? "true" : undefined} onClick={() => setBrowsing(c)}><span>{c.title}</span><small>{c.groups.reduce((sum, g) => sum + g.tasks.length, 0)} 个任务 ›</small></button>) : current.groups.map(g => <button key={g.id} role="menuitem" aria-current={g.id === activeGroupId ? "true" : undefined} onClick={() => { onSelect(g.id); close(true); }}><span>{g.title}</span><small>{g.tasks.length} 个场景</small></button>)}</div>, document.body)}
   </>;

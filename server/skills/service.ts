@@ -5,7 +5,8 @@ import { mkdirSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { randomUUID, createHash } from "node:crypto";
 import { Worker } from "node:worker_threads";
-import { runtimeSkills, type SkillRun, type SkillArtifact } from "../../shared/skillRuntime";
+import { externalSkillPermissions, runtimeSkills, type SkillRun, type SkillArtifact } from "../../shared/skillRuntime";
+import { skillPermissions } from "./skill-permissions";
 import type { Output } from "./executors";
 import type { PDFPageCheckpoint } from "./pdf-ocr";
 import { SkillRequestError as RequestError, normalizeFilename, validateSkillOptions, validRequestId, skillTaskId } from "./contracts";
@@ -197,7 +198,11 @@ export class SkillService {
     const recent = Number(this.db.prepare("SELECT count(*) AS n FROM skill_submissions WHERE owner=? AND created_at>?").get(owner, Date.now()-86400000)?.n || 0);
     if (recent >= 500) throw new RequestError("24小时内执行次数达到限制，请稍后重试。", 429);
     const now = new Date().toISOString();
-    const record: SkillRun = { id: randomUUID(), ...(taskId ? { taskId } : {}), expertId, skillId, version: skill.version, status: "queued", filename, inputHash, createdAt: now, updatedAt: now, options,
+    // Tool permissions are part of the governance record: which version ran, with what rights.
+    const permissions = skillPermissions(skillId);
+    if (permissions.some(permission => externalSkillPermissions.includes(permission)) && options.parameters?.externalConsent !== "yes")
+      throw new RequestError("该技能会把内容发送给第三方服务，请单次明确授权后再执行。", 403);
+    const record: SkillRun = { id: randomUUID(), ...(taskId ? { taskId } : {}), expertId, skillId, version: skill.version, permissions, status: "queued", filename, inputHash, createdAt: now, updatedAt: now, options,
       ...(plan ? { plan: { id: plan.id, goal: plan.goal, reason: plan.decision!.kind === "plan" ? plan.decision!.reason : "", approvalDigest: plan.approvalDigest!, plannedAt: plan.createdAt, confirmedAt: now } } : {}),
       events: [{ at: now, message: plan ? "用户已确认冻结方案；文件SHA-256一致，材料已保存并排队，未重复调用模型。" : "材料已保存并记录 SHA-256，等待执行。" }], artifacts: [] };
     this.db.exec("BEGIN");

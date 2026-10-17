@@ -43,7 +43,7 @@ for (const width of [320, 375, 768, 1440]) {
     await expect(
       types.getByRole("button", { name: "全部", exact: true }),
     ).toHaveAttribute("aria-pressed", "true");
-    await expect(page.locator(".sample-card")).toHaveCount(19);
+    await expect(page.locator(".sample-card")).toHaveCount(22);
   });
 }
 
@@ -75,7 +75,7 @@ test("new categories support keyboard selection and preserve search and draft fi
   ).toHaveAttribute("aria-pressed", "true");
   await page.getByRole("button", { name: "查看全部作品", exact: true }).click();
   await expect(search).toHaveValue("");
-  await expect(page.locator(".sample-card")).toHaveCount(19);
+  await expect(page.locator(".sample-card")).toHaveCount(22);
   await expect(
     page.getByRole("button", { name: "我的副本（0）", exact: true }),
   ).toBeVisible();

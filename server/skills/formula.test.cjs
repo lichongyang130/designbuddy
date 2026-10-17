@@ -8,7 +8,7 @@ async function finish(s,id){for(let i=0;i<1800;i++){const response=await s.handl
 function request(bytes,extra={}){const f=new FormData();for(const [k,v]of Object.entries({skillId:'table.calculate',expertId:'data',consent:'true',requestId:randomUUID(),...extra}))f.set(k,v);f.set('file',new File([bytes],'source.xlsx'));return new Request('http://local/api/skill-runs',{method:'POST',body:f});}
 
 test('closed arithmetic grammar handles precedence, decimals, percent on divisor, ROUND and scientific literals',()=>{
- for(const [f,expected]of [['0.1+0.2','0.3'],['2+3*4','14'],['(2+3)*4','20'],['2/5%','40'],['2*5%','0.1'],['-50%','-0.5'],['50%%','0.005'],['ROUND(-1.005,2)','-1.01'],['ROUND(125,-1)','130'],['ABS(-5)+COUNT(2,3)','7'],['1e-3+2E-3','0.003'],['MIN(4,-2)+MAX(1,5)','3'],['=SUM(1,2,3)','6']])assert.equal(scalar(f),expected,f);
+ for(const [f,expected]of [['0.1+0.2','0.3'],['2+3*4','14'],['(2+3)*4','20'],['2/5%','40'],['2*5%','0.1'],['-50%','-0.5'],['50%%','0.005'],['ROUND(-1.005,2)','-1.01'],['ROUND(125,-1)','130'],['ABS(-5)+COUNT(2,3)','7'],['1e-3+2E-3','0.003'],['MIN(4,-2)+MAX(1,5)','3'],['=SUM(1,2,3)','6'],['ROUNDUP(1.001,2)','1.01'],['ROUNDDOWN(1.009,2)','1'],['MOD(-1,3)','2'],['POWER(2,10)','1024'],['INT(-1.5)','-2'],['SQRT(16)','4'],['SIGN(-7)','-1'],['CEILING(7,3)','9'],['FLOOR(7,3)','6']])assert.equal(scalar(f),expected,f);
  assert.throws(()=>scalar('ROUND(1,2.2)'),/位数/);assert.throws(()=>scalar('ROUND(1,16)'),/位数/);assert.throws(()=>scalar('1e999'),/范围/);assert.throws(()=>scalar('1e-31'),/范围/);assert.throws(()=>scalar('1/0'),/除数/);
 });
 test('actual XLSX formulas ignore deliberately stale caches, resolve cross-sheet dependencies and export ONLY calculated values',async()=>{
@@ -28,11 +28,11 @@ test('aggregate semantics distinguish empty, text, booleans and numbers; dates a
  assert.equal(parsed(await run(await simple('MIN(B1:B2)+MAX(B1:B2)+COUNT(B1:B2)'))).cells[0].result,0);
 });
 test('errors are fail-closed for cycles, missing sheets, divide by zero and unsupported functions even with valid cached values',async()=>{
- for(const [formula,pattern]of [['A1+1',/循环/],['Missing!B1',/不存在/],['5/0',/除数/],['IF(1,2,3)',/不支持函数/],['WEBSERVICE("https://example.com")',/不支持函数/],['B1:B2',/区域/],['SUM(B3:B1)',/倒序/],['B1:B1+2',/区域/]])await assert.rejects(async()=>run(await simple(formula)),pattern);
+ for(const [formula,pattern]of [['A1+1',/循环/],['Missing!B1',/不存在/],['5/0',/除数/],['TEXTJOIN(",",TRUE,A1)',/不支持函数/],['WEBSERVICE("https://example.com")',/不支持函数/],['B1:B2',/区域/],['SUM(B3:B1)',/倒序/],['B1:B1+2',/区域/]])await assert.rejects(async()=>run(await simple(formula)),pattern);
  await assert.rejects(async()=>run(await simple('Other!A1',(w)=>{w.addWorksheet('Other').getCell('A1').value={formula:'Sheet1!A1',result:0};})),/循环/);
 });
 test('formula syntax is never JavaScript, external data, named ranges, implicit intersection or arbitrary function execution',()=>{
- for(const f of ['process.exit()','constructor(1)','SUM(1);globalThis.x=1','[book.xlsx]Sheet!A1','Revenue+1','SUM(A:A)','A1#','@A1','2^3','1<2','"hello"','SUM()','1,2','1 garbage','SUM(B1:Other!B2)'])assert.throws(()=>scalar(f),undefined,f);
+ for(const f of ['process.exit()','constructor(1)','SUM(1);globalThis.x=1','[book.xlsx]Sheet!A1','Revenue+1','SUM(A:A)','A1#','@A1','2^3','SUM()','1,2','1 garbage','SUM(B1:Other!B2)'])assert.throws(()=>scalar(f),undefined,f);
  assert.equal(globalThis.x,undefined);
 });
 test('resource bounds enforce formula length, nesting, reference area and dependency chain',async()=>{
@@ -54,4 +54,39 @@ test('real service worker stores computed artifacts and receipts behind owner ch
 });
 test('planner accepts only matching candidate/expert/format and no calculation parameters',()=>{
  const d={kind:'plan',expertId:'data',skillId:'table.calculate',reason:'受限公式重算',options:{deduplicate:false}};assert.equal(validateDecision(d,planningCandidates({file:{name:'book.xlsx'}})).skillId,'table.calculate');assert.throws(()=>validateDecision(d,planningCandidates({file:{name:'book.csv'}})));assert.throws(()=>validateDecision({...d,expertId:'qa'},planningCandidates({file:{name:'book.xlsx'}})));assert.throws(()=>validateDecision({...d,options:{deduplicate:false,parameters:{formula:'1'}}},planningCandidates({file:{name:'book.xlsx'}})));
+});
+
+test('tier-2 text, boolean, comparison and concatenation semantics never coerce number into text',()=>{
+ const value=f=>evaluateFormula(parseFormula(f,'Sheet1').tree,()=>[null],()=>{});
+ assert.equal(scalar('"hello"'),'hello');assert.equal(scalar('"a"&"b"'),'ab');assert.equal(scalar('"n="&1'),'n=1');
+ assert.equal(scalar('IF(1>0,"yes","no")'),'yes');assert.equal(scalar('IF(1>2,"yes","no")'),'no');assert.equal(scalar('IF(1>2,"yes")'),'false');
+ assert.equal(scalar('LEN("abc")'),'3');assert.equal(scalar('UPPER("ab")'),'AB');assert.equal(scalar('LOWER("AB")'),'ab');
+ assert.equal(scalar('LEFT("abcdef",2)'),'ab');assert.equal(scalar('RIGHT("abcdef",2)'),'ef');assert.equal(scalar('MID("abcdef",2,3)'),'bcd');
+ assert.equal(scalar('TRIM("  a   b  ")'),'a b');assert.equal(scalar('CONCATENATE("a","b","c")'),'abc');
+ assert.equal(value('1=1'),true);assert.equal(value('1<>1'),false);assert.equal(value('"a"="A"'),true);assert.equal(value('"5"=5'),false);
+ assert.equal(value('AND(TRUE,1=1)'),true);assert.equal(value('OR(FALSE,FALSE)'),false);assert.equal(value('NOT(FALSE)'),true);
+ assert.equal(value('TRUE'),true);assert.equal(value('FALSE'),false);
+ assert.throws(()=>scalar('IF("a",1,2)'),/逻辑判断/);assert.throws(()=>scalar('"a"+1'),/文本、布尔或日期/);
+});
+test('VLOOKUP, INDEX, MATCH, SUMIF and COUNTIF read real ranges with exact-match and no-silent-coercion rules',async()=>{
+ const setup=(w,s)=>{s.getCell('B1').value=1;s.getCell('B2').value=5;s.getCell('B3').value=3;s.getCell('C1').value=10;s.getCell('C2').value=20;s.getCell('C3').value=30;};
+ assert.equal(parsed(await run(await simple('VLOOKUP(5,B1:C3,2,FALSE)',setup))).cells[0].result,20);
+ assert.equal(parsed(await run(await simple('VLOOKUP(5,B1:C3,2)',setup))).cells[0].result,20);
+ assert.equal(parsed(await run(await simple('INDEX(B1:C3,2,2)',setup))).cells[0].result,20);
+ assert.equal(parsed(await run(await simple('MATCH(5,B1:B3,0)',setup))).cells[0].result,2);
+ assert.equal(parsed(await run(await simple('SUMIF(B1:B3,">1",C1:C3)',setup))).cells[0].result,50);
+ assert.equal(parsed(await run(await simple('COUNTIF(B1:B3,">1")',setup))).cells[0].result,2);
+ assert.equal(parsed(await run(await simple('SUMIF(B1:B3,">=3",C1:C3)',setup))).cells[0].result,50);
+ await assert.rejects(async()=>run(await simple('VLOOKUP(5,B1:C3,2,TRUE)',setup)),/精确匹配/);
+ await assert.rejects(async()=>run(await simple('VLOOKUP(9,B1:C3,2,FALSE)',setup)),/未找到匹配/);
+ await assert.rejects(async()=>run(await simple('MATCH(9,B1:B3,0)',setup)),/未找到匹配/);
+ await assert.rejects(async()=>run(await simple('MATCH(5,B1:C3,0)',setup)),/单行或单列/);
+ await assert.rejects(async()=>run(await simple('INDEX(B1:C3,2)',setup)),/必须同时指定/);
+ await assert.rejects(async()=>run(await simple('VLOOKUP(5,B1,2,FALSE)',setup)),/区域/);
+});
+test('text and boolean results keep their real type in the report and in the exported workbook',async()=>{
+ const bytes=await simple('IF(B1>10,"高","低")',(w,s)=>{s.getCell('B1').value=20;});
+ const report=parsed(await run(bytes));assert.equal(report.cells[0].resultType,'text');assert.equal(report.cells[0].result,'高');assert.equal(report.cells[0].decimalResult,undefined);
+ const book=new ExcelJS.Workbook();await book.xlsx.load(Buffer.from((await run(bytes)).outputs[0].bytes));assert.equal(book.getWorksheet('Sheet1').getCell('A1').value,'高');
+ const flag=parsed(await run(await simple('B1>10',(w,s)=>{s.getCell('B1').value=20;})));assert.equal(flag.cells[0].resultType,'boolean');assert.equal(flag.cells[0].result,true);
 });

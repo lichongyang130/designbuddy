@@ -11,6 +11,18 @@ import {
   responseJSON,
   sameOrigin,
 } from "./api/workspace-backend";
+import { TaskBackend } from "./api/task-backend";
+import { handleAiRegistry } from "./api/ai-models";
+import { ProfileStore } from "./api/profile";
+import { handleProfileRequest } from "./api/profile-api";
+import { ProjectVersionStore } from "./api/project-versions";
+import { setAiUsageRecorder } from "./api/ai";
+import { PluginRegistry } from "./api/plugin-registry";
+import { ProjectShareStore } from "./api/project-shares";
+import { AssetStore } from "./api/assets";
+import { CommunityTemplateStore } from "./api/community-templates";
+import { WorkflowEngine } from "./api/workflows";
+import { ScheduleRunner } from "./api/scheduler";
 
 const host = process.env.DESIGNBUDDY_HOST || "0.0.0.0";
 const port = Number(process.env.DESIGNBUDDY_PORT || 8787);
@@ -18,7 +30,7 @@ const rendererRoot = resolve(
   process.env.DESIGNBUDDY_RENDERER_DIR || "./apps/web/dist",
 );
 const workspace = new WorkspaceBackend();
-const { projects, collaborationStore, memberships } = createLocalPersistence();
+const { projects, collaborationStore, memberships, workspaces } = createLocalPersistence();
 const localToken = process.env.DESIGNBUDDY_LOCAL_TOKEN;
 function trustedToken(request: Request) {
   const auth = request.headers.get("authorization") || "";
@@ -28,11 +40,42 @@ function trustedToken(request: Request) {
   return a.length === b.length && timingSafeEqual(a, b);
 }
 const skills = new SkillService();
+// Tasks, schedules and notifications live on the server so a refresh, another
+// browser or another device keeps the history.
+const tasks = new TaskBackend();
+const profiles = new ProfileStore();
+const projectVersions = new ProjectVersionStore();
+const scheduler = new ScheduleRunner(tasks);
+if (process.env.SKILL_SCHEDULER_ENABLED !== "false") scheduler.start();
+const plugins = new PluginRegistry();
+const projectShares = new ProjectShareStore();
+const assets = new AssetStore();
+const community = new CommunityTemplateStore();
+// Workflows reuse the real skill service, the asset library and the task list.
+const workflows = new WorkflowEngine(skills, assets, tasks);
+setAiUsageRecorder((ownerId, record) => {
+  try {
+    tasks.recordAiUsage(ownerId, record);
+  } catch {
+    /* accounting must never break a call */
+  }
+});
+
+const taskPaths = ["/api/tasks", "/api/notifications", "/api/schedules"];
+const aiPaths = ["/api/ai"];
+const profilePaths = ["/api/profile"];
+const pluginPaths = ["/api/plugins"];
 const api = createApiHandler({
   skills,
   projects,
   collaborationStore,
   memberships,
+  versions: projectVersions,
+  shares: projectShares,
+  assets,
+  community,
+  workflows,
+  workspaces,
   authenticate: async (request) =>
     trustedToken(request) ? { id: "local-user" } : workspace.principal(request),
   localAgentWorkspaceRoot:
@@ -149,7 +192,47 @@ const server = createServer(async (incoming, outgoing) => {
           : { body: Buffer.concat(chunks) }),
       });
       const handled = await workspace.handle(request);
-      send(handled || (await api(request)));
+      if (handled) {
+        send(handled);
+        return;
+      }
+      if (pluginPaths.some(prefix => url.pathname === prefix || url.pathname.startsWith(prefix + "/"))) {
+        const owner = workspace.principal(request);
+        if (!owner) {
+          send(responseJSON({ error: "服务器会话未建立或已过期。", code: "SESSION_REQUIRED" }, 401));
+          return;
+        }
+        send((await plugins.handle(request, owner.id)) || responseJSON({ error: "未找到该接口。" }, 404));
+        return;
+      }
+      if (profilePaths.some(prefix => url.pathname === prefix || url.pathname.startsWith(prefix + "/"))) {
+        const owner = workspace.principal(request);
+        if (!owner) {
+          send(responseJSON({ error: "服务器会话未建立或已过期。", code: "SESSION_REQUIRED" }, 401));
+          return;
+        }
+        send(await handleProfileRequest(request, owner.id, profiles));
+        return;
+      }
+      if (aiPaths.some(prefix => url.pathname === prefix || url.pathname.startsWith(prefix + "/"))) {
+        const owner = workspace.principal(request);
+        if (!owner) {
+          send(responseJSON({ error: "服务器会话未建立或已过期。", code: "SESSION_REQUIRED" }, 401));
+          return;
+        }
+        send(await handleAiRegistry(request, owner.id, tasks));
+        return;
+      }
+      if (taskPaths.some(prefix => url.pathname === prefix || url.pathname.startsWith(prefix + "/"))) {
+        const owner = workspace.principal(request);
+        if (!owner) {
+          send(responseJSON({ error: "服务器会话未建立或已过期。", code: "SESSION_REQUIRED" }, 401));
+          return;
+        }
+        send((await tasks.handle(request, owner.id)) || responseJSON({ error: "未找到该接口。" }, 404));
+        return;
+      }
+      send(await api(request));
       return;
     }
     if (method !== "GET" && method !== "HEAD") {

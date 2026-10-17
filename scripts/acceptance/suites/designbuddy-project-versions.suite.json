@@ -1,0 +1,108 @@
+{
+  "name": "designbuddy-project-versions",
+  "baseUrl": "http://127.0.0.1:5173",
+  "viewports": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "checks": [
+    {
+      "id": "editor-opens",
+      "type": "click",
+      "path": "/projects",
+      "selector": "button:has-text(\"＋ 新建项目\")",
+      "waitFor": "button:has-text(\"＋ 新建项目\")"
+    },
+    {
+      "id": "sync-click",
+      "type": "click",
+      "path": "/projects",
+      "reload": false,
+      "selector": "button:has-text(\"同步云端\")",
+      "waitFor": ".db-save-state",
+      "expectSelector": ".db-save-state.is-synced"
+    },
+    {
+      "id": "sync-state",
+      "type": "assertText",
+      "path": "/projects",
+      "reload": false,
+      "selector": ".db-save-state",
+      "contains": "云端已同步"
+    },
+    {
+      "id": "history-open",
+      "type": "click",
+      "path": "/projects",
+      "reload": false,
+      "selector": "button:has-text(\"版本历史\")",
+      "waitFor": "button:has-text(\"版本历史\")",
+      "expectSelector": "[role=\"dialog\"][aria-label=\"版本历史\"]"
+    },
+    {
+      "id": "history-visible",
+      "type": "assertVisible",
+      "path": "/projects",
+      "reload": false,
+      "selector": "[role=\"dialog\"][aria-label=\"版本历史\"]",
+      "waitFor": "[role=\"dialog\"][aria-label=\"版本历史\"]"
+    },
+    {
+      "id": "history-base",
+      "type": "assertText",
+      "path": "/projects",
+      "reload": false,
+      "selector": ".db-version-base",
+      "contains": "index.html",
+      "waitFor": ".db-version-base"
+    },
+    {
+      "id": "history-versions",
+      "type": "assertVisible",
+      "path": "/projects",
+      "reload": false,
+      "selector": ".db-version-list li button",
+      "waitFor": ".db-version-list li button"
+    },
+    {
+      "id": "history-audit-open",
+      "type": "click",
+      "path": "/projects",
+      "reload": false,
+      "selector": ".db-version-audit summary",
+      "waitFor": ".db-version-audit summary"
+    },
+    {
+      "id": "history-audit-save",
+      "type": "assertText",
+      "path": "/projects",
+      "reload": false,
+      "selector": ".db-version-audit",
+      "contains": "project.save",
+      "waitFor": ".db-version-audit li"
+    },
+    {
+      "id": "history-screenshot",
+      "type": "screenshot",
+      "path": "/projects",
+      "reload": false,
+      "selector": "[role=\"dialog\"][aria-label=\"版本历史\"]"
+    },
+    {
+      "id": "history-close",
+      "type": "click",
+      "path": "/projects",
+      "reload": false,
+      "selector": "button[aria-label=\"关闭版本历史\"]",
+      "waitFor": "button[aria-label=\"关闭版本历史\"]"
+    }
+  ]
+}

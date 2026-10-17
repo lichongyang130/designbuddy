@@ -7,24 +7,11 @@ import { createHash } from 'node:crypto';
 import { readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
+// Canonical implementation lives with the server skill so the benchmark and the skill never drift apart.
+import { editDistance, normalizeForScore } from '../dist/local/server/skills/ocr-accuracy.js';
+export { editDistance };
 
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
-const normalize = text => text.normalize('NFC').replace(/\s+/gu, ' ').trim();
-
-export function editDistance(left, right) {
-  const a = Array.from(left), b = Array.from(right);
-  if (a.length < b.length) return editDistance(right, left);
-  let previous = Array.from({ length: b.length + 1 }, (_, i) => i);
-  for (let i = 1; i <= a.length; i++) {
-    const current = [i];
-    for (let j = 1; j <= b.length; j++) {
-      current[j] = Math.min(current[j - 1] + 1, previous[j] + 1, previous[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
-    }
-    previous = current;
-  }
-  return previous[b.length];
-}
-
 function validateManifest(manifest) {
   if (!manifest || manifest.version !== 1 || manifest.referenceStatus !== 'human-reviewed' || !Array.isArray(manifest.documents) || !manifest.documents.length) {
     throw Error('Manifest must use version 1, referenceStatus "human-reviewed", and contain documents.');
@@ -35,7 +22,7 @@ function validateManifest(manifest) {
     names.add(doc.file);
     const pages = new Set();
     for (const page of doc.pages) {
-      if (!Number.isInteger(page.page) || page.page < 1 || page.page > 6 || pages.has(page.page) || typeof page.referenceText !== 'string' || !normalize(page.referenceText)) throw Error(`${doc.file}: page references must have unique page numbers 1–6 and non-empty human-reviewed referenceText.`);
+      if (!Number.isInteger(page.page) || page.page < 1 || page.page > 6 || pages.has(page.page) || typeof page.referenceText !== 'string' || !normalizeForScore(page.referenceText)) throw Error(`${doc.file}: page references must have unique page numbers 1–6 and non-empty human-reviewed referenceText.`);
       pages.add(page.page);
     }
   }
@@ -65,7 +52,7 @@ async function run(manifestPath, reportPath) {
     for (const reference of doc.pages) {
       const prediction = evidence.pages.find(page => page.page === reference.page);
       if (!prediction || typeof prediction.text !== 'string') throw Error(`${doc.file}: no OCR output for referenced page ${reference.page}.`);
-      const expected = normalize(reference.referenceText), actual = normalize(prediction.text);
+      const expected = normalizeForScore(reference.referenceText), actual = normalizeForScore(prediction.text);
       if (Array.from(expected).length > 60000 || Array.from(actual).length > 60000) throw Error(`${doc.file} page ${reference.page}: text exceeds benchmark safety limit.`);
       const errors = editDistance(expected, actual), characters = Array.from(expected).length;
       totalErrors += errors; totalReferenceCharacters += characters;

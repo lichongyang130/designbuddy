@@ -1,0 +1,235 @@
+{
+  "name": "designbuddy-workflows",
+  "baseUrl": "http://127.0.0.1:5173",
+  "viewports": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "checks": [
+    {
+      "id": "workflows-page",
+      "type": "assertVisible",
+      "path": "/workflows",
+      "selector": "main[aria-label=\"工作流\"]",
+      "waitFor": "main[aria-label=\"工作流\"]"
+    },
+    {
+      "id": "workflows-cards",
+      "type": "assertVisible",
+      "path": "/workflows",
+      "reload": false,
+      "selector": "section[aria-label=\"工作流列表\"]",
+      "waitFor": "section[aria-label=\"工作流列表\"]"
+    },
+    {
+      "id": "workflows-honest-boundary",
+      "type": "assertText",
+      "path": "/workflows",
+      "reload": false,
+      "selector": ".wf-hero p",
+      "contains": "缺凭据或没授权的步骤会写明缺什么"
+    },
+    {
+      "id": "workflows-recipes",
+      "type": "assertText",
+      "path": "/workflows",
+      "reload": false,
+      "selector": ".wf-card-wall",
+      "contains": "业务对比信息图"
+    },
+    {
+      "id": "workflows-history-empty",
+      "type": "assertText",
+      "path": "/workflows",
+      "reload": false,
+      "selector": "section[aria-label=\"最近运行\"]",
+      "contains": "最近运行"
+    },
+    {
+      "id": "workflows-start",
+      "type": "click",
+      "path": "/workflows",
+      "reload": false,
+      "selector": ".wf-recipe .wf-button.is-primary",
+      "expectSelector": "form.wf-form"
+    },
+    {
+      "id": "workflows-missing-answer",
+      "type": "click",
+      "path": "/workflows",
+      "reload": false,
+      "selector": ".wf-actions button.is-primary",
+      "expectText": "请先填写"
+    },
+    {
+      "id": "workflows-fill-title",
+      "type": "fill",
+      "path": "/workflows",
+      "reload": false,
+      "selector": "input#wf-title",
+      "value": "渠道收入对比"
+    },
+    {
+      "id": "workflows-fill-metric",
+      "type": "fill",
+      "path": "/workflows",
+      "reload": false,
+      "selector": "input#wf-metric",
+      "value": "确认收入"
+    },
+    {
+      "id": "workflows-fill-unit",
+      "type": "fill",
+      "path": "/workflows",
+      "reload": false,
+      "selector": "input#wf-unit",
+      "value": "万元"
+    },
+    {
+      "id": "workflows-fill-scope",
+      "type": "fill",
+      "path": "/workflows",
+      "reload": false,
+      "selector": "textarea#wf-scope",
+      "value": "2026年9月已确认收入；各渠道采用相同记账口径"
+    },
+    {
+      "id": "workflows-fill-source",
+      "type": "fill",
+      "path": "/workflows",
+      "reload": false,
+      "selector": "input#wf-source",
+      "value": "验收样例，不代表真实业务"
+    },
+    {
+      "id": "workflows-add-row",
+      "type": "click",
+      "path": "/workflows",
+      "reload": false,
+      "selector": ".wf-rows > .wf-button",
+      "expectSelector": ".wf-rows .wf-row"
+    },
+    {
+      "id": "workflows-add-row-2",
+      "type": "click",
+      "path": "/workflows",
+      "reload": false,
+      "selector": ".wf-rows > .wf-button",
+      "expectSelector": ".wf-rows .wf-row:nth-child(2)"
+    },
+    {
+      "id": "workflows-row-1-label",
+      "type": "fill",
+      "path": "/workflows",
+      "reload": false,
+      "selector": ".wf-rows .wf-row:nth-child(1) .wf-cell:nth-child(1) input",
+      "value": "线上直营"
+    },
+    {
+      "id": "workflows-row-1-value",
+      "type": "fill",
+      "path": "/workflows",
+      "reload": false,
+      "selector": ".wf-rows .wf-row:nth-child(1) .wf-cell:nth-child(2) input",
+      "value": "128.5"
+    },
+    {
+      "id": "workflows-row-2-label",
+      "type": "fill",
+      "path": "/workflows",
+      "reload": false,
+      "selector": ".wf-rows .wf-row:nth-child(2) .wf-cell:nth-child(1) input",
+      "value": "线下门店"
+    },
+    {
+      "id": "workflows-row-2-value",
+      "type": "fill",
+      "path": "/workflows",
+      "reload": false,
+      "selector": ".wf-rows .wf-row:nth-child(2) .wf-cell:nth-child(2) input",
+      "value": "96.2"
+    },
+    {
+      "id": "workflows-confirm",
+      "type": "click",
+      "path": "/workflows",
+      "reload": false,
+      "selector": ".wf-actions button.is-primary",
+      "expectSelector": "ol.wf-plan"
+    },
+    {
+      "id": "workflows-plan-lists-skill",
+      "type": "assertText",
+      "path": "/workflows",
+      "reload": false,
+      "selector": "ol.wf-plan",
+      "contains": "infographic.compose"
+    },
+    {
+      "id": "workflows-run",
+      "type": "click",
+      "path": "/workflows",
+      "reload": false,
+      "selector": ".wf-actions button.is-primary",
+      "expectSelector": ".wf-steps-list li[data-status=\"succeeded\"]"
+    },
+    {
+      "id": "workflows-artifacts",
+      "type": "assertVisible",
+      "path": "/workflows",
+      "reload": false,
+      "selector": ".wf-artifacts a",
+      "waitFor": ".wf-artifacts a"
+    },
+    {
+      "id": "workflows-artifact-svg",
+      "type": "assertText",
+      "path": "/workflows",
+      "reload": false,
+      "selector": ".wf-artifacts",
+      "contains": ".svg"
+    },
+    {
+      "id": "workflows-back-to-list",
+      "type": "click",
+      "path": "/workflows",
+      "reload": false,
+      "selector": ".wf-actions .wf-button",
+      "expectSelector": ".wf-run-list"
+    },
+    {
+      "id": "workflows-history",
+      "type": "assertText",
+      "path": "/workflows",
+      "reload": false,
+      "selector": ".wf-run-list",
+      "contains": "业务对比信息图"
+    },
+    {
+      "id": "workflows-api",
+      "type": "http",
+      "path": "/api/workflows",
+      "expectStatus": 200
+    },
+    {
+      "id": "workflows-runs-api",
+      "type": "http",
+      "path": "/api/workflow-runs",
+      "expectStatus": 200
+    },
+    {
+      "id": "workflows-screenshot",
+      "type": "screenshot",
+      "path": "/workflows",
+      "reload": false
+    }
+  ]
+}

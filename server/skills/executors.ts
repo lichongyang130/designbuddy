@@ -37,6 +37,11 @@ import { faqPage } from "./faq-page";
 import { hrOnboarding } from "./hr-onboarding";
 import { engineeringRunbook } from "./engineering-runbook";
 import { financeReport } from "./finance-report";
+import { connectData } from "./data-connect";
+import { runVerification } from "./web-verify";
+import { runBuild } from "./code-build";
+import { generateImage } from "./image-generate";
+import { runCollaborationSync } from "./collaboration-sync";
 
 export type SkillInput = { skillId: string; filename: string; bytes: Uint8Array; deduplicate: boolean; parameters?: Record<string, string>; owner?: string; resumePages?: import('./pdf-ocr').PDFPageCheckpoint[]; onPageCheckpoint?: (checkpoint: import('./pdf-ocr').PDFPageCheckpoint) => Promise<void> | void };
 export type Output = { name: string; mime: string; bytes: Uint8Array };
@@ -196,8 +201,13 @@ export async function executeSkill(input: SkillInput, event: (s: string) => void
     "audio.transcribe-en": transcribeEnglish, "document.summarize": summarizeDocument, "infographic.compose": infographic, "table.calculate": calculateWorkbook, "table.analyze": table, "table.join": joinTables, "table.join-multi": joinMultiTables, "pdf.ocr": pdfOCR, "pdf.ocr-batch": pdfBatch, "document.format": document, "document.structure": docxStructure, "slides.compose": slides,
     "pdf.extract": (input, event) => pdfRead(input.bytes, event), "image.ocr": ocr,
     "brand.assets": palette, "brand.system": brandSystem, "image.product": productImages, "image.marketing": marketing, "image.layout": posterLayout,
-    "collaboration.schedule": schedule, "requirements.check": requirements,
+    "collaboration.schedule": schedule, "requirements.check": requirements, "data.connect": connectData,
     "web.audit": htmlAudit, "code.inspect": codeInspect,
+    "web.verify": (input, event) => runVerification({ filename: input.filename, bytes: input.bytes, parameters: input.parameters, mode: "web" }, event),
+    "test.browser": (input, event) => runVerification({ filename: input.filename, bytes: input.bytes, parameters: input.parameters, mode: "qa" }, event),
+    "code.build": (input, event) => runBuild({ filename: input.filename, bytes: input.bytes, parameters: input.parameters }, event),
+    "image.generate": (input, event) => generateImage({ filename: input.filename, bytes: input.bytes, parameters: input.parameters }, event),
+    "collaboration.sync": (input, event) => runCollaborationSync({ filename: input.filename, bytes: input.bytes, parameters: input.parameters }, event),
     "web.css-audit": cssAudit, "web.scaffold": webScaffold, "design.tokens": designTokens, "image.web-pack": webImagePack, "social.carousel": socialCarousel, "design.review": designReview, "article.magazine": articleMagazine, "design.brief": designBrief, "social.card": socialCard, "team.okrs": teamOKRs, "data.report": dataReport, "email.marketing": emailMarketing, "product.spec": productSpec, "faq.page": faqPage, "hr.onboarding": hrOnboarding, "engineering.runbook": engineeringRunbook, "finance.report": financeReport,
   };
   const executor = executors[input.skillId];

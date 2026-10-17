@@ -1,0 +1,69 @@
+{
+  "name": "designbuddy-assets",
+  "baseUrl": "http://127.0.0.1:5173",
+  "viewports": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "checks": [
+    {
+      "id": "assets-page",
+      "type": "assertVisible",
+      "path": "/assets",
+      "selector": "main[aria-label=\"素材库\"]",
+      "waitFor": "main[aria-label=\"素材库\"]"
+    },
+    {
+      "id": "assets-upload-card",
+      "type": "assertVisible",
+      "path": "/assets",
+      "reload": false,
+      "selector": "section[aria-label=\"上传素材\"]",
+      "waitFor": "section[aria-label=\"上传素材\"]"
+    },
+    {
+      "id": "assets-limits-honest",
+      "type": "assertText",
+      "path": "/assets",
+      "reload": false,
+      "selector": "section[aria-label=\"上传素材\"] .as-note",
+      "contains": "单个文件最多 5 MB"
+    },
+    {
+      "id": "assets-parsing-honest",
+      "type": "assertText",
+      "path": "/assets",
+      "reload": false,
+      "selector": "section[aria-label=\"上传素材\"] .as-note",
+      "contains": "其它类型只保存不解析"
+    },
+    {
+      "id": "assets-hero",
+      "type": "assertText",
+      "path": "/assets",
+      "reload": false,
+      "selector": ".as-hero p",
+      "contains": "可见范围决定谁能看到它们"
+    },
+    {
+      "id": "assets-screenshot",
+      "type": "screenshot",
+      "path": "/assets",
+      "reload": false
+    },
+    {
+      "id": "assets-api",
+      "type": "http",
+      "path": "/api/assets",
+      "expectStatus": 200
+    }
+  ]
+}

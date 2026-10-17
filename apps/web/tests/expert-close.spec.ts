@@ -5,7 +5,7 @@ for (const width of [320, 375, 768, 1440]) {
     await page.setViewportSize({ width, height: 812 });
     await page.addInitScript(() => localStorage.setItem("designbuddy.expert-match-consent.v1", "allowed"));
     await page.route("**/api/expert-match", route => route.fulfill({ json: {
-      kind: "match", expertId: "data", reason: "需要核对报销数据。",
+      kind: "match", expertId: "data", collaboratorIds: [], reason: "需要核对报销数据。",
       responsibilities: ["核对金额与统计口径", "检查重复与缺失", "整理差异清单", "给出待复核事项"],
       missing: ["报销明细", "统计时间", "字段含义", "核验标准"],
     } }));

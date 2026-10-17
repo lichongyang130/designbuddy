@@ -16,14 +16,15 @@ class BoundedCanvasFactory {
   reset(target: any, width: number, height: number) { checkCanvas(width, height); target.canvas.width = Math.ceil(width); target.canvas.height = Math.ceil(height); }
   destroy(target: any) { target.canvas.width = 0; target.canvas.height = 0; target.canvas = null; target.context = null; }
 }
-export async function pdfOCR(input: SkillInput, event: (message: string) => void, context: {fileIndex?:number;resumePages?:PDFPageCheckpoint[];onPageCheckpoint?:SkillInput['onPageCheckpoint']} = {}) {
+export async function pdfOCR(input: SkillInput, event: (message: string) => void, context: {fileIndex?:number;resumePages?:PDFPageCheckpoint[];onPageCheckpoint?:SkillInput['onPageCheckpoint'];maxPages?:number} = {}) {
   context={fileIndex:context.fileIndex??0,resumePages:context.resumePages??input.resumePages??[],onPageCheckpoint:context.onPageCheckpoint??input.onPageCheckpoint};
+  const maxPages=context.maxPages??6;
   if (!Buffer.from(input.bytes.subarray(0,5)).equals(Buffer.from("%PDF-"))) throw Error("文件不是真实 PDF。");
   // Reject oversized declared images before PDF.js can silently omit them at maxImageSize.
   let structural: PDFDocument;
   try { structural = await PDFDocument.load(input.bytes, { updateMetadata: false, throwOnInvalidObject: true }); }
   catch (error) { if (error instanceof Error && /password|encrypt/i.test(error.message)) throw Error("PDF 已加密，请提供未加密副本。"); throw error; }
-  if (structural.getPageCount() > 6) throw Error("PDF批量OCR最多6页，请先拆分；没有只处理前6页冒充完整结果。");
+  if (structural.getPageCount() > maxPages) throw Error(`PDF批量OCR最多${maxPages}页，请先拆分；没有只处理前${maxPages}页冒充完整结果。`);
   const objects = structural.context.enumerateIndirectObjects();
   if (objects.length > 10000) throw Error("PDF对象数量超过10000，请简化文件后重试。");
   for (const [, object] of objects) if (object instanceof PDFRawStream && object.dict.lookup(PDFName.of("Subtype")) === PDFName.of("Image")) {
@@ -39,7 +40,7 @@ export async function pdfOCR(input: SkillInput, event: (message: string) => void
   let session: Awaited<ReturnType<typeof openLocalOCR>> | undefined;
   try {
     const doc = await loading.promise;
-    if (doc.numPages > 6) throw Error("PDF批量OCR最多6页，请先拆分；没有只处理前6页冒充完整结果。");
+    if (doc.numPages > maxPages) throw Error(`PDF批量OCR最多${maxPages}页，请先拆分；没有只处理前${maxPages}页冒充完整结果。`);
     session = await openLocalOCR();
     event(`开始逐页本地渲染并OCR，共${doc.numPages}页；不执行PDF脚本、不上传外部服务。`);
     const pages: PDFPageRecord[] = [];
@@ -77,7 +78,7 @@ export async function pdfOCR(input: SkillInput, event: (message: string) => void
     const recognizedPages = pages.filter(p => p.status === "recognized").length;
     if (!recognizedPages) throw Error("所有PDF页面均未识别到文字，不能视为OCR成功；请检查扫描清晰度及渲染资源。");
     outputs.push(out("pdf-ocr.txt", "text/plain; charset=utf-8", pages.map(p => `【第${p.page}页】\n${p.warning || p.text}`).join("\n\n")));
-    outputs.push(json("pdf-ocr-evidence.json", { sourceSHA256, pageCount: pages.length, recognizedPages, pagesWithoutText: pages.filter(p => p.warning).map(p => p.page), allPagesHaveText: recognizedPages === pages.length, pages, engine: "tesseract.js@6.0.1", renderer: "pdfjs-dist@6.4.299", modelSource: "@tesseract.js-data@1.0.0/4.0.0_best_int", modelHashes: session.modelHashes, language: "chi_sim+eng", coordinateSystem: "每页渲染PNG的左上角像素坐标；PDF旋转已应用。", requiresReview: true, limits: "最多6页/2MB，逐页≤200万像素，最高144dpi；识别的是渲染后的可见内容，已预检拒绝超限的独立图像对象；仍可能有内联图像省略或字体/渲染差异。必须对照原PDF及逐页PNG复核，置信度不是正确率保证。不还原复杂表格/版式，不生成可检索PDF。" }));
+    outputs.push(json("pdf-ocr-evidence.json", { sourceSHA256, pageCount: pages.length, recognizedPages, pagesWithoutText: pages.filter(p => p.warning).map(p => p.page), allPagesHaveText: recognizedPages === pages.length, pages, engine: "tesseract.js@6.0.1", renderer: "pdfjs-dist@6.4.299", modelSource: "@tesseract.js-data@1.0.0/4.0.0_best_int", modelHashes: session.modelHashes, language: "chi_sim+eng", coordinateSystem: "每页渲染PNG的左上角像素坐标；PDF旋转已应用。", requiresReview: true, limits: `最多${maxPages}页/2MB，逐页≤200万像素，最高144dpi；识别的是渲染后的可见内容，已预检拒绝超限的独立图像对象；仍可能有内联图像省略或字体/渲染差异。必须对照原PDF及逐页PNG复核，置信度不是正确率保证。不还原复杂表格/版式，不生成可检索PDF。` }));
     return { summary: `完成${pages.length}页PDF的本地渲染与OCR报告，${recognizedPages}页识别到文字，${pages.length-recognizedPages}页未识别到。${recognizedPages < pages.length ? "存在缺失页，不能视为全文读取完成。" : "识别文字仍须对照原件逐页复核。"}未执行语义摘要、表格还原或外部上传。`, outputs };
   } catch (error) {
     if (error instanceof Error && /password|encrypt/i.test(error.message)) throw Error("PDF 已加密，请提供未加密副本。");
