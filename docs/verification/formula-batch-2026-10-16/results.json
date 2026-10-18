@@ -1,0 +1,58 @@
+{
+  "date": "2026-10-16",
+  "branch": "arena/5a5e7967-new",
+  "baseCommit": "edb66d8c847542692ba6b71286dcbf1be327013d",
+  "sourceState": "local working tree; not pushed or deployed",
+  "verification": {
+    "server": {
+      "passed": 90,
+      "failed": 0,
+      "skipped": 0,
+      "new": 15
+    },
+    "browser": {
+      "passed": 149,
+      "failed": 0,
+      "skipped": 0,
+      "new": 6
+    },
+    "catalog": {
+      "passed": 9,
+      "failed": 0
+    },
+    "backendCompile": "passed",
+    "frontendCompileBuild": "passed",
+    "diffCheck": "passed"
+  },
+  "skillCount": 16,
+  "allAdvancedExpertCapabilitiesComplete": false,
+  "liveModelAccuracyVerified": false,
+  "productionIsolationVerified": false,
+  "realEngines": [
+    "closed arithmetic parser / decimal.js",
+    "ExcelJS",
+    "PDF.js",
+    "Tesseract chi_sim+eng",
+    "SQLite and worker_threads",
+    "Chromium and real HTTP/downloads"
+  ],
+  "sourceSHA256": {
+    "server/skills/formula-engine.ts": "1c935c76b9cd4ad487c9916897e78c6e5ece6c00022518d82d5aab6779ea2118",
+    "server/skills/table-calculate.ts": "02f0b1d3ded25d7a0224757dc366aa740c104adb112722443d46a2a163dad36d",
+    "server/skills/pdf-batch.ts": "b57b6789639441c2efca2e078f9d4c0b9f62dce8e59f6374ed5b12f283e22cfb",
+    "server/skills/office.ts": "a91689475e361cf8af90b18382429ad30cf534dba5ebb2eea6fe77ad9751cbf7",
+    "server/skills/pdf.ts": "8833c3f847de93d15aa77f5043cfe96b6052825d75eb294b2f7e29c19935f104",
+    "server/skills/executors.ts": "7e3dda8f0a28f5edbe8b195fa5527ce5ce470f4beeb96b614c3250d8ae1e2390",
+    "server/skills/planner.ts": "0992994deda2dfdf68661b1c7d0bf72bed9f41c468ad2c25bc7325eadf97a349",
+    "shared/skillRuntime.ts": "3c270d166cddfdd52744c0e64a6ebf8328b268ab59a58d3503124064b8be251d",
+    "shared/expertRouting.ts": "5f1cf982eb563db0a3d3af9e74e859c2463c6d514c10261fb0c1c1f5e3694d2f",
+    "frontend/workspace/SkillWorkbench.tsx": "6cd316ee85d91ffc22b206f62355d157eea753e6d0bba881c99f2a60892e665c",
+    "frontend/workspace/skill-workbench.css": "348b1c11bc34ef83564a6c7b45535f4767f52c54a4a4b8e4fd7decd1aa0f61b7",
+    "server/skills/formula.test.cjs": "f82e2c56bd4395ba3ac59bc9ed033f19aebcf9e16d1bfb118b12d5b03dcfd5c4",
+    "server/skills/pdf-batch.test.cjs": "8fa1de12a9b32af9afb87a440775603ec79565aa00245d28b5a8747016d5a5b1",
+    "server/skills/service.test.cjs": "9638b73d5d61cf51aee6448b1ee0d193e20b00edc9129655566d2084bec11680",
+    "server/skills/testing/formula-fixtures.cjs": "76f2030246d7dca9b04d3005e1060b781b247e671b9754eeaa7138f7763f92d0",
+    "apps/web/tests/formula-batch.spec.ts": "b59d288378883a4735e74d6202505fec36518349a55233577c45c4938d920deb",
+    "apps/web/public/skill-examples/formula-example.xlsx": "1d2716525ece9aafebba0787ce91f3e8eb5a4006e35239753fa68207e1d776f4"
+  }
+}

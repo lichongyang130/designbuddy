@@ -1,0 +1,212 @@
+{
+  "date": "2026-10-16",
+  "branch": "arena/5a5e7967-new",
+  "baseCommit": "edb66d8c847542692ba6b71286dcbf1be327013d",
+  "sourceState": "local working tree; not pushed or deployed",
+  "implementedTools": 19,
+  "configuredReadyTools": 19,
+  "readyToolsWithoutOptionalAsrInstall": 18,
+  "tests": {
+    "newServer": 10,
+    "newBrowser": 6,
+    "finalServerRegression": {
+      "passed": 123,
+      "failed": 0,
+      "skipped": 0
+    },
+    "relatedBrowserRegression": {
+      "passed": 167,
+      "failed": 0,
+      "skipped": 0,
+      "durationMinutes": 8.8,
+      "scope": "17 selected suites, not the full-site browser suite"
+    },
+    "finalAudioTargetedAfterManualOnlyPlanningMessageAndNarrowedSampleWording": {
+      "serverPassed": 10,
+      "browserPassed": 6,
+      "failed": 0,
+      "skipped": 0
+    },
+    "catalog": {
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0
+    },
+    "sequence": "Related browser regression preceded the final manual-only planning message. Full server regression was rerun after that message; then audio tests were rerun after narrowing sample-origin wording. Counts are not additive."
+  },
+  "checks": {
+    "backendTypeScript": "passed",
+    "frontendTypeScriptBuild": "passed",
+    "diffCheck": "passed",
+    "pinnedInstallerActualSelfTest": "passed",
+    "existingInstallationRecheck": "passed"
+  },
+  "runtime": {
+    "engine": "PocketSphinx 5.1.1",
+    "platform": "Linux x86_64 / Python 3.11",
+    "wheelSHA256": "bb8fd0fc7fb08dd8f85da21f5121f34ebf4186a5bee91ce85e2d358e69a448bf",
+    "maximumInputSeconds": 15,
+    "processMemoryMiB": 512,
+    "processCpuSeconds": 15,
+    "nodeProcessDeadlineSeconds": 24,
+    "pythonWallDeadlineSeconds": 25,
+    "modelAssetsInGit": false,
+    "externalAsrRequest": false,
+    "newRequestAfterModelMissingOrCorrupt": "unavailable / HTTP 409",
+    "actualProcessCancellationCrashShutdownAndDeadlineTested": true
+  },
+  "evidence": {
+    "artifactCreation": "Two actual SkillService queues/workers/native recognizer runs, owner-scoped downloads; all seven artifact hashes checked before saving. No transcript or process-success mock.",
+    "audioSamples": "Pinned public PocketSphinx source archive; raw PCM unchanged, canonical WAV header added. Source URLs and hashes are in testing/audio/sources.json.",
+    "visualReview": [
+      "real audio control and decoded duration",
+      "native word timing and low-score highlight",
+      "390px real review iframe"
+    ],
+    "audioPlayback": "Browser actually decoded and played original audio (muted in automated test); not a claim of human listening review."
+  },
+  "limitations": {
+    "chineseOrMultilingualSupported": false,
+    "longMeetingsSupported": false,
+    "automaticLanguageDetection": false,
+    "confidenceIsAccuracy": false,
+    "broadSpeechAccuracyVerified": false,
+    "allAdvancedCapabilitiesComplete": false,
+    "businessCases36Complete": false,
+    "generalOsSandboxVerified": false,
+    "fullSiteBrowserSuiteRerunThisBatch": false,
+    "priorFfmpegGapResolved": false,
+    "driveBackupUpdated": false
+  },
+  "sourceSHA256": {
+    "server/skills/asr-assets.json": "d73f192a2631bca41e70df76cf86099983d0197604e1485671713dc1cce09214",
+    "server/skills/asr-config.ts": "3eaeccf7d9c84a42140284ad01474f42f5c13c3671b32f5bc84e53831708330d",
+    "server/skills/asr-process.ts": "5a25fe0b180f12a9b55ab14b7c97bf605794539ac03e5efa2c8a75ca0c7ee03c",
+    "server/skills/asr_decode.py": "14b020093393d0ad40d8ecf2fed4b76628410af0afba2dc675e93f16ccffb2ec",
+    "server/skills/audio-transcribe.ts": "b80697c31f4fdb9782a3f1bac4ed77ff5ab3282c47b524f40a8eb09ca1848b67",
+    "server/skills/audio-transcribe.test.cjs": "8ed69a675badc9266c932e560e1d166ad63b63906787bfb1992559c09ab1db51",
+    "server/skills/runtime-catalog.ts": "437b172a72e6d78b40b4b60540879dcf8c999af9aa039bb0ffc832f38c17ed70",
+    "server/skills/contracts.ts": "973aedf10721432a02a37e6d9600fa6531b6706cf32287473f7ac3d22e4ba69d",
+    "server/skills/executors.ts": "40ab121e03078453ad40b04f76796dd755c59b987f75179501594a677b77d2f1",
+    "server/skills/planner.ts": "43099958bf508bef9af411d3c85154198f514c0a725fda73841df5eea6ca73c4",
+    "server/skills/service.ts": "a89a351ddc149c162df5e720d472c32b9a0de1db279707b9ba8844df93c9c52e",
+    "server/skills/service.test.cjs": "763d5162a9420615a3639fafb068baa21f8da872f5846653a2d3e7a670d63d41",
+    "shared/skillRuntime.ts": "3364fc03912fae53456a859b16a6e514cae41bca222013c796b0110a8507eb73",
+    "shared/expertRouting.ts": "68cd77e685514fa56179ffafa02bbfccd0c7504c7b3e0872250a2ecd4c7a214d",
+    "frontend/workspace/SkillWorkbench.tsx": "aa172f8bd7761c92507f26f4208f8264bf090aca17cf8bdd01b90ee6a51e0bcf",
+    "apps/web/tests/audio-transcribe.spec.ts": "0d652fce26063e9d926a8e35461c2b4f9be7e204243c5d2f530c62b4ce3105cb",
+    "scripts/setup-asr.py": "360f72952332f4dbaab6dcdb82f42fa52c2f84a0ba922f2a2a0f89469435e21b",
+    "server/skills/testing/audio/sources.json": "70e646f77f55b325d0650f204a5aee1b520d98af3bf9b3d9d7ac147a5971093b",
+    "server/skills/testing/audio/goforward.wav": "97ec638609b9c7eeb616764b4e5713d7ed2d0a8e1a2f8246631d9074d47aaf11",
+    "server/skills/testing/audio/something.wav": "85fc7f1a94db4d957a2d7a3c8f31ecf4ba78c067e50c5028098c4fc3a6f29bf0",
+    "server/skills/testing/audio/numbers.wav": "353c67f7c7dc00b36fb341dd34929bf9291f4e92f0e00daf7e560be9c1c02562",
+    "apps/web/public/skill-examples/english-transcription-example.wav": "97ec638609b9c7eeb616764b4e5713d7ed2d0a8e1a2f8246631d9074d47aaf11",
+    "apps/web/public/skill-examples/english-transcription-LICENSE.txt": "1ed2a4842972522c87ac95c1b120c9a5143ed2c0f3f9aeb551f1a16c823b2fc1",
+    "docs/licenses/pocketsphinx-5.1.1.txt": "98f2e9909fef12272c7b6e312cfe6495636ef8767a09bfad5c478413b3776a03",
+    "docs/plans/english-audio-transcription.md": "ff845cb5d81120cefdc27b1d47bf23165130dbae610633568e50e82bd35f3490",
+    "docs/plans/advanced-experts-execution.md": "350b2394760417bf4474c7c93e57999a9b622fa7adb3764a90b8c2a6b686b42a",
+    "docs/plans/remaining-work-ledger.md": "692d9df3b5e1158aac3c8de4ce128e1606f5e6956895ea56b8dbf2edee774528",
+    "README.md": "611c7607b126ab57177e896f84d6c866d2763af8fdb6f9907b8f919e6936df88",
+    ".env.example": "6b4bb9342f7945c791528a1cc052a6499bae2aaced36269e1555f6cfb1a384d8",
+    ".gitignore": "b1d6ba53251609f1352ab91475f400c2a7b536c63f649f010b9a4d337014331c",
+    "package.json": "db0e8d7de148b0bc3c35b7f570543da70516015a89a90d50b880245b1dbaee65"
+  },
+  "evidenceFiles": {
+    "goforward/execution-receipt.json": {
+      "bytes": 1818,
+      "sha256": "5cab3aa73fdc33a9ec563b0268982f7a7e4e76756327e5a34be3cafbaa4fe3e7"
+    },
+    "goforward/recognizer-license.txt": {
+      "bytes": 8343,
+      "sha256": "98f2e9909fef12272c7b6e312cfe6495636ef8767a09bfad5c478413b3776a03"
+    },
+    "goforward/review-audio.wav": {
+      "bytes": 89204,
+      "sha256": "97ec638609b9c7eeb616764b4e5713d7ed2d0a8e1a2f8246631d9074d47aaf11"
+    },
+    "goforward/transcript-report.json": {
+      "bytes": 5798,
+      "sha256": "5331580a7fd23afaf30924367f218e1650a09f1dcf5d49715567a9b42e79eaa6"
+    },
+    "goforward/transcript-review.html": {
+      "bytes": 129762,
+      "sha256": "ec2a5dea6952a1a12f4da9a2dc517a2fcaced5c02b3cdf2afc02a39a14f0ece5"
+    },
+    "goforward/transcript.srt": {
+      "bytes": 54,
+      "sha256": "500537728782299023111b0e2c3e0c5d969de640d48c8a3a79a9ad3de9433f9e"
+    },
+    "goforward/transcript.txt": {
+      "bytes": 22,
+      "sha256": "1d193f5aa48ed0ebd0850c3194aa266ba1860bc10a946eb77e5bc0c179856a1e"
+    },
+    "logs/browser-related-regression.log": {
+      "bytes": 22304,
+      "sha256": "3f132309a474ef8097590bc8a98f145d3d264c142c1efbb161a4ffd4f955c6a5"
+    },
+    "logs/browser-targeted-final.log": {
+      "bytes": 998,
+      "sha256": "79504f5a9a28b85f344a9d109abc6a2191104e7a4643c39de2447f55b55f765c"
+    },
+    "logs/build.log": {
+      "bytes": 19427,
+      "sha256": "dab6a6068e816891036c004ce1754a7a0a014228f23a3cdeaf4d651526855476"
+    },
+    "logs/catalog.log": {
+      "bytes": 2626,
+      "sha256": "15b618b4928b4aaabc6045cb594713212db4bed7d762ca2acaa18e701d1b1947"
+    },
+    "logs/server-final.log": {
+      "bytes": 35202,
+      "sha256": "1e68d387f7cb638028a79bf13bead38efcdbab4ed2eb5cb549b6c08350e5ee3a"
+    },
+    "logs/server-targeted-final.log": {
+      "bytes": 3019,
+      "sha256": "85db44e484cb3c19a05ef62c61f0ea070ea7fdacdae2dfbf95b602d3bec6ea49"
+    },
+    "logs/setup.log": {
+      "bytes": 184,
+      "sha256": "ec121b4669409cc94cdab6f4a71a923efe7d2b3bb91fc5962bcd60e6509a1042"
+    },
+    "preview-390.png": {
+      "bytes": 24615,
+      "sha256": "5f7381df77bf3c0710458e9cdb0e30fbea70cf6d8d39d77514aaf38a58ad7373"
+    },
+    "preview-audio.png": {
+      "bytes": 28895,
+      "sha256": "b58db5c5ded101839f09530b05e8025198f0ec81ee110060cd66cb4c9651458c"
+    },
+    "preview-word-timing.png": {
+      "bytes": 52028,
+      "sha256": "3d2cc88b80655ab6eb9e240d52794347d1815f43e3d06dbfe33ca6e0152d0baf"
+    },
+    "something/execution-receipt.json": {
+      "bytes": 1818,
+      "sha256": "4375ffbd042643971f671a1ec2e9fc785a7cc15db3d3d78b161f10327f9f2df2"
+    },
+    "something/recognizer-license.txt": {
+      "bytes": 8343,
+      "sha256": "98f2e9909fef12272c7b6e312cfe6495636ef8767a09bfad5c478413b3776a03"
+    },
+    "something/review-audio.wav": {
+      "bytes": 96002,
+      "sha256": "85fc7f1a94db4d957a2d7a3c8f31ecf4ba78c067e50c5028098c4fc3a6f29bf0"
+    },
+    "something/transcript-report.json": {
+      "bytes": 6413,
+      "sha256": "9e27b70cfa63e67eb57b1948804d657b88e8019fe124ff438d89265fd1142193"
+    },
+    "something/transcript-review.html": {
+      "bytes": 138895,
+      "sha256": "ea2e90a2fdfcdb5a83708dc4f74998d804a41f0bd67bc1df727ecc8875396402"
+    },
+    "something/transcript.srt": {
+      "bytes": 62,
+      "sha256": "16ab13ee18065836ca7bdcd139c4c352b69375e56bf476212e3bb59243c647f3"
+    },
+    "something/transcript.txt": {
+      "bytes": 30,
+      "sha256": "63b74146da856deb125c5dbee3ac0a1270fd600310e00d7d0bdc544c1806e978"
+    }
+  }
+}

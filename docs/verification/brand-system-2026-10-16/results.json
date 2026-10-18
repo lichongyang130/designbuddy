@@ -1,0 +1,225 @@
+{
+  "date": "2026-10-16",
+  "branch": "arena/5a5e7967-new",
+  "baseCommit": "edb66d8c847542692ba6b71286dcbf1be327013d",
+  "remoteDelivery": "not pushed/deployed/backed up",
+  "skill": "brand.system@1.0.0",
+  "implementedTools": 21,
+  "readyWithoutOptionalAsr": 20,
+  "readyWithOptionalAsr": 21,
+  "verification": {
+    "brandServer": {
+      "pass": 10,
+      "fail": 0,
+      "skip": 0
+    },
+    "backendApiNoAsr": {
+      "pass": 136,
+      "fail": 0,
+      "skip": 0
+    },
+    "brandBrowser": {
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "scope": "one workflow, not full-site acceptance"
+    },
+    "catalog": {
+      "pass": 9,
+      "fail": 0,
+      "skip": 0
+    },
+    "fullBackendWithoutModel": {
+      "pass": 137,
+      "fail": 8,
+      "skip": 0,
+      "total": 145,
+      "reason": "optional PocketSphinx asset directory is missing; failed genuine model tests are not skipped"
+    },
+    "typescript": "backend/frontend passed",
+    "build": "passed with existing large bundle and mixed fflate import warnings",
+    "diffCheck": "passed"
+  },
+  "actualEvidence": {
+    "skillArtifacts": 8,
+    "automaticExecutionReceipt": 1,
+    "allNineDownloadedAndSHA256Verified": true,
+    "foreignOwnerStatus": 404,
+    "cacheControl": "private, no-store",
+    "database": "isolated in-memory",
+    "browser": "real upload/consent/worker/download, offline-font check and desktop/390px screenshots",
+    "font": "only needed local Noto WOFF2 shards embedded in standalone HTML",
+    "visual": "Chinese text legible in both viewports; color cards responsive"
+  },
+  "boundaries": [
+    "finite template geometry, not AI or bespoke creative direction",
+    "no trademark or copyright search/registration promise",
+    "not all brand or expert capabilities",
+    "not 36 business cases/full-site browser acceptance",
+    "not deployed"
+  ],
+  "sourceFiles": {
+    "README.md": {
+      "bytes": 59109,
+      "sha256": "7d2715af9f763b2148edf522f03e3b213fedd8a24b77fec90bb29a53dbd559af"
+    },
+    "apps/web/playwright.config.ts": {
+      "bytes": 808,
+      "sha256": "7ebf7dcf46d4ac55de7b8e7768aeceb436e5b8415b501648cb7613228a72851d"
+    },
+    "apps/web/src/assets/fonts/OFL.txt": {
+      "bytes": 4314,
+      "sha256": "18aabf190848725e2576eefb5c29ba06aac1029d02132252a7f312eac2e50cf3"
+    },
+    "apps/web/src/assets/fonts/manifest.json": {
+      "bytes": 81366,
+      "sha256": "151834efa7c7683f02a6b6099e06565ed658cf12117927918ce913b8f34689e2"
+    },
+    "apps/web/tests/brand-system.spec.ts": {
+      "bytes": 2914,
+      "sha256": "8c6518c56c24e8fc9653ad99f490f190b29410f7e505b7169d4f3154f6296501"
+    },
+    "docs/plans/advanced-experts-execution.md": {
+      "bytes": 13766,
+      "sha256": "ec7bbd6e9dde1faebc29a1b0515cdd0c7755da65a7141bdb789c9447100f37fb"
+    },
+    "docs/plans/brand-system-execution.md": {
+      "bytes": 6156,
+      "sha256": "621ba506dda2131ac2281027b83aa7e0c94ffe1d9f1483077494c0428b7a40c8"
+    },
+    "docs/plans/remaining-work-ledger.md": {
+      "bytes": 10073,
+      "sha256": "49cd5cf2dd527e1049eef86aeddfcbd6777d3d5065d6647970091cdf31381b71"
+    },
+    "docs/verification/brand-system-2026-10-16/README.md": {
+      "bytes": 2094,
+      "sha256": "f403accbfdb1b6e3ec5c6791f2f126944272a9af74210ac8474d6283facee980"
+    },
+    "scripts/verify-brand-system.cjs": {
+      "bytes": 2860,
+      "sha256": "a946d561e896b7242637b55061c3ef6f520e909cbf0c09da5486675d005d325f"
+    },
+    "server/skills/brand-system.test.cjs": {
+      "bytes": 6123,
+      "sha256": "59e4d14c6d0bb7fef70d8d65b3920ee2a4fc4346025b8c9fbf54a6e2345d1e82"
+    },
+    "server/skills/brand-system.ts": {
+      "bytes": 9270,
+      "sha256": "8529d86c3500a29b39e68f5f523a7181eb68c0147788b798c44cc993490e938e"
+    },
+    "server/skills/executors.ts": {
+      "bytes": 15840,
+      "sha256": "4a2d49f041980d59a686f05f43394e16cf29ee76de58fadc114b37adb13b5647"
+    },
+    "server/skills/fonts.ts": {
+      "bytes": 3258,
+      "sha256": "3a89f3d2848c00486968dfd41a4dd8ca1d873a7be95e78ee4942039f7c2d9b8b"
+    },
+    "server/skills/runtime-catalog.ts": {
+      "bytes": 465,
+      "sha256": "437b172a72e6d78b40b4b60540879dcf8c999af9aa039bb0ffc832f38c17ed70"
+    },
+    "server/skills/service.test.cjs": {
+      "bytes": 11651,
+      "sha256": "7685d56a58c7ae4826ab1e0825927bbc343dbb2671d1a5ba2d90a5ba5053a073"
+    },
+    "server/skills/service.ts": {
+      "bytes": 22193,
+      "sha256": "a89a351ddc149c162df5e720d472c32b9a0de1db279707b9ba8844df93c9c52e"
+    },
+    "shared/skillRuntime.ts": {
+      "bytes": 22482,
+      "sha256": "2b37845bf38b806142d4f3e88698e898faa60ebe6a076a414dd4f298779bc858"
+    }
+  },
+  "evidenceFiles": {
+    "README.md": {
+      "bytes": 2094,
+      "sha256": "f403accbfdb1b6e3ec5c6791f2f126944272a9af74210ac8474d6283facee980"
+    },
+    "assets/brand-avatar-512.png": {
+      "bytes": 15901,
+      "sha256": "398571edc4965bd312ab08f4099f89cce8b0fbb64fbd172b563c264feca096d8"
+    },
+    "assets/brand-brief.json": {
+      "bytes": 557,
+      "sha256": "ed2b6a9ca43165528f112aefa08e2e1e389eee7a099797f2f03b17a8632d4849"
+    },
+    "assets/brand-guidelines.html": {
+      "bytes": 667302,
+      "sha256": "717eb2ed544865a0f70f8d7a8e910fe97c412e761de5f502f5ee94b58a7693f4"
+    },
+    "assets/brand-icon-64.png": {
+      "bytes": 1567,
+      "sha256": "af327aedf750fa1464e9527b198a7f833e911cc3abc6797765433f9ca0edf46e"
+    },
+    "assets/brand-system.css": {
+      "bytes": 246,
+      "sha256": "f5729ec218640f530ea0a01b0ec46e391fc02d0c1e3fc3ff83cb6c1940a806c5"
+    },
+    "assets/brand-system.json": {
+      "bytes": 2250,
+      "sha256": "b04cc6e4b62e6af69c084bbe46c38a6f8ef9fa28e6dc77ff51a05b6b287103f0"
+    },
+    "assets/execution-receipt.json": {
+      "bytes": 1346,
+      "sha256": "6bab3c0300886e8cf2bad29b9b0917e63c7aacd40b3f1a973f734962762f0d55"
+    },
+    "assets/font-license.txt": {
+      "bytes": 4314,
+      "sha256": "18aabf190848725e2576eefb5c29ba06aac1029d02132252a7f312eac2e50cf3"
+    },
+    "assets/logo-lockup.svg": {
+      "bytes": 8687,
+      "sha256": "1513a616fc0500129c866a37dfec7b6114ad12ba0f8b0bfc09ee32ab1377c4ec"
+    },
+    "assets/logo-symbol.svg": {
+      "bytes": 374,
+      "sha256": "ea73e2e457edf3e31c00ef1bc80d073fea47b2fc0f0b40fdd907838a0195155d"
+    },
+    "assets/verification-report.json": {
+      "bytes": 1884,
+      "sha256": "f626ad111f7ec40ebe5a617a6895d79cb4f4dbd121a0395c9794ee475dff74d5"
+    },
+    "logs/brand-browser.log": {
+      "bytes": 192,
+      "sha256": "26e7d0384dd7cf9909023e468b3652f3cb79bb4dcfa1787fb58ebc77feba13d1"
+    },
+    "logs/brand-targeted.log": {
+      "bytes": 2827,
+      "sha256": "82bd243f57034538f362dc1688873be9a59b2a032fd53e7fb9d0dc2f4b1acd94"
+    },
+    "logs/build.log": {
+      "bytes": 19427,
+      "sha256": "9811052278c1e73d72e8f86072f115a84c543cef599276aa3ef4bcdf87b54382"
+    },
+    "logs/catalog.log": {
+      "bytes": 2624,
+      "sha256": "e03dade3fe861bdf23e1e6da7b1b7976e4ddb080da00fb2ec9450aac74807038"
+    },
+    "logs/full-server-without-asr-model.log": {
+      "bytes": 47352,
+      "sha256": "2e2fd127f771157c6d0a0f31e82c1ef2f0e4717b6c565fda39cdf97fc93c22cc"
+    },
+    "logs/server-no-asr.log": {
+      "bytes": 38731,
+      "sha256": "1e309e72fe164ed59b192359e88543d7c595dc3b471046eb065b34031e7ff210"
+    },
+    "logs/worker-run-initial.log": {
+      "bytes": 1884,
+      "sha256": "bd66136f7439a6024cf3901cfd09ecf231b68dcdeb0311b835ea5409b9b3983e"
+    },
+    "logs/worker-run.log": {
+      "bytes": 2052,
+      "sha256": "0499888dbebfc81d2d28b7de0b4d8fae6b03cd82a18ddff85af5566f4d10d013"
+    },
+    "screenshots/brand-guidelines-desktop.png": {
+      "bytes": 198422,
+      "sha256": "09a5b11659e1da8cef22f87b4877232b8837a4d3ac8e9f42000bf826d628af28"
+    },
+    "screenshots/brand-guidelines-mobile.png": {
+      "bytes": 197666,
+      "sha256": "7a126240cce2312a357e6343dfc767b9ebd59b5f4c1bf03bfd29e448fb66599c"
+    }
+  }
+}

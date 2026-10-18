@@ -1,0 +1,227 @@
+{
+  "tool": "run-acceptance",
+  "suite": "designbuddy-plugin-compat",
+  "baseUrl": "http://127.0.0.1:5173",
+  "ranAt": "2026-10-16T18:02:05.570Z",
+  "viewports": [
+    "desktop 1440x900",
+    "mobile 390x844"
+  ],
+  "counts": {
+    "total": 26,
+    "passed": 26,
+    "failed": 0,
+    "notVerified": 0
+  },
+  "results": [
+    {
+      "id": "plugin-panel",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 3393
+    },
+    {
+      "id": "plugin-cards",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (755 chars)",
+      "durationMs": 9
+    },
+    {
+      "id": "plugin-api-version",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (8 chars)",
+      "durationMs": 8
+    },
+    {
+      "id": "plugin-permission-labels",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (42 chars)",
+      "durationMs": 4
+    },
+    {
+      "id": "plugin-compatibility",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (18 chars)",
+      "durationMs": 6
+    },
+    {
+      "id": "plugin-network-permission",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (78 chars)",
+      "durationMs": 13
+    },
+    {
+      "id": "plugin-install",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 156
+    },
+    {
+      "id": "plugin-install-notice",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (14 chars)",
+      "durationMs": 24
+    },
+    {
+      "id": "plugin-resolved-versions",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 69
+    },
+    {
+      "id": "plugin-lifecycle-log",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (93 chars)",
+      "durationMs": 6
+    },
+    {
+      "id": "plugin-uninstall",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 72
+    },
+    {
+      "id": "plugin-uninstall-notice",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (14 chars)",
+      "durationMs": 38
+    },
+    {
+      "id": "plugin-screenshot",
+      "type": "screenshot",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "screenshot saved as screenshots/desktop/plugin-screenshot.png",
+      "durationMs": 2848
+    },
+    {
+      "id": "plugin-panel",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 3506
+    },
+    {
+      "id": "plugin-cards",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (755 chars)",
+      "durationMs": 8
+    },
+    {
+      "id": "plugin-api-version",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (8 chars)",
+      "durationMs": 6
+    },
+    {
+      "id": "plugin-permission-labels",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (42 chars)",
+      "durationMs": 6
+    },
+    {
+      "id": "plugin-compatibility",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (18 chars)",
+      "durationMs": 6
+    },
+    {
+      "id": "plugin-network-permission",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (78 chars)",
+      "durationMs": 53
+    },
+    {
+      "id": "plugin-install",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 105
+    },
+    {
+      "id": "plugin-install-notice",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (14 chars)",
+      "durationMs": 218
+    },
+    {
+      "id": "plugin-resolved-versions",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 14
+    },
+    {
+      "id": "plugin-lifecycle-log",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (93 chars)",
+      "durationMs": 8
+    },
+    {
+      "id": "plugin-uninstall",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 53
+    },
+    {
+      "id": "plugin-uninstall-notice",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (14 chars)",
+      "durationMs": 217
+    },
+    {
+      "id": "plugin-screenshot",
+      "type": "screenshot",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "screenshot saved as screenshots/mobile/plugin-screenshot.png",
+      "durationMs": 391
+    }
+  ],
+  "policy": "只有真实访问目标并通过断言的检查才记为 passed；选择器缺失记为 not_verified 并写明原因；失败项保留控制台与网络记录。本工具不代表被测目标已完成业务验收，只证明声明的检查项在声明的视口下实际执行过。"
+}

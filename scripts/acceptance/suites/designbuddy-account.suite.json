@@ -1,0 +1,173 @@
+{
+  "name": "designbuddy-account",
+  "baseUrl": "http://127.0.0.1:5173",
+  "viewports": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "checks": [
+    {
+      "id": "account-guest",
+      "type": "evaluate",
+      "path": "/profile",
+      "script": "async () => { const response = await fetch('/api/local/session', { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: '{}' }); const session = await response.json(); return { status: response.status, text: JSON.stringify(session.user) }; }",
+      "expectStatus": 200,
+      "expectText": "guest"
+    },
+    {
+      "id": "account-card",
+      "type": "assertVisible",
+      "path": "/profile",
+      "selector": "section[aria-label=\"账号资料\"]"
+    },
+    {
+      "id": "account-register",
+      "type": "evaluate",
+      "path": "/profile",
+      "reload": false,
+      "script": "async () => { const username = 'acceptance_acct_' + Date.now().toString(36); const response = await fetch('/api/auth/register', { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, password: 'acceptance-local-pass-1' }) }); const body = await response.text(); return { status: response.status, text: body }; }",
+      "expectStatus": 201,
+      "expectText": "account"
+    },
+    {
+      "id": "account-display-name",
+      "type": "fill",
+      "path": "/profile",
+      "reload": false,
+      "selector": "input[aria-label=\"显示名\"]",
+      "value": "李工"
+    },
+    {
+      "id": "account-email",
+      "type": "fill",
+      "path": "/profile",
+      "reload": false,
+      "selector": "input[aria-label=\"邮箱\"]",
+      "value": "li@example.com"
+    },
+    {
+      "id": "account-save",
+      "type": "click",
+      "path": "/profile",
+      "reload": false,
+      "selector": "button:has-text(\"保存账号资料\")",
+      "expectSelector": ".profile-message"
+    },
+    {
+      "id": "account-save-notice",
+      "type": "assertText",
+      "path": "/profile",
+      "reload": false,
+      "selector": ".profile-message",
+      "contains": "账号资料已更新"
+    },
+    {
+      "id": "account-audit-row",
+      "type": "assertVisible",
+      "path": "/profile",
+      "reload": false,
+      "selector": "tr[data-audit=\"account.profile.update\"]",
+      "waitFor": "tr[data-audit=\"account.profile.update\"]"
+    },
+    {
+      "id": "account-current-password",
+      "type": "fill",
+      "path": "/profile",
+      "reload": false,
+      "selector": "input[aria-label=\"当前密码\"]",
+      "value": "acceptance-local-pass-1"
+    },
+    {
+      "id": "account-new-password",
+      "type": "fill",
+      "path": "/profile",
+      "reload": false,
+      "selector": "input[aria-label=\"新密码\"]",
+      "value": "acceptance-local-pass-2"
+    },
+    {
+      "id": "account-rotate",
+      "type": "click",
+      "path": "/profile",
+      "reload": false,
+      "selector": "button:has-text(\"修改密码\")",
+      "expectSelector": ".profile-message"
+    },
+    {
+      "id": "account-rotate-notice",
+      "type": "assertText",
+      "path": "/profile",
+      "reload": false,
+      "selector": ".profile-message",
+      "contains": "密码已修改"
+    },
+    {
+      "id": "account-rotate-audit",
+      "type": "assertVisible",
+      "path": "/profile",
+      "reload": false,
+      "selector": "tr[data-audit=\"account.password.change\"]",
+      "waitFor": "tr[data-audit=\"account.password.change\"]"
+    },
+    {
+      "id": "account-menu-name",
+      "type": "assertVisible",
+      "path": "/",
+      "selector": "button[aria-label=\"账号菜单：李工\"]",
+      "waitFor": "button[aria-label=\"账号菜单：李工\"]"
+    },
+    {
+      "id": "account-delete-confirm",
+      "type": "click",
+      "path": "/profile",
+      "selector": "input[aria-label=\"确认注销账号\"]"
+    },
+    {
+      "id": "account-delete-password",
+      "type": "fill",
+      "path": "/profile",
+      "reload": false,
+      "selector": "input[aria-label=\"当前登录密码\"]",
+      "value": "acceptance-local-pass-2"
+    },
+    {
+      "id": "account-delete",
+      "type": "click",
+      "path": "/profile",
+      "reload": false,
+      "selector": "button:has-text(\"注销账号\")",
+      "expectSelector": ".profile-message"
+    },
+    {
+      "id": "account-delete-notice",
+      "type": "assertText",
+      "path": "/profile",
+      "reload": false,
+      "selector": ".profile-message",
+      "contains": "账号已注销"
+    },
+    {
+      "id": "account-session-gone",
+      "type": "evaluate",
+      "path": "/profile",
+      "reload": false,
+      "script": "async () => { const response = await fetch('/api/auth/me', { credentials: 'include' }); return { status: response.status, text: await response.text() }; }",
+      "expectStatus": 401
+    },
+    {
+      "id": "account-screenshot",
+      "type": "screenshot",
+      "path": "/profile",
+      "reload": false,
+      "selector": "section[aria-label=\"账号资料\"]"
+    }
+  ]
+}

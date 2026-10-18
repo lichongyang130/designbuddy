@@ -1,0 +1,2 @@
+# MORROW concept imagery
+Five distinct AI-generated images created for MORROW on 2026-10-15: morning coffee ritual, roasted beans, coffee cherries, roasting studio and plain packaging. No image is reused from another template. These fictional concepts are not actual products, origin traceability, certified farms or inventory. PNG intermediates remain in ignored cache; delivered WebP images and offline HTML preserve this disclosure. Font license is separate Noto Sans SC OFL.

@@ -1,0 +1,1 @@
+# DesignBuddy Official Plugin Catalog\n\n48 个官方插件能力规格，覆盖设计、开发、质量、研究、办公、数据、多媒体、增长和部署。目录中的 catalog 是插件清单和权限声明；只有绑定服务端 adapter、配置 OAuth/API 并通过权限审核后，才能标记为可执行。\n

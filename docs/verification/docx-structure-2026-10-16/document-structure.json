@@ -1,0 +1,441 @@
+{
+  "sourceSHA256": "991bf34dec8bfee41a18e0df8c420d20f740eb44c5bbef4c34d3e37555165871",
+  "sourcePart": "word/document.xml",
+  "paragraphCount": 12,
+  "tableCount": 1,
+  "imageCount": 1,
+  "imagePlacements": 1,
+  "blocks": [
+    {
+      "type": "paragraph",
+      "id": "p1",
+      "sourcePath": "word/document.xml/body/1:w:p",
+      "styleId": "Heading1",
+      "heading": 1,
+      "alignment": "left",
+      "pageBreakBefore": false,
+      "runs": [
+        {
+          "type": "text",
+          "text": "项目交付核对",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ],
+      "text": "项目交付核对"
+    },
+    {
+      "type": "paragraph",
+      "id": "p2",
+      "sourcePath": "word/document.xml/body/2:w:p",
+      "styleId": "",
+      "heading": 0,
+      "alignment": "left",
+      "pageBreakBefore": false,
+      "runs": [
+        {
+          "type": "text",
+          "text": "阶段交付说明：内容均为演示样例，请按原始材料核对。",
+          "bold": true,
+          "italic": false,
+          "underline": false
+        },
+        {
+          "type": "text",
+          "text": " / 斜体",
+          "bold": false,
+          "italic": true,
+          "underline": false
+        },
+        {
+          "type": "text",
+          "text": " / 下划线",
+          "bold": false,
+          "italic": false,
+          "underline": true
+        }
+      ],
+      "text": "阶段交付说明：内容均为演示样例，请按原始材料核对。 / 斜体 / 下划线"
+    },
+    {
+      "type": "table",
+      "id": "table1",
+      "sourcePath": "word/document.xml/body/3:w:tbl",
+      "columns": 3,
+      "rows": [
+        {
+          "sourceRow": 1,
+          "cells": [
+            {
+              "column": 1,
+              "colSpan": 2,
+              "rowSpan": 1,
+              "sourcePaths": [
+                "word/document.xml/body/3:w:tbl/row[1]/column[1]"
+              ],
+              "paragraphs": [
+                {
+                  "type": "paragraph",
+                  "id": "p3",
+                  "sourcePath": "word/document.xml/body/3:w:tbl/row[1]/column[1]/p[2]",
+                  "styleId": "",
+                  "heading": 0,
+                  "alignment": "left",
+                  "pageBreakBefore": false,
+                  "runs": [
+                    {
+                      "type": "text",
+                      "text": "合并标题",
+                      "bold": false,
+                      "italic": false,
+                      "underline": false
+                    }
+                  ],
+                  "text": "合并标题"
+                }
+              ],
+              "continuations": []
+            },
+            {
+              "column": 3,
+              "colSpan": 1,
+              "rowSpan": 1,
+              "sourcePaths": [
+                "word/document.xml/body/3:w:tbl/row[1]/column[3]"
+              ],
+              "paragraphs": [
+                {
+                  "type": "paragraph",
+                  "id": "p4",
+                  "sourcePath": "word/document.xml/body/3:w:tbl/row[1]/column[3]/p[1]",
+                  "styleId": "",
+                  "heading": 0,
+                  "alignment": "left",
+                  "pageBreakBefore": false,
+                  "runs": [
+                    {
+                      "type": "text",
+                      "text": "金额",
+                      "bold": false,
+                      "italic": false,
+                      "underline": false
+                    }
+                  ],
+                  "text": "金额"
+                }
+              ],
+              "continuations": []
+            }
+          ]
+        },
+        {
+          "sourceRow": 2,
+          "cells": [
+            {
+              "column": 1,
+              "colSpan": 1,
+              "rowSpan": 2,
+              "sourcePaths": [
+                "word/document.xml/body/3:w:tbl/row[2]/column[1]",
+                "word/document.xml/body/3:w:tbl/row[3]/column[1]"
+              ],
+              "paragraphs": [
+                {
+                  "type": "paragraph",
+                  "id": "p5",
+                  "sourcePath": "word/document.xml/body/3:w:tbl/row[2]/column[1]/p[2]",
+                  "styleId": "",
+                  "heading": 0,
+                  "alignment": "left",
+                  "pageBreakBefore": false,
+                  "runs": [
+                    {
+                      "type": "text",
+                      "text": "跨行项目",
+                      "bold": false,
+                      "italic": false,
+                      "underline": false
+                    }
+                  ],
+                  "text": "跨行项目"
+                }
+              ],
+              "continuations": [
+                {
+                  "sourcePath": "word/document.xml/body/3:w:tbl/row[3]/column[1]",
+                  "paragraphs": [
+                    {
+                      "type": "paragraph",
+                      "id": "p8",
+                      "sourcePath": "word/document.xml/body/3:w:tbl/row[3]/column[1]/p[2]",
+                      "styleId": "",
+                      "heading": 0,
+                      "alignment": "left",
+                      "pageBreakBefore": false,
+                      "runs": [],
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "column": 2,
+              "colSpan": 1,
+              "rowSpan": 1,
+              "sourcePaths": [
+                "word/document.xml/body/3:w:tbl/row[2]/column[2]"
+              ],
+              "paragraphs": [
+                {
+                  "type": "paragraph",
+                  "id": "p6",
+                  "sourcePath": "word/document.xml/body/3:w:tbl/row[2]/column[2]/p[1]",
+                  "styleId": "",
+                  "heading": 0,
+                  "alignment": "left",
+                  "pageBreakBefore": false,
+                  "runs": [
+                    {
+                      "type": "text",
+                      "text": "第一阶段",
+                      "bold": false,
+                      "italic": false,
+                      "underline": false
+                    }
+                  ],
+                  "text": "第一阶段"
+                }
+              ],
+              "continuations": []
+            },
+            {
+              "column": 3,
+              "colSpan": 1,
+              "rowSpan": 1,
+              "sourcePaths": [
+                "word/document.xml/body/3:w:tbl/row[2]/column[3]"
+              ],
+              "paragraphs": [
+                {
+                  "type": "paragraph",
+                  "id": "p7",
+                  "sourcePath": "word/document.xml/body/3:w:tbl/row[2]/column[3]/p[1]",
+                  "styleId": "",
+                  "heading": 0,
+                  "alignment": "left",
+                  "pageBreakBefore": false,
+                  "runs": [
+                    {
+                      "type": "text",
+                      "text": "12.50",
+                      "bold": false,
+                      "italic": false,
+                      "underline": false
+                    }
+                  ],
+                  "text": "12.50"
+                }
+              ],
+              "continuations": []
+            }
+          ]
+        },
+        {
+          "sourceRow": 3,
+          "cells": [
+            {
+              "column": 2,
+              "colSpan": 1,
+              "rowSpan": 1,
+              "sourcePaths": [
+                "word/document.xml/body/3:w:tbl/row[3]/column[2]"
+              ],
+              "paragraphs": [
+                {
+                  "type": "paragraph",
+                  "id": "p9",
+                  "sourcePath": "word/document.xml/body/3:w:tbl/row[3]/column[2]/p[1]",
+                  "styleId": "",
+                  "heading": 0,
+                  "alignment": "left",
+                  "pageBreakBefore": false,
+                  "runs": [
+                    {
+                      "type": "text",
+                      "text": "第二阶段",
+                      "bold": false,
+                      "italic": false,
+                      "underline": false
+                    }
+                  ],
+                  "text": "第二阶段"
+                }
+              ],
+              "continuations": []
+            },
+            {
+              "column": 3,
+              "colSpan": 1,
+              "rowSpan": 1,
+              "sourcePaths": [
+                "word/document.xml/body/3:w:tbl/row[3]/column[3]"
+              ],
+              "paragraphs": [
+                {
+                  "type": "paragraph",
+                  "id": "p10",
+                  "sourcePath": "word/document.xml/body/3:w:tbl/row[3]/column[3]/p[1]",
+                  "styleId": "",
+                  "heading": 0,
+                  "alignment": "left",
+                  "pageBreakBefore": false,
+                  "runs": [
+                    {
+                      "type": "text",
+                      "text": "25.00",
+                      "bold": false,
+                      "italic": false,
+                      "underline": false
+                    }
+                  ],
+                  "text": "25.00"
+                }
+              ],
+              "continuations": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "id": "p11",
+      "sourcePath": "word/document.xml/body/4:w:p",
+      "styleId": "",
+      "heading": 0,
+      "alignment": "left",
+      "pageBreakBefore": false,
+      "runs": [
+        {
+          "type": "image",
+          "imageId": "image-001",
+          "width": 120
+        }
+      ],
+      "text": "[图片 image-001]"
+    },
+    {
+      "type": "paragraph",
+      "id": "p12",
+      "sourcePath": "word/document.xml/body/5:w:p",
+      "styleId": "Heading2",
+      "heading": 2,
+      "alignment": "left",
+      "pageBreakBefore": false,
+      "runs": [
+        {
+          "type": "text",
+          "text": "核对完成",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ],
+      "text": "核对完成"
+    }
+  ],
+  "sections": [
+    {
+      "sourcePath": "word/document.xml/body/6:w:sectPr",
+      "pageSizeTwips": {
+        "width": "11906",
+        "height": "16838"
+      },
+      "columns": "1"
+    }
+  ],
+  "images": [
+    {
+      "id": "image-001",
+      "sourcePath": "word/media/fa98838cff827909cb65f3bbb019a6cd71b6d8d4.png",
+      "originalFile": "image-001.png",
+      "sourceSHA256": "e8ba09add24749ab6f820576ae864b11b76ad4e9e3fc2623c6cee74e4cee055c",
+      "previewSHA256": "e8ba09add24749ab6f820576ae864b11b76ad4e9e3fc2623c6cee74e4cee055c",
+      "previewWidth": 120,
+      "previewHeight": 60,
+      "sourceBytes": 303
+    }
+  ],
+  "warnings": [
+    "这是正文结构重排预览，不是Word原始分页或像素级版式还原；没有AI摘要。",
+    "所有正文文字均提取并显示，不应用隐藏文字或隐藏样式；请留意原件中的隐藏内容。",
+    "预览使用内嵌授权字体而非原Word字体；未覆盖字符需系统字体回退，请检查缺字。",
+    "仅保留直接声明的粗体/斜体/下划线及标题层级；不完整计算样式继承、字体、间距、边框、底纹或分页。",
+    "图片预览不还原裁剪或图形变换；图片包保留原始位图供核对。",
+    "包内含页眉/页脚/批注/注释部件；本技能仅提取正文，不读取这些附属内容。",
+    "部分标题无显式outlineLvl，按内置Heading1–9样式标识确定层级，须对照原件。"
+  ],
+  "previewFonts": [
+    {
+      "file": "noto-sans-sc-119-400-normal.woff2",
+      "sha256": "190237c828b2ea0f076bd1a4a1e6bbd7365e56a5ef837042e35763585250b3ac"
+    },
+    {
+      "file": "noto-sans-sc-116-400-normal.woff2",
+      "sha256": "5744f8001a3e231990bd1fe87b080bdd4b4d0e658c84a3bcdb5555e57e32661a"
+    },
+    {
+      "file": "noto-sans-sc-117-400-normal.woff2",
+      "sha256": "bf7c1b4b8b0d1110c761720b977d237d350130d29db48aea0bc5189f572dad3d"
+    },
+    {
+      "file": "noto-sans-sc-114-400-normal.woff2",
+      "sha256": "d58ca6082d43993a894bcee72181b98527d3ef003099ba61146e3df4883a7be2"
+    },
+    {
+      "file": "noto-sans-sc-115-400-normal.woff2",
+      "sha256": "d83b8291340e0024c8a573afe48b60ce22ed00d87619a7f3950b2193d19af6c9"
+    },
+    {
+      "file": "noto-sans-sc-118-400-normal.woff2",
+      "sha256": "b6be37866f0d950777a6ce2ab417aba11acc3c52786072b0d760da2a277cd248"
+    },
+    {
+      "file": "noto-sans-sc-111-400-normal.woff2",
+      "sha256": "f20ccaeab7d4244e651e6cac4296c2a26403108e70e8db5ac105b474670f1c28"
+    },
+    {
+      "file": "noto-sans-sc-108-400-normal.woff2",
+      "sha256": "b1a0d456ebff097f0ef909ea1d0680a993ee018e0c8a319c77576abacdccc22c"
+    },
+    {
+      "file": "noto-sans-sc-112-400-normal.woff2",
+      "sha256": "6624c02437475caaf043f015208ef74c74e8fe8633d54ae1d5fc3a9ed38e7ea0"
+    },
+    {
+      "file": "noto-sans-sc-106-400-normal.woff2",
+      "sha256": "6f1efc3f7a993358a56290ea16b4e241d3618f2791733209ef332737d2b1ac5d"
+    },
+    {
+      "file": "noto-sans-sc-113-400-normal.woff2",
+      "sha256": "f2fd94429f722da169fb4b0a3a132ef5bf92d0b0aa3ae3426006446d50994c36"
+    },
+    {
+      "file": "noto-sans-sc-110-400-normal.woff2",
+      "sha256": "e4d24ba921e93102c2b198187e4e0ed507aafd07e5cd6de032d5df7b76ee044b"
+    },
+    {
+      "file": "noto-sans-sc-109-400-normal.woff2",
+      "sha256": "7a7980f80559bb36dfff4ea64e9b03d926c98566fb7326181569ac1e8334b717"
+    },
+    {
+      "file": "noto-sans-sc-101-400-normal.woff2",
+      "sha256": "8eef1fa6b5557ee00c1451df31ff4f56833a8460494446d943a8228d4daf9f72"
+    }
+  ],
+  "unsupportedGlyphs": [],
+  "requiresReview": true,
+  "wordRenderVerified": false
+}

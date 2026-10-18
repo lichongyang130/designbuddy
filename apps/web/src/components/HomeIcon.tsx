@@ -1,0 +1,61 @@
+import type { ReactNode } from "react";
+
+const paths = {
+  home: <><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-8H9v8H4a1 1 0 0 1-1-1V10Z" /></>,
+  fuel: <><circle cx="12" cy="12" r="9" /><path d="m4 12 4-1 2-5 3 12 2-7 5 1" /></>,
+  invite: <><circle cx="9" cy="7" r="4" /><path d="M2 21v-3a6 6 0 0 1 12 0v3m5-13v8m-4-4h8" /></>,
+  growth: <><rect x="3" y="3" width="18" height="18" rx="4" /><path d="m7 8 5 5 5-5m-9 9h8" /></>,
+  bulb: <><path d="M9 18v-2a6 6 0 1 1 6 0v2Zm0 3h6M12 1V0M3 4l2 2M1 11h2m18 0h2m-4-5 2-2" /></>,
+  help: <><circle cx="12" cy="12" r="9" /><path d="M9 9a3 3 0 1 1 5 2c-1 1-2 1-2 3m0 3h.01" /></>,
+  update: <><circle cx="12" cy="12" r="9" /><path d="M12 17V7m-4 4 4-4 4 4" /></>,
+  logout: <><path d="M10 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h4m4-15 6 6-6 6m-6-6h12" /></>,
+  copy: <><rect x="8" y="8" width="12" height="13" rx="2" /><path d="M15 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h3" /></>,
+  speaker: <><path d="m3 9 5 0 6-5v16l-6-5H3Zm15-2a8 8 0 0 1 0 10m3-13a12 12 0 0 1 0 16" /></>,
+  share: <path d="m14 3 8 7-8 7v-5c-5 0-8 3-11 8 0-9 4-14 11-14V3Z" />,
+  history: <><circle cx="12" cy="12" r="9" /><path d="M12 6v7l4 3" /></>,
+  ellipsis: <><circle cx="4" cy="12" r="1" fill="currentColor" /><circle cx="12" cy="12" r="1" fill="currentColor" /><circle cx="20" cy="12" r="1" fill="currentColor" /></>,
+  stop: <rect x="5" y="5" width="14" height="14" rx="2" fill="currentColor" />,
+  pencil: <><path d="m14 4 6 6-10 10-7 1 1-7L14 4Zm0 0 2-2a2 2 0 0 1 3 0l3 3a2 2 0 0 1 0 3l-2 2M4 14l6 6M3 21h18" /></>,
+  check: <path d="m5 12 4 4L19 6" />,
+  checkCircle: <><path d="M21 11a9 9 0 1 1-5-7" /><path d="m8 10 4 4 9-10" /></>,
+  installed: <><rect x="3" y="3" width="18" height="18" rx="4" /><path d="M3 8h18m-13 6 3 3 5-6" /></>,
+  refresh: <><path d="M20 7a9 9 0 1 0 1 8M20 2v5h-5" /></>,
+  thumbsUp: <path d="M8 10v11H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h4Zm0 0 5-8c3 0 3 3 1 7h5a2 2 0 0 1 2 2l-2 8a3 3 0 0 1-3 2H8" />,
+  tools: <><path d="m4 3 6 2 3 5-4 4-5-3-2-6 5 4 3-3ZM12 14l7 7 3-3-7-7M8 14l-5 6 2 2 6-6" /></>,
+  link: <><path d="m10 14 4-4m-6 6-1 1a4 4 0 0 1-6-6l5-5a4 4 0 0 1 6 0m4 2 1-1a4 4 0 0 1 6 6l-5 5a4 4 0 0 1-6 0" /></>,
+  bolt: <path d="m13 2-9 12h6l-1 8 10-13h-6l1-7Z" />,
+  panel: <><rect x="3" y="4" width="18" height="16" rx="4" /><path d="M8 4v16" /></>,
+  search: <><circle cx="10.5" cy="10.5" r="7" /><path d="m16 16 5 5" /></>,
+  filter: <path d="M4 4h16l-6 8v7l-4 2V12L4 4Z" />,
+  assistant: <><path d="m7 7-1-4 5 3h2l5-3-1 4M5 10a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v8a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3Z" /><rect x="8" y="10" width="8" height="6" rx="2" /><path d="M10 12v2m4-2v2m-4 5h4" /></>,
+  plusCircle: <><circle cx="12" cy="12" r="9" /><path d="M8 12h8m-4-4v8" /></>,
+  experts: <><rect x="4" y="3" width="13" height="9" rx="3" /><path d="m7 12 2 3 3-3m6-3 3 4v5a3 3 0 0 1-3 3h-3l-3-3M8 7h5" /></>,
+  clock: <><circle cx="12" cy="13" r="8" /><path d="m4 3-3 4m19-4 3 4M8 21l-1 2m9-2 1 2M8 13l3 3 5-6" /></>,
+  book: <><path d="M12 5C8 2 5 3 3 4v15c3-1 6-1 9 2 3-3 6-3 9-2V4c-2-1-5-2-9 1Zm0 0v16" /></>,
+  more: <><rect x="3" y="3" width="6" height="6" rx="1" /><path d="M17 3v6m-3-3h6" /><rect x="14" y="14" width="7" height="7" rx="1" /><path d="m6 14 4 7H2Z" /></>,
+  folder: <path d="M3 8V6a2 2 0 0 1 2-2h4l3 3h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8h12" />,
+  settings: <><path d="m8 3-6 9 6 9h8l6-9-6-9Z" /><circle cx="12" cy="12" r="3" /></>,
+  bell: <><path d="M9 4a3 3 0 0 1 6 0c3 1 3 4 3 7v4l2 3H4l2-3v-4c0-3 0-6 3-7Zm1 17h4" /></>,
+  devices: <><rect x="2" y="3" width="15" height="12" rx="2" /><path d="M7 15v5m-3 0h7" /><rect x="15" y="10" width="7" height="12" rx="2" /></>,
+  coffee: <><path d="M4 9h13v7a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9Zm13 1h2a3 3 0 1 1 0 6h-2M7 6c-3-2 3-2 0-5m6 5c-3-2 3-2 0-5" /></>,
+  code: <><path d="m7 8-4 4 4 4m10-8 4 4-4 4m-4-9-2 14" /><path d="M5 3h14a3 3 0 0 1 3 3m-3 15H5a3 3 0 0 1-3-3" /></>,
+  palette: <><path d="M12 3a9 9 0 1 0 0 18h1a2 2 0 0 0 1-4c-1-1 0-3 2-3h2a3 3 0 0 0 3-3 9 9 0 0 0-9-8Z" /><path d="M7 9h.1M11 6h.1M16 7h.1M18 11h.1" strokeWidth="3" /></>,
+  document: <><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9Zm0 0v6h6M8 13h8m-8 4h6M8 8h2" /></>,
+  wallet: <><path d="M20 8V5a2 2 0 0 0-2-2L5 6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h15V8H5" /><path d="M20 12h-6v5h6m-3-2.5h.1" /></>,
+  chart: <><path d="M10 3a9 9 0 1 0 11 11H10V3Z" /><path d="M14 2v8h8a9 9 0 0 0-8-8Z" /></>,
+  grid: <><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" /></>,
+  slides: <><rect x="3" y="3" width="18" height="13" rx="2" /><path d="M8 21h8m-4-5v5M7 7h10m-10 4h6" /></>,
+  shield: <><path d="m12 2 9 4v6c0 5-5 9-9 10-4-1-9-5-9-10V6Z" /><path d="m7 12 3 3 7-7" /></>,
+  microphone: <><rect x="8" y="2" width="8" height="13" rx="4" /><path d="M5 11v1a7 7 0 0 0 14 0v-1m-7 8v3m-3 0h6" /></>,
+  plus: <path d="M12 4v16M4 12h16" />,
+  chevron: <path d="m9 5 7 7-7 7" />,
+  send: <path d="m12 3 9 17-9-4-9 4Z" fill="currentColor" strokeLinejoin="round" />,
+  step: <path d="M3 17h5v4H3Zm5-5h5v9H8Zm5-9h5v13h-5Zm6 0h3v4h-3Z" fill="currentColor" stroke="none" />,
+} satisfies Record<string, ReactNode>;
+
+export type HomeIconName = keyof typeof paths;
+
+/** Small, consistent line icons rather than platform-dependent text glyphs. */
+export function HomeIcon({ name, size = 16 }: { name: HomeIconName; size?: number }) {
+  return <svg className="home-icon" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">{paths[name]}</svg>;
+}

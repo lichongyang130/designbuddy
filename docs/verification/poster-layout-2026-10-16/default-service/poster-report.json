@@ -1,0 +1,175 @@
+{
+  "skill": "image.layout",
+  "version": "1.0.0",
+  "sourceSHA256": "429026f7af4274f634e4eb1fbe2a50d0be5838b12865bcf62a492522174aedab",
+  "title": "自由排版示例",
+  "width": 960,
+  "height": 1200,
+  "background": "#f3f0e7",
+  "layers": [
+    {
+      "id": "accent",
+      "name": "橙色圆形",
+      "type": "rect",
+      "order": 0,
+      "x": 608,
+      "y": 80,
+      "width": 272,
+      "height": 272,
+      "opacityPercent": 100,
+      "visible": true,
+      "locked": false,
+      "rendered": true
+    },
+    {
+      "id": "panel",
+      "name": "绿色底板",
+      "type": "rect",
+      "order": 1,
+      "x": 64,
+      "y": 520,
+      "width": 832,
+      "height": 520,
+      "opacityPercent": 100,
+      "visible": true,
+      "locked": false,
+      "rendered": true
+    },
+    {
+      "id": "eyebrow",
+      "name": "上方说明",
+      "type": "text",
+      "order": 2,
+      "x": 64,
+      "y": 64,
+      "width": 480,
+      "height": 64,
+      "opacityPercent": 100,
+      "visible": true,
+      "locked": false,
+      "rendered": true,
+      "lines": [
+        {
+          "text": "DESIGNBUDDY / LAYOUT STUDIO",
+          "baseline": 94,
+          "width": 306.20000000000005
+        }
+      ],
+      "fontSize": 20,
+      "padding": 8,
+      "lineHeight": 1.4
+    },
+    {
+      "id": "title",
+      "name": "主标题",
+      "type": "text",
+      "order": 3,
+      "x": 64,
+      "y": 178,
+      "width": 680,
+      "height": 264,
+      "opacityPercent": 100,
+      "visible": true,
+      "locked": false,
+      "rendered": true,
+      "lines": [
+        {
+          "text": "把想法",
+          "baseline": 278.4,
+          "width": 252
+        },
+        {
+          "text": "变成画面。",
+          "baseline": 396,
+          "width": 420
+        }
+      ],
+      "fontSize": 84,
+      "padding": 8,
+      "lineHeight": 1.4
+    },
+    {
+      "id": "body",
+      "name": "说明文字",
+      "type": "text",
+      "order": 4,
+      "x": 112,
+      "y": 616,
+      "width": 720,
+      "height": 300,
+      "opacityPercent": 100,
+      "visible": true,
+      "locked": false,
+      "rendered": true,
+      "lines": [
+        {
+          "text": "文字、图片、色块",
+          "baseline": 670.2,
+          "width": 336
+        },
+        {
+          "text": "自由移动与调整层级",
+          "baseline": 729,
+          "width": 378
+        },
+        {
+          "text": "从你的实际素材开始",
+          "baseline": 787.8000000000001,
+          "width": 378
+        }
+      ],
+      "fontSize": 42,
+      "padding": 8,
+      "lineHeight": 1.4
+    },
+    {
+      "id": "footer",
+      "name": "样例声明",
+      "type": "text",
+      "order": 5,
+      "x": 64,
+      "y": 1096,
+      "width": 832,
+      "height": 64,
+      "opacityPercent": 100,
+      "visible": true,
+      "locked": false,
+      "rendered": true,
+      "lines": [
+        {
+          "text": "版式示例 · 非真实活动 · 请替换内容后导出",
+          "baseline": 1128.2,
+          "width": 437.712
+        }
+      ],
+      "fontSize": 22,
+      "padding": 8,
+      "lineHeight": 1.4
+    }
+  ],
+  "assets": [],
+  "fontSHA256": {
+    "noto-sans-sc-119-400-normal.woff2": "190237c828b2ea0f076bd1a4a1e6bbd7365e56a5ef837042e35763585250b3ac",
+    "noto-sans-sc-117-400-normal.woff2": "bf7c1b4b8b0d1110c761720b977d237d350130d29db48aea0bc5189f572dad3d",
+    "noto-sans-sc-116-400-normal.woff2": "5744f8001a3e231990bd1fe87b080bdd4b4d0e658c84a3bcdb5555e57e32661a",
+    "noto-sans-sc-118-400-normal.woff2": "b6be37866f0d950777a6ce2ab417aba11acc3c52786072b0d760da2a277cd248",
+    "noto-sans-sc-115-400-normal.woff2": "d83b8291340e0024c8a573afe48b60ce22ed00d87619a7f3950b2193d19af6c9",
+    "noto-sans-sc-114-400-normal.woff2": "d58ca6082d43993a894bcee72181b98527d3ef003099ba61146e3df4883a7be2",
+    "noto-sans-sc-111-400-normal.woff2": "f20ccaeab7d4244e651e6cac4296c2a26403108e70e8db5ac105b474670f1c28"
+  },
+  "render": {
+    "svgSHA256": "520cb10baffdcd488e7d698ffce02b179426745bc212171c6919c10c1b002a35",
+    "pngSHA256": "5de59aaf7a307a5cca0489824235afa00eb269e323a8bf8d65e845cc39b10072"
+  },
+  "notes": [
+    "图层按数组顺序由底到顶合成；锁定只是编辑器防误操作，不是权限隔离。",
+    "文本按显式换行和本地字体实际测量，不自动改写/缩字/换行；可见文字越界或缺字会失败。",
+    "SVG文字为轮廓路径；继续编辑请导入poster-project.json，而不是把SVG当文字编辑源。",
+    "可编辑JSON含全部图层、隐藏内容及原始内嵌素材（可能含元数据）；分享前须检查隐私和素材权利。",
+    "SVG内嵌完整规范图片，图片裁剪不删除图框外像素；裁剪/隐藏不应用作脱敏。",
+    "固定字段图层合成不是AI生图、智能改图、抠图、任意矢量编辑、PSD兼容或发布。"
+  ],
+  "requiresReview": true,
+  "generatedImagery": false,
+  "published": false
+}

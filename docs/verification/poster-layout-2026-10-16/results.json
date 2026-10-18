@@ -1,0 +1,357 @@
+{
+  "date": "2026-10-16",
+  "branch": "arena/5a5e7967-new",
+  "baseCommit": "edb66d8c847542692ba6b71286dcbf1be327013d",
+  "sourceState": "local working tree; not pushed, deployed or backed up to Drive",
+  "implementedTools": 20,
+  "configuredReadyTools": 20,
+  "readyToolsWithoutOptionalAsrInstall": 19,
+  "skill": "image.layout@1.0.0",
+  "tests": {
+    "newServer": 13,
+    "newBrowser": 8,
+    "serverRegression": {
+      "passed": 136,
+      "failed": 0,
+      "skipped": 0
+    },
+    "relatedBrowserRegression": {
+      "uniquePassed": 175,
+      "failed": 0,
+      "skipped": 0,
+      "suites": 18,
+      "runs": [
+        {
+          "passed": 169,
+          "suites": 17,
+          "log": "logs/layout-browser-regression.log"
+        },
+        {
+          "passed": 6,
+          "suites": 1,
+          "log": "logs/layout-browser-infographic.log"
+        }
+      ],
+      "scope": "Selected related suites, NOT full-site acceptance. Initial command misspelled infographic filename; omitted suite separately rerun."
+    },
+    "finalLayoutTargeted": {
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "log": "logs/layout-browser-final-targeted.log"
+    },
+    "catalog": {
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0
+    },
+    "sequence": "Backend/full frontend checks and related regression followed production code changes. Subsequently only screenshot collection and delayed image-read identity assertions were added to the layout test; its eight tests passed again. Counts are not additive across repeated runs."
+  },
+  "checks": {
+    "backendTypeScript": "passed",
+    "frontendTypeScript": "passed",
+    "productionBuild": "passed with existing large-chunk/fflate warnings",
+    "gitDiffCheck": "passed",
+    "actualServiceArtifacts": "6 artifacts; hashes verified; foreign-owner 404",
+    "browserArtifacts": "6 artifacts, edited text/image, real HTTP worker execution and download; hashes verified",
+    "screenshots": "7; desktop and 320/390px; desktop output/mobile canvas/390px controls visually inspected"
+  },
+  "notCompleted": [
+    "Full M3 advanced layout",
+    "AI image generation/retouching",
+    "Publishing",
+    "Autosave/cloud drafts",
+    "All expert advanced capabilities",
+    "36 business cases",
+    "Full-site acceptance",
+    "Remote delivery/deployment/updated backup"
+  ],
+  "sourceFiles": {
+    "README.md": {
+      "bytes": 56987,
+      "sha256": "e1b416af3ebe7751e85a980a9410bc3f1f47c66a1d856b3127bdfa4714bb8ce3"
+    },
+    "apps/web/playwright.config.ts": {
+      "bytes": 808,
+      "sha256": "7ebf7dcf46d4ac55de7b8e7768aeceb436e5b8415b501648cb7613228a72851d"
+    },
+    "apps/web/src/assets/fonts/OFL.txt": {
+      "bytes": 4314,
+      "sha256": "18aabf190848725e2576eefb5c29ba06aac1029d02132252a7f312eac2e50cf3"
+    },
+    "apps/web/src/assets/fonts/manifest.json": {
+      "bytes": 81366,
+      "sha256": "151834efa7c7683f02a6b6099e06565ed658cf12117927918ce913b8f34689e2"
+    },
+    "apps/web/src/assets/fonts/noto-sans-sc-111-400-normal.woff2": {
+      "bytes": 33164,
+      "sha256": "f20ccaeab7d4244e651e6cac4296c2a26403108e70e8db5ac105b474670f1c28"
+    },
+    "apps/web/src/assets/fonts/noto-sans-sc-114-400-normal.woff2": {
+      "bytes": 30712,
+      "sha256": "d58ca6082d43993a894bcee72181b98527d3ef003099ba61146e3df4883a7be2"
+    },
+    "apps/web/src/assets/fonts/noto-sans-sc-115-400-normal.woff2": {
+      "bytes": 29968,
+      "sha256": "d83b8291340e0024c8a573afe48b60ce22ed00d87619a7f3950b2193d19af6c9"
+    },
+    "apps/web/src/assets/fonts/noto-sans-sc-116-400-normal.woff2": {
+      "bytes": 28120,
+      "sha256": "5744f8001a3e231990bd1fe87b080bdd4b4d0e658c84a3bcdb5555e57e32661a"
+    },
+    "apps/web/src/assets/fonts/noto-sans-sc-117-400-normal.woff2": {
+      "bytes": 27864,
+      "sha256": "bf7c1b4b8b0d1110c761720b977d237d350130d29db48aea0bc5189f572dad3d"
+    },
+    "apps/web/src/assets/fonts/noto-sans-sc-118-400-normal.woff2": {
+      "bytes": 24720,
+      "sha256": "b6be37866f0d950777a6ce2ab417aba11acc3c52786072b0d760da2a277cd248"
+    },
+    "apps/web/src/assets/fonts/noto-sans-sc-119-400-normal.woff2": {
+      "bytes": 41288,
+      "sha256": "190237c828b2ea0f076bd1a4a1e6bbd7365e56a5ef837042e35763585250b3ac"
+    },
+    "apps/web/src/assets/fonts/scene-fonts.css": {
+      "bytes": 98466,
+      "sha256": "501179f2ad5ab17d2950515891471e92353608d949233327324d91fdbc705feb"
+    },
+    "apps/web/tests/poster-layout.spec.ts": {
+      "bytes": 13474,
+      "sha256": "f103cc24504eef6d42373440cb5931ada4ee1e0dc1503afca390bd70c226e61f"
+    },
+    "apps/web/tsconfig.json": {
+      "bytes": 710,
+      "sha256": "18093a3aa4065d4442c25b4b6e81a20ab5845764b721db8b1b9bc9a420263e98"
+    },
+    "docs/plans/advanced-experts-execution.md": {
+      "bytes": 13463,
+      "sha256": "c9a4b9690f23fd277f045511990f76ce56855d755a08f3d2a534c5b030a451b4"
+    },
+    "docs/plans/poster-layout-execution.md": {
+      "bytes": 8465,
+      "sha256": "94335d90e018d3982134c27f52a5472650ead88bd92f09849f9acca9d01fb19a"
+    },
+    "docs/plans/remaining-work-ledger.md": {
+      "bytes": 9308,
+      "sha256": "549e30a3fcc5a8762248ba08af48f5bf003a57ec1323ce25d8f46a24bf9e28d9"
+    },
+    "frontend/workspace/PosterLayoutEditor.tsx": {
+      "bytes": 19857,
+      "sha256": "27325020ee6e9772b8e2b39a0036633b264f0705690400c710c6f9d6a76ba26a"
+    },
+    "frontend/workspace/SkillWorkbench.tsx": {
+      "bytes": 18517,
+      "sha256": "10a736de37cbef6c32e14b3f8c0985d6dfa0b181a5195e88bb9f95cc1b9a6b5b"
+    },
+    "frontend/workspace/poster-layout-editor.css": {
+      "bytes": 4056,
+      "sha256": "ce190a7858918db1e49d186f3c6cb573068f9e71021ff1fc053afd72d7bc2568"
+    },
+    "package.json": {
+      "bytes": 1734,
+      "sha256": "db0e8d7de148b0bc3c35b7f570543da70516015a89a90d50b880245b1dbaee65"
+    },
+    "pnpm-lock.yaml": {
+      "bytes": 126806,
+      "sha256": "f0a75cc5c1b69ae02785c26f7fa5583149c61e019a6c9c2189daefdcb78a149f"
+    },
+    "scripts/verify-poster-layout.cjs": {
+      "bytes": 2709,
+      "sha256": "5cf8a1789471796e2dfbb511e4716d838a405f3df4244f0bebd0f3479b6e0e05"
+    },
+    "server/skills/contracts.ts": {
+      "bytes": 3935,
+      "sha256": "973aedf10721432a02a37e6d9600fa6531b6706cf32287473f7ac3d22e4ba69d"
+    },
+    "server/skills/executors.ts": {
+      "bytes": 15765,
+      "sha256": "437e3bddb9137ba21eba2260d1c6761feeba88ffeffa6a212efc605bedc67573"
+    },
+    "server/skills/fonts.ts": {
+      "bytes": 2567,
+      "sha256": "4f4311d773068199e92d5f498bea71b10a249c93418d2689e9b303cc4aeeffb6"
+    },
+    "server/skills/images.ts": {
+      "bytes": 8910,
+      "sha256": "90199520b0f153b17478e18fc47a6060dbc13f9a1c5616fe19118a418ead1ba3"
+    },
+    "server/skills/io.ts": {
+      "bytes": 921,
+      "sha256": "7387a558b3c048e24b53e80688d0df25b0c088da1d3f89ad482391ca193773e9"
+    },
+    "server/skills/plan-store.ts": {
+      "bytes": 10478,
+      "sha256": "7222ab4586f24690a48987bcfa526bcdda8d4c463c53405108ad56a532787c06"
+    },
+    "server/skills/planner.ts": {
+      "bytes": 10727,
+      "sha256": "7385fd59e8f7d2dc0aed4ea7f6284dc7746de3b4fcc3f304990d66e4c4484e75"
+    },
+    "server/skills/poster-layout.test.cjs": {
+      "bytes": 11130,
+      "sha256": "afa2dba13e546f796946b65065dd61ff37104493278a92f7e30cfd12ac76316b"
+    },
+    "server/skills/poster-layout.ts": {
+      "bytes": 7826,
+      "sha256": "59495b9286ea8f0eaa2dc1a90b46929f04f83704c8451a54ebc17a9c8de8724c"
+    },
+    "server/skills/runtime-catalog.ts": {
+      "bytes": 465,
+      "sha256": "437b172a72e6d78b40b4b60540879dcf8c999af9aa039bb0ffc832f38c17ed70"
+    },
+    "server/skills/service.test.cjs": {
+      "bytes": 11651,
+      "sha256": "f3b6343e299acc861bc9ebc44c9eae9b97223dd87432cca0c51aed30716d1374"
+    },
+    "server/skills/service.ts": {
+      "bytes": 22193,
+      "sha256": "a89a351ddc149c162df5e720d472c32b9a0de1db279707b9ba8844df93c9c52e"
+    },
+    "server/skills/testing/poster-layout-fixtures.cjs": {
+      "bytes": 1101,
+      "sha256": "12562c2f082b956dc02b89002c591c25b6e8cfb9a8cbee94c64d4daf99d8458e"
+    },
+    "server/skills/worker.ts": {
+      "bytes": 428,
+      "sha256": "6702cb68530b98f471e6c8a0a078be7261fb0e4bf1bbfc824fd3caa92bb0579c"
+    },
+    "server/tsconfig.local.json": {
+      "bytes": 435,
+      "sha256": "cd63ebb0e9b2c0ab4def27e63511750dce5731b29a7f5ebcdc73b2f1f404f5ce"
+    },
+    "shared/expertRouting.ts": {
+      "bytes": 19159,
+      "sha256": "5e65b3784c314e8b167f77d06d6e1efa3c1bab2f8e8daa64c4d6a3dc46f4be54"
+    },
+    "shared/posterLayout.ts": {
+      "bytes": 8309,
+      "sha256": "55ae7fc0eab1da98362d244aa5c877b2e25aedd070bd96032a0e7abe7fbaf0e7"
+    },
+    "shared/skillRuntime.ts": {
+      "bytes": 21136,
+      "sha256": "723637a726074ce099ea4f1f5e58cdb89a5f917740f318f5aad4402a2f847c7c"
+    }
+  },
+  "evidenceFiles": {
+    "README.md": {
+      "bytes": 1937,
+      "sha256": "534dbf51d9b130ea8c30ae445b1989cf2138bfdd28f7bbbfca70f19f6e0c7eb0"
+    },
+    "default-service/execution-receipt.json": {
+      "bytes": 1696,
+      "sha256": "d1de39aa48f06fbff4fafc2629361f26b35cc8e69bc02c5ac81fd196e22efbe4"
+    },
+    "default-service/font-license.txt": {
+      "bytes": 4314,
+      "sha256": "18aabf190848725e2576eefb5c29ba06aac1029d02132252a7f312eac2e50cf3"
+    },
+    "default-service/poster-project.json": {
+      "bytes": 2046,
+      "sha256": "429026f7af4274f634e4eb1fbe2a50d0be5838b12865bcf62a492522174aedab"
+    },
+    "default-service/poster-report.json": {
+      "bytes": 4939,
+      "sha256": "37c15be34decaaaf35e131c2d78647783a157aca03ca53e13daab3f622ef4a26"
+    },
+    "default-service/poster.png": {
+      "bytes": 76708,
+      "sha256": "5de59aaf7a307a5cca0489824235afa00eb269e323a8bf8d65e845cc39b10072"
+    },
+    "default-service/poster.svg": {
+      "bytes": 57026,
+      "sha256": "520cb10baffdcd488e7d698ffce02b179426745bc212171c6919c10c1b002a35"
+    },
+    "edited-browser/execution-receipt.json": {
+      "bytes": 1696,
+      "sha256": "8f448ad8d9e33e49c0badd09a027b17c740dc0a56167676a84a32d88fe6a302e"
+    },
+    "edited-browser/font-license.txt": {
+      "bytes": 4314,
+      "sha256": "18aabf190848725e2576eefb5c29ba06aac1029d02132252a7f312eac2e50cf3"
+    },
+    "edited-browser/poster-project.json": {
+      "bytes": 3461,
+      "sha256": "d5a75c524521778d1873d8d0a99ebc51aee6f114e9caf475b80ce1137a585f00"
+    },
+    "edited-browser/poster-report.json": {
+      "bytes": 6090,
+      "sha256": "e0173df92e4a6e15cecc7aa0a3e0a5df1af22a448e067cfa7aeef6174f744388"
+    },
+    "edited-browser/poster.png": {
+      "bytes": 66154,
+      "sha256": "4516181a22afc818ca4470596d02f6bebc12504f921492d54d243b753d8b20ac"
+    },
+    "edited-browser/poster.svg": {
+      "bytes": 56776,
+      "sha256": "a6e248ab09b7f4f8a2133c6717de1aaee8d5db2b0a8cb181b04b9551bf1512ff"
+    },
+    "logs/layout-browser-final-targeted.log": {
+      "bytes": 1239,
+      "sha256": "36cdfe66ecb3f87275683b4feebaf2b91a82fb53eefdc73b7457fc43afab3f83"
+    },
+    "logs/layout-browser-infographic.log": {
+      "bytes": 933,
+      "sha256": "110cf2c4eb6d5175031a768f0ce3fea5c42ee223eef6620508efb225f99b39a2"
+    },
+    "logs/layout-browser-regression.log": {
+      "bytes": 22615,
+      "sha256": "595f8be4ab118c7add57d45a0d7265361440a0f90696b27d4c61861b0705e5bc"
+    },
+    "logs/layout-browser-targeted.log": {
+      "bytes": 1239,
+      "sha256": "7580063ec55c622f78e7c75cf2cf3e687ae0653546818b782d696efce9afa42d"
+    },
+    "logs/layout-build.log": {
+      "bytes": 19427,
+      "sha256": "6e4ae1e7d5b6f17f815ead619d3b7cc64b27bdbce05104a59930a51b550d8952"
+    },
+    "logs/layout-catalog.log": {
+      "bytes": 2625,
+      "sha256": "f17d595d249fd84cf0532d904c84917a1cbe68057b1e93de94275155b8c01510"
+    },
+    "logs/layout-server-full.log": {
+      "bytes": 38957,
+      "sha256": "6c9f0b7c9b8fd64e1de034492405c9fc5bbf7c7ec92cde0c7c561ad30747389e"
+    },
+    "logs/layout-server-targeted.log": {
+      "bytes": 3834,
+      "sha256": "3970b7890e32f95a207216d5211c70c68405f1023b102d955c36c467ebea6fee"
+    },
+    "logs/layout-service-evidence.log": {
+      "bytes": 1349,
+      "sha256": "f69a0cca3949bf0bfe71eb319d5736b96549e76200a54674e9c40384d826e7cf"
+    },
+    "logs/runtime-catalog.log": {
+      "bytes": 4146,
+      "sha256": "d9cac416ccaa5a3ff686e14a1bdfa4c3ae9f20094adfd019b4994a3108afe5b0"
+    },
+    "screenshots/layout-canvas-320.png": {
+      "bytes": 12505,
+      "sha256": "7d637949dbfb8ccbb0d8d968e2eb8e54ab2ca3d6174bd2ae6e24bc10e6cd5e80"
+    },
+    "screenshots/layout-canvas-390.png": {
+      "bytes": 18407,
+      "sha256": "084a5eb1b1a28eeff1e004a1cd51a30bcce58923e036055c4a5407a0883af5e4"
+    },
+    "screenshots/layout-canvas-desktop.png": {
+      "bytes": 40537,
+      "sha256": "452a5204fbf5df187bad64cb9ddd132735cbfd05cba8031bdad0b5ad95fda933"
+    },
+    "screenshots/layout-controls-390.png": {
+      "bytes": 43425,
+      "sha256": "f4c81e34d85217255225e8c51702e3553b2d50110a6bbdd71f619f8d75a0dfbd"
+    },
+    "screenshots/layout-output-320.png": {
+      "bytes": 17291,
+      "sha256": "931d92876c9b1848ccd344f95384a26f0af67cfe025ad01dc7cd2da864068a27"
+    },
+    "screenshots/layout-output-390.png": {
+      "bytes": 21514,
+      "sha256": "a6cee2947f6543476f2faf1d13f94c8d9310950d4d364346dfc7fc314f92fa16"
+    },
+    "screenshots/layout-preview.png": {
+      "bytes": 33093,
+      "sha256": "9561867206dcbdb1b74aad6033379e85ab7142df61c3de1e9e7bb9c7ea127e0f"
+    }
+  }
+}

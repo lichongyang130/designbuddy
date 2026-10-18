@@ -1,0 +1,69 @@
+{
+  "name": "designbuddy-skills",
+  "baseUrl": "http://127.0.0.1:5173",
+  "viewports": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "checks": [
+    {
+      "id": "home-loads",
+      "type": "http",
+      "path": "/",
+      "expectStatus": 200
+    },
+    {
+      "id": "skills-hero",
+      "type": "assertText",
+      "path": "/skills",
+      "selector": "h1",
+      "contains": "技能"
+    },
+    {
+      "id": "unavailable-card-badge",
+      "type": "assertVisible",
+      "path": "/skills",
+      "selector": ".skill-directory-card.is-unavailable",
+      "waitFor": ".skill-directory-card"
+    },
+    {
+      "id": "open-unavailable-skill",
+      "type": "click",
+      "path": "/skills",
+      "selector": "button:has-text(\"查看接入状态\")",
+      "expectText": "需要你提供",
+      "waitFor": ".skill-directory-card",
+      "expectSelector": ".skill-detail-requires"
+    },
+    {
+      "id": "requirements-listed",
+      "type": "assertText",
+      "path": "/skills",
+      "selector": ".skill-detail-requires",
+      "contains": "需要你提供",
+      "waitFor": ".skill-detail-requires",
+      "reload": false
+    },
+    {
+      "id": "requirements-screenshot",
+      "type": "screenshot",
+      "path": "/skills",
+      "selector": ".skill-detail-requires",
+      "reload": false
+    },
+    {
+      "id": "skills-screenshot",
+      "type": "screenshot",
+      "path": "/skills",
+      "waitFor": ".skill-directory-card"
+    }
+  ]
+}

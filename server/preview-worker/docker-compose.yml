@@ -1,0 +1,29 @@
+services:
+  preview-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      HOST: ${HOST:-127.0.0.1}
+      PORT: ${PORT:-8080}
+      PREVIEW_RUNTIME_TOKEN: ${PREVIEW_RUNTIME_TOKEN:?Set PREVIEW_RUNTIME_TOKEN in .env}
+      PREVIEW_WORKER_ID: ${PREVIEW_WORKER_ID:-designbuddy-preview-worker}
+      PUBLIC_PREVIEW_ORIGIN: ${PUBLIC_PREVIEW_ORIGIN:?Set PUBLIC_PREVIEW_ORIGIN in .env}
+      PREVIEW_WORKSPACE_ROOT: ${PREVIEW_WORKSPACE_ROOT:-/var/lib/designbuddy-preview}
+      PREVIEW_BIND_HOST: ${PREVIEW_BIND_HOST:-127.0.0.1}
+      PREVIEW_UPSTREAM_HOST: ${PREVIEW_UPSTREAM_HOST:-127.0.0.1}
+      PREVIEW_HOST_PORT_START: ${PREVIEW_HOST_PORT_START:-41000}
+      PREVIEW_HOST_PORT_END: ${PREVIEW_HOST_PORT_END:-41999}
+      PREVIEW_MEMORY_LIMIT: ${PREVIEW_MEMORY_LIMIT:-512m}
+      PREVIEW_CPU_LIMIT: ${PREVIEW_CPU_LIMIT:-1}
+      PREVIEW_PIDS_LIMIT: ${PREVIEW_PIDS_LIMIT:-128}
+      PREVIEW_MAX_SESSIONS: ${PREVIEW_MAX_SESSIONS:-8}
+      PREVIEW_MAX_FILES: ${PREVIEW_MAX_FILES:-500}
+      PREVIEW_MAX_TOTAL_BYTES: ${PREVIEW_MAX_TOTAL_BYTES:-5242880}
+      PREVIEW_STARTUP_TIMEOUT_MS: ${PREVIEW_STARTUP_TIMEOUT_MS:-180000}
+      PREVIEW_SESSION_TTL_MS: ${PREVIEW_SESSION_TTL_MS:-7200000}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${PREVIEW_WORKSPACE_ROOT:-/var/lib/designbuddy-preview}:${PREVIEW_WORKSPACE_ROOT:-/var/lib/designbuddy-preview}

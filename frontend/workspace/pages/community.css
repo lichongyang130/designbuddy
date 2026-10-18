@@ -1,0 +1,28 @@
+.community-workspace { background: #f7f8fc; }
+.ct-main { flex: 1; min-width: 0; overflow: auto; background: #f7f8fc; color: #202434; }
+.ct-content { display: flex; flex-direction: column; gap: 18px; max-width: 1040px; margin: 0 auto; padding: 26px 28px 60px; }
+.ct-hero h1 { margin: 4px 0 6px; font-size: 26px; }
+.ct-hero p { margin: 0; color: #6b7180; font-size: 13px; line-height: 1.7; }
+.ct-eyebrow { color: #8a90a0; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; }
+.ct-card { padding: 18px 20px; border: 1px solid #e6e8f0; border-radius: 14px; background: #fff; }
+.ct-card h2 { margin: 0 0 6px; font-size: 16px; }
+.ct-note { margin: 0 0 12px; color: #6b7180; font-size: 12px; line-height: 1.7; }
+.ct-message { margin: 0; padding: 9px 12px; border-radius: 10px; background: #eef7f1; color: #2f7a55; font-size: 12px; }
+.ct-message.is-error { background: #fdeeee; color: #b4483f; }
+.ct-list { display: flex; flex-direction: column; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.ct-list > li { padding: 12px; border: 1px solid #e6e8f0; border-radius: 10px; background: #fbfbfe; }
+.ct-item-head { display: flex; flex-direction: column; gap: 4px; }
+.ct-item-head strong { font-size: 13px; word-break: break-word; }
+.ct-item-head span { color: #6b7180; font-size: 11px; line-height: 1.6; }
+.ct-description { margin: 2px 0 0; color: #4a5060; font-size: 12px; line-height: 1.7; }
+.ct-item-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; }
+.ct-item-actions select { padding: 6px 9px; border: 1px solid #dcdfe8; border-radius: 8px; background: #fff; font: inherit; font-size: 11px; }
+.ct-button { padding: 8px 13px; border: 1px solid #dcdfe8; border-radius: 9px; background: #fff; color: #3a4050; font: inherit; font-size: 12px; cursor: pointer; }
+.ct-button:disabled { opacity: 0.55; cursor: not-allowed; }
+.ct-button.is-primary { border-color: #7458ed; background: #7458ed; color: #fff; }
+.ct-button.is-danger { border-color: #e0b3ae; color: #b4483f; }
+.ct-events { margin: 10px 0 0; padding: 0 0 0 16px; color: #6b7180; font-size: 11px; }
+.ct-empty { color: #8a90a0; font-size: 12px; }
+@media (max-width: 720px) {
+  .ct-content { padding: 18px 14px 40px; }
+}

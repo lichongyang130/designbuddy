@@ -1,0 +1,26 @@
+[
+  {
+    "id": "office",
+    "name": "办公效率",
+    "type": "skill",
+    "items": ["会议纪要", "周报生成", "邮件助手", "Excel分析"]
+  },
+  {
+    "id": "business",
+    "name": "商业创业",
+    "type": "skill",
+    "items": ["商业计划书", "竞品分析", "市场调研"]
+  },
+  {
+    "id": "design",
+    "name": "设计生产",
+    "type": "template",
+    "items": ["官网模板", "PPT模板", "Dashboard模板"]
+  },
+  {
+    "id": "integration",
+    "name": "连接器",
+    "type": "plugin",
+    "items": ["Notion", "飞书", "企业微信", "GitHub"]
+  }
+]

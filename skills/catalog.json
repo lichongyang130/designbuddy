@@ -1,0 +1,2882 @@
+[
+  {
+    "id": "skill-01",
+    "name": "UI/UX Pro",
+    "category": "设计",
+    "description": "页面层级、组件一致性与交互状态审查",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-02",
+    "name": "Frontend Design",
+    "category": "设计",
+    "description": "生成具有明确视觉方向的高品质前端界面",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-03",
+    "name": "Design System Builder",
+    "category": "设计",
+    "description": "从品牌目标生成 Token 与组件规范",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-04",
+    "name": "Screenshot to UI",
+    "category": "设计",
+    "description": "从截图提取布局、组件和样式线索",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-05",
+    "name": "Design Critique",
+    "category": "设计",
+    "description": "按可读性、可访问性和一致性提出改进",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-06",
+    "name": "Responsive QA",
+    "category": "质量",
+    "description": "检查断点、溢出与触控目标",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-07",
+    "name": "Accessibility Audit",
+    "category": "质量",
+    "description": "检查键盘、语义和对比度",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-08",
+    "name": "Design Token Extractor",
+    "category": "设计",
+    "description": "提取颜色、字体、间距和圆角变量",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-09",
+    "name": "Component API Designer",
+    "category": "开发",
+    "description": "设计可维护的组件属性和变体",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-10",
+    "name": "React Refactor",
+    "category": "开发",
+    "description": "分离状态、视图与业务逻辑",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-11",
+    "name": "TypeScript Guard",
+    "category": "开发",
+    "description": "改进类型边界和错误处理",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-12",
+    "name": "Bug Reproducer",
+    "category": "开发",
+    "description": "把问题描述整理成最小复现步骤",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-13",
+    "name": "Test Plan Generator",
+    "category": "质量",
+    "description": "根据需求生成测试矩阵",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-14",
+    "name": "Playwright E2E",
+    "category": "质量",
+    "description": "编写端到端交互测试",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-15",
+    "name": "Visual Regression",
+    "category": "质量",
+    "description": "建立截图基线和视觉差异清单",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-16",
+    "name": "API Integration",
+    "category": "开发",
+    "description": "从 API 契约生成可靠调用层",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-17",
+    "name": "MCP Tool Design",
+    "category": "开发",
+    "description": "设计权限清晰的工具输入输出",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-18",
+    "name": "Agent Planner",
+    "category": "AI Agent",
+    "description": "将复杂任务拆分为可验证子任务",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-19",
+    "name": "Project Analyzer",
+    "category": "AI Agent",
+    "description": "分析目录、依赖、入口和风险",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-20",
+    "name": "Memory Curator",
+    "category": "AI Agent",
+    "description": "沉淀稳定偏好、决策与项目事实",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-21",
+    "name": "Prompt Optimizer",
+    "category": "AI Agent",
+    "description": "增强目标、约束、示例和验收标准",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-22",
+    "name": "Research Brief",
+    "category": "研究",
+    "description": "汇总来源、证据与待验证假设",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-23",
+    "name": "Competitor Matrix",
+    "category": "研究",
+    "description": "构建竞品能力与差异矩阵",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-24",
+    "name": "Product Requirements",
+    "category": "产品",
+    "description": "把想法整理为用户故事与验收标准",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-25",
+    "name": "User Journey Map",
+    "category": "产品",
+    "description": "梳理任务路径、情绪与摩擦点",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-26",
+    "name": "Information Architecture",
+    "category": "产品",
+    "description": "组织导航、页面和内容层级",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-27",
+    "name": "Conversion Review",
+    "category": "增长",
+    "description": "评估 CTA、信任信号与表单流程",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-28",
+    "name": "SEO Structure",
+    "category": "增长",
+    "description": "优化语义标题、元信息和内部链接",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-29",
+    "name": "Content Design",
+    "category": "内容",
+    "description": "编写简洁、一致且易理解的界面文案",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-30",
+    "name": "Localization QA",
+    "category": "质量",
+    "description": "检查多语言布局与字符串完整性",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-31",
+    "name": "Dashboard Storytelling",
+    "category": "数据",
+    "description": "选择适合指标的图表和注释",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-32",
+    "name": "Data Table UX",
+    "category": "设计",
+    "description": "优化筛选、排序、批量操作和空状态",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-33",
+    "name": "Form UX",
+    "category": "设计",
+    "description": "设计字段、校验、错误与成功反馈",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-34",
+    "name": "Onboarding Flow",
+    "category": "设计",
+    "description": "设计渐进式引导与首次价值体验",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-35",
+    "name": "Empty State Design",
+    "category": "设计",
+    "description": "让空状态提供明确下一步动作",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-36",
+    "name": "Loading State Design",
+    "category": "设计",
+    "description": "规划骨架屏、进度与超时反馈",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-37",
+    "name": "Error Recovery",
+    "category": "质量",
+    "description": "设计可理解的错误与恢复路径",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-38",
+    "name": "Security Review",
+    "category": "安全",
+    "description": "检查权限、秘密信息和危险执行边界",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-39",
+    "name": "Release Checklist",
+    "category": "交付",
+    "description": "制定可验证的发布与回滚清单",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-40",
+    "name": "PR Review",
+    "category": "开发",
+    "description": "检查风险、兼容性、测试和可维护性",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-41",
+    "name": "Codebase Mapping",
+    "category": "开发",
+    "description": "建立入口、模块、依赖与调用图",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-42",
+    "name": "Documentation Writer",
+    "category": "文档",
+    "description": "生成准确的安装、架构和操作文档",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-43",
+    "name": "Meeting Notes",
+    "category": "办公",
+    "description": "整理决定、负责人、截止时间和风险",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-44",
+    "name": "Spreadsheet Cleanup",
+    "category": "办公",
+    "description": "规范字段、重复值与数据类型",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-45",
+    "name": "Presentation Outline",
+    "category": "办公",
+    "description": "生成叙事清晰的演示结构",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-46",
+    "name": "Image Asset Brief",
+    "category": "多媒体",
+    "description": "定义画面主体、构图、色调和交付规格",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-47",
+    "name": "Video Storyboard",
+    "category": "多媒体",
+    "description": "组织镜头、时长、字幕与转场",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-48",
+    "name": "Brand Voice",
+    "category": "品牌",
+    "description": "维护品牌语气、词汇与禁用表达",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-49",
+    "name": "Figma Handoff",
+    "category": "设计",
+    "description": "整理标注、状态、资源和开发说明",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-50",
+    "name": "Template QA",
+    "category": "质量",
+    "description": "检查模板链接、状态和响应式布局",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-51",
+    "name": "Commerce UX",
+    "category": "产品",
+    "description": "优化商品发现、购物袋与结账路径",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-52",
+    "name": "Subscription UX",
+    "category": "产品",
+    "description": "设计套餐、用量、支付和取消流程",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-53",
+    "name": "Admin Console",
+    "category": "产品",
+    "description": "设计权限、审计日志和批量管理",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-54",
+    "name": "Search Experience",
+    "category": "设计",
+    "description": "优化查询、建议、筛选和无结果体验",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-55",
+    "name": "Notification Strategy",
+    "category": "产品",
+    "description": "设计优先级、频率与偏好管理",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-56",
+    "name": "Realtime Collaboration",
+    "category": "开发",
+    "description": "规划 presence、冲突解决和同步状态",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-57",
+    "name": "Performance Budget",
+    "category": "开发",
+    "description": "定义资源预算、加载目标与测量方法",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-58",
+    "name": "Database Schema",
+    "category": "开发",
+    "description": "设计实体、索引和迁移约定",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-59",
+    "name": "Deployment Readiness",
+    "category": "交付",
+    "description": "检查环境变量、健康检查与回滚策略",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-60",
+    "name": "User Feedback Loop",
+    "category": "产品",
+    "description": "收集反馈、分类问题并追踪改进",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-61",
+    "name": "Pricing Strategy",
+    "category": "产品",
+    "description": "组织套餐差异、价值锚点与升级路径",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-62",
+    "name": "Marketplace Listing",
+    "category": "增长",
+    "description": "编写资源介绍、截图和清晰能力边界",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-63",
+    "name": "Knowledge Base",
+    "category": "办公",
+    "description": "把文档整理为可检索的可信知识源",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-64",
+    "name": "Workflow Composer",
+    "category": "AI Agent",
+    "description": "定义触发器、步骤、分支和失败恢复",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-65",
+    "name": "Agent Evaluation",
+    "category": "AI Agent",
+    "description": "设计任务集、评分标准和回归测试",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-66",
+    "name": "Human Approval Gates",
+    "category": "安全",
+    "description": "为写文件、发消息和部署设置人工确认",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-67",
+    "name": "Image Accessibility",
+    "category": "质量",
+    "description": "检查替代文本、装饰图与信息图说明",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-68",
+    "name": "Design QA Checklist",
+    "category": "质量",
+    "description": "建立跨页面视觉和交互验收清单",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-69",
+    "name": "Prototype Handoff",
+    "category": "设计",
+    "description": "将原型状态、链接与验收条件交付开发",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-70",
+    "name": "OpenAPI Reader",
+    "category": "开发",
+    "description": "读取 API schema 并提取参数和错误码",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-71",
+    "name": "CSV Insight",
+    "category": "数据",
+    "description": "快速分析表格并解释趋势与异常",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-72",
+    "name": "Support Reply",
+    "category": "客服",
+    "description": "依据知识库起草并标记不确定信息",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-73",
+    "name": "Task Estimation",
+    "category": "产品",
+    "description": "按依赖、风险与不确定性拆分任务",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-74",
+    "name": "Legacy UI Modernizer",
+    "category": "设计",
+    "description": "逐步改造旧界面并保留现有功能",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-075",
+    "name": "知识管理 · 风险分析 5",
+    "category": "办公",
+    "description": "识别依赖、边界条件和潜在失败，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-076",
+    "name": "工程交付 · 风险分析 5",
+    "category": "开发",
+    "description": "识别依赖、边界条件和潜在失败，并保留输入来源、决策依据和验收结果。",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-077",
+    "name": "自动化测试 · 风险分析 5",
+    "category": "质量",
+    "description": "识别依赖、边界条件和潜在失败，并保留输入来源、决策依据和验收结果。",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-078",
+    "name": "用户研究 · 风险分析 5",
+    "category": "研究",
+    "description": "识别依赖、边界条件和潜在失败，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-079",
+    "name": "产品增长 · 风险分析 5",
+    "category": "产品",
+    "description": "识别依赖、边界条件和潜在失败，并保留输入来源、决策依据和验收结果。",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-080",
+    "name": "安全治理 · 风险分析 5",
+    "category": "安全",
+    "description": "识别依赖、边界条件和潜在失败，并保留输入来源、决策依据和验收结果。",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-081",
+    "name": "内容创作 · 风险分析 5",
+    "category": "内容",
+    "description": "识别依赖、边界条件和潜在失败，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-082",
+    "name": "媒体工作流 · 风险分析 5",
+    "category": "多媒体",
+    "description": "识别依赖、边界条件和潜在失败，并保留输入来源、决策依据和验收结果。",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-083",
+    "name": "项目协作 · 风险分析 5",
+    "category": "产品",
+    "description": "识别依赖、边界条件和潜在失败，并保留输入来源、决策依据和验收结果。",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-084",
+    "name": "部署运维 · 风险分析 5",
+    "category": "交付",
+    "description": "识别依赖、边界条件和潜在失败，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-085",
+    "name": "API 设计 · 风险分析 5",
+    "category": "开发",
+    "description": "识别依赖、边界条件和潜在失败，并保留输入来源、决策依据和验收结果。",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-086",
+    "name": "设计系统 · 交付清单 6",
+    "category": "设计",
+    "description": "输出执行步骤、负责人和完成标准，并保留输入来源、决策依据和验收结果。",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-087",
+    "name": "响应式产品 · 交付清单 6",
+    "category": "设计",
+    "description": "输出执行步骤、负责人和完成标准，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-088",
+    "name": "表单体验 · 交付清单 6",
+    "category": "设计",
+    "description": "输出执行步骤、负责人和完成标准，并保留输入来源、决策依据和验收结果。",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-089",
+    "name": "电商体验 · 交付清单 6",
+    "category": "产品",
+    "description": "输出执行步骤、负责人和完成标准，并保留输入来源、决策依据和验收结果。",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-090",
+    "name": "数据可视化 · 交付清单 6",
+    "category": "数据",
+    "description": "输出执行步骤、负责人和完成标准，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-091",
+    "name": "Agent 评估 · 交付清单 6",
+    "category": "AI Agent",
+    "description": "输出执行步骤、负责人和完成标准，并保留输入来源、决策依据和验收结果。",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-092",
+    "name": "知识管理 · 交付清单 6",
+    "category": "办公",
+    "description": "输出执行步骤、负责人和完成标准，并保留输入来源、决策依据和验收结果。",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-093",
+    "name": "工程交付 · 交付清单 6",
+    "category": "开发",
+    "description": "输出执行步骤、负责人和完成标准，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-094",
+    "name": "自动化测试 · 交付清单 6",
+    "category": "质量",
+    "description": "输出执行步骤、负责人和完成标准，并保留输入来源、决策依据和验收结果。",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-095",
+    "name": "用户研究 · 交付清单 6",
+    "category": "研究",
+    "description": "输出执行步骤、负责人和完成标准，并保留输入来源、决策依据和验收结果。",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-096",
+    "name": "产品增长 · 交付清单 6",
+    "category": "产品",
+    "description": "输出执行步骤、负责人和完成标准，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-097",
+    "name": "安全治理 · 交付清单 6",
+    "category": "安全",
+    "description": "输出执行步骤、负责人和完成标准，并保留输入来源、决策依据和验收结果。",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-098",
+    "name": "内容创作 · 交付清单 6",
+    "category": "内容",
+    "description": "输出执行步骤、负责人和完成标准，并保留输入来源、决策依据和验收结果。",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-099",
+    "name": "媒体工作流 · 交付清单 6",
+    "category": "多媒体",
+    "description": "输出执行步骤、负责人和完成标准，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-100",
+    "name": "项目协作 · 交付清单 6",
+    "category": "产品",
+    "description": "输出执行步骤、负责人和完成标准，并保留输入来源、决策依据和验收结果。",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-101",
+    "name": "部署运维 · 交付清单 6",
+    "category": "交付",
+    "description": "输出执行步骤、负责人和完成标准，并保留输入来源、决策依据和验收结果。",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-102",
+    "name": "API 设计 · 交付清单 6",
+    "category": "开发",
+    "description": "输出执行步骤、负责人和完成标准，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-103",
+    "name": "设计系统 · 方案生成 7",
+    "category": "设计",
+    "description": "生成清晰的方案、约束与验收条件，并保留输入来源、决策依据和验收结果。",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-104",
+    "name": "响应式产品 · 方案生成 7",
+    "category": "设计",
+    "description": "生成清晰的方案、约束与验收条件，并保留输入来源、决策依据和验收结果。",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-105",
+    "name": "表单体验 · 方案生成 7",
+    "category": "设计",
+    "description": "生成清晰的方案、约束与验收条件，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-106",
+    "name": "电商体验 · 方案生成 7",
+    "category": "产品",
+    "description": "生成清晰的方案、约束与验收条件，并保留输入来源、决策依据和验收结果。",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-107",
+    "name": "数据可视化 · 方案生成 7",
+    "category": "数据",
+    "description": "生成清晰的方案、约束与验收条件，并保留输入来源、决策依据和验收结果。",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-108",
+    "name": "Agent 评估 · 方案生成 7",
+    "category": "AI Agent",
+    "description": "生成清晰的方案、约束与验收条件，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-109",
+    "name": "知识管理 · 方案生成 7",
+    "category": "办公",
+    "description": "生成清晰的方案、约束与验收条件，并保留输入来源、决策依据和验收结果。",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-110",
+    "name": "工程交付 · 方案生成 7",
+    "category": "开发",
+    "description": "生成清晰的方案、约束与验收条件，并保留输入来源、决策依据和验收结果。",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-111",
+    "name": "自动化测试 · 方案生成 7",
+    "category": "质量",
+    "description": "生成清晰的方案、约束与验收条件，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-112",
+    "name": "用户研究 · 方案生成 7",
+    "category": "研究",
+    "description": "生成清晰的方案、约束与验收条件，并保留输入来源、决策依据和验收结果。",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-113",
+    "name": "产品增长 · 方案生成 7",
+    "category": "产品",
+    "description": "生成清晰的方案、约束与验收条件，并保留输入来源、决策依据和验收结果。",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-114",
+    "name": "安全治理 · 方案生成 7",
+    "category": "安全",
+    "description": "生成清晰的方案、约束与验收条件，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-115",
+    "name": "内容创作 · 方案生成 7",
+    "category": "内容",
+    "description": "生成清晰的方案、约束与验收条件，并保留输入来源、决策依据和验收结果。",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-116",
+    "name": "媒体工作流 · 方案生成 7",
+    "category": "多媒体",
+    "description": "生成清晰的方案、约束与验收条件，并保留输入来源、决策依据和验收结果。",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-117",
+    "name": "项目协作 · 方案生成 7",
+    "category": "产品",
+    "description": "生成清晰的方案、约束与验收条件，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-118",
+    "name": "部署运维 · 方案生成 7",
+    "category": "交付",
+    "description": "生成清晰的方案、约束与验收条件，并保留输入来源、决策依据和验收结果。",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-119",
+    "name": "API 设计 · 方案生成 7",
+    "category": "开发",
+    "description": "生成清晰的方案、约束与验收条件，并保留输入来源、决策依据和验收结果。",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-120",
+    "name": "设计系统 · 质量审查 8",
+    "category": "设计",
+    "description": "检查一致性、错误状态与可访问性，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-121",
+    "name": "响应式产品 · 质量审查 8",
+    "category": "设计",
+    "description": "检查一致性、错误状态与可访问性，并保留输入来源、决策依据和验收结果。",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-122",
+    "name": "表单体验 · 质量审查 8",
+    "category": "设计",
+    "description": "检查一致性、错误状态与可访问性，并保留输入来源、决策依据和验收结果。",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-123",
+    "name": "电商体验 · 质量审查 8",
+    "category": "产品",
+    "description": "检查一致性、错误状态与可访问性，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-124",
+    "name": "数据可视化 · 质量审查 8",
+    "category": "数据",
+    "description": "检查一致性、错误状态与可访问性，并保留输入来源、决策依据和验收结果。",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-125",
+    "name": "Agent 评估 · 质量审查 8",
+    "category": "AI Agent",
+    "description": "检查一致性、错误状态与可访问性，并保留输入来源、决策依据和验收结果。",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-126",
+    "name": "知识管理 · 质量审查 8",
+    "category": "办公",
+    "description": "检查一致性、错误状态与可访问性，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-127",
+    "name": "工程交付 · 质量审查 8",
+    "category": "开发",
+    "description": "检查一致性、错误状态与可访问性，并保留输入来源、决策依据和验收结果。",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-128",
+    "name": "自动化测试 · 质量审查 8",
+    "category": "质量",
+    "description": "检查一致性、错误状态与可访问性，并保留输入来源、决策依据和验收结果。",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-129",
+    "name": "用户研究 · 质量审查 8",
+    "category": "研究",
+    "description": "检查一致性、错误状态与可访问性，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-130",
+    "name": "产品增长 · 质量审查 8",
+    "category": "产品",
+    "description": "检查一致性、错误状态与可访问性，并保留输入来源、决策依据和验收结果。",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-131",
+    "name": "安全治理 · 质量审查 8",
+    "category": "安全",
+    "description": "检查一致性、错误状态与可访问性，并保留输入来源、决策依据和验收结果。",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-132",
+    "name": "内容创作 · 质量审查 8",
+    "category": "内容",
+    "description": "检查一致性、错误状态与可访问性，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-133",
+    "name": "媒体工作流 · 质量审查 8",
+    "category": "多媒体",
+    "description": "检查一致性、错误状态与可访问性，并保留输入来源、决策依据和验收结果。",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-134",
+    "name": "项目协作 · 质量审查 8",
+    "category": "产品",
+    "description": "检查一致性、错误状态与可访问性，并保留输入来源、决策依据和验收结果。",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-135",
+    "name": "部署运维 · 质量审查 8",
+    "category": "交付",
+    "description": "检查一致性、错误状态与可访问性，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-136",
+    "name": "API 设计 · 质量审查 8",
+    "category": "开发",
+    "description": "检查一致性、错误状态与可访问性，并保留输入来源、决策依据和验收结果。",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-137",
+    "name": "设计系统 · 流程优化 9",
+    "category": "设计",
+    "description": "找出步骤摩擦并给出改进路径，并保留输入来源、决策依据和验收结果。",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-138",
+    "name": "响应式产品 · 流程优化 9",
+    "category": "设计",
+    "description": "找出步骤摩擦并给出改进路径，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-139",
+    "name": "表单体验 · 流程优化 9",
+    "category": "设计",
+    "description": "找出步骤摩擦并给出改进路径，并保留输入来源、决策依据和验收结果。",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-140",
+    "name": "电商体验 · 流程优化 9",
+    "category": "产品",
+    "description": "找出步骤摩擦并给出改进路径，并保留输入来源、决策依据和验收结果。",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-141",
+    "name": "数据可视化 · 流程优化 9",
+    "category": "数据",
+    "description": "找出步骤摩擦并给出改进路径，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-142",
+    "name": "Agent 评估 · 流程优化 9",
+    "category": "AI Agent",
+    "description": "找出步骤摩擦并给出改进路径，并保留输入来源、决策依据和验收结果。",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-143",
+    "name": "知识管理 · 流程优化 9",
+    "category": "办公",
+    "description": "找出步骤摩擦并给出改进路径，并保留输入来源、决策依据和验收结果。",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-144",
+    "name": "工程交付 · 流程优化 9",
+    "category": "开发",
+    "description": "找出步骤摩擦并给出改进路径，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-145",
+    "name": "自动化测试 · 流程优化 9",
+    "category": "质量",
+    "description": "找出步骤摩擦并给出改进路径，并保留输入来源、决策依据和验收结果。",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-146",
+    "name": "用户研究 · 流程优化 9",
+    "category": "研究",
+    "description": "找出步骤摩擦并给出改进路径，并保留输入来源、决策依据和验收结果。",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-147",
+    "name": "产品增长 · 流程优化 9",
+    "category": "产品",
+    "description": "找出步骤摩擦并给出改进路径，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-148",
+    "name": "安全治理 · 流程优化 9",
+    "category": "安全",
+    "description": "找出步骤摩擦并给出改进路径，并保留输入来源、决策依据和验收结果。",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-149",
+    "name": "内容创作 · 流程优化 9",
+    "category": "内容",
+    "description": "找出步骤摩擦并给出改进路径，并保留输入来源、决策依据和验收结果。",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-150",
+    "name": "媒体工作流 · 流程优化 9",
+    "category": "多媒体",
+    "description": "找出步骤摩擦并给出改进路径，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-151",
+    "name": "项目协作 · 流程优化 9",
+    "category": "产品",
+    "description": "找出步骤摩擦并给出改进路径，并保留输入来源、决策依据和验收结果。",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-152",
+    "name": "部署运维 · 流程优化 9",
+    "category": "交付",
+    "description": "找出步骤摩擦并给出改进路径，并保留输入来源、决策依据和验收结果。",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-153",
+    "name": "API 设计 · 流程优化 9",
+    "category": "开发",
+    "description": "找出步骤摩擦并给出改进路径，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-154",
+    "name": "设计系统 · 文档整理 10",
+    "category": "设计",
+    "description": "将零散信息整理为结构化可复用资料，并保留输入来源、决策依据和验收结果。",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-155",
+    "name": "响应式产品 · 文档整理 10",
+    "category": "设计",
+    "description": "将零散信息整理为结构化可复用资料，并保留输入来源、决策依据和验收结果。",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-156",
+    "name": "表单体验 · 文档整理 10",
+    "category": "设计",
+    "description": "将零散信息整理为结构化可复用资料，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-157",
+    "name": "电商体验 · 文档整理 10",
+    "category": "产品",
+    "description": "将零散信息整理为结构化可复用资料，并保留输入来源、决策依据和验收结果。",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-158",
+    "name": "数据可视化 · 文档整理 10",
+    "category": "数据",
+    "description": "将零散信息整理为结构化可复用资料，并保留输入来源、决策依据和验收结果。",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-159",
+    "name": "Agent 评估 · 文档整理 10",
+    "category": "AI Agent",
+    "description": "将零散信息整理为结构化可复用资料，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-160",
+    "name": "知识管理 · 文档整理 10",
+    "category": "办公",
+    "description": "将零散信息整理为结构化可复用资料，并保留输入来源、决策依据和验收结果。",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-161",
+    "name": "工程交付 · 文档整理 10",
+    "category": "开发",
+    "description": "将零散信息整理为结构化可复用资料，并保留输入来源、决策依据和验收结果。",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-162",
+    "name": "自动化测试 · 文档整理 10",
+    "category": "质量",
+    "description": "将零散信息整理为结构化可复用资料，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-163",
+    "name": "用户研究 · 文档整理 10",
+    "category": "研究",
+    "description": "将零散信息整理为结构化可复用资料，并保留输入来源、决策依据和验收结果。",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-164",
+    "name": "产品增长 · 文档整理 10",
+    "category": "产品",
+    "description": "将零散信息整理为结构化可复用资料，并保留输入来源、决策依据和验收结果。",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-165",
+    "name": "安全治理 · 文档整理 10",
+    "category": "安全",
+    "description": "将零散信息整理为结构化可复用资料，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-166",
+    "name": "内容创作 · 文档整理 10",
+    "category": "内容",
+    "description": "将零散信息整理为结构化可复用资料，并保留输入来源、决策依据和验收结果。",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-167",
+    "name": "媒体工作流 · 文档整理 10",
+    "category": "多媒体",
+    "description": "将零散信息整理为结构化可复用资料，并保留输入来源、决策依据和验收结果。",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-168",
+    "name": "项目协作 · 文档整理 10",
+    "category": "产品",
+    "description": "将零散信息整理为结构化可复用资料，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-169",
+    "name": "部署运维 · 文档整理 10",
+    "category": "交付",
+    "description": "将零散信息整理为结构化可复用资料，并保留输入来源、决策依据和验收结果。",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-170",
+    "name": "API 设计 · 文档整理 10",
+    "category": "开发",
+    "description": "将零散信息整理为结构化可复用资料，并保留输入来源、决策依据和验收结果。",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-171",
+    "name": "设计系统 · 风险分析 11",
+    "category": "设计",
+    "description": "识别依赖、边界条件和潜在失败，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-172",
+    "name": "响应式产品 · 风险分析 11",
+    "category": "设计",
+    "description": "识别依赖、边界条件和潜在失败，并保留输入来源、决策依据和验收结果。",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-173",
+    "name": "表单体验 · 风险分析 11",
+    "category": "设计",
+    "description": "识别依赖、边界条件和潜在失败，并保留输入来源、决策依据和验收结果。",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-174",
+    "name": "电商体验 · 风险分析 11",
+    "category": "产品",
+    "description": "识别依赖、边界条件和潜在失败，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-175",
+    "name": "数据可视化 · 风险分析 11",
+    "category": "数据",
+    "description": "识别依赖、边界条件和潜在失败，并保留输入来源、决策依据和验收结果。",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-176",
+    "name": "Agent 评估 · 风险分析 11",
+    "category": "AI Agent",
+    "description": "识别依赖、边界条件和潜在失败，并保留输入来源、决策依据和验收结果。",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-177",
+    "name": "知识管理 · 风险分析 11",
+    "category": "办公",
+    "description": "识别依赖、边界条件和潜在失败，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-178",
+    "name": "工程交付 · 风险分析 11",
+    "category": "开发",
+    "description": "识别依赖、边界条件和潜在失败，并保留输入来源、决策依据和验收结果。",
+    "level": "基础",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-179",
+    "name": "自动化测试 · 风险分析 11",
+    "category": "质量",
+    "description": "识别依赖、边界条件和潜在失败，并保留输入来源、决策依据和验收结果。",
+    "level": "进阶",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  },
+  {
+    "id": "skill-180",
+    "name": "用户研究 · 风险分析 11",
+    "category": "研究",
+    "description": "识别依赖、边界条件和潜在失败，并保留输入来源、决策依据和验收结果。",
+    "level": "专家",
+    "inputs": [
+      "用户目标",
+      "当前项目上下文"
+    ],
+    "outputs": [
+      "可执行方案",
+      "验收清单"
+    ],
+    "status": "ready"
+  }
+]

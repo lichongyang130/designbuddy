@@ -1,0 +1,131 @@
+{
+  "tool": "run-acceptance",
+  "suite": "designbuddy-assets",
+  "baseUrl": "http://127.0.0.1:5173",
+  "ranAt": "2026-10-16T22:23:53.668Z",
+  "viewports": [
+    "desktop 1440x900",
+    "mobile 390x844"
+  ],
+  "counts": {
+    "total": 14,
+    "passed": 14,
+    "failed": 0,
+    "notVerified": 0
+  },
+  "results": [
+    {
+      "id": "assets-page",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 2144
+    },
+    {
+      "id": "assets-upload-card",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 8
+    },
+    {
+      "id": "assets-limits-honest",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (75 chars)",
+      "durationMs": 6
+    },
+    {
+      "id": "assets-parsing-honest",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (75 chars)",
+      "durationMs": 8
+    },
+    {
+      "id": "assets-hero",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (48 chars)",
+      "durationMs": 6
+    },
+    {
+      "id": "assets-screenshot",
+      "type": "screenshot",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "screenshot saved as screenshots/desktop/assets-screenshot.png",
+      "durationMs": 714
+    },
+    {
+      "id": "assets-api",
+      "type": "http",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "HTTP 200",
+      "durationMs": 14
+    },
+    {
+      "id": "assets-page",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 2064
+    },
+    {
+      "id": "assets-upload-card",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 29
+    },
+    {
+      "id": "assets-limits-honest",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (75 chars)",
+      "durationMs": 6
+    },
+    {
+      "id": "assets-parsing-honest",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (75 chars)",
+      "durationMs": 5
+    },
+    {
+      "id": "assets-hero",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (48 chars)",
+      "durationMs": 5
+    },
+    {
+      "id": "assets-screenshot",
+      "type": "screenshot",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "screenshot saved as screenshots/mobile/assets-screenshot.png",
+      "durationMs": 206
+    },
+    {
+      "id": "assets-api",
+      "type": "http",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "HTTP 200",
+      "durationMs": 7
+    }
+  ],
+  "policy": "只有真实访问目标并通过断言的检查才记为 passed；选择器缺失记为 not_verified 并写明原因；失败项保留控制台与网络记录。本工具不代表被测目标已完成业务验收，只证明声明的检查项在声明的视口下实际执行过。"
+}

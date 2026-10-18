@@ -1,0 +1,44 @@
+{
+  "bundles": [
+    {
+      "id": "bundle-docs-data",
+      "name": "文档与数据基础包",
+      "version": "1.0.0",
+      "apiVersion": "1.0",
+      "description": "把文档解析、表格统计与数据报告的真实执行器打成一组：装上后在插件面板里一次打开四个技能的入口。",
+      "skills": ["document.format", "table.analyze", "table.calculate", "data.report"],
+      "permissions": ["local.read", "local.write"],
+      "requires": []
+    },
+    {
+      "id": "bundle-brand-visual",
+      "name": "品牌与视觉产出包",
+      "version": "1.0.0",
+      "apiVersion": "1.0",
+      "description": "品牌系统、素材海报与社交图卡的组合；全部在本机渲染真实文件，不调用外部服务。",
+      "skills": ["brand.system", "image.marketing", "social.carousel", "design.tokens"],
+      "permissions": ["local.read", "local.write"],
+      "requires": []
+    },
+    {
+      "id": "bundle-quality-web",
+      "name": "网页与质量检查包",
+      "version": "1.0.0",
+      "apiVersion": "1.0",
+      "description": "HTML/CSS 静态检查、源码扫描与浏览器验收执行器的组合；浏览器验收需要你提供可访问的测试目标。",
+      "skills": ["web.audit", "web.css-audit", "code.inspect", "test.browser"],
+      "permissions": ["local.read", "local.write", "network", "subprocess"],
+      "requires": ["浏览器验收需要一个你授权的目标地址"]
+    },
+    {
+      "id": "bundle-join-multi",
+      "name": "多文件关联包",
+      "version": "1.0.0",
+      "apiVersion": "1.0",
+      "description": "跨文件精确关联与需求核对执行器；只按明确键关联，不推断业务口径。",
+      "skills": ["table.join", "table.join-multi", "requirements.check", "product.spec"],
+      "permissions": ["local.read", "local.write"],
+      "requires": []
+    }
+  ]
+}

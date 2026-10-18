@@ -1,0 +1,1 @@
+export default function CommandBar(){return <div className="command-bar"><input placeholder="Describe your task..."/><button>Run</button></div>}

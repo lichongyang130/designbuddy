@@ -1,0 +1,10 @@
+import {test,expect} from '@playwright/test';
+import {readFile} from 'node:fs/promises';
+import ExcelJS from 'exceljs';
+const bench=(p:any)=>p.getByRole('region',{name:'真实技能执行台'});
+test('data expert uploads three actual CSV files, executes a two-step backend join and downloads source-traceable XLSX',async({page})=>{
+ await page.goto('/experts/data');const w=bench(page);await w.getByLabel('执行技能').selectOption('table.join-multi');const example=await page.evaluate(async()=>Array.from(new Uint8Array(await(await fetch('/skill-examples/multi-table-join-example.zip')).arrayBuffer())));const bytes=Buffer.from(example);await w.getByLabel('上传实际材料').setInputFiles({name:'multi-table.zip',mimeType:'application/zip',buffer:bytes});await w.getByRole('checkbox',{name:/我同意上传材料/}).check();const queued=page.waitForResponse(r=>r.request().method()==='POST'&&new URL(r.url()).pathname==='/api/skill-runs');await w.getByRole('button',{name:'上传并执行技能'}).click();expect((await queued).status()).toBe(202);await expect(w.getByRole('status')).toHaveText('执行成功',{timeout:20000});
+ const record=await page.evaluate(async()=>(await(await fetch('/api/skill-runs')).json()).runs[0]);expect(record.status).toBe('succeeded');expect(record.artifacts.map((x:any)=>x.name)).toContain('multi-joined.xlsx');expect(record.artifacts.map((x:any)=>x.name)).toContain('multi-join-report.json');expect(record.summary).toContain('3份CSV');
+ const pending=page.waitForEvent('download');await w.getByRole('button',{name:'下载 multi-joined.xlsx',exact:true}).click();const path=(await(await pending).path())!;const book=new ExcelJS.Workbook();await book.xlsx.readFile(path);expect(book.getWorksheet('关联结果').rowCount).toBe(4);expect(book.getWorksheet('关联结果').getCell('I2').value).toBe('山形笔记本');expect(book.getWorksheet('来源行号').getCell('F4').value).toBe(4);
+ const others=record.artifacts.filter((a:any)=>a.name==='multi-join-report.json');expect(others).toHaveLength(1);await page.evaluate(async()=>{const r=await fetch('/api/skill-runs');for(const x of(await r.json()).runs)await fetch('/api/skill-runs/'+x.id,{method:'DELETE'});});
+});

@@ -1,0 +1,37 @@
+.home-category-menu { position:fixed; z-index:140; width:240px; max-width:calc(100vw - 16px); max-height:calc(100dvh - 24px); overflow:auto; padding:8px; border:1px solid #e6e6e6; border-radius:14px; background:#fff; box-shadow:0 10px 32px #00000012; color:#444; }
+.home-category-menu > p { margin:4px 10px 8px; font-size:12px; color:#999; }
+.home-category-menu > button { display:flex; align-items:center; justify-content:space-between; gap:12px; width:100%; padding:11px 10px; border:0; border-radius:8px; background:transparent; color:#444; text-align:left; font:inherit; font-size:14px; cursor:pointer; }
+.home-category-menu > button small { flex-shrink:0; color:#aaa; font-size:11px; }
+.home-category-menu > button:hover,.home-category-menu > button[aria-current="true"] { background:#f3f3f3; }
+.home-category-menu > button:focus-visible { outline:2px solid #777; outline-offset:-2px; }
+.home27-content .home27-shortcut[data-active="true"],.home27-content .home27-shortcut[aria-expanded="true"] { background:#ededed; border-color:#ccc; color:#333; }
+.home27-content .home-prompt-recommendations { margin-top:28px; }
+.home27-content .home-prompt-recommendations .home27-section-heading { gap:16px; align-items:center; }
+.home27-content .home-prompt-recommendations h2 { min-width:0; color:#444; font-size:14px; font-weight:500; line-height:1.8; }
+.home27-content .prompt-breadcrumb { margin-left:8px; color:#999; font-size:12px; font-weight:400; }
+.home27-content .prompt-refresh { flex-shrink:0; display:flex; align-items:center; gap:8px; padding:5px 0 5px 10px; font-size:13px; color:#777; }
+.home27-content .prompt-refresh:hover { color:#222; }
+.prompt-recommendation-context { display:flex; justify-content:space-between; gap:12px; margin:2px 0 12px; color:#aaa; font-size:11px; line-height:1.5; }
+.home-prompt-list { margin:0; padding:0; list-style:none; border:1px solid #e9e9e9; border-radius:16px; overflow:hidden; background:#fff; }
+.home-prompt-list > li + li { border-top:1px solid #eee; }
+.home27-content .home-prompt-list > li > button { display:flex; align-items:center; gap:16px; width:100%; min-height:88px; padding:17px 20px; border:0; background:transparent; text-align:left; color:#444; }
+.home27-content .home-prompt-list > li > button:hover { background:#f8f8f8; }
+.home27-content .home-prompt-list > li > button:focus-visible { outline:2px solid #777; outline-offset:-3px; }
+.prompt-row-number { flex-shrink:0; color:#b4b4b4; font-size:12px; font-variant-numeric:tabular-nums; }
+.prompt-row-content { display:flex; flex:1; min-width:0; flex-direction:column; gap:6px; }
+.prompt-row-content strong { color:#444; font-size:14px; line-height:1.6; font-weight:500; }
+.prompt-row-content > span { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; color:#999; font-size:12px; line-height:1.7; overflow-wrap:anywhere; }
+.prompt-row-end { display:flex; flex-shrink:0; align-items:center; gap:20px; color:#999; }
+.prompt-row-end small { font-size:11px; font-weight:400; }
+.prompt-sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+.home27-content .home-example-library { margin-top:22px; color:#888; }
+.home-example-library > summary { width:fit-content; padding:8px 0; cursor:pointer; font-size:12px; }
+.home-example-library[open] > summary { margin-bottom:12px; }
+@media(max-width:680px) {
+  .home27-content .prompt-breadcrumb { display:block; margin-left:0; }
+  .home27-content .home-prompt-list > li > button { gap:10px; padding:14px 12px; }
+  .prompt-row-end { flex-direction:column; align-items:flex-end; gap:8px; }
+  .prompt-row-end small { font-size:10px; }
+  .prompt-row-number { display:none; }
+  .prompt-recommendation-context { font-size:10px; }
+}

@@ -1,0 +1,2 @@
+# ROOTS concept imagery
+Five separate AI-generated images created for ROOTS on 2026-10-15: courtyard, shaded ferns, sunny rosemary, root-ball/soil study, and potting tools. Not reused from another template; not real locations, product inventory, professional endorsements or species-identification evidence. Export repeats this disclosure. Resized and encoded as WebP; original generated PNGs remain in ignored cache. Noto Sans SC uses its separately bundled OFL license.

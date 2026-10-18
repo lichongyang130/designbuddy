@@ -1,0 +1,2 @@
+# DAYLIGHT imagery
+Five distinct AI-generated interior concept photographs created on 2026-10-15 for this template: lounge, individual focus alcoves, meeting room, podcast studio, and community kitchen. None are reused from another template. These are fictional spaces, not real available inventory or architectural/customer endorsements. The UI and offline export disclose this. Generated PNGs remain in ignored cache; repository assets are compressed WebP. Embedded Noto Sans SC has its separate OFL notice.

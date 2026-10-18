@@ -1,0 +1,147 @@
+{
+  "name": "designbuddy-third-round",
+  "baseUrl": "http://127.0.0.1:5173",
+  "viewports": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "checks": [
+    {
+      "id": "home-loads",
+      "type": "http",
+      "path": "/",
+      "expectStatus": 200
+    },
+    {
+      "id": "skills-hero",
+      "type": "assertText",
+      "path": "/skills",
+      "selector": "h1",
+      "contains": "技能"
+    },
+    {
+      "id": "skills-ready-cards",
+      "type": "assertVisible",
+      "path": "/skills",
+      "selector": ".skill-directory-card.is-ready",
+      "waitFor": ".skill-directory-card"
+    },
+    {
+      "id": "open-credential-skill",
+      "type": "click",
+      "path": "/skills",
+      "selector": "button[aria-label=\"查看技能：生成式图片与商品抠图\"]",
+      "waitFor": ".skill-directory-card",
+      "expectSelector": ".skill-detail-requires"
+    },
+    {
+      "id": "requirements-listed",
+      "type": "assertText",
+      "path": "/skills",
+      "reload": false,
+      "selector": ".skill-detail-requires",
+      "contains": "需要你提供"
+    },
+    {
+      "id": "requirements-screenshot",
+      "type": "screenshot",
+      "path": "/skills",
+      "reload": false,
+      "selector": ".skill-detail-requires"
+    },
+    {
+      "id": "skills-screenshot",
+      "type": "screenshot",
+      "path": "/skills",
+      "waitFor": ".skill-directory-card"
+    },
+    {
+      "id": "plugin-lifecycle-visible",
+      "type": "assertVisible",
+      "path": "/plugins",
+      "selector": ".pm-lifecycle-card",
+      "waitFor": ".pm-lifecycle-card"
+    },
+    {
+      "id": "plugin-lifecycle-heading",
+      "type": "assertText",
+      "path": "/plugins",
+      "selector": ".pm-lifecycle",
+      "contains": "插件包安装与启停"
+    },
+    {
+      "id": "plugin-install",
+      "type": "click",
+      "path": "/plugins",
+      "selector": ".pm-lifecycle-card >> nth=0 >> button:text-is(\"安装\")",
+      "waitFor": ".pm-lifecycle-card",
+      "expectSelector": ".pm-lifecycle-state-tag"
+    },
+    {
+      "id": "plugin-installed-state",
+      "type": "assertText",
+      "path": "/plugins",
+      "reload": false,
+      "selector": ".pm-lifecycle-card >> nth=0",
+      "contains": "已启用",
+      "waitFor": ".pm-lifecycle-state-tag"
+    },
+    {
+      "id": "plugin-lifecycle-screenshot",
+      "type": "screenshot",
+      "path": "/plugins",
+      "reload": false,
+      "selector": ".pm-lifecycle"
+    },
+    {
+      "id": "plugin-uninstall",
+      "type": "click",
+      "path": "/plugins",
+      "reload": false,
+      "selector": ".pm-lifecycle-card >> nth=0 >> button:text-is(\"卸载\")",
+      "expectSelector": ".pm-lifecycle-card >> nth=0 >> button:text-is(\"安装\")",
+      "waitFor": ".pm-lifecycle-card"
+    },
+    {
+      "id": "schedules-hero",
+      "type": "assertText",
+      "path": "/schedules",
+      "selector": "h1",
+      "contains": "定时任务"
+    },
+    {
+      "id": "schedules-form",
+      "type": "assertVisible",
+      "path": "/schedules",
+      "selector": "#schedule-form",
+      "waitFor": "#schedule-form"
+    },
+    {
+      "id": "kit-template-counter",
+      "type": "assertText",
+      "path": "/inspiration/studio-nine",
+      "selector": ".kit-counter",
+      "contains": "1 / 24"
+    },
+    {
+      "id": "kit-template-visible",
+      "type": "assertVisible",
+      "path": "/inspiration/wellspring",
+      "selector": ".kit-root",
+      "waitFor": ".kit-root"
+    },
+    {
+      "id": "kit-template-screenshot",
+      "type": "screenshot",
+      "path": "/inspiration/studio-nine"
+    }
+  ]
+}

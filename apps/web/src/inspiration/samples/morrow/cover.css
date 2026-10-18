@@ -1,0 +1,37 @@
+.mr-cover {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: #edd5c0;
+  color: #603d4c;
+  overflow: hidden;
+}
+.mr-cover > div {
+  padding: 16% 12%;
+  min-width: 0;
+}
+.mr-cover small {
+  font: 7px sans-serif;
+  letter-spacing: 1px;
+}
+.mr-cover h2 {
+  font:
+    italic clamp(25px, 3vw, 40px) / 1 Georgia,
+    serif;
+  letter-spacing: -1px;
+  margin-top: 32%;
+}
+.mr-cover h2 span {
+  display: block;
+  font:
+    11px/2 "Noto Sans SC",
+    sans-serif;
+  letter-spacing: 0;
+  margin-top: 15px;
+}
+.mr-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50% 50% 0 0;
+}

@@ -1,0 +1,29 @@
+{
+  "source": "https://files.pythonhosted.org/packages/61/e7/13e0e787ff467218de880310d79cba14424f13b87171ac44af0bde1e428c/pocketsphinx-5.1.1.tar.gz",
+  "sourceSHA256": "675778b309a22dfc9b7d37f7621976bba491d2a5f8c59696bd77fd6d07271355",
+  "license": "BSD-2-Clause, Carnegie Mellon University; root LICENSE retained in docs/licenses/pocketsphinx-5.1.1.txt",
+  "transformation": "Added canonical PCM WAV header only; source 16kHz mono signed 16-bit little-endian samples unchanged. No TTS or transcript prompt.",
+  "fixtures": [
+    {
+      "file": "goforward.wav",
+      "rawPath": "test/data/goforward.raw",
+      "rawSHA256": "f15c60ec54059d8b66e410d0064945a0b0a04ea56e1ddca1958e493c0cf70e71",
+      "wavSHA256": "97ec638609b9c7eeb616764b4e5713d7ed2d0a8e1a2f8246631d9074d47aaf11",
+      "durationSeconds": 2.78625
+    },
+    {
+      "file": "something.wav",
+      "rawPath": "test/data/something.raw",
+      "rawSHA256": "eb95b74ce3f3037487e49dcfd935bbcf8c158b5f4083dd19451729c3ee694f5f",
+      "wavSHA256": "85fc7f1a94db4d957a2d7a3c8f31ecf4ba78c067e50c5028098c4fc3a6f29bf0",
+      "durationSeconds": 2.9986875
+    },
+    {
+      "file": "numbers.wav",
+      "rawPath": "test/data/numbers.raw",
+      "rawSHA256": "45b5f6d3f88e36dd55b025cc9e8f1cae567583ea93f554ecdff6d09e6dd4577d",
+      "wavSHA256": "353c67f7c7dc00b36fb341dd34929bf9291f4e92f0e00daf7e560be9c1c02562",
+      "durationSeconds": 4.0231875
+    }
+  ]
+}

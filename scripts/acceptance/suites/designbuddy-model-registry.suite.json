@@ -1,0 +1,117 @@
+{
+  "name": "designbuddy-model-registry",
+  "baseUrl": "http://127.0.0.1:5173",
+  "viewports": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "checks": [
+    {
+      "id": "models-page-loads",
+      "type": "assertVisible",
+      "path": "/models",
+      "selector": ".models-card",
+      "waitFor": ".models-card"
+    },
+    {
+      "id": "models-protocol",
+      "type": "assertText",
+      "path": "/models",
+      "selector": ".models-facts",
+      "contains": "openai-compatible",
+      "waitFor": ".models-main[data-loaded=\"true\"]"
+    },
+    {
+      "id": "models-catalog-unverified",
+      "type": "assertText",
+      "path": "/models",
+      "selector": "section[aria-label=\"已登记模型\"] .models-tag",
+      "contains": "未核验",
+      "waitFor": ".models-main[data-loaded=\"true\"]"
+    },
+    {
+      "id": "models-product-claim",
+      "type": "assertText",
+      "path": "/models",
+      "selector": "section[aria-label=\"产品可选模型\"] .models-note",
+      "contains": "未经服务商核验",
+      "waitFor": ".models-main[data-loaded=\"true\"]"
+    },
+    {
+      "id": "models-parameter-mapping",
+      "type": "assertText",
+      "path": "/models",
+      "selector": "section[aria-label=\"参数映射\"]",
+      "contains": "max_tokens",
+      "waitFor": ".models-main[data-loaded=\"true\"]"
+    },
+    {
+      "id": "models-usage-totals",
+      "type": "assertText",
+      "path": "/models",
+      "selector": "section[aria-label=\"真实用量\"] .models-facts",
+      "contains": "调用次数",
+      "waitFor": ".models-main[data-loaded=\"true\"]"
+    },
+    {
+      "id": "models-quota-card",
+      "type": "assertVisible",
+      "path": "/models",
+      "selector": "section[aria-label=\"额度\"]",
+      "waitFor": "section[aria-label=\"额度\"]"
+    },
+    {
+      "id": "models-quota-query",
+      "type": "click",
+      "path": "/models",
+      "selector": "section[aria-label=\"额度\"] button",
+      "waitFor": "section[aria-label=\"额度\"] .models-button"
+    },
+    {
+      "id": "models-quota-honest",
+      "type": "assertText",
+      "path": "/models",
+      "reload": false,
+      "selector": "section[aria-label=\"额度\"] .models-note",
+      "contains": "无法查询额度",
+      "waitFor": ".models-main[data-loaded=\"true\"]"
+    },
+    {
+      "id": "models-quota-ready",
+      "type": "assertVisible",
+      "path": "/models",
+      "reload": false,
+      "selector": "section[aria-label=\"额度\"] [data-quota=\"ready\"]",
+      "waitFor": "section[aria-label=\"额度\"] [data-quota=\"ready\"]"
+    },
+    {
+      "id": "models-verify-button",
+      "type": "click",
+      "path": "/models",
+      "selector": ".models-button.is-primary",
+      "waitFor": ".models-button.is-primary"
+    },
+    {
+      "id": "models-verify-honest",
+      "type": "assertText",
+      "path": "/models",
+      "reload": false,
+      "selector": ".models-message",
+      "contains": "核验",
+      "waitFor": ".models-message"
+    },
+    {
+      "id": "models-screenshot",
+      "type": "screenshot",
+      "path": "/models"
+    }
+  ]
+}

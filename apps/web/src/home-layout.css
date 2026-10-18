@@ -1,0 +1,86 @@
+/* Current homepage geometry: one spacing system, scoped to the right canvas.
+   Keep the existing typography, sidebar, controls, and confirmed 48px mode/category gap. */
+.main-workspace.home27 {
+  --home-content-width: 960px;
+  --home-top-space: 100px; /* Preserve the title position after removing the 76px utility bar. */
+  --home-heading-gap: 24px;
+  --home-mode-gap: 48px;
+  --home-category-gap: 16px;
+  --home-results-gap: 32px;
+}
+.home27 .home-content-v2.home27-content {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: min(var(--home-content-width), calc(100% - 96px));
+  margin: 0 auto;
+  padding: var(--home-top-space) 0 40px;
+  left: 0;
+}
+.home27 .home27-content > .home27-hero { min-height: 0; margin: 0; }
+.home27 .home27-content .home27-hero-copy { padding: 0; }
+.home27 .home27-content .home27-hero h1 { text-wrap: balance; }
+.home27 .home27-content > .home27-mode-row {
+  margin: var(--home-heading-gap) 0 var(--home-mode-gap);
+  display: flex;
+  justify-content: center;
+}
+.home27 .home27-content > .home27-shortcuts { margin: 0 0 var(--home-category-gap); }
+.home27 .home27-content > .composer-shell { margin: 0; }
+.home27 .home27-content .composer-main { min-height: 152px; padding: 20px 24px 12px; }
+.home27 .home27-content .composer-main textarea { min-height: 72px; }
+.home27 .home27-content .composer-footer { min-height: 44px; padding: 10px 24px; }
+.home27 .home27-content > .home-prompt-recommendations { margin-top: var(--home-results-gap); }
+.home27 .home27-content > .home-notice { margin: 12px 0 0; }
+.home27 .home27-content > .home-notice + .home-prompt-recommendations { margin-top: 16px; }
+.home27 .home27-content .home-prompt-recommendations .home27-section-heading { margin: 0 0 8px; }
+.home27 .home27-content .prompt-recommendation-context { margin: 0 0 12px; }
+.home27 .home27-content .home-prompt-list > li > button { min-height: 80px; padding: 16px 20px; }
+.home27 .home27-content > .home-example-library { margin-top: 16px; }
+.home27 .home27-content > .home27-more-scenes { margin-top: 12px; }
+.home27 .home27-content > .home27-explore { align-self: center; margin-top: 24px; }
+@media (max-width: 1200px) and (min-width: 681px) {
+  .home27 .home-content-v2.home27-content { width: min(var(--home-content-width), calc(100% - 64px)); }
+}
+@media (max-width: 680px) {
+  .main-workspace.home27 { --home-top-space: 66px; /* Includes the former 54px compact utility bar. */ --home-heading-gap: 20px; --home-results-gap: 28px; }
+  .home27 .home-content-v2.home27-content { width: calc(100% - 32px); padding-bottom: 32px; }
+  .home27 .home27-content .composer-main { padding: 16px 12px 12px; }
+  .home27 .home27-content .composer-footer { padding: 10px 14px; }
+  .home27 .home27-content .home-prompt-list > li > button { min-height: 80px; padding: 14px 12px; }
+}
+
+/* Category entries: visible oval outlines, including the all-categories trigger. */
+.home27 .home27-content .home27-shortcut {
+  border: 1px solid #c9c9c9;
+  border-radius: 999px;
+  background: #fff;
+}
+.home27 .home27-content .home27-shortcut:hover {
+  border-color: #999;
+  background: #f7f7f7;
+}
+.home27 .home27-content .home27-shortcut[data-active="true"],
+.home27 .home27-content .home27-shortcut[aria-expanded="true"] {
+  border-color: #999;
+  background: #ededed;
+  color: #333;
+}
+.home27 .home27-content .home27-shortcut:focus-visible {
+  outline: 2px solid #888;
+  outline-offset: 2px;
+}
+
+/* Homepage drafts grow downward; scroll the page, never a nested textarea. */
+.home27 .home27-content .composer-main textarea[data-auto-resize="true"] {
+  flex: 0 0 auto;
+  max-height: none;
+  overflow: hidden;
+  resize: none;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  scrollbar-width: none;
+}
+.home27 .home27-content .composer-main textarea[data-auto-resize="true"]::-webkit-scrollbar {
+  display: none;
+}

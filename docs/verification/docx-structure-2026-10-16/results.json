@@ -1,0 +1,47 @@
+{
+  "date": "2026-10-16",
+  "branch": "arena/5a5e7967-new",
+  "baseCommit": "edb66d8c847542692ba6b71286dcbf1be327013d",
+  "sourceState": "local working tree; not pushed or deployed",
+  "tests": {
+    "fullRegression": {
+      "serverPassed": 101,
+      "browserPassed": 155,
+      "catalogPassed": 9,
+      "failed": 0,
+      "skipped": 0
+    },
+    "finalTargetedAfterInlineFontLicenseAndScreenshotAdjustment": {
+      "serverPassed": 11,
+      "browserPassed": 6,
+      "failed": 0,
+      "skipped": 0
+    },
+    "newServerTests": 11,
+    "newBrowserTests": 6
+  },
+  "checks": {
+    "backendTypeScript": "passed",
+    "frontendTypeScriptBuild": "passed",
+    "diffCheck": "passed"
+  },
+  "runtimeSkillCount": 17,
+  "wordRenderingVerified": false,
+  "allAdvancedCapabilitiesComplete": false,
+  "liveModelAccuracyVerified": false,
+  "productionIsolationVerified": false,
+  "evidenceNotes": "Browser screenshots use the security fixture; saved output artifacts are from the publicly downloadable DOCX example. Full regression preceded the final inline-license addition; final targeted tests were rerun after it.",
+  "sourceSHA256": {
+    "server/skills/docx-structure.ts": "3bfca7377a87fe250d5dd315c5e199d767e330118ce07f08acbc130615135eeb",
+    "server/skills/executors.ts": "cc4056081fb1399114ba7be0214b7bb8204a851d87264562c216d389f2d89111",
+    "server/skills/planner.ts": "81347fa3c98ca5710d3adc3bc5d40c2b398f224db4815bb8cfe5880b9ea2bd34",
+    "server/skills/service.test.cjs": "237d4b0ab8309e3d7b377c44d419465892882a2d3ab27b587b5118788792da4f",
+    "shared/skillRuntime.ts": "84b4507e63afbf6cb97ede89c63d917d207b41622cde138f5f21c607464d663c",
+    "shared/expertRouting.ts": "4e411c7d07f92e9ca303ca744291bc8b01484e97ee762716c26a87f7e9b20c5d",
+    "frontend/workspace/SkillWorkbench.tsx": "5951774a8ddffc1b3907f33d990011d9aa85c866457ae0f287a61aa8bb12a798",
+    "server/skills/docx-structure.test.cjs": "be2f09522156cf251037cfc0590493cb860ad554fa1f8c58783a16d98ed0f9c4",
+    "server/skills/testing/docx-fixtures.cjs": "8d338981d5b00aa632b1371d839ad9a12c403e79852793d56aa60d4538290426",
+    "apps/web/tests/docx-structure.spec.ts": "b77e90c4d9bd4a9109e17fa8dd66ccee274d22037f49ce285d0ffb7f03b04c93",
+    "apps/web/public/skill-examples/document-structure-example.docx": "991bf34dec8bfee41a18e0df8c420d20f740eb44c5bbef4c34d3e37555165871"
+  }
+}

@@ -1,0 +1,227 @@
+{
+  "tool": "run-acceptance",
+  "suite": "designbuddy-model-registry",
+  "baseUrl": "http://127.0.0.1:5173",
+  "ranAt": "2026-10-16T14:15:24.195Z",
+  "viewports": [
+    "desktop 1440x900",
+    "mobile 390x844"
+  ],
+  "counts": {
+    "total": 26,
+    "passed": 26,
+    "failed": 0,
+    "notVerified": 0
+  },
+  "results": [
+    {
+      "id": "models-page-loads",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 1704
+    },
+    {
+      "id": "models-protocol",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (85 chars)",
+      "durationMs": 1961
+    },
+    {
+      "id": "models-catalog-unverified",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (3 chars)",
+      "durationMs": 1928
+    },
+    {
+      "id": "models-product-claim",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (56 chars)",
+      "durationMs": 1924
+    },
+    {
+      "id": "models-parameter-mapping",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (237 chars)",
+      "durationMs": 2093
+    },
+    {
+      "id": "models-usage-totals",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (59 chars)",
+      "durationMs": 1749
+    },
+    {
+      "id": "models-quota-card",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 1644
+    },
+    {
+      "id": "models-quota-query",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 1835
+    },
+    {
+      "id": "models-quota-honest",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (53 chars)",
+      "durationMs": 13
+    },
+    {
+      "id": "models-quota-ready",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 7
+    },
+    {
+      "id": "models-verify-button",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 2036
+    },
+    {
+      "id": "models-verify-honest",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (65 chars)",
+      "durationMs": 27
+    },
+    {
+      "id": "models-screenshot",
+      "type": "screenshot",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "screenshot saved as screenshots/desktop/models-screenshot.png",
+      "durationMs": 2316
+    },
+    {
+      "id": "models-page-loads",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 1727
+    },
+    {
+      "id": "models-protocol",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (85 chars)",
+      "durationMs": 1466
+    },
+    {
+      "id": "models-catalog-unverified",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (3 chars)",
+      "durationMs": 1587
+    },
+    {
+      "id": "models-product-claim",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (56 chars)",
+      "durationMs": 1721
+    },
+    {
+      "id": "models-parameter-mapping",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (237 chars)",
+      "durationMs": 1632
+    },
+    {
+      "id": "models-usage-totals",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (59 chars)",
+      "durationMs": 1541
+    },
+    {
+      "id": "models-quota-card",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 1494
+    },
+    {
+      "id": "models-quota-query",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 1458
+    },
+    {
+      "id": "models-quota-honest",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (53 chars)",
+      "durationMs": 24
+    },
+    {
+      "id": "models-quota-ready",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 4
+    },
+    {
+      "id": "models-verify-button",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 1710
+    },
+    {
+      "id": "models-verify-honest",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (65 chars)",
+      "durationMs": 22
+    },
+    {
+      "id": "models-screenshot",
+      "type": "screenshot",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "screenshot saved as screenshots/mobile/models-screenshot.png",
+      "durationMs": 1918
+    }
+  ],
+  "policy": "只有真实访问目标并通过断言的检查才记为 passed；选择器缺失记为 not_verified 并写明原因；失败项保留控制台与网络记录。本工具不代表被测目标已完成业务验收，只证明声明的检查项在声明的视口下实际执行过。"
+}

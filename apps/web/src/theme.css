@@ -1,0 +1,412 @@
+/* App-wide theme + density layer. Driven by documentElement data-theme /
+ * data-density, which App syncs from 外观 settings. Color-only overrides:
+ * no layout, display or position changes here. Template viewer *content*
+ * canvases keep their authored colors; only the gallery + viewer chrome
+ * is themed (a white document stays white, like dark-mode Word). */
+
+:root {
+  --db-bg: #ffffff;
+  --db-bg-soft: #f4f4f5;
+  --db-bg-raised: #ffffff;
+  --db-line: #e4e4e7;
+  --db-ink: #1c1c1e;
+  --db-mute: #6b7280;
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --db-bg: #0f1115;
+  --db-bg-soft: #171a21;
+  --db-bg-raised: #1f232e;
+  --db-line: #2a2f3c;
+  --db-ink: #e8eaf0;
+  --db-mute: #9aa3b5;
+}
+
+html[data-theme="dark"] body {
+  background: var(--db-bg);
+  color: var(--db-ink);
+}
+
+/* generic controls (native widgets follow color-scheme) */
+html[data-theme="dark"] input,
+html[data-theme="dark"] select,
+html[data-theme="dark"] textarea {
+  background-color: #1c2029;
+  border-color: #2e3442;
+  color: var(--db-ink);
+}
+html[data-theme="dark"] button {
+  color: var(--db-ink);
+}
+html[data-theme="dark"] ::placeholder {
+  color: #7c8598;
+}
+
+/* app frame */
+html[data-theme="dark"] .workbuddy-app {
+  background: var(--db-bg);
+}
+html[data-theme="dark"] .workbuddy-app .app-sidebar {
+  background: #14161c;
+  border-right: 1px solid var(--db-line);
+}
+html[data-theme="dark"] .workbuddy-app .app-sidebar .sidebar-nav-item {
+  color: var(--db-mute);
+}
+html[data-theme="dark"] .workbuddy-app .app-sidebar .sidebar-nav-item.is-active {
+  background: #242936;
+  color: #fff;
+}
+html[data-theme="dark"] .workbuddy-app .app-sidebar .sidebar-nav-item:hover {
+  background: #1e222c;
+}
+html[data-theme="dark"] .workbuddy-app .sidebar-bottom .profile-trigger {
+  color: var(--db-ink);
+}
+html[data-theme="dark"] .workbuddy-app .sidebar-bottom .profile-trigger[aria-expanded="true"] {
+  background: #242936;
+}
+html[data-theme="dark"] .sidebar-more-menu {
+  background: var(--db-bg-raised);
+  border-color: var(--db-line);
+  color: var(--db-ink);
+}
+html[data-theme="dark"] .sidebar-more-menu button:hover,
+html[data-theme="dark"] .sidebar-more-menu button:focus-visible,
+html[data-theme="dark"] .sidebar-more-menu button[aria-current="page"] {
+  background: #2a2f3c;
+  color: #fff;
+}
+
+/* home */
+html[data-theme="dark"] .main-workspace {
+  background: var(--db-bg);
+  color: var(--db-ink);
+}
+html[data-theme="dark"] .home-content-v2,
+html[data-theme="dark"] .home27-content {
+  color: var(--db-ink);
+}
+html[data-theme="dark"] .composer-shell {
+  background: var(--db-bg-soft);
+  border-color: var(--db-line);
+}
+html[data-theme="dark"] .composer-shell textarea {
+  color: var(--db-ink);
+}
+html[data-theme="dark"] .home27-scene,
+html[data-theme="dark"] .home27-shortcut,
+html[data-theme="dark"] .home27-card {
+  background: var(--db-bg-soft);
+  border-color: var(--db-line);
+  color: var(--db-ink);
+}
+
+/* popovers + dialogs */
+html[data-theme="dark"] .account-popover {
+  background: var(--db-bg-raised);
+  border-color: var(--db-line);
+  color: var(--db-ink);
+}
+html[data-theme="dark"] .account-popover.account-settings-menu {
+  background: var(--db-bg-raised);
+}
+html[data-theme="dark"] .account-action,
+html[data-theme="dark"] .account-identity {
+  color: var(--db-ink);
+}
+html[data-theme="dark"] .model-menu-popover,
+html[data-theme="dark"] .home-model-menu,
+html[data-theme="dark"] .home-attach-menu,
+html[data-theme="dark"] .home-prompts-panel {
+  background: var(--db-bg-raised);
+  border-color: var(--db-line);
+  color: var(--db-ink);
+}
+html[data-theme="dark"] .auth-loading {
+  background: var(--db-bg);
+  color: var(--db-ink);
+}
+
+/* settings */
+html[data-theme="dark"] .settings-window {
+  background: #14161c;
+  border-color: var(--db-line);
+  color: var(--db-ink);
+}
+html[data-theme="dark"] .settings-sidebar {
+  background: #101218;
+  border-color: var(--db-line);
+}
+html[data-theme="dark"] .settings-sidebar nav button {
+  color: var(--db-mute);
+}
+html[data-theme="dark"] .settings-sidebar nav button.is-active {
+  background: #242936;
+  color: #fff;
+}
+html[data-theme="dark"] .settings-content {
+  background: transparent;
+}
+html[data-theme="dark"] .settings-card {
+  background: var(--db-bg-soft);
+  border-color: var(--db-line);
+}
+html[data-theme="dark"] .settings-row {
+  border-color: var(--db-line);
+}
+html[data-theme="dark"] .settings-section-label {
+  color: var(--db-ink);
+}
+html[data-theme="dark"] .settings-row p,
+html[data-theme="dark"] .settings-card-foot {
+  color: var(--db-mute);
+}
+html[data-theme="dark"] .settings-error {
+  background: #3a1d1d;
+  border-color: #7f2d2d;
+  color: #fca5a5;
+}
+html[data-theme="dark"] .settings-notice {
+  background: #16233d;
+  border-color: #2c4a7c;
+  color: #bfd4ff;
+}
+html[data-theme="dark"] .settings-radio-group button {
+  background: transparent;
+  border-color: var(--db-line);
+  color: var(--db-ink);
+}
+html[data-theme="dark"] .settings-radio-group button.is-active {
+  background: #e8eaf0;
+  border-color: #e8eaf0;
+  color: #14161c;
+}
+html[data-theme="dark"] .settings-radio-group button small {
+  opacity: 0.6;
+}
+html[data-theme="dark"] .settings-button {
+  background: transparent;
+  border-color: var(--db-line);
+  color: var(--db-ink);
+}
+html[data-theme="dark"] .settings-button:hover {
+  background: #242936;
+}
+html[data-theme="dark"] .settings-button.is-primary {
+  background: #e8eaf0;
+  border-color: #e8eaf0;
+  color: #14161c;
+}
+html[data-theme="dark"] .settings-keycap {
+  background: #242936;
+  border-color: var(--db-line);
+  color: var(--db-ink);
+}
+html[data-theme="dark"] .settings-switch {
+  background: #3a3f4d;
+}
+html[data-theme="dark"] .settings-switch[aria-checked="true"] {
+  background: #e8eaf0;
+}
+html[data-theme="dark"] .settings-switch[aria-checked="true"] span {
+  background: #14161c;
+}
+html[data-theme="dark"] .settings-danger {
+  border-color: #7f2d2d !important;
+  color: #fca5a5 !important;
+}
+html[data-theme="dark"] .settings-keycap {
+  background: #0d0f14;
+  border-color: var(--db-line);
+  color: var(--db-ink);
+}
+html[data-theme="dark"] .settings-source {
+  background: #242936;
+  color: var(--db-mute);
+}
+html[data-theme="dark"] .settings-meter {
+  background: #0d0f14;
+}
+
+/* template community chrome (content canvases untouched) */
+html[data-theme="dark"] .samples-community {
+  background: var(--db-bg);
+  color: var(--db-ink);
+}
+html[data-theme="dark"] .samples-filters button {
+  color: var(--db-mute);
+}
+html[data-theme="dark"] .samples-filters button[aria-pressed="true"] {
+  background: #242936;
+  color: #fff;
+}
+html[data-theme="dark"] .sample-card {
+  background: var(--db-bg-soft);
+  border-color: var(--db-line);
+}
+html[data-theme="dark"] .sample-card-detail {
+  color: var(--db-ink);
+}
+html[data-theme="dark"] .sample-top {
+  background: #14161c;
+  border-color: var(--db-line);
+  color: var(--db-ink);
+}
+html[data-theme="dark"] .sample-top small {
+  color: var(--db-mute);
+}
+html[data-theme="dark"] .sample-notice {
+  background: #16233d;
+  border-color: #2c4a7c;
+  color: #bfd4ff;
+}
+html[data-theme="dark"] .sample-unavailable {
+  background: var(--db-bg);
+  color: var(--db-ink);
+}
+html[data-theme="dark"] .sample-credits {
+  color: var(--db-mute);
+}
+
+/* task + misc surfaces */
+html[data-theme="dark"] .task-reply-markdown {
+  color: var(--db-ink);
+}
+html[data-theme="dark"] dialog {
+  color: var(--db-ink);
+}
+
+/* density */
+html[data-density="compact"] .workbuddy-app .app-sidebar .sidebar-nav-item {
+  min-height: 28px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+html[data-density="compact"] .settings-row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+html[data-density="compact"] .settings-card {
+  gap: 0;
+}
+html[data-density="compact"] .home-content-v2 {
+  --db-user-font-size: var(--db-user-font-size);
+}
+html[data-density="compact"] .sample-card-detail {
+  padding: 10px 12px;
+}
+
+/* server-backed template chrome + account panel */
+html[data-theme="dark"] .template-cloud {
+  background: var(--db-bg-soft);
+  border-color: var(--db-line);
+  color: var(--db-ink);
+}
+html[data-theme="dark"] .template-cloud small {
+  color: var(--db-mute);
+}
+html[data-theme="dark"] .template-cloud button:not(.is-primary) {
+  background: var(--db-bg-raised);
+  border-color: var(--db-line);
+  color: var(--db-ink);
+}
+html[data-theme="dark"] .server-panel {
+  background: var(--db-bg-raised);
+  border-color: var(--db-line);
+  color: var(--db-ink);
+}
+html[data-theme="dark"] .server-panel p,
+html[data-theme="dark"] .server-panel li small {
+  color: var(--db-mute);
+}
+html[data-theme="dark"] .server-panel button {
+  background: var(--db-bg-soft);
+  border-color: var(--db-line);
+  color: var(--db-ink);
+}
+html[data-theme="dark"] .server-panel li {
+  border-color: var(--db-line);
+}
+html[data-theme="dark"] .server-panel-message {
+  background: var(--db-bg-soft);
+  color: var(--db-ink);
+}
+
+/* Custom model editor inherits the selected application theme. */
+html[data-theme="dark"] .settings-model-dialog {
+  border-color: var(--db-line);
+  background: #14161c;
+  color: var(--db-ink);
+}
+html[data-theme="dark"] .settings-model-dialog::backdrop {
+  background: #0009;
+}
+html[data-theme="dark"] .settings-model-dialog__header h2,
+html[data-theme="dark"] .settings-model-dialog__field,
+html[data-theme="dark"] .settings-model-dialog__advanced legend {
+  color: var(--db-ink);
+}
+html[data-theme="dark"] .settings-model-dialog__field small,
+html[data-theme="dark"] .settings-model-dialog__advanced > p,
+html[data-theme="dark"] .settings-model-dialog__note {
+  color: var(--db-mute);
+}
+html[data-theme="dark"] .settings-model-dialog__field input,
+html[data-theme="dark"] .settings-model-dialog__field select {
+  border-color: var(--db-line);
+  background: #1a1d25;
+  color: var(--db-ink);
+}
+html[data-theme="dark"] .settings-model-dialog__field input:disabled,
+html[data-theme="dark"] .settings-model-dialog__field select:disabled {
+  background: #181a20;
+  color: #858b98;
+}
+html[data-theme="dark"] .settings-model-dialog__field input::placeholder {
+  color: #747985;
+}
+html[data-theme="dark"] .settings-model-dialog__key-toggle {
+  color: var(--db-mute);
+}
+html[data-theme="dark"] .settings-model-dialog__key-toggle:hover:not(:disabled),
+html[data-theme="dark"] .settings-model-dialog__test:hover:not(:disabled) {
+  background: #242936;
+}
+html[data-theme="dark"] .settings-model-dialog__test {
+  border-color: var(--db-line);
+  background: transparent;
+  color: var(--db-ink);
+}
+html[data-theme="dark"] .settings-model-dialog__test:disabled {
+  color: #737986;
+}
+html[data-theme="dark"] .settings-model-dialog__checks label {
+  color: var(--db-ink);
+}
+html[data-theme="dark"] .settings-model-dialog__checks input {
+  accent-color: #e8eaf0;
+}
+html[data-theme="dark"] .settings-model-dialog__footer {
+  background: #14161c;
+}
+html[data-theme="dark"] .settings-model-dialog__footer .settings-button {
+  border-color: var(--db-line);
+  background: transparent;
+  color: var(--db-ink);
+}
+html[data-theme="dark"] .settings-model-dialog__footer .settings-button.is-primary {
+  background: #e8eaf0;
+  border-color: #e8eaf0;
+  color: #14161c;
+}
+html[data-theme="dark"] .settings-model-dialog__footer .settings-button.is-primary:hover {
+  background: #fff;
+}
+html[data-theme="dark"] .settings-model-dialog__connection.is-ok {
+  color: #7bd9a4;
+}
+html[data-theme="dark"] .settings-model-dialog__connection.is-error {
+  color: #f2a2a2;
+}

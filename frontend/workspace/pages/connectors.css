@@ -1,0 +1,82 @@
+/* 8.png connector directory; shared WorkBuddy sidebar stays visible on desktop. */
+.connectors-workspace { min-height:100vh; background:#fff; color:#111; }
+.connectors-workspace .home-icon { display:block; flex-shrink:0; }
+.connectors-workspace .app-sidebar { position:sticky; top:0; flex:0 0 279px; width:279px; height:100vh; min-height:0; padding:0 12px 14px 11px; }
+.connectors-workspace .app-sidebar .sidebar-nav-item.is-prominent { background:transparent; font-weight:400; }
+.connectors-workspace .app-sidebar .sidebar-nav-item.is-active { background:#e7e7e7; color:#151515; font-weight:600; }
+.connectors-workspace .app-sidebar .sidebar-nav-item:hover { background:#e5e5e5; }
+.connectors-workspace .connectors-main { flex:1; min-width:0; container:connector-content / inline-size; }
+.connectors-workspace .connectors-topbar { display:flex; align-items:center; justify-content:space-between; gap:24px; height:56px; padding:12px 24px; }
+.connectors-workspace .market-nav { display:flex; align-items:center; gap:24px; flex-shrink:0; }
+.connectors-workspace .market-nav button { display:flex; align-items:center; gap:5px; padding:0; border:0; background:none; color:#999; font-size:18px; line-height:28px; white-space:nowrap; }
+.connectors-workspace .market-nav button.is-active { color:#080808; font-weight:600; }
+.connectors-workspace .market-nav button:hover { color:#222; }
+.connectors-workspace .connectors-header-actions { display:flex; align-items:center; gap:12px; min-width:0; }
+.connectors-workspace .connectors-search { display:flex; align-items:center; gap:5px; width:180px; height:32px; padding:0 9px; border:1px solid #ebebeb; border-radius:8px; color:#999; }
+.connectors-workspace .connectors-search:focus-within { border-color:#b5b5b5; }
+.connectors-workspace .connectors-search input { width:100%; min-width:0; padding:0; border:0; outline:none; background:none; color:#333; font-size:14px; }
+.connectors-workspace .connectors-search input::placeholder { color:#b8b8b8; }
+.connectors-workspace .connectors-custom-control { display:flex; align-items:center; justify-content:center; gap:5px; height:32px; padding:0 16px; border:1px solid #202020; border-radius:8px; background:#202020; color:#fff; font-size:14px; white-space:nowrap; }
+.connectors-workspace .connectors-custom-control:hover { background:#3b3b3b; }
+.connectors-workspace .connectors-content { padding:3px 36px 24px 24px; }
+.connectors-workspace .connectors-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+.connectors-workspace .connector-tile { position:relative; min-width:0; height:92px; padding:20px; border:1px solid #ededed; border-radius:17px; background:#fff; box-shadow:0 5px 16px #00000002; }
+.connectors-workspace .connector-tile:hover { border-color:#d6d6d6; box-shadow:0 5px 18px #00000005; }
+.connectors-workspace .connector-tile-open { display:flex; align-items:center; gap:10px; width:100%; min-width:0; height:50px; padding:0; border:0; border-radius:8px; background:none; text-align:left; }
+.connectors-workspace .connector-tile-icon { display:block; flex:0 0 50px; width:50px; height:50px; border-radius:16px; object-fit:contain; }
+.connectors-workspace .connector-icon-fallback { display:grid; place-items:center; background:#edf4f2; color:#4c8877; }
+.connectors-workspace .connector-tile-copy { display:flex; flex-direction:column; gap:4px; min-width:0; flex:1; }
+.connectors-workspace .connector-tile-title { display:block; overflow:hidden; padding-right:32px; color:#101010; font-size:16px; font-weight:500; line-height:23px; white-space:nowrap; text-overflow:ellipsis; }
+.connectors-workspace .connector-tile-description { display:block; overflow:hidden; color:#999; font-size:14px; line-height:22px; white-space:nowrap; text-overflow:ellipsis; }
+.connectors-workspace .connector-configure-button { position:absolute; top:20px; right:20px; display:grid; place-items:center; width:24px; height:24px; padding:0; border:0; border-radius:6px; background:#f3f3f3; color:#444; }
+.connectors-workspace .connector-configure-button:hover { background:#e7e7e7; }
+.connectors-workspace .connector-status-dot { position:absolute; top:28px; right:52px; width:8px; height:8px; border-radius:50%; background:#ff8b13; }
+.connectors-workspace .connector-status-dot.is-connected { background:#0cba91; }
+.connectors-workspace .connector-tile:has(.connector-status-dot) .connector-tile-title { padding-right:48px; }
+.connectors-workspace .connectors-empty { display:flex; flex-direction:column; align-items:center; gap:12px; padding:70px 16px; text-align:center; color:#999; }
+.connectors-workspace .connectors-empty h1 { margin:0; color:#333; font-size:18px; }
+.connectors-workspace .connectors-empty p { margin:0 0 8px; font-size:14px; }
+.connectors-workspace .connectors-primary,.connectors-workspace .connectors-secondary { padding:9px 16px; border:1px solid #222; border-radius:8px; background:#222; color:#fff; font-size:14px; }
+.connectors-workspace .connectors-secondary { border-color:#ddd; background:#fff; color:#333; }
+.connectors-workspace .connectors-primary:hover:not(:disabled) { background:#444; }
+.connectors-workspace .connectors-secondary:hover:not(:disabled) { background:#f7f7f7; }
+.connectors-workspace .connectors-primary:disabled,.connectors-workspace .connectors-secondary:disabled { opacity:.55; }
+.connectors-workspace .connectors-back { display:block; padding:0; margin-bottom:24px; border:0; background:none; color:#777; font-size:14px; }
+.connectors-workspace .connector-detail-panel { max-width:700px; margin:24px auto; padding:28px; border:1px solid #e5e5e5; border-radius:17px; }
+.connectors-workspace .connector-detail-panel h1 { margin:20px 0 12px; color:#222; font-size:24px; }
+.connectors-workspace .connector-detail-panel p { color:#777; font-size:14px; line-height:1.8; }
+.connectors-workspace .connector-detail-panel label { display:flex; flex-direction:column; gap:8px; margin:20px 0; color:#333; font-size:14px; }
+.connectors-workspace .connector-detail-panel input,.connectors-workspace .connector-detail-panel textarea,.connectors-workspace .connector-detail-panel select { width:100%; padding:10px 12px; border:1px solid #ddd; border-radius:8px; background:#fff; color:#222; font:inherit; }
+.connectors-workspace .connector-detail-panel textarea { resize:vertical; }
+.connectors-workspace .connector-detail-panel small { display:block; color:#888; font-size:12px; line-height:1.7; }
+.connectors-workspace .connector-service-note { padding:16px; margin:20px 0; border-radius:10px; background:#f6f8f7; font-size:14px; }
+.connectors-workspace .connector-service-note p { margin:8px 0 0; }
+.connectors-workspace .connector-detail-actions { display:flex; flex-wrap:wrap; gap:12px; margin-top:24px; }
+.connectors-workspace .connector-config-values { color:#777; font-size:14px; line-height:1.8; }
+.connectors-workspace .connector-config-values dt { margin-top:12px; color:#333; }
+.connectors-workspace .connector-config-values dd { margin-left:0; overflow-wrap:anywhere; }
+.connectors-workspace .connectors-message { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:12px 16px; margin:8px 0 16px; border:1px solid #ddd; border-radius:9px; background:#fafafa; color:#666; font-size:13px; overflow-wrap:anywhere; }
+.connectors-workspace .connectors-message.is-error { background:#fff6f4; color:#a04436; }
+.connectors-workspace .connectors-message button { padding:0; border:0; background:none; font-size:20px; }
+@container connector-content (max-width:1000px) {
+  .connectors-workspace .connectors-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .connectors-workspace .connectors-content { padding-right:24px; }
+}
+@container connector-content (max-width:680px) {
+  .connectors-workspace .connectors-topbar { flex-wrap:wrap; height:auto; gap:12px; padding:12px 16px; }
+  .connectors-workspace .market-nav { width:100%; }
+  .connectors-workspace .connectors-header-actions { width:100%; }
+  .connectors-workspace .connectors-search { flex:1; min-width:0; width:auto; }
+  .connectors-workspace .connectors-content { padding:3px 16px 24px; }
+  .connectors-workspace .connectors-custom-control { padding:0 12px; font-size:13px; }
+}
+@container connector-content (max-width:580px) {
+  .connectors-workspace .connectors-grid { grid-template-columns:minmax(0,1fr); }
+  .connectors-workspace .connector-detail-panel { padding:20px; }
+}
+@media(max-width:980px) and (min-width:681px) {
+  .connectors-workspace .app-sidebar { flex-basis:225px; width:225px; }
+}
+@media(max-width:680px) {
+  .connectors-workspace .app-sidebar { position:relative; width:100%; height:auto; min-height:0; padding:0 12px 9px; }
+}

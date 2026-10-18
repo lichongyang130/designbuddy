@@ -1,0 +1,87 @@
+{
+  "sourceSHA256": "0cfca3c9aac6865cd784fadad1e39f21e057f2ab719d5a609edcc28ff0cb8307",
+  "title": "累计收入趋势",
+  "metric": "确认收入",
+  "unit": "万元",
+  "scope": "2026年9月累计确认收入；仅列出已提供观测日期",
+  "source": "演示样例，未独立验证业务事实",
+  "purpose": "trend",
+  "chartType": "date-line",
+  "selectionReason": "用户明确选择时间趋势，使用按日期间隔定位的折线；不补齐缺失日期。",
+  "selectionMethod": "explicit-purpose deterministic rules, not AI semantic understanding",
+  "userDeclaredPartsCompleteAndDisjoint": false,
+  "sourceIndependentlyVerified": false,
+  "calculationPolicy": "decimal.js 40位有效数字；原始数值不超过6位小数，图形坐标为双精度近似，变化率等除法结果可能舍入。",
+  "rowReference": "sourceRow为输入data数组从1开始的记录序号，不是JSON物理行号或外部数据源行号。",
+  "kpis": [
+    {
+      "label": "首期值",
+      "value": "100"
+    },
+    {
+      "label": "末期值",
+      "value": "150"
+    },
+    {
+      "label": "净变化",
+      "value": "50"
+    }
+  ],
+  "rows": [
+    {
+      "label": "2026-09-01",
+      "value": "100",
+      "sourceRow": 2
+    },
+    {
+      "label": "2026-09-02",
+      "value": "125",
+      "sourceRow": 3
+    },
+    {
+      "label": "2026-09-04",
+      "value": "150",
+      "sourceRow": 1
+    }
+  ],
+  "geometry": [
+    {
+      "x": 210,
+      "y": 554.6666666666667,
+      "sourceRow": 2,
+      "label": "2026-09-01"
+    },
+    {
+      "x": 496.66666666666663,
+      "y": 510.3333333333333,
+      "sourceRow": 3,
+      "label": "2026-09-02"
+    },
+    {
+      "x": 1070,
+      "y": 466,
+      "sourceRow": 1,
+      "label": "2026-09-04"
+    }
+  ],
+  "domain": {
+    "min": "0",
+    "max": "150"
+  },
+  "change": "50",
+  "changePercent": "50",
+  "dateSpacing": "UTC date proportional",
+  "missingDatesFilled": false,
+  "render": {
+    "width": 1200,
+    "height": 1417,
+    "svgSHA256": "2f50f825e573da71c0c3087743c36ea19949dc05fed785f9a0387f28b206f8db",
+    "pngSHA256": "fd388a10c7af67b30d2716b42485c0cddd2d92fc300b7f80cb612450fcf86702"
+  },
+  "notes": [
+    "单位、统计口径和来源均由用户声明，未独立核实。",
+    "图形坐标与PNG为近似呈现；完整数值及记录序号见下方明细和JSON。",
+    "折线只连接已提供的数据点，不补数据、不做预测或因果解释。"
+  ],
+  "requiresReview": true
+}

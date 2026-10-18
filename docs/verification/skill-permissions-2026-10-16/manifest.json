@@ -1,0 +1,163 @@
+{
+  "tool": "run-acceptance",
+  "suite": "designbuddy-skill-permissions",
+  "baseUrl": "http://127.0.0.1:5173",
+  "ranAt": "2026-10-16T17:54:52.906Z",
+  "viewports": [
+    "desktop 1440x900",
+    "mobile 390x844"
+  ],
+  "counts": {
+    "total": 18,
+    "passed": 18,
+    "failed": 0,
+    "notVerified": 0
+  },
+  "results": [
+    {
+      "id": "skills-heading",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 2911
+    },
+    {
+      "id": "skill-permission-chip",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 19
+    },
+    {
+      "id": "open-browser-skill",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 233
+    },
+    {
+      "id": "browser-skill-permissions",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (91 chars)",
+      "durationMs": 6
+    },
+    {
+      "id": "browser-skill-subprocess",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (91 chars)",
+      "durationMs": 5
+    },
+    {
+      "id": "browser-skill-permission-count",
+      "type": "evaluate",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "script ran (status 200)",
+      "durationMs": 2
+    },
+    {
+      "id": "close-skill-dialog",
+      "type": "click",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 111
+    },
+    {
+      "id": "local-skill-permissions",
+      "type": "evaluate",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "script ran (status 200)",
+      "durationMs": 804
+    },
+    {
+      "id": "skill-permission-screenshot",
+      "type": "screenshot",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "screenshot saved as screenshots/desktop/skill-permission-screenshot.png",
+      "durationMs": 1223
+    },
+    {
+      "id": "skills-heading",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 3416
+    },
+    {
+      "id": "skill-permission-chip",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 141
+    },
+    {
+      "id": "open-browser-skill",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 253
+    },
+    {
+      "id": "browser-skill-permissions",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (91 chars)",
+      "durationMs": 12
+    },
+    {
+      "id": "browser-skill-subprocess",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (91 chars)",
+      "durationMs": 6
+    },
+    {
+      "id": "browser-skill-permission-count",
+      "type": "evaluate",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "script ran (status 200)",
+      "durationMs": 1
+    },
+    {
+      "id": "close-skill-dialog",
+      "type": "click",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "clicked",
+      "durationMs": 81
+    },
+    {
+      "id": "local-skill-permissions",
+      "type": "evaluate",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "script ran (status 200)",
+      "durationMs": 803
+    },
+    {
+      "id": "skill-permission-screenshot",
+      "type": "screenshot",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "screenshot saved as screenshots/mobile/skill-permission-screenshot.png",
+      "durationMs": 646
+    }
+  ],
+  "policy": "只有真实访问目标并通过断言的检查才记为 passed；选择器缺失记为 not_verified 并写明原因；失败项保留控制台与网络记录。本工具不代表被测目标已完成业务验收，只证明声明的检查项在声明的视口下实际执行过。"
+}

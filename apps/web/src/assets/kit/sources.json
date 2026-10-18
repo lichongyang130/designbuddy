@@ -1,0 +1,194 @@
+[
+  {
+    "file": "studio-nine/art-01.svg",
+    "set": "studio-nine",
+    "title": "STUDIO NINE · 原创图形 1",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "studio-nine/art-02.svg",
+    "set": "studio-nine",
+    "title": "STUDIO NINE · 原创图形 2",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "studio-nine/art-03.svg",
+    "set": "studio-nine",
+    "title": "STUDIO NINE · 原创图形 3",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "studio-nine/art-04.svg",
+    "set": "studio-nine",
+    "title": "STUDIO NINE · 原创图形 4",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "studio-nine/art-05.svg",
+    "set": "studio-nine",
+    "title": "STUDIO NINE · 原创图形 5",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "studio-nine/art-06.svg",
+    "set": "studio-nine",
+    "title": "STUDIO NINE · 原创图形 6",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "studio-nine/art-07.svg",
+    "set": "studio-nine",
+    "title": "STUDIO NINE · 原创图形 7",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "studio-nine/art-08.svg",
+    "set": "studio-nine",
+    "title": "STUDIO NINE · 原创图形 8",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "wellspring/art-01.svg",
+    "set": "wellspring",
+    "title": "WELLSPRING · 原创图形 1",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "wellspring/art-02.svg",
+    "set": "wellspring",
+    "title": "WELLSPRING · 原创图形 2",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "wellspring/art-03.svg",
+    "set": "wellspring",
+    "title": "WELLSPRING · 原创图形 3",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "wellspring/art-04.svg",
+    "set": "wellspring",
+    "title": "WELLSPRING · 原创图形 4",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "wellspring/art-05.svg",
+    "set": "wellspring",
+    "title": "WELLSPRING · 原创图形 5",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "wellspring/art-06.svg",
+    "set": "wellspring",
+    "title": "WELLSPRING · 原创图形 6",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "wellspring/art-07.svg",
+    "set": "wellspring",
+    "title": "WELLSPRING · 原创图形 7",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "wellspring/art-08.svg",
+    "set": "wellspring",
+    "title": "WELLSPRING · 原创图形 8",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "circuit/art-01.svg",
+    "set": "circuit",
+    "title": "CIRCUIT · 原创图形 1",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "circuit/art-02.svg",
+    "set": "circuit",
+    "title": "CIRCUIT · 原创图形 2",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "circuit/art-03.svg",
+    "set": "circuit",
+    "title": "CIRCUIT · 原创图形 3",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "circuit/art-04.svg",
+    "set": "circuit",
+    "title": "CIRCUIT · 原创图形 4",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "circuit/art-05.svg",
+    "set": "circuit",
+    "title": "CIRCUIT · 原创图形 5",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "circuit/art-06.svg",
+    "set": "circuit",
+    "title": "CIRCUIT · 原创图形 6",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "circuit/art-07.svg",
+    "set": "circuit",
+    "title": "CIRCUIT · 原创图形 7",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "circuit/art-08.svg",
+    "set": "circuit",
+    "title": "CIRCUIT · 原创图形 8",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  }
+]

@@ -1,0 +1,25 @@
+{
+  "brandName": "林间来信",
+  "description": "以植物灵感制作日常文具。",
+  "concept": "让每一次书写都留住细小观察。",
+  "tagline": "把日常写进自然",
+  "voice": "安静、明朗、具体，不夸张承诺。",
+  "logoShape": "seed",
+  "colors": [
+    {
+      "name": "森林墨绿",
+      "role": "primary",
+      "hex": "#294C3B"
+    },
+    {
+      "name": "雾感米白",
+      "role": "surface",
+      "hex": "#F3EFE4"
+    },
+    {
+      "name": "柿子橙",
+      "role": "accent",
+      "hex": "#D67A4A"
+    }
+  ]
+}

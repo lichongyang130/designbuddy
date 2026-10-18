@@ -1,0 +1,163 @@
+{
+  "tool": "run-acceptance",
+  "suite": "designbuddy-community",
+  "baseUrl": "http://127.0.0.1:5173",
+  "ranAt": "2026-10-16T22:59:13.879Z",
+  "viewports": [
+    "desktop 1440x900",
+    "mobile 390x844"
+  ],
+  "counts": {
+    "total": 18,
+    "passed": 18,
+    "failed": 0,
+    "notVerified": 0
+  },
+  "results": [
+    {
+      "id": "community-page",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 2010
+    },
+    {
+      "id": "community-list",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 19
+    },
+    {
+      "id": "community-honest-empty",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (32 chars)",
+      "durationMs": 9
+    },
+    {
+      "id": "community-hero",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (57 chars)",
+      "durationMs": 6
+    },
+    {
+      "id": "publish-controls",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 2553
+    },
+    {
+      "id": "publish-title",
+      "type": "assertVisible",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 8
+    },
+    {
+      "id": "publish-visibility",
+      "type": "assertText",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "text matched (16 chars)",
+      "durationMs": 6
+    },
+    {
+      "id": "community-api",
+      "type": "http",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "HTTP 200",
+      "durationMs": 15
+    },
+    {
+      "id": "community-screenshot",
+      "type": "screenshot",
+      "viewport": "desktop",
+      "status": "passed",
+      "detail": "screenshot saved as screenshots/desktop/community-screenshot.png",
+      "durationMs": 1872
+    },
+    {
+      "id": "community-page",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 2113
+    },
+    {
+      "id": "community-list",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 21
+    },
+    {
+      "id": "community-honest-empty",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (32 chars)",
+      "durationMs": 5
+    },
+    {
+      "id": "community-hero",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (57 chars)",
+      "durationMs": 6
+    },
+    {
+      "id": "publish-controls",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 2350
+    },
+    {
+      "id": "publish-title",
+      "type": "assertVisible",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "element visible",
+      "durationMs": 26
+    },
+    {
+      "id": "publish-visibility",
+      "type": "assertText",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "text matched (16 chars)",
+      "durationMs": 6
+    },
+    {
+      "id": "community-api",
+      "type": "http",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "HTTP 200",
+      "durationMs": 7
+    },
+    {
+      "id": "community-screenshot",
+      "type": "screenshot",
+      "viewport": "mobile",
+      "status": "passed",
+      "detail": "screenshot saved as screenshots/mobile/community-screenshot.png",
+      "durationMs": 495
+    }
+  ],
+  "policy": "只有真实访问目标并通过断言的检查才记为 passed；选择器缺失记为 not_verified 并写明原因；失败项保留控制台与网络记录。本工具不代表被测目标已完成业务验收，只证明声明的检查项在声明的视口下实际执行过。"
+}

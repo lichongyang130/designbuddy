@@ -1,0 +1,39 @@
+.workspace-workspace { background: #f7f8fc; }
+.ws-main { flex: 1; min-width: 0; overflow: auto; background: #f7f8fc; color: #202434; }
+.ws-topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 28px; border-bottom: 1px solid #e6e8f0; background: #fff; }
+.ws-nav { flex: 1; min-width: 0; }
+.ws-content { display: flex; flex-direction: column; gap: 18px; max-width: 1040px; margin: 0 auto; padding: 26px 28px 60px; }
+.ws-hero h1 { margin: 4px 0 6px; font-size: 26px; }
+.ws-hero p { margin: 0; color: #6b7180; font-size: 13px; line-height: 1.7; }
+.ws-eyebrow { color: #8a90a0; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; }
+.ws-card { padding: 18px 20px; border: 1px solid #e6e8f0; border-radius: 14px; background: #fff; }
+.ws-card h2 { margin: 0 0 6px; font-size: 16px; }
+.ws-card h3 { margin: 20px 0 8px; font-size: 14px; }
+.ws-note { margin: 0 0 12px; color: #6b7180; font-size: 12px; line-height: 1.7; }
+.ws-message { margin: 0; padding: 9px 12px; border-radius: 10px; background: #eef7f1; color: #2f7a55; font-size: 12px; }
+.ws-message.is-error { background: #fdeeee; color: #b4483f; }
+.ws-list, .ws-projects { display: flex; flex-direction: column; gap: 8px; margin: 0 0 14px; padding: 0; list-style: none; }
+.ws-list-open { display: flex; flex-direction: column; gap: 3px; width: 100%; padding: 10px 12px; border: 1px solid #e6e8f0; border-radius: 10px; background: #fbfbfe; color: inherit; text-align: left; cursor: pointer; }
+.ws-list-open strong { font-size: 13px; }
+.ws-list-open span { color: #6b7180; font-size: 11px; }
+.ws-list li.is-selected .ws-list-open { border-color: #7458ed; background: #f3f1ff; }
+.ws-empty { color: #8a90a0; font-size: 12px; }
+.ws-forms { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px; margin-top: 12px; }
+.ws-forms label { display: flex; flex-direction: column; gap: 5px; color: #6b7180; font-size: 11px; }
+.ws-forms input, .ws-forms select { min-width: 170px; padding: 8px 10px; border: 1px solid #dcdfe8; border-radius: 9px; background: #fff; color: #202434; font: inherit; font-size: 12px; }
+.ws-button { padding: 8px 13px; border: 1px solid #dcdfe8; border-radius: 9px; background: #fff; color: #3a4050; font: inherit; font-size: 12px; cursor: pointer; }
+.ws-button:disabled { opacity: 0.55; cursor: not-allowed; }
+.ws-button.is-primary { border-color: #7458ed; background: #7458ed; color: #fff; }
+.ws-button.is-danger { border-color: #e0b3ae; color: #b4483f; }
+.ws-code { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 0 0 12px; color: #3a4050; font-size: 12px; }
+.ws-code code { padding: 3px 9px; border-radius: 999px; background: #f0efff; color: #5b46cf; font-size: 13px; letter-spacing: 0.12em; }
+.ws-code span { color: #8a90a0; font-size: 11px; }
+.ws-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.ws-table th, .ws-table td { padding: 8px 10px; border-bottom: 1px solid #eef0f6; text-align: left; }
+.ws-table th { color: #8a90a0; font-weight: 600; font-size: 11px; }
+.ws-table td button, .ws-table td select { margin-right: 6px; padding: 4px 9px; border: 1px solid #dcdfe8; border-radius: 8px; background: #fff; font: inherit; font-size: 11px; }
+@media (max-width: 720px) {
+  .ws-content { padding: 18px 14px 40px; }
+  .ws-forms { flex-direction: column; align-items: stretch; }
+  .ws-forms input, .ws-forms select { min-width: 0; width: 100%; }
+}

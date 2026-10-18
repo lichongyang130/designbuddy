@@ -1,0 +1,33 @@
+.fm-cover {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  background: #eee8dd;
+  color: #43382a;
+}
+.fm-cover > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.fm-cover > div {
+  position: absolute;
+  inset: 0;
+  padding: 8%;
+  background: linear-gradient(90deg, #ede6d9ce, transparent 85%);
+}
+.fm-cover small {
+  font-size: 8px;
+  letter-spacing: 2px;
+}
+.fm-cover h2 {
+  font-size: clamp(19px, 2vw, 31px);
+  line-height: 1.5;
+  font-weight: 400;
+  margin: 8% 0;
+}
+.fm-cover span {
+  font-size: 8px;
+  letter-spacing: 1px;
+}

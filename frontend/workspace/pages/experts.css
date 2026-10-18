@@ -1,0 +1,118 @@
+/* 2.png reference. Scoped to the expert workspace; other markets stay unchanged. */
+.expert-workspace { background:#fff; color:#161616; }
+.expert-workspace .app-sidebar { position:sticky; top:0; flex:0 0 277px; width:277px; height:100vh; min-height:0; padding:0 12px 14px 9px; }
+.expert-workspace .app-sidebar .sidebar-nav-item.is-prominent { background:transparent; font-weight:400; }
+.expert-workspace .app-sidebar .sidebar-nav-item.is-active { background:#e7e7e7; color:#151515; font-weight:600; }
+.expert-workspace .app-sidebar .sidebar-nav-item:hover { background:#e5e5e5; }
+.expert-workspace .sidebar-bottom { display:none; }
+.expert-workspace .sidebar-windowbar { padding-left:10px; padding-right:6px; }
+/* Task-oriented expert library. All rules remain scoped away from other markets. */
+.expert-workspace .experts-main { flex: 1; min-width: 0; background: #fff; }
+.expert-workspace .experts-topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 72px; padding: 16px 36px; border-bottom: 1px solid #eee; }
+.expert-workspace .experts-main-nav { display: flex; align-items: center; gap: 24px; }
+.expert-workspace .experts-main-nav button { display: flex; align-items: center; gap: 7px; border: 0; padding: 0; background: transparent; color: #929292; font-size: 15px; white-space: nowrap; }
+.expert-workspace .experts-main-nav button.is-active { color: #262626; font-weight: 600; }
+.expert-workspace .expert-create-button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; flex-shrink: 0; padding: 9px 12px; border: 1px solid #ddd; border-radius: 9px; background: #fff; color: #444; font-size: 13px; }
+.expert-workspace .experts-content { max-width: 1400px; margin: 0 auto; padding: 36px; }
+.expert-workspace .expert-library-hero { display: flex; align-items: flex-end; justify-content: space-between; gap: 28px; padding: 0 0 32px; }
+.expert-workspace .expert-eyebrow { display: block; color: #999; font-size: 12px; letter-spacing: .06em; margin-bottom: 10px; }
+.expert-workspace .expert-library-hero h1 { margin: 0 0 12px; font-size: clamp(23px, 2.2vw, 32px); line-height: 1.4; font-weight: 600; letter-spacing: -.04em; color: #303030; }
+.expert-workspace .expert-library-hero > div:first-child > p { max-width: 490px; margin: 0; color: #888; font-size: 13px; line-height: 1.8; }
+.expert-workspace .expert-auto-note { flex: 0 0 278px; display: flex; gap: 12px; padding: 18px; border: 1px solid #e8e8e8; border-radius: 14px; background: #fafafa; }
+.expert-workspace .expert-auto-note > svg { flex-shrink: 0; margin-top: 2px; color: #777; }
+.expert-workspace .expert-auto-note b { font-size: 13px; font-weight: 500; }
+.expert-workspace .expert-auto-note p { margin: 6px 0 10px; color: #999; font-size: 12px; line-height: 1.7; }
+.expert-workspace .expert-auto-note button { border: 0; padding: 0; background: none; font-size: 12px; color: #444; }
+.expert-workspace .expert-directory-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 0; border-top: 1px solid #eee; border-bottom: 1px solid #eee; }
+.expert-workspace .expert-category-track { display: flex; flex-wrap: wrap; gap: 6px; }
+.expert-workspace .expert-category-track button { padding: 8px 12px; border: 1px solid transparent; border-radius: 999px; background: transparent; color: #888; font-size: 13px; white-space: nowrap; }
+.expert-workspace .expert-category-track button.is-active { border-color: #d6d6d6; background: #f1f1f1; color: #333; }
+.expert-workspace .experts-search { display: flex; align-items: center; gap: 8px; width: 205px; min-width: 0; height: 36px; padding: 0 12px; border: 1px solid #e4e4e4; border-radius: 9px; color: #999; background: #fff; }
+.expert-workspace .experts-search input { min-width: 0; width: 100%; border: 0; outline: none; background: transparent; font-size: 12px; color: #444; }
+.expert-workspace .experts-search:focus-within { border-color: #888; }
+.expert-workspace .expert-result-count { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin: 16px 0 26px; color: #999; font-size: 11px; }
+.expert-workspace .expert-result-count > span { color: #aaa; }
+.expert-workspace .expert-area { margin-bottom: 36px; }
+.expert-workspace .expert-area-heading { margin-bottom: 16px; }
+.expert-workspace .expert-area-heading h2 { display: flex; align-items: center; gap: 10px; margin: 0; color: #444; font-size: 18px; font-weight: 500; }
+.expert-workspace .expert-area-heading h2 > span { font-size: 11px; color: #999; font-weight: 400; }
+.expert-workspace .expert-area-heading p { margin: 7px 0 0; color: #999; font-size: 12px; line-height: 1.7; }
+.expert-workspace .expert-card-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.expert-workspace .expert-directory-card { min-width: 0; display: flex; flex-direction: column; padding: 22px; border: 1px solid #e6e6e6; border-radius: 16px; background: #fff; transition: border-color .15s, box-shadow .15s; }
+.expert-workspace .expert-directory-card:hover { border-color: #bdbdbd; box-shadow: 0 4px 16px #00000005; }
+.expert-workspace .expert-card-heading { display: flex; align-items: center; gap: 12px; }
+.expert-workspace .expert-card-heading > div { min-width: 0; }
+.expert-workspace .expert-card-heading h3 { margin: 0; color: #343434; font-size: 16px; line-height: 1.5; font-weight: 600; overflow-wrap: anywhere; }
+.expert-workspace .expert-card-heading > div > span { font-size: 11px; color: #aaa; }
+.expert-workspace .expert-role-icon { flex: 0 0 44px; display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid #e7e7e7; border-radius: 12px; background: #f6f6f6; color: #666; }
+.expert-workspace .expert-role-icon.tone-office { color: #5c7770; background: #f0f6f3; border-color: #e0ebe5; }
+.expert-workspace .expert-role-icon.tone-design { color: #84715c; background: #f9f5ef; border-color: #eee6da; }
+.expert-workspace .expert-role-icon.tone-code { color: #64738b; background: #f0f3f8; border-color: #e0e6ef; }
+.expert-workspace .expert-card-description { margin: 16px 0 12px; color: #777; font-size: 13px; line-height: 1.8; overflow-wrap: anywhere; }
+.expert-workspace .expert-card-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.expert-workspace .expert-card-tags > span { padding: 3px 7px; border-radius: 5px; background: #f6f6f6; color: #888; font-size: 11px; line-height: 1.6; overflow-wrap: anywhere; }
+.expert-workspace .expert-directory-card dl { margin: 16px 0 20px; font-size: 12px; line-height: 1.7; }
+.expert-workspace .expert-directory-card dl > div { display: flex; gap: 12px; margin-top: 5px; }
+.expert-workspace .expert-directory-card dt { flex: 0 0 48px; color: #aaa; }
+.expert-workspace .expert-directory-card dd { min-width: 0; margin: 0; color: #666; overflow-wrap: anywhere; }
+.expert-workspace .expert-directory-card footer { margin-top: auto; padding-top: 14px; border-top: 1px solid #f0f0f0; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.expert-workspace .expert-detail-link { border: 0; background: none; color: #888; padding: 6px 0; font-size: 12px; }
+.expert-workspace .expert-detail-link span { margin-left: 4px; }
+.expert-workspace .expert-use-button { padding: 8px 12px; border: 1px solid #d7d7d7; border-radius: 8px; background: #fafafa; color: #444; font-size: 12px; }
+.expert-workspace .expert-primary { border: 1px solid #363636; border-radius: 8px; padding: 10px 16px; color: #fff; background: #363636; font-size: 13px; white-space: nowrap; }
+.expert-workspace .expert-back { border: 0; padding: 0; margin: 0 0 28px; color: #888; background: none; font-size: 13px; }
+.expert-workspace .expert-detail-panel { max-width: 1000px; margin: 0 auto; }
+.expert-workspace .expert-detail-hero { display: flex; align-items: flex-start; gap: 18px; margin-bottom: 20px; }
+.expert-workspace .expert-detail-hero > div { flex: 1; min-width: 0; }
+.expert-workspace .expert-detail-hero h1 { margin: 0 0 12px; color: #333; font-size: 28px; overflow-wrap: anywhere; }
+.expert-workspace .expert-detail-hero p { margin: 0; color: #777; font-size: 14px; line-height: 1.9; overflow-wrap: anywhere; white-space: pre-wrap; }
+.expert-workspace .expert-detail-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-top: 28px; }
+.expert-workspace .expert-info-block { padding: 22px; border: 1px solid #e8e8e8; border-radius: 14px; background: #fcfcfc; }
+.expert-workspace .expert-info-block h2, .expert-workspace .expert-capability-note h2 { margin: 0 0 12px; color: #444; font-size: 14px; font-weight: 600; }
+.expert-workspace .expert-info-block ul, .expert-workspace .expert-info-block ol { margin: 0; padding-left: 19px; color: #777; font-size: 13px; line-height: 1.9; }
+.expert-workspace .expert-info-block li { padding: 3px 0; overflow-wrap: anywhere; }
+.expert-workspace .expert-capability-note { display: flex; gap: 12px; margin: 22px 0 32px; padding: 20px; border: 1px solid #e9e5de; border-radius: 12px; background: #faf9f6; color: #8a806e; }
+.expert-workspace .expert-capability-note > svg { flex-shrink: 0; }
+.expert-workspace .expert-capability-note p { margin: 6px 0 0; color: #8a806e; font-size: 12px; line-height: 1.9; }
+.expert-workspace .expert-task-examples > button { display: flex; align-items: center; justify-content: space-between; gap: 18px; width: 100%; margin-top: 10px; border: 1px solid #e5e5e5; border-radius: 12px; padding: 16px 20px; background: #fff; text-align: left; color: #666; }
+.expert-workspace .expert-task-examples > button > span { min-width: 0; display: flex; flex-direction: column; gap: 5px; }
+.expert-workspace .expert-task-examples b { color: #444; font-size: 14px; font-weight: 500; }
+.expert-workspace .expert-task-examples small { color: #aaa; font-size: 11px; }
+.expert-workspace .expert-task-examples > button > span > span { font-size: 12px; line-height: 1.8; color: #888; }
+.expert-workspace .expert-task-examples svg { flex-shrink: 0; }
+.expert-workspace .expert-create-form { max-width: 650px; }
+.expert-workspace .expert-create-form h1 { font-size: 28px; margin: 0 0 10px; }
+.expert-workspace .expert-create-form > p { color: #888; font-size: 13px; line-height: 1.8; }
+.expert-workspace .expert-create-form label { display: block; margin: 24px 0; color: #666; font-size: 13px; }
+.expert-workspace .expert-create-form input, .expert-workspace .expert-create-form textarea { display: block; width: 100%; margin-top: 8px; padding: 12px; border: 1px solid #ddd; border-radius: 9px; color: #444; background: #fff; font: inherit; line-height: 1.8; }
+.expert-workspace .expert-create-form textarea { resize: vertical; }
+.expert-workspace .expert-empty { padding: 60px 16px; text-align: center; color: #999; }
+.expert-workspace .expert-empty h1, .expert-workspace .expert-empty h2 { color: #666; font-size: 18px; font-weight: 500; }
+.expert-workspace .expert-empty p { font-size: 13px; line-height: 1.8; }
+.expert-workspace .experts-message { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 16px; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 13px; color: #666; }
+.expert-workspace .experts-message button { border: 0; background: none; color: inherit; }
+.expert-workspace .experts-message.is-error { color: #a64e46; border-color: #ead3d0; }
+.expert-workspace .experts-main button { cursor: pointer; }
+.expert-workspace .experts-main button:hover { filter: brightness(.96); }
+.expert-workspace .experts-main button:focus-visible, .expert-workspace .experts-main input:focus-visible, .expert-workspace .experts-main textarea:focus-visible { outline: 2px solid #888; outline-offset: 3px; }
+@media (min-width: 1600px) { .expert-workspace .expert-card-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 1100px) { .expert-workspace .expert-library-hero { align-items: stretch; flex-direction: column; gap: 20px; } .expert-workspace .expert-auto-note { flex-basis: auto; max-width: 100%; } }
+@media (max-width: 980px) and (min-width: 681px) { .expert-workspace .app-sidebar { flex-basis: 225px; width: 225px; } .expert-workspace .experts-content { padding: 28px 22px; } .expert-workspace .experts-topbar { padding: 16px 22px; } .expert-workspace .expert-directory-card { padding: 16px; } }
+@media (max-width: 800px) { .expert-workspace .expert-detail-hero { flex-wrap: wrap; } .expert-workspace .expert-detail-hero > .expert-primary { margin-left: 62px; } .expert-workspace .expert-directory-toolbar { flex-direction: column; align-items: stretch; } .expert-workspace .experts-search { width: 100%; } }
+@media (max-width: 680px) { .expert-workspace .app-sidebar { position: relative; width: 100%; height: auto; min-height: 0; padding: 0 12px 9px; } .expert-workspace .experts-content { padding: 28px 16px; } .expert-workspace .experts-topbar { padding: 14px 16px; gap: 8px; } .expert-workspace .experts-main-nav { gap: 14px; } .expert-workspace .experts-main-nav button { font-size: 13px; gap: 4px; } .expert-workspace .experts-main-nav svg { width: 18px; } .expert-workspace .expert-create-button { padding: 8px; font-size: 12px; } .expert-workspace .expert-create-button svg { display: none; } .expert-workspace .expert-detail-columns { grid-template-columns: 1fr; } .expert-workspace .expert-category-track { gap: 4px; } .expert-workspace .expert-category-track button { padding: 7px 10px; font-size: 12px; } }
+@media (max-width: 760px) { .expert-workspace .expert-card-grid { grid-template-columns: minmax(0, 1fr); } }
+@media (prefers-reduced-motion: reduce) { .expert-workspace .expert-directory-card { transition: none; } }
+/* On compact screens the action gets its own row; never squeeze the expert title. */
+@media (max-width: 800px) {
+  .expert-workspace .expert-detail-hero { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 16px; }
+  .expert-workspace .expert-detail-hero > .expert-primary { grid-column: 2; justify-self: start; margin-left: 0; }
+  .expert-workspace .expert-detail-hero h1 { font-size: 24px; line-height: 1.4; }
+}
+
+/* Portraits share one catalog with the homepage picker; preserve icon fallbacks. */
+.expert-workspace .expert-role-icon.has-avatar { width: 56px; height: 56px; flex-basis: 56px; overflow: hidden; border-radius: 16px; }
+.expert-workspace .expert-role-icon.has-avatar img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.expert-workspace .expert-detail-hero .expert-role-icon.has-avatar { width: 64px; height: 64px; flex-basis: 64px; border-radius: 18px; }
+@media (max-width: 800px) {
+  .expert-workspace .expert-detail-hero { grid-template-columns: 64px minmax(0, 1fr); }
+}
