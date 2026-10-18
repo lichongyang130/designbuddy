@@ -261,16 +261,18 @@ scrollable narrow-screen navigation/content are supported.
   模板修改状态 · 自定义模型 · 本地存储占用) keeps its real browser statistics and its
   “不会产生订阅或扣费” note. See `docs/verification/settings-plan-credits-2026-10-18/`.
 - **外观** follows the 2026-10-18 reference screenshot: an 界面样式 heading with a
-  hairline rule, then one row per setting (title + grey help line on the left,
-  control on the right) separated by the same gradient rules — 主题模式 (real
-  system/light/dark select plus a light/dark toggle button), 终端主题, 终端链接使用
-  内置浏览器, 语言 (real, same store as 常规), 字体风格, 内容宽度, 文件图标, 模糊与
-  玻璃效果, and the real 界面密度 row. The 森林 / 节能 / 蜜蜂 / 羊皮纸 cards are the
-  four reference preview cards. **Only 主题模式, 语言 and 界面密度 are real**: the
-  four inert selects are `disabled`, both switches are `disabled` and unchecked, and
-  the four preview cards are static artwork (`aria-disabled`), because this build has
-  no terminal, typeface, content-width, file-icon or blur/glass setting. They are
-  rendered exactly as in the reference without claiming a working feature. See
+  hairline rule, three clickable 跟随系统 / 浅色 / 深色 theme preview cards, then one
+  row per setting (title + grey help line on the left, control on the right)
+  separated by the same gradient rules — 主题模式 (system/light/dark select plus a
+  light/dark toggle button), 控制台主题, 链接打开方式, 语言, 字体风格, 内容宽度,
+  文件图标, 模糊与玻璃效果, and 界面密度. **Every control is real** and writes to the
+  local preferences store: 控制台主题 tints the skill workbench run log
+  (`html[data-console-theme]`), 链接打开方式 shares `linkMode` with 通用, 字体风格
+  switches the interface between sans-serif and serif, 内容宽度 caps task bodies and
+  the composer (680 / 920 / 1320px), 文件图标 tints file icons by type or in one
+  neutral grey, and 模糊与玻璃效果 turns the five `backdrop-filter` layers off. Two
+  rows were renamed from the reference because the product has no terminal:
+  终端主题 → 控制台主题 and 终端链接使用内置浏览器 → 链接打开方式. See
   `docs/verification/settings-appearance-2026-10-18/`.
 - Lock-screen execution, wake prevention, startup, proxy management and trusted
   auto-install controls explicitly show their browser limitations and are disabled.

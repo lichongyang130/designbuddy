@@ -8,14 +8,24 @@ import {
   resetHomeScenes,
   resetKeybindings,
   setComposerDefaults,
+  setConsoleTheme,
+  setContentWidth,
   setDensity,
+  setFileIcons,
+  setFontStyle,
+  setGlassEffects,
   setHomeScenes,
   setKeybinding,
+  setLinkMode,
   setLocale,
   setTheme,
   useModelOptions,
   usePreferences,
+  type ConsoleTheme,
+  type ContentWidth,
   type DensityMode,
+  type FileIconStyle,
+  type FontStyle,
   type KeybindingAction,
   type ThemeMode,
 } from "../../../../frontend/workspace/settingsStore";
@@ -35,6 +45,9 @@ import type { Locale } from "../../../../frontend/workspace/locales";
 import { navigateTo } from "../../../../frontend/workspace/workspaceRoutes";
 import { apiJSON, resetAPISession } from "../api/client";
 import { modeLabels, quickActionCatalog } from "./homeScenes";
+
+/** 与 settingsStore 的 linkMode 取值保持一致（该类型未导出）。 */
+type LinkMode = "smart" | "new-tab" | "same-tab";
 
 type T = (key: string, params?: I18nParams) => string;
 function useT(): T {
@@ -65,62 +78,39 @@ function useNotice() {
 
 /* ------------------------------- appearance ------------------------------- */
 
-/**
- * 界面样式预览卡的配色、结构与名字取自参考界面（森林 / 节能 / 蜜蜂 / 羊皮纸）。
- * DesignBuddy 只有浅色、深色两套真实配色，且没有可持久化的配色方案接口，
- * 因此这四张卡是静态预览：aria-disabled、不响应点击、不显示选中态。
- */
-const THEME_PREVIEWS: { id: string; labelKey: string; vars: CSSProperties }[] = [
-  {
-    id: "forest",
-    labelKey: "settings.appearance.preview.forest",
-    vars: {
-      "--preview-bg": "#f2f4f2",
-      "--preview-bar": "#e9efe9",
-      "--preview-accent": "#4b6f5a",
-      "--preview-surface": "#4b6f5a",
-      "--preview-line": "rgba(255, 255, 255, 0.72)",
-    } as CSSProperties,
-  },
-  {
-    id: "eco",
-    labelKey: "settings.appearance.preview.eco",
-    vars: {
-      "--preview-bg": "#f1f8f5",
-      "--preview-bar": "#e8f3ee",
-      "--preview-accent": "#50a98f",
-      "--preview-surface": "#f8fcfa",
-      "--preview-line": "#dbe9e3",
-    } as CSSProperties,
-  },
-  {
-    id: "honey",
-    labelKey: "settings.appearance.preview.honey",
-    vars: {
-      "--preview-bg": "#f7f2d8",
-      "--preview-bar": "#f2eccf",
-      "--preview-accent": "#c4b267",
-      "--preview-surface": "#ececec",
-      "--preview-line": "#d8d8d8",
-    } as CSSProperties,
-  },
-  {
-    id: "parchment",
-    labelKey: "settings.appearance.preview.parchment",
-    vars: {
-      "--preview-bg": "#fdfcfa",
-      "--preview-bar": "#f6f3ee",
-      "--preview-accent": "#c96442",
-      "--preview-surface": "#e5e1d9",
-      "--preview-line": "#d3cec4",
-    } as CSSProperties,
-  },
+/** 主题预览卡：三张卡对应真实可用的三种主题，点击即切换 html[data-theme]。 */
+const THEME_CARDS: { id: ThemeMode; labelKey: string }[] = [
+  { id: "system", labelKey: "settings.appearance.theme.system" },
+  { id: "light", labelKey: "settings.appearance.theme.light" },
+  { id: "dark", labelKey: "settings.appearance.theme.dark" },
 ];
 
 const THEME_OPTIONS: { value: ThemeMode; labelKey: string }[] = [
   { value: "system", labelKey: "settings.appearance.theme.system" },
   { value: "light", labelKey: "settings.appearance.theme.light" },
   { value: "dark", labelKey: "settings.appearance.theme.dark" },
+];
+
+const FONT_STYLES: { value: FontStyle; labelKey: string }[] = [
+  { value: "sans", labelKey: "settings.appearance.fontStyle.sans" },
+  { value: "serif", labelKey: "settings.appearance.fontStyle.serif" },
+];
+
+const CONTENT_WIDTHS: { value: ContentWidth; labelKey: string }[] = [
+  { value: "narrow", labelKey: "settings.appearance.contentWidth.narrow" },
+  { value: "standard", labelKey: "settings.appearance.contentWidth.standard" },
+  { value: "wide", labelKey: "settings.appearance.contentWidth.wide" },
+];
+
+const FILE_ICON_STYLES: { value: FileIconStyle; labelKey: string }[] = [
+  { value: "color", labelKey: "settings.appearance.fileIcons.color" },
+  { value: "mono", labelKey: "settings.appearance.fileIcons.mono" },
+];
+
+const LINK_MODES: { value: LinkMode; labelKey: string }[] = [
+  { value: "smart", labelKey: "settings.general.links.smart" },
+  { value: "new-tab", labelKey: "settings.general.links.newtab" },
+  { value: "same-tab", labelKey: "settings.general.links.sametab" },
 ];
 
 /** 一行：左标题 + 说明，右控件。结构与参考界面一致。 */
@@ -152,6 +142,12 @@ export function AppearanceSettings({ onError }: { onError(message: string): void
   const theme = usePreferences((state) => state.theme);
   const density = usePreferences((state) => state.density);
   const locale = usePreferences((state) => state.locale);
+  const consoleTheme = usePreferences((state) => state.consoleTheme);
+  const fontStyle = usePreferences((state) => state.fontStyle);
+  const contentWidth = usePreferences((state) => state.contentWidth);
+  const fileIcons = usePreferences((state) => state.fileIcons);
+  const glassEffects = usePreferences((state) => state.glassEffects);
+  const linkMode = usePreferences((state) => state.linkMode);
   const t = useT();
   const change = (callback: () => void) => {
     try {
@@ -211,33 +207,50 @@ export function AppearanceSettings({ onError }: { onError(message: string): void
 
         <div
           className="settings-appearance-previews"
-          role="group"
+          role="radiogroup"
           aria-label={t("settings.appearance.preview.group")}
-          aria-disabled="true"
         >
-          {THEME_PREVIEWS.map((item) => (
-            <div key={item.id} className="settings-appearance-card" style={item.vars}>
-              <div className="settings-appearance-preview" aria-hidden="true">
+          {THEME_CARDS.map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              role="radio"
+              aria-checked={theme === item.id}
+              data-theme-preview={item.id}
+              className={theme === item.id ? "settings-appearance-card is-active" : "settings-appearance-card"}
+              onClick={() => change(() => setTheme(item.id))}
+            >
+              <span className="settings-appearance-preview" aria-hidden="true">
                 <span className="settings-appearance-preview-bar" />
                 <span className="settings-appearance-preview-dot" />
                 <span className="settings-appearance-preview-panel" />
                 <span className="settings-appearance-preview-line is-wide" />
                 <span className="settings-appearance-preview-line" />
-              </div>
+              </span>
               <span className="settings-appearance-card-label">{t(item.labelKey)}</span>
-            </div>
+            </button>
           ))}
         </div>
 
         <div className="settings-appearance-rule" />
         <AppearanceRow
-          id="settings-appearance-terminal-theme"
-          title={t("settings.appearance.terminalTheme")}
-          help={t("settings.appearance.terminalTheme.help")}
+          id="settings-appearance-console-theme"
+          title={t("settings.appearance.consoleTheme")}
+          help={t("settings.appearance.consoleTheme.help")}
         >
           <span className="settings-appearance-select">
-            <select aria-labelledby="settings-appearance-terminal-theme" value="system" disabled>
-              <option value="system">{t("settings.appearance.terminalTheme.value")}</option>
+            <select
+              aria-labelledby="settings-appearance-console-theme"
+              value={consoleTheme}
+              onChange={(event) =>
+                change(() => setConsoleTheme(event.target.value as ConsoleTheme))
+              }
+            >
+              {THEME_OPTIONS.map((item) => (
+                <option key={item.value} value={item.value}>
+                  {t(item.labelKey)}
+                </option>
+              ))}
             </select>
             <span className="settings-appearance-caret" aria-hidden="true" />
           </span>
@@ -245,18 +258,24 @@ export function AppearanceSettings({ onError }: { onError(message: string): void
 
         <div className="settings-appearance-rule" />
         <AppearanceRow
-          id="settings-appearance-terminal-links"
-          title={t("settings.appearance.terminalLinks")}
-          help={t("settings.appearance.terminalLinks.help")}
+          id="settings-appearance-links"
+          title={t("settings.general.links")}
+          help={t("settings.general.links.help")}
         >
-          <button
-            type="button"
-            role="switch"
-            aria-checked={false}
-            aria-labelledby="settings-appearance-terminal-links"
-            className="settings-appearance-switch"
-            disabled
-          />
+          <span className="settings-appearance-select">
+            <select
+              aria-label={t("settings.appearance.links.label")}
+              value={linkMode}
+              onChange={(event) => change(() => setLinkMode(event.target.value as LinkMode))}
+            >
+              {LINK_MODES.map((item) => (
+                <option key={item.value} value={item.value}>
+                  {t(item.labelKey)}
+                </option>
+              ))}
+            </select>
+            <span className="settings-appearance-caret" aria-hidden="true" />
+          </span>
         </AppearanceRow>
 
         <div className="settings-appearance-rule" />
@@ -288,8 +307,16 @@ export function AppearanceSettings({ onError }: { onError(message: string): void
           help={t("settings.appearance.fontStyle.help")}
         >
           <span className="settings-appearance-select">
-            <select aria-labelledby="settings-appearance-font-style" value="sans" disabled>
-              <option value="sans">{t("settings.appearance.fontStyle.value")}</option>
+            <select
+              aria-labelledby="settings-appearance-font-style"
+              value={fontStyle}
+              onChange={(event) => change(() => setFontStyle(event.target.value as FontStyle))}
+            >
+              {FONT_STYLES.map((item) => (
+                <option key={item.value} value={item.value}>
+                  {t(item.labelKey)}
+                </option>
+              ))}
             </select>
             <span className="settings-appearance-caret" aria-hidden="true" />
           </span>
@@ -302,8 +329,18 @@ export function AppearanceSettings({ onError }: { onError(message: string): void
           help={t("settings.appearance.contentWidth.help")}
         >
           <span className="settings-appearance-select">
-            <select aria-labelledby="settings-appearance-content-width" value="standard" disabled>
-              <option value="standard">{t("settings.appearance.contentWidth.value")}</option>
+            <select
+              aria-labelledby="settings-appearance-content-width"
+              value={contentWidth}
+              onChange={(event) =>
+                change(() => setContentWidth(event.target.value as ContentWidth))
+              }
+            >
+              {CONTENT_WIDTHS.map((item) => (
+                <option key={item.value} value={item.value}>
+                  {t(item.labelKey)}
+                </option>
+              ))}
             </select>
             <span className="settings-appearance-caret" aria-hidden="true" />
           </span>
@@ -316,8 +353,18 @@ export function AppearanceSettings({ onError }: { onError(message: string): void
           help={t("settings.appearance.fileIcons.help")}
         >
           <span className="settings-appearance-select">
-            <select aria-labelledby="settings-appearance-file-icons" value="designbuddy" disabled>
-              <option value="designbuddy">{t("settings.appearance.fileIcons.value")}</option>
+            <select
+              aria-labelledby="settings-appearance-file-icons"
+              value={fileIcons}
+              onChange={(event) =>
+                change(() => setFileIcons(event.target.value as FileIconStyle))
+              }
+            >
+              {FILE_ICON_STYLES.map((item) => (
+                <option key={item.value} value={item.value}>
+                  {t(item.labelKey)}
+                </option>
+              ))}
             </select>
             <span className="settings-appearance-caret" aria-hidden="true" />
           </span>
@@ -332,10 +379,10 @@ export function AppearanceSettings({ onError }: { onError(message: string): void
           <button
             type="button"
             role="switch"
-            aria-checked={false}
+            aria-checked={glassEffects}
             aria-labelledby="settings-appearance-glass"
             className="settings-appearance-switch"
-            disabled
+            onClick={() => change(() => setGlassEffects(!glassEffects))}
           />
         </AppearanceRow>
 
@@ -367,7 +414,6 @@ export function AppearanceSettings({ onError }: { onError(message: string): void
     </section>
   );
 }
-
 /* -------------------------------- shortcuts ------------------------------- */
 
 const FIXED_SHORTCUTS: [string, string][] = [

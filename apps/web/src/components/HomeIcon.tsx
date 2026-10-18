@@ -57,5 +57,5 @@ export type HomeIconName = keyof typeof paths;
 
 /** Small, consistent line icons rather than platform-dependent text glyphs. */
 export function HomeIcon({ name, size = 16 }: { name: HomeIconName; size?: number }) {
-  return <svg className="home-icon" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">{paths[name]}</svg>;
+  return <svg className="home-icon" data-icon={name} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">{paths[name]}</svg>;
 }

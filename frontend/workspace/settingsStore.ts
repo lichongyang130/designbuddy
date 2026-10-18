@@ -26,6 +26,14 @@ export type CustomModel = {
 };
 export type ThemeMode = "system" | "light" | "dark";
 export type DensityMode = "comfortable" | "compact";
+/** 技能运行控制台（运行记录 / 日志区）的配色，独立于界面主题。 */
+export type ConsoleTheme = "system" | "light" | "dark";
+/** 界面正文使用的字形。 */
+export type FontStyle = "sans" | "serif";
+/** 任务内容区与输入框的最大宽度。 */
+export type ContentWidth = "narrow" | "standard" | "wide";
+/** 文件类图标的配色。 */
+export type FileIconStyle = "color" | "mono";
 export type ComposerMode = "office" | "code" | "design";
 export type KeybindingAction =
   | "open-settings"
@@ -55,6 +63,11 @@ type Preferences = {
   wakeLock: boolean;
   theme: ThemeMode;
   density: DensityMode;
+  consoleTheme: ConsoleTheme;
+  fontStyle: FontStyle;
+  contentWidth: ContentWidth;
+  fileIcons: FileIconStyle;
+  glassEffects: boolean;
   defaultModel: string;
   defaultMode: ComposerMode;
   defaultWorkspace: string;
@@ -71,6 +84,11 @@ const defaults: Preferences = {
   wakeLock: false,
   theme: "system",
   density: "comfortable",
+  consoleTheme: "system",
+  fontStyle: "sans",
+  contentWidth: "standard",
+  fileIcons: "color",
+  glassEffects: true,
   defaultModel: "",
   defaultMode: "office",
   defaultWorkspace: "",
@@ -196,6 +214,19 @@ function sanitizePreferences(raw: unknown): Preferences {
       density: (["comfortable", "compact"] as const).includes(source.density as DensityMode)
         ? (source.density as DensityMode)
         : "comfortable",
+      consoleTheme: (["system", "light", "dark"] as const).includes(source.consoleTheme as ConsoleTheme)
+        ? (source.consoleTheme as ConsoleTheme)
+        : "system",
+      fontStyle: (["sans", "serif"] as const).includes(source.fontStyle as FontStyle)
+        ? (source.fontStyle as FontStyle)
+        : "sans",
+      contentWidth: (["narrow", "standard", "wide"] as const).includes(source.contentWidth as ContentWidth)
+        ? (source.contentWidth as ContentWidth)
+        : "standard",
+      fileIcons: (["color", "mono"] as const).includes(source.fileIcons as FileIconStyle)
+        ? (source.fileIcons as FileIconStyle)
+        : "color",
+      glassEffects: source.glassEffects === false ? false : true,
       defaultModel,
       defaultMode: (["office", "code", "design"] as const).includes(source.defaultMode as ComposerMode)
         ? (source.defaultMode as ComposerMode)
@@ -318,6 +349,21 @@ export function setTheme(theme: ThemeMode) {
 }
 export function setDensity(density: DensityMode) {
   save({ ...usePreferences.getState(), density });
+}
+export function setConsoleTheme(consoleTheme: ConsoleTheme) {
+  save({ ...usePreferences.getState(), consoleTheme });
+}
+export function setFontStyle(fontStyle: FontStyle) {
+  save({ ...usePreferences.getState(), fontStyle });
+}
+export function setContentWidth(contentWidth: ContentWidth) {
+  save({ ...usePreferences.getState(), contentWidth });
+}
+export function setFileIcons(fileIcons: FileIconStyle) {
+  save({ ...usePreferences.getState(), fileIcons });
+}
+export function setGlassEffects(glassEffects: boolean) {
+  save({ ...usePreferences.getState(), glassEffects });
 }
 export function setComposerDefaults(patch: {
   defaultModel?: string;

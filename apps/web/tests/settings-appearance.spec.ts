@@ -35,13 +35,12 @@ test("appearance follows the reference interface-style layout", async ({ page })
   await expect(section.getByRole("heading", { name: "界面样式" })).toBeVisible();
   await expect(section.locator(".settings-appearance-rule").first()).toBeVisible();
 
-  // One row per reference line: 主题模式, 终端主题, 终端链接, 语言, 字体风格,
-  // 内容宽度, 文件图标, 模糊与玻璃效果, plus the real density row.
+  // One row per setting: title + grey help on the left, control on the right.
   await expect(section.locator(".settings-appearance-row")).toHaveCount(9);
   await expect(section.locator(".settings-appearance-name")).toHaveText([
     "主题模式",
-    "终端主题",
-    "终端链接使用内置浏览器",
+    "控制台主题",
+    "链接打开方式",
     "语言",
     "字体风格",
     "内容宽度",
@@ -49,56 +48,110 @@ test("appearance follows the reference interface-style layout", async ({ page })
     "模糊与玻璃效果",
   ]);
 
-  // Four style preview cards, laid out in one grid row, with the reference
-  // names and palettes.
-  const previews = section.locator(".settings-appearance-card");
-  await expect(previews).toHaveCount(4);
+  // Three theme preview cards, laid out in one grid row.
+  const cards = section.locator(".settings-appearance-card");
+  await expect(cards).toHaveCount(3);
   await expect(section.locator(".settings-appearance-card-label")).toHaveText([
-    "森林",
-    "节能",
-    "蜜蜂",
-    "羊皮纸",
+    "跟随系统",
+    "浅色",
+    "深色",
   ]);
-  await expect(previews.nth(0).locator(".settings-appearance-preview")).toHaveCSS(
+  await expect(cards.nth(1).locator(".settings-appearance-preview")).toHaveCSS(
     "background-color",
-    "rgb(242, 244, 242)",
+    "rgb(246, 247, 249)",
   );
-  await expect(previews.nth(2).locator(".settings-appearance-preview")).toHaveCSS(
+  await expect(cards.nth(2).locator(".settings-appearance-preview")).toHaveCSS(
     "background-color",
-    "rgb(247, 242, 216)",
+    "rgb(23, 26, 33)",
   );
 });
 
-test("theme mode is a real control and unsupported rows stay inert", async ({ page }) => {
+test("every appearance control is real: nothing is disabled or inert", async ({ page }) => {
   await openAppearance(page);
   const section = settings(page).locator(".settings-appearance");
 
-  // 主题模式 drives the document theme, and the small icon button flips it.
+  // No leftover placeholders: every select and switch is interactive.
+  await expect(section.locator("select:disabled")).toHaveCount(0);
+  await expect(section.locator("button[role=\"switch\"]:disabled")).toHaveCount(0);
+
+  // 主题模式 + the preview cards drive the document theme.
   await section.getByLabel("主题模式").selectOption("dark");
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
-  await section.getByRole("button", { name: "在浅色与深色之间切换" }).click();
-  await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
-
-  // Rows with no counterpart in this build are present but inert: the selects
-  // are disabled, the switches are disabled and unchecked. No fake state.
-  for (const label of ["终端主题", "字体风格", "内容宽度", "文件图标"]) {
-    await expect(section.getByLabel(label)).toBeDisabled();
-  }
-  const switches = section.getByRole("switch");
-  await expect(switches).toHaveCount(2);
-  for (const item of await switches.all()) {
-    await expect(item).toBeDisabled();
-    await expect(item).toHaveAttribute("aria-checked", "false");
-  }
-
-  // The preview cards are static artwork: no button, checkbox or radio inside.
-  await expect(section.locator(".settings-appearance-previews")).toHaveAttribute(
-    "aria-disabled",
+  await expect(section.locator(".settings-appearance-card").nth(2)).toHaveAttribute(
+    "aria-checked",
     "true",
   );
-  await expect(
-    section.locator(".settings-appearance-previews").getByRole("button"),
-  ).toHaveCount(0);
+  await section.locator(".settings-appearance-card").nth(1).click();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+  await expect(section.locator(".settings-appearance-card").nth(1)).toHaveAttribute(
+    "aria-checked",
+    "true",
+  );
+  await section.getByRole("button", { name: "在浅色与深色之间切换" }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+
+  // 控制台主题 is its own preference and applies to the document.
+  await section.getByLabel("控制台主题").selectOption("light");
+  await expect(page.locator("html")).toHaveAttribute("data-console-theme", "light");
+  await section.getByLabel("控制台主题").selectOption("dark");
+  await expect(page.locator("html")).toHaveAttribute("data-console-theme", "dark");
+
+  // 字体风格 really changes the rendered font.
+  await section.getByLabel("字体风格").selectOption("serif");
+  await expect(page.locator("body")).toHaveCSS("font-family", /Georgia|serif/i);
+  await section.getByLabel("字体风格").selectOption("sans");
+
+  // 内容宽度 sets the task content max width variable.
+  const contentMax = () =>
+    page.evaluate(() =>
+      getComputedStyle(document.documentElement).getPropertyValue("--db-content-max").trim(),
+    );
+  await section.getByLabel("内容宽度").selectOption("narrow");
+  await expect.poll(contentMax).toBe("680px");
+  await section.getByLabel("内容宽度").selectOption("wide");
+  await expect.poll(contentMax).toBe("1320px");
+  await section.getByLabel("内容宽度").selectOption("standard");
+  await expect.poll(contentMax).toBe("920px");
+
+  // 文件图标 switches between colored and monochrome tints.
+  await section.getByLabel("文件图标").selectOption("mono");
+  await expect(page.locator("html")).toHaveAttribute("data-file-icons", "mono");
+  await expect(section.getByLabel("文件图标")).toHaveValue("mono");
+  await section.getByLabel("文件图标").selectOption("color");
+  await expect(page.locator("html")).toHaveAttribute("data-file-icons", "color");
+
+  // 模糊与玻璃效果 toggles the real glass layer.
+  const glass = section.getByRole("switch");
+  await expect(glass).toHaveAttribute("aria-checked", "true");
+  await glass.click();
+  await expect(page.locator("html")).toHaveAttribute("data-glass", "off");
+  await expect(glass).toHaveAttribute("aria-checked", "false");
+  await glass.click();
+  await expect(page.locator("html")).toHaveAttribute("data-glass", "on");
+});
+
+test("link behavior and density are real and shared with 常规", async ({ page }) => {
+  await openAppearance(page);
+  const section = settings(page).locator(".settings-appearance");
+  await section.getByLabel("界面链接打开方式").selectOption("new-tab");
+  await section.getByRole("radio", { name: "紧凑" }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-density", "compact");
+
+  // Both controls persist and stay in sync with the 常规 section.
+  await page.keyboard.press("Escape");
+  await page.reload();
+  await expect(page.locator("dialog.settings-window")).toBeAttached();
+  await page.waitForTimeout(400);
+  await page.keyboard.press("Control+,");
+  const dialog = settings(page);
+  await expect(dialog).toBeVisible();
+  await dialog.getByRole("button", { name: "外观", exact: true }).click();
+  await expect(dialog.locator(".settings-appearance").getByLabel("界面链接打开方式")).toHaveValue(
+    "new-tab",
+  );
+  await dialog.getByRole("button", { name: "通用", exact: true }).click();
+  await expect(dialog.getByLabel("链接打开方式", { exact: true })).toHaveValue("new-tab");
+  await expect(page.locator("html")).toHaveAttribute("data-density", "compact");
 });
 
 test("the appearance language row drives the interface language", async ({ page }) => {
@@ -116,13 +169,4 @@ test("the appearance language row drives the interface language", async ({ page 
   await expect(english.locator(".settings-appearance").getByLabel("Interface language")).toBeVisible();
   await english.locator(".settings-appearance").getByLabel("Interface language").selectOption("zh-CN");
   await expect(page.locator("html")).toHaveAttribute("lang", "zh-CN");
-});
-
-test("density keeps working from the appearance section", async ({ page }) => {
-  await openAppearance(page);
-  const section = settings(page).locator(".settings-appearance");
-  await section.getByRole("radio", { name: "紧凑" }).click();
-  await expect(page.locator("html")).toHaveAttribute("data-density", "compact");
-  await section.getByRole("radio", { name: "舒适" }).click();
-  await expect(page.locator("html")).toHaveAttribute("data-density", "comfortable");
 });

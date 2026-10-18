@@ -457,3 +457,110 @@ html[data-density="compact"] .settings-appearance-previews {
   padding-top: 10px;
   padding-bottom: 12px;
 }
+
+/* 外观 → 真实生效的界面偏好（设置 → 外观的每个控件都作用在这里） */
+
+/* 字体风格：衬线 / 无衬线（无衬线是默认值，无需覆盖） */
+html[data-font-style="serif"] *,
+html[data-font-style="serif"] *::before,
+html[data-font-style="serif"] *::after {
+  font-family: Georgia, "Times New Roman", "Songti SC", "Noto Serif CJK SC",
+    "Source Han Serif SC", serif;
+}
+html[data-font-style="serif"] pre,
+html[data-font-style="serif"] code,
+html[data-font-style="serif"] kbd,
+html[data-font-style="serif"] samp,
+html[data-font-style="serif"] .task-reply-markdown pre,
+html[data-font-style="serif"] .task-reply-markdown code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+/* 内容宽度：任务正文与输入框的最大宽度 */
+html[data-content-width="narrow"] {
+  --db-content-max: 680px;
+}
+html[data-content-width="standard"] {
+  --db-content-max: 920px;
+}
+html[data-content-width="wide"] {
+  --db-content-max: 1320px;
+}
+.task-workspace .task-assistant-message,
+.task-workspace .task-user-message,
+.task-workspace .task-composer {
+  max-width: var(--db-content-max, 920px);
+}
+
+/* 模糊与玻璃效果：关闭后改为实色 */
+html[data-glass="off"] .db-library-overlay {
+  background: #10142599;
+  backdrop-filter: none;
+}
+html[data-glass="off"] .profile-modal-backdrop {
+  background: #0c1718d9;
+  backdrop-filter: none;
+}
+html[data-glass="off"] .ai-cover-tag {
+  background: rgba(10, 10, 14, 0.72);
+  backdrop-filter: none;
+}
+html[data-glass="off"] .scene-preview-dialog::backdrop {
+  backdrop-filter: none;
+}
+html[data-glass="off"] .pm-dialog::backdrop {
+  backdrop-filter: none;
+}
+
+/* 文件图标：彩色 / 单色 */
+html[data-file-icons="color"] .home-icon[data-icon="document"] {
+  color: #4b7bec;
+}
+html[data-file-icons="color"] .home-icon[data-icon="folder"] {
+  color: #f0a020;
+}
+html[data-file-icons="color"] .home-icon[data-icon="book"] {
+  color: #22a06b;
+}
+html[data-file-icons="color"] .home-icon[data-icon="slides"] {
+  color: #e0603a;
+}
+html[data-file-icons="color"] .home-icon[data-icon="chart"] {
+  color: #7a5af8;
+}
+html[data-file-icons="mono"] .home-icon[data-icon="document"],
+html[data-file-icons="mono"] .home-icon[data-icon="folder"],
+html[data-file-icons="mono"] .home-icon[data-icon="book"],
+html[data-file-icons="mono"] .home-icon[data-icon="slides"],
+html[data-file-icons="mono"] .home-icon[data-icon="chart"] {
+  color: #8a8a8a;
+}
+html[data-theme="dark"][data-file-icons="mono"] .home-icon[data-icon="document"],
+html[data-theme="dark"][data-file-icons="mono"] .home-icon[data-icon="folder"],
+html[data-theme="dark"][data-file-icons="mono"] .home-icon[data-icon="book"],
+html[data-theme="dark"][data-file-icons="mono"] .home-icon[data-icon="slides"],
+html[data-theme="dark"][data-file-icons="mono"] .home-icon[data-icon="chart"] {
+  color: #9aa3b2;
+}
+
+/* 控制台主题：技能执行台的运行记录与结果区 */
+html[data-console-theme="dark"] .skill-runtime-history,
+html[data-console-theme="dark"] .skill-run-result {
+  background: #14161c;
+  border-color: #2b303b;
+  color: #e8eaf0;
+}
+html[data-console-theme="dark"] .skill-runtime-history h3,
+html[data-console-theme="dark"] .skill-run-result b,
+html[data-console-theme="dark"] .skill-run-heading span {
+  color: #f2f4f8;
+}
+html[data-console-theme="dark"] .skill-run-result p {
+  color: #c3c9d6;
+}
+html[data-console-theme="light"] .skill-runtime-history,
+html[data-console-theme="light"] .skill-run-result {
+  background: #fff;
+  border-color: #e6e8ef;
+  color: #1f232b;
+}

@@ -1483,18 +1483,57 @@
 .settings-appearance-switch:disabled {
   cursor: default;
 }
-/* 界面样式预览卡（静态预览：不可点击） */
+/* 主题预览卡：三张卡对应真实可切换的三种主题 */
 .settings-appearance-previews {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
   padding: 16px 0 18px;
 }
 .settings-appearance-card {
   min-width: 0;
+  display: block;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  text-align: center;
+  cursor: pointer;
+}
+.settings-appearance-card.is-active .settings-appearance-preview {
+  border-color: #141414;
+  box-shadow: 0 0 0 2px rgba(20, 20, 20, 0.12);
+}
+.settings-appearance-card:focus-visible .settings-appearance-preview {
+  outline: 2px solid #4b6f5a;
+  outline-offset: 2px;
+}
+/* 浅色 / 深色 / 跟随系统 三套预览配色（取自主界面在对应模式下的实际颜色） */
+.settings-appearance-card[data-theme-preview="light"] {
+  --preview-bg: #f6f7f9;
+  --preview-bar: #eceef4;
+  --preview-accent: #b9c0d0;
+  --preview-surface: #ffffff;
+  --preview-line: #dfe3ec;
+}
+.settings-appearance-card[data-theme-preview="dark"] {
+  --preview-bg: #171a21;
+  --preview-bar: #1f242d;
+  --preview-accent: #6b7383;
+  --preview-surface: #0f1115;
+  --preview-line: #343a47;
+}
+.settings-appearance-card[data-theme-preview="system"] {
+  --preview-bg: linear-gradient(90deg, #f6f7f9 0 50%, #171a21 50% 100%);
+  --preview-bar: linear-gradient(90deg, #eceef4 0 50%, #1f242d 50% 100%);
+  --preview-accent: #9aa3b2;
+  --preview-surface: linear-gradient(90deg, #ffffff 0 50%, #0f1115 50% 100%);
+  --preview-line: #9aa3b2;
 }
 .settings-appearance-preview {
   position: relative;
+  display: block;
   height: 100px;
   overflow: hidden;
   border: 1px solid rgba(0, 0, 0, 0.06);
@@ -1560,7 +1599,8 @@
 }
 @media (max-width: 560px) {
   .settings-appearance-previews {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
   }
   .settings-appearance-row {
     flex-direction: column;
