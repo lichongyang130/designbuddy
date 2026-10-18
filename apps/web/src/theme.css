@@ -410,3 +410,50 @@ html[data-theme="dark"] .settings-model-dialog__connection.is-ok {
 html[data-theme="dark"] .settings-model-dialog__connection.is-error {
   color: #f2a2a2;
 }
+
+/* settings → 外观（界面样式面板） */
+html[data-theme="dark"] .settings-appearance {
+  background: var(--db-bg-soft);
+  border-color: var(--db-line);
+  color-scheme: dark;
+}
+html[data-theme="dark"] .settings-appearance-heading,
+html[data-theme="dark"] .settings-appearance-name,
+html[data-theme="dark"] .settings-appearance-row > div > span {
+  color: var(--db-ink);
+}
+html[data-theme="dark"] .settings-appearance-row p {
+  color: var(--db-mute);
+}
+html[data-theme="dark"] .settings-appearance-select,
+html[data-theme="dark"] .settings-appearance-icon-button {
+  background: var(--db-bg);
+  border-color: var(--db-line);
+}
+html[data-theme="dark"] .settings-appearance-select > select {
+  color: var(--db-ink);
+}
+html[data-theme="dark"] .settings-appearance-select > select:disabled {
+  color: var(--db-mute);
+}
+html[data-theme="dark"] .settings-appearance-icon-button {
+  color: var(--db-ink);
+}
+html[data-theme="dark"] .settings-appearance-switch {
+  background: #2b303a;
+  border-color: var(--db-line);
+}
+html[data-theme="dark"] .settings-appearance-switch::after {
+  background: #8a8f9a;
+}
+html[data-theme="dark"] .settings-appearance-card-label {
+  color: var(--db-mute);
+}
+html[data-density="compact"] .settings-appearance-row {
+  padding-top: 9px;
+  padding-bottom: 9px;
+}
+html[data-density="compact"] .settings-appearance-previews {
+  padding-top: 10px;
+  padding-bottom: 12px;
+}

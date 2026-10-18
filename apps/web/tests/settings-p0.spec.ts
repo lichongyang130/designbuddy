@@ -32,7 +32,7 @@ test("appearance theme and density apply to the document and persist", async ({
   page,
 }) => {
   await open(page, "外观");
-  await settings(page).getByRole("radio", { name: "深色" }).click();
+  await settings(page).getByLabel("主题模式").selectOption("dark");
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   await settings(page).getByRole("radio", { name: "紧凑" }).click();
   await expect(page.locator("html")).toHaveAttribute("data-density", "compact");
@@ -51,7 +51,7 @@ test("appearance theme and density apply to the document and persist", async ({
   await expect(templateControls).toBeVisible();
   await expect(templateControls).toHaveCSS("background-color", "rgb(23, 26, 33)");
   await open(page, "外观");
-  await settings(page).getByRole("radio", { name: /^浅色 默认灰白外观$/ }).click();
+  await settings(page).getByLabel("主题模式").selectOption("light");
   await settings(page).getByRole("radio", { name: "舒适" }).click();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
 });

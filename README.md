@@ -260,6 +260,18 @@ scrollable narrow-screen navigation/content are supported.
   “付费套餐暂未接入” notice. The local usage card below (设计项目 · 任务对话 · 模板副本 ·
   模板修改状态 · 自定义模型 · 本地存储占用) keeps its real browser statistics and its
   “不会产生订阅或扣费” note. See `docs/verification/settings-plan-credits-2026-10-18/`.
+- **外观** follows the 2026-10-18 reference screenshot: an 界面样式 heading with a
+  hairline rule, then one row per setting (title + grey help line on the left,
+  control on the right) separated by the same gradient rules — 主题模式 (real
+  system/light/dark select plus a light/dark toggle button), 终端主题, 终端链接使用
+  内置浏览器, 语言 (real, same store as 常规), 字体风格, 内容宽度, 文件图标, 模糊与
+  玻璃效果, and the real 界面密度 row. The 森林 / 节能 / 蜜蜂 / 羊皮纸 cards are the
+  four reference preview cards. **Only 主题模式, 语言 and 界面密度 are real**: the
+  four inert selects are `disabled`, both switches are `disabled` and unchecked, and
+  the four preview cards are static artwork (`aria-disabled`), because this build has
+  no terminal, typeface, content-width, file-icon or blur/glass setting. They are
+  rendered exactly as in the reference without claiming a working feature. See
+  `docs/verification/settings-appearance-2026-10-18/`.
 - Lock-screen execution, wake prevention, startup, proxy management and trusted
   auto-install controls explicitly show their browser limitations and are disabled.
   Other unconnected account/plan/memory/device/security services explain their

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import {
   DEFAULT_KEYBINDINGS,
   KEYBINDING_ACTIONS,
@@ -11,6 +11,7 @@ import {
   setDensity,
   setHomeScenes,
   setKeybinding,
+  setLocale,
   setTheme,
   useModelOptions,
   usePreferences,
@@ -29,6 +30,8 @@ import {
   usageStats,
 } from "../../../../frontend/workspace/settingsTransfer";
 import { translate, type I18nParams } from "../../../../frontend/workspace/i18n";
+import { LOCALE_OPTIONS } from "../../../../frontend/workspace/locales";
+import type { Locale } from "../../../../frontend/workspace/locales";
 import { navigateTo } from "../../../../frontend/workspace/workspaceRoutes";
 import { apiJSON, resetAPISession } from "../api/client";
 import { modeLabels, quickActionCatalog } from "./homeScenes";
@@ -62,9 +65,93 @@ function useNotice() {
 
 /* ------------------------------- appearance ------------------------------- */
 
+/**
+ * 界面样式预览卡的配色、结构与名字取自参考界面（森林 / 节能 / 蜜蜂 / 羊皮纸）。
+ * DesignBuddy 只有浅色、深色两套真实配色，且没有可持久化的配色方案接口，
+ * 因此这四张卡是静态预览：aria-disabled、不响应点击、不显示选中态。
+ */
+const THEME_PREVIEWS: { id: string; labelKey: string; vars: CSSProperties }[] = [
+  {
+    id: "forest",
+    labelKey: "settings.appearance.preview.forest",
+    vars: {
+      "--preview-bg": "#f2f4f2",
+      "--preview-bar": "#e9efe9",
+      "--preview-accent": "#4b6f5a",
+      "--preview-surface": "#4b6f5a",
+      "--preview-line": "rgba(255, 255, 255, 0.72)",
+    } as CSSProperties,
+  },
+  {
+    id: "eco",
+    labelKey: "settings.appearance.preview.eco",
+    vars: {
+      "--preview-bg": "#f1f8f5",
+      "--preview-bar": "#e8f3ee",
+      "--preview-accent": "#50a98f",
+      "--preview-surface": "#f8fcfa",
+      "--preview-line": "#dbe9e3",
+    } as CSSProperties,
+  },
+  {
+    id: "honey",
+    labelKey: "settings.appearance.preview.honey",
+    vars: {
+      "--preview-bg": "#f7f2d8",
+      "--preview-bar": "#f2eccf",
+      "--preview-accent": "#c4b267",
+      "--preview-surface": "#ececec",
+      "--preview-line": "#d8d8d8",
+    } as CSSProperties,
+  },
+  {
+    id: "parchment",
+    labelKey: "settings.appearance.preview.parchment",
+    vars: {
+      "--preview-bg": "#fdfcfa",
+      "--preview-bar": "#f6f3ee",
+      "--preview-accent": "#c96442",
+      "--preview-surface": "#e5e1d9",
+      "--preview-line": "#d3cec4",
+    } as CSSProperties,
+  },
+];
+
+const THEME_OPTIONS: { value: ThemeMode; labelKey: string }[] = [
+  { value: "system", labelKey: "settings.appearance.theme.system" },
+  { value: "light", labelKey: "settings.appearance.theme.light" },
+  { value: "dark", labelKey: "settings.appearance.theme.dark" },
+];
+
+/** 一行：左标题 + 说明，右控件。结构与参考界面一致。 */
+function AppearanceRow({
+  id,
+  title,
+  help,
+  children,
+}: {
+  id: string;
+  title: string;
+  help: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className="settings-appearance-row">
+      <div>
+        <span className="settings-appearance-name" id={id}>
+          {title}
+        </span>
+        <p>{help}</p>
+      </div>
+      <div className="settings-appearance-control">{children}</div>
+    </div>
+  );
+}
+
 export function AppearanceSettings({ onError }: { onError(message: string): void }) {
   const theme = usePreferences((state) => state.theme);
   const density = usePreferences((state) => state.density);
+  const locale = usePreferences((state) => state.locale);
   const t = useT();
   const change = (callback: () => void) => {
     try {
@@ -74,11 +161,6 @@ export function AppearanceSettings({ onError }: { onError(message: string): void
       onError(t("settings.storageError"));
     }
   };
-  const themes: { id: ThemeMode; labelKey: string; hintKey: string }[] = [
-    { id: "system", labelKey: "settings.appearance.theme.system", hintKey: "settings.appearance.theme.system.hint" },
-    { id: "light", labelKey: "settings.appearance.theme.light", hintKey: "settings.appearance.theme.light.hint" },
-    { id: "dark", labelKey: "settings.appearance.theme.dark", hintKey: "settings.appearance.theme.dark.hint" },
-  ];
   const densities: { id: DensityMode; labelKey: string; hintKey: string }[] = [
     { id: "comfortable", labelKey: "settings.appearance.density.comfort", hintKey: "settings.appearance.density.comfort.hint" },
     { id: "compact", labelKey: "settings.appearance.density.compact", hintKey: "settings.appearance.density.compact.hint" },
@@ -88,47 +170,197 @@ export function AppearanceSettings({ onError }: { onError(message: string): void
       <h2 className="settings-section-label" id="settings-appearance-title">
         {t("settings.appearance.title")} <SourceBadge sourceKey="settings.source.local" />
       </h2>
-      <div className="settings-card">
-        <div className="settings-row">
+      <div className="settings-appearance">
+        <h3 className="settings-appearance-heading">{t("settings.appearance.styleTitle")}</h3>
+        <div className="settings-appearance-rule" />
+
+        <div className="settings-appearance-row">
           <div>
-            <span id="settings-theme-label">{t("settings.appearance.theme")}</span>
-            <p>{t("settings.appearance.theme.help")}</p>
+            <span className="settings-appearance-name" id="settings-appearance-mode">
+              {t("settings.appearance.mode")}
+            </span>
+            <p>{t("settings.appearance.mode.help")}</p>
           </div>
-          <div className="settings-radio-group" role="radiogroup" aria-labelledby="settings-theme-label">
-            {themes.map((item) => (
-              <button
-                key={item.id}
-                role="radio"
-                aria-checked={theme === item.id}
-                className={theme === item.id ? "is-active" : ""}
-                title={t(item.hintKey)}
-                onClick={() => change(() => setTheme(item.id))}
+          <div className="settings-appearance-control">
+            <span className="settings-appearance-select">
+              <span className="settings-appearance-swatch" data-mode={theme} aria-hidden="true" />
+              <select
+                aria-labelledby="settings-appearance-mode"
+                value={theme}
+                onChange={(event) => change(() => setTheme(event.target.value as ThemeMode))}
               >
-                <span>{t(item.labelKey)}</span>
-                <small>{t(item.hintKey)}</small>
-              </button>
-            ))}
+                {THEME_OPTIONS.map((item) => (
+                  <option key={item.value} value={item.value}>
+                    {t(item.labelKey)}
+                  </option>
+                ))}
+              </select>
+              <span className="settings-appearance-caret" aria-hidden="true" />
+            </span>
+            <button
+              type="button"
+              className="settings-appearance-icon-button"
+              aria-label={t("settings.appearance.mode.toggle")}
+              title={t("settings.appearance.mode.toggle")}
+              onClick={() => change(() => setTheme(theme === "dark" ? "light" : "dark"))}
+            >
+              <span aria-hidden="true">◐</span>
+            </button>
           </div>
         </div>
-        <div className="settings-row">
+
+        <div
+          className="settings-appearance-previews"
+          role="group"
+          aria-label={t("settings.appearance.preview.group")}
+          aria-disabled="true"
+        >
+          {THEME_PREVIEWS.map((item) => (
+            <div key={item.id} className="settings-appearance-card" style={item.vars}>
+              <div className="settings-appearance-preview" aria-hidden="true">
+                <span className="settings-appearance-preview-bar" />
+                <span className="settings-appearance-preview-dot" />
+                <span className="settings-appearance-preview-panel" />
+                <span className="settings-appearance-preview-line is-wide" />
+                <span className="settings-appearance-preview-line" />
+              </div>
+              <span className="settings-appearance-card-label">{t(item.labelKey)}</span>
+            </div>
+          ))}
+        </div>
+
+        <div className="settings-appearance-rule" />
+        <AppearanceRow
+          id="settings-appearance-terminal-theme"
+          title={t("settings.appearance.terminalTheme")}
+          help={t("settings.appearance.terminalTheme.help")}
+        >
+          <span className="settings-appearance-select">
+            <select aria-labelledby="settings-appearance-terminal-theme" value="system" disabled>
+              <option value="system">{t("settings.appearance.terminalTheme.value")}</option>
+            </select>
+            <span className="settings-appearance-caret" aria-hidden="true" />
+          </span>
+        </AppearanceRow>
+
+        <div className="settings-appearance-rule" />
+        <AppearanceRow
+          id="settings-appearance-terminal-links"
+          title={t("settings.appearance.terminalLinks")}
+          help={t("settings.appearance.terminalLinks.help")}
+        >
+          <button
+            type="button"
+            role="switch"
+            aria-checked={false}
+            aria-labelledby="settings-appearance-terminal-links"
+            className="settings-appearance-switch"
+            disabled
+          />
+        </AppearanceRow>
+
+        <div className="settings-appearance-rule" />
+        <AppearanceRow
+          id="settings-appearance-language"
+          title={t("settings.appearance.language")}
+          help={t("settings.appearance.language.help")}
+        >
+          <span className="settings-appearance-select is-wide">
+            <select
+              aria-label={t("settings.appearance.language.label")}
+              value={locale}
+              onChange={(event) => change(() => setLocale(event.target.value as Locale))}
+            >
+              {LOCALE_OPTIONS.map(({ value, label }) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
+            <span className="settings-appearance-caret" aria-hidden="true" />
+          </span>
+        </AppearanceRow>
+
+        <div className="settings-appearance-rule" />
+        <AppearanceRow
+          id="settings-appearance-font-style"
+          title={t("settings.appearance.fontStyle")}
+          help={t("settings.appearance.fontStyle.help")}
+        >
+          <span className="settings-appearance-select">
+            <select aria-labelledby="settings-appearance-font-style" value="sans" disabled>
+              <option value="sans">{t("settings.appearance.fontStyle.value")}</option>
+            </select>
+            <span className="settings-appearance-caret" aria-hidden="true" />
+          </span>
+        </AppearanceRow>
+
+        <div className="settings-appearance-rule" />
+        <AppearanceRow
+          id="settings-appearance-content-width"
+          title={t("settings.appearance.contentWidth")}
+          help={t("settings.appearance.contentWidth.help")}
+        >
+          <span className="settings-appearance-select">
+            <select aria-labelledby="settings-appearance-content-width" value="standard" disabled>
+              <option value="standard">{t("settings.appearance.contentWidth.value")}</option>
+            </select>
+            <span className="settings-appearance-caret" aria-hidden="true" />
+          </span>
+        </AppearanceRow>
+
+        <div className="settings-appearance-rule" />
+        <AppearanceRow
+          id="settings-appearance-file-icons"
+          title={t("settings.appearance.fileIcons")}
+          help={t("settings.appearance.fileIcons.help")}
+        >
+          <span className="settings-appearance-select">
+            <select aria-labelledby="settings-appearance-file-icons" value="designbuddy" disabled>
+              <option value="designbuddy">{t("settings.appearance.fileIcons.value")}</option>
+            </select>
+            <span className="settings-appearance-caret" aria-hidden="true" />
+          </span>
+        </AppearanceRow>
+
+        <div className="settings-appearance-rule" />
+        <AppearanceRow
+          id="settings-appearance-glass"
+          title={t("settings.appearance.glass")}
+          help={t("settings.appearance.glass.help")}
+        >
+          <button
+            type="button"
+            role="switch"
+            aria-checked={false}
+            aria-labelledby="settings-appearance-glass"
+            className="settings-appearance-switch"
+            disabled
+          />
+        </AppearanceRow>
+
+        <div className="settings-appearance-rule" />
+        <div className="settings-appearance-row">
           <div>
             <span id="settings-density-label">{t("settings.appearance.density")}</span>
             <p>{t("settings.appearance.density.help")}</p>
           </div>
-          <div className="settings-radio-group" role="radiogroup" aria-labelledby="settings-density-label">
-            {densities.map((item) => (
-              <button
-                key={item.id}
-                role="radio"
-                aria-checked={density === item.id}
-                className={density === item.id ? "is-active" : ""}
-                title={t(item.hintKey)}
-                onClick={() => change(() => setDensity(item.id))}
-              >
-                <span>{t(item.labelKey)}</span>
-                <small>{t(item.hintKey)}</small>
-              </button>
-            ))}
+          <div className="settings-appearance-control">
+            <div className="settings-radio-group" role="radiogroup" aria-labelledby="settings-density-label">
+              {densities.map((item) => (
+                <button
+                  key={item.id}
+                  role="radio"
+                  aria-checked={density === item.id}
+                  className={density === item.id ? "is-active" : ""}
+                  title={t(item.hintKey)}
+                  onClick={() => change(() => setDensity(item.id))}
+                >
+                  <span>{t(item.labelKey)}</span>
+                  <small>{t(item.hintKey)}</small>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
