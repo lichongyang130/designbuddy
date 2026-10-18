@@ -3,6 +3,7 @@ import {
   DEFAULT_KEYBINDINGS,
   KEYBINDING_ACTIONS,
   bindingFromEvent,
+  closeSettings,
   formatBinding,
   resetHomeScenes,
   resetKeybindings,
@@ -28,6 +29,7 @@ import {
   usageStats,
 } from "../../../../frontend/workspace/settingsTransfer";
 import { translate, type I18nParams } from "../../../../frontend/workspace/i18n";
+import { navigateTo } from "../../../../frontend/workspace/workspaceRoutes";
 import { apiJSON, resetAPISession } from "../api/client";
 import { modeLabels, quickActionCatalog } from "./homeScenes";
 
@@ -657,14 +659,174 @@ export function DataSettings({ onError }: { onError(message: string): void }) {
 
 /* ---------------------------------- plan ---------------------------------- */
 
+/**
+ * 套餐与积分面板（版式来自 2026-10-18 的参考截图）。
+ *
+ * 面板里的版本、积分余额、用量与日期都是截图里的静态展示内容，不是本机或服务端读到的
+ * 真实数据：仓库没有接入积分、订阅或支付服务，所以这些数字不会被写入、扣除或同步。
+ * “升级套餐”打开的仍是真实说明（不能下单），“查看明细”跳到个人主页的账号与数据。
+ */
+const CREDIT_TOTALS = [
+  { label: "套餐基础积分", value: "0" },
+  { label: "平台奖励积分", value: "193.4" },
+  { label: "购买积分", value: "0" },
+];
+
+const CREDIT_ROWS = [
+  {
+    name: "套餐基础积分",
+    meta: "下次刷新时间 2026/11/01 00:00:00",
+    used: "100/100",
+    remain: "0%",
+    percent: 100,
+  },
+  {
+    name: "平台奖励积分",
+    meta: "最近到期时间 2026/10/28 02:20:24",
+    used: "346.6/540",
+    remain: "35%",
+    percent: 64.2,
+  },
+];
+
+export function PlanUpgradeDialog({
+  open,
+  onClose,
+}: {
+  open: boolean;
+  onClose(): void;
+}) {
+  const element = useRef<HTMLDialogElement>(null);
+  useEffect(() => {
+    const dialog = element.current;
+    if (!dialog) return;
+    if (open && !dialog.open) dialog.showModal();
+    else if (!open && dialog.open) dialog.close();
+  }, [open]);
+  return (
+    <dialog
+      ref={element}
+      className="settings-plan-dialog"
+      aria-labelledby="settings-plan-dialog-title"
+      onCancel={(event) => {
+        event.preventDefault();
+        onClose();
+      }}
+      onClick={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}
+    >
+      <header className="settings-plan-dialog__header">
+        <h2 id="settings-plan-dialog-title">付费套餐暂未接入</h2>
+        <button
+          type="button"
+          className="settings-plan-dialog__close"
+          aria-label="关闭升级说明"
+          onClick={onClose}
+        >
+          ×
+        </button>
+      </header>
+      <p>
+        这里展示的是本机免费版本信息。订阅购买、钱包余额、自动充值和云端额度服务还没有接入，
+        因此不会创建订单或产生扣费。
+      </p>
+      <div className="settings-plan-dialog__actions">
+        <button type="button" className="settings-button is-primary" onClick={onClose}>
+          知道了
+        </button>
+      </div>
+    </dialog>
+  );
+}
+
+function PlanCreditsPanel() {
+  const [upgradeOpen, setUpgradeOpen] = useState(false);
+  return (
+    <>
+      <div className="settings-credits-card" role="region" aria-label="积分余额">
+        <div className="settings-credits-top">
+          <span className="settings-credits-edition">免费版</span>
+          <button
+            type="button"
+            className="settings-credits-upgrade"
+            onClick={() => setUpgradeOpen(true)}
+          >
+            升级套餐
+          </button>
+        </div>
+        <div className="settings-credits-divider" />
+        <div className="settings-credits-total">
+          <strong aria-label="总剩余积分 193.4">193.4</strong>
+          <span>总剩余积分</span>
+        </div>
+        <dl className="settings-credits-grid">
+          {CREDIT_TOTALS.map((item) => (
+            <div key={item.label}>
+              <dt>{item.label}</dt>
+              <dd>{item.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+
+      <h3 className="settings-credits-heading">积分明细</h3>
+      <div className="settings-credits-card" role="region" aria-label="积分明细">
+        {CREDIT_ROWS.map((row) => (
+          <div className="settings-credits-row" key={row.name}>
+            <strong>{row.name}</strong>
+            <div className="settings-credits-meta">
+              <span>{row.meta}</span>
+              <span className="settings-credits-usage">
+                已使用 {row.used}
+                <i>剩余 {row.remain}</i>
+              </span>
+            </div>
+            <div
+              className="settings-credits-bar"
+              role="progressbar"
+              aria-label={`${row.name}已使用 ${row.used}`}
+              aria-valuenow={Math.round(row.percent)}
+              aria-valuemin={0}
+              aria-valuemax={100}
+            >
+              <span style={{ width: `${row.percent}%` }} />
+            </div>
+          </div>
+        ))}
+        <button
+          type="button"
+          className="settings-credits-details"
+          onClick={() => {
+            closeSettings();
+            navigateTo("/profile");
+          }}
+        >
+          查看明细
+          <span aria-hidden="true">›</span>
+        </button>
+      </div>
+
+      <PlanUpgradeDialog open={upgradeOpen} onClose={() => setUpgradeOpen(false)} />
+    </>
+  );
+}
+
 export function PlanSettings() {
   const [stats, setStats] = useState(usageStats);
   const t = useT();
   return (
-    <section aria-labelledby="settings-plan-title">
-      <h2 className="settings-section-label" id="settings-plan-title">
-        {t("settings.plan.title")} <SourceBadge sourceKey="settings.source.local" />
-      </h2>
+    <>
+      <section aria-labelledby="settings-plan-credits-title">
+        <h2 className="settings-section-label" id="settings-plan-credits-title">
+          套餐与积分
+        </h2>
+        <PlanCreditsPanel />
+      </section>
+      <section aria-labelledby="settings-plan-title">
+        <h2 className="settings-section-label" id="settings-plan-title">
+          {t("settings.plan.title")} <SourceBadge sourceKey="settings.source.local" />
+        </h2>
       <div className="settings-card">
         <div className="settings-row">
           <div>
@@ -701,6 +863,7 @@ export function PlanSettings() {
         </dl>
         <p className="settings-card-foot">{t("settings.plan.footnote")}</p>
       </div>
-    </section>
+      </section>
+    </>
   );
 }

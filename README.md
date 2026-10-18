@@ -250,6 +250,16 @@ scrollable narrow-screen navigation/content are supported.
   账号与数据 entries are unchanged, so the section keeps its real destinations.
   The layout follows the 2026-10-18 reference screenshot; see
   `docs/verification/settings-profile-2026-10-18/`.
+- **套餐与积分** now shows a credits panel above the honest local usage card: edition
+  row (免费版 · 升级套餐), 总剩余积分 with the 套餐基础积分 / 平台奖励积分 / 购买积分
+  breakdown, then 积分明细 rows with refresh/expiry times, used ratios and progress
+  bars, and a 查看明细 link to the profile account page. **The values in that panel
+  are the static reference content from the 2026-10-18 screenshot, not live data** —
+  this build has no credits, subscription or payment service, so nothing can be
+  granted, spent, recharged or billed. 升级套餐 still opens the real
+  “付费套餐暂未接入” notice. The local usage card below (设计项目 · 任务对话 · 模板副本 ·
+  模板修改状态 · 自定义模型 · 本地存储占用) keeps its real browser statistics and its
+  “不会产生订阅或扣费” note. See `docs/verification/settings-plan-credits-2026-10-18/`.
 - Lock-screen execution, wake prevention, startup, proxy management and trusted
   auto-install controls explicitly show their browser limitations and are disabled.
   Other unconnected account/plan/memory/device/security services explain their

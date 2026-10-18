@@ -1172,3 +1172,144 @@
     padding: 16px 18px;
   }
 }
+
+/* 设置 → 套餐与积分：积分面板（版式参考 2026-10-18 的截图）。 */
+.settings-credits-card {
+  border-radius: 13px;
+  background: #fff;
+  padding: 16px 24px 20px;
+}
+.settings-credits-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.settings-credits-edition {
+  color: #1a1a1a;
+  font-size: 14px;
+  font-weight: 500;
+}
+.settings-credits-upgrade {
+  flex: 0 0 auto;
+  height: 32px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 999px;
+  background: #1a1a1a;
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+}
+.settings-credits-upgrade:hover {
+  background: #000;
+}
+.settings-credits-divider {
+  height: 1px;
+  margin: 14px 0 18px;
+  background: #eee;
+}
+.settings-credits-total {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.settings-credits-total strong {
+  color: #000;
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -.01em;
+}
+.settings-credits-total span {
+  color: #565656;
+  font-size: 13px;
+}
+.settings-credits-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 20px 0 0;
+}
+.settings-credits-grid dt {
+  color: #565656;
+  font-size: 13px;
+}
+.settings-credits-grid dd {
+  margin: 6px 0 0;
+  color: #000;
+  font-size: 20px;
+  font-weight: 600;
+}
+.settings-credits-heading {
+  margin: 22px 8px 8px;
+  color: #535353;
+  font-size: 13px;
+  font-weight: 500;
+}
+.settings-credits-row + .settings-credits-row {
+  margin-top: 20px;
+}
+.settings-credits-row strong {
+  display: block;
+  color: #000;
+  font-size: 15px;
+  font-weight: 600;
+}
+.settings-credits-meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin-top: 8px;
+  color: #565656;
+  font-size: 12px;
+}
+.settings-credits-usage i {
+  margin-left: 12px;
+  font-style: normal;
+}
+.settings-credits-bar {
+  height: 6px;
+  margin-top: 10px;
+  border-radius: 999px;
+  background: #eee;
+  overflow: hidden;
+}
+.settings-credits-bar span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: #00c29a;
+}
+.settings-credits-details {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 18px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #565656;
+  font-size: 13px;
+  cursor: pointer;
+}
+.settings-credits-details:hover {
+  color: #1a1a1a;
+}
+@media (max-width: 560px) {
+  .settings-credits-card {
+    padding: 14px 16px 16px;
+  }
+  .settings-credits-grid {
+    gap: 10px;
+  }
+  .settings-credits-grid dd {
+    font-size: 18px;
+  }
+  .settings-credits-total strong {
+    font-size: 26px;
+  }
+}

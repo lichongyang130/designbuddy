@@ -31,6 +31,7 @@ import {
   DevicesSettings,
   PersonalSettings,
   PlanSettings,
+  PlanUpgradeDialog,
   ShortcutsSettings,
 } from "./SettingsSections";
 
@@ -736,13 +737,6 @@ function OtherSettings({
  */
 function ProfilePlanSettings({ name }: { name: string }) {
   const [upgradeOpen, setUpgradeOpen] = useState(false);
-  const upgrade = useRef<HTMLDialogElement>(null);
-  useEffect(() => {
-    const element = upgrade.current;
-    if (!element) return;
-    if (upgradeOpen && !element.open) element.showModal();
-    else if (!upgradeOpen && element.open) element.close();
-  }, [upgradeOpen]);
   return (
     <section aria-labelledby="settings-profile-title">
       <h2 className="settings-section-label" id="settings-profile-title">
@@ -813,43 +807,7 @@ function ProfilePlanSettings({ name }: { name: string }) {
 
       <SectionInfoCard section="profile" name={name} cardTitle="账号与后台连接" />
 
-      <dialog
-        ref={upgrade}
-        className="settings-plan-dialog"
-        aria-labelledby="settings-plan-dialog-title"
-        onCancel={(event) => {
-          event.preventDefault();
-          setUpgradeOpen(false);
-        }}
-        onClick={(event) => {
-          if (event.target === event.currentTarget) setUpgradeOpen(false);
-        }}
-      >
-        <header className="settings-plan-dialog__header">
-          <h2 id="settings-plan-dialog-title">付费套餐暂未接入</h2>
-          <button
-            type="button"
-            className="settings-plan-dialog__close"
-            aria-label="关闭升级说明"
-            onClick={() => setUpgradeOpen(false)}
-          >
-            ×
-          </button>
-        </header>
-        <p>
-          这里展示的是本机免费版本信息。订阅购买、钱包余额、自动充值和云端额度服务还没有接入，
-          因此不会创建订单或产生扣费。
-        </p>
-        <div className="settings-plan-dialog__actions">
-          <button
-            type="button"
-            className="settings-button is-primary"
-            onClick={() => setUpgradeOpen(false)}
-          >
-            知道了
-          </button>
-        </div>
-      </dialog>
+      <PlanUpgradeDialog open={upgradeOpen} onClose={() => setUpgradeOpen(false)} />
     </section>
   );
 }

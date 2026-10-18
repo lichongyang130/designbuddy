@@ -17,7 +17,7 @@
     "test:right-preview": "node scripts/run-playwright.mjs test tests/right-preview.spec.ts",
     "test:account": "playwright test account.spec.ts",
     "test:scenes": "playwright test scenes.spec.ts workspace.spec.ts",
-    "test:settings": "playwright test account.spec.ts settings.spec.ts settings-profile-plan.spec.ts",
+    "test:settings": "playwright test account.spec.ts settings.spec.ts settings-profile-plan.spec.ts settings-plan-credits.spec.ts",
     "test:sidebar": "playwright test sidebar.spec.ts",
     "test:inspiration": "playwright test inspiration",
     "test:backend": "playwright test backend.spec.ts"
