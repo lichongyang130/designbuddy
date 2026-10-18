@@ -43,7 +43,7 @@ when no existing dev server is running.
 
 - Homepage requests create a local project immediately and then start an AI first pass. If the API is unavailable, the local starter project remains editable and the editor reports the generation error.
 - The editor can apply the full `design-systems/catalog.json` token set, export HTML/PDF/ZIP, and create a read-only share link that can be imported as a separate local copy.
-- A **right-hand live preview** is available in two places: the task conversation opens it automatically after the assistant generates or updates a web page, and the project editor adds a **右侧预览** split that shows the source on the left and the running page on the right. Both render the current project files in a sandboxed iframe, so they need no build step, no preview worker and no network.
+- A **right-hand live preview** is available in two places, and both now start **open by default**: the task conversation shows it as soon as the task opens (and still opens by itself after the assistant generates or updates a web page), and the project editor opens on its **右侧预览** split — source on the left, running page on the right — instead of the single “设计预览” canvas. On phone-width viewports (≤680 px) the task panel would cover the conversation, so it starts closed there and is still one tap away in the title bar. Both render the current project files in a sandboxed iframe, so they need no build step, no preview worker and no network.
 - **工作流**（`/workflows`）：固定配方的三步向导——填 1–3 个必填项 → 确认要跑什么 → 拿产物。配方由服务端注册表定义，每一步都调用**已登记的真实技能**（`infographic.compose`、`faq.page`、`table.analyze`、`document.format`/`document.summarize`、`document.structure`、`web.scaffold`、`social.card`），所以权限、单次授权、上限和产物都沿用既有规则。缺凭据或没授权的步骤会显式标成“不可用/已跳过”并写明缺什么，不会伪造结果；产物可下载、可“继续编辑”进编辑器、可“存为素材”进素材库。配方详情见 `docs/plans/workflow-plan.md`。
 - **管理后台 / 运营控制台**（`/admin`）：面向这台服务器运维者的真实后台。**管理员名单只由服务端环境变量 `DESIGNBUDDY_ADMIN_ACCOUNTS` 决定**（逗号分隔的用户名；未配置时任何账号一律 403，不设假管理员；本机 trusted token `local-user` 视为管理员）。页面一次读出跨账号账号清单（可**停用/恢复**：停用立即删除该账号的全部会话并拒绝它再次登录）、AI 用量汇总（调用/输入/输出/失败/平均延迟 + 按模型）、任务与最近失败（带真实失败原因）、定时任务清单与上次运行结果、技能 ready/unavailable 的真实原因、最近审计；三个写动作（停用/恢复账号、重试失败任务、启停定时任务）都走任务与定时后端自己的逻辑并写审计，不是页面上改状态。证据与边界见 `docs/verification/admin-2026-10-17/`。
 - Studio sends web, slide, vector-poster, and video-storyboard briefs through the configured AI provider; generated artifacts remain editable and can be exported to HTML/PPTX/PDF/Markdown, SVG/PNG, or WebM/MP4.
@@ -187,9 +187,10 @@ editor remains available from the title bar and generated-file cards.
   as it arrives. Code/design tasks still use project generation and save generated
   files before offering the editor. Conversation state is stored in this browser,
   not synchronized across accounts or devices.
-- The **右侧预览** button in the task title bar opens a live preview panel on the
-  right. It opens by itself when the assistant generates project files and closes
-  again with the panel's × button. The panel renders the project files that are
+- The **右侧预览** panel in the task title bar is **open by default** when a task
+  opens (except at ≤680 px, where the panel would cover the conversation); the
+  title-bar button or the panel's × button closes it again. It also opens by itself
+  when the assistant generates project files. The panel renders the project files that are
   already stored in this browser inside a sandboxed iframe (`allow-scripts`, no
   same-origin access), so it shows the real page without a build step, a preview
   worker or network access. Device presets, refresh and “打开编辑器” are available;
@@ -239,6 +240,16 @@ scrollable narrow-screen navigation/content are supported.
 - The AI service/provider is shared with the existing generation configuration;
   keys remain session-only, not in the persistent model list. This website does
   not write `~/.workbuddy/models.json` or install models locally.
+- **个人主页** renders the plan panel directly inside the settings window: a
+  gradient plan banner (`Free` · 订阅状态：免费 · 升级), a wallet card (`$0.00`,
+  当前可用余额, 自动充值 with a disabled switch) and a quota-reset card (可用 0 ·
+  暂无可用重置额度). Every number is the real state: payment, wallet, auto-recharge
+  and cloud quota services are not connected, so the balance stays `$0.00`, the
+  switch cannot be turned on, and each card's footnote says so. 升级 opens the same
+  “付费套餐暂未接入” notice used by the profile page. The existing 后台连接状态 and
+  账号与数据 entries are unchanged, so the section keeps its real destinations.
+  The layout follows the 2026-10-18 reference screenshot; see
+  `docs/verification/settings-profile-2026-10-18/`.
 - Lock-screen execution, wake prevention, startup, proxy management and trusted
   auto-install controls explicitly show their browser limitations and are disabled.
   Other unconnected account/plan/memory/device/security services explain their
