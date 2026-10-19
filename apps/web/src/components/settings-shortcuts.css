@@ -1,0 +1,298 @@
+/* Scoped to the shortcuts pane: shared settings and appearance remain unchanged. */
+.settings-shortcuts {
+  --sc-surface: #fff;
+  --sc-ink: #292b30;
+  --sc-muted: #80848d;
+  --sc-line: #e9eaed;
+  --sc-soft: #f7f8fa;
+  --sc-accent: #39786d;
+  --sc-tint: #edf6f2;
+  color: var(--sc-ink);
+  padding: 0 2px;
+}
+.shortcuts-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0 0 27px;
+}
+.shortcuts-header-icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border: 1px solid var(--sc-line);
+  border-radius: 14px;
+  background: var(--sc-surface);
+  box-shadow: 0 2px 3px #00000003;
+}
+.shortcuts-header h2 {
+  margin: 0 0 5px;
+  font-size: 21px;
+  font-weight: 650;
+  letter-spacing: -0.6px;
+}
+.shortcuts-header p {
+  margin: 0;
+  color: var(--sc-muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.shortcuts-group-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 2px 10px;
+}
+.shortcuts-group-heading h3 {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sc-muted);
+}
+.settings-shortcuts .settings-source {
+  margin: 0;
+  border: 0;
+  background: transparent;
+  color: var(--sc-muted);
+  font-size: 10px;
+  padding: 0;
+}
+.shortcuts-actions {
+  border: 1px solid var(--sc-line);
+  border-radius: 13px;
+  background: var(--sc-surface);
+  overflow: hidden;
+}
+.shortcut-action {
+  display: grid;
+  grid-template-columns: 32px minmax(100px, 1fr) auto;
+  align-items: center;
+  column-gap: 11px;
+  padding: 15px 16px;
+  transition: background 0.15s;
+}
+.shortcut-action + .shortcut-action {
+  border-top: 1px solid var(--sc-line);
+}
+.shortcut-action:hover {
+  background: var(--sc-soft);
+}
+.shortcut-action-icon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  color: #747a84;
+  background: var(--sc-soft);
+  border-radius: 9px;
+}
+.shortcut-description > span {
+  font-size: 13px;
+  font-weight: 500;
+}
+.shortcut-description p {
+  margin: 5px 0 0;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--sc-muted);
+}
+.shortcut-binding-control {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+}
+.shortcut-keys,
+.shortcut-key-part {
+  display: inline-flex;
+  align-items: center;
+}
+.shortcut-keys {
+  white-space: nowrap;
+}
+.shortcut-keys kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  height: 27px;
+  padding: 0 7px;
+  border: 1px solid var(--sc-line);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  background: var(--sc-soft);
+  color: var(--sc-ink);
+  font:
+    11px ui-monospace,
+    SFMono-Regular,
+    Consolas,
+    monospace;
+  box-shadow: 0 1px 1px #00000003;
+}
+.shortcut-plus {
+  padding: 0 4px;
+  color: var(--sc-muted);
+  font-size: 10px;
+}
+.settings-shortcuts button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  min-height: 29px;
+  border-radius: 7px;
+  font-size: 11px;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+.shortcut-edit {
+  padding: 4px 7px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--sc-muted);
+  white-space: nowrap;
+}
+.shortcut-edit:hover {
+  background: var(--sc-surface);
+  border-color: var(--sc-line);
+  color: var(--sc-ink);
+}
+.shortcut-action.is-recording {
+  background: var(--sc-tint);
+  box-shadow: inset 3px 0 var(--sc-accent);
+}
+.is-recording .shortcut-edit {
+  color: var(--sc-accent);
+  background: var(--sc-surface);
+  border-color: var(--sc-accent);
+}
+.shortcut-recording-hint {
+  grid-column: 2 / -1;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 9px 0 0;
+  color: var(--sc-accent);
+  font-size: 11px;
+  line-height: 1.6;
+}
+.shortcut-recording-hint > span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.shortcuts-tip {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  margin: 12px 3px 23px;
+  color: var(--sc-muted);
+  font-size: 11px;
+  line-height: 1.8;
+}
+.shortcuts-tip svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.shortcuts-readonly {
+  color: var(--sc-muted);
+  font-size: 10px;
+}
+.shortcuts-fixed {
+  margin: 0;
+  padding: 2px 16px;
+  border: 1px solid var(--sc-line);
+  border-radius: 13px;
+  background: var(--sc-surface);
+}
+.shortcuts-fixed > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 11px 0;
+}
+.shortcuts-fixed > div + div {
+  border-top: 1px solid var(--sc-line);
+}
+.shortcuts-fixed dt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+}
+.shortcuts-fixed dt svg {
+  color: var(--sc-muted);
+  flex-shrink: 0;
+}
+.shortcuts-fixed dd {
+  margin: 0;
+}
+.shortcuts-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 17px 2px 0;
+}
+.shortcuts-footer > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--sc-muted);
+  font-size: 10px;
+}
+.shortcut-reset {
+  padding: 5px 9px;
+  border: 1px solid var(--sc-line);
+  background: var(--sc-surface);
+  color: var(--sc-muted);
+}
+.shortcut-reset:hover {
+  background: var(--sc-soft);
+  color: var(--sc-ink);
+}
+html[data-theme="dark"] .settings-shortcuts {
+  --sc-surface: #191d25;
+  --sc-ink: #e4e7ee;
+  --sc-muted: #969ead;
+  --sc-line: #303641;
+  --sc-soft: #222732;
+  --sc-accent: #88cdbb;
+  --sc-tint: #1d332f;
+}
+html[data-density="compact"] .shortcut-action {
+  padding-block: 11px;
+}
+@media (max-width: 760px) {
+  .shortcut-action {
+    grid-template-columns: 28px minmax(0, 1fr);
+    padding: 13px;
+    gap: 9px;
+  }
+  .shortcut-action-icon {
+    width: 28px;
+    height: 28px;
+  }
+  .shortcut-binding-control {
+    grid-column: 2;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .shortcut-recording-hint {
+    grid-column: 2;
+  }
+  .shortcuts-fixed {
+    padding-inline: 12px;
+  }
+  .shortcuts-header {
+    margin-bottom: 22px;
+  }
+}

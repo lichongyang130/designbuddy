@@ -4,6 +4,7 @@ import App from "./App";
 import { SettingsWindow } from "./components/SettingsWindow";
 import "./styles.css";
 import "./theme.css";
+import "./components/settings-redesign.css";
 
 const root = document.getElementById("root");
 if (!root) {

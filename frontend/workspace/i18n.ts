@@ -1,3 +1,4 @@
+import { settingsDesignCopy } from "./i18nCatalogs/settingsDesign";
 import type { Locale } from "./locales";
 import ja from "./i18nCatalogs/ja";
 import zhTW from "./i18nCatalogs/zh-TW";
@@ -203,6 +204,11 @@ const zh: Record<string, string> = {
   "settings.appearance.glass.help":
     "关闭后弹窗遮罩与浮层不再使用毛玻璃模糊，改为实色背景。",
   "settings.shortcuts.title": "快捷键",
+  "settings.shortcuts.subtitle": "少一点点击，让灵感更流畅。",
+  "settings.shortcuts.custom": "自定义快捷键",
+  "settings.shortcuts.tip": "点击「重新录制」后按下组合键，按 Esc 取消。Ctrl / ⌘ 对应 Windows / Mac 的修饰键。",
+  "settings.shortcuts.readonly": "不可更改",
+  "settings.shortcuts.autosave": "更改自动保存",
   "settings.shortcuts.action.open-settings": "打开设置",
   "settings.shortcuts.hint.open-settings": "任何页面",
   "settings.shortcuts.action.send-task": "发送当前任务",
@@ -655,6 +661,11 @@ const en: Record<string, string> = {
   "settings.appearance.glass.help":
     "When off, dialog backdrops and floating panels stop using frosted blur and switch to solid backgrounds.",
   "settings.shortcuts.title": "Shortcuts",
+  "settings.shortcuts.subtitle": "Less clicking. More creating.",
+  "settings.shortcuts.custom": "Custom shortcuts",
+  "settings.shortcuts.tip": "Click Re-record, then press a key combination. Esc cancels. Ctrl / ⌘ refers to the Windows / Mac modifier key.",
+  "settings.shortcuts.readonly": "Read only",
+  "settings.shortcuts.autosave": "Changes save automatically",
   "settings.shortcuts.action.open-settings": "Open settings",
   "settings.shortcuts.hint.open-settings": "Works anywhere",
   "settings.shortcuts.action.send-task": "Send current task",
@@ -928,6 +939,11 @@ const en: Record<string, string> = {
   "home.explore.plugins": "Explore more AI abilities",
   "home.explore.workflows": "Get it done in clicks with workflows",
 };
+
+for (const [key, [chinese, english]] of Object.entries(settingsDesignCopy)) {
+  zh[`settings.design.${key}`] = chinese;
+  en[`settings.design.${key}`] = english;
+}
 
 const extraCatalogs: Partial<Record<Locale, Record<string, string>>> = {
   ja,

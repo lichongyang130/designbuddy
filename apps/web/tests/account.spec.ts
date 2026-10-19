@@ -171,6 +171,7 @@ for (const [width, height] of [
         .locator(".settings-content")
         .evaluate((el) => el.scrollWidth - el.clientWidth),
     ).toBeLessThanOrEqual(1);
+    await dialog.getByRole("button", { name: "关闭模型编辑器", exact: true }).click();
     await dialog.getByRole("button", { name: "关闭设置" }).click();
     await expect(dialog).not.toBeVisible();
   });

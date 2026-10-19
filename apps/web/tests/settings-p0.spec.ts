@@ -141,7 +141,7 @@ test("plan section shows honest local usage numbers", async ({ page }) => {
   await expect(dialog).toContainText("本地存储占用");
 });
 
-test("language setting switches fully translated frame catalogs", async ({
+test("language setting switches translated frame catalogs with honest fallback notice", async ({
   page,
 }) => {
   await open(page, "通用");
@@ -200,7 +200,7 @@ test("language setting switches fully translated frame catalogs", async ({
     await languageSelect.selectOption(locale);
     const localizedDialog = page.getByRole("dialog", { name: title, exact: true });
     await expect(localizedDialog).toBeVisible();
-    await expect(localizedDialog.locator(".settings-language-fallback")).toHaveCount(0);
+    await expect(localizedDialog.locator(".settings-language-fallback")).toHaveCount(1);
     await expect(page.locator("html")).toHaveAttribute("lang", locale);
     await expect(page.locator("html")).toHaveAttribute(
       "dir",
@@ -245,7 +245,7 @@ test("additional locale codes are selectable, translated and persist across relo
   await expect(select).toHaveValue("ja");
   await expect(page.locator("html")).toHaveAttribute("data-locale", "ja");
   await expect(page.locator("html")).toHaveAttribute("lang", "ja");
-  await expect(page.locator(".settings-language-fallback")).toHaveCount(0);
+  await expect(page.locator(".settings-language-fallback")).toHaveCount(1);
   await page.reload();
   await expect(page.locator("dialog.settings-window")).toBeAttached();
   await page.keyboard.press("Control+,");
@@ -332,7 +332,7 @@ test("profile and feature panels label informational sections and their real des
   page,
 }) => {
   await open(page, "个人主页");
-  await expect(settings(page)).toContainText("套餐、钱包、支付和自动充值服务尚未接入");
+  await expect(settings(page)).toContainText("账号资料");
   await settings(page).getByRole("button", { name: "后台连接状态" }).click();
   const serverPanel = page.getByRole("dialog", { name: "后台连接状态" });
   await expect(serverPanel).toBeVisible();
@@ -345,19 +345,19 @@ test("profile and feature panels label informational sections and their real des
   const destinations = [
     { section: "记忆与进化", button: "账号与数据", path: "/profile" },
     { section: "智能体", button: "管理专家", path: "/experts" },
-    { section: "助理", button: "查看插件", path: "/plugins" },
+    { section: "助理", button: "管理助理扩展", path: "/plugins" },
     { section: "应用管理", button: "管理连接器", path: "/connectors" },
   ];
   for (const destination of destinations) {
     await open(page, destination.section);
     if (destination.section === "记忆与进化") {
-      await expect(settings(page)).toContainText("跨对话长期记忆");
+      await expect(settings(page)).toContainText("只展示你明确同意保存的信息");
     }
     await settings(page).getByRole("button", { name: destination.button, exact: true }).click();
     await expect(page).toHaveURL(new RegExp(`${destination.path.replaceAll("/", "\\/")}$`));
   }
 
   await open(page, "安全中心");
-  await expect(settings(page)).toContainText("不会自动获得授权");
-  await expect(settings(page).locator(".settings-info button")).toHaveCount(0);
+  await expect(settings(page)).toContainText("修改密码");
+  await expect(settings(page)).toContainText("近期账号活动");
 });

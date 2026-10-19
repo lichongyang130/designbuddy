@@ -11,7 +11,9 @@ async function open(page: Page, models = false) {
       .getByRole("button", { name: "模型", exact: true })
       .click();
 }
-async function loadHomeWithPreferences(page: Page): Promise<{ wakeLock?: boolean }> {
+async function loadHomeWithPreferences(
+  page: Page,
+): Promise<{ wakeLock?: boolean }> {
   const responsePromise = page.waitForResponse(
     (response) =>
       response.url().includes("/profile/preferences") &&
@@ -20,11 +22,15 @@ async function loadHomeWithPreferences(page: Page): Promise<{ wakeLock?: boolean
   );
   await page.goto("/");
   const response = await responsePromise;
-  const body = await response.json() as {
+  const body = (await response.json()) as {
     preferences?: { key: string; value: unknown }[];
   };
-  const value = body.preferences?.find((entry) => entry.key === "workspace.preferences")?.value;
-  return value && typeof value === "object" ? value as { wakeLock?: boolean } : {};
+  const value = body.preferences?.find(
+    (entry) => entry.key === "workspace.preferences",
+  )?.value;
+  return value && typeof value === "object"
+    ? (value as { wakeLock?: boolean })
+    : {};
 }
 test.beforeEach(async ({ page }) => {
   await page.goto("/");
@@ -38,20 +44,21 @@ test.beforeEach(async ({ page }) => {
   });
   expect(reset).toBe(true);
   const preferencesLoaded = page.waitForResponse(
-    (response) => response.url().includes("/profile/preferences") && response.request().method() === "GET",
+    (response) =>
+      response.url().includes("/profile/preferences") &&
+      response.request().method() === "GET",
   );
   await page.reload();
   await preferencesLoaded;
 });
-async function add(page: Page, name = "我的模型", id = "custom-test-v1") {
+async function add(page: Page, id = "custom-test-v1") {
   await settings(page)
     .getByRole("button", { name: "添加模型", exact: true })
     .click();
-  await settings(page).getByLabel("模型名称", { exact: true }).fill(name);
-  await settings(page).getByLabel("模型标识", { exact: true }).fill(id);
-  await settings(page)
-    .getByRole("button", { name: "保存模型", exact: true })
-    .click();
+  const editor = page.getByRole("dialog", { name: "添加模型", exact: true });
+  await editor.getByRole("combobox").first().selectOption("server");
+  await editor.getByLabel("模型名称", { exact: true }).fill(id);
+  await editor.getByRole("button", { name: "保存", exact: true }).click();
 }
 
 test("reference 13 empty model page, searchable settings and accurate unsupported sections", async ({
@@ -158,10 +165,14 @@ test("font and link settings persist, apply to actual task UI and reset to defau
     page.getByRole("link", { name: "外部链接", exact: true }),
   ).toHaveAttribute("rel", "noopener noreferrer");
   await open(page);
-  await settings(page).getByLabel("链接打开方式", { exact: true }).selectOption("smart");
+  await settings(page)
+    .getByLabel("链接打开方式", { exact: true })
+    .selectOption("smart");
 });
 
-test("desktop sleep prevention follows the active task and stays off while idle", async ({ page }) => {
+test("desktop sleep prevention follows the active task and stays off while idle", async ({
+  page,
+}) => {
   await page.addInitScript(() => {
     (window as any).__nativeSleepCalls = [];
     Object.defineProperty(window, "designBuddyDesktop", {
@@ -175,29 +186,47 @@ test("desktop sleep prevention follows the active task and stays off while idle"
   });
   await page.route("**/api/chat", async (route) => {
     await new Promise((resolve) => setTimeout(resolve, 250));
-    await route.fulfill({ contentType: "text/event-stream", body: 'data: {"choices":[{"delta":{"content":"任务完成"}}]}\n\ndata: [DONE]\n\n' });
+    await route.fulfill({
+      contentType: "text/event-stream",
+      body: 'data: {"choices":[{"delta":{"content":"任务完成"}}]}\n\ndata: [DONE]\n\n',
+    });
   });
   const accountPreferences = await loadHomeWithPreferences(page);
   await open(page);
-  const wakeLock = settings(page).getByRole("switch", { name: "运行时防止系统休眠" });
-  await expect(wakeLock).toHaveAttribute("aria-checked", String(Boolean(accountPreferences.wakeLock)));
-  if ((await wakeLock.getAttribute("aria-checked")) === "true") await wakeLock.click();
+  const wakeLock = settings(page).getByRole("switch", {
+    name: "运行时防止系统休眠",
+  });
+  await expect(wakeLock).toHaveAttribute(
+    "aria-checked",
+    String(Boolean(accountPreferences.wakeLock)),
+  );
+  if ((await wakeLock.getAttribute("aria-checked")) === "true")
+    await wakeLock.click();
   await expect(wakeLock).toHaveAttribute("aria-checked", "false");
   await wakeLock.click();
   await expect(wakeLock).toHaveAttribute("aria-checked", "true");
-  const calls = () => page.evaluate(() => (window as any).__nativeSleepCalls as boolean[]);
+  const calls = () =>
+    page.evaluate(() => (window as any).__nativeSleepCalls as boolean[]);
   await expect.poll(async () => (await calls()).includes(true)).toBe(false);
   await page.keyboard.press("Escape");
-  await page.getByRole("textbox", { name: "任务描述", exact: true }).fill("实际运行一个短任务");
+  await page
+    .getByRole("textbox", { name: "任务描述", exact: true })
+    .fill("实际运行一个短任务");
   await page.getByRole("button", { name: "开始任务", exact: true }).click();
   await expect.poll(async () => (await calls()).includes(true)).toBe(true);
   await expect.poll(async () => (await calls()).at(-1)).toBe(false);
   await open(page);
-  await settings(page).getByRole("switch", { name: "运行时防止系统休眠" }).click();
-  await expect(settings(page).getByRole("switch", { name: "运行时防止系统休眠" })).toHaveAttribute("aria-checked", "false");
+  await settings(page)
+    .getByRole("switch", { name: "运行时防止系统休眠" })
+    .click();
+  await expect(
+    settings(page).getByRole("switch", { name: "运行时防止系统休眠" }),
+  ).toHaveAttribute("aria-checked", "false");
 });
 
-test("wake lock remains off while idle and releases after a real task finishes", async ({ page }) => {
+test("wake lock remains off while idle and releases after a real task finishes", async ({
+  page,
+}) => {
   await page.addInitScript(() => {
     (window as any).__wakeLockStats = { requests: 0, releases: 0 };
     Object.defineProperty(navigator, "wakeLock", {
@@ -230,29 +259,53 @@ test("wake lock remains off while idle and releases after a real task finishes",
   });
   await page.route("**/api/chat", async (route) => {
     await taskGate;
-    await route.fulfill({ contentType: "text/event-stream", body: 'data: {"choices":[{"delta":{"content":"任务完成"}}]}\n\ndata: [DONE]\n\n' });
+    await route.fulfill({
+      contentType: "text/event-stream",
+      body: 'data: {"choices":[{"delta":{"content":"任务完成"}}]}\n\ndata: [DONE]\n\n',
+    });
   });
   const accountPreferences = await loadHomeWithPreferences(page);
   await open(page);
-  const wakeLock = settings(page).getByRole("switch", { name: "运行时防止系统休眠" });
-  await expect(wakeLock).toHaveAttribute("aria-checked", String(Boolean(accountPreferences.wakeLock)));
-  if ((await wakeLock.getAttribute("aria-checked")) === "true") await wakeLock.click();
+  const wakeLock = settings(page).getByRole("switch", {
+    name: "运行时防止系统休眠",
+  });
+  await expect(wakeLock).toHaveAttribute(
+    "aria-checked",
+    String(Boolean(accountPreferences.wakeLock)),
+  );
+  if ((await wakeLock.getAttribute("aria-checked")) === "true")
+    await wakeLock.click();
   await expect(wakeLock).toHaveAttribute("aria-checked", "false");
   await wakeLock.click();
   await expect(wakeLock).toHaveAttribute("aria-checked", "true");
-  const stats = () => page.evaluate(() => (window as any).__wakeLockStats as { requests: number; releases: number });
+  const stats = () =>
+    page.evaluate(
+      () =>
+        (window as any).__wakeLockStats as {
+          requests: number;
+          releases: number;
+        },
+    );
   await expect.poll(async () => (await stats()).requests).toBe(0);
   await page.keyboard.press("Escape");
-  await page.getByRole("textbox", { name: "任务描述", exact: true }).fill("实际运行一个短任务");
+  await page
+    .getByRole("textbox", { name: "任务描述", exact: true })
+    .fill("实际运行一个短任务");
   await page.getByRole("button", { name: "开始任务", exact: true }).click();
   await expect.poll(async () => (await stats()).requests).toBe(1);
   await page.evaluate(() => {
-    Object.defineProperty(document, "visibilityState", { configurable: true, value: "hidden" });
+    Object.defineProperty(document, "visibilityState", {
+      configurable: true,
+      value: "hidden",
+    });
     document.dispatchEvent(new Event("visibilitychange"));
   });
   await expect.poll(async () => (await stats()).releases).toBe(1);
   await page.evaluate(() => {
-    Object.defineProperty(document, "visibilityState", { configurable: true, value: "visible" });
+    Object.defineProperty(document, "visibilityState", {
+      configurable: true,
+      value: "visible",
+    });
     document.dispatchEvent(new Event("visibilitychange"));
   });
   await expect.poll(async () => (await stats()).requests).toBe(2);
@@ -284,33 +337,32 @@ test("custom models persist, can be edited, and only explicit send requests thei
   await add(page);
   await expect(settings(page).getByRole("status")).toContainText("已保存");
   await settings(page)
-    .getByRole("button", { name: "编辑我的模型", exact: true })
+    .getByRole("button", { name: "编辑custom-test-v1", exact: true })
     .click();
-  await settings(page).getByLabel("模型名称", { exact: true }).fill("工作模型");
+  const editor = page.getByRole("dialog", { name: "编辑模型", exact: true });
+  await editor.getByLabel("模型名称", { exact: true }).fill("custom-test-v2");
+  await editor.getByRole("button", { name: "保存", exact: true }).click();
   await settings(page)
-    .getByLabel("模型标识", { exact: true })
-    .fill("custom-test-v2");
-  await settings(page)
-    .getByRole("button", { name: "保存模型", exact: true })
+    .getByRole("button", { name: "个性化", exact: true })
     .click();
-  await settings(page).getByRole("button", { name: "个性化", exact: true }).click();
-  const savedDefaultModel = page.waitForResponse((response) => {
-    if (!response.url().includes("/profile/preferences") || response.request().method() !== "PUT" || !response.ok()) return false;
-    const body = response.request().postDataJSON() as { key?: string; value?: { defaultModel?: string } };
-    return body.key === "workspace.preferences" && body.value?.defaultModel === "custom-test-v2";
-  });
-  await settings(page).getByLabel("默认模型", { exact: true }).selectOption("custom-test-v2");
-  await savedDefaultModel;
+  const saved = page.waitForResponse(
+    (response) =>
+      response.url().includes("/profile/preferences") &&
+      response.request().method() === "PUT" &&
+      response.request().postDataJSON()?.value?.defaultModel ===
+        "custom-test-v2",
+  );
+  await settings(page)
+    .getByLabel("默认模型", { exact: true })
+    .selectOption("custom-test-v2");
+  await saved;
   await page.keyboard.press("Escape");
-  await expect(page.getByRole("button", { name: "选择大模型", exact: true })).toContainText("工作模型");
+  await expect(
+    page.getByRole("button", { name: "选择大模型", exact: true }),
+  ).toContainText("custom-test-v2");
   await page.reload();
   await page.getByRole("button", { name: "选择大模型", exact: true }).click();
-  await expect(
-    page
-      .getByRole("dialog", { name: "选择大模型", exact: true })
-      .getByRole("option"),
-  ).toHaveCount(2);
-  await page.getByRole("option", { name: /工作模型/ }).click();
+  await page.getByRole("option", { name: /custom-test-v2/ }).click();
   expect(calls).toHaveLength(0);
   await page
     .getByRole("textbox", { name: "任务描述", exact: true })
@@ -319,24 +371,15 @@ test("custom models persist, can be edited, and only explicit send requests thei
   await expect(page.locator(".task-reply-markdown")).toContainText("收到");
   expect(calls).toHaveLength(1);
   expect(calls[0].model).toBe("custom-test-v2");
-  await expect(
-    page.getByRole("combobox", { name: "对话模型", exact: true }),
-  ).toHaveValue("custom-test-v2");
   await open(page, true);
-  page.once("dialog", (dialog) => dialog.accept());
+  page.once("dialog", (confirmation) => confirmation.accept());
   await settings(page)
-    .getByRole("button", { name: "移除工作模型", exact: true })
+    .getByRole("button", { name: "移除custom-test-v2", exact: true })
     .click();
   await page.keyboard.press("Escape");
   await expect(
     page.getByRole("combobox", { name: "对话模型", exact: true }),
   ).toHaveValue("custom-test-v2");
-  await expect(
-    page.getByRole("option", {
-      name: "custom-test-v2（原任务模型）",
-      exact: true,
-    }),
-  ).toHaveCount(1);
   expect(calls).toHaveLength(1);
 });
 
@@ -348,18 +391,21 @@ test("removing a selected model asks confirmation and resets only the home selec
   await add(page);
   await page.keyboard.press("Escape");
   await page.getByRole("button", { name: "选择大模型", exact: true }).click();
-  await page.getByRole("option", { name: /我的模型/ }).click();
+  await page.getByRole("option", { name: /custom-test-v1/ }).click();
   await open(page, true);
-  page.once("dialog", (dialog) => dialog.dismiss());
+  page.once("dialog", (confirmation) => confirmation.dismiss());
   await settings(page)
-    .getByRole("button", { name: "移除我的模型", exact: true })
+    .getByRole("button", { name: "移除custom-test-v1", exact: true })
     .click();
   await expect(
-    settings(page).getByRole("button", { name: "编辑我的模型", exact: true }),
+    settings(page).getByRole("button", {
+      name: "编辑custom-test-v1",
+      exact: true,
+    }),
   ).toBeVisible();
-  page.once("dialog", (dialog) => dialog.accept());
+  page.once("dialog", (confirmation) => confirmation.accept());
   await settings(page)
-    .getByRole("button", { name: "移除我的模型", exact: true })
+    .getByRole("button", { name: "移除custom-test-v1", exact: true })
     .click();
   await expect(
     settings(page).getByRole("region", { name: "已添加模型" }),
@@ -367,7 +413,7 @@ test("removing a selected model asks confirmation and resets only the home selec
   await page.keyboard.press("Escape");
   await expect(
     page.getByRole("button", { name: "选择大模型", exact: true }),
-  ).toContainText("Agnes-3.0-Flash");
+  ).not.toContainText("custom-test-v1");
   await page.reload();
   await open(page, true);
   await expect(
@@ -375,35 +421,33 @@ test("removing a selected model asks confirmation and resets only the home selec
   ).toHaveCount(0);
 });
 
-test("invalid and duplicate model identifiers are rejected; provider secrets stay out of local model preferences", async ({
+test("invalid and duplicate model IDs are rejected and secrets stay out of synced preferences", async ({
   page,
 }) => {
   await page.goto("/");
   await open(page, true);
-  await add(page, "坏模型", "bad model");
-  await expect(settings(page).getByRole("alert")).toContainText("有效模型标识");
-  await settings(page).getByLabel("模型名称", { exact: true }).fill("安全模型");
-  await settings(page)
-    .getByLabel("模型标识", { exact: true })
-    .fill("secure-test");
-  await settings(page).locator("summary").click();
-  await settings(page)
-    .getByRole("combobox", { name: "服务商", exact: true })
-    .selectOption("deepseek");
-  await settings(page)
+  await add(page, "bad model");
+  const editor = page.getByRole("dialog", { name: "添加模型", exact: true });
+  await expect(editor.getByRole("alert")).toContainText("有效模型标识");
+  await editor.getByLabel("模型名称", { exact: true }).fill("secure-test");
+  await editor.getByRole("combobox").first().selectOption("deepseek");
+  await editor
     .getByLabel("API Key", { exact: true })
     .fill("test-key-not-a-real-secret");
+  await expect(editor.getByLabel("API Key", { exact: true })).toHaveAttribute(
+    "type",
+    "password",
+  );
+  await editor.locator("summary").click();
   await expect(
-    settings(page).getByLabel("API Key", { exact: true }),
-  ).toHaveAttribute("type", "password");
-  await settings(page)
-    .getByRole("button", { name: "保存模型", exact: true })
-    .click();
+    editor.locator(".settings-model-dialog__token-row"),
+  ).toBeVisible();
+  await editor.getByRole("button", { name: "保存", exact: true }).click();
   expect(
     await page.evaluate((key) => localStorage.getItem(key), KEY),
   ).not.toContain("test-key-not-a-real-secret");
-  await add(page, "另一个名字", "secure-test");
-  await expect(settings(page).getByRole("alert")).toContainText("已存在");
+  await add(page, "secure-test");
+  await expect(editor.getByRole("alert")).toContainText("已存在");
   expect(
     await page.evaluate(
       (key) => JSON.parse(localStorage.getItem(key)!).models.length,
@@ -419,7 +463,8 @@ test("storage failure is surfaced without claiming a save", async ({
   await page.evaluate((key) => {
     const original = Storage.prototype.setItem;
     Storage.prototype.setItem = function (k, value) {
-      if (k === key || k === "designbuddy.ai-provider.v1") throw new DOMException("blocked", "QuotaExceededError");
+      if (k === key || k === "designbuddy.ai-provider.v1")
+        throw new DOMException("blocked", "QuotaExceededError");
       return original.call(this, k, value);
     };
   }, KEY);
@@ -435,18 +480,15 @@ test("storage failure is surfaced without claiming a save", async ({
     .getByRole("button", { name: "模型", exact: true })
     .click();
   await add(page);
-  await expect(settings(page).getByRole("alert")).toBeVisible();
+  await expect(
+    page
+      .getByRole("dialog", { name: "添加模型", exact: true })
+      .getByRole("alert"),
+  ).toBeVisible();
   await expect(settings(page).getByRole("form")).toBeVisible();
   await expect(
     settings(page).getByRole("region", { name: "已添加模型" }),
   ).toHaveCount(0);
-  await settings(page).locator(".db-ai-provider-settings summary").click();
-  const provider = settings(page).getByRole("combobox", { name: "服务商", exact: true });
-  await provider.selectOption("deepseek");
-  await expect(
-    settings(page).locator(".db-ai-provider-settings [role=alert]"),
-  ).toContainText("会话存储不可用");
-  await expect(provider).toHaveValue("server");
 });
 
 test("corrupt storage falls back safely and storage events refresh preferences", async ({

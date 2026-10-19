@@ -1,10 +1,16 @@
-import { useEffect, useLayoutEffect, useRef, useState, type FormEvent } from "react";
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type FormEvent,
+} from "react";
 import { HomeIcon, type HomeIconName } from "./HomeIcon";
-import { AIProviderSettings } from "../../../../frontend/workspace/AIProviderSettings";
-import { readCustomModelApiKey, writeCustomModelApiKey } from "../../../../frontend/workspace/aiProviderStorage";
+import {
+  readCustomModelApiKey,
+  writeCustomModelApiKey,
+} from "../../../../frontend/workspace/aiProviderStorage";
 import { testModelConnection } from "../../../../frontend/workspace/api/models";
-import { navigateTo } from "../../../../frontend/workspace/workspaceRoutes";
-import { AUTH_GATE_ENABLED, SERVER_PANEL_TITLE } from "../../../../frontend/workspace/authGate";
 import {
   closeSettings,
   refreshPreferences,
@@ -16,6 +22,7 @@ import {
   setWakeLock,
   SETTINGS_KEY,
   usePreferences,
+  usePreferenceSync,
   useSettingsWindow,
   type CustomModel,
   type ModelCapabilities,
@@ -26,12 +33,21 @@ import { hasFullCatalog, translate } from "../../../../frontend/workspace/i18n";
 import { LOCALE_OPTIONS } from "../../../../frontend/workspace/locales";
 import "./settings-window.css";
 import {
+  ProfileSettings,
+  MemorySettings,
+  AgentsSettings,
+  AssistantSettings,
+  AppsSettings,
+  SecuritySettings,
+  useSettingsCopy,
+  SettingsEmpty,
+} from "./SettingsHubSections";
+import {
   AppearanceSettings,
   DataSettings,
   DevicesSettings,
   PersonalSettings,
   PlanSettings,
-  PlanUpgradeDialog,
   ShortcutsSettings,
 } from "./SettingsSections";
 
@@ -53,15 +69,35 @@ const groups: { labelKey: string; items: Section[] }[] = [
           "常规 语言 多语言 简体中文 繁體中文 English Bahasa Indonesia Deutsch Português Brasil Español España Русский فارسی العربية 日本語 한국어 Polski Magyar Français Українська Türkçe ภาษาไทย Italiano zh-CN zh-TW en id de pt-BR es-ES ru fa ar ja ko pl hu fr uk tr th it 链接打开方式 字体大小 字号 系统 防休眠 唤醒锁定 屏幕常亮",
       },
       { id: "profile", nameKey: "settings.section.profile", icon: "invite" },
-      { id: "plan", nameKey: "settings.section.plan", icon: "chart", keywords: "用量 统计 套餐 积分 订阅 本地版" },
-      { id: "appearance", nameKey: "settings.section.appearance", icon: "palette", keywords: "主题 深色 浅色 跟随系统 密度 紧凑" },
-      { id: "shortcuts", nameKey: "settings.section.shortcuts", icon: "panel", keywords: "快捷键 录制 按键 绑定 恢复默认" },
+      {
+        id: "plan",
+        nameKey: "settings.section.plan",
+        icon: "chart",
+        keywords: "用量 统计 套餐 积分 订阅 本地版",
+      },
+      {
+        id: "appearance",
+        nameKey: "settings.section.appearance",
+        icon: "palette",
+        keywords: "主题 深色 浅色 跟随系统 密度 紧凑",
+      },
+      {
+        id: "shortcuts",
+        nameKey: "settings.section.shortcuts",
+        icon: "panel",
+        keywords: "快捷键 录制 按键 绑定 恢复默认",
+      },
     ],
   },
   {
     labelKey: "settings.group.features",
     items: [
-      { id: "personalization", nameKey: "settings.section.personalization", icon: "pencil", keywords: "默认值 预设 空间 权限 快捷场景 创作" },
+      {
+        id: "personalization",
+        nameKey: "settings.section.personalization",
+        icon: "pencil",
+        keywords: "默认值 预设 空间 权限 快捷场景 创作",
+      },
       { id: "memory", nameKey: "settings.section.memory", icon: "bulb" },
       { id: "agents", nameKey: "settings.section.agents", icon: "assistant" },
       {
@@ -70,14 +106,28 @@ const groups: { labelKey: string; items: Section[] }[] = [
         icon: "grid",
         keywords: "自定义模型 添加模型 AI 服务商 API",
       },
-      { id: "assistant", nameKey: "settings.section.assistant", icon: "experts" },
-      { id: "devices", nameKey: "settings.section.devices", icon: "devices", keywords: "会话 同步 迁移 设置文件 导出导入 清除" },
+      {
+        id: "assistant",
+        nameKey: "settings.section.assistant",
+        icon: "experts",
+      },
+      {
+        id: "devices",
+        nameKey: "settings.section.devices",
+        icon: "devices",
+        keywords: "会话 同步 迁移 设置文件 导出导入 清除",
+      },
     ],
   },
   {
     labelKey: "settings.group.data",
     items: [
-      { id: "data", nameKey: "settings.section.data", icon: "book", keywords: "备份 导出 导入 清空 存储 占用 恢复" },
+      {
+        id: "data",
+        nameKey: "settings.section.data",
+        icon: "book",
+        keywords: "备份 导出 导入 清空 存储 占用 恢复",
+      },
       { id: "apps", nameKey: "settings.section.apps", icon: "panel" },
       { id: "security", nameKey: "settings.section.security", icon: "shield" },
     ],
@@ -85,10 +135,20 @@ const groups: { labelKey: string; items: Section[] }[] = [
 ];
 
 function wakeLockSupported() {
-  if (typeof window !== "undefined" && window.designBuddyDesktop?.setRuntimeSleepBlocker) return true;
-  return typeof window !== "undefined" && typeof navigator !== "undefined" && !!window.isSecureContext && "wakeLock" in navigator;
+  if (
+    typeof window !== "undefined" &&
+    window.designBuddyDesktop?.setRuntimeSleepBlocker
+  )
+    return true;
+  return (
+    typeof window !== "undefined" &&
+    typeof navigator !== "undefined" &&
+    !!window.isSecureContext &&
+    "wakeLock" in navigator
+  );
 }
 function GeneralSettings({ onError }: { onError(message: string): void }) {
+  const designT = useSettingsCopy();
   const fontSize = usePreferences((state) => state.fontSize);
   const linkMode = usePreferences((state) => state.linkMode);
   const locale = usePreferences((state) => state.locale);
@@ -106,18 +166,21 @@ function GeneralSettings({ onError }: { onError(message: string): void }) {
   useEffect(() => {
     const failed = () => onError(t("settings.general.wakelock.denied"));
     window.addEventListener("designbuddy:wake-lock-failed", failed);
-    return () => window.removeEventListener("designbuddy:wake-lock-failed", failed);
+    return () =>
+      window.removeEventListener("designbuddy:wake-lock-failed", failed);
   }, [locale, onError]);
   return (
     <>
       <section aria-labelledby="settings-normal-title">
         <h2 className="settings-section-label" id="settings-normal-title">
-          {t("settings.general.regular")}
+          {designT("reading")}
         </h2>
         <div className="settings-card">
           <div className="settings-row">
             <div>
-              <label htmlFor="settings-language">{t("settings.general.language")}</label>
+              <label htmlFor="settings-language">
+                {t("settings.general.language")}
+              </label>
               {!hasFullCatalog(locale) && (
                 <p className="settings-language-fallback" role="status">
                   {t("settings.general.language.fallback")}
@@ -141,7 +204,56 @@ function GeneralSettings({ onError }: { onError(message: string): void }) {
           </div>
           <div className="settings-row">
             <div>
-              <label htmlFor="settings-link-mode">{t("settings.general.links")}</label>
+              <label htmlFor="settings-font-size">
+                {t("settings.general.font")}
+              </label>
+              <p className="settings-font-help">
+                {t("settings.general.font.help")}
+              </p>
+            </div>
+            <div className="settings-font-control">
+              <input
+                id="settings-font-size"
+                type="range"
+                min="12"
+                max="20"
+                step="1"
+                value={fontSize}
+                onChange={(event) =>
+                  change(() => setFontSize(Number(event.target.value)))
+                }
+                aria-valuetext={t("settings.general.font.unit", {
+                  size: fontSize,
+                })}
+              />
+              <div>
+                <span>{t("settings.general.font.small")}</span>
+                <button onClick={() => change(() => setFontSize(15))}>
+                  {t("settings.general.font.default")}
+                </button>
+                <span>{t("settings.general.font.big")}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div className="settings-reading-preview">
+        <span>
+          {designT("fontPreview")} · {fontSize}px
+        </span>
+        <p style={{ fontSize }}>{designT("fontSample")}</p>
+      </div>
+      <section aria-labelledby="settings-behavior-title">
+        <h2 className="settings-section-label" id="settings-behavior-title">
+          {designT("behavior")}
+        </h2>
+        <div className="settings-card">
+          {" "}
+          <div className="settings-row">
+            <div>
+              <label htmlFor="settings-link-mode">
+                {t("settings.general.links")}
+              </label>
               <p>{t("settings.general.links.help")}</p>
             </div>
             <select
@@ -156,36 +268,13 @@ function GeneralSettings({ onError }: { onError(message: string): void }) {
               }
             >
               <option value="smart">{t("settings.general.links.smart")}</option>
-              <option value="new-tab">{t("settings.general.links.newtab")}</option>
-              <option value="same-tab">{t("settings.general.links.sametab")}</option>
+              <option value="new-tab">
+                {t("settings.general.links.newtab")}
+              </option>
+              <option value="same-tab">
+                {t("settings.general.links.sametab")}
+              </option>
             </select>
-          </div>
-          <div className="settings-row">
-            <div>
-              <label htmlFor="settings-font-size">{t("settings.general.font")}</label>
-              <p className="settings-font-help">{t("settings.general.font.help")}</p>
-            </div>
-            <div className="settings-font-control">
-              <input
-                id="settings-font-size"
-                type="range"
-                min="12"
-                max="20"
-                step="1"
-                value={fontSize}
-                onChange={(event) =>
-                  change(() => setFontSize(Number(event.target.value)))
-                }
-                aria-valuetext={t("settings.general.font.unit", { size: fontSize })}
-              />
-              <div>
-                <span>{t("settings.general.font.small")}</span>
-                <button onClick={() => change(() => setFontSize(15))}>
-                  {t("settings.general.font.default")}
-                </button>
-                <span>{t("settings.general.font.big")}</span>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -251,11 +340,20 @@ function emptyModelDraft(): ModelDraft {
     apiKey: "",
     inputTokens: "",
     outputTokens: "",
-    capabilities: { tools: true, images: false, reasoning: false, customProtocol: false },
+    capabilities: {
+      tools: true,
+      images: false,
+      reasoning: false,
+      customProtocol: false,
+    },
   };
 }
 
-function parseTokenLimit(value: string, maximum: number, t: (key: string) => string): number | undefined {
+function parseTokenLimit(
+  value: string,
+  maximum: number,
+  t: (key: string) => string,
+): number | undefined {
   if (!value.trim()) return undefined;
   const parsed = Number(value);
   if (!Number.isSafeInteger(parsed) || parsed < 1 || parsed > maximum)
@@ -264,6 +362,7 @@ function parseTokenLimit(value: string, maximum: number, t: (key: string) => str
 }
 
 function ModelsSettings() {
+  const defaultModel = usePreferences((state) => state.defaultModel);
   const models = usePreferences((state) => state.models);
   const locale = usePreferences((state) => state.locale);
   const t = (key: string, params?: Record<string, string | number>) =>
@@ -272,7 +371,10 @@ function ModelsSettings() {
   const [draft, setDraft] = useState<ModelDraft>(emptyModelDraft);
   const [showKey, setShowKey] = useState(false);
   const [testing, setTesting] = useState(false);
-  const [connection, setConnection] = useState<{ ok: boolean; message: string } | null>(null);
+  const [connection, setConnection] = useState<{
+    ok: boolean;
+    message: string;
+  } | null>(null);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const modal = useRef<HTMLDialogElement>(null);
@@ -294,14 +396,28 @@ function ModelsSettings() {
     const provider = isNew ? "custom" : model.provider || "server";
     setDraft({
       provider,
-      baseUrl: isNew ? "" : model.baseUrl || modelProviderEndpoints[provider] || "",
+      baseUrl: isNew
+        ? ""
+        : model.baseUrl || modelProviderEndpoints[provider] || "",
       modelId: isNew ? "" : model.modelId,
       apiKey: isNew ? "" : readCustomModelApiKey(model.modelId),
       inputTokens: isNew || !model.inputTokens ? "" : String(model.inputTokens),
-      outputTokens: isNew || !model.outputTokens ? "" : String(model.outputTokens),
+      outputTokens:
+        isNew || !model.outputTokens ? "" : String(model.outputTokens),
       capabilities: isNew
-        ? { tools: true, images: false, reasoning: false, customProtocol: false }
-        : { tools: false, images: false, reasoning: false, customProtocol: false, ...model.capabilities },
+        ? {
+            tools: true,
+            images: false,
+            reasoning: false,
+            customProtocol: false,
+          }
+        : {
+            tools: false,
+            images: false,
+            reasoning: false,
+            customProtocol: false,
+            ...model.capabilities,
+          },
     });
     setShowKey(false);
     setTesting(false);
@@ -326,7 +442,12 @@ function ModelsSettings() {
     setDraft((current) => ({
       ...current,
       provider,
-      baseUrl: provider === "custom" ? (current.provider === "custom" ? current.baseUrl : "") : modelProviderEndpoints[provider] || "",
+      baseUrl:
+        provider === "custom"
+          ? current.provider === "custom"
+            ? current.baseUrl
+            : ""
+          : modelProviderEndpoints[provider] || "",
     }));
     setConnection(null);
   }
@@ -335,11 +456,22 @@ function ModelsSettings() {
     try {
       const url = new URL(value.trim());
       const host = url.hostname.toLowerCase().replace(/\.$/, "");
-      return url.protocol === "https:" && !!host.includes(".") &&
-        !url.username && !url.password && !url.search && !url.hash &&
-        host !== "localhost" && !/\.(?:localhost|local|internal|lan|home|test|invalid)$/.test(host) &&
-        !/^(?:10\.|127\.|169\.254\.|192\.168\.|172\.(?:1[6-9]|2\d|3[01])\.)/.test(host);
-    } catch { return false; }
+      return (
+        url.protocol === "https:" &&
+        !!host.includes(".") &&
+        !url.username &&
+        !url.password &&
+        !url.search &&
+        !url.hash &&
+        host !== "localhost" &&
+        !/\.(?:localhost|local|internal|lan|home|test|invalid)$/.test(host) &&
+        !/^(?:10\.|127\.|169\.254\.|192\.168\.|172\.(?:1[6-9]|2\d|3[01])\.)/.test(
+          host,
+        )
+      );
+    } catch {
+      return false;
+    }
   }
 
   async function testConnection() {
@@ -366,18 +498,27 @@ function ModelsSettings() {
         modelId,
       });
       if (!result.ok) {
-        setConnection({ ok: false, message: result.error || t("settings.models.test.fail") });
+        setConnection({
+          ok: false,
+          message: result.error || t("settings.models.test.fail"),
+        });
       } else if (!result.modelCount) {
         setConnection({ ok: true, message: t("settings.models.test.noList") });
       } else if (result.modelFound) {
         setConnection({ ok: true, message: t("settings.models.test.found") });
       } else {
-        setConnection({ ok: false, message: t("settings.models.test.notFound") });
+        setConnection({
+          ok: false,
+          message: t("settings.models.test.notFound"),
+        });
       }
     } catch (cause) {
       setConnection({
         ok: false,
-        message: cause instanceof Error ? cause.message.slice(0, 300) : t("settings.models.test.fail"),
+        message:
+          cause instanceof Error
+            ? cause.message.slice(0, 300)
+            : t("settings.models.test.fail"),
       });
     } finally {
       setTesting(false);
@@ -390,7 +531,10 @@ function ModelsSettings() {
     setNotice("");
     const modelId = draft.modelId.trim();
     const apiKey = draft.provider === "server" ? "" : draft.apiKey.trim();
-    const baseUrl = draft.provider === "custom" ? draft.baseUrl.trim() : modelProviderEndpoints[draft.provider] || "";
+    const baseUrl =
+      draft.provider === "custom"
+        ? draft.baseUrl.trim()
+        : modelProviderEndpoints[draft.provider] || "";
     if (draft.provider !== "server" && !apiKey) {
       setError(t("settings.models.err.key"));
       return;
@@ -405,16 +549,23 @@ function ModelsSettings() {
       inputTokens = parseTokenLimit(draft.inputTokens, 1_000_000, t);
       outputTokens = parseTokenLimit(draft.outputTokens, 128_000, t);
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : t("settings.models.err.tokens"));
+      setError(
+        cause instanceof Error
+          ? cause.message
+          : t("settings.models.err.tokens"),
+      );
       return;
     }
 
     const previous = editing !== "new" ? editing : null;
-    const name = previous && previous.name !== previous.modelId
-      ? previous.name
-      : modelId.slice(0, 60);
+    const name =
+      previous && previous.name !== previous.modelId
+        ? previous.name
+        : modelId.slice(0, 60);
     const previousKeyAtModelId = readCustomModelApiKey(modelId);
-    const previousModelKey = previous ? readCustomModelApiKey(previous.modelId) : "";
+    const previousModelKey = previous
+      ? readCustomModelApiKey(previous.modelId)
+      : "";
     try {
       writeCustomModelApiKey(modelId, apiKey);
       saveCustomModel({
@@ -427,19 +578,34 @@ function ModelsSettings() {
         outputTokens,
         capabilities: draft.capabilities,
       });
-      if (previous && previous.modelId !== modelId) writeCustomModelApiKey(previous.modelId, "");
+      if (previous && previous.modelId !== modelId)
+        writeCustomModelApiKey(previous.modelId, "");
       closeEditor();
       setNotice(t("settings.models.saved"));
     } catch (cause) {
       try {
-        writeCustomModelApiKey(modelId, previous && previous.modelId === modelId ? previousModelKey : previousKeyAtModelId);
-      } catch { /* Keep the validation or storage error shown below. */ }
-      setError(cause instanceof Error ? cause.message : t("settings.models.saveFail"));
+        writeCustomModelApiKey(
+          modelId,
+          previous && previous.modelId === modelId
+            ? previousModelKey
+            : previousKeyAtModelId,
+        );
+      } catch {
+        /* Keep the validation or storage error shown below. */
+      }
+      setError(
+        cause instanceof Error ? cause.message : t("settings.models.saveFail"),
+      );
     }
   }
 
-  const title = editing === "new" ? t("settings.models.add") : t("settings.models.edit");
-  const canTest = draft.provider !== "server" && !!draft.apiKey.trim() && !!draft.modelId.trim() && !testing;
+  const title =
+    editing === "new" ? t("settings.models.add") : t("settings.models.edit");
+  const canTest =
+    draft.provider !== "server" &&
+    !!draft.apiKey.trim() &&
+    !!draft.modelId.trim() &&
+    !testing;
   return (
     <>
       <section
@@ -450,12 +616,33 @@ function ModelsSettings() {
           <h2>{t("settings.models.title")}</h2>
           <p>{t("settings.models.help")}</p>
         </div>
-        <button className="settings-button" type="button" onClick={() => openEditor("new")}>
+        <button
+          className="settings-button"
+          type="button"
+          onClick={() => openEditor("new")}
+        >
           {t("settings.models.add")}
         </button>
       </section>
-      {notice && <p className="settings-notice" role="status">{notice}</p>}
-      {error && !editing && <p className="settings-error" role="alert">{error}</p>}
+      {notice && (
+        <p className="settings-notice" role="status">
+          {notice}
+        </p>
+      )}
+      {error && !editing && (
+        <p className="settings-error" role="alert">
+          {error}
+        </p>
+      )}
+      {models.length === 0 && (
+        <div className="settings-card">
+          <SettingsEmpty
+            icon="grid"
+            title={translate(locale, "settings.design.modelEmpty")}
+            help={translate(locale, "settings.design.modelEmptyHelp")}
+          />
+        </div>
+      )}
       {models.length > 0 && (
         <section
           className="settings-card settings-model-list"
@@ -463,9 +650,23 @@ function ModelsSettings() {
         >
           {models.map((model) => (
             <article key={model.id}>
-              <div>
-                <strong>{model.name}</strong>
+              <span className="settings-tile-icon">
+                <HomeIcon name="grid" size={19} />
+              </span>
+              <div className="settings-model-description">
+                <strong>
+                  {model.name}{" "}
+                  {defaultModel === model.modelId && (
+                    <span className="settings-status-tag is-positive">
+                      {translate(locale, "settings.design.defaultModel")}
+                    </span>
+                  )}
+                </strong>
                 <code>{model.modelId}</code>
+                <small>
+                  {model.provider || "server"} ·{" "}
+                  {translate(locale, "settings.design.configured")}
+                </small>
               </div>
               <button
                 className="settings-button"
@@ -476,14 +677,22 @@ function ModelsSettings() {
               </button>
               <button
                 className="settings-button"
-                aria-label={t("settings.models.removeAria", { name: model.name })}
+                aria-label={t("settings.models.removeAria", {
+                  name: model.name,
+                })}
                 onClick={() => {
-                  if (!window.confirm(t("settings.models.removeConfirm", { name: model.name }))) return;
+                  if (
+                    !window.confirm(
+                      t("settings.models.removeConfirm", { name: model.name }),
+                    )
+                  )
+                    return;
                   try {
                     removeCustomModel(model.id);
                     setNotice(t("settings.models.removed"));
                     setError("");
-                    if (editing !== "new" && editing?.id === model.id) closeEditor();
+                    if (editing !== "new" && editing?.id === model.id)
+                      closeEditor();
                   } catch {
                     setError(t("settings.models.removeFail"));
                   }
@@ -499,13 +708,25 @@ function ModelsSettings() {
         ref={modal}
         className="settings-model-dialog"
         aria-labelledby="settings-model-dialog-title"
-        onCancel={(event) => { event.preventDefault(); closeEditor(); }}
-        onClick={(event) => { if (event.target === event.currentTarget) closeEditor(); }}
+        onCancel={(event) => {
+          event.preventDefault();
+          closeEditor();
+        }}
+        onClick={(event) => {
+          if (event.target === event.currentTarget) closeEditor();
+        }}
       >
         <div className="settings-model-dialog__shell">
           <header className="settings-model-dialog__header">
             <h2 id="settings-model-dialog-title">{title}</h2>
-            <button type="button" className="settings-model-dialog__close" aria-label={t("settings.close")} onClick={closeEditor}>×</button>
+            <button
+              type="button"
+              className="settings-model-dialog__close"
+              aria-label={translate(locale, "settings.design.closeEditor")}
+              onClick={closeEditor}
+            >
+              ×
+            </button>
           </header>
           <form
             className="settings-model-dialog__form"
@@ -514,9 +735,17 @@ function ModelsSettings() {
           >
             <div className="settings-model-dialog__scroll">
               <label className="settings-model-dialog__field">
-                <span>{t("settings.models.provider")} <small>{t("settings.models.provider.help")}</small></span>
-                <select value={draft.provider} onChange={(event) => changeProvider(event.target.value)}>
-                  <option value="custom">✧ {t("settings.models.custom")}</option>
+                <span>
+                  {t("settings.models.provider")}{" "}
+                  <small>{t("settings.models.provider.help")}</small>
+                </span>
+                <select
+                  value={draft.provider}
+                  onChange={(event) => changeProvider(event.target.value)}
+                >
+                  <option value="custom">
+                    ✧ {t("settings.models.custom")}
+                  </option>
                   <option value="openai">OpenAI</option>
                   <option value="openrouter">OpenRouter</option>
                   <option value="deepseek">DeepSeek</option>
@@ -532,30 +761,49 @@ function ModelsSettings() {
                   type="url"
                   value={draft.baseUrl}
                   onChange={(event) => setField("baseUrl", event.target.value)}
-                  placeholder={draft.provider === "server" ? t("settings.models.endpoint.serverPh") : t("settings.models.endpoint.ph")}
+                  placeholder={
+                    draft.provider === "server"
+                      ? t("settings.models.endpoint.serverPh")
+                      : t("settings.models.endpoint.ph")
+                  }
                   disabled={draft.provider !== "custom"}
                   autoComplete="url"
                   spellCheck={false}
                 />
               </label>
               <div className="settings-model-dialog__key-row">
-                <label className="settings-model-dialog__field">
+                <label
+                  className="settings-model-dialog__field"
+                  htmlFor="settings-model-api-key"
+                >
                   <span>API Key</span>
                   <span className="settings-model-dialog__key-control">
                     <input
+                      id="settings-model-api-key"
+                      aria-label="API Key"
                       type={showKey ? "text" : "password"}
                       autoComplete="off"
                       spellCheck={false}
                       value={draft.apiKey}
-                      onChange={(event) => setField("apiKey", event.target.value)}
-                      placeholder={draft.provider === "server" ? t("settings.models.key.serverPh") : t("settings.models.key.ph")}
+                      onChange={(event) =>
+                        setField("apiKey", event.target.value)
+                      }
+                      placeholder={
+                        draft.provider === "server"
+                          ? t("settings.models.key.serverPh")
+                          : t("settings.models.key.ph")
+                      }
                       disabled={draft.provider === "server"}
                       required={draft.provider !== "server"}
                     />
                     <button
                       type="button"
                       className="settings-model-dialog__key-toggle"
-                      aria-label={t(showKey ? "settings.models.key.hide" : "settings.models.key.show")}
+                      aria-label={t(
+                        showKey
+                          ? "settings.models.key.hide"
+                          : "settings.models.key.show",
+                      )}
                       onClick={() => setShowKey((value) => !value)}
                       disabled={draft.provider === "server"}
                     >
@@ -563,11 +811,25 @@ function ModelsSettings() {
                     </button>
                   </span>
                 </label>
-                <button type="button" className="settings-model-dialog__test" onClick={() => void testConnection()} disabled={!canTest}>
-                  {testing ? t("settings.models.testing") : t("settings.models.test")}
+                <button
+                  type="button"
+                  className="settings-model-dialog__test"
+                  onClick={() => void testConnection()}
+                  disabled={!canTest}
+                >
+                  {testing
+                    ? t("settings.models.testing")
+                    : t("settings.models.test")}
                 </button>
               </div>
-              {connection && <p className={`settings-model-dialog__connection ${connection.ok ? "is-ok" : "is-error"}`} role={connection.ok ? "status" : "alert"}>{connection.message}</p>}
+              {connection && (
+                <p
+                  className={`settings-model-dialog__connection ${connection.ok ? "is-ok" : "is-error"}`}
+                  role={connection.ok ? "status" : "alert"}
+                >
+                  {connection.message}
+                </p>
+              )}
               <label className="settings-model-dialog__field">
                 <span>{t("settings.models.id")}</span>
                 <input
@@ -582,64 +844,97 @@ function ModelsSettings() {
                   autoCapitalize="off"
                 />
               </label>
-              <fieldset className="settings-model-dialog__advanced">
-                <legend>{t("settings.models.advanced")}</legend>
-                <div className="settings-model-dialog__checks">
-                  {([
-                    ["tools", "settings.models.feature.tools"],
-                    ["images", "settings.models.feature.images"],
-                    ["reasoning", "settings.models.feature.reasoning"],
-                    ["customProtocol", "settings.models.feature.protocol"],
-                  ] as const).map(([key, label]) => (
-                    <label key={key}>
-                      <input
-                        type="checkbox"
-                        checked={draft.capabilities[key]}
-                        onChange={(event) => {
-                          setDraft((current) => ({ ...current, capabilities: { ...current.capabilities, [key]: event.target.checked } }));
-                        }}
-                      />
-                      {t(label)}
-                    </label>
-                  ))}
+              <details className="settings-model-advanced">
+                <summary>
+                  {translate(locale, "settings.design.advanced")}
+                </summary>
+                <fieldset className="settings-model-dialog__advanced">
+                  <legend>{t("settings.models.advanced")}</legend>
+                  <div className="settings-model-dialog__checks">
+                    {(
+                      [
+                        ["tools", "settings.models.feature.tools"],
+                        ["images", "settings.models.feature.images"],
+                        ["reasoning", "settings.models.feature.reasoning"],
+                        ["customProtocol", "settings.models.feature.protocol"],
+                      ] as const
+                    ).map(([key, label]) => (
+                      <label key={key}>
+                        <input
+                          type="checkbox"
+                          checked={draft.capabilities[key]}
+                          onChange={(event) => {
+                            setDraft((current) => ({
+                              ...current,
+                              capabilities: {
+                                ...current.capabilities,
+                                [key]: event.target.checked,
+                              },
+                            }));
+                          }}
+                        />
+                        {t(label)}
+                      </label>
+                    ))}
+                  </div>
+                  <p>{t("settings.models.capability.note")}</p>
+                </fieldset>
+                <div className="settings-model-dialog__token-row">
+                  <label className="settings-model-dialog__field">
+                    <span>{t("settings.models.tokens.input")}</span>
+                    <input
+                      type="number"
+                      min="1"
+                      max="1000000"
+                      step="1"
+                      value={draft.inputTokens}
+                      onChange={(event) =>
+                        setField("inputTokens", event.target.value)
+                      }
+                      placeholder={t("settings.models.tokens.ph")}
+                      inputMode="numeric"
+                    />
+                  </label>
+                  <label className="settings-model-dialog__field">
+                    <span>{t("settings.models.tokens.output")}</span>
+                    <input
+                      type="number"
+                      min="1"
+                      max="128000"
+                      step="1"
+                      value={draft.outputTokens}
+                      onChange={(event) =>
+                        setField("outputTokens", event.target.value)
+                      }
+                      placeholder={t("settings.models.tokens.ph")}
+                      inputMode="numeric"
+                    />
+                  </label>
                 </div>
-                <p>{t("settings.models.capability.note")}</p>
-              </fieldset>
-              <div className="settings-model-dialog__token-row">
-                <label className="settings-model-dialog__field">
-                  <span>{t("settings.models.tokens.input")}</span>
-                  <input
-                    type="number"
-                    min="1"
-                    max="1000000"
-                    step="1"
-                    value={draft.inputTokens}
-                    onChange={(event) => setField("inputTokens", event.target.value)}
-                    placeholder={t("settings.models.tokens.ph")}
-                    inputMode="numeric"
-                  />
-                </label>
-                <label className="settings-model-dialog__field">
-                  <span>{t("settings.models.tokens.output")}</span>
-                  <input
-                    type="number"
-                    min="1"
-                    max="128000"
-                    step="1"
-                    value={draft.outputTokens}
-                    onChange={(event) => setField("outputTokens", event.target.value)}
-                    placeholder={t("settings.models.tokens.ph")}
-                    inputMode="numeric"
-                  />
-                </label>
-              </div>
-              <p className="settings-model-dialog__note">{t("settings.models.tokens.note")}</p>
-              <p className="settings-model-dialog__note">{t("settings.models.note")}</p>
-              {error && <p className="settings-error" role="alert">{error}</p>}
+                <p className="settings-model-dialog__note">
+                  {t("settings.models.tokens.note")}
+                </p>
+              </details>
+              <p className="settings-model-dialog__note">
+                {t("settings.models.note")}
+              </p>
+              {error && (
+                <p className="settings-error" role="alert">
+                  {error}
+                </p>
+              )}
             </div>
             <footer className="settings-model-dialog__footer">
-              <button type="button" className="settings-button" onClick={closeEditor}>{t("settings.models.cancel")}</button>
-              <button type="submit" className="settings-button is-primary">{t("settings.models.save")}</button>
+              <button
+                type="button"
+                className="settings-button"
+                onClick={closeEditor}
+              >
+                {t("settings.models.cancel")}
+              </button>
+              <button type="submit" className="settings-button is-primary">
+                {t("settings.models.save")}
+              </button>
             </footer>
           </form>
         </div>
@@ -648,172 +943,10 @@ function ModelsSettings() {
   );
 }
 
-const descriptionKeys: Partial<Record<SettingsSection, string>> = {
-  profile: AUTH_GATE_ENABLED
-    ? "settings.desc.profile.gate"
-    : "settings.desc.profile.open",
-  memory: "settings.desc.memory",
-  agents: "settings.desc.agents",
-  assistant: "settings.desc.assistant",
-  apps: "settings.desc.apps",
-  security: "settings.desc.security",
-};
-function SectionInfoCard({
-  section,
-  name,
-  cardTitle,
-}: {
-  section: SettingsSection;
-  name: string;
-  cardTitle?: string;
-}) {
-  const locale = usePreferences((state) => state.locale);
-  const t = (key: string) => translate(locale, key);
-  const routes: Partial<
-    Record<SettingsSection, { labelKey: string; path: string }>
-  > = {
-    profile: { labelKey: "settings.link.profile", path: "/profile" },
-    agents: { labelKey: "settings.link.experts", path: "/experts" },
-    assistant: { labelKey: "settings.link.plugins", path: "/plugins" },
-    apps: { labelKey: "settings.link.connectors", path: "/connectors" },
-    memory: { labelKey: "settings.link.profile", path: "/profile" },
-  };
-  const link = routes[section];
-  return (
-    <section className="settings-card settings-info">
-      <h2>{cardTitle ?? name}</h2>
-      <p>{descriptionKeys[section] ? t(descriptionKeys[section]!) : ""}</p>
-      {section === "profile" && (
-        <button
-          className="settings-button"
-          onClick={() => {
-            closeSettings();
-            requestAnimationFrame(() =>
-              window.dispatchEvent(new Event("designbuddy:open-server")),
-            );
-          }}
-        >
-          {SERVER_PANEL_TITLE}
-        </button>
-      )}
-      {link && (
-        <button
-          className="settings-button"
-          onClick={() => {
-            closeSettings();
-            navigateTo(link.path);
-          }}
-        >
-          {t(link.labelKey)}
-        </button>
-      )}
-    </section>
-  );
-}
-
-function OtherSettings({
-  section,
-  name,
-}: {
-  section: SettingsSection;
-  name: string;
-}) {
-  return (
-    <section aria-labelledby={`settings-${section}-title`}>
-      <h2 className="settings-section-label" id={`settings-${section}-title`}>
-        {name}
-      </h2>
-      <SectionInfoCard section={section} name={name} />
-    </section>
-  );
-}
-
-/**
- * 设置 → 个人主页：把套餐与额度面板直接放进设置窗口。
- *
- * 版式来自 2026-10-18 提供的参考截图（顶部渐变横幅、钱包余额卡、使用限额重置卡），
- * 但所有数字都是真实状态：没有接入支付、钱包、自动充值或云端额度服务，
- * 所以余额固定为 $0.00、开关禁用，并把「未接入」写在卡片脚注里，不伪造账单。
- */
-function ProfilePlanSettings({ name }: { name: string }) {
-  const [upgradeOpen, setUpgradeOpen] = useState(false);
-  return (
-    <section aria-labelledby="settings-profile-title">
-      <h2 className="settings-section-label" id="settings-profile-title">
-        {name}
-      </h2>
-
-      <div className="settings-plan-banner" role="region" aria-label="当前套餐">
-        <div className="settings-plan-banner-art" aria-hidden="true" />
-        <div className="settings-plan-banner-copy">
-          <span className="settings-plan-free">Free</span>
-          <p>订阅状态：免费</p>
-        </div>
-        <button
-          type="button"
-          className="settings-plan-upgrade"
-          onClick={() => setUpgradeOpen(true)}
-        >
-          升级
-        </button>
-      </div>
-
-      <div className="settings-plan-heading">
-        <h3>钱包余额</h3>
-        <p>Design Plan 额度用尽后，自动使用此余额按量付费。</p>
-      </div>
-      <div className="settings-plan-card" role="region" aria-label="钱包余额">
-        <div className="settings-plan-balance">
-          <strong aria-label="当前可用余额 0.00，支付与钱包服务未接入">$0.00</strong>
-          <span>当前可用余额</span>
-        </div>
-        <div className="settings-plan-divider" />
-        <div className="settings-plan-row">
-          <div>
-            <strong>自动充值</strong>
-            <p>升级会员后即可使用自动充值。</p>
-          </div>
-          <button
-            type="button"
-            className="settings-plan-switch"
-            role="switch"
-            aria-checked={false}
-            aria-label="自动充值"
-            disabled
-            title="自动充值服务尚未接入"
-          >
-            <span />
-          </button>
-        </div>
-        <p className="settings-plan-foot">
-          支付、钱包与自动充值服务尚未接入：$0.00 表示现在没有可用余额，也不会产生扣费。
-        </p>
-      </div>
-
-      <div className="settings-plan-heading">
-        <h3>使用限额重置</h3>
-      </div>
-      <div className="settings-plan-card is-soft" role="region" aria-label="使用限额重置">
-        <div className="settings-plan-quota">
-          <span>可用</span>
-          <strong>0</strong>
-        </div>
-        <div className="settings-plan-divider" />
-        <p className="settings-plan-empty">暂无可用重置额度</p>
-        <p className="settings-plan-foot">
-          没有已连接的云端额度服务；这个数字不会限制本机项目或本地数据。
-        </p>
-      </div>
-
-      <SectionInfoCard section="profile" name={name} cardTitle="账号与后台连接" />
-
-      <PlanUpgradeDialog open={upgradeOpen} onClose={() => setUpgradeOpen(false)} />
-    </section>
-  );
-}
-
 export function SettingsWindow() {
   const { open, section } = useSettingsWindow();
+  const designT = useSettingsCopy();
+  const sync = usePreferenceSync();
   const fontSize = usePreferences((state) => state.fontSize);
   const locale = usePreferences((state) => state.locale);
   const t = (key: string, params?: Record<string, string | number>) =>
@@ -871,13 +1004,53 @@ export function SettingsWindow() {
   return (
     <dialog
       ref={dialog}
-      className="settings-window"
+      className="settings-window settings-redesign"
       aria-label={t("settings.title")}
       onKeyDown={(event) => {
-        if (event.key !== "Tab") return;
+        const target = event.target as HTMLElement;
+        if (
+          target.getAttribute("role") === "radio" &&
+          [
+            "ArrowLeft",
+            "ArrowRight",
+            "ArrowUp",
+            "ArrowDown",
+            "Home",
+            "End",
+          ].includes(event.key)
+        ) {
+          const options = Array.from(
+            target
+              .closest('[role="radiogroup"]')
+              ?.querySelectorAll<HTMLButtonElement>('[role="radio"]') || [],
+          );
+          if (options.length) {
+            event.preventDefault();
+            const backwards =
+              event.key === "ArrowLeft" || event.key === "ArrowUp";
+            const index =
+              event.key === "Home"
+                ? 0
+                : event.key === "End"
+                  ? options.length - 1
+                  : (options.indexOf(target as HTMLButtonElement) +
+                      (backwards ? -1 : 1) +
+                      options.length) %
+                    options.length;
+            options[index].focus();
+            options[index].click();
+          }
+          return;
+        }
+        if (
+          event.key !== "Tab" ||
+          (event.target as HTMLElement).closest("dialog") !==
+            event.currentTarget
+        )
+          return;
         const focusable = Array.from(
           event.currentTarget.querySelectorAll<HTMLElement>(
-            "button:not(:disabled), input:not(:disabled), select:not(:disabled), summary, a[href], [tabindex='0']",
+            "button:not(:disabled), input:not(:disabled), textarea:not(:disabled), select:not(:disabled), summary, a[href], [tabindex='0']",
           ),
         ).filter((element) => element.offsetParent !== null);
         const first = focusable[0],
@@ -914,9 +1087,13 @@ export function SettingsWindow() {
             aria-label={t("settings.close")}
             onClick={closeSettings}
           >
-            <span />
+            <span aria-hidden="true">×</span>
           </button>
           <aside className="settings-sidebar" aria-label={t("settings.nav")}>
+            <div className="settings-sidebar-brand">
+              <HomeIcon name="settings" size={18} />
+              <span>{t("settings.title")}</span>
+            </div>
             <label className="settings-search">
               <HomeIcon name="search" size={15} />
               <input
@@ -926,7 +1103,10 @@ export function SettingsWindow() {
                 onChange={(event) => setQuery(event.target.value)}
               />
               {query && (
-                <button aria-label={t("settings.search.clear")} onClick={() => setQuery("")}>
+                <button
+                  aria-label={t("settings.search.clear")}
+                  onClick={() => setQuery("")}
+                >
                   ×
                 </button>
               )}
@@ -951,7 +1131,9 @@ export function SettingsWindow() {
                 </section>
               ))}
               {shown.length === 0 && (
-                <p className="settings-search-empty">{t("settings.search.empty")}</p>
+                <p className="settings-search-empty">
+                  {t("settings.search.empty")}
+                </p>
               )}
             </nav>
           </aside>
@@ -960,31 +1142,69 @@ export function SettingsWindow() {
             className="settings-content"
             aria-label={t("settings.contentTitle", { name: t(active.nameKey) })}
           >
-            {error && (
-              <p className="settings-error" role="alert">
-                {error}
-              </p>
-            )}
-            {section === "general" ? (
-              <GeneralSettings onError={setError} />
-            ) : section === "models" ? (
-              <ModelsSettings />
-            ) : section === "appearance" ? (
-              <AppearanceSettings onError={setError} />
-            ) : section === "shortcuts" ? (
-              <ShortcutsSettings onError={setError} />
-            ) : section === "personalization" ? (
-              <PersonalSettings onError={setError} />
-            ) : section === "devices" ? (
-              <DevicesSettings onError={setError} />
-            ) : section === "data" ? (
-              <DataSettings onError={setError} />
-            ) : section === "plan" ? (
-              <PlanSettings />
-            ) : section === "profile" ? (
-              <ProfilePlanSettings name={t(active.nameKey)} />
-            ) : (
-              <OtherSettings section={section} name={t(active.nameKey)} />
+            <header className="settings-page-header">
+              <span className="settings-page-icon">
+                <HomeIcon name={active.icon} size={23} />
+              </span>
+              <div>
+                <h1>{t(active.nameKey)}</h1>
+                <p>{designT(`intro.${section}`)}</p>
+              </div>
+            </header>
+            <div
+              className="settings-pane-body"
+              data-section={section}
+              key={section}
+            >
+              {error && (
+                <p className="settings-error" role="alert">
+                  {error}
+                </p>
+              )}
+              {section === "general" ? (
+                <GeneralSettings onError={setError} />
+              ) : section === "models" ? (
+                <ModelsSettings />
+              ) : section === "appearance" ? (
+                <AppearanceSettings onError={setError} />
+              ) : section === "shortcuts" ? (
+                <ShortcutsSettings onError={setError} />
+              ) : section === "personalization" ? (
+                <PersonalSettings onError={setError} />
+              ) : section === "devices" ? (
+                <DevicesSettings onError={setError} />
+              ) : section === "data" ? (
+                <DataSettings onError={setError} />
+              ) : section === "plan" ? (
+                <PlanSettings />
+              ) : section === "profile" ? (
+                <ProfileSettings />
+              ) : section === "memory" ? (
+                <MemorySettings />
+              ) : section === "agents" ? (
+                <AgentsSettings />
+              ) : section === "assistant" ? (
+                <AssistantSettings />
+              ) : section === "apps" ? (
+                <AppsSettings />
+              ) : (
+                <SecuritySettings />
+              )}
+            </div>
+            {["general", "appearance", "shortcuts", "personalization"].includes(
+              section,
+            ) && (
+              <footer
+                className="settings-sync-footer"
+                title={sync.error || undefined}
+                aria-live="polite"
+              >
+                <HomeIcon
+                  name={sync.status === "offline" ? "help" : "checkCircle"}
+                  size={14}
+                />
+                {designT(`sync.${sync.status}`)}
+              </footer>
             )}
           </main>
         </div>
