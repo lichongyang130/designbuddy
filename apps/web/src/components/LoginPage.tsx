@@ -2,27 +2,13 @@ import { useEffect, useState, type FormEvent } from "react";
 import {
   fetchOAuthProviders,
   loginWithPassword,
+  registerWithPassword,
   sanitizeNext,
   startOAuth,
   type OAuthProvider,
 } from "../../../../frontend/workspace/api/auth";
-import "./auth.css";
-
-const providerNames: Record<OAuthProvider, string> = {
-  google: "Google",
-  github: "GitHub",
-};
-
-const oauthErrors: Record<string, string> = {
-  denied: "你取消了第三方授权，可以重试或使用账号密码登录。",
-  not_configured: "服务器尚未配置第三方登录，请使用账号密码登录。",
-  invalid_state: "登录会话已过期，请重新点击登录按钮。",
-  missing_code: "没有收到授权码，请重试。",
-  rate_limited: "操作过于频繁，请一分钟后重试。",
-  disabled: "该账号已被管理员停用，请联系管理员。",
-  exchange_failed: "第三方登录失败，请重试或使用账号密码登录。",
-};
-
+import ImmersiveShell from "./welcome/ImmersiveShell";
+import { useWelcomeCopy } from "./welcome/copy";
 function GoogleGlyph() {
   return (
     <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
@@ -61,7 +47,7 @@ function GitHubGlyph() {
 }
 
 export function OAuthButtons({
-  mode,
+  mode: _mode,
   next,
   onNotice,
 }: {
@@ -69,188 +55,196 @@ export function OAuthButtons({
   next: string;
   onNotice: (message: string) => void;
 }) {
+  const c = useWelcomeCopy();
   const [providers, setProviders] = useState<Record<
     OAuthProvider,
     boolean
   > | null>(null);
+  const [failed, setFailed] = useState(false);
+  const [attempt, setAttempt] = useState(0);
   useEffect(() => {
     let cancelled = false;
+    setFailed(false);
+    setProviders(null);
     fetchOAuthProviders()
-      .then((result) => {
-        if (!cancelled) setProviders(result);
+      .then((p) => {
+        if (!cancelled) setProviders(p);
       })
       .catch(() => {
-        if (!cancelled)
-          setProviders({ google: false, github: false });
+        if (!cancelled) setFailed(true);
       });
     return () => {
       cancelled = true;
     };
-  }, []);
-  const verb = mode === "login" ? "登录" : "注册";
-  function attempt(provider: OAuthProvider) {
+  }, [attempt]);
+  function signIn(provider: OAuthProvider) {
+    if (failed) {
+      onNotice(c.connection);
+      return;
+    }
     if (!providers) {
-      onNotice("正在加载登录选项，请稍候再试。");
+      onNotice(c.loading);
       return;
     }
     if (!providers[provider]) {
-      onNotice(
-        `服务器尚未配置 ${providerNames[provider]} ${verb}，请使用账号密码${verb}，或联系管理员配置。`,
-      );
+      onNotice(c.unavailable);
       return;
     }
     onNotice("");
-    startOAuth(provider, next);
+    startOAuth(provider, sanitizeNext(next));
   }
   return (
-    <div className="auth-oauth">
-      <button
-        type="button"
-        className={`auth-oauth-btn${providers && !providers.google ? " is-unconfigured" : ""}`}
-        onClick={() => attempt("google")}
-      >
-        <GoogleGlyph />
-        <span>使用 Google {verb}</span>
-        {providers && !providers.google && (
-          <small>未配置</small>
-        )}
-      </button>
-      <button
-        type="button"
-        className={`auth-oauth-btn${providers && !providers.github ? " is-unconfigured" : ""}`}
-        onClick={() => attempt("github")}
-      >
-        <GitHubGlyph />
-        <span>使用 GitHub {verb}</span>
-        {providers && !providers.github && (
-          <small>未配置</small>
-        )}
-      </button>
+    <div className="welcome-oauth">
+      {(["google", "github"] as const).map((provider) => (
+        <button type="button" key={provider} onClick={() => signIn(provider)}>
+          {provider === "google" ? <GoogleGlyph /> : <GitHubGlyph />}
+          <span>{provider === "google" ? c.google : c.github}</span>
+          {providers && !providers[provider] && <small>{c.unconfigured}</small>}
+        </button>
+      ))}
+      {failed && (
+        <button
+          type="button"
+          onClick={() => {
+            setAttempt((a) => a + 1);
+            onNotice("");
+          }}
+        >
+          {c.connection} · {c.retry}
+        </button>
+      )}
     </div>
   );
 }
 
-export function AuthShowcase() {
-  return (
-    <div className="auth-showcase">
-      <div className="auth-showcase-brand">
-        <strong>DesignBuddy</strong>
-        <span>设计 AI 工作台</span>
-      </div>
-      <h2>
-        把想法变成
-        <br />
-        可以交付的作品
-      </h2>
-      <ul>
-        <li>
-          <strong>文档 / 幻灯片 / 数据看板</strong>
-          <span>一句话描述需求，自动生成初稿并支持反复修改</span>
-        </li>
-        <li>
-          <strong>专家与技能市场</strong>
-          <span>按场景匹配专家角色与可执行技能，流程透明可追溯</span>
-        </li>
-        <li>
-          <strong>本地优先，数据可控</strong>
-          <span>草稿默认保存在本机，上传服务器的每一步都由你确认</span>
-        </li>
-      </ul>
-      <p className="auth-showcase-foot">登录后即可创建任务、管理工作空间与作品库。</p>
-    </div>
-  );
-}
-
-export default function LoginPage({ next: nextProp }: { next?: string } = {}) {
-  const query = new URLSearchParams(window.location.search);
-  const next = sanitizeNext(nextProp ?? query.get("next"));
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState(
-    query.get("oauth") === "error"
-      ? oauthErrors[query.get("reason") || ""] ||
-          "第三方登录失败，请重试或使用账号密码登录。"
-      : "",
-  );
-
-  async function submit(event: FormEvent) {
-    event.preventDefault();
-    if (busy) return;
+export function AuthFormPage({
+  mode = "login",
+  next: nextProp,
+}: {
+  mode?: "login" | "register";
+  next?: string;
+}) {
+  const c = useWelcomeCopy(),
+    isRegister = mode === "register";
+  const query = new URLSearchParams(window.location.search),
+    next = sanitizeNext(nextProp ?? query.get("next"));
+  const [username, setUsername] = useState(""),
+    [password, setPassword] = useState(""),
+    [confirm, setConfirm] = useState("");
+  const [busy, setBusy] = useState(false),
+    [error, setError] = useState("");
+  const mismatch = isRegister && confirm.length > 0 && confirm !== password;
+  const valid =
+    /^[a-zA-Z0-9_-]{3,40}$/.test(username.trim()) &&
+    password.length >= 10 &&
+    password.length <= 128 &&
+    (!isRegister || confirm === password);
+  async function submit(e: FormEvent) {
+    e.preventDefault();
+    if (busy || !valid) return;
     setBusy(true);
     setError("");
     try {
-      await loginWithPassword(username.trim(), password);
+      if (isRegister)
+        await registerWithPassword(username.trim().toLowerCase(), password);
+      else await loginWithPassword(username.trim(), password);
       window.location.assign(next);
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "登录失败，请重试。");
+      setError(cause instanceof Error ? cause.message : c.failed);
       setBusy(false);
     }
   }
-
   return (
-    <div className="auth-page">
-      <AuthShowcase />
-      <main className="auth-panel">
-        <div className="auth-card">
-          <h1>欢迎回来</h1>
-          <p className="auth-sub">登录 DesignBuddy，继续你的工作</p>
-          <OAuthButtons mode="login" next={next} onNotice={setError} />
-          <div className="auth-divider" aria-hidden="true">
-            <span>或使用账号密码</span>
-          </div>
-          <form className="auth-form" onSubmit={submit}>
-            <label className="auth-field">
-              <span>用户名</span>
-              <input
-                type="text"
-                name="username"
-                autoComplete="username"
-                placeholder="3–40 位字母 / 数字 / 下划线"
-                value={username}
-                onChange={(event) => setUsername(event.target.value)}
-                required
-                minLength={3}
-                maxLength={40}
-              />
-            </label>
-            <label className="auth-field">
-              <span>密码</span>
-              <input
-                type="password"
-                name="password"
-                autoComplete="current-password"
-                placeholder="10–128 位密码"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                required
-                minLength={10}
-                maxLength={128}
-              />
-            </label>
-            {error && (
-              <p className="auth-error" role="alert">
-                {error}
-              </p>
-            )}
-            <button
-              type="submit"
-              className="auth-submit"
-              disabled={busy || username.trim().length < 3 || password.length < 10}
-            >
-              {busy ? "正在登录…" : "登录"}
-            </button>
-          </form>
-          <p className="auth-switch">
-            还没有账号？
-            <a href={`/register?next=${encodeURIComponent(next)}`}>立即注册</a>
+    <ImmersiveShell>
+      <a
+        className="welcome-back"
+        href={`/welcome?next=${encodeURIComponent(next)}`}
+      >
+        ← {c.back}
+      </a>
+      <h1 className="welcome-form-title">
+        {isRegister ? c.registerTitle : c.loginTitle}
+      </h1>
+      <p className="welcome-subtitle">
+        {isRegister ? c.registerSub : c.loginSub}
+      </p>
+      <OAuthButtons mode={mode} next={next} onNotice={setError} />
+      <div className="welcome-divider">{c.divider}</div>
+      <form className="welcome-form" onSubmit={submit}>
+        <label>
+          {c.username}
+          <input
+            name="username"
+            autoComplete="username"
+            placeholder={c.usernameHint}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+            minLength={3}
+            maxLength={40}
+            pattern="[a-zA-Z0-9_-]{3,40}"
+          />
+        </label>
+        <label>
+          {c.password}
+          <input
+            type="password"
+            name="password"
+            autoComplete={isRegister ? "new-password" : "current-password"}
+            placeholder={c.passwordHint}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            minLength={10}
+            maxLength={128}
+          />
+        </label>
+        {isRegister && (
+          <label>
+            {c.confirm}
+            <input
+              type="password"
+              name="confirm"
+              autoComplete="new-password"
+              value={confirm}
+              onChange={(e) => setConfirm(e.target.value)}
+              required
+              minLength={10}
+              maxLength={128}
+              aria-invalid={mismatch}
+            />
+          </label>
+        )}
+        {mismatch && (
+          <p className="welcome-notice" role="alert">
+            {c.mismatch}
           </p>
-          <p className="auth-terms">
-            继续即表示你同意我们的 <a href="#terms">服务条款</a> 和{" "}
-            <a href="#privacy">隐私政策</a>
+        )}
+        {(error || query.get("oauth") === "error") && (
+          <p className="welcome-notice" role="alert">
+            {error || c.oauthError}
           </p>
-        </div>
-      </main>
-    </div>
+        )}
+        <button
+          type="submit"
+          className="welcome-primary"
+          disabled={busy || !valid}
+        >
+          {busy ? c.busy : isRegister ? c.register : c.login}
+          <span aria-hidden="true">→</span>
+        </button>
+      </form>
+      <p className="welcome-switch">
+        {isRegister ? c.hasAccount : c.newAccount}{" "}
+        <a
+          href={`/${isRegister ? "login" : "register"}?next=${encodeURIComponent(next)}`}
+        >
+          {isRegister ? c.toLogin : c.toRegister}
+        </a>
+      </p>
+    </ImmersiveShell>
   );
+}
+export default function LoginPage({ next }: { next?: string } = {}) {
+  return <AuthFormPage next={next} />;
 }

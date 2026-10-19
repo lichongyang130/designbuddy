@@ -15,6 +15,7 @@ export default defineConfig({
     host: "0.0.0.0",
     allowedHosts: [
       ".e2b.app",
+      ".arena.site",
       ...(env.DESIGNBUDDY_PUBLIC_ORIGIN
         ? [new URL(env.DESIGNBUDDY_PUBLIC_ORIGIN).hostname]
         : []),

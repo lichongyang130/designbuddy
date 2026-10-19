@@ -1,3 +1,5 @@
+import WelcomeTemplate from "./samples/WelcomeTemplate";
+import { isWelcomeSample, welcomeTemplates, welcomeBase } from "./welcomeTemplates";
 import { MorrowCover } from "./samples/morrow/MorrowCover";
 import { TideCover } from "./samples/tide/TideCover";
 import { DaylightCover } from "./samples/daylight/DaylightCover";
@@ -82,6 +84,8 @@ const workCategories: { label: string; icon?: HomeIconName }[] = [
 ];
 
 function Preview({ id }: { id: SampleId }) {
+  const welcome=welcomeTemplates.find(t=>t.id===id);
+  if(welcome)return <div className="sample-preview" aria-hidden="true"><img src={`${welcomeBase}/thumb/${welcome.number}.webp?rev=2-final`} alt="" loading="lazy" style={{width:'100%',height:'100%',objectFit:'contain',background:'#eeeee7'}}/></div>;
   return (
     <div className={`sample-preview preview-${id}`} aria-hidden="true">
       {id === "word-pro" ? (<img src={`${import.meta.env.BASE_URL}word-examples/word-pro/business-report/pages/02.jpg`} alt="" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"top"}} loading="lazy" />) : id === "content-director" ? (<img src={`${import.meta.env.BASE_URL}presentation-examples/content-director/slides/07.jpg`} alt="" style={{width:"100%",height:"100%",objectFit:"cover"}} loading="lazy" />) : id === "visual-directions" ? (<img src={`${import.meta.env.BASE_URL}presentation-examples/visual-directions/brand-editorial/cover.jpg`} alt="" style={{width:"100%",height:"100%",objectFit:"cover"}} loading="lazy" />) : id === "leader-decision" ? (
@@ -173,7 +177,7 @@ export default function InspirationPage({ pathname }: { pathname: string }) {
     "live-form": LiveForm,
     "live-status": LiveStatus,
   };
-  const Viewer = sample ? viewers[sample.id] : null;
+  const Viewer = sample ? (isWelcomeSample(sample.id) ? WelcomeTemplate : viewers[sample.id as keyof typeof viewers]) : null;
   const visible = samples.filter(
     (x) =>
       (category === "全部" || category === x.category) &&

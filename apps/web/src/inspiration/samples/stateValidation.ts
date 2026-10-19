@@ -62,7 +62,7 @@ export function restoreSample<T extends object>(
       } else
         result[key] = value.slice(
           0,
-          key === "message" ? 1000 : key === "reservation" ? 6000 : 120,
+          sample.startsWith("welcome-") && key === "notes" ? 2000 : key === "message" ? 1000 : key === "reservation" ? 6000 : 120,
         );
     }
     if (typeof fallback === "number") {

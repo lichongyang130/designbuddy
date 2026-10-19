@@ -1,3 +1,4 @@
+import { welcomeTemplates, type WelcomeSampleId } from "../welcomeTemplates";
 import { TemplateCloudControls, useTemplateBinding } from "../TemplateCloud";
 import { useEffect, useState } from "react";
 import { restoreSample } from "./stateValidation";
@@ -56,6 +57,7 @@ export const museumPhotos = pack("museum"),
   handbookPhotos = pack("handbook"),
   naturePhotos = pack("nature");
 export type SampleId =
+  | WelcomeSampleId
   | "leader-decision"
   | "visual-directions"
   | "content-director"
@@ -95,6 +97,7 @@ export const samples: {
   format: string;
   photos: Photo[];
 }[] = [
+  ...welcomeTemplates.map(t=>({id:t.id,category:"图片",title:`欢迎页 ${t.number} · ${t.name}`,description:"欢迎页设计 / 独立 AI 主视觉 / 完整界面",format:"PNG · 1440 × 1000",photos:[]})),
   {id:"word-pro",category:"文档",title:"Word专业排版 · 真实分页与有限修复",description:"商业报告 / 项目方案 · 同源PDF / 原生表格 / 修复证据",format:"DOCX / PDF",photos:[]},
   {id:"content-director",category:"幻灯片",title:"内容导演 · 让表达由证据决定",description:"逐页任务 / 整套节奏 / 原生结构与流程 · 同内容对照",format:"PPTX / PDF",photos:[]},
   {id:"visual-directions",category:"幻灯片",title:"视觉叙事 · 三种艺术方向",description:"咨询极简 / 科技发布 / 品牌图文 · 同内容真实导出",format:"PPTX / PDF",photos:[]},

@@ -1,0 +1,131 @@
+{
+  "revision": 2,
+  "date": "2026-10-19",
+  "requested": 15,
+  "generated": 15,
+  "pending": 0,
+  "limit": "Previous turn produced 10 artworks; this turn produced the remaining 5. All 15 now exist.",
+  "artworks": [
+    {
+      "id": 1,
+      "source": "image-generation-tool, original for this design",
+      "generationBatch": 1,
+      "original": "assets/art-01.png",
+      "web": "assets/art-01.webp",
+      "sha256": "af5bc225e11f7125eb17390d69c0cb7707b22ceed520cd0f37ea2bd5ab583f2f"
+    },
+    {
+      "id": 2,
+      "source": "image-generation-tool, original for this design",
+      "generationBatch": 1,
+      "original": "assets/art-02.png",
+      "web": "assets/art-02.webp",
+      "sha256": "b9fa880912cc558aad9671007a99083ad1eb5b7885e92c995bd6c1bfd3350c77"
+    },
+    {
+      "id": 3,
+      "source": "image-generation-tool, original for this design",
+      "generationBatch": 1,
+      "original": "assets/art-03.png",
+      "web": "assets/art-03.webp",
+      "sha256": "86cc56572e60c1388a1a39b7656e14426c3139d961e3fe224c1b247643ed286b"
+    },
+    {
+      "id": 4,
+      "source": "image-generation-tool, original for this design",
+      "generationBatch": 1,
+      "original": "assets/art-04.png",
+      "web": "assets/art-04.webp",
+      "sha256": "c4f814dfa6e05637180b35e341f8020bc144cf97c2d12323662b4c40cdf6b95c"
+    },
+    {
+      "id": 5,
+      "source": "image-generation-tool, original for this design",
+      "generationBatch": 1,
+      "original": "assets/art-05.png",
+      "web": "assets/art-05.webp",
+      "sha256": "632b8b366b1442ea4a4892c54b12922b42ef8223b60f475160113c8b84b0873b"
+    },
+    {
+      "id": 6,
+      "source": "image-generation-tool, original for this design",
+      "generationBatch": 1,
+      "original": "assets/art-06.png",
+      "web": "assets/art-06.webp",
+      "sha256": "7586d4274421e571b73d12f11e81c0296122789ec25ad54f44eb23c41f26d41d"
+    },
+    {
+      "id": 7,
+      "source": "image-generation-tool, original for this design",
+      "generationBatch": 1,
+      "original": "assets/art-07.png",
+      "web": "assets/art-07.webp",
+      "sha256": "26129e9039dc49a18c2885824b2ca805c53f65c2d820b19303d811dec5b1cf4f"
+    },
+    {
+      "id": 8,
+      "source": "image-generation-tool, original for this design",
+      "generationBatch": 1,
+      "original": "assets/art-08.png",
+      "web": "assets/art-08.webp",
+      "sha256": "8f8e4fdf00013bb4fe13278258f59f238f99ad416d1aa0c1a89802ca6602a676"
+    },
+    {
+      "id": 9,
+      "source": "image-generation-tool, original for this design",
+      "generationBatch": 1,
+      "original": "assets/art-09.png",
+      "web": "assets/art-09.webp",
+      "sha256": "79d1d885f363f591756ab6f30c1167e4dc5889b3f8fefe29823ef10630203d18"
+    },
+    {
+      "id": 10,
+      "source": "image-generation-tool, original for this design",
+      "generationBatch": 1,
+      "original": "assets/art-10.png",
+      "web": "assets/art-10.webp",
+      "sha256": "4b964fe0e5c13aa14319ef36c57d524057242e900b76a317e7582ee7b433b252"
+    },
+    {
+      "id": 11,
+      "source": "image-generation-tool, original for this design",
+      "generationBatch": 2,
+      "original": "assets/art-11.png",
+      "web": "assets/art-11.webp",
+      "sha256": "460fc20d69163271a3197821f658f774c4485dcf26a97cb2bc61153e19ffd697"
+    },
+    {
+      "id": 12,
+      "source": "image-generation-tool, original for this design",
+      "generationBatch": 2,
+      "original": "assets/art-12.png",
+      "web": "assets/art-12.webp",
+      "sha256": "39066d64cdfc97763d5ac8e6f7b96d7043567f1a9dc4b02444ae733586c1568a"
+    },
+    {
+      "id": 13,
+      "source": "image-generation-tool, original for this design",
+      "generationBatch": 2,
+      "original": "assets/art-13.png",
+      "web": "assets/art-13.webp",
+      "sha256": "d568e2df157c104779c867e6bff111944ca2a6e55d39dd7109728f47603f45cb"
+    },
+    {
+      "id": 14,
+      "source": "image-generation-tool, original for this design",
+      "generationBatch": 2,
+      "original": "assets/art-14.png",
+      "web": "assets/art-14.webp",
+      "sha256": "26cbbdd07ba6e2c37a824c33d53ddc0a391a6d9eccee3007e54e71c4bd4d8c16"
+    },
+    {
+      "id": 15,
+      "source": "image-generation-tool, original for this design",
+      "generationBatch": 2,
+      "original": "assets/art-15.png",
+      "web": "assets/art-15.webp",
+      "sha256": "c0eefe3e87668a2602f896b9be2e1fa5188ac35150f8ac1f0cc5e177a20a9e23"
+    }
+  ],
+  "nextTurnBriefs": []
+}

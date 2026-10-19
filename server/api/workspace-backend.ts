@@ -11,6 +11,7 @@ import {
 } from "node:crypto";
 
 const samples = new Set([
+  ...Array.from({ length: 15 }, (_, i) => `welcome-${String(i + 1).padStart(2, "0")}`),
   "travel",
   "museum",
   "luma",
@@ -64,7 +65,7 @@ export function sameOrigin(request: Request) {
       u.protocol ===
         (configured?.host === target.host
           ? configured.protocol
-          : target.hostname.endsWith(".e2b.app")
+          : (target.hostname.endsWith(".e2b.app") || target.hostname.endsWith(".arena.site"))
             ? "https:"
             : target.protocol) &&
       u.username === "" &&
@@ -239,7 +240,7 @@ export class WorkspaceBackend {
       origin.startsWith("https://") ||
       referer.startsWith("https://") ||
       forwarded === "https" ||
-      host.endsWith(".e2b.app") ||
+      (host.endsWith(".e2b.app") || host.endsWith(".arena.site")) ||
       (process.env.DESIGNBUDDY_PUBLIC_ORIGIN || "").startsWith("https://");
     return `designbuddy_session=${token}; HttpOnly; Path=/; Max-Age=${clear ? 0 : 30 * 86400}; ${facingHttps ? "Secure; SameSite=None; Partitioned" : "SameSite=Lax"}`;
   }
@@ -321,7 +322,7 @@ export class WorkspaceBackend {
     const protocol =
       forwarded === "http" || forwarded === "https"
         ? forwarded
-        : host.endsWith(".e2b.app")
+        : (host.endsWith(".e2b.app") || host.endsWith(".arena.site"))
           ? "https"
           : new URL(request.url).protocol.replace(":", "");
     return `${protocol}://${host}`;
@@ -904,7 +905,7 @@ export class WorkspaceBackend {
         return responseJSON(rows);
       }
       const match = path.match(
-        /^\/api\/templates\/([a-z]+)\/([a-zA-Z0-9-]{1,60})$/,
+        /^\/api\/templates\/([a-z][a-z0-9-]{0,59})\/([a-zA-Z0-9-]{1,60})$/,
       );
       if (match && samples.has(match[1])) {
         const [, sample, draft] = match;

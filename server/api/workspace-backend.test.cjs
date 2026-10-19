@@ -5,13 +5,14 @@ const { once } = require("node:events");
 const { mkdtemp, mkdir } = require("node:fs/promises");
 const { resolve } = require("node:path");
 const { DatabaseSync } = require("node:sqlite");
-async function boot(db) {
+async function boot(db, extraEnv = {}) {
   const env = {
     ...process.env,
     DESIGNBUDDY_HOST: "0.0.0.0",
     DESIGNBUDDY_PORT: "0",
     DESIGNBUDDY_SQLITE_PATH: db,
     DESIGNBUDDY_STORAGE: "sqlite",
+    ...extraEnv,
   };
   for (const k of [
     "AI_API_KEY",
@@ -435,4 +436,62 @@ test("canonical HTTPS origin is checked explicitly without trusting forwarded he
     false,
   );
   assert.equal(sameOrigin(request("null")), false);
+});
+
+test('15 welcome image template states persist with owner isolation and revision checks', async () => {
+  const dir = await mkdtemp(resolve('.cache/', 'welcome-template-test-'));
+  const server = await boot(resolve(dir, 'state.sqlite'));
+  try {
+    const a = await call(server, '/api/local/session', {method:'POST',body:{}});
+    const b = await call(server, '/api/local/session', {method:'POST',body:{}});
+    for (let id=1;id<=15;id++) {
+      const path=`/api/templates/welcome-${String(id).padStart(2,'0')}/sample`;
+      const saved=await call(server,path,{method:'PUT',cookie:a.cookie,body:{revision:0,state:{notes:`welcome ${id}`}}});
+      assert.equal(saved.status,200);assert.equal(saved.data.revision,1);
+      const loaded=await call(server,path,{cookie:a.cookie});
+      assert.equal(loaded.data.state.notes,`welcome ${id}`);
+      assert.equal((await call(server,path,{cookie:b.cookie})).status,404);
+      assert.equal((await call(server,path,{method:'PUT',cookie:a.cookie,body:{revision:0,state:{notes:'stale'}}})).status,409);
+    }
+    assert.equal((await call(server,'/api/templates/welcome-16/sample',{method:'PUT',cookie:a.cookie,body:{revision:0,state:{}}})).status,404);
+  } finally {await server.stop();}
+});
+
+test('Arena HTTPS alias establishes a secure isolated session and rejects HTTP spoofing', async () => {
+ const dir=await mkdtemp(resolve('.cache/','welcome-origin-test-'));
+ const server=await boot(resolve(dir,'state.sqlite'));
+ try {
+  const headers={host:'welcome-preview.arena.site'};
+  const result=await call(server,'/api/local/session',{method:'POST',body:{},headers,origin:'https://welcome-preview.arena.site'});
+  assert.equal(result.status,200);
+  assert.match(result.headers.get('set-cookie'),/Secure; SameSite=None; Partitioned/);
+  assert.equal((await call(server,'/api/local/session',{method:'POST',body:{},headers,origin:'http://welcome-preview.arena.site'})).status,403);
+  for(const path of ['/api/projects','/api/tasks','/api/plugins','/api/profile','/api/ai/providers'])
+   assert.equal((await call(server,path)).status,401,`missing sessions cannot access ${path}`);
+ }finally{await server.stop()}
+});
+
+test('OAuth provider authorization redirects, safe next, invalid and one-time states (no token exchange)', async () => {
+ const dir=await mkdtemp(resolve('.cache/','welcome-oauth-test-'));
+ // Deliberately fake credentials exercise redirects only, never provider authentication.
+ const server=await boot(resolve(dir,'state.sqlite'),{GOOGLE_CLIENT_ID:'test-google-client',GOOGLE_CLIENT_SECRET:'test-only-fake-secret',GITHUB_CLIENT_ID:'test-github-client',GITHUB_CLIENT_SECRET:'test-only-fake-secret',DESIGNBUDDY_PUBLIC_ORIGIN:'https://welcome-preview.arena.site'});
+ try {
+  const session=await call(server,'/api/local/session',{method:'POST',body:{}});
+  assert.deepEqual((await call(server,'/api/auth/providers',{cookie:session.cookie})).data,{google:true,github:true});
+  for(const provider of ['google','github']){
+   const headers={Cookie:session.cookie};
+   const result=await fetch(`${server.base}/api/auth/oauth/${provider}?next=%2F%2Fevil.example`,{headers,redirect:'manual'});
+   assert.equal(result.status,302);
+   const location=new URL(result.headers.get('location'));
+   assert.equal(location.hostname,provider==='google'?'accounts.google.com':'github.com');
+   assert.equal(location.searchParams.get('redirect_uri'),`https://welcome-preview.arena.site/api/auth/oauth/${provider}/callback`);
+   const state=location.searchParams.get('state');assert.ok(state);
+   const invalid=await fetch(`${server.base}/api/auth/oauth/${provider}/callback?state=invalid&code=unused`,{headers,redirect:'manual'});
+   assert.match(invalid.headers.get('location'),/reason=invalid_state/);
+   const missing=await fetch(`${server.base}/api/auth/oauth/${provider}/callback?state=${state}`,{headers,redirect:'manual'});
+   assert.match(missing.headers.get('location'),/reason=missing_code/);
+   const replay=await fetch(`${server.base}/api/auth/oauth/${provider}/callback?state=${state}&code=unused`,{headers,redirect:'manual'});
+   assert.match(replay.headers.get('location'),/reason=invalid_state/);
+  }
+ }finally{await server.stop()}
 });

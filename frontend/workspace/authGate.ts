@@ -1,15 +1,7 @@
-/**
- * Login/registration gate switch.
- *
- * `false` (current): the app opens directly for everyone with no login wall.
- * /login, /register and /auth redirect home, and the login/register/logout
- * controls in the server panel and account menu are hidden. The
- * LoginPage/RegisterPage components, the backend auth endpoints, and the
- * token fallback all stay in place, so flipping this back to `true`
- * restores the gated experience (together with the gate-era tests that
- * are parked in git history while the gate is off).
+/** The immersive welcome introduces account login and an explicit local/guest entry.
+ * This is a UI gate only; server authorization remains enforced by each API.
  */
-export const AUTH_GATE_ENABLED = false;
+export const AUTH_GATE_ENABLED = true;
 
 /**
  * Server-status dialog title, matching whatever the panel currently offers.

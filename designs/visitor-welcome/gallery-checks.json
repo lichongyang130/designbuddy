@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-19",
+  "revision": 2,
+  "complete": true,
+  "generatedArtworks": 15,
+  "completedDesigns": 15,
+  "pending": 0,
+  "galleryCards": 15,
+  "galleryImageCards": 15,
+  "pendingPlaceholders": 0,
+  "staleV1ConceptDataRegression": "passed (15 thumbnails decoded)",
+  "manifestFailureAndRetry": "passed",
+  "versionedConceptScript": true,
+  "noStoreResponseHeader": true,
+  "categoryCounts": {
+    "经典": 3,
+    "艺术": 5,
+    "极简": 5,
+    "沉浸": 2,
+    "全部": 15
+  },
+  "galleryWidths": [
+    {
+      "width": 1440,
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "width": 320,
+      "overflow": false
+    }
+  ],
+  "viewerImagesDecoded": 15,
+  "cyclicNextLinksPassed": 15,
+  "conceptArtworkBindingsChecked": 15,
+  "archiveDownload": "DesignBuddy-welcome-v2-all15.zip",
+  "pageErrors": [],
+  "scope": "Visual design delivery only, not production login functionality or legal/quality certification."
+}

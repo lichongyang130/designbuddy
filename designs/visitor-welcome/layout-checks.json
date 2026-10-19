@@ -1,0 +1,267 @@
+{
+  "date": "2026-10-19",
+  "revision": 2,
+  "completed": 15,
+  "pending": 0,
+  "scope": "Desktop design-concept renders, not application/functional acceptance.",
+  "engine": "Chromium",
+  "count": 15,
+  "pageErrors": [],
+  "results": [
+    {
+      "id": 1,
+      "name": "经典留白",
+      "file": "png/01-经典留白.png",
+      "checks": {
+        "width": 1440,
+        "height": 1000,
+        "horizontalOverflow": false,
+        "verticalOverflow": false,
+        "titleFits": true,
+        "titleWithinWindow": true,
+        "buttonWithinWindow": true,
+        "brandBodyOverlap": false,
+        "footerBodyOverlap": false,
+        "fontLoaded": true
+      }
+    },
+    {
+      "id": 2,
+      "name": "暖白书页",
+      "file": "png/02-暖白书页.png",
+      "checks": {
+        "width": 1440,
+        "height": 1000,
+        "horizontalOverflow": false,
+        "verticalOverflow": false,
+        "titleFits": true,
+        "titleWithinWindow": true,
+        "buttonWithinWindow": true,
+        "brandBodyOverlap": false,
+        "footerBodyOverlap": false,
+        "fontLoaded": true
+      }
+    },
+    {
+      "id": 3,
+      "name": "暗夜画廊",
+      "file": "png/03-暗夜画廊.png",
+      "checks": {
+        "width": 1440,
+        "height": 1000,
+        "horizontalOverflow": false,
+        "verticalOverflow": false,
+        "titleFits": true,
+        "titleWithinWindow": true,
+        "buttonWithinWindow": true,
+        "brandBodyOverlap": false,
+        "footerBodyOverlap": false,
+        "fontLoaded": true
+      }
+    },
+    {
+      "id": 4,
+      "name": "苔绿工作室",
+      "file": "png/04-苔绿工作室.png",
+      "checks": {
+        "width": 1440,
+        "height": 1000,
+        "horizontalOverflow": false,
+        "verticalOverflow": false,
+        "titleFits": true,
+        "titleWithinWindow": true,
+        "buttonWithinWindow": true,
+        "brandBodyOverlap": false,
+        "footerBodyOverlap": false,
+        "fontLoaded": true
+      }
+    },
+    {
+      "id": 5,
+      "name": "紫色灵感",
+      "file": "png/05-紫色灵感.png",
+      "checks": {
+        "width": 1440,
+        "height": 1000,
+        "horizontalOverflow": false,
+        "verticalOverflow": false,
+        "titleFits": true,
+        "titleWithinWindow": true,
+        "buttonWithinWindow": true,
+        "brandBodyOverlap": false,
+        "footerBodyOverlap": false,
+        "fontLoaded": true
+      }
+    },
+    {
+      "id": 6,
+      "name": "编辑部",
+      "file": "png/06-编辑部.png",
+      "checks": {
+        "width": 1440,
+        "height": 1000,
+        "horizontalOverflow": false,
+        "verticalOverflow": false,
+        "titleFits": true,
+        "titleWithinWindow": true,
+        "buttonWithinWindow": true,
+        "brandBodyOverlap": false,
+        "footerBodyOverlap": false,
+        "fontLoaded": true
+      }
+    },
+    {
+      "id": 7,
+      "name": "沉浸画廊",
+      "file": "png/07-沉浸画廊.png",
+      "checks": {
+        "width": 1440,
+        "height": 1000,
+        "horizontalOverflow": false,
+        "verticalOverflow": false,
+        "titleFits": true,
+        "titleWithinWindow": true,
+        "buttonWithinWindow": true,
+        "brandBodyOverlap": false,
+        "footerBodyOverlap": false,
+        "fontLoaded": true
+      }
+    },
+    {
+      "id": 8,
+      "name": "极简圆窗",
+      "file": "png/08-极简圆窗.png",
+      "checks": {
+        "width": 1440,
+        "height": 1000,
+        "horizontalOverflow": false,
+        "verticalOverflow": false,
+        "titleFits": true,
+        "titleWithinWindow": true,
+        "buttonWithinWindow": true,
+        "brandBodyOverlap": false,
+        "footerBodyOverlap": false,
+        "fontLoaded": true
+      }
+    },
+    {
+      "id": 9,
+      "name": "横幅展映",
+      "file": "png/09-横幅展映.png",
+      "checks": {
+        "width": 1440,
+        "height": 1000,
+        "horizontalOverflow": false,
+        "verticalOverflow": false,
+        "titleFits": true,
+        "titleWithinWindow": true,
+        "buttonWithinWindow": true,
+        "brandBodyOverlap": false,
+        "footerBodyOverlap": false,
+        "fontLoaded": true
+      }
+    },
+    {
+      "id": 10,
+      "name": "创作序章",
+      "file": "png/10-创作序章.png",
+      "checks": {
+        "width": 1440,
+        "height": 1000,
+        "horizontalOverflow": false,
+        "verticalOverflow": false,
+        "titleFits": true,
+        "titleWithinWindow": true,
+        "buttonWithinWindow": true,
+        "brandBodyOverlap": false,
+        "footerBodyOverlap": false,
+        "fontLoaded": true
+      }
+    },
+    {
+      "id": 11,
+      "name": "柔粉拼贴",
+      "file": "png/11-柔粉拼贴.png",
+      "checks": {
+        "width": 1440,
+        "height": 1000,
+        "horizontalOverflow": false,
+        "verticalOverflow": false,
+        "titleFits": true,
+        "titleWithinWindow": true,
+        "buttonWithinWindow": true,
+        "brandBodyOverlap": false,
+        "footerBodyOverlap": false,
+        "fontLoaded": true
+      }
+    },
+    {
+      "id": 12,
+      "name": "朱砂东方",
+      "file": "png/12-朱砂东方.png",
+      "checks": {
+        "width": 1440,
+        "height": 1000,
+        "horizontalOverflow": false,
+        "verticalOverflow": false,
+        "titleFits": true,
+        "titleWithinWindow": true,
+        "buttonWithinWindow": true,
+        "brandBodyOverlap": false,
+        "footerBodyOverlap": false,
+        "fontLoaded": true
+      }
+    },
+    {
+      "id": 13,
+      "name": "蓝图实验室",
+      "file": "png/13-蓝图实验室.png",
+      "checks": {
+        "width": 1440,
+        "height": 1000,
+        "horizontalOverflow": false,
+        "verticalOverflow": false,
+        "titleFits": true,
+        "titleWithinWindow": true,
+        "buttonWithinWindow": true,
+        "brandBodyOverlap": false,
+        "footerBodyOverlap": false,
+        "fontLoaded": true
+      }
+    },
+    {
+      "id": 14,
+      "name": "漂浮窗口",
+      "file": "png/14-漂浮窗口.png",
+      "checks": {
+        "width": 1440,
+        "height": 1000,
+        "horizontalOverflow": false,
+        "verticalOverflow": false,
+        "titleFits": true,
+        "titleWithinWindow": true,
+        "buttonWithinWindow": true,
+        "brandBodyOverlap": false,
+        "footerBodyOverlap": false,
+        "fontLoaded": true
+      }
+    },
+    {
+      "id": 15,
+      "name": "柔光主推",
+      "file": "png/15-柔光主推.png",
+      "checks": {
+        "width": 1440,
+        "height": 1000,
+        "horizontalOverflow": false,
+        "verticalOverflow": false,
+        "titleFits": true,
+        "titleWithinWindow": true,
+        "buttonWithinWindow": true,
+        "brandBodyOverlap": false,
+        "footerBodyOverlap": false,
+        "fontLoaded": true
+      }
+    }
+  ]
+}

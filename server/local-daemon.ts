@@ -65,9 +65,9 @@ setAiUsageRecorder((ownerId, record) => {
   }
 });
 
-/** Always return a valid principal; fall back to a stable guest identity. */
-function resolvePrincipal(request: Request): { id: string } {
-  return workspace.principal(request) ?? { id: "guest-user" };
+/** Guests must first hold their own isolated server session, never a shared fallback. */
+function resolvePrincipal(request: Request): { id: string } | null {
+  return trustedToken(request) ? { id: "local-user" } : workspace.principal(request);
 }
 
 const taskPaths = ["/api/tasks", "/api/notifications", "/api/schedules"];
@@ -86,8 +86,7 @@ const api = createApiHandler({
   workflows,
   admin,
   workspaces,
-  authenticate: async (request) =>
-    trustedToken(request) ? { id: "local-user" } : (workspace.principal(request) ?? { id: "guest-" + (request.headers.get("cookie") || "anonymous").slice(0, 32).replace(/[^a-zA-Z0-9]/g, "") || "anonymous" }),
+  authenticate: async (request) => resolvePrincipal(request),
   localAgentWorkspaceRoot:
     process.env.DESIGNBUDDY_ENABLE_LOCAL_AGENT === "true"
       ? process.env.DESIGNBUDDY_AGENT_WORKSPACE_DIR || "./data/agent-projects"
@@ -133,6 +132,7 @@ const server = createServer(async (incoming, outgoing) => {
     if (
       !["localhost", "127.0.0.1", "0.0.0.0", "[::1]"].includes(hostname) &&
       !hostname.endsWith(".e2b.app") &&
+      !hostname.endsWith(".arena.site") &&
       hostname !== process.env.DESIGNBUDDY_PUBLIC_HOST &&
       hostname !== publicHostname
     ) {
@@ -208,21 +208,37 @@ const server = createServer(async (incoming, outgoing) => {
       }
       if (pluginPaths.some(prefix => url.pathname === prefix || url.pathname.startsWith(prefix + "/"))) {
         const owner = resolvePrincipal(request);
+        if (!owner) {
+          send(responseJSON({ error: "服务器会话未建立或已过期。", code: "SESSION_REQUIRED" }, 401));
+          return;
+        }
         send((await plugins.handle(request, owner.id)) || responseJSON({ error: "未找到该接口。" }, 404));
         return;
       }
       if (profilePaths.some(prefix => url.pathname === prefix || url.pathname.startsWith(prefix + "/"))) {
         const owner = resolvePrincipal(request);
+        if (!owner) {
+          send(responseJSON({ error: "服务器会话未建立或已过期。", code: "SESSION_REQUIRED" }, 401));
+          return;
+        }
         send(await handleProfileRequest(request, owner.id, profiles));
         return;
       }
       if (aiPaths.some(prefix => url.pathname === prefix || url.pathname.startsWith(prefix + "/"))) {
         const owner = resolvePrincipal(request);
+        if (!owner) {
+          send(responseJSON({ error: "服务器会话未建立或已过期。", code: "SESSION_REQUIRED" }, 401));
+          return;
+        }
         send(await handleAiRegistry(request, owner.id, tasks));
         return;
       }
       if (taskPaths.some(prefix => url.pathname === prefix || url.pathname.startsWith(prefix + "/"))) {
         const owner = resolvePrincipal(request);
+        if (!owner) {
+          send(responseJSON({ error: "服务器会话未建立或已过期。", code: "SESSION_REQUIRED" }, 401));
+          return;
+        }
         send((await tasks.handle(request, owner.id)) || responseJSON({ error: "未找到该接口。" }, 404));
         return;
       }

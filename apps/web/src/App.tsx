@@ -38,6 +38,7 @@ import { HomeDiscovery, HomeShortcuts, type HomeScene } from "./components/HomeD
 import "./components/auth.css";
 import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterPage";
+import WelcomePage from "./components/welcome/WelcomePage";
 import type { AccountIdentity } from "../../../frontend/workspace/api/account";
 import { AUTH_GATE_ENABLED } from "../../../frontend/workspace/authGate";
 
@@ -82,9 +83,21 @@ export default function App() {
   const [promptGroupRevision, setPromptGroupRevision] = useState(0);
   const [notice, setNotice] = useState("");
   const [projects, setProjects] = useState<DesignProject[]>(() => listProjects());
+  const [guestEntry, setGuestEntry] = useState(() => {
+    try { return localStorage.getItem("designbuddy.welcome-entered.v1") === "true"; }
+    catch { return false; }
+  });
+  function enterWorkspace(settings = false) {
+    setGuestEntry(true);
+    try { localStorage.setItem("designbuddy.welcome-entered.v1", "true"); }
+    catch { /* In-memory entry still works when storage is blocked. */ }
+    const destination = settings || ["/welcome", "/login", "/register", "/auth"].includes(currentPath)
+      ? "/" : currentPath + window.location.search;
+    go(destination);
+    if (settings) openSettings("models");
+  }
   const [identity, setIdentity] = useState<AccountIdentity | null | undefined>(undefined);
   const [identityFailed, setIdentityFailed] = useState(false);
-  const [identityAttempt, setIdentityAttempt] = useState(0);
   const [workspaceCount, setWorkspaceCount] = useState(0);
   const [assetCount, setAssetCount] = useState(0);
   const [busy, setBusy] = useState(false);
@@ -298,6 +311,7 @@ export default function App() {
     currentPath === "/login" ||
     currentPath === "/register" ||
     currentPath === "/auth" ||
+    currentPath === "/welcome" ||
     currentPath.startsWith("/share");
   useEffect(() => {
     if (publicRoute) return;
@@ -334,7 +348,7 @@ export default function App() {
       cancelled = true;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPath, publicRoute, identityAttempt]);
+  }, [currentPath, publicRoute]);
 
   // The sidebar shows how many workspaces the account belongs to.
   useEffect(() => {
@@ -511,11 +525,12 @@ export default function App() {
   }
   startProjectRef.current = () => startProject();
 
+  if (currentPath === "/welcome") return <WelcomePage onEnter={enterWorkspace} />;
   if (AUTH_GATE_ENABLED && (currentPath === "/login" || currentPath === "/auth")) return <LoginPage />;
   if (AUTH_GATE_ENABLED && currentPath === "/register") return <RegisterPage />;
-  // Gate off: everyone lands directly in the app. Legacy auth URLs redirect
-  // home (see the effect below) and fall through to the home view meanwhile.
-  if (AUTH_GATE_ENABLED && !publicRoute) {
+  // Returning accounts go straight to their work. Visitors explicitly choose
+  // the local/guest path; this preference never grants server account access.
+  if (AUTH_GATE_ENABLED && !publicRoute && !guestEntry) {
     if (identity === undefined && !identityFailed)
       return (
         <div className="auth-loading" role="status" aria-label="正在确认登录状态">
@@ -524,16 +539,9 @@ export default function App() {
         </div>
       );
     if (identityFailed || !identity)
-      return (
-        <div className="auth-loading" role="alert">
-          <p>无法连接后台服务，请确认服务已启动后重试。</p>
-          <button onClick={() => setIdentityAttempt((attempt) => attempt + 1)}>
-            重新连接
-          </button>
-        </div>
-      );
+      return <WelcomePage next={currentPath + window.location.search} onEnter={enterWorkspace} backendUnavailable />;
     if (identity.kind !== "account")
-      return <LoginPage next={currentPath + window.location.search} />;
+      return <WelcomePage next={currentPath + window.location.search} onEnter={enterWorkspace} />;
   }
   if (currentPath === "/plugins") return <PluginsPage />;
   if (currentPath === "/schedules") return <SchedulesPage />;
