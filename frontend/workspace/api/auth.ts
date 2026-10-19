@@ -1,4 +1,4 @@
-import { apiJSON } from "../../../apps/web/src/api/client";
+import { apiJSON, apiPublicJSON } from "../../../apps/web/src/api/client";
 import type { AccountIdentity } from "./account";
 
 export type OAuthProvider = "google" | "github";
@@ -33,7 +33,15 @@ export async function registerWithPassword(
 export async function fetchOAuthProviders(): Promise<
   Record<OAuthProvider, boolean>
 > {
-  return apiJSON<Record<OAuthProvider, boolean>>("/auth/providers");
+  const providers =
+    await apiPublicJSON<Record<OAuthProvider, unknown>>("/auth/providers");
+  if (
+    !providers ||
+    typeof providers.google !== "boolean" ||
+    typeof providers.github !== "boolean"
+  )
+    throw new Error("Invalid OAuth provider availability response.");
+  return { google: providers.google, github: providers.github };
 }
 
 /** Leave the SPA for the provider round trip; the server redirects back to `next`. */

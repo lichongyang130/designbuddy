@@ -80,3 +80,13 @@ corepack pnpm --filter designbuddy-web exec playwright test welcome.spec.ts auth
 新增 `auth-entry.spec.ts` 验证未登录的 `/`、`/models`、`/inspiration/welcome-07` 在直接打开与刷新后均显示新版“表单在前、OAuth 在后”的结构，并验证已有账号刷新无需再次登录。更新原有测试，使默认入口断言与实际需求一致。
 
 最终分批运行：`auth-entry.spec.ts auth-layout.spec.ts auth.spec.ts` 24/24 通过；`welcome.spec.ts` 15/15 通过，总计 39 项专项检查通过。最初联合运行触发工具等待超时，未将该次不完整结果记为通过，以上为分批完整结束的结果。生产构建通过，原有包大小告警未消除。
+
+## 登录选项加载失败修复
+
+后台在线时，无有效会话的 `GET /api/auth/providers` 原先返回 401；前端又通过 `apiJSON` 先创建访客会话，导致只读登录选项依赖 Cookie/会话建立链路。该依赖会把会话失败连带表现为“无法加载登录选项”。
+
+修复：将提供商可用性查询移动到会话验证之前，仅公开 `{google:boolean,github:boolean}`；不返回客户端 ID、密钥或账号信息，不创建 Cookie。前端通过已有只读 `apiPublicJSON` 查询，凭据传输设为 omit，并严格校验布尔字段。真实 OAuth 授权、账号接口及模板仍走原有会话和权限校验。真正的网络故障或畸形响应仍显示失败并允许重试，不把错误吞成配置成功。
+
+已执行：后端 6/6 测试通过，包含无 Cookie、过期 Cookie、过期 Bearer token、只读限制、私有接口继续返回 401；浏览器 `oauth-discovery.spec.ts welcome.spec.ts` 19/19 通过，包含阻断会话创建且注入旧凭据时 `/`、`/login`、`/register` 仍可通过真实代理接口加载配置，未配置状态明确、畸形数据及重试、真实密码注册登录及模板回归。生产构建通过（现有 bundle 大小告警仍存在）。
+
+已重启 5173 前端及 8787 后台；实际无凭据 GET 查询返回 200 和两个 false，身份接口无会话仍为 401。当前仍未配置 Google/GitHub OAuth 凭据，本次不声称完成真实第三方账号授权测试。未修改页面布局或模板。

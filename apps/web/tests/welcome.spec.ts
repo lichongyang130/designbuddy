@@ -12,9 +12,9 @@ test.describe("immersive welcome", () => {
     await page.goto("/");
     await expect(page.getByRole("heading", { name: "欢迎回来" })).toBeVisible();
     await expect(page.locator(".auth-mode-switch")).toBeVisible();
-    await expect(
-      page.getByRole("button", { name: /无法加载登录选项/ }),
-    ).toBeVisible();
+    // Provider metadata remains readable even when session establishment fails.
+    await expect(page.locator(".welcome-oauth small")).toHaveCount(2);
+    await expect(page.getByRole("button", { name: /无法加载登录选项/ })).toHaveCount(0);
     await page.goto("/welcome");
     await page.getByRole("button", { name: /先逛逛工作台/ }).click();
     await expect(page.locator(".welcome-page")).toHaveCount(0);

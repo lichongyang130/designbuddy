@@ -495,3 +495,20 @@ test('OAuth provider authorization redirects, safe next, invalid and one-time st
   }
  }finally{await server.stop()}
 });
+
+test('OAuth availability is public read-only metadata, independent of stale or missing sessions', async () => {
+ const dir=await mkdtemp(resolve('.cache/','oauth-public-metadata-'));
+ const server=await boot(resolve(dir,'state.sqlite'),{GOOGLE_CLIENT_ID:'',GOOGLE_CLIENT_SECRET:'',GITHUB_CLIENT_ID:'',GITHUB_CLIENT_SECRET:''});
+ try {
+  for(const headers of [{},{Authorization:'Bearer '+ 'x'.repeat(43)},{Cookie:'designbuddy_session='+ 'x'.repeat(43)}]){
+   const r=await fetch(server.base+'/api/auth/providers',{headers});
+   assert.equal(r.status,200);
+   assert.deepEqual(await r.json(),{google:false,github:false});
+   assert.equal(r.headers.get('set-cookie'),null);
+   assert.equal(r.headers.get('cache-control'),'no-store');
+  }
+  assert.equal((await call(server,'/api/auth/me')).status,401);
+  assert.equal((await call(server,'/api/templates')).status,401);
+  assert.equal((await call(server,'/api/auth/providers',{method:'POST',body:{}})).status,401);
+ }finally{await server.stop()}
+});

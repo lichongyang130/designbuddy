@@ -553,6 +553,13 @@ export class WorkspaceBackend {
         },
       });
     }
+    // Provider availability is public metadata, needed before a login/session exists.
+    // Return booleans only; never disclose client IDs, secrets or account information.
+    if (path === "/api/auth/providers" && method === "GET")
+      return responseJSON({
+        google: this.oauthClient("google") !== null,
+        github: this.oauthClient("github") !== null,
+      });
     const principal = this.principal(request);
     if (path.startsWith("/api/auth/") || path.startsWith("/api/templates")) {
       if (!principal)
@@ -564,11 +571,6 @@ export class WorkspaceBackend {
         return responseJSON({ error: "跨站修改请求已拒绝。" }, 403);
       if (path === "/api/auth/me" && method === "GET")
         return responseJSON({ user: this.identity(principal.id) });
-      if (path === "/api/auth/providers" && method === "GET")
-        return responseJSON({
-          google: this.oauthClient("google") !== null,
-          github: this.oauthClient("github") !== null,
-        });
       if (path === "/api/auth/logout" && method === "POST") {
         this.revoke(request);
         return responseJSON({ ok: true }, 200, {
