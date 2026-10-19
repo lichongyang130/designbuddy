@@ -1,0 +1,39 @@
+{
+  "renderer": "LibreOffice Kit",
+  "engineApiVersion": "0.2.0",
+  "backend": "wasm",
+  "rasterEngine": "libreoffice",
+  "sourceSHA256": "434077d65b642f24ff15dbb7ba6a88791e0c80b39ea2c7566e84142a46ce2903",
+  "pdfSHA256": "f752a5dbd9a547b4f97ff4ff68df03d06083baa9739cc1944bd61d17ce7a3ba2",
+  "pageCount": 5,
+  "dpi": 72,
+  "missingFonts": [],
+  "pages": [
+    {
+      "page": 1,
+      "file": "pages/01.jpg",
+      "sha256": "6b309e10f5e28dd80a7aba45e1c32b3342a67b236a27a6f33ab4e18ea1453a7b"
+    },
+    {
+      "page": 2,
+      "file": "pages/02.jpg",
+      "sha256": "e79742295574dff5669d32169e0e3b470147f926dd8cc0be3864804c5815763e"
+    },
+    {
+      "page": 3,
+      "file": "pages/03.jpg",
+      "sha256": "f921a19e80cdb09854cc0dc873a1a083af55bce161e16bf19d68238e14a109ce"
+    },
+    {
+      "page": 4,
+      "file": "pages/04.jpg",
+      "sha256": "1b3bd69b1b5be871f199528cca4d454e71f841c68aeaeffe1d8820f9ba79f4b1"
+    },
+    {
+      "page": 5,
+      "file": "pages/05.jpg",
+      "sha256": "5653d31a18a9e55b1a80e49ba5339a54a189846172280236d3231442dd6f9e16"
+    }
+  ],
+  "microsoftWordVerified": false
+}

@@ -18,6 +18,8 @@
   },
   "include": [
     "local-daemon.ts",
-    "skills/**/*.ts"
+    "skills/**/*.ts",
+    "../shared/commercialExports.ts",
+    "../shared/commercialOffice.ts"
   ]
 }

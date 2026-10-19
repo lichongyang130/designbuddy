@@ -1,0 +1,382 @@
+{
+  "schemaVersion": 1,
+  "engineVersion": "word-pro-1.0.0",
+  "inputSHA256": "b060b60b762e6684dedcbd484cb4662b7eef326b9c76eb6c6540b2ab9cc8688c",
+  "finalDocxSHA256": "434077d65b642f24ff15dbb7ba6a88791e0c80b39ea2c7566e84142a46ce2903",
+  "finalPdfSHA256": "f752a5dbd9a547b4f97ff4ff68df03d06083baa9739cc1944bd61d17ce7a3ba2",
+  "contentHash": "aa2b5efd0e6b3e0e7f19477bb57d797ef6c95214299c8f840c3d6a0a120760f2",
+  "contentPreserved": true,
+  "documentType": "project-plan",
+  "font": {
+    "family": "Noto Sans SC",
+    "regularSHA256": "eeb06b8a64fd04a2744d95579db1571b51027cda61ed78c62e4b730791525461",
+    "boldSHA256": "a8d8569e6cf8e93e830736e64c69568c5499ff65bf6a8ff860f0cdacc3eab7d0",
+    "embeddedInDocx": false
+  },
+  "renderer": {
+    "renderer": "LibreOffice Kit",
+    "engineApiVersion": "0.2.0",
+    "backend": "wasm",
+    "rasterEngine": "libreoffice",
+    "sourceSHA256": "434077d65b642f24ff15dbb7ba6a88791e0c80b39ea2c7566e84142a46ce2903",
+    "pdfSHA256": "f752a5dbd9a547b4f97ff4ff68df03d06083baa9739cc1944bd61d17ce7a3ba2",
+    "pageCount": 5,
+    "dpi": 72,
+    "missingFonts": [],
+    "pages": [
+      {
+        "page": 1,
+        "file": "pages/01.jpg",
+        "sha256": "6b309e10f5e28dd80a7aba45e1c32b3342a67b236a27a6f33ab4e18ea1453a7b"
+      },
+      {
+        "page": 2,
+        "file": "pages/02.jpg",
+        "sha256": "e79742295574dff5669d32169e0e3b470147f926dd8cc0be3864804c5815763e"
+      },
+      {
+        "page": 3,
+        "file": "pages/03.jpg",
+        "sha256": "f921a19e80cdb09854cc0dc873a1a083af55bce161e16bf19d68238e14a109ce"
+      },
+      {
+        "page": 4,
+        "file": "pages/04.jpg",
+        "sha256": "1b3bd69b1b5be871f199528cca4d454e71f841c68aeaeffe1d8820f9ba79f4b1"
+      },
+      {
+        "page": 5,
+        "file": "pages/05.jpg",
+        "sha256": "5653d31a18a9e55b1a80e49ba5339a54a189846172280236d3231442dd6f9e16"
+      }
+    ],
+    "microsoftWordVerified": false
+  },
+  "checks": {
+    "headingHierarchy": {
+      "status": "passed",
+      "method": "strict WordSpec validation"
+    },
+    "nativeContent": {
+      "status": "passed",
+      "method": "generated DOCX text inventory verified before render"
+    },
+    "pdfTextCoverage": {
+      "status": "passed",
+      "method": "PDF text match; not semantic verification"
+    },
+    "tableWidths": {
+      "status": "passed",
+      "method": "declared DOCX widths against page margins; not pixel inspection"
+    },
+    "tocPageNumbers": {
+      "status": "not-applicable",
+      "method": "native internal chapter links without page numbers"
+    },
+    "pageNumberFields": {
+      "status": "required",
+      "method": "PAGE/NUMPAGES emitted; manual rendered and target-client check required"
+    },
+    "renderedVisualReview": {
+      "status": "required",
+      "method": null
+    },
+    "targetWordCompatibility": {
+      "status": "not-evaluated",
+      "method": null
+    }
+  },
+  "issues": [],
+  "pdfCoverage": [
+    {
+      "nodeId": "section-0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-0-0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-0-1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-0-2",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-0-3",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-0-4",
+      "status": "matched"
+    },
+    {
+      "nodeId": "section-1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-1-0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-1-1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-1-2",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-1-3",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-1-4",
+      "status": "matched"
+    },
+    {
+      "nodeId": "section-2",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-2-0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-2-1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-2-2",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-2-3",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-2-4",
+      "status": "matched"
+    },
+    {
+      "nodeId": "deliverables-caption",
+      "status": "matched"
+    },
+    {
+      "nodeId": "deliverables-h0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "deliverables-h1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "deliverables-h2",
+      "status": "matched"
+    },
+    {
+      "nodeId": "deliverables-r0c0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "deliverables-r0c1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "deliverables-r0c2",
+      "status": "matched"
+    },
+    {
+      "nodeId": "deliverables-r1c0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "deliverables-r1c1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "deliverables-r1c2",
+      "status": "matched"
+    },
+    {
+      "nodeId": "deliverables-r2c0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "deliverables-r2c1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "deliverables-r2c2",
+      "status": "matched"
+    },
+    {
+      "nodeId": "deliverables-scope",
+      "status": "matched"
+    },
+    {
+      "nodeId": "deliverables-calculation",
+      "status": "matched"
+    },
+    {
+      "nodeId": "section-3",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-3-0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-3-1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-3-2",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-3-3",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-3-4",
+      "status": "matched"
+    },
+    {
+      "nodeId": "section-4",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-4-0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-4-1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-4-2",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-4-3",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-4-4",
+      "status": "matched"
+    },
+    {
+      "nodeId": "section-5",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-5-0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-5-1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-5-2",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-5-3",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-5-4",
+      "status": "matched"
+    },
+    {
+      "nodeId": "section-6",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-6-0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-6-1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-6-2",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-6-3",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-6-4",
+      "status": "matched"
+    },
+    {
+      "nodeId": "section-7",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-7-0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-7-1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-7-2",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-7-3",
+      "status": "matched"
+    },
+    {
+      "nodeId": "body-7-4",
+      "status": "matched"
+    }
+  ],
+  "score": {
+    "weights": {
+      "visual": 30,
+      "content": 25,
+      "structure": 20,
+      "pagination": 15,
+      "compatibility": 10
+    },
+    "calibrated": false,
+    "weightedScore": null
+  },
+  "repairPolicy": {
+    "maxRepairRounds": 2,
+    "maxFullRenders": 3,
+    "contentChangesAllowed": false,
+    "automaticFactVerification": false
+  },
+  "repairRounds": [
+    {
+      "round": 0,
+      "docxSHA256": "434077d65b642f24ff15dbb7ba6a88791e0c80b39ea2c7566e84142a46ce2903",
+      "pdfSHA256": "f752a5dbd9a547b4f97ff4ff68df03d06083baa9739cc1944bd61d17ce7a3ba2",
+      "pageCount": 5,
+      "contentHash": "aa2b5efd0e6b3e0e7f19477bb57d797ef6c95214299c8f840c3d6a0a120760f2",
+      "issues": [],
+      "actions": []
+    }
+  ],
+  "releaseStatus": "needs-human-review",
+  "commercialApproval": false,
+  "limitations": [
+    "不调用AI、不编辑任意旧Word；输入内容与引用仍需事实核验。",
+    "章节导航无目录页码；PAGE/NUMPAGES字段需检查目标软件刷新。",
+    "PDF文字与几何信号不等于像素级溢出/遮挡检测。",
+    "LibreOffice当前平台可能为WASM；没有Microsoft Word/WPS验收。",
+    "原生正文/表格/图像对象；没有原生可编辑图表或流程图编辑器。",
+    "DOCX不内嵌字体；接收端需安装Noto Sans SC。"
+  ]
+}

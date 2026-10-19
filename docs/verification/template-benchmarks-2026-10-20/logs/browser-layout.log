@@ -1,0 +1,21 @@
+
+Running 17 tests using 1 worker
+
+[1/17] tests/template-benchmarks.spec.ts:29:1 › collection exposes nine benchmarks and a truthful full inventory
+[2/17] tests/template-benchmarks.spec.ts:46:5 › pro-review: real content, no page errors or horizontal overflow at 1440
+[3/17] tests/template-benchmarks.spec.ts:46:5 › pro-project: real content, no page errors or horizontal overflow at 1440
+[4/17] tests/template-benchmarks.spec.ts:46:5 › pro-launch: real content, no page errors or horizontal overflow at 1440
+[5/17] tests/template-benchmarks.spec.ts:46:5 › pro-tour: real content, no page errors or horizontal overflow at 1440
+[6/17] tests/template-benchmarks.spec.ts:46:5 › pro-film: real content, no page errors or horizontal overflow at 1440
+[7/17] tests/template-benchmarks.spec.ts:46:5 › pro-cues: real content, no page errors or horizontal overflow at 1440
+[8/17] tests/template-benchmarks.spec.ts:46:5 › pro-cost: real content, no page errors or horizontal overflow at 1440
+[9/17] tests/template-benchmarks.spec.ts:46:5 › pro-config: real content, no page errors or horizontal overflow at 1440
+[10/17] tests/template-benchmarks.spec.ts:46:5 › pro-review: real content, no page errors or horizontal overflow at 390
+[11/17] tests/template-benchmarks.spec.ts:46:5 › pro-project: real content, no page errors or horizontal overflow at 390
+[12/17] tests/template-benchmarks.spec.ts:46:5 › pro-launch: real content, no page errors or horizontal overflow at 390
+[13/17] tests/template-benchmarks.spec.ts:46:5 › pro-tour: real content, no page errors or horizontal overflow at 390
+[14/17] tests/template-benchmarks.spec.ts:46:5 › pro-film: real content, no page errors or horizontal overflow at 390
+[15/17] tests/template-benchmarks.spec.ts:46:5 › pro-cues: real content, no page errors or horizontal overflow at 390
+[16/17] tests/template-benchmarks.spec.ts:46:5 › pro-cost: real content, no page errors or horizontal overflow at 390
+[17/17] tests/template-benchmarks.spec.ts:46:5 › pro-config: real content, no page errors or horizontal overflow at 390
+  17 passed (1.8m)

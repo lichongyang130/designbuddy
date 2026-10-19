@@ -22,7 +22,9 @@
     "test:acceptance": "pnpm exec tsc -p server/tsconfig.local.json && node --test scripts/acceptance/run-acceptance.test.mjs",
     "acceptance:run": "node scripts/acceptance/run-acceptance.mjs",
     "test:scripts": "pnpm exec tsc -p server/tsconfig.local.json && node --test scripts/verify-formula-compat.test.mjs scripts/acceptance/run-acceptance.test.mjs scripts/ocr-accuracy-benchmark.test.mjs",
-    "test:presentation": "corepack pnpm exec tsc -p server/tsconfig.local.json && node --test --test-concurrency=1 server/skills/presentation*.test.cjs"
+    "test:presentation": "corepack pnpm exec tsc -p server/tsconfig.local.json && node --test --test-concurrency=1 server/skills/presentation*.test.cjs",
+    "templates:build": "pnpm exec tsc -p server/tsconfig.local.json && node scripts/generate-template-benchmarks.cjs && node scripts/audit-template-readiness.cjs",
+    "test:templates": "pnpm exec tsc -p server/tsconfig.local.json && node --test scripts/template-benchmarks.test.cjs"
   },
   "packageManager": "pnpm@9.0.0",
   "workspaces": [

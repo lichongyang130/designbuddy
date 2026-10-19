@@ -1,0 +1,4436 @@
+{
+  "schemaVersion": 1,
+  "version": "2026.10.20-1",
+  "method": "Static source inventory. Capability claims do not constitute complete commercial acceptance.",
+  "summary": {
+    "registered": 54,
+    "legacy": 46,
+    "newBenchmarks": 8,
+    "catalog": 130,
+    "industryCategories": 19,
+    "descriptorCount": 3120,
+    "uniquePageNameSequences": 1
+  },
+  "registered": [
+    {
+      "id": "pro-review",
+      "name": "NORTH · 季度经营复盘",
+      "category": "幻灯片",
+      "exports": "PPTX / PDF / JSON",
+      "source": "shared/commercialTemplates.ts:benchmarkTemplates",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "可运行工作区，证据见验证记录",
+        "editing": "本地编辑/恢复/副本及授权云快照",
+        "exports": "PPTX / PDF / JSON"
+      },
+      "license": {
+        "status": "declared-original-with-exceptions",
+        "content": "CC0-1.0",
+        "font": "Noto Sans SC / SIL OFL",
+        "code": "原代码和依赖许可不变",
+        "source": "apps/web/public/template-benchmarks/README.md"
+      },
+      "openReviewItems": [
+        "用户业务与视觉验收",
+        "目标软件/设备编辑复核",
+        "实际品牌与数据替换后的权利复核"
+      ],
+      "commercialApproval": false,
+      "stage": "本批实现",
+      "dataMode": "原创/示例内容",
+      "review": "实现与导出证据见验证记录；业务验收待审"
+    },
+    {
+      "id": "pro-project",
+      "name": "FIELDNOTE · 项目实施方案",
+      "category": "文档",
+      "exports": "DOCX / PDF / JSON",
+      "source": "shared/commercialTemplates.ts:benchmarkTemplates",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "可运行工作区，证据见验证记录",
+        "editing": "本地编辑/恢复/副本及授权云快照",
+        "exports": "DOCX / PDF / JSON"
+      },
+      "license": {
+        "status": "declared-original-with-exceptions",
+        "content": "CC0-1.0",
+        "font": "Noto Sans SC / SIL OFL",
+        "code": "原代码和依赖许可不变",
+        "source": "apps/web/public/template-benchmarks/README.md"
+      },
+      "openReviewItems": [
+        "用户业务与视觉验收",
+        "目标软件/设备编辑复核",
+        "实际品牌与数据替换后的权利复核"
+      ],
+      "commercialApproval": false,
+      "stage": "本批实现",
+      "dataMode": "原创/示例内容",
+      "review": "实现与导出证据见验证记录；业务验收待审"
+    },
+    {
+      "id": "pro-launch",
+      "name": "ORBIT · 新品发布视觉",
+      "category": "图片",
+      "exports": "SVG / PNG / ZIP",
+      "source": "shared/commercialTemplates.ts:benchmarkTemplates",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "可运行工作区，证据见验证记录",
+        "editing": "本地编辑/恢复/副本及授权云快照",
+        "exports": "SVG / PNG / ZIP"
+      },
+      "license": {
+        "status": "declared-original-with-exceptions",
+        "content": "CC0-1.0",
+        "font": "Noto Sans SC / SIL OFL",
+        "code": "原代码和依赖许可不变",
+        "source": "apps/web/public/template-benchmarks/README.md"
+      },
+      "openReviewItems": [
+        "用户业务与视觉验收",
+        "目标软件/设备编辑复核",
+        "实际品牌与数据替换后的权利复核"
+      ],
+      "commercialApproval": false,
+      "stage": "本批实现",
+      "dataMode": "原创/示例内容",
+      "review": "实现与导出证据见验证记录；业务验收待审"
+    },
+    {
+      "id": "pro-tour",
+      "name": "WAYFINDER · 产品上手导览",
+      "category": "HyperFrames",
+      "exports": "交互 HTML / JSON",
+      "source": "shared/commercialTemplates.ts:benchmarkTemplates",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "可运行工作区，证据见验证记录",
+        "editing": "本地编辑/恢复/副本及授权云快照",
+        "exports": "交互 HTML / JSON"
+      },
+      "license": {
+        "status": "declared-original-with-exceptions",
+        "content": "CC0-1.0",
+        "font": "Noto Sans SC / SIL OFL",
+        "code": "原代码和依赖许可不变",
+        "source": "apps/web/public/template-benchmarks/README.md"
+      },
+      "openReviewItems": [
+        "用户业务与视觉验收",
+        "目标软件/设备编辑复核",
+        "实际品牌与数据替换后的权利复核"
+      ],
+      "commercialApproval": false,
+      "stage": "本批实现",
+      "dataMode": "原创/示例内容",
+      "review": "实现与导出证据见验证记录；业务验收待审"
+    },
+    {
+      "id": "pro-film",
+      "name": "FORM / FUNCTION · 产品短片",
+      "category": "视频",
+      "exports": "MP4 / VTT / 分镜 JSON",
+      "source": "shared/commercialTemplates.ts:benchmarkTemplates",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "可运行工作区，证据见验证记录",
+        "editing": "本地编辑/恢复/副本及授权云快照",
+        "exports": "MP4 / VTT / 分镜 JSON"
+      },
+      "license": {
+        "status": "declared-original-with-exceptions",
+        "content": "CC0-1.0",
+        "font": "Noto Sans SC / SIL OFL",
+        "code": "原代码和依赖许可不变",
+        "source": "apps/web/public/template-benchmarks/README.md"
+      },
+      "openReviewItems": [
+        "用户业务与视觉验收",
+        "目标软件/设备编辑复核",
+        "实际品牌与数据替换后的权利复核"
+      ],
+      "commercialApproval": false,
+      "stage": "本批实现",
+      "dataMode": "原创/示例内容",
+      "review": "实现与导出证据见验证记录；业务验收待审"
+    },
+    {
+      "id": "pro-cues",
+      "name": "SIGNAL · 产品提示音",
+      "category": "音频",
+      "exports": "WAV / ZIP / 参数 JSON",
+      "source": "shared/commercialTemplates.ts:benchmarkTemplates",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "可运行工作区，证据见验证记录",
+        "editing": "本地编辑/恢复/副本及授权云快照",
+        "exports": "WAV / ZIP / 参数 JSON"
+      },
+      "license": {
+        "status": "declared-original-with-exceptions",
+        "content": "CC0-1.0",
+        "font": "Noto Sans SC / SIL OFL",
+        "code": "原代码和依赖许可不变",
+        "source": "apps/web/public/template-benchmarks/README.md"
+      },
+      "openReviewItems": [
+        "用户业务与视觉验收",
+        "目标软件/设备编辑复核",
+        "实际品牌与数据替换后的权利复核"
+      ],
+      "commercialApproval": false,
+      "stage": "本批实现",
+      "dataMode": "原创/示例内容",
+      "review": "实现与导出证据见验证记录；业务验收待审"
+    },
+    {
+      "id": "pro-cost",
+      "name": "LEDGER · 项目成本测算",
+      "category": "实时产物",
+      "exports": "HTML / CSV / JSON",
+      "source": "shared/commercialTemplates.ts:benchmarkTemplates",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "可运行工作区，证据见验证记录",
+        "editing": "本地编辑/恢复/副本及授权云快照",
+        "exports": "HTML / CSV / JSON"
+      },
+      "license": {
+        "status": "declared-original-with-exceptions",
+        "content": "CC0-1.0",
+        "font": "Noto Sans SC / SIL OFL",
+        "code": "原代码和依赖许可不变",
+        "source": "apps/web/public/template-benchmarks/README.md"
+      },
+      "openReviewItems": [
+        "用户业务与视觉验收",
+        "目标软件/设备编辑复核",
+        "实际品牌与数据替换后的权利复核"
+      ],
+      "commercialApproval": false,
+      "stage": "本批实现",
+      "dataMode": "本地计算",
+      "review": "实现与导出证据见验证记录；业务验收待审"
+    },
+    {
+      "id": "pro-config",
+      "name": "OBJECT · 三维产品选配",
+      "category": "WebGL",
+      "exports": "WebGL HTML / OBJ / JSON",
+      "source": "shared/commercialTemplates.ts:benchmarkTemplates",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "可运行工作区，证据见验证记录",
+        "editing": "本地编辑/恢复/副本及授权云快照",
+        "exports": "WebGL HTML / OBJ / JSON"
+      },
+      "license": {
+        "status": "declared-original-with-exceptions",
+        "content": "CC0-1.0",
+        "font": "Noto Sans SC / SIL OFL",
+        "code": "原代码和依赖许可不变",
+        "source": "apps/web/public/template-benchmarks/README.md"
+      },
+      "openReviewItems": [
+        "用户业务与视觉验收",
+        "目标软件/设备编辑复核",
+        "实际品牌与数据替换后的权利复核"
+      ],
+      "commercialApproval": false,
+      "stage": "本批实现",
+      "dataMode": "原创/示例内容",
+      "review": "实现与导出证据见验证记录；业务验收待审"
+    },
+    {
+      "id": "welcome-01",
+      "name": "经典留白",
+      "category": "图片",
+      "exports": "PNG / 设计参考",
+      "source": "apps/web/src/inspiration/welcomeTemplates.ts",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "PNG / 设计参考"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "welcome-02",
+      "name": "暖白书页",
+      "category": "图片",
+      "exports": "PNG / 设计参考",
+      "source": "apps/web/src/inspiration/welcomeTemplates.ts",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "PNG / 设计参考"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "welcome-03",
+      "name": "暗夜画廊",
+      "category": "图片",
+      "exports": "PNG / 设计参考",
+      "source": "apps/web/src/inspiration/welcomeTemplates.ts",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "PNG / 设计参考"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "welcome-04",
+      "name": "苔绿工作室",
+      "category": "图片",
+      "exports": "PNG / 设计参考",
+      "source": "apps/web/src/inspiration/welcomeTemplates.ts",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "PNG / 设计参考"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "welcome-05",
+      "name": "紫色灵感",
+      "category": "图片",
+      "exports": "PNG / 设计参考",
+      "source": "apps/web/src/inspiration/welcomeTemplates.ts",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "PNG / 设计参考"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "welcome-06",
+      "name": "编辑部",
+      "category": "图片",
+      "exports": "PNG / 设计参考",
+      "source": "apps/web/src/inspiration/welcomeTemplates.ts",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "PNG / 设计参考"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "welcome-07",
+      "name": "沉浸画廊",
+      "category": "图片",
+      "exports": "PNG / 设计参考",
+      "source": "apps/web/src/inspiration/welcomeTemplates.ts",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "PNG / 设计参考"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "welcome-08",
+      "name": "极简圆窗",
+      "category": "图片",
+      "exports": "PNG / 设计参考",
+      "source": "apps/web/src/inspiration/welcomeTemplates.ts",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "PNG / 设计参考"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "welcome-09",
+      "name": "横幅展映",
+      "category": "图片",
+      "exports": "PNG / 设计参考",
+      "source": "apps/web/src/inspiration/welcomeTemplates.ts",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "PNG / 设计参考"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "welcome-10",
+      "name": "创作序章",
+      "category": "图片",
+      "exports": "PNG / 设计参考",
+      "source": "apps/web/src/inspiration/welcomeTemplates.ts",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "PNG / 设计参考"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "welcome-11",
+      "name": "柔粉拼贴",
+      "category": "图片",
+      "exports": "PNG / 设计参考",
+      "source": "apps/web/src/inspiration/welcomeTemplates.ts",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "PNG / 设计参考"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "welcome-12",
+      "name": "朱砂东方",
+      "category": "图片",
+      "exports": "PNG / 设计参考",
+      "source": "apps/web/src/inspiration/welcomeTemplates.ts",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "PNG / 设计参考"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "welcome-13",
+      "name": "蓝图实验室",
+      "category": "图片",
+      "exports": "PNG / 设计参考",
+      "source": "apps/web/src/inspiration/welcomeTemplates.ts",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "PNG / 设计参考"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "welcome-14",
+      "name": "漂浮窗口",
+      "category": "图片",
+      "exports": "PNG / 设计参考",
+      "source": "apps/web/src/inspiration/welcomeTemplates.ts",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "PNG / 设计参考"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "welcome-15",
+      "name": "柔光主推",
+      "category": "图片",
+      "exports": "PNG / 设计参考",
+      "source": "apps/web/src/inspiration/welcomeTemplates.ts",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "PNG / 设计参考"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "word-pro",
+      "category": "文档",
+      "name": "Word专业排版 · 真实分页与有限修复",
+      "exports": "DOCX / PDF",
+      "source": "apps/web/src/inspiration/samples/shared.tsx:samples",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "DOCX / PDF"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "content-director",
+      "category": "幻灯片",
+      "name": "内容导演 · 让表达由证据决定",
+      "exports": "PPTX / PDF",
+      "source": "apps/web/src/inspiration/samples/shared.tsx:samples",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "PPTX / PDF"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "visual-directions",
+      "category": "幻灯片",
+      "name": "视觉叙事 · 三种艺术方向",
+      "exports": "PPTX / PDF",
+      "source": "apps/web/src/inspiration/samples/shared.tsx:samples",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "PPTX / PDF"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "leader-decision",
+      "category": "幻灯片",
+      "name": "领导决策汇报 · PPT引擎试点建议",
+      "exports": "PPTX / PDF",
+      "source": "apps/web/src/inspiration/samples/shared.tsx:samples",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "PPTX / PDF"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "travel",
+      "category": "原型",
+      "name": "慢游 · 城市旅行预订",
+      "exports": "交互原型",
+      "source": "apps/web/src/inspiration/samples/shared.tsx:samples",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "交互原型"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "luma",
+      "category": "幻灯片",
+      "name": "LUMA · 影像工作台发布",
+      "exports": "PPTX 演示文稿",
+      "source": "apps/web/src/inspiration/samples/shared.tsx:samples",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "PPTX 演示文稿"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "research",
+      "category": "文档",
+      "name": "开放影像 · 多尺度结构研究",
+      "exports": "分页研究报告",
+      "source": "apps/web/src/inspiration/samples/shared.tsx:samples",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "分页研究报告"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "chishan",
+      "category": "图片",
+      "name": "迟山 · 山野咖啡视觉系统",
+      "exports": "SVG / PNG 图片集",
+      "source": "apps/web/src/inspiration/samples/shared.tsx:samples",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "SVG / PNG 图片集"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "museum",
+      "category": "原型",
+      "name": "拾光 · 城市展馆预约",
+      "exports": "展馆预约原型",
+      "source": "apps/web/src/inspiration/samples/shared.tsx:samples",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "展馆预约原型"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "city",
+      "category": "幻灯片",
+      "name": "WALK · 城市漫步提案",
+      "exports": "PPTX 策划提案",
+      "source": "apps/web/src/inspiration/samples/shared.tsx:samples",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "PPTX 策划提案"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "handbook",
+      "category": "文档",
+      "name": "出发之前 · 旅行行动手册",
+      "exports": "A4 出行手册",
+      "source": "apps/web/src/inspiration/samples/shared.tsx:samples",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "A4 出行手册"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "nature",
+      "category": "图片",
+      "name": "野生来信 · 自然摄影海报集",
+      "exports": "SVG / PNG 摄影海报",
+      "source": "apps/web/src/inspiration/samples/shared.tsx:samples",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "SVG / PNG 摄影海报"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "hyperframes",
+      "category": "HyperFrames",
+      "name": "NEXT FRAME · 品牌动效分镜",
+      "exports": "HTML / CSS 动效",
+      "source": "apps/web/src/inspiration/samples/shared.tsx:samples",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "HTML / CSS 动效"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "film",
+      "category": "视频",
+      "name": "LAKESIDE · 慢下来的一天",
+      "exports": "MP4 / VTT 字幕",
+      "source": "apps/web/src/inspiration/samples/shared.tsx:samples",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "MP4 / VTT 字幕"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "sound",
+      "category": "音频",
+      "name": "SOFT SIGNALS · 声音标识实验",
+      "exports": "WAV / PCM 音频",
+      "source": "apps/web/src/inspiration/samples/shared.tsx:samples",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "WAV / PCM 音频"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "live",
+      "category": "实时产物",
+      "name": "SCOPE · 实时报价工作台",
+      "exports": "交互 HTML / CSV",
+      "source": "apps/web/src/inspiration/samples/shared.tsx:samples",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "交互 HTML / CSV"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "本地计算",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "webgl",
+      "category": "WebGL",
+      "name": "FORM · 材质与光",
+      "exports": "WebGL HTML / OBJ",
+      "source": "apps/web/src/inspiration/samples/shared.tsx:samples",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "WebGL HTML / OBJ"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "forme",
+      "category": "原型",
+      "name": "FORME · 家具选配与空间采购",
+      "exports": "家具采购原型 / CSV / HTML",
+      "source": "apps/web/src/inspiration/samples/shared.tsx:samples",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "家具采购原型 / CSV / HTML"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "atelier",
+      "category": "原型",
+      "name": "ATELIER · 独立服饰订制",
+      "exports": "订制原型 / SVG / CSV / HTML",
+      "source": "apps/web/src/inspiration/samples/shared.tsx:samples",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "订制原型 / SVG / CSV / HTML"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "roots",
+      "category": "原型",
+      "name": "ROOTS · 植物与花园规划",
+      "exports": "花园原型 / SVG / CSV / HTML",
+      "source": "apps/web/src/inspiration/samples/shared.tsx:samples",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "花园原型 / SVG / CSV / HTML"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "daylight",
+      "category": "原型",
+      "name": "DAYLIGHT · 联合办公空间",
+      "exports": "空间原型 / ICS / SVG / HTML",
+      "source": "apps/web/src/inspiration/samples/shared.tsx:samples",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "空间原型 / ICS / SVG / HTML"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "tide",
+      "category": "原型",
+      "name": "TIDE · 帆船俱乐部会员",
+      "exports": "会员原型 / SVG / CSV / HTML",
+      "source": "apps/web/src/inspiration/samples/shared.tsx:samples",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "会员原型 / SVG / CSV / HTML"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "morrow",
+      "category": "原型",
+      "name": "MORROW · 精品咖啡订阅",
+      "exports": "订阅原型 / SVG / CSV / HTML",
+      "source": "apps/web/src/inspiration/samples/shared.tsx:samples",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "订阅原型 / SVG / CSV / HTML"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "hf-tour",
+      "category": "HyperFrames",
+      "name": "SPOTLIGHT · 新功能分帧导览",
+      "exports": "HTML 分帧导览",
+      "source": "apps/web/src/inspiration/samples/shared.tsx:samples",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "HTML 分帧导览"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "hf-story",
+      "category": "HyperFrames",
+      "name": "RISE · 一图读懂数据故事",
+      "exports": "HTML 数据故事",
+      "source": "apps/web/src/inspiration/samples/shared.tsx:samples",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "HTML 数据故事"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "hf-quest",
+      "category": "HyperFrames",
+      "name": "CROSSROADS · 分支剧情",
+      "exports": "HTML 分支剧情",
+      "source": "apps/web/src/inspiration/samples/shared.tsx:samples",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "HTML 分支剧情"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "hf-lesson",
+      "category": "HyperFrames",
+      "name": "SPARK · 五分钟微课",
+      "exports": "HTML 微课",
+      "source": "apps/web/src/inspiration/samples/shared.tsx:samples",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "HTML 微课"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "原创/示例内容",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "live-board",
+      "category": "实时产物",
+      "name": "PULSE · 实时数据大屏",
+      "exports": "实时看板 / CSV",
+      "source": "apps/web/src/inspiration/samples/shared.tsx:samples",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "实时看板 / CSV"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "本地/模拟数据",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "live-event",
+      "category": "实时产物",
+      "name": "MOMENT · 发布会倒计时",
+      "exports": "落地页 / CSV",
+      "source": "apps/web/src/inspiration/samples/shared.tsx:samples",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "落地页 / CSV"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "本地/模拟数据",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "live-form",
+      "category": "实时产物",
+      "name": "VOICE · 实时问卷",
+      "exports": "问卷 / 实时统计",
+      "source": "apps/web/src/inspiration/samples/shared.tsx:samples",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "问卷 / 实时统计"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "本地/模拟数据",
+      "review": "已有能力声明；待本轮逐套复核"
+    },
+    {
+      "id": "live-status",
+      "category": "实时产物",
+      "name": "STEADY · 服务状态页",
+      "exports": "状态页 / 事件线",
+      "source": "apps/web/src/inspiration/samples/shared.tsx:samples",
+      "duplicateReview": "ID 唯一已检查；不把源码登记或页面数量当作视觉/业务独立性认证",
+      "capabilities": {
+        "preview": "现有入口；本轮逐套动态复核待办",
+        "editing": "现有能力待逐套复核",
+        "exports": "状态页 / 事件线"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "既有素材声明需逐套复核，不推定全目录同一许可"
+      },
+      "openReviewItems": [
+        "逐套内容和视觉缺陷核查",
+        "逐套编辑与导出实测",
+        "素材来源和许可核对"
+      ],
+      "commercialApproval": false,
+      "stage": "既有模板",
+      "dataMode": "本地/模拟数据",
+      "review": "已有能力声明；待本轮逐套复核"
+    }
+  ],
+  "catalog": [
+    {
+      "id": "tpl-01",
+      "name": "SaaS 营销官网",
+      "category": "marketing",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-02",
+      "name": "AI 产品官网",
+      "category": "marketing",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-03",
+      "name": "电商商店",
+      "category": "commerce",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-04",
+      "name": "品牌商品详情",
+      "category": "commerce",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-05",
+      "name": "分析仪表盘",
+      "category": "dashboard",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-06",
+      "name": "项目管理工作台",
+      "category": "productivity",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-07",
+      "name": "CRM 客户管理",
+      "category": "productivity",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-08",
+      "name": "预约与排期",
+      "category": "service",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-09",
+      "name": "餐厅订位",
+      "category": "service",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-10",
+      "name": "旅行预订",
+      "category": "travel",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-11",
+      "name": "房地产展示",
+      "category": "commerce",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-12",
+      "name": "在线教育平台",
+      "category": "education",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-13",
+      "name": "作品集网站",
+      "category": "portfolio",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-14",
+      "name": "创意作品画廊",
+      "category": "portfolio",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-15",
+      "name": "移动银行",
+      "category": "finance",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-16",
+      "name": "健康管理",
+      "category": "health",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-17",
+      "name": "招聘与求职",
+      "category": "service",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-18",
+      "name": "社区论坛",
+      "category": "community",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-19",
+      "name": "知识库与文档",
+      "category": "productivity",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-20",
+      "name": "社交内容应用",
+      "category": "community",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-21",
+      "name": "活动票务",
+      "category": "service",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-22",
+      "name": "物流订单中心",
+      "category": "dashboard",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-23",
+      "name": "开发者 API 控制台",
+      "category": "developer",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-24",
+      "name": "团队协作聊天",
+      "category": "productivity",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-25",
+      "name": "播客与音频",
+      "category": "media",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-26",
+      "name": "视频创作工作室",
+      "category": "media",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-27",
+      "name": "数据表格工作台",
+      "category": "dashboard",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-28",
+      "name": "设计系统文档站",
+      "category": "developer",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-29",
+      "name": "活动报名落地页",
+      "category": "marketing",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-30",
+      "name": "订阅与账单门户",
+      "category": "finance",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-031",
+      "name": "企业 HR 门户",
+      "category": "productivity",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-032",
+      "name": "供应商采购平台",
+      "category": "commerce",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-033",
+      "name": "保险服务门户",
+      "category": "finance",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-034",
+      "name": "非营利组织官网",
+      "category": "marketing",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-035",
+      "name": "活动运营后台",
+      "category": "dashboard",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-036",
+      "name": "智能家居控制台",
+      "category": "dashboard",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-037",
+      "name": "车队管理平台",
+      "category": "dashboard",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-038",
+      "name": "库存与仓储",
+      "category": "dashboard",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-039",
+      "name": "法律服务门户",
+      "category": "service",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-040",
+      "name": "医疗预约平台",
+      "category": "health",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-041",
+      "name": "宠物护理服务",
+      "category": "service",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-042",
+      "name": "健身训练应用",
+      "category": "health",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-043",
+      "name": "食谱与餐单规划",
+      "category": "lifestyle",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-044",
+      "name": "可持续品牌商城",
+      "category": "commerce",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-045",
+      "name": "众筹项目页",
+      "category": "commerce",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-046",
+      "name": "采购管理工作台",
+      "category": "dashboard",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-047",
+      "name": "财务报销系统",
+      "category": "finance",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-048",
+      "name": "客户支持中心",
+      "category": "support",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-049",
+      "name": "远程团队门户",
+      "category": "productivity",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-050",
+      "name": "在线简历构建器",
+      "category": "service",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-051",
+      "name": "设计反馈平台",
+      "category": "design",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-052",
+      "name": "营销活动管理",
+      "category": "marketing",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-053",
+      "name": "内容编辑后台",
+      "category": "content",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-054",
+      "name": "社区会员门户",
+      "category": "community",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-055",
+      "name": "客户成功工作台",
+      "category": "productivity",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-056",
+      "name": "物流司机应用",
+      "category": "service",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-057",
+      "name": "门店运营后台",
+      "category": "dashboard",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-058",
+      "name": "餐饮点单应用",
+      "category": "commerce",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-059",
+      "name": "药房管理门户",
+      "category": "health",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-060",
+      "name": "患者健康门户",
+      "category": "health",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-061",
+      "name": "学习管理后台",
+      "category": "education",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-062",
+      "name": "招聘管理 ATS",
+      "category": "productivity",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-063",
+      "name": "员工自助门户",
+      "category": "productivity",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-064",
+      "name": "知识问答社区",
+      "category": "community",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-065",
+      "name": "企业搜索门户",
+      "category": "productivity",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-066",
+      "name": "活动场地预订",
+      "category": "service",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-067",
+      "name": "车辆租赁平台",
+      "category": "travel",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-068",
+      "name": "旅游行程规划",
+      "category": "travel",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-069",
+      "name": "会员订阅管理",
+      "category": "finance",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-070",
+      "name": "个人预算应用",
+      "category": "finance",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-071",
+      "name": "加密资产观察台",
+      "category": "dashboard",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-072",
+      "name": "内容创作者后台",
+      "category": "media",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-073",
+      "name": "摄影师客户画廊",
+      "category": "portfolio",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-074",
+      "name": "音乐活动平台",
+      "category": "media",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-075",
+      "name": "在线书店",
+      "category": "commerce",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-076",
+      "name": "家具家居商城",
+      "category": "commerce",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-077",
+      "name": "时尚品牌商店",
+      "category": "commerce",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-078",
+      "name": "美妆个护商城",
+      "category": "commerce",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-079",
+      "name": "数字产品商店",
+      "category": "commerce",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-080",
+      "name": "企业 API 门户",
+      "category": "developer",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-081",
+      "name": "云资源控制台",
+      "category": "dashboard",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-082",
+      "name": "网站监控平台",
+      "category": "dashboard",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-083",
+      "name": "安全事件中心",
+      "category": "dashboard",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-084",
+      "name": "产品路线图工具",
+      "category": "productivity",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-085",
+      "name": "敏捷冲刺看板",
+      "category": "productivity",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-086",
+      "name": "会议协作空间",
+      "category": "productivity",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-087",
+      "name": "合同审批平台",
+      "category": "service",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-088",
+      "name": "电子签名门户",
+      "category": "service",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-089",
+      "name": "慈善捐赠平台",
+      "category": "marketing",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-090",
+      "name": "志愿者管理系统",
+      "category": "productivity",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-091",
+      "name": "汽车销售展示",
+      "category": "commerce",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-092",
+      "name": "工业设备监控",
+      "category": "dashboard",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-093",
+      "name": "建筑项目管理",
+      "category": "dashboard",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-094",
+      "name": "物业租户门户",
+      "category": "service",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-095",
+      "name": "共享办公预订",
+      "category": "service",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-096",
+      "name": "宠物领养平台",
+      "category": "community",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-097",
+      "name": "婚礼活动规划",
+      "category": "service",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-098",
+      "name": "个人目标追踪",
+      "category": "lifestyle",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-099",
+      "name": "冥想与睡眠应用",
+      "category": "health",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-100",
+      "name": "家庭食谱管理",
+      "category": "lifestyle",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-101",
+      "name": "智能园艺助手",
+      "category": "lifestyle",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-102",
+      "name": "电子竞技赛事平台",
+      "category": "media",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-103",
+      "name": "体育俱乐部会员",
+      "category": "community",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-104",
+      "name": "在线语言学习",
+      "category": "education",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-105",
+      "name": "考试备考平台",
+      "category": "education",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-106",
+      "name": "科研项目门户",
+      "category": "education",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-107",
+      "name": "开源项目展示",
+      "category": "developer",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-108",
+      "name": "API 使用分析",
+      "category": "dashboard",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-109",
+      "name": "数据目录平台",
+      "category": "data",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-110",
+      "name": "实验结果工作台",
+      "category": "data",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-111",
+      "name": "企业采购目录",
+      "category": "commerce",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-112",
+      "name": "B2B 批发门户",
+      "category": "commerce",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-113",
+      "name": "售后维修中心",
+      "category": "service",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-114",
+      "name": "客户忠诚度平台",
+      "category": "marketing",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-115",
+      "name": "优惠券活动中心",
+      "category": "marketing",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-116",
+      "name": "新闻编辑部工作台",
+      "category": "content",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-117",
+      "name": "播客节目管理",
+      "category": "media",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-118",
+      "name": "直播活动控制台",
+      "category": "media",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-119",
+      "name": "数字艺术收藏平台",
+      "category": "portfolio",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-120",
+      "name": "插画委托平台",
+      "category": "service",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-121",
+      "name": "建筑作品集",
+      "category": "portfolio",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-122",
+      "name": "品牌资产管理",
+      "category": "design",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-123",
+      "name": "设计审核门户",
+      "category": "design",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-124",
+      "name": "软件许可管理",
+      "category": "developer",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-125",
+      "name": "身份与访问管理",
+      "category": "security",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-126",
+      "name": "隐私偏好中心",
+      "category": "security",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-127",
+      "name": "供应链风险平台",
+      "category": "dashboard",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-128",
+      "name": "能源用量仪表盘",
+      "category": "dashboard",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-129",
+      "name": "碳排放管理",
+      "category": "dashboard",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    },
+    {
+      "id": "tpl-130",
+      "name": "智能制造控制台",
+      "category": "dashboard",
+      "source": "design-templates/catalog.json",
+      "duplicateReview": "与全部130系列具有相同页面名称序列；这是描述层去重信号，非独立页面已实现的证据",
+      "capabilities": {
+        "preview": "目录详情",
+        "editing": "待独立业务实现与验证",
+        "exports": "待逐套实现与验证"
+      },
+      "license": {
+        "status": "pending-per-asset-review",
+        "source": "此处只有描述登记，不替未提供的行业素材授权"
+      },
+      "commercialApproval": false,
+      "stage": "目录描述，不计为独立已验收成品",
+      "missing": [
+        "独立业务页面图",
+        "实际交互与异常状态证据",
+        "逐套导出/授权/验收记录"
+      ]
+    }
+  ]
+}

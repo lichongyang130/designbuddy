@@ -1,3 +1,7 @@
+import {
+  isNewBenchmark,
+  restoreBenchmark,
+} from "../../../../../shared/commercialTemplates";
 import { restore as restoreMorrow } from "./morrow/model";
 import { restore as restoreTide } from "./tide/model";
 import { restore as restoreDaylight } from "./daylight/model";
@@ -34,6 +38,8 @@ export function restoreSample<T extends object>(
   initial: T,
   raw: unknown,
 ): T {
+  if (isNewBenchmark(sample))
+    return restoreBenchmark(sample, raw) as unknown as T;
   if (sample === "morrow") return restoreMorrow(raw) as unknown as T;
   if (sample === "tide") return restoreTide(raw) as unknown as T;
   if (sample === "daylight") return restoreDaylight(raw) as unknown as T;
@@ -62,7 +68,13 @@ export function restoreSample<T extends object>(
       } else
         result[key] = value.slice(
           0,
-          sample.startsWith("welcome-") && key === "notes" ? 2000 : key === "message" ? 1000 : key === "reservation" ? 6000 : 120,
+          sample.startsWith("welcome-") && key === "notes"
+            ? 2000
+            : key === "message"
+              ? 1000
+              : key === "reservation"
+                ? 6000
+                : 120,
         );
     }
     if (typeof fallback === "number") {

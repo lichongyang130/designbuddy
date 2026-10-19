@@ -1,5 +1,15 @@
+import {
+  benchmarkTemplates,
+  isNewBenchmark,
+} from "../../../../shared/commercialTemplates";
+import { BenchmarkCover } from "./commercial/BenchmarkCover";
+import TemplateReadiness from "./commercial/TemplateReadiness";
 import WelcomeTemplate from "./samples/WelcomeTemplate";
-import { isWelcomeSample, welcomeTemplates, welcomeBase } from "./welcomeTemplates";
+import {
+  isWelcomeSample,
+  welcomeTemplates,
+  welcomeBase,
+} from "./welcomeTemplates";
 import { MorrowCover } from "./samples/morrow/MorrowCover";
 import { TideCover } from "./samples/tide/TideCover";
 import { DaylightCover } from "./samples/daylight/DaylightCover";
@@ -33,18 +43,32 @@ import BrandGallery, {
   BrandArtwork,
   NatureGallery,
 } from "./samples/BrandGallery";
-import GenericTemplate from './samples/GenericTemplate';
-import { drafts, samples, type SampleId, type DraftRecord } from './samples/shared';
+import GenericTemplate from "./samples/GenericTemplate";
+import {
+  drafts,
+  samples,
+  type SampleId,
+  type DraftRecord,
+} from "./samples/shared";
 import MuseumPrototype, { MuseumCover } from "./samples/MuseumPrototype";
 import { HandbookPaper } from "./samples/HandbookPaper";
 import { AICover, aiCoverIds } from "./samples/aiCovers";
 import { NatureArtwork } from "./samples/NatureArtwork";
 import "./samples/samples.css";
 import "./samples/expansion.css";
-const WordProReport=lazy(()=>import("./samples/WordProReport"));
-const ContentDirectorReport=lazy(()=>import("./samples/ContentDirectorReport"));
-const PresentationVisualGallery = lazy(() => import("./samples/PresentationVisualGallery"));
-const LeaderDecisionReport = lazy(() => import("./samples/LeaderDecisionReport"));
+const CommercialBenchmark = lazy(
+  () => import("./commercial/CommercialBenchmark"),
+);
+const WordProReport = lazy(() => import("./samples/WordProReport"));
+const ContentDirectorReport = lazy(
+  () => import("./samples/ContentDirectorReport"),
+);
+const PresentationVisualGallery = lazy(
+  () => import("./samples/PresentationVisualGallery"),
+);
+const LeaderDecisionReport = lazy(
+  () => import("./samples/LeaderDecisionReport"),
+);
 const MorrowPrototype = lazy(() => import("./samples/morrow/MorrowPrototype"));
 const TidePrototype = lazy(() => import("./samples/tide/TidePrototype"));
 const DaylightPrototype = lazy(
@@ -55,14 +79,38 @@ const AtelierPrototype = lazy(
   () => import("./samples/atelier/AtelierPrototype"),
 );
 const FormePrototype = lazy(() => import("./samples/forme/FormePrototype"));
-const HFTour = lazy(() => import("./samples/hyperframes/HyperFramesSet").then((m) => ({ default: m.HFTour })));
-const HFStory = lazy(() => import("./samples/hyperframes/HyperFramesSet").then((m) => ({ default: m.HFStory })));
-const HFQuest = lazy(() => import("./samples/hyperframes/HyperFramesPlay").then((m) => ({ default: m.HFQuest })));
-const HFLesson = lazy(() => import("./samples/hyperframes/HyperFramesPlay").then((m) => ({ default: m.HFLesson })));
-const LiveBoard = lazy(() => import("./samples/live/LiveSet").then((m) => ({ default: m.LiveBoard })));
-const LiveEvent = lazy(() => import("./samples/live/LiveSet").then((m) => ({ default: m.LiveEvent })));
-const LiveForm = lazy(() => import("./samples/live/LiveTools").then((m) => ({ default: m.LiveForm })));
-const LiveStatus = lazy(() => import("./samples/live/LiveTools").then((m) => ({ default: m.LiveStatus })));
+const HFTour = lazy(() =>
+  import("./samples/hyperframes/HyperFramesSet").then((m) => ({
+    default: m.HFTour,
+  })),
+);
+const HFStory = lazy(() =>
+  import("./samples/hyperframes/HyperFramesSet").then((m) => ({
+    default: m.HFStory,
+  })),
+);
+const HFQuest = lazy(() =>
+  import("./samples/hyperframes/HyperFramesPlay").then((m) => ({
+    default: m.HFQuest,
+  })),
+);
+const HFLesson = lazy(() =>
+  import("./samples/hyperframes/HyperFramesPlay").then((m) => ({
+    default: m.HFLesson,
+  })),
+);
+const LiveBoard = lazy(() =>
+  import("./samples/live/LiveSet").then((m) => ({ default: m.LiveBoard })),
+);
+const LiveEvent = lazy(() =>
+  import("./samples/live/LiveSet").then((m) => ({ default: m.LiveEvent })),
+);
+const LiveForm = lazy(() =>
+  import("./samples/live/LiveTools").then((m) => ({ default: m.LiveForm })),
+);
+const LiveStatus = lazy(() =>
+  import("./samples/live/LiveTools").then((m) => ({ default: m.LiveStatus })),
+);
 
 const StudioNineCover = kitCover("studio-nine");
 const WellspringCover = kitCover("wellspring");
@@ -84,12 +132,59 @@ const workCategories: { label: string; icon?: HomeIconName }[] = [
 ];
 
 function Preview({ id }: { id: SampleId }) {
-  const welcome=welcomeTemplates.find(t=>t.id===id);
-  if(welcome)return <div className="sample-preview" aria-hidden="true"><img src={`${welcomeBase}/thumb/${welcome.number}.webp?rev=2-final`} alt="" loading="lazy" style={{width:'100%',height:'100%',objectFit:'contain',background:'#eeeee7'}}/></div>;
+  if (isNewBenchmark(id)) return <BenchmarkCover id={id} />;
+  const welcome = welcomeTemplates.find((t) => t.id === id);
+  if (welcome)
+    return (
+      <div className="sample-preview" aria-hidden="true">
+        <img
+          src={`${welcomeBase}/thumb/${welcome.number}.webp?rev=2-final`}
+          alt=""
+          loading="lazy"
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "contain",
+            background: "#eeeee7",
+          }}
+        />
+      </div>
+    );
   return (
     <div className={`sample-preview preview-${id}`} aria-hidden="true">
-      {id === "word-pro" ? (<img src={`${import.meta.env.BASE_URL}word-examples/word-pro/business-report/pages/02.jpg`} alt="" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"top"}} loading="lazy" />) : id === "content-director" ? (<img src={`${import.meta.env.BASE_URL}presentation-examples/content-director/slides/07.jpg`} alt="" style={{width:"100%",height:"100%",objectFit:"cover"}} loading="lazy" />) : id === "visual-directions" ? (<img src={`${import.meta.env.BASE_URL}presentation-examples/visual-directions/brand-editorial/cover.jpg`} alt="" style={{width:"100%",height:"100%",objectFit:"cover"}} loading="lazy" />) : id === "leader-decision" ? (
-        <img src={`${import.meta.env.BASE_URL}presentation-examples/leader-decision/adaptive/cover.jpg`} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} loading="lazy" />
+      {id === "word-pro" ? (
+        <img
+          src={`${import.meta.env.BASE_URL}word-examples/word-pro/business-report/pages/02.jpg`}
+          alt=""
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            objectPosition: "top",
+          }}
+          loading="lazy"
+        />
+      ) : id === "content-director" ? (
+        <img
+          src={`${import.meta.env.BASE_URL}presentation-examples/content-director/slides/07.jpg`}
+          alt=""
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          loading="lazy"
+        />
+      ) : id === "visual-directions" ? (
+        <img
+          src={`${import.meta.env.BASE_URL}presentation-examples/visual-directions/brand-editorial/cover.jpg`}
+          alt=""
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          loading="lazy"
+        />
+      ) : id === "leader-decision" ? (
+        <img
+          src={`${import.meta.env.BASE_URL}presentation-examples/leader-decision/adaptive/cover.jpg`}
+          alt=""
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          loading="lazy"
+        />
       ) : (mediaIds as readonly string[]).includes(id) ? (
         <MediaCover id={id as (typeof mediaIds)[number]} />
       ) : id === "morrow" ? (
@@ -127,6 +222,8 @@ function Preview({ id }: { id: SampleId }) {
   );
 }
 export default function InspirationPage({ pathname }: { pathname: string }) {
+  const [benchmarksOnly, setBenchmarksOnly] = useState(false);
+  const [showReadiness, setShowReadiness] = useState(false);
   const [serverLibrary, setServerLibrary] = useState(false);
   const [category, choose] = useState("全部");
   const [query, search] = useState("");
@@ -146,8 +243,8 @@ export default function InspirationPage({ pathname }: { pathname: string }) {
         drafts().some((d) => d.id === draftId && d.sample === sample.id)));
   const viewers = {
     "leader-decision": LeaderDecisionReport,
-    "content-director":ContentDirectorReport,
-    "word-pro":WordProReport,
+    "content-director": ContentDirectorReport,
+    "word-pro": WordProReport,
     "visual-directions": PresentationVisualGallery,
     travel: TravelPrototype,
     luma: SlideDeck,
@@ -177,9 +274,16 @@ export default function InspirationPage({ pathname }: { pathname: string }) {
     "live-form": LiveForm,
     "live-status": LiveStatus,
   };
-  const Viewer = sample ? (isWelcomeSample(sample.id) ? WelcomeTemplate : viewers[sample.id as keyof typeof viewers]) : null;
+  const Viewer = sample
+    ? isNewBenchmark(sample.id)
+      ? CommercialBenchmark
+      : isWelcomeSample(sample.id)
+        ? WelcomeTemplate
+        : viewers[sample.id as keyof typeof viewers]
+    : null;
   const visible = samples.filter(
     (x) =>
+      (!benchmarksOnly || benchmarkTemplates.some((t) => t.id === x.id)) &&
       (category === "全部" || category === x.category) &&
       `${x.title}${x.description}`
         .toLowerCase()
@@ -213,7 +317,11 @@ export default function InspirationPage({ pathname }: { pathname: string }) {
               sample={sample.id}
               draft={draftId}
             >
-              <Viewer draftId={draftId} />
+              {sample && isNewBenchmark(sample.id) ? (
+                <CommercialBenchmark id={sample.id} draftId={draftId} />
+              ) : (
+                <Viewer draftId={draftId} />
+              )}
             </TemplateCloudProvider>
           </Suspense>
         ) : (
@@ -231,7 +339,7 @@ export default function InspirationPage({ pathname }: { pathname: string }) {
         <main className="samples-community" aria-label="灵感模版社区">
           <header className="samples-heading">
             <div>
-              <h1>社区</h1>
+              <h1>模板</h1>
               <p>
                 {samples.length}{" "}
                 套可体验作品，从文档与图片，到声音、动效和实时三维。
@@ -242,6 +350,31 @@ export default function InspirationPage({ pathname }: { pathname: string }) {
             </button>
             <button onClick={() => setServerLibrary(true)}>服务器作品</button>
           </header>
+          <section className="benchmark-collection">
+            <div>
+              <small>COMMERCIAL TEMPLATE LAB / 第一批</small>
+              <h2>先做好每一套，再扩展更多可能。</h2>
+              <p>
+                9 类标杆：8 套新作 + FORME
+                采购原型。样例、本地计算与真实服务分别标识；不以目录数量替代验收。
+              </p>
+            </div>
+            <div>
+              <button
+                aria-pressed={benchmarksOnly}
+                onClick={() => setBenchmarksOnly(!benchmarksOnly)}
+              >
+                {benchmarksOnly ? "查看全部模板" : "查看本批 9 类标杆"}
+              </button>
+              <button
+                aria-expanded={showReadiness}
+                onClick={() => setShowReadiness(!showReadiness)}
+              >
+                能力与缺口清单
+              </button>
+            </div>
+          </section>
+          {showReadiness && <TemplateReadiness />}
           <div className="samples-filters">
             <div role="group" aria-label="作品类型">
               {workCategories.map(({ label, icon }) => (
@@ -332,6 +465,7 @@ export default function InspirationPage({ pathname }: { pathname: string }) {
                   choose("全部");
                   search("");
                   showMine(false);
+                  setBenchmarksOnly(false);
                 }}
               >
                 查看全部作品
@@ -346,29 +480,32 @@ export default function InspirationPage({ pathname }: { pathname: string }) {
                 <b>原型</b>旅行预订、展馆预约与家具采购，20–24 个业务页面。
               </p>
               <p>
-                <b>幻灯片</b>产品发布、城市漫步，各20页可编辑PPTX。
+                <b>幻灯片</b>产品发布、经营复盘与决策汇报；页数按表达任务确定。
               </p>
               <p>
-                <b>文档</b>研究报告、出行手册，各20页可编辑A4文稿。
+                <b>文档</b>
+                研究报告、出行手册与实施方案；各自说明编辑及导出范围。
               </p>
               <p>
-                <b>图片</b>咖啡品牌、自然摄影，各20张SVG / PNG画板。
+                <b>图片</b>
+                品牌传播、摄影海报与欢迎页参考；区分矢量画板与静态图。
               </p>
               <p>
-                <b>HyperFrames</b>四段 HTML 动效分镜，编辑并离线播放。
+                <b>HyperFrames</b>
+                品牌分镜、分帧导览与互动教学，可编辑支持的内容并离线播放。
               </p>
               <p>
-                <b>视频与音频</b>真实 MP4 摄影剪辑、可调参数的原创 WAV 音序。
+                <b>视频与音频</b>
+                摄影剪辑、原创程序短片与合成音效；固定样片与可编辑参数分别标识。
               </p>
               <p>
-                <b>实时产物与 WebGL</b>本地报价计算器与原生三维材质场景。
+                <b>实时产物与 WebGL</b>
+                本地预算、模拟看板与三维选配；数据来源与服务边界逐套注明。
               </p>
             </div>
             <small>
-              原有八个样板使用各自的独立摄影素材；新增视频由 AI
-              概念摄影剪辑，不是实地拍摄。音频为原创程序合成；HyperFrames 栏目为
-              HTML
-              动效样板，未集成第三方引擎。所有作品均不自动播放或调用外部服务。
+              素材、模拟数据与编辑范围见各模板说明。本批新增内容不调用外部模型；既有摄影与新作程序图形分别标识。
+              下载成功不等于业务验收通过，真实支付、邮件、预约或多端实时服务需另行配置与验收。
             </small>
           </section>
         </main>

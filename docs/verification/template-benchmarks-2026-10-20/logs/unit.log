@@ -1,0 +1,70 @@
+TAP version 13
+# Subtest: inventory distinguishes 54 display entries from 130 catalog descriptions
+ok 1 - inventory distinguishes 54 display entries from 130 catalog descriptions
+  ---
+  duration_ms: 4.021113
+  type: 'test'
+  ...
+# Subtest: state restoration rejects malicious/invalid collections and scalar bounds
+ok 2 - state restoration rejects malicious/invalid collections and scalar bounds
+  ---
+  duration_ms: 1.712321
+  type: 'test'
+  ...
+# Subtest: cost model follows exact cent-based order and independent stress scenario
+ok 3 - cost model follows exact cent-based order and independent stress scenario
+  ---
+  duration_ms: 0.289416
+  type: 'test'
+  ...
+# Subtest: five cue WAVs contain distinct nonclipped PCM with truthful headers
+ok 4 - five cue WAVs contain distinct nonclipped PCM with truthful headers
+  ---
+  duration_ms: 32.741485
+  type: 'test'
+  ...
+# Subtest: HTML and SVG exports escape user input, source geometry is finite and indexed
+ok 5 - HTML and SVG exports escape user input, source geometry is finite and indexed
+  ---
+  duration_ms: 1.774881
+  type: 'test'
+  ...
+# Subtest: all committed generated asset hashes and lengths match
+ok 6 - all committed generated asset hashes and lengths match
+  ---
+  duration_ms: 12.151299
+  type: 'test'
+  ...
+# Subtest: native original PPTX has ten slides, notes and editable objects; PDF count matches
+ok 7 - native original PPTX has ten slides, notes and editable objects; PDF count matches
+  ---
+  duration_ms: 124.177542
+  type: 'test'
+  ...
+# Subtest: Word DOCX and same-source PDF preserve all eight substantive sections
+ok 8 - Word DOCX and same-source PDF preserve all eight substantive sections
+  ---
+  duration_ms: 36.310807
+  type: 'test'
+  ...
+# Subtest: encoded video decodes without errors with the configured local FFmpeg
+ok 9 - encoded video decodes without errors with the configured local FFmpeg
+  ---
+  duration_ms: 240.696523
+  type: 'test'
+  ...
+# Subtest: offline HTML carries a local CJK font and its complete redistribution license
+ok 10 - offline HTML carries a local CJK font and its complete redistribution license
+  ---
+  duration_ms: 25.409224
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 553.181505

@@ -1,0 +1,48 @@
+TAP version 13
+# (node:12084) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: real HTTP: sessions, durable accounts/projects/templates, isolation, CAS, CSRF, restart and honest failures
+ok 1 - real HTTP: sessions, durable accounts/projects/templates, isolation, CAS, CSRF, restart and honest failures
+  ---
+  duration_ms: 2842.192743
+  type: 'test'
+  ...
+# Subtest: canonical HTTPS origin is checked explicitly without trusting forwarded headers
+ok 2 - canonical HTTPS origin is checked explicitly without trusting forwarded headers
+  ---
+  duration_ms: 5.956745
+  type: 'test'
+  ...
+# Subtest: 15 welcome image template states persist with owner isolation and revision checks
+ok 3 - 15 welcome image template states persist with owner isolation and revision checks
+  ---
+  duration_ms: 1185.2401
+  type: 'test'
+  ...
+# Subtest: Arena HTTPS alias establishes a secure isolated session and rejects HTTP spoofing
+ok 4 - Arena HTTPS alias establishes a secure isolated session and rejects HTTP spoofing
+  ---
+  duration_ms: 1109.558656
+  type: 'test'
+  ...
+# Subtest: OAuth provider authorization redirects, safe next, invalid and one-time states (no token exchange)
+ok 5 - OAuth provider authorization redirects, safe next, invalid and one-time states (no token exchange)
+  ---
+  duration_ms: 813.337319
+  type: 'test'
+  ...
+# Subtest: OAuth availability is public read-only metadata, independent of stale or missing sessions
+ok 6 - OAuth availability is public read-only metadata, independent of stale or missing sessions
+  ---
+  duration_ms: 697.816868
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 6788.058435

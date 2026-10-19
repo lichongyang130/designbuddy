@@ -1,0 +1,16 @@
+
+Running 12 tests using 1 worker
+
+[1/12] tests/inspiration-forme.spec.ts:47:1 › FORME has 24 substantive navigable pages, five original images and no runtime errors
+[2/12] tests/inspiration-forme.spec.ts:76:1 › catalog search/filter/sort, favorites and capped comparison operate on actual products
+[3/12] tests/inspiration-forme.spec.ts:112:1 › procurement to simulated receipt: real prices, validation, immutable snapshot and cancellation
+[4/12] tests/inspiration-forme.spec.ts:161:1 › layout pointer/coordinate edits, doorway check, undo redo and named versions persist
+[5/12] tests/inspiration-forme.spec.ts:216:1 › copy isolation and own edits survive refresh
+[6/12] tests/inspiration-forme.spec.ts:236:1 › exports contain current prices, escaped text and real embedded photos, and run offline
+[7/12] tests/inspiration-forme.spec.ts:289:1 › aftercare, checklist and consultation create only editable local records
+[8/12] tests/inspiration-forme.spec.ts:319:1 › malformed storage recovers safely and quota errors do not fake a saved copy
+[9/12] tests/inspiration-forme.spec.ts:360:3 › all 24 pages have no outer overflow at 320px
+[10/12] tests/inspiration-forme.spec.ts:360:3 › all 24 pages have no outer overflow at 375px
+[11/12] tests/inspiration-forme.spec.ts:360:3 › all 24 pages have no outer overflow at 768px
+[12/12] tests/inspiration-forme.spec.ts:360:3 › all 24 pages have no outer overflow at 1440px
+  12 passed (1.1m)

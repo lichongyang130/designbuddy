@@ -1,0 +1,15 @@
+
+Running 11 tests using 1 worker
+
+[1/11] tests/template-benchmarks.spec.ts:72:1 › PPTX and DOCX downloads contain current edits and native editable text
+[2/11] tests/template-benchmarks.spec.ts:112:1 › campaign exports six distinct SVGs, current PNG and safely escaped user text
+[3/11] tests/template-benchmarks.spec.ts:135:1 › cost CSV and independent HTML reproduce live cent-based totals
+[4/11] tests/template-benchmarks.spec.ts:151:1 › guide export is self contained and completes all five steps with keyboard
+[5/11] tests/template-benchmarks.spec.ts:165:1 › audio exports actual WAVs; film is decodable with a 20-second duration
+[6/11] tests/template-benchmarks.spec.ts:204:1 › WebGL config exports geometry and a safe standalone page
+[7/11] tests/template-benchmarks.spec.ts:219:1 › new template cloud save/restore uses the real API
+[8/11] tests/template-benchmarks.spec.ts:240:1 › copy preserves edited configuration without mutating the original key
+[9/11] tests/template-benchmarks.spec.ts:257:1 › benchmark main area has no serious/critical axe violations and a keyboard path
+[10/11] tests/template-benchmarks.spec.ts:294:1 › all eight new IDs support authorized snapshots, stale CAS and isolation
+[11/11] tests/template-benchmarks.spec.ts:332:1 › standalone HTML loads embedded Chinese fonts with all network requests blocked
+  11 passed (1.3m)

@@ -1,3 +1,4 @@
+import { newBenchmarkIds } from "../../shared/commercialTemplates";
 import { ffmpegAvailable } from "./video-transcode";
 import { DatabaseSync } from "node:sqlite";
 import { mkdirSync } from "node:fs";
@@ -11,6 +12,7 @@ import {
 } from "node:crypto";
 
 const samples = new Set([
+  ...newBenchmarkIds,
   ...Array.from({ length: 15 }, (_, i) => `welcome-${String(i + 1).padStart(2, "0")}`),
   "travel",
   "museum",
