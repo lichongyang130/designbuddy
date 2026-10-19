@@ -1,0 +1,11 @@
+designbuddy.56juqingba.com {
+    encode zstd gzip
+    header {
+        X-Content-Type-Options nosniff
+        Referrer-Policy strict-origin-when-cross-origin
+        X-Frame-Options SAMEORIGIN
+    }
+    # Preserve Host for the backend's host and same-origin checks.
+    # Deliberately no access log: OAuth callback query strings contain codes.
+    reverse_proxy app:8787
+}

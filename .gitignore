@@ -33,3 +33,7 @@ coverage/
 
 # Local maintenance-only Python environment (font instance tooling)
 .venv/
+
+# Server deployment artifacts and private backups
+/releases/
+/backups/

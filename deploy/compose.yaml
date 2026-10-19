@@ -1,0 +1,52 @@
+name: designbuddy
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    image: designbuddy-server:local
+    restart: unless-stopped
+    init: true
+    env_file: .env
+    environment:
+      DESIGNBUDDY_HOST: 0.0.0.0
+      DESIGNBUDDY_PORT: "8787"
+      DESIGNBUDDY_RENDERER_DIR: /app/apps/web/dist
+      DESIGNBUDDY_ENABLE_LOCAL_AGENT: "false"
+      DESIGNBUDDY_STORAGE: sqlite
+      DESIGNBUDDY_SQLITE_PATH: /app/data/designbuddy.sqlite
+    volumes:
+      - app_data:/app/data
+      - app_cache:/app/.cache
+    # Internal only; no host port for the API/database.
+    expose:
+      - "8787"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    depends_on:
+      app:
+        condition: service_healthy
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+volumes:
+  app_data:
+  app_cache:
+  caddy_data:
+  caddy_config:
