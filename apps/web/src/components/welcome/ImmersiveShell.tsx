@@ -7,13 +7,21 @@ import lake from "../../assets/welcome/gallery-lake.webp";
 import { useWelcomeCopy, welcomeLanguages } from "./copy";
 import "./welcome.css";
 
-export default function ImmersiveShell({ children }: { children: ReactNode }) {
+export default function ImmersiveShell({
+  children,
+  variant = "welcome",
+}: {
+  children: ReactNode;
+  variant?: "welcome" | "auth";
+}) {
   const copy = useWelcomeCopy();
   const locale = usePreferences((s) => s.locale);
   const [error, setError] = useState("");
   return (
     <main
-      className="welcome-page"
+      className={
+        variant === "auth" ? "welcome-page welcome-page--auth" : "welcome-page"
+      }
       style={{
         backgroundImage: `linear-gradient(90deg,rgba(12,30,32,.22),rgba(12,30,32,.08)),url("${lake}")`,
       }}

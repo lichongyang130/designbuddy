@@ -155,7 +155,7 @@ export function AuthFormPage({
     }
   }
   return (
-    <ImmersiveShell>
+    <ImmersiveShell variant="auth">
       <a
         className="welcome-back"
         href={`/welcome?next=${encodeURIComponent(next)}`}
