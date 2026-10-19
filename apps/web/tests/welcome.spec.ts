@@ -3,17 +3,19 @@ import { GUEST_STORAGE } from "./auth-helpers";
 
 test.describe("immersive welcome", () => {
   test.use({ storageState: GUEST_STORAGE });
-  test("backend outage still permits the welcome and explicit local entry", async ({
+  test("backend outage still shows the latest login and permits explicit local entry", async ({
     page,
   }) => {
     await page.route("**/api/local/session", (route) =>
       route.fulfill({ status: 503, json: { error: "Backend unavailable" } }),
     );
     await page.goto("/");
+    await expect(page.getByRole("heading", { name: "欢迎回来" })).toBeVisible();
+    await expect(page.locator(".auth-mode-switch")).toBeVisible();
     await expect(
-      page.getByRole("heading", { name: "把灵感，带进现实。" }),
+      page.getByRole("button", { name: /无法加载登录选项/ }),
     ).toBeVisible();
-    await expect(page.getByRole("alert")).toContainText("无法加载");
+    await page.goto("/welcome");
     await page.getByRole("button", { name: /先逛逛工作台/ }).click();
     await expect(page.locator(".welcome-page")).toHaveCount(0);
   });

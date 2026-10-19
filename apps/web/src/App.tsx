@@ -538,10 +538,10 @@ export default function App() {
           正在确认登录状态…
         </div>
       );
-    if (identityFailed || !identity)
-      return <WelcomePage next={currentPath + window.location.search} onEnter={enterWorkspace} backendUnavailable />;
-    if (identity.kind !== "account")
-      return <WelcomePage next={currentPath + window.location.search} onEnter={enterWorkspace} />;
+    // All implicit signed-out entries use the current form-first login UI.
+    // The older welcome remains available only through explicit /welcome navigation.
+    if (identityFailed || !identity || identity.kind !== "account")
+      return <LoginPage next={currentPath + window.location.search} />;
   }
   if (currentPath === "/plugins") return <PluginsPage />;
   if (currentPath === "/schedules") return <SchedulesPage />;

@@ -6,19 +6,22 @@ test.use({ storageState: GUEST_STORAGE });
 const unique = (prefix: string) =>
   `${prefix}_${Date.now().toString(36)}_${crypto.randomUUID().slice(0, 6)}`;
 
-test("a first-time visitor sees the immersive gallery welcome", async ({
+test("a first-time visitor refreshes into the latest form-first login", async ({
   page,
 }) => {
   await page.goto("/");
-  await expect(
-    page.getByRole("heading", { name: "把灵感，带进现实。" }),
-  ).toBeVisible();
+  await expect(page.getByRole("heading", { name: "欢迎回来" })).toBeVisible();
   await expect(
     page.getByRole("button", { name: /使用 Google 登录/ }),
   ).toBeVisible();
   await expect(
     page.getByRole("button", { name: /使用 GitHub 登录/ }),
   ).toBeVisible();
+  await expect(page.locator(".auth-mode-switch")).toBeVisible();
+  await page.reload();
+  await expect(page.getByLabel("用户名", { exact: true })).toBeVisible();
+  await expect(page.locator(".auth-mode-switch")).toBeVisible();
+  await page.goto("/welcome");
   await page.getByRole("button", { name: /先逛逛工作台/ }).click();
   await expect(
     page.getByRole("heading", { name: /DesignBuddy 让工作更高效/ }),
@@ -84,7 +87,7 @@ test("clearing cookies keeps the session through the token fallback", async ({
 test("the server panel offers real account controls after guest entry", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/welcome");
   await page.getByRole("button", { name: /先逛逛工作台/ }).click();
   await page.getByRole("button", { name: "工作区状态", exact: true }).click();
   const dialog = page.getByRole("dialog", { name: "后台连接与账号" });
@@ -115,9 +118,7 @@ test("an account session can sign back in through the API after a wipe", async (
     );
     await page.reload();
     // A wiped account returns to the welcome until the visitor explicitly enters.
-    await expect(
-      page.getByRole("heading", { name: "把灵感，带进现实。" }),
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "欢迎回来" })).toBeVisible();
     await loginViaAPI(page, username, "uirelogin-pass-12");
     await expect(menu).toBeVisible();
   } finally {
