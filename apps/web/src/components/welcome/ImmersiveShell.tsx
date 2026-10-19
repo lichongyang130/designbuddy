@@ -29,6 +29,9 @@ export default function ImmersiveShell({
       <section className="welcome-card" aria-label="DesignBuddy">
         <a className="welcome-brand" href="/welcome">
           <span aria-hidden="true">✧</span> DesignBuddy
+          {variant === "auth" && (
+            <small className="auth-brand-note">CREATIVE SPACE</small>
+          )}
         </a>
         <div className="welcome-content">{children}</div>
         <footer className="welcome-footer">

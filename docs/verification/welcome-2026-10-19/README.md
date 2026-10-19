@@ -60,3 +60,13 @@ corepack pnpm --filter designbuddy-web exec playwright test welcome.spec.ts auth
 ```
 
 图像源稿、15 PNG、原始 AI 素材及历史参考版本仍在 `designs/visitor-welcome/`，不是自动公开到第三方模板市场。字体 OFL 保留；AI 图片不保证独占权或商业法律验收。
+
+## 最新表单优先设计已应用
+
+在用户指出新图尚未替换后，已将 `designs/auth-login-concept/` 中的设计方向应用到 `/login`、`/auth`、`/register`：
+- 品牌区下方提供真正的登录/注册导航，保留 `next` 深链接；输入框、主按钮在上，Google/GitHub 在下。
+- 左卡片桌面宽 540px、最小高度 860px，手机取消固定最小高度；底部语言入口保持可操作。
+- 输入框图标、真实的显示/隐藏密码按钮及其四语言无障碍名称；按钮不会提交表单。
+- 欢迎页本身、山湖图片、后端登录接口、模板数据未改；OAuth 未配置状态继续明确显示。
+- 本轮 23 项 auth/welcome 测试通过；新增布局和交互共 12 项最终重跑全部通过。最初联合运行中有一项测试切换英文后仍用中文查找字段，已修正为英文定位，不是修改页面来规避断言。
+- TypeScript/生产构建通过，构建原有 bundle 大小提示仍存在。桌面登录页截图已人工目视对照设计。

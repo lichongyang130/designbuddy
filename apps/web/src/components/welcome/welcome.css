@@ -379,38 +379,158 @@
   }
 }
 
-/* Form-only layout: do not alter the welcome screen or the lake background. */
+/* Auth-only: approved form-first design; welcome and lake artwork are unchanged. */
 .welcome-page--auth .welcome-card {
-  padding: 32px 44px 26px;
-}
-.welcome-page--auth .welcome-brand,
-.welcome-page--auth .welcome-content,
-.welcome-page--auth .welcome-footer {
-  width: 100%;
-  max-width: 384px;
-  margin-inline: auto;
+  width: 540px;
+  min-height: 860px;
+  padding: 38px 50px 28px;
+  display: flex;
+  flex-direction: column;
 }
 .welcome-page--auth .welcome-brand {
   display: flex;
+  width: 100%;
+  font-size: 22px;
+}
+.auth-brand-note {
+  margin-inline-start: auto;
+  border: 1px solid #d5dfd3;
+  border-radius: 20px;
+  padding: 5px 9px;
+  font-size: 8px;
+  font-weight: 400;
+  letter-spacing: 0.8px;
+  color: #758574;
+  white-space: nowrap;
 }
 .welcome-page--auth .welcome-content {
-  padding: 26px 0 24px;
+  width: 100%;
+  padding: 30px 0 28px;
 }
-.welcome-page--auth .welcome-back {
-  margin: 0 0 16px;
-  font-size: 11px;
-  line-height: 18px;
+.auth-mode-switch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 28px;
+  border-bottom: 1px solid #dce4d8;
+}
+.auth-mode-switch a {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 44px;
+  padding-bottom: 12px;
+  color: #96a08f;
+  font-size: 14px;
+}
+.auth-mode-switch a[aria-current="page"] {
+  color: #28503d;
+  font-weight: 600;
+}
+.auth-mode-switch a[aria-current="page"]::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: calc(50% - 21px);
+  width: 42px;
+  height: 3px;
+  border-radius: 3px;
+  background: #345f47;
 }
 .welcome-page--auth h1.welcome-form-title {
   max-width: none;
-  font-size: 32px;
-  line-height: 1.3;
-  letter-spacing: -0.8px;
-  margin-bottom: 8px;
+  font-size: 33px;
+  line-height: 1.35;
+  letter-spacing: -1px;
+  margin-bottom: 10px;
 }
 .welcome-page--auth .welcome-subtitle {
-  margin: 0 0 22px;
-  line-height: 1.7;
+  margin: 0 0 26px;
+  line-height: 1.9;
+  font-size: 12px;
+}
+.welcome-page--auth .welcome-form {
+  gap: 20px;
+}
+.auth-field {
+  display: grid;
+  gap: 9px;
+}
+.welcome-page--auth .auth-field label {
+  display: block;
+  font-size: 12px;
+  line-height: 19px;
+  color: #51664f;
+}
+.auth-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  border: 0;
+  border-radius: 11px;
+  background: transparent;
+}
+.welcome-page--auth .auth-input input {
+  min-width: 0;
+  width: 100%;
+  height: 50px;
+  padding: 14px 42px;
+  border: 1px solid #d7e0d1;
+  border-radius: 11px;
+  background: #fff;
+  font-size: 12px;
+  line-height: 22px;
+  outline-offset: -3px;
+}
+.auth-input-icon {
+  position: absolute;
+  inset-inline-start: 15px;
+  width: 18px;
+  height: 18px;
+  color: #8c9a85;
+  pointer-events: none;
+}
+.auth-password-toggle {
+  position: absolute;
+  inset-inline-end: 3px;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 42px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #8c9a85;
+}
+.auth-password-toggle svg {
+  width: 17px;
+  height: 17px;
+}
+.welcome-page--auth .welcome-form .welcome-primary {
+  position: relative;
+  justify-content: center;
+  min-height: 52px;
+  margin-top: 5px;
+  font-size: 14px;
+  letter-spacing: 2px;
+}
+.welcome-page--auth .welcome-primary > span {
+  position: absolute;
+  inset-inline-end: 18px;
+  letter-spacing: 0;
+}
+.welcome-page--auth .welcome-notice {
+  margin: 0;
+}
+.welcome-page--auth .welcome-switch {
+  margin: 17px 0 0;
+  font-size: 11px;
+  line-height: 19px;
+}
+.welcome-page--auth .welcome-divider {
+  margin: 28px 0 16px;
+  font-size: 10px;
+  line-height: 18px;
 }
 .welcome-page--auth .welcome-oauth {
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -418,95 +538,52 @@
   margin: 0;
 }
 .welcome-page--auth .welcome-oauth button {
-  display: grid;
-  grid-template-columns: 20px minmax(0, 1fr);
-  column-gap: 9px;
-  row-gap: 3px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   align-content: center;
   min-width: 0;
-  min-height: 64px;
+  min-height: 46px;
+  gap: 5px 9px;
   padding: 10px 12px;
   line-height: 18px;
 }
-.welcome-page--auth .welcome-oauth svg {
-  grid-row: 1 / 3;
-}
 .welcome-page--auth .welcome-oauth small {
-  grid-column: 2;
   margin: 0;
-  line-height: 12px;
+  font-size: 9px;
 }
 .welcome-page--auth .welcome-oauth button:last-child:nth-child(3) {
   grid-column: 1 / -1;
   display: block;
-  min-height: 46px;
-}
-.welcome-page--auth .welcome-divider {
-  margin: 22px 0;
-  font-size: 11px;
-  line-height: 16px;
-}
-.welcome-page--auth .welcome-form {
-  gap: 18px;
-}
-.welcome-page--auth .welcome-form label {
-  gap: 8px;
-  font-size: 12px;
-  line-height: 18px;
-  font-weight: 500;
-}
-.welcome-page--auth .welcome-form input {
-  min-width: 0;
-  height: 48px;
-  padding: 12px 14px;
-  font-size: 13px;
-  line-height: 22px;
-  border-radius: 10px;
-}
-.welcome-page--auth .welcome-form .welcome-primary {
-  min-height: 48px;
-  margin-top: 4px;
-  font-size: 14px;
-}
-.welcome-page--auth .welcome-notice {
-  margin: 0;
-}
-.welcome-page--auth .welcome-switch {
-  margin-top: 20px;
-  font-size: 12px;
-  line-height: 18px;
 }
 .welcome-page--auth .welcome-footer {
-  padding-top: 18px;
+  margin-top: auto;
+  padding-top: 20px;
+}
+@media (max-width: 900px) {
+  .welcome-page--auth .welcome-card {
+    padding-inline: 36px;
+  }
+  .auth-brand-note {
+    display: none;
+  }
 }
 @media (max-width: 700px) {
   .welcome-page--auth .welcome-card {
+    min-height: 0;
     padding: 26px 26px 24px;
   }
   .welcome-page--auth .welcome-content {
     padding-top: 24px;
   }
 }
-@media (max-width: 480px) {
-  .welcome-page--auth .welcome-oauth {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-  .welcome-page--auth .welcome-oauth button {
-    grid-template-columns: 20px minmax(0, 1fr) auto;
-    min-height: 46px;
-    padding: 10px 12px;
-  }
-  .welcome-page--auth .welcome-oauth svg {
-    grid-row: auto;
-  }
-  .welcome-page--auth .welcome-oauth small {
-    grid-column: 3;
-  }
-}
 @media (max-width: 360px) {
   .welcome-page--auth .welcome-card {
     padding-inline: 20px;
+  }
+  .welcome-page--auth .welcome-oauth small {
+    flex-basis: 100%;
+    text-align: center;
   }
   .welcome-page--auth .welcome-footer {
     align-items: flex-start;

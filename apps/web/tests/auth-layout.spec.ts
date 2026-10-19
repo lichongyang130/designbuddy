@@ -63,3 +63,43 @@ test("provider retry text spans the complete form instead of an icon column", as
   const display = await retry.evaluate((el) => getComputedStyle(el).display);
   expect(display).toBe("block");
 });
+
+test("approved form-first layout and top navigation preserve the destination", async ({
+  page,
+}) => {
+  await page.goto("/login?next=%2Finspiration%2Fwelcome-07");
+  const form = await page.locator(".welcome-form").boundingBox();
+  const oauth = await page.locator(".welcome-oauth").boundingBox();
+  expect(form!.y + form!.height).toBeLessThan(oauth!.y);
+  const nav = page.locator(".auth-mode-switch");
+  await expect(
+    nav.getByRole("link", { name: "登录", exact: true }),
+  ).toHaveAttribute("aria-current", "page");
+  await nav.getByRole("link", { name: "注册", exact: true }).click();
+  await expect(page).toHaveURL(/\/register\?next=%2Finspiration%2Fwelcome-07$/);
+  await expect(
+    nav.getByRole("link", { name: "注册", exact: true }),
+  ).toHaveAttribute("aria-current", "page");
+  await expect(page.getByLabel("确认密码", { exact: true })).toBeVisible();
+  await nav.getByRole("link", { name: "登录", exact: true }).click();
+  await expect(page.getByLabel("确认密码", { exact: true })).toHaveCount(0);
+});
+
+test("password visibility controls are keyboard accessible, localized and never submit", async ({
+  page,
+}) => {
+  await page.goto("/login");
+  const input = page.getByLabel("密码", { exact: true });
+  await input.fill("test-only-password-12");
+  const show = page.getByRole("button", { name: "显示密码", exact: true });
+  await show.focus();
+  await page.keyboard.press("Enter");
+  await expect(input).toHaveAttribute("type", "text");
+  await expect(input).toHaveValue("test-only-password-12");
+  await expect(page).toHaveURL(/\/login$/);
+  await page.getByRole("combobox").selectOption("en");
+  await page
+    .getByRole("button", { name: "Hide password", exact: true })
+    .click();
+  await expect(page.getByLabel("Password", { exact: true })).toHaveAttribute("type", "password");
+});

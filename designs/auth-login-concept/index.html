@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>07 沉浸画廊 · 登录表单新布局设计稿</title>
+<style>
+@font-face{font-family:DesignSans;src:url('../visitor-welcome/assets/NotoSansSC.ttf');font-display:block}
+*{box-sizing:border-box}body{margin:0;font-family:DesignSans,Arial,sans-serif;color:#233f34}button,input{font:inherit}button{cursor:default}button:focus-visible,input:focus-visible{outline:3px solid #66866b;outline-offset:3px}
+.scene{width:1440px;height:1000px;position:relative;overflow:hidden;background-image:linear-gradient(90deg,rgba(12,30,32,.22),rgba(12,30,32,.08)),url('../visitor-welcome/assets/art-07.webp');background-size:cover;background-position:center 40%}
+.panel{position:absolute;left:75px;top:70px;width:540px;height:860px;padding:38px 50px 28px;border-radius:28px;border:1px solid #ffffffc9;background:rgba(255,255,255,.95);box-shadow:0 24px 90px #071f2940;backdrop-filter:blur(24px);display:flex;flex-direction:column}
+.brand{display:flex;align-items:center;gap:10px;font-family:Arial,sans-serif;font-size:22px;letter-spacing:-.6px;font-weight:500}.brand svg{width:27px;height:27px;color:#3c6651}.brand small{margin-left:auto;border:1px solid #d5dfd3;border-radius:20px;padding:5px 9px;font-family:DesignSans,sans-serif;font-size:9px;letter-spacing:.8px;font-weight:400;color:#758574}
+.switch{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid #dce4d8;margin:33px 0 0}.switch button{border:0;background:transparent;color:#96a08f;font-size:14px;height:43px;position:relative;padding-bottom:12px}.switch button.selected{color:#28503d;font-weight:600}.switch button.selected:after{content:'';height:3px;width:42px;background:#345f47;border-radius:3px;position:absolute;bottom:-1px;left:calc(50% - 21px)}
+.heading{margin:28px 0 26px}.heading h1{font-size:33px;line-height:1.35;letter-spacing:-1px;font-weight:500;margin:0 0 10px}.heading p{margin:0;color:#83907e;font-size:12px;line-height:1.9}
+.form{display:grid;gap:20px}.field{display:grid;gap:9px;font-size:12px;line-height:1.6;color:#51664f}.input-wrap{position:relative;display:flex;align-items:center;height:52px;border:1px solid #d7e0d1;border-radius:11px;background:#fff;overflow:hidden}.input-wrap>svg{position:absolute;left:15px;width:18px;height:18px;stroke:#8c9a85;fill:none;stroke-width:1.5}.input-wrap input{width:100%;height:100%;padding:14px 42px;border:0;background:transparent;color:#314b38;font-size:12px;outline-offset:-3px}.input-wrap input::placeholder{color:#a4ad9c}.input-wrap .eye{left:auto;right:15px;width:17px;height:17px;stroke:#9ea995}
+.submit{height:52px;margin-top:5px;display:flex;align-items:center;justify-content:center;gap:14px;border:0;border-radius:11px;background:#28513e;color:#fff;font-size:14px;letter-spacing:2px;box-shadow:0 5px 12px #274e3614}.submit span{font-family:Arial,sans-serif;position:absolute;right:69px;font-size:20px;letter-spacing:0}.register-note{margin:17px 0 0;text-align:center;font-size:11px;color:#8b9785}.register-note strong{font-weight:500;color:#3a6346;margin-left:6px}
+.divider{display:flex;align-items:center;gap:13px;font-size:10px;color:#97a18e;line-height:1.8;margin:28px 0 16px}.divider:before,.divider:after{content:'';flex:1;height:1px;background:#dfe5d9}.oauth{display:grid;grid-template-columns:1fr 1fr;gap:12px}.oauth button{height:46px;display:flex;justify-content:center;align-items:center;gap:10px;border:1px solid #d8e1d1;border-radius:10px;background:#ffffffc9;font-family:Arial,sans-serif;font-size:12px;color:#3d5041}.oauth svg{width:18px;height:18px}.provider-note{font-size:9px;color:#9aa391;text-align:center;margin:11px 0 0}
+.footer{margin-top:auto;padding-top:20px;border-top:1px solid #dce3d6;display:flex;align-items:center;justify-content:space-between;font-size:10px;color:#6f8169}.footer small{font-size:8px;color:#94a08a}.language{display:flex;gap:7px;align-items:center}.language svg{height:13px;width:13px;fill:none;stroke:currentColor;stroke-width:1.3}.chevron{font-family:Arial;font-size:13px;color:#718369}
+.caption{position:absolute;right:64.8px;bottom:50px;color:white;text-align:right;text-shadow:0 2px 12px #122c27a0}.caption>span{font-size:10px;letter-spacing:2px;opacity:.8}.caption p{font-size:24px;margin:14px 0 12px;font-weight:400}.caption>small{font-size:10px;opacity:.75}
+</style>
+</head>
+<body><main class="scene">
+<section class="panel" aria-label="登录部分布局设计">
+<div class="brand"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M14 2c1 7 4 10 11 12-7 1-10 4-11 12C12 18 9 15 2 14 9 12 12 9 14 2Z"/></svg>DesignBuddy<small>CREATIVE SPACE</small></div>
+<div class="switch" role="tablist" aria-label="账号入口"><button class="selected" role="tab" aria-selected="true">登录</button><button role="tab" aria-selected="false">注册</button></div>
+<header class="heading"><h1>欢迎回来。</h1><p>登录你的创作空间，让灵感继续发生。</p></header>
+<div class="form">
+<label class="field">用户名<div class="input-wrap"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M5 21v-3a7 7 0 0 1 14 0v3"/></svg><input placeholder="请输入用户名" aria-label="用户名"></div></label>
+<label class="field">密码<div class="input-wrap"><svg viewBox="0 0 24 24"><rect x="4.5" y="10" width="15" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"/></svg><input type="password" placeholder="请输入密码" aria-label="密码"><svg class="eye" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="2.5"/></svg></div></label>
+<button class="submit" type="button">登录<span aria-hidden="true">→</span></button>
+</div>
+<p class="register-note">还没有账号？<strong>创建新账号 ↗</strong></p>
+<div class="divider">或使用第三方账号继续</div>
+<div class="oauth"><button type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38z"/></svg>Google</button><button type="button"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0a12 12 0 0 0-3.79 23.39c.6.11.82-.26.82-.58v-2.23c-3.34.73-4.04-1.42-4.04-1.42-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.09 1.84 1.23 1.84 1.23 1.07 1.84 2.81 1.31 3.49 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.23-3.22-.12-.31-.53-1.53.12-3.18 0 0 1.01-.32 3.3 1.23A11.5 11.5 0 0 1 12 5.79c1.02 0 2.05.14 3.01.4 2.29-1.55 3.3-1.23 3.3-1.23.65 1.65.24 2.87.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.62-5.49 5.92.43.37.81 1.1.81 2.22v3.31c0 .32.22.69.83.58A12 12 0 0 0 12 0Z"/></svg>GitHub</button></div>
+<p class="provider-note">第三方登录需服务器完成 OAuth 配置</p>
+<footer class="footer"><span class="language"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5"/><ellipse cx="10" cy="10" rx="3.2" ry="7.5"/><path d="M2.5 10h15"/></svg>简体中文 <span class="chevron">⌄</span></span><small>DesignBuddy · 让灵感变成设计</small></footer>
+</section>
+<aside class="caption"><span>ART MEETS POSSIBILITY</span><p>暮色山湖 · 让灵感，成为作品。</p><small>DesignBuddy / Creative Space</small></aside>
+</main></body></html>

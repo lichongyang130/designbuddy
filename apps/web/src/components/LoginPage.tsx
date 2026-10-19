@@ -1,4 +1,10 @@
-import { useEffect, useState, type FormEvent } from "react";
+import {
+  useEffect,
+  useId,
+  useState,
+  type FormEvent,
+  type InputHTMLAttributes,
+} from "react";
 import {
   fetchOAuthProviders,
   loginWithPassword,
@@ -50,10 +56,12 @@ export function OAuthButtons({
   mode: _mode,
   next,
   onNotice,
+  compact = false,
 }: {
   mode: "login" | "register";
   next: string;
   onNotice: (message: string) => void;
+  compact?: boolean;
 }) {
   const c = useWelcomeCopy();
   const [providers, setProviders] = useState<Record<
@@ -96,9 +104,26 @@ export function OAuthButtons({
   return (
     <div className="welcome-oauth">
       {(["google", "github"] as const).map((provider) => (
-        <button type="button" key={provider} onClick={() => signIn(provider)}>
+        <button
+          type="button"
+          key={provider}
+          onClick={() => signIn(provider)}
+          aria-label={
+            compact
+              ? `${provider === "google" ? c.google : c.github}${providers && !providers[provider] ? " · " + c.unconfigured : ""}`
+              : undefined
+          }
+        >
           {provider === "google" ? <GoogleGlyph /> : <GitHubGlyph />}
-          <span>{provider === "google" ? c.google : c.github}</span>
+          <span>
+            {compact
+              ? provider === "google"
+                ? "Google"
+                : "GitHub"
+              : provider === "google"
+                ? c.google
+                : c.github}
+          </span>
           {providers && !providers[provider] && <small>{c.unconfigured}</small>}
         </button>
       ))}
@@ -113,6 +138,69 @@ export function OAuthButtons({
           {c.connection} · {c.retry}
         </button>
       )}
+    </div>
+  );
+}
+
+function AuthInput({
+  label,
+  ...props
+}: InputHTMLAttributes<HTMLInputElement> & { label: string }) {
+  const id = useId();
+  const c = useWelcomeCopy();
+  const [visible, setVisible] = useState(false);
+  const password = props.type === "password";
+  return (
+    <div className="auth-field">
+      <label htmlFor={id}>{label}</label>
+      <div className="auth-input">
+        <svg
+          className="auth-input-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          aria-hidden="true"
+        >
+          {password ? (
+            <>
+              <rect x="4.5" y="10" width="15" height="10" rx="2" />
+              <path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3" />
+            </>
+          ) : (
+            <>
+              <circle cx="12" cy="8" r="3.4" />
+              <path d="M5 21v-3a7 7 0 0 1 14 0v3" />
+            </>
+          )}
+        </svg>
+        <input
+          {...props}
+          id={id}
+          type={password && visible ? "text" : props.type}
+        />
+        {password && (
+          <button
+            className="auth-password-toggle"
+            type="button"
+            aria-label={visible ? c.hidePassword : c.showPassword}
+            aria-pressed={visible}
+            onClick={() => setVisible((v) => !v)}
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              aria-hidden="true"
+            >
+              <path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6S2 12 2 12Z" />
+              <circle cx="12" cy="12" r="2.5" />
+              {visible && <path d="M3 3l18 18" />}
+            </svg>
+          </button>
+        )}
+      </div>
     </div>
   );
 }
@@ -156,64 +244,64 @@ export function AuthFormPage({
   }
   return (
     <ImmersiveShell variant="auth">
-      <a
-        className="welcome-back"
-        href={`/welcome?next=${encodeURIComponent(next)}`}
-      >
-        ← {c.back}
-      </a>
+      <nav className="auth-mode-switch" aria-label={c.start}>
+        <a
+          href={`/login?next=${encodeURIComponent(next)}`}
+          aria-current={!isRegister ? "page" : undefined}
+        >
+          {c.login}
+        </a>
+        <a
+          href={`/register?next=${encodeURIComponent(next)}`}
+          aria-current={isRegister ? "page" : undefined}
+        >
+          {c.register}
+        </a>
+      </nav>
       <h1 className="welcome-form-title">
         {isRegister ? c.registerTitle : c.loginTitle}
       </h1>
       <p className="welcome-subtitle">
         {isRegister ? c.registerSub : c.loginSub}
       </p>
-      <OAuthButtons mode={mode} next={next} onNotice={setError} />
-      <div className="welcome-divider">{c.divider}</div>
       <form className="welcome-form" onSubmit={submit}>
-        <label>
-          {c.username}
-          <input
-            name="username"
-            autoComplete="username"
-            placeholder={c.usernameHint}
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-            minLength={3}
-            maxLength={40}
-            pattern="[a-zA-Z0-9_-]{3,40}"
-          />
-        </label>
-        <label>
-          {c.password}
-          <input
+        <AuthInput
+          label={c.username}
+          name="username"
+          autoComplete="username"
+          placeholder={c.usernameHint}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+          minLength={3}
+          maxLength={40}
+          pattern="[a-zA-Z0-9_-]{3,40}"
+        />
+        <AuthInput
+          label={c.password}
+          type="password"
+          name="password"
+          autoComplete={isRegister ? "new-password" : "current-password"}
+          placeholder={c.passwordHint}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          minLength={10}
+          maxLength={128}
+        />
+        {isRegister && (
+          <AuthInput
+            label={c.confirm}
             type="password"
-            name="password"
-            autoComplete={isRegister ? "new-password" : "current-password"}
-            placeholder={c.passwordHint}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            name="confirm"
+            autoComplete="new-password"
+            value={confirm}
+            onChange={(e) => setConfirm(e.target.value)}
             required
             minLength={10}
             maxLength={128}
+            aria-invalid={mismatch}
           />
-        </label>
-        {isRegister && (
-          <label>
-            {c.confirm}
-            <input
-              type="password"
-              name="confirm"
-              autoComplete="new-password"
-              value={confirm}
-              onChange={(e) => setConfirm(e.target.value)}
-              required
-              minLength={10}
-              maxLength={128}
-              aria-invalid={mismatch}
-            />
-          </label>
         )}
         {mismatch && (
           <p className="welcome-notice" role="alert">
@@ -242,6 +330,8 @@ export function AuthFormPage({
           {isRegister ? c.toLogin : c.toRegister}
         </a>
       </p>
+      <div className="welcome-divider">{c.oauthDivider}</div>
+      <OAuthButtons mode={mode} next={next} onNotice={setError} compact />
     </ImmersiveShell>
   );
 }
