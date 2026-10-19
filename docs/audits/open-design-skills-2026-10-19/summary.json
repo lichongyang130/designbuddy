@@ -1,0 +1,87 @@
+{
+  "date": "2026-10-19",
+  "repositoryCommit": "497c9704e04e88f62d4a0569add0b1e00a4909f0",
+  "website": "https://open-design.ai/zh/skills/",
+  "websiteRead": "All 13 fetch_page chunks read; manually transcribed the 244 unique detail URL slugs in displayed order. Category totals taken from page. No upstream packages installed.",
+  "comparisonScope": "Original upstream skill packages and integration, not equivalence of all design capabilities. Names alone are not proof of installation.",
+  "websiteEntries": 244,
+  "originalPackagesFound": 0,
+  "originalIntegrationsFound": 0,
+  "originalPackagesNotFound": 244,
+  "trackedSkillMdFiles": [
+    "server/skills/word-pro/SKILL.md"
+  ],
+  "legacyCatalogEntries": 180,
+  "legacyExactDisplayNameMatches": [
+    {
+      "siteSlug": "frontend-design",
+      "legacyId": "skill-02",
+      "legacyName": "Frontend Design"
+    },
+    {
+      "siteSlug": "a11y-audit",
+      "legacyId": "skill-07",
+      "legacyName": "Accessibility Audit"
+    },
+    {
+      "siteSlug": "design-critique",
+      "legacyId": "skill-05",
+      "legacyName": "Design Critique"
+    },
+    {
+      "siteSlug": "information-architecture",
+      "legacyId": "skill-26",
+      "legacyName": "Information Architecture"
+    }
+  ],
+  "runtimeRegistered": 49,
+  "runtimeStatusAtAudit": {
+    "ready": 45,
+    "unavailable": 4
+  },
+  "runtimeUnavailableAtAudit": [
+    {
+      "id": "document.summarize",
+      "name": "文档语义摘要（云端模型）"
+    },
+    {
+      "id": "slides.create",
+      "name": "商业演示AI规划与原生PPTX交付（首版）"
+    },
+    {
+      "id": "collaboration.sync",
+      "name": "外部日历与消息同步"
+    },
+    {
+      "id": "image.generate",
+      "name": "生成式图片与商品抠图"
+    }
+  ],
+  "runtimeExecutorCount": 49,
+  "websiteCategoryCounts": {
+    "Web & UI": 53,
+    "移动应用": 10,
+    "品牌与设计系统": 30,
+    "UX与研究": 32,
+    "设计评审与无障碍": 19,
+    "演示文稿": 19,
+    "图像与生成艺术": 15,
+    "动效与视频": 40,
+    "图解与数据可视化": 13,
+    "3D与空间设计": 13
+  },
+  "sourceSHA256": {
+    "skills/catalog.json": "f4c103e9e90c96366ae38a4da742d51c706f3219763c415e91caa63e9ece6efb",
+    "shared/skillRuntime.ts": "c5c18f6e4588ed1432c62cb9b0fedf1d03aaa446967f48cbd91da2b21b42ce16",
+    "server/skills/executors.ts": "4637df6bbbc7f8bdbdf4943b985a0ea0bbe50578a19950635c27ec33cccdc7cd",
+    "server/skills/runtime-catalog.ts": "0f9102b282100ef966e92d48c61f31143096e4967b52b777797943ddcead7aa7",
+    "frontend/workspace/pages/SkillsPage.tsx": "6cb81327c929f5ba5b15ff09c901f9a52c64259b22e9a1adae4946556e9ff397"
+  },
+  "limits": [
+    "Runtime readiness is reported by GET /api/skill-runtime, not a fresh execution/quality test of all 49 skills.",
+    "Legacy name matching ignores case and punctuation, without semantic aliases; it does not establish origin or equivalent implementation.",
+    "No complete functional-equivalence score or missing-capability count is claimed.",
+    "Source inventory excludes installed npm dependencies and local runtime/user data.",
+    "The old skills README says 72, but parsed catalog contains 180."
+  ]
+}
