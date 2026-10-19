@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "type": "project-plan",
+  "title": "文档交付质量提升项目方案",
+  "engineVersion": "word-pro-1.0.0",
+  "inputSHA256": "cebe276fb7b97c8eb700d1f7e05a257487b28c60f93d7e12cf7cc9b99f33ad34",
+  "pageCount": 4,
+  "repairRounds": 0,
+  "criticalIssues": 0,
+  "releaseStatus": "needs-human-review",
+  "commercialApproval": false,
+  "planningOrigin": "assistant-authored original methodology fixture; not AI quality acceptance or real business evidence",
+  "files": [
+    {
+      "file": "OFL.txt",
+      "bytes": 4388,
+      "sha256": "1c05c68c34f9708415aada51f17e1b0092d2cea709bf4a94cd38114f9e73d7d9"
+    },
+    {
+      "file": "content-manifest.json",
+      "bytes": 11269,
+      "sha256": "c77b71e81e3f5700c5c1a9ed3c6d83d5da316d2b456137ab993e31dae664e6c6"
+    },
+    {
+      "file": "document.docx",
+      "bytes": 13277,
+      "sha256": "075414361df0290e5a45c986040a50073b38a9768d0fdf7b7d0aff4f263b8b0e"
+    },
+    {
+      "file": "document.pdf",
+      "bytes": 146374,
+      "sha256": "bd1e9f9c3e7839bf4e98fb6c779742458b24d38b1f0f8adce553af8516b067a3"
+    },
+    {
+      "file": "input.json",
+      "bytes": 9308,
+      "sha256": "cebe276fb7b97c8eb700d1f7e05a257487b28c60f93d7e12cf7cc9b99f33ad34"
+    },
+    {
+      "file": "iterations/0/document.docx",
+      "bytes": 13277,
+      "sha256": "075414361df0290e5a45c986040a50073b38a9768d0fdf7b7d0aff4f263b8b0e"
+    },
+    {
+      "file": "iterations/0/document.pdf",
+      "bytes": 146374,
+      "sha256": "bd1e9f9c3e7839bf4e98fb6c779742458b24d38b1f0f8adce553af8516b067a3"
+    },
+    {
+      "file": "iterations/0/render-manifest.json",
+      "bytes": 965,
+      "sha256": "83ee49ec97bfaf4d2d06aa29f0d2cb7cfe7e3cc25ead9f5f8a4860c83c4442f4"
+    },
+    {
+      "file": "pages/01.jpg",
+      "bytes": 16800,
+      "sha256": "04f0bc22f1046dbd3e05462a2521575071761a741baaa71494682ba210da5faa"
+    },
+    {
+      "file": "pages/02.jpg",
+      "bytes": 36345,
+      "sha256": "3efa69f6912ca4a3a8b71c8f6a5bf4d01b27723d085fa152e267b3e7b5eb2a75"
+    },
+    {
+      "file": "pages/03.jpg",
+      "bytes": 56274,
+      "sha256": "22619f6f920caef72ecf7d954aefee4aa63d9e275efd73a15d3dfedd345bfe7c"
+    },
+    {
+      "file": "pages/04.jpg",
+      "bytes": 32988,
+      "sha256": "68f3b967b4b37b04fd5fea6bb04d2ee43aac8ea30d8788bcb0d16b9c175fc0ca"
+    },
+    {
+      "file": "render-manifest.json",
+      "bytes": 965,
+      "sha256": "83ee49ec97bfaf4d2d06aa29f0d2cb7cfe7e3cc25ead9f5f8a4860c83c4442f4"
+    },
+    {
+      "file": "word-delivery.zip",
+      "bytes": 423636,
+      "sha256": "88da1d1ce37bc9f7ca3fc612c8e26203f60acf71c2834f27f3268f76fa5f797b"
+    },
+    {
+      "file": "word-pages.jpg",
+      "bytes": 23319,
+      "sha256": "0c6bd25f9b3bb44acf92ce0f5e8b16eadc239dd20d23a457ae3eaef7e4c81b1a"
+    },
+    {
+      "file": "word-quality-report.json",
+      "bytes": 7835,
+      "sha256": "70a906effa4551a1750308d52551dc0836350ac17edbf7b90ca7402776e57573"
+    },
+    {
+      "file": "word-spec.json",
+      "bytes": 9308,
+      "sha256": "cebe276fb7b97c8eb700d1f7e05a257487b28c60f93d7e12cf7cc9b99f33ad34"
+    }
+  ]
+}

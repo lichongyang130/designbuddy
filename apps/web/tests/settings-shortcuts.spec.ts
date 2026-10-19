@@ -1,5 +1,18 @@
 import { test, expect } from "@playwright/test";
 
+// UI cases must not inherit another test's account-synced locale or shortcuts.
+// Persistence itself is covered by settings.spec.ts; other APIs remain real.
+test.beforeEach(async ({ page }) => {
+  await page.route("**/api/profile/preferences", (route) =>
+    route.fulfill({
+      json:
+        route.request().method() === "GET"
+          ? { preferences: [] }
+          : { preference: { updatedAt: Date.now() } },
+    }),
+  );
+});
+
 async function openShortcuts(page: import("@playwright/test").Page) {
   await page.goto("/");
   await expect(page.locator("dialog.settings-window")).toBeAttached();

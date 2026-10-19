@@ -1,0 +1,78 @@
+TAP version 13
+# Subtest: word strict schema rejects unknown/code/remote fields, broken hierarchy, role omissions, unbound refs, duplicate IDs and oversized input
+ok 1 - word strict schema rejects unknown/code/remote fields, broken hierarchy, role omissions, unbound refs, duplicate IDs and oversized input
+  ---
+  duration_ms: 6.186656
+  type: 'test'
+  ...
+# Subtest: two document types enforce different ordered required roles, real body after headings, and safe table/image contracts
+ok 2 - two document types enforce different ordered required roles, real body after headings, and safe table/image contracts
+  ---
+  duration_ms: 2.558372
+  type: 'test'
+  ...
+# Subtest: native DOCX has real styles, headers, PAGE fields, internal links, native tables and inventory-checked escaped text
+ok 3 - native DOCX has real styles, headers, PAGE fields, internal links, native tables and inventory-checked escaped text
+  ---
+  duration_ms: 177.657591
+  type: 'test'
+  ...
+# Subtest: repair only changes white-listed layout fields and keeps all content, strings, sources and image permissions hash-locked
+ok 4 - repair only changes white-listed layout fields and keeps all content, strings, sources and image permissions hash-locked
+  ---
+  duration_ms: 2.091843
+  type: 'test'
+  ...
+# Subtest: PDF coverage does not count source appendix as body; unknown geometry/blank signals and scores never become visual or commercial approval
+ok 5 - PDF coverage does not count source appendix as body; unknown geometry/blank signals and scores never become visual or commercial approval
+  ---
+  duration_ms: 1.067206
+  type: 'test'
+  ...
+# Subtest: authorized images are normalized and embedded independently; oversized frames scale proportionally without cropping or content edits
+ok 6 - authorized images are normalized and embedded independently; oversized frames scale proportionally without cropping or content edits
+  ---
+  duration_ms: 43.690469
+  type: 'test'
+  ...
+# Subtest: missing glyphs and corrupt image formats fail before delivery, never substituted with fake content
+ok 7 - missing glyphs and corrupt image formats fail before delivery, never substituted with fake content
+  ---
+  duration_ms: 1.792503
+  type: 'test'
+  ...
+# (node:13556) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: actual local two-render repair produces hash-bound DOCX/PDF/all pages and pre/post evidence with no external AI calls
+ok 8 - actual local two-render repair produces hash-bound DOCX/PDF/all pages and pre/post evidence with no external AI calls
+  ---
+  duration_ms: 14955.170263
+  type: 'test'
+  ...
+# Subtest: registered real Worker persists artifacts, requires upload consent, enforces owner isolation and rejects arbitrary parameters/resume
+ok 9 - registered real Worker persists artifacts, requires upload consent, enforces owner isolation and rejects arbitrary parameters/resume
+  ---
+  duration_ms: 8691.89961
+  type: 'test'
+  ...
+# Subtest: bounded orchestration unit mock stops at three renders/two repairs, never rewrites facts or grants a score
+ok 10 - bounded orchestration unit mock stops at three renders/two repairs, never rewrites facts or grants a score
+  ---
+  duration_ms: 184.196876
+  type: 'test'
+  ...
+# Subtest: orchestration unit mock rolls back a repair that introduces a new critical issue, retaining prior version and full evidence
+ok 11 - orchestration unit mock rolls back a repair that introduces a new critical issue, retaining prior version and full evidence
+  ---
+  duration_ms: 73.988315
+  type: 'test'
+  ...
+1..11
+# tests 11
+# suites 0
+# pass 11
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 24718.60214

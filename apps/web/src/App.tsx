@@ -102,6 +102,7 @@ export default function App() {
   const composerRef = useRef<HTMLElement>(null);
   const startProjectRef = useRef<() => void>(() => {});
   const expertMatch = useExpertMatch({ prompt, mode, model, permission, attachments, selectedExpert, enabled: currentPath === "/" });
+  useEffect(() => { if (expertMatch.blockedManual) setSelectedExpert(""); }, [expertMatch.blockedManual]);
 
   useEffect(() => {
     void syncPreferencesFromAccount();

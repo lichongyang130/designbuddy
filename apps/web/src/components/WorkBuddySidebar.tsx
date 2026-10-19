@@ -20,7 +20,8 @@ type Props = {
     | "workflows"
     | "models"
     | "profile"
-    | "templates";
+    | "templates"
+    | "projects";
   projectCount: number;
   /** How many workspaces the account belongs to. */
   workspaceCount?: number;
@@ -137,7 +138,7 @@ export function WorkBuddySidebar({
       </nav>
 
       <div className="sidebar-lists">
-        <button onClick={() => go("/projects")}>{t("sidebar.projects", { n: projectCount })}</button>
+        <button aria-current={active === "projects" ? "page" : undefined} onClick={() => go("/projects")}>{t("sidebar.projects", { n: projectCount })}</button>
         <button onClick={() => go("/workspaces")}>
           {t("sidebar.spaces", { n: workspaceCount })}
         </button>

@@ -1,8 +1,15 @@
+import { getAiUsageRecorder } from "../api/ai";
+import { validatePresentationUsage } from "./presentation/usage";
+import { validatePresentationCheckpoint } from "./presentation/pipeline";
+import { parsePresentationRequest } from "./presentation/sources";
+import type { PresentationCheckpoint } from "../../shared/presentation";
 import { runtimeCatalog } from "./runtime-catalog";
 import { startASRProcess } from "./asr-process";
 import { DatabaseSync } from "node:sqlite";
-import { mkdirSync } from "node:fs";
-import { dirname, resolve } from "node:path";
+import { mkdirSync, mkdtempSync } from "node:fs";
+import { rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { dirname, resolve, join } from "node:path";
 import { randomUUID, createHash } from "node:crypto";
 import { Worker } from "node:worker_threads";
 import { externalSkillPermissions, runtimeSkills, type SkillRun, type SkillArtifact } from "../../shared/skillRuntime";
@@ -19,8 +26,9 @@ type Row = { id: string; owner: string; record: string; input: Uint8Array };
 export class SkillService {
   private db: DatabaseSync;
   private plans: SkillPlanStore;
-  private active = new Map<string, { worker: Worker; timeout: ReturnType<typeof setTimeout>; external?: ReturnType<typeof startASRProcess> }>();
+  private active = new Map<string, { worker: Worker; workDirectory?: string; timeout: ReturnType<typeof setTimeout>; external?: ReturnType<typeof startASRProcess> }>();
   private closed = false;
+  private stopping = new Set<Promise<void>>();
   constructor(file = process.env.DESIGNBUDDY_SKILL_DB || "./data/skill-runs.sqlite", private timeoutMs = 45000, planner?: Planner) {
     if (file !== ":memory:") mkdirSync(dirname(resolve(file)), { recursive: true });
     this.db = new DatabaseSync(file);
@@ -29,13 +37,20 @@ export class SkillService {
       CREATE INDEX IF NOT EXISTS skill_runs_owner ON skill_runs(owner);
       CREATE TABLE IF NOT EXISTS skill_artifacts(id TEXT PRIMARY KEY,run_id TEXT NOT NULL REFERENCES skill_runs(id) ON DELETE CASCADE,meta TEXT NOT NULL,bytes BLOB NOT NULL);
       CREATE TABLE IF NOT EXISTS skill_run_checkpoints(run_id TEXT NOT NULL REFERENCES skill_runs(id) ON DELETE CASCADE,file_index INTEGER NOT NULL,page INTEGER NOT NULL,source_hash TEXT NOT NULL,meta TEXT NOT NULL,bytes BLOB NOT NULL,PRIMARY KEY(run_id,file_index,page));
+      CREATE TABLE IF NOT EXISTS skill_presentation_checkpoints(run_id TEXT PRIMARY KEY REFERENCES skill_runs(id) ON DELETE CASCADE,meta TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS skill_submissions(owner TEXT NOT NULL,request_key TEXT NOT NULL,fingerprint TEXT NOT NULL,run_id TEXT NOT NULL,created_at INTEGER NOT NULL,PRIMARY KEY(owner,request_key));`);
     this.plans = new SkillPlanStore(this.db, planner);
     let recoverableWork = false;
-    for (const row of this.db.prepare("SELECT id,record FROM skill_runs WHERE json_extract(record,'$.status') IN ('queued','running')").all() as Row[]) {
+    for (const row of this.db.prepare("SELECT * FROM skill_runs WHERE json_extract(record,'$.status') IN ('queued','running')").all() as Row[]) {
       const record = JSON.parse(row.record) as SkillRun;
       if (!["queued", "running"].includes(record.status)) continue;
-      if (["pdf.ocr", "pdf.ocr-batch"].includes(record.skillId)) {
+      let presentationRecoverable = false;
+      try { presentationRecoverable = record.skillId === "slides.create" && !!this.presentationCheckpoint(row.id); } catch { /* invalid checkpoints never authorize a new model call */ }
+      if (presentationRecoverable) {
+        record.status = "queued"; delete record.error;
+        this.event(record, "服务已恢复；将复用哈希绑定的已存规划，不重复调用第三方模型，仅重新编译/渲染与质检。");
+        recoverableWork = true;
+      } else if (["pdf.ocr", "pdf.ocr-batch"].includes(record.skillId)) {
         // OCR is local and input-hash-bound. Until page checkpoints are available, recover by rerunning the complete input, never by claiming continuation.
         record.status = "queued"; delete record.error;
         this.event(record, "服务已恢复；本地PDF OCR将加载已持久化的逐页检查点，从首个未完成页继续；当前中断页可能需要重新OCR。");
@@ -56,13 +71,42 @@ export class SkillService {
     const rows=this.db.prepare("SELECT meta,bytes FROM skill_run_checkpoints WHERE run_id=? ORDER BY file_index,page").all(id) as {meta:string;bytes:Uint8Array}[];
     return rows.map(row=>({...JSON.parse(Buffer.from(row.meta).toString("utf8")),png:new Uint8Array(row.bytes)} as PDFPageCheckpoint));
   }
-  private event(record: SkillRun, message: string) { if (record.events.length < 30) record.events.push({ at: new Date().toISOString(), message: message.slice(0, 500) }); }
+  private stopWorker(active: { worker: Worker; workDirectory?: string }): Promise<void> {
+    const stopping = active.worker.terminate().then(async () => {
+      if (active.workDirectory) await rm(active.workDirectory, { recursive: true, force: true });
+    }).catch(() => { /* best-effort cleanup of this server-created private directory only */ });
+    this.stopping.add(stopping); void stopping.then(() => this.stopping.delete(stopping)); return stopping;
+  }
+  private presentationStorage(owner?: string): number {
+    return Number((owner === undefined
+      ? this.db.prepare("SELECT coalesce(sum(length(CAST(meta AS BLOB))),0) AS n FROM skill_presentation_checkpoints").get()
+      : this.db.prepare("SELECT coalesce(sum(length(CAST(c.meta AS BLOB))),0) AS n FROM skill_presentation_checkpoints c JOIN skill_runs r ON r.id=c.run_id WHERE r.owner=?").get(owner))?.n || 0);
+  }
+  private presentationCheckpoint(id: string): PresentationCheckpoint | undefined {
+    const cp = this.db.prepare("SELECT meta FROM skill_presentation_checkpoints WHERE run_id=?").get(id) as { meta: string } | undefined;
+    if (!cp) return undefined;
+    const run = this.row(id); if (!run) throw Error("检查点所属运行不存在。");
+    return validatePresentationCheckpoint(JSON.parse(cp.meta), hash(run.input));
+  }
+  private savePresentationCheckpoint(id: string, owner: string, value: unknown) {
+    const row = this.row(id, owner); if (!row) throw Error("检查点运行不存在。");
+    const record = JSON.parse(row.record) as SkillRun;
+    if (record.skillId !== "slides.create" || record.status !== "running") throw Error("检查点与当前技能或状态不一致。");
+    const cp = validatePresentationCheckpoint(value, hash(row.input)), meta = Buffer.from(JSON.stringify(cp));
+    const previous = Number(this.db.prepare("SELECT coalesce(length(CAST(meta AS BLOB)),0) AS n FROM skill_presentation_checkpoints WHERE run_id=?").get(id)?.n || 0);
+    const ownerUsed = Number(this.db.prepare("SELECT coalesce(sum(length(input)),0) AS n FROM skill_runs WHERE owner=?").get(owner)?.n || 0) + Number(this.db.prepare("SELECT coalesce(sum(length(a.bytes)),0) AS n FROM skill_artifacts a JOIN skill_runs r ON r.id=a.run_id WHERE r.owner=?").get(owner)?.n || 0) + Number(this.db.prepare("SELECT coalesce(sum(length(c.meta)+length(c.bytes)),0) AS n FROM skill_run_checkpoints c JOIN skill_runs r ON r.id=c.run_id WHERE r.owner=?").get(owner)?.n || 0) + this.presentationStorage(owner);
+    const globalUsed = Number(this.db.prepare("SELECT (SELECT coalesce(sum(length(input)),0) FROM skill_runs)+(SELECT coalesce(sum(length(bytes)),0) FROM skill_artifacts)+(SELECT coalesce(sum(length(meta)+length(bytes)),0) FROM skill_run_checkpoints) AS n").get()?.n || 0) + this.presentationStorage();
+    if (ownerUsed - previous + meta.length > 100_000_000 || globalUsed - previous + meta.length > 1_000_000_000) throw Error("演示规划检查点超过后台配额。");
+    this.db.prepare("INSERT INTO skill_presentation_checkpoints(run_id,meta) VALUES(?,?) ON CONFLICT(run_id) DO UPDATE SET meta=excluded.meta").run(id, meta.toString('utf8'));
+    this.event(record, cp.stage === "directed" ? "导演状态与写稿调用预算已保存；恢复仅使用剩余预算，预算耗尽不会再次外发正文。" : "逐页AI规划检查点已持久保存；恢复时不重复调用模型。最终成果原子提交后清除检查点。"); this.save(record);
+  }
+  private event(record: SkillRun, message: string) { if (record.events.length < (record.skillId === "slides.create" ? 100 : 30)) record.events.push({ at: new Date().toISOString(), message: message.slice(0, 500) }); }
   private finish(id: string, error?: string, result?: { summary: string; outputs: Output[] }) {
     const row = this.row(id); if (!row || this.closed) return;
     const record = JSON.parse(row.record) as SkillRun;
     if (record.status !== "running") return;
     const active = this.active.get(id);
-    if (active) { active.external?.abort(); clearTimeout(active.timeout); this.active.delete(id); void active.worker.terminate(); }
+    if (active) { active.external?.abort(); clearTimeout(active.timeout); this.active.delete(id); void this.stopWorker(active); }
     if (error) {
       const checkpoints=Number(this.db.prepare("SELECT count(*) AS n FROM skill_run_checkpoints WHERE run_id=?").get(id)?.n||0);
       const retry=Number(record.recoveryAttempts||0);
@@ -73,10 +117,10 @@ export class SkillService {
       try {
         const receipt = Buffer.from(JSON.stringify({ runId: id, skillId: record.skillId, version: record.version, inputHash: record.inputHash, options: record.options, ...(record.taskId ? { taskId: record.taskId } : {}), ...(record.plan ? { plan: record.plan } : {}), summary: result.summary, events: record.events, limitations: runtimeSkills.find(s => s.id === record.skillId)?.limits }, null, 2));
         const outputs = [...result.outputs, { name: "execution-receipt.json", mime: "application/json", bytes: receipt }];
-        if (outputs.length > 10 || outputs.some(o => !(o.bytes instanceof Uint8Array) || !o.bytes.length) || outputs.reduce((n, o) => n + o.bytes.length, 0) > 10_000_000) throw Error("交付文件超限或无效。");
-        const checkpointSize=Number(this.db.prepare("SELECT coalesce(sum(length(meta)+length(bytes)),0) AS n FROM skill_run_checkpoints WHERE run_id=?").get(id)?.n||0);
-        const used = Number(this.db.prepare("SELECT coalesce(sum(length(a.bytes)),0) AS n FROM skill_artifacts a JOIN skill_runs r ON r.id=a.run_id WHERE r.owner=?").get(row.owner)?.n || 0) + Number(this.db.prepare("SELECT coalesce(sum(length(input)),0) AS n FROM skill_runs WHERE owner=?").get(row.owner)?.n || 0)+Number(this.db.prepare("SELECT coalesce(sum(length(c.meta)+length(c.bytes)),0) AS n FROM skill_run_checkpoints c JOIN skill_runs r ON c.run_id=r.id WHERE r.owner=?").get(row.owner)?.n||0);
-        const globalUsed = Number(this.db.prepare("SELECT (SELECT coalesce(sum(length(input)),0) FROM skill_runs)+(SELECT coalesce(sum(length(bytes)),0) FROM skill_artifacts)+(SELECT coalesce(sum(length(meta)+length(bytes)),0) FROM skill_run_checkpoints) AS n").get()?.n || 0);
+        if (outputs.length > 10 || outputs.some(o => !(o.bytes instanceof Uint8Array) || !o.bytes.length) || outputs.reduce((n, o) => n + o.bytes.length, 0) > (record.skillId === "slides.create" ? 25_000_000 : 10_000_000)) throw Error("交付文件超限或无效。");
+        const checkpointSize=Number(this.db.prepare("SELECT coalesce(sum(length(meta)+length(bytes)),0) AS n FROM skill_run_checkpoints WHERE run_id=?").get(id)?.n||0) + Number(this.db.prepare("SELECT coalesce(length(CAST(meta AS BLOB)),0) AS n FROM skill_presentation_checkpoints WHERE run_id=?").get(id)?.n || 0);
+        const used = Number(this.db.prepare("SELECT coalesce(sum(length(a.bytes)),0) AS n FROM skill_artifacts a JOIN skill_runs r ON r.id=a.run_id WHERE r.owner=?").get(row.owner)?.n || 0) + Number(this.db.prepare("SELECT coalesce(sum(length(input)),0) AS n FROM skill_runs WHERE owner=?").get(row.owner)?.n || 0)+Number(this.db.prepare("SELECT coalesce(sum(length(c.meta)+length(c.bytes)),0) AS n FROM skill_run_checkpoints c JOIN skill_runs r ON c.run_id=r.id WHERE r.owner=?").get(row.owner)?.n||0) + this.presentationStorage(row.owner);
+        const globalUsed = Number(this.db.prepare("SELECT (SELECT coalesce(sum(length(input)),0) FROM skill_runs)+(SELECT coalesce(sum(length(bytes)),0) FROM skill_artifacts)+(SELECT coalesce(sum(length(meta)+length(bytes)),0) FROM skill_run_checkpoints) AS n").get()?.n || 0) + this.presentationStorage();
         if (globalUsed-checkpointSize + outputs.reduce((n, o) => n + o.bytes.length, 0) > 1_000_000_000) throw Error("后台全局存储配额已满。");
         if (used-checkpointSize + outputs.reduce((n, o) => n + o.bytes.length, 0) > 100_000_000) throw Error("成果存储超过 100 MB，请删除不需要的运行记录后重试。");
         this.db.exec("BEGIN");
@@ -85,7 +129,7 @@ export class SkillService {
             const meta: SkillArtifact = { id: randomUUID(), name: output.name, mime: output.mime, size: output.bytes.length, sha256: hash(output.bytes) };
             this.db.prepare("INSERT INTO skill_artifacts VALUES(?,?,?,?)").run(meta.id, id, JSON.stringify(meta), output.bytes); return meta;
           });
-          record.summary = result.summary; record.status = "succeeded"; this.event(record, "成果已持久化，可以下载。"); this.save(record); this.db.prepare("DELETE FROM skill_run_checkpoints WHERE run_id=?").run(id); this.db.exec("COMMIT");
+          record.summary = result.summary; record.status = "succeeded"; this.event(record, "成果已持久化，可以下载。"); this.save(record); this.db.prepare("DELETE FROM skill_run_checkpoints WHERE run_id=?").run(id); this.db.prepare("DELETE FROM skill_presentation_checkpoints WHERE run_id=?").run(id); this.db.exec("COMMIT");
         } catch (error) { this.db.exec("ROLLBACK"); throw error; }
       } catch (error) { record.status = "failed"; record.artifacts = []; record.error = error instanceof Error ? error.message : "保存失败。"; this.event(record, record.error); this.save(record); }
     }
@@ -97,14 +141,23 @@ export class SkillService {
     for (const row of queued) {
       if (this.active.size >= 2) return;
       const fresh = this.row(row.id); if (!fresh || JSON.parse(fresh.record).status !== "queued") continue;
-      const record = JSON.parse(fresh.record) as SkillRun; record.status = "running"; this.event(record, record.skillId === "document.summarize" ? "后台开始处理用户已授权上传的材料；此技能会将正文发送至已配置的第三方AI服务。" : "后台执行器开始处理已上传材料（不访问外网、不执行用户代码）。"); this.save(record);
+      const record = JSON.parse(fresh.record) as SkillRun; record.status = "running"; this.event(record, ["document.summarize", "slides.create"].includes(record.skillId) ? "后台开始处理用户已授权上传的材料；此技能会将正文发送至已配置的第三方AI服务。" : "后台执行器开始处理已上传材料（不访问外网、不执行用户代码）。"); this.save(record);
+      let workDirectory: string | undefined;
       try {
-        const worker = new Worker(resolve(__dirname, "worker.js"), { workerData: { skillId: record.skillId, filename: record.filename, bytes: row.input, owner: row.owner, ...record.options, ...(["pdf.ocr","pdf.ocr-batch"].includes(record.skillId)?{resumePages:this.pageCheckpoints(row.id)}:{}) }, resourceLimits: { maxOldGenerationSizeMb: 256, maxYoungGenerationSizeMb: 32, stackSizeMb: 4 } });
-        const executionTimeout = ["pdf.ocr","pdf.ocr-batch"].includes(record.skillId) ? Math.max(this.timeoutMs, 120000) : this.timeoutMs;
+        if (record.skillId.startsWith("slides.")) workDirectory = mkdtempSync(join(tmpdir(), "designbuddy-skill-slides-"));
+        const worker = new Worker(resolve(__dirname, "worker.js"), { workerData: { workDirectory, skillId: record.skillId, filename: record.filename, bytes: row.input, owner: row.owner, ...record.options, ...(record.skillId === "slides.create" ? { resumePresentation: this.presentationCheckpoint(row.id) } : {}), ...(["pdf.ocr","pdf.ocr-batch"].includes(record.skillId)?{resumePages:this.pageCheckpoints(row.id)}:{}) }, resourceLimits: { maxOldGenerationSizeMb: 256, maxYoungGenerationSizeMb: 32, stackSizeMb: 4 } });
+        const executionTimeout = ["pdf.ocr","pdf.ocr-batch"].includes(record.skillId) ? Math.max(this.timeoutMs, 120000)
+          : this.timeoutMs === 45000 && ["slides.create", "document.create"].includes(record.skillId) ? 300000
+          : this.timeoutMs === 45000 && ["slides.compose", "slides.inspect"].includes(record.skillId) ? 150000 : this.timeoutMs;
         const timeout = setTimeout(() => this.finish(row.id, `执行超过 ${Math.ceil(executionTimeout / 1000)} 秒限制，已终止；没有把未完成成果标记为成功。`), executionTimeout);
-        this.active.set(row.id, { worker, timeout });
+        this.active.set(row.id, { worker, timeout, workDirectory });
         worker.on("message", msg => {
           if (this.closed || !this.active.has(row.id)) return;
+          if (msg.type === "ai-usage" && record.skillId === "slides.create") {
+            try { getAiUsageRecorder()?.(row.owner, validatePresentationUsage(msg.usage)); }
+            catch { const latest = this.row(row.id); if (latest) { const r = JSON.parse(latest.record); this.event(r, "模型用量记录未能确认；不估算或伪造计费数值，需核对服务商账单。"); this.save(r); } }
+            return;
+          }
           if (msg.type === "asr-request") {
             const active=this.active.get(row.id);
             if (!active || active.worker!==worker || active.external || record.skillId!=="audio.transcribe-en" || typeof msg.id!=="string" || msg.id.length>80 || !(msg.pcm instanceof Uint8Array)) { this.finish(row.id,"离线识别进程请求无效。"); return; }
@@ -115,6 +168,14 @@ export class SkillService {
             } catch { this.finish(row.id,"离线识别未配置或无法启动，没有生成转写。"); }
             return;
           }
+          if (msg.type === "checkpoint" && record.skillId === "slides.create") {
+            try {
+              if (typeof msg.id !== "string" || msg.id.length > 80) throw Error("检查点请求标识无效。");
+              this.savePresentationCheckpoint(row.id, row.owner, msg.checkpoint);
+              worker.postMessage({ type: "checkpoint-saved", id: msg.id });
+            } catch { worker.postMessage({ type: "checkpoint-error", id: msg.id }); }
+            return;
+          }
           if(msg.type==="checkpoint"){
             const reply=(type:string)=>worker.postMessage({type,id:msg.id});
             try{
@@ -123,8 +184,8 @@ export class SkillService {
               const meta=Buffer.from(JSON.stringify({fileIndex:cp.fileIndex,sourceSHA256:cp.sourceSHA256,page:cp.page,record:cp.record}));if(meta.length>2000000)throw Error("OCR页级检查点元数据超过2MB。");
               const old=Number(this.db.prepare("SELECT coalesce(length(meta)+length(bytes),0) AS n FROM skill_run_checkpoints WHERE run_id=? AND file_index=? AND page=?").get(row.id,cp.fileIndex,cp.page)?.n||0);
               const runUsed=Number(this.db.prepare("SELECT coalesce(sum(length(meta)+length(bytes)),0) AS n FROM skill_run_checkpoints WHERE run_id=?").get(row.id)?.n||0);
-              const ownerUsed=Number(this.db.prepare("SELECT coalesce(sum(length(input)),0) AS n FROM skill_runs WHERE owner=?").get(row.owner)?.n||0)+Number(this.db.prepare("SELECT coalesce(sum(length(a.bytes)),0) AS n FROM skill_artifacts a JOIN skill_runs r ON a.run_id=r.id WHERE r.owner=?").get(row.owner)?.n||0)+Number(this.db.prepare("SELECT coalesce(sum(length(c.meta)+length(c.bytes)),0) AS n FROM skill_run_checkpoints c JOIN skill_runs r ON c.run_id=r.id WHERE r.owner=?").get(row.owner)?.n||0);
-              const globalUsed=Number(this.db.prepare("SELECT (SELECT coalesce(sum(length(input)),0) FROM skill_runs)+(SELECT coalesce(sum(length(bytes)),0) FROM skill_artifacts)+(SELECT coalesce(sum(length(c.meta)+length(c.bytes)),0) FROM skill_run_checkpoints c) AS n").get()?.n||0);
+              const ownerUsed=Number(this.db.prepare("SELECT coalesce(sum(length(input)),0) AS n FROM skill_runs WHERE owner=?").get(row.owner)?.n||0)+Number(this.db.prepare("SELECT coalesce(sum(length(a.bytes)),0) AS n FROM skill_artifacts a JOIN skill_runs r ON a.run_id=r.id WHERE r.owner=?").get(row.owner)?.n||0)+Number(this.db.prepare("SELECT coalesce(sum(length(c.meta)+length(c.bytes)),0) AS n FROM skill_run_checkpoints c JOIN skill_runs r ON c.run_id=r.id WHERE r.owner=?").get(row.owner)?.n||0) + this.presentationStorage(row.owner);
+              const globalUsed=Number(this.db.prepare("SELECT (SELECT coalesce(sum(length(input)),0) FROM skill_runs)+(SELECT coalesce(sum(length(bytes)),0) FROM skill_artifacts)+(SELECT coalesce(sum(length(c.meta)+length(c.bytes)),0) FROM skill_run_checkpoints c) AS n").get()?.n||0) + this.presentationStorage();
               if(runUsed-old+meta.length+cp.png.length>18000000||ownerUsed-old+meta.length+cp.png.length>100000000||globalUsed-old+meta.length+cp.png.length>1000000000)throw Error("页级OCR检查点超过后台存储配额。");
               this.db.prepare("INSERT INTO skill_run_checkpoints(run_id,file_index,page,source_hash,meta,bytes) VALUES(?,?,?,?,?,?) ON CONFLICT(run_id,file_index,page) DO UPDATE SET source_hash=excluded.source_hash,meta=excluded.meta,bytes=excluded.bytes").run(row.id,cp.fileIndex,cp.page,cp.sourceSHA256,meta,new Uint8Array(cp.png));
               this.event(current,`PDF第${cp.page}页检查点已持久保存（文件序号${cp.fileIndex+1}）；仅在最终成果提交后清除。`);this.save(current);reply("checkpoint-saved");
@@ -137,7 +198,7 @@ export class SkillService {
         });
         worker.on("error", () => { if (!this.closed && this.active.has(row.id)) this.finish(row.id, "执行器异常或超出资源限制，任务未完成。"); });
         worker.on("exit", () => { if (!this.closed && this.active.has(row.id)) this.finish(row.id, "执行器退出，未交付有效结果。"); });
-      } catch { this.finish(row.id, "无法启动后台执行器。"); }
+      } catch { if (workDirectory) void rm(workDirectory, { recursive: true, force: true }).catch(() => {}); this.finish(row.id, "无法启动后台执行器。"); }
     }
   }
   private async readBody(request: Request, limit: number) {
@@ -148,12 +209,13 @@ export class SkillService {
   }
   private async createRun(request: Request, owner: string): Promise<Response> {
     if (!request.headers.get("content-type")?.includes("multipart/form-data")) throw new RequestError("请上传 multipart 文件。");
-    const raw = await this.readBody(request, 2_100_000);
+    const presentationUpload = new URL(request.url).searchParams.get("kind") === "presentation";
+    const raw = await this.readBody(request, presentationUpload ? 13_700_000 : 2_100_000);
     let form: FormData; try { form = await new Request(request.url, { method: "POST", headers: { "content-type": request.headers.get("content-type")! }, body: raw }).formData(); } catch { throw new RequestError("上传表单格式错误。"); }
     if (form.get("consent") !== "true") throw new RequestError("请确认将材料上传到应用后台并执行。", 403);
     if (form.get("permission") === "仅本地") throw new RequestError("仅本地任务不能上传执行，请先修改任务权限。", 403);
     const file = form.get("file");
-    if (!(file instanceof File) || !file.size || file.size > 2_000_000) throw new RequestError("请选择不超过 2 MB 的非空文件。", 413);
+    if (!(file instanceof File) || !file.size || file.size > (presentationUpload && form.get("skillId") === "slides.create" && !form.has("planId") ? 13_600_000 : 2_000_000)) throw new RequestError("文件为空或超过该技能的上传限制（常规2MB、演示封装13.6MB）。", 413);
     const inputBytes = new Uint8Array(await file.arrayBuffer()); const inputHash = hash(inputBytes), filename = normalizeFilename(file.name);
     let skillId: string, expertId: string, options: SkillOptions, key: string, plan: SkillPlan | undefined, taskId: string | undefined;
     if (form.has("planId")) {
@@ -173,6 +235,9 @@ export class SkillService {
       const requestId = form.get("requestId"); if (requestId !== null && !validRequestId(requestId)) throw new RequestError("执行请求标识无效。");
       key = `manual:${requestId || randomUUID()}`;
     }
+    if (skillId === "slides.create") {
+      try { parsePresentationRequest(inputBytes); } catch (error) { throw new RequestError(error instanceof Error ? error.message : "演示材料格式错误。"); }
+    }
     const skill = runtimeCatalog().find(s => s.id === skillId);
     if (!skill || !skill.expertIds.includes(expertId)) throw new RequestError("该专家没有这个可执行技能。", 409);
     const fingerprint = hash(JSON.stringify({ filename, inputHash, skillId, expertId, version: plan?.skillVersion || skill.version, options, planId: plan?.id || null, ...(taskId ? { taskId } : {}) }));
@@ -188,8 +253,8 @@ export class SkillService {
     if (!extension || !skill.accepts.includes(extension)) throw new RequestError("文件格式不受该技能支持。");
     const ownerUsage = Number(this.db.prepare("SELECT coalesce(sum(length(input)),0) AS n FROM skill_runs WHERE owner=?").get(owner)?.n || 0)
       + Number(this.db.prepare("SELECT coalesce(sum(length(a.bytes)),0) AS n FROM skill_artifacts a JOIN skill_runs r ON a.run_id=r.id WHERE r.owner=?").get(owner)?.n || 0)
-      + Number(this.db.prepare("SELECT coalesce(sum(length(c.meta)+length(c.bytes)),0) AS n FROM skill_run_checkpoints c JOIN skill_runs r ON c.run_id=r.id WHERE r.owner=?").get(owner)?.n||0);
-    const globalUsage = Number(this.db.prepare("SELECT (SELECT coalesce(sum(length(input)),0) FROM skill_runs)+(SELECT coalesce(sum(length(bytes)),0) FROM skill_artifacts)+(SELECT coalesce(sum(length(meta)+length(bytes)),0) FROM skill_run_checkpoints) AS n").get()?.n || 0);
+      + Number(this.db.prepare("SELECT coalesce(sum(length(c.meta)+length(c.bytes)),0) AS n FROM skill_run_checkpoints c JOIN skill_runs r ON c.run_id=r.id WHERE r.owner=?").get(owner)?.n||0) + this.presentationStorage(owner);
+    const globalUsage = Number(this.db.prepare("SELECT (SELECT coalesce(sum(length(input)),0) FROM skill_runs)+(SELECT coalesce(sum(length(bytes)),0) FROM skill_artifacts)+(SELECT coalesce(sum(length(meta)+length(bytes)),0) FROM skill_run_checkpoints) AS n").get()?.n || 0) + this.presentationStorage();
     if (ownerUsage + file.size > 100_000_000 || globalUsage + file.size > 1_000_000_000) throw new RequestError("存储配额不足，请删除不需要的运行与文件。", 429);
     const count = Number(this.db.prepare("SELECT count(*) AS n FROM skill_runs WHERE owner=?").get(owner)?.n || 0);
     if (count >= 100) throw new RequestError("最多保存 100 次运行，请先删除不需要的记录。", 429);
@@ -252,14 +317,19 @@ export class SkillService {
         return new Response(new Uint8Array(artifact.bytes).buffer, { headers: { "Content-Type": meta.mime, "Content-Length": String(artifact.bytes.length), "Content-Disposition": `attachment; filename="${meta.name}"`, "Content-Security-Policy": "sandbox; default-src 'none'; style-src 'unsafe-inline'", "X-Content-Type-Options": "nosniff", "Cache-Control": "private, no-store" } });
       }
       if (request.method === "POST" && match[2] === "resume") {
-        if (!["pdf.ocr", "pdf.ocr-batch"].includes(record.skillId)) return response({ error: "目前仅支持重新处理本地PDF OCR运行。" }, 409);
-        if (!["failed", "cancelled"].includes(record.status)) return response({ error: "只有失败或已取消的PDF OCR运行可重新处理。" }, 409);
+        if (!["pdf.ocr", "pdf.ocr-batch", "slides.create"].includes(record.skillId)) return response({ error: "目前仅支持本地PDF OCR或已有规划检查点的演示继续处理。" }, 409);
+        if(record.skillId==='slides.create'){
+          const cp=this.presentationCheckpoint(record.id);
+          if(!cp)return response({error:'尚无已保存的演示规划；为避免未经确认重复发送正文/计费，请重新准备材料、授权并新建运行。'},409);
+          if(cp.stage==='directed'&&(cp.writerAttempts||0)>=2)return response({error:'写稿两次调用预算已用完，不会再次发送正文；请重新准备并明确授权新任务。'},409);
+        }
+        if (!["failed", "cancelled"].includes(record.status)) return response({ error: "只有失败或已取消的运行可重新处理。" }, 409);
         record.status = "queued"; record.artifacts = []; record.recoveryAttempts = 0; delete record.error; delete record.summary;
-        this.event(record, "用户请求继续PDF OCR；将校验并复用已持久化的逐页检查点，重新处理未完成页。"); this.save(record);
+        this.event(record, record.skillId === "slides.create" ? (this.presentationCheckpoint(record.id)?.stage === "directed" ? "用户请求恢复导演检查点；跳过导演调用，继续已授权的逐页写稿，可能产生剩余模型调用。" : "用户请求复用已有规划继续编译/渲染；不重复发送正文或调用模型。") : "用户请求继续PDF OCR；将校验并复用已持久化的逐页检查点，重新处理未完成页。"); this.save(record);
         setImmediate(() => this.pump()); return response(record, 202);
       }
       if ((request.method === "POST" && match[2] === "cancel") || (request.method === "DELETE" && !match[2])) {
-        const active = this.active.get(record.id); if (active) { active.external?.abort(); clearTimeout(active.timeout); this.active.delete(record.id); await active.worker.terminate(); await active.external?.promise.catch(() => {}); }
+        const active = this.active.get(record.id); if (active) { active.external?.abort(); clearTimeout(active.timeout); this.active.delete(record.id); await this.stopWorker(active); await active.external?.promise.catch(() => {}); }
         if (request.method === "DELETE") this.db.prepare("DELETE FROM skill_runs WHERE id=? AND owner=?").run(record.id, owner);
         else if (["queued", "running"].includes(record.status)) { record.status = "cancelled"; this.event(record, "用户已取消，执行器已停止。"); this.save(record); }
         this.pump(); return response(request.method === "DELETE" ? { deleted: true } : record);
@@ -270,5 +340,5 @@ export class SkillService {
       return response({ error: "技能服务处理失败，未确认成功。请稍后重试。" }, 500);
     }
   }
-  async close() { this.closed = true; this.plans.close(); for (const a of this.active.values()) { a.external?.abort(); clearTimeout(a.timeout); await a.worker.terminate(); await a.external?.promise.catch(() => {}); } this.active.clear(); this.db.close(); }
+  async close() { this.closed = true; this.plans.close(); for (const a of this.active.values()) { a.external?.abort(); clearTimeout(a.timeout); await this.stopWorker(a); await a.external?.promise.catch(() => {}); } this.active.clear(); await Promise.all(this.stopping); this.db.close(); }
 }

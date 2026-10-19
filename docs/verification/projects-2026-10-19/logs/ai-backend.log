@@ -1,0 +1,264 @@
+TAP version 13
+# Subtest: AI fails closed without configured credentials, for normal and server-only requests
+ok 1 - AI fails closed without configured credentials, for normal and server-only requests
+  ---
+  duration_ms: 1.495916
+  type: 'test'
+  ...
+# (node:22029) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: chat route requires authentication before contacting the provider
+ok 2 - chat route requires authentication before contacting the provider
+  ---
+  duration_ms: 60.104765
+  type: 'test'
+  ...
+# Subtest: authenticated chat relays SSE with server settings and the conversation history
+ok 3 - authenticated chat relays SSE with server settings and the conversation history
+  ---
+  duration_ms: 22.868928
+  type: 'test'
+  ...
+# Subtest: BYOK selects a fixed endpoint, never a client-supplied base URL
+ok 4 - BYOK selects a fixed endpoint, never a client-supplied base URL
+  ---
+  duration_ms: 5.979398
+  type: 'test'
+  ...
+# Subtest: invalid roles and oversized histories are rejected without provider calls
+ok 5 - invalid roles and oversized histories are rejected without provider calls
+  ---
+  duration_ms: 10.669722
+  type: 'test'
+  ...
+# Subtest: missing configuration and provider errors do not return fake replies or leak provider bodies
+ok 6 - missing configuration and provider errors do not return fake replies or leak provider bodies
+  ---
+  duration_ms: 2.078389
+  type: 'test'
+  ...
+# Subtest: client cancellation reaches upstream fetch
+ok 7 - client cancellation reaches upstream fetch
+  ---
+  duration_ms: 0.8558
+  type: 'test'
+  ...
+# Subtest: the streamed chat records the usage the provider reported
+ok 8 - the streamed chat records the usage the provider reported
+  ---
+  duration_ms: 2.317048
+  type: 'test'
+  ...
+# Subtest: a stream without usage data is recorded as unreported, never estimated
+ok 9 - a stream without usage data is recorded as unreported, never estimated
+  ---
+  duration_ms: 1.656563
+  type: 'test'
+  ...
+# (node:22048) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: authentication, consent, local-only, input/profile/model limits prevent provider calls
+ok 10 - authentication, consent, local-only, input/profile/model limits prevent provider calls
+  ---
+  duration_ms: 38.903823
+  type: 'test'
+  ...
+# Subtest: model classification receives deliverable context and candidate contracts, returns one validated expert
+ok 11 - model classification receives deliverable context and candidate contracts, returns one validated expert
+  ---
+  duration_ms: 3.459628
+  type: 'test'
+  ...
+# Subtest: general and one-question responses work; malformed or out-of-catalog results fail closed
+ok 12 - general and one-question responses work; malformed or out-of-catalog results fail closed
+  ---
+  duration_ms: 9.899806
+  type: 'test'
+  ...
+# Subtest: confirmed answers are passed and identical repeated questions are rejected
+ok 13 - confirmed answers are passed and identical repeated questions are rejected
+  ---
+  duration_ms: 1.681849
+  type: 'test'
+  ...
+# Subtest: BYOK uses fixed endpoints; missing config and errors do not fabricate matches or leak secrets
+ok 14 - BYOK uses fixed endpoints; missing config and errors do not fabricate matches or leak secrets
+  ---
+  duration_ms: 5.92587
+  type: 'test'
+  ...
+# Subtest: cancellation reaches upstream and oversized responses are rejected
+ok 15 - cancellation reaches upstream and oversized responses are rejected
+  ---
+  duration_ms: 2.778527
+  type: 'test'
+  ...
+# Subtest: execution contracts contain actual method/checks and fallback is only an explicitly labeled suggestion
+ok 16 - execution contracts contain actual method/checks and fallback is only an explicitly labeled suggestion
+  ---
+  duration_ms: 1.889212
+  type: 'test'
+  ...
+# (node:22067) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: platform options are mapped onto the wire names of the implemented protocol
+ok 17 - platform options are mapped onto the wire names of the implemented protocol
+  ---
+  duration_ms: 2.8488
+  type: 'test'
+  ...
+# Subtest: an option the provider cannot carry is reported instead of silently dropped
+ok 18 - an option the provider cannot carry is reported instead of silently dropped
+  ---
+  duration_ms: 0.283865
+  type: 'test'
+  ...
+# Subtest: out of range option values are rejected and reported
+ok 19 - out of range option values are rejected and reported
+  ---
+  duration_ms: 0.189275
+  type: 'test'
+  ...
+# Subtest: provider failures are classified with an actionable message
+ok 20 - provider failures are classified with an actionable message
+  ---
+  duration_ms: 0.301522
+  type: 'test'
+  ...
+# Subtest: usage is only reported when the provider actually reported it
+ok 21 - usage is only reported when the provider actually reported it
+  ---
+  duration_ms: 0.422142
+  type: 'test'
+  ...
+# Subtest: the registered catalog is marked unverified until a provider answers
+ok 22 - the registered catalog is marked unverified until a provider answers
+  ---
+  duration_ms: 0.381338
+  type: 'test'
+  ...
+# Subtest: model usage is recorded per owner and never crosses owners
+ok 23 - model usage is recorded per owner and never crosses owners
+  ---
+  duration_ms: 14.178181
+  type: 'test'
+  ...
+# Subtest: the model registry endpoint tells the truth about what is verified
+ok 24 - the model registry endpoint tells the truth about what is verified
+  ---
+  duration_ms: 42.844954
+  type: 'test'
+  ...
+# Subtest: the usage endpoint only sums the calls the provider actually reported
+ok 25 - the usage endpoint only sums the calls the provider actually reported
+  ---
+  duration_ms: 11.44626
+  type: 'test'
+  ...
+# Subtest: a quota probe without credentials reports the missing key instead of a balance
+ok 26 - a quota probe without credentials reports the missing key instead of a balance
+  ---
+  duration_ms: 0.697308
+  type: 'test'
+  ...
+# Subtest: a provider without a known quota endpoint says so plainly
+ok 27 - a provider without a known quota endpoint says so plainly
+  ---
+  duration_ms: 0.301199
+  type: 'test'
+  ...
+# Subtest: the quota endpoint refuses to invent a balance without credentials
+ok 28 - the quota endpoint refuses to invent a balance without credentials
+  ---
+  duration_ms: 22.873853
+  type: 'test'
+  ...
+# Subtest: unknown registry routes answer with 404 and writes are refused
+ok 29 - unknown registry routes answer with 404 and writes are refused
+  ---
+  duration_ms: 9.699484
+  type: 'test'
+  ...
+# (node:22075) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: the catalogue lists real recipes and says which steps cannot run here
+ok 30 - the catalogue lists real recipes and says which steps cannot run here
+  ---
+  duration_ms: 315.472339
+  type: 'test'
+  ...
+# Subtest: a missing answer is refused before any step runs
+ok 31 - a missing answer is refused before any step runs
+  ---
+  duration_ms: 157.948844
+  type: 'test'
+  ...
+# Subtest: a form driven run really executes the skill and returns its artifacts
+ok 32 - a form driven run really executes the skill and returns its artifacts
+  ---
+  duration_ms: 2263.394648
+  type: 'test'
+  ...
+# Subtest: the FAQ run produces a searchable page and an offline package
+ok 33 - the FAQ run produces a searchable page and an offline package
+  ---
+  duration_ms: 2133.415547
+  type: 'test'
+  ...
+# Subtest: a table run reads the file from the asset library and produces the workbook
+ok 34 - a table run reads the file from the asset library and produces the workbook
+  ---
+  duration_ms: 1734.604954
+  type: 'test'
+  ...
+# Subtest: a file that belongs to somebody else is refused with a clear reason
+ok 35 - a file that belongs to somebody else is refused with a clear reason
+  ---
+  duration_ms: 127.064722
+  type: 'test'
+  ...
+# Subtest: a step that needs credentials says what is missing instead of faking a result
+ok 36 - a step that needs credentials says what is missing instead of faking a result
+  ---
+  duration_ms: 2938.843383
+  type: 'test'
+  ...
+# Subtest: a step that needs a single authorisation is skipped and says so
+ok 37 - a step that needs a single authorisation is skipped and says so
+  ---
+  duration_ms: 2132.384078
+  type: 'test'
+  ...
+# Subtest: a failed step can be retried and the reason comes from the real run
+ok 38 - a failed step can be retried and the reason comes from the real run
+  ---
+  duration_ms: 4142.768802
+  type: 'test'
+  ...
+# Subtest: one person cannot read or retry another person's run
+ok 39 - one person cannot read or retry another person's run
+  ---
+  duration_ms: 2128.454907
+  type: 'test'
+  ...
+# Subtest: the http api starts, reads and retries workflow runs
+ok 40 - the http api starts, reads and retries workflow runs
+  ---
+  duration_ms: 4566.92665
+  type: 'test'
+  ...
+# Subtest: the landing page and the social card really build their files
+ok 41 - the landing page and the social card really build their files
+  ---
+  duration_ms: 4542.766664
+  type: 'test'
+  ...
+1..41
+# tests 41
+# suites 0
+# pass 41
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 30147.139626

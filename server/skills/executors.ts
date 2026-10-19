@@ -1,3 +1,6 @@
+import { createWord } from "./word-pro/pipeline";
+import { createPresentation } from "./presentation/pipeline";
+import type { PresentationCheckpoint } from "../../shared/presentation";
 import { runtimeCatalog } from "./runtime-catalog";
 import { requestAI } from "../api/ai";
 import { createHash } from "node:crypto";
@@ -16,7 +19,7 @@ import { joinTables } from "./table-join";
 import { joinMultiTables } from "./table-join-multi";
 import { pdfBatch } from "./pdf-batch";
 import { pdfOCR } from "./pdf-ocr";
-import { XMLParser, XMLValidator } from "fast-xml-parser";
+import { paragraphs } from "./source-text";
 import { Document, Packer, Paragraph, HeadingLevel, TextRun } from "docx";
 import PptxGenJS from "pptxgenjs";
 import { writePDF, pdfRead } from "./pdf";
@@ -46,7 +49,7 @@ import { buildStructuredPresentation } from "./pptx-deck";
 import { inspectPresentation } from "./pptx-inspect";
 import { presentationRendererAvailable, renderPresentation } from "./pptx-render";
 
-export type SkillInput = { skillId: string; filename: string; bytes: Uint8Array; deduplicate: boolean; parameters?: Record<string, string>; owner?: string; resumePages?: import('./pdf-ocr').PDFPageCheckpoint[]; onPageCheckpoint?: (checkpoint: import('./pdf-ocr').PDFPageCheckpoint) => Promise<void> | void };
+export type SkillInput = { workDirectory?: string; onAIUsage?: (usage: import("../api/model-registry").UsageRecord) => void; skillId: string; filename: string; bytes: Uint8Array; deduplicate: boolean; parameters?: Record<string, string>; owner?: string; resumePresentation?: PresentationCheckpoint; onPresentationCheckpoint?: (checkpoint: PresentationCheckpoint) => Promise<void> | void; resumePages?: import('./pdf-ocr').PDFPageCheckpoint[]; onPageCheckpoint?: (checkpoint: import('./pdf-ocr').PDFPageCheckpoint) => Promise<void> | void };
 export type Output = { name: string; mime: string; bytes: Uint8Array };
 import { out, json, text, xml } from "./io";
 async function table(input: SkillInput, event: (s: string) => void) {
@@ -101,25 +104,6 @@ async function table(input: SkillInput, event: (s: string) => void) {
   const max = Math.max(1, ...chartItems.map(s => Math.abs(s.value)));
   const chart = `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="${150 + chartItems.length * 48}" viewBox="0 0 900 ${150 + chartItems.length * 48}"><rect width="100%" height="100%" fill="#fafaf7"/><g font-family="sans-serif" fill="#273c38"><text x="32" y="38" font-size="22">${numeric.length ? "数值列合计（正负以数字标签为准）" : "各字段非空记录数"}</text><text x="32" y="65" font-size="13">独立字段仅作概览；单位可能不同，请勿据柱长比较业务价值。最多展示12列。</text>${chartItems.map((s, i) => `<text x="32" y="${110 + i * 48}" font-size="14">${xml(s.label.slice(0, 12))}</text><rect x="210" y="${90 + i * 48}" width="${Math.abs(s.value) / max * 450}" height="28" rx="4" fill="${s.value < 0 ? "#bb7060" : "#698a80"}"/><text x="680" y="${110 + i * 48}" font-size="14">${xml(Number(s.value.toPrecision(12)))}</text>`).join("")}</g></svg>`;
   return { summary: `实际处理 ${rows.length - 1} 行；交付 ${cleaned.length} 行。发现 ${duplicates} 行完全重复；数值列 ${stats.filter(s => s.numeric).length} 个。`, outputs: [out("cleaned.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", xlsx), json("analysis.json", { sourceSheet, originalRows: rows.length - 1, retainedRows: cleaned.length, duplicateRows: duplicates, deduplicated: input.deduplicate, sourceRows: cleaned.map(r => r.sourceRow), rowReference: "CSV 为解析后记录序号（含表头、跳过空行），XLSX 为首表实际行号；不是所有文件的物理文本行号。", columns: stats, numericPolicy: "Decimal 40位十进制计算；sumExact 为精确合计，meanExact 最多20位有效数字，图表及数字字段为近似值。绝对值≤1e12且小数≤12位，不推断前导零、币种、百分比或日期。" }), out("overview.svg", "image/svg+xml", chart)] };
-}
-function paragraphs(input: SkillInput) {
-  let value: string;
-  if (/\.docx$/i.test(input.filename)) {
-    const entries = openOffice(input.bytes, "word/document.xml");
-    const source = text(entries["word/document.xml"]);
-    if (XMLValidator.validate(source) !== true) throw Error("DOCX XML 损坏。");
-    if (/<w:(?:ins|del|altChunk)\b/.test(source)) throw Error("请先接受或拒绝修订，并移除外部嵌入内容。");
-    const parser = new XMLParser({ preserveOrder: true, ignoreAttributes: true, trimValues: false, parseTagValue: false, processEntities: false });
-    const tree = parser.parse(source); const found: string[] = [];
-    const decode = (s: string) => s.replace(/&(?:amp|lt|gt|quot|apos);/g, v => ({ "&amp;": "&", "&lt;": "<", "&gt;": ">", "&quot;": '"', "&apos;": "'" }[v]!)).replace(/&#(x[0-9a-f]+|\d+);/gi, (_, n) => { const code = n[0].toLowerCase() === "x" ? parseInt(n.slice(1), 16) : Number(n); return code <= 0x10ffff && code > 0 ? String.fromCodePoint(code) : ""; });
-    function content(nodes: any[]): string { return nodes.map(node => Object.entries(node).map(([key, value]) => key === "#text" ? decode(String(value)) : key === "w:tab" ? "\t" : key === "w:br" ? "\n" : Array.isArray(value) ? content(value) : "").join("")).join(""); }
-    function walk(nodes: any[]) { for (const node of nodes) for (const [key, val] of Object.entries(node)) if (Array.isArray(val)) { if (key === "w:p") found.push(content(val)); else walk(val); } }
-    walk(tree); value = found.join("\n\n");
-  } else value = text(input.bytes);
-  if (!value.trim() || value.length > 60000) throw Error("文档为空或超过 60000 字限制。");
-  const sections = value.replace(/\r\n?/g, "\n").split(/\n+/).filter(s => s.trim()).map((s, index) => ({ sourceParagraph: index + 1, text: s, heading: /^(#{1,3})\s+/.exec(s)?.[1].length || 0 }));
-  if (sections.length > 1000) throw Error("文档超过 1000 个非空段落。");
-  return sections;
 }
 async function summarizeDocument(input: SkillInput, event: (s: string) => void) {
   if (input.parameters?.externalConsent !== "yes") throw Error("没有第三方模型正文处理授权，未发送文档内容。");
@@ -219,7 +203,7 @@ async function slides(input: SkillInput, event: (s: string) => void) {
   let rendered = false;
   let missingFonts: string[] = [];
   try {
-    const preview = await renderPresentation(build.pptxBytes, build.slideCount, event);
+    const preview = await renderPresentation(build.pptxBytes, build.slideCount, event, { workDirectory: input.workDirectory });
     renderOutputs = preview.outputs;
     missingFonts = Array.isArray(preview.report.missingFonts) ? preview.report.missingFonts.filter((font): font is string => typeof font === "string").slice(0, 5) : [];
     rendered = true;
@@ -248,14 +232,15 @@ async function slides(input: SkillInput, event: (s: string) => void) {
   };
 }
 
-export async function executeSkill(input: SkillInput, event: (s: string) => void = () => {}, onPageCheckpoint?: SkillInput['onPageCheckpoint']) {
+export async function executeSkill(input: SkillInput, event: (s: string) => void = () => {}, onPageCheckpoint?: SkillInput['onPageCheckpoint'], onPresentationCheckpoint?: SkillInput['onPresentationCheckpoint']) {
   if (onPageCheckpoint) input.onPageCheckpoint = onPageCheckpoint;
-  if (input.bytes.length > 2_000_000 || !input.bytes.length) throw Error("文件为空或超过 2 MB。");
+  if (onPresentationCheckpoint) input.onPresentationCheckpoint = onPresentationCheckpoint;
+  if (input.bytes.length > (input.skillId === "slides.create" ? 13_600_000 : 2_000_000) || !input.bytes.length) throw Error("文件为空或超过当前技能的输入限制。");
   const definition = runtimeCatalog().find(s => s.id === input.skillId && s.status === "ready");
   const extension = /\.[a-z0-9]+$/i.exec(input.filename)?.[0].toLowerCase();
   if (!definition || !extension || !definition.accepts.includes(extension)) throw Error("技能或输入文件格式不受支持。");
   const executors: Record<string, (input: SkillInput, event: (s: string) => void) => Promise<{ summary: string; outputs: Output[] }>> = {
-    "audio.transcribe-en": transcribeEnglish, "document.summarize": summarizeDocument, "infographic.compose": infographic, "table.calculate": calculateWorkbook, "table.analyze": table, "table.join": joinTables, "table.join-multi": joinMultiTables, "pdf.ocr": pdfOCR, "pdf.ocr-batch": pdfBatch, "document.format": document, "document.structure": docxStructure, "slides.compose": slides, "slides.inspect": inspectPresentation,
+    "audio.transcribe-en": transcribeEnglish, "document.summarize": summarizeDocument, "infographic.compose": infographic, "table.calculate": calculateWorkbook, "table.analyze": table, "table.join": joinTables, "table.join-multi": joinMultiTables, "pdf.ocr": pdfOCR, "pdf.ocr-batch": pdfBatch, "document.create": createWord, "document.format": document, "document.structure": docxStructure, "slides.create": createPresentation, "slides.compose": slides, "slides.inspect": inspectPresentation,
     "pdf.extract": (input, event) => pdfRead(input.bytes, event), "image.ocr": ocr,
     "brand.assets": palette, "brand.system": brandSystem, "image.product": productImages, "image.marketing": marketing, "image.layout": posterLayout,
     "collaboration.schedule": schedule, "requirements.check": requirements, "data.connect": connectData,
@@ -270,7 +255,7 @@ export async function executeSkill(input: SkillInput, event: (s: string) => void
   const executor = executors[input.skillId];
   if (!executor) throw Error("该技能没有可用执行器。");
   const result = await executor(input, event);
-  if (!result.outputs.length || result.outputs.some(o => !o.bytes.length) || result.outputs.reduce((n, o) => n + o.bytes.length, 0) > 10_000_000) throw Error("交付文件为空或超过输出限制。");
+  if (!result.outputs.length || result.outputs.some(o => !o.bytes.length) || result.outputs.reduce((n, o) => n + o.bytes.length, 0) > (input.skillId === "slides.create" ? 25_000_000 : 10_000_000)) throw Error("交付文件为空或超过输出限制。");
   // Re-open generated Office packages before declaring success.
   for (const output of result.outputs) {
     if (/\.xlsx$/.test(output.name)) { openOffice(output.bytes, "xl/workbook.xml"); const w = new ExcelJS.Workbook(); await w.xlsx.load(Buffer.from(output.bytes) as any); if (!w.worksheets.length) throw Error("输出表格校验失败。"); }

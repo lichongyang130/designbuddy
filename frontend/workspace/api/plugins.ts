@@ -1,4 +1,4 @@
-import { apiFetch, apiJSON } from "../../../apps/web/src/api/client";
+import { apiFetch, apiJSON, readJSON } from "../../../apps/web/src/api/client";
 import type { SkillPermission } from "../../../shared/skillRuntime";
 
 /** A plugin bundle the server is willing to install. */
@@ -69,7 +69,8 @@ export async function setPluginBundleStatus(id: string, status: "enabled" | "dis
 }
 
 export async function uninstallPluginBundle(id: string): Promise<void> {
-  await apiFetch(`/plugins/${encodeURIComponent(id)}`, { method: "DELETE" });
+  const response = await apiFetch(`/plugins/${encodeURIComponent(id)}`, { method: "DELETE" });
+  if (!response.ok) await readJSON(response);
 }
 
 export async function fetchPluginEvents(): Promise<PluginEvent[]> {

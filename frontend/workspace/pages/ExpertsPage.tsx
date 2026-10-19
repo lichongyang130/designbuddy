@@ -2,12 +2,14 @@ import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { HomeIcon } from "../../../apps/web/src/components/HomeIcon";
 import { WorkBuddySidebar } from "../../../apps/web/src/components/WorkBuddySidebar";
 import { allPromptTasks, type PromptTask } from "../../../apps/web/src/components/promptLibrary";
-import { expertCatalog, expertCategories, expertLegacyIds, customExpertCatalog, type CatalogExpert } from "../expertCatalog";
+import { expertCatalog, expertCategories, expertLegacyIds, customExpertCatalog, configureExpert, type CatalogExpert } from "../expertCatalog";
 import { MarketNavigation } from "../MarketNavigation";
 import { listProjects } from "../projectStore";
 import { useWorkspaceStore } from "../store";
 import { navigateTo, resolveWorkspaceRoute, workspaceRoutes } from "../workspaceRoutes";
 import "./experts.css";
+import { usePreferences } from "../settingsStore";
+import { translate } from "../i18n";
 import SkillWorkbench from "../SkillWorkbench";
 
 const tasks = new Map(allPromptTasks.map(task => [task.id, task]));
@@ -34,6 +36,7 @@ export default function ExpertsPage({ pathname }: { pathname: string }) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [error, setError] = useState("");
+  const expertSettings = usePreferences(s => s.expertSettings);
   const experts = useWorkspaceStore(state => state.experts);
   const upsertExpert = useWorkspaceStore(state => state.upsertExpert);
   useEffect(() => {
@@ -41,12 +44,12 @@ export default function ExpertsPage({ pathname }: { pathname: string }) {
     if (route.page === "create") { setName(""); setDescription(""); }
   }, [pathname, route.page]);
   const customExperts = useMemo(() => experts.map(customExpertCatalog), [experts]);
-  const allExperts = useMemo(() => [...expertCatalog, ...customExperts], [customExperts]);
+  const allExperts = useMemo(() => [...expertCatalog, ...customExperts].map(p => configureExpert(p, expertSettings)), [customExperts, expertSettings]);
   const activeCategory = mine ? "我的专家" : category;
   const visibleExperts = allExperts.filter(expert => (activeCategory === "全部专家" || expert.category === activeCategory)
     && [expert.name, expert.description, expert.category, ...expert.tags, ...expert.deliverables].join(" ").toLocaleLowerCase().includes(search.trim().toLocaleLowerCase()));
   // Custom IDs are checked first; legacy links never mutate stored experts or past tasks.
-  const selectedExpert = customExperts.find(e => e.id === route.id) || expertCatalog.find(e => e.id === route.id || e.id === expertLegacyIds[route.id || ""]);
+  const selectedExpert = allExperts.find(e => e.id === route.id || e.id === expertLegacyIds[route.id || ""]);
   const groups = ["办公提效", "设计制作", "网页应用", "我的专家"].map(area => ({ area, experts: visibleExperts.filter(e => e.category === area) })).filter(g => g.experts.length);
   function chooseCategory(value: string) {
     setSearch("");
@@ -55,6 +58,7 @@ export default function ExpertsPage({ pathname }: { pathname: string }) {
     else setCategory(value);
   }
   function launch(expert: CatalogExpert, task?: PromptTask) {
+    if (expertSettings[expert.id]?.enabled === false) { setError(translate(usePreferences.getState().locale, "settings.design.roleDisabled")); return; }
     try {
       sessionStorage.setItem("designbuddy.launch-context.v1", JSON.stringify({ expert: expert.name, ...(task ? { prompt: task.prompt, mode: task.mode } : {}) }));
       navigateTo("/");

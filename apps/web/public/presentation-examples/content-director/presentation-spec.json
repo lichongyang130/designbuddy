@@ -1,0 +1,874 @@
+{
+  "versionId": "7850b17e810407e27455c1c68a4d167d01b5265277a9b29a90cb0ea313ed7707",
+  "brief": {
+    "goal": "向项目决策领导汇报是否有条件批准当前PPT引擎进入小范围试点。结论先行；比较维持现状、受控试点、完善后再试点；不将工程测试等同于商业验收。",
+    "audience": "项目决策领导",
+    "scenario": "business-report",
+    "theme": "consulting",
+    "slideCount": 12,
+    "layoutStyle": "adaptive",
+    "visualStyle": "consulting",
+    "narrativeMode": "directed"
+  },
+  "spec": {
+    "schemaVersion": 2,
+    "title": "领导决策汇报｜PPT引擎试点建议",
+    "storyline": "建议有条件试点 → 工程事实与验收缺口 → 三方案取舍 → 成本风险 → 关卡和拍板事项",
+    "missingInformation": [
+      "试点业务复核人与技术负责人尚未指定。",
+      "实际模型通道、账单/单价、复核工时、部署资源成本尚未测算。",
+      "试点材料、人数/份数、开始日期、资源上限和停止条件待确认。",
+      "真实商业材料、真实外部模型与目标Office人工编辑尚未验收。"
+    ],
+    "theme": {
+      "primary": "#244C42",
+      "background": "#F4F1E9",
+      "surface": "#FFFFFF",
+      "text": "#172C26",
+      "muted": "#52685D",
+      "accent": "#A54525"
+    },
+    "slides": [
+      {
+        "id": "slide-01",
+        "sourceRefs": [
+          "source-1-p-1",
+          "source-1-p-2",
+          "source-1-p-3"
+        ],
+        "bindings": [],
+        "content": {
+          "type": "cover",
+          "title": "建议有条件批准小范围试点",
+          "subtitle": "【建议】领导决策汇报 · 15分钟建议讲述 · 待拍板，非已批准",
+          "speakerNotes": "各位领导，本次汇报只讨论一个决定：当前PPT引擎是否可以进入有边界的小范围试点。我的建议是有条件批准，而不是宣布商业就绪或全面推广。源码已经具备材料规划、原生PPTX编译、PDF及预览导出和质量报告链路；但真实商业材料、真实模型表现和目标Office编辑效果仍未完成验收。后面会把已证实的事实、选项分析及待确认事项分开呈现。今天不请求未经测算的预算，也不承诺没有证据的上线日期。\n\n来源位置：source-1-p-1；source-1-p-2；source-1-p-3\n助手基于源码证据编排；未调用后台外部模型，仍需人工事实与Office验收。\n\n仓库依据（快照）：\nE01 docs/examples/leader-decision/brief.md:L1–L8\nE02 server/skills/presentation/pipeline.ts:L63–L73；shared/presentation.ts:L1–L8\nE03 server/skills/presentation/quality.ts:L41–L64；docs/commercial-ppt-engine.md:L135–L144",
+          "sources": [
+            "source-1-p-1",
+            "source-1-p-2",
+            "source-1-p-3"
+          ]
+        },
+        "design": {
+          "layout": "editorial-cover",
+          "nature": "recommendation"
+        }
+      },
+      {
+        "id": "slide-02",
+        "sourceRefs": [
+          "source-1-p-1",
+          "source-1-p-3",
+          "source-1-p-8"
+        ],
+        "bindings": [],
+        "content": {
+          "type": "bullets",
+          "title": "本次请求：批准试点边界，不背书全面推广",
+          "speakerNotes": "需要领导确认的是试点授权的边界，而不是替每一份PPT作事实担保。建议仅选有明确使用目的、可访问且有授权的材料；先产生可复核草稿，再由指定人员核对事实、口径和编辑效果。任何关键质量问题、授权不清或成本无法控制，都应暂停试跑。业务复核人、技术负责人、资源上限和停止条件目前没有提供，必须在启动前确认。源码中的执行成功状态不能自动转化为商业发布批准。本页全部是建议条件，不是已经生效的管理制度。\n\n来源位置：source-1-p-1；source-1-p-3；source-1-p-8\n助手基于源码证据编排；未调用后台外部模型，仍需人工事实与Office验收。\n\n仓库依据（快照）：\nE01 docs/examples/leader-decision/brief.md:L1–L8\nE03 server/skills/presentation/quality.ts:L41–L64；docs/commercial-ppt-engine.md:L135–L144\nE08 frontend/workspace/skillPainpointMap.ts:L21–L53；server/skills/presentation/pipeline.ts:L34–L49；apps/web/src/inspiration/samples/LeaderDecisionReport.tsx:L54–L63",
+          "sources": [
+            "source-1-p-1",
+            "source-1-p-3",
+            "source-1-p-8"
+          ],
+          "body": "建议授权，不代表试点已启动或领导已批准。",
+          "bullets": [
+            "仅使用有授权、可追溯的材料，先产出草稿",
+            "指定业务复核人与技术负责人；人选待确认",
+            "关键问题、授权或成本不清时暂停，不直接发布",
+            "范围、资源上限及退出条件批准后才启动"
+          ],
+          "subtitle": "【建议】待决策；责任、资源与启动条件仍需确认。"
+        },
+        "design": {
+          "layout": "executive-summary",
+          "nature": "recommendation"
+        }
+      },
+      {
+        "id": "slide-03",
+        "sourceRefs": [
+          "source-2-table-1",
+          "source-1-p-3",
+          "source-1-p-4"
+        ],
+        "bindings": [
+          {
+            "datasetId": "source-2-table-1",
+            "rows": [
+              2
+            ],
+            "columns": [
+              "通过数"
+            ],
+            "operation": "verbatim-cells",
+            "values": [
+              [
+                "240"
+              ]
+            ]
+          },
+          {
+            "datasetId": "source-2-table-1",
+            "rows": [
+              3
+            ],
+            "columns": [
+              "通过数"
+            ],
+            "operation": "verbatim-cells",
+            "values": [
+              [
+                "25"
+              ]
+            ]
+          },
+          {
+            "datasetId": "source-2-table-1",
+            "rows": [
+              4
+            ],
+            "columns": [
+              "失败数"
+            ],
+            "operation": "verbatim-cells",
+            "values": [
+              [
+                "4"
+              ]
+            ]
+          }
+        ],
+        "content": {
+          "type": "metrics",
+          "title": "已有工程证据，但不是商业质量认证",
+          "speakerNotes": "这里引用的是上一轮已保存的测试记录，不是今天重新跑出来的覆盖率。技能后端回归有240项通过，相关界面回归有25项通过；另外扩展API检查仍有4项失败。这三项采用不同测试范围，不能相加计算一个所谓全仓通过率，也不能用界面通过数推导客户满意度或商业视觉水平。后端测试覆盖原生对象、来源绑定、导出、恢复和隔离等工程链路；仍需用真实业务材料和目标Office完成验收。测试记录中的0跳过也只属于该批测试，不代表所有可能环境均已覆盖。\n\n来源位置：source-2-table-1；source-1-p-3；source-1-p-4\n助手基于源码证据编排；未调用后台外部模型，仍需人工事实与Office验收。\n\n仓库依据（快照）：\nD01 见随附来源与字段口径\nE03 server/skills/presentation/quality.ts:L41–L64；docs/commercial-ppt-engine.md:L135–L144\nE04 docs/commercial-ppt-engine.md:L94–L110；.cache/presentation-full-skills-serial.log:L1535–L1543；.cache/presentation-ui-final.log:L32–L32；.cache/presentation-api-regression.log:L222–L230；.cache/presentation-api-head-baseline.log:L223–L231",
+          "sources": [
+            "source-2-table-1",
+            "source-1-p-3",
+            "source-1-p-4"
+          ],
+          "items": [
+            {
+              "label": "技能用例通过数",
+              "value": "240",
+              "note": "上一轮技能后端回归"
+            },
+            {
+              "label": "界面用例通过数",
+              "value": "25",
+              "note": "上一轮相关界面回归"
+            },
+            {
+              "label": "扩展API失败项",
+              "value": "4",
+              "note": "HEAD对照同样复现"
+            }
+          ],
+          "subtitle": "【事实】仅限所列源码与历史测试范围；不等于商业验收。"
+        },
+        "design": {
+          "layout": "kpi-insight",
+          "nature": "fact"
+        }
+      },
+      {
+        "id": "slide-04",
+        "sourceRefs": [
+          "source-1-p-2",
+          "source-1-p-3",
+          "source-1-p-6"
+        ],
+        "bindings": [],
+        "content": {
+          "type": "comparison",
+          "title": "可以交付可编辑草稿，不能承诺商业成稿",
+          "speakerNotes": "源码可以接收明确需求和多份材料，在单次授权后进行逐页规划，再由代码生成可编辑文字、形状、图表、表格和讲稿；本机LibreOffice提供PDF和逐页预览，质量报告保留来源和告警。边界同样重要：当前没有独立语义事实核查，没有自动商业视觉批准，也没有任意旧PPT无损编辑或会话局部修订。PPTX不内嵌字体，接收方需要相应字体并复核重排。判断是否试点，应建立在这些真实能力与限制上，而不是把规范导出误称为咨询公司定制成稿。\n\n来源位置：source-1-p-2；source-1-p-3；source-1-p-6\n助手基于源码证据编排；未调用后台外部模型，仍需人工事实与Office验收。\n\n仓库依据（快照）：\nE02 server/skills/presentation/pipeline.ts:L63–L73；shared/presentation.ts:L1–L8\nE03 server/skills/presentation/quality.ts:L41–L64；docs/commercial-ppt-engine.md:L135–L144\nE06 docs/commercial-ppt-engine.md:L81–L93",
+          "sources": [
+            "source-1-p-2",
+            "source-1-p-3",
+            "source-1-p-6"
+          ],
+          "columns": [
+            {
+              "heading": "已实现的工程能力",
+              "bullets": [
+                "授权材料规划与来源引用",
+                "原生文字、图表、表格及讲稿",
+                "实际PDF与全页渲染证据",
+                "规划恢复与独立质量报告"
+              ]
+            },
+            {
+              "heading": "不能据此承诺的效果",
+              "bullets": [
+                "独立事实核查与商业视觉批准",
+                "真实商业材料与真实模型已验收",
+                "任意旧PPT无损编辑",
+                "会话修订、版本对比与目标Office认证"
+              ]
+            }
+          ],
+          "subtitle": "【事实】仅限所列源码与历史测试范围；不等于商业验收。"
+        },
+        "design": {
+          "layout": "capability-boundary",
+          "nature": "fact"
+        }
+      },
+      {
+        "id": "slide-05",
+        "sourceRefs": [
+          "source-3-table-1",
+          "source-1-p-4"
+        ],
+        "bindings": [
+          {
+            "datasetId": "source-3-table-1",
+            "rows": [
+              2,
+              3
+            ],
+            "columns": [
+              "检查结果",
+              "用例数"
+            ],
+            "operation": "verbatim-cells",
+            "values": [
+              [
+                "通过",
+                "19"
+              ],
+              [
+                "失败",
+                "4"
+              ]
+            ]
+          }
+        ],
+        "content": {
+          "type": "chart",
+          "title": "扩展API仍有失败，需先判断试点影响",
+          "subtitle": "【事实】同一批扩展API检查；HEAD对照复现，不等于自动放行。",
+          "speakerNotes": "这张图只展示同一批23项扩展API检查的结果：19项通过、4项失败。隔离的HEAD源码树复现了相同失败，因此没有证据把它们归因于本次PPT变更；但既存不等于可以忽略。失败涉及未配置通道时的错误、模型目录配置状态、未配置额度接口和匿名HTTP接口鉴权期望。下一步需要逐项确认它们是否影响拟选的试点路径，以及应当修复、限制范围还是设置启动阻断。这里不推断生产事故已经发生，也不把“基线同样失败”当成自动放行理由。\n\n来源位置：source-3-table-1；source-1-p-4\n助手基于源码证据编排；未调用后台外部模型，仍需人工事实与Office验收。\n\n仓库依据（快照）：\nD02 见随附来源与字段口径\nE04 docs/commercial-ppt-engine.md:L94–L110；.cache/presentation-full-skills-serial.log:L1535–L1543；.cache/presentation-ui-final.log:L32–L32；.cache/presentation-api-regression.log:L222–L230；.cache/presentation-api-head-baseline.log:L223–L231",
+          "sources": [
+            "source-3-table-1",
+            "source-1-p-4"
+          ],
+          "chartType": "bar",
+          "categories": [
+            "通过",
+            "失败"
+          ],
+          "series": [
+            {
+              "name": "用例数",
+              "values": [
+                19,
+                4
+              ]
+            }
+          ]
+        },
+        "design": {
+          "layout": "chart-takeaway",
+          "nature": "fact"
+        }
+      },
+      {
+        "id": "slide-06",
+        "sourceRefs": [
+          "source-4-table-1",
+          "source-1-p-3",
+          "source-1-p-4"
+        ],
+        "bindings": [
+          {
+            "datasetId": "source-4-table-1",
+            "rows": [
+              2,
+              3,
+              4
+            ],
+            "columns": [
+              "方案",
+              "可获得价值",
+              "主要代价或风险",
+              "建议判断"
+            ],
+            "operation": "verbatim-cells",
+            "values": [
+              [
+                "维持现状",
+                "不新增试跑投入",
+                "缺少真实使用反馈",
+                "不优先"
+              ],
+              [
+                "受控小范围试点",
+                "获得真实复核证据",
+                "需授权与复核投入",
+                "有条件推荐"
+              ],
+              [
+                "完善后再试点",
+                "先补部分能力缺口",
+                "真实反馈仍然缺少",
+                "条件不足时采用"
+              ]
+            ]
+          }
+        ],
+        "content": {
+          "type": "table",
+          "title": "三种可选路径：建议选择受控试点",
+          "subtitle": "【分析】定性分析与建议，不是已测算成本收益。",
+          "speakerNotes": "当前有三种实际可讨论的路径。维持现状，不新增试点投入，但无法获得真实材料的使用反馈；在明确边界下小范围试点，能够把模型表现、复核投入和目标Office兼容性转化为可记录证据，但必须承担受控的试跑与复核工作；继续完善后再试点，可以先处理部分缺口，但在真实反馈不足时可能扩大开发范围。表内是基于当前能力和缺口作出的定性分析，不是已经测得的成本收益或项目排期。建议选择受控试点，并以前述授权、责任和退出条件为前提。\n\n来源位置：source-4-table-1；source-1-p-3；source-1-p-4\n助手基于源码证据编排；未调用后台外部模型，仍需人工事实与Office验收。\n\n仓库依据（快照）：\nD03 见随附来源与字段口径\nE03 server/skills/presentation/quality.ts:L41–L64；docs/commercial-ppt-engine.md:L135–L144\nE04 docs/commercial-ppt-engine.md:L94–L110；.cache/presentation-full-skills-serial.log:L1535–L1543；.cache/presentation-ui-final.log:L32–L32；.cache/presentation-api-regression.log:L222–L230；.cache/presentation-api-head-baseline.log:L223–L231",
+          "sources": [
+            "source-4-table-1",
+            "source-1-p-3",
+            "source-1-p-4"
+          ],
+          "headers": [
+            "方案",
+            "可获得价值",
+            "主要代价或风险",
+            "建议判断"
+          ],
+          "rows": [
+            [
+              "维持现状",
+              "不新增试跑投入",
+              "缺少真实使用反馈",
+              "不优先"
+            ],
+            [
+              "受控小范围试点",
+              "获得真实复核证据",
+              "需授权与复核投入",
+              "有条件推荐"
+            ],
+            [
+              "完善后再试点",
+              "先补部分能力缺口",
+              "真实反馈仍然缺少",
+              "条件不足时采用"
+            ]
+          ]
+        },
+        "design": {
+          "layout": "decision-matrix",
+          "nature": "analysis",
+          "emphasisRows": [
+            1
+          ]
+        }
+      },
+      {
+        "id": "slide-07",
+        "sourceRefs": [
+          "source-1-p-1",
+          "source-1-p-3",
+          "source-1-p-6",
+          "source-1-p-8"
+        ],
+        "bindings": [],
+        "content": {
+          "type": "bullets",
+          "title": "试点的价值：把未知变成可核对证据",
+          "speakerNotes": "推荐试点，不是因为全部问题已经解决，而是已有链路足以承载受控验证。试点应该回答四个尚未有答案的问题：真实材料能否形成领导可用的决策主线；模型会不会误解事实、遗漏矛盾或给出无依据结论；业务人员需要投入多少复核时间；接收方在目标Office打开后，图表、表格和字体是否保持可编辑、可读。建议把这些问题作为每次试跑的记录项。若只是重复导出既有合成样本，或只看截图漂亮而不核对原文，就不能证明试点取得了有效结果。\n\n来源位置：source-1-p-1；source-1-p-3；source-1-p-6；source-1-p-8\n助手基于源码证据编排；未调用后台外部模型，仍需人工事实与Office验收。\n\n仓库依据（快照）：\nE01 docs/examples/leader-decision/brief.md:L1–L8\nE03 server/skills/presentation/quality.ts:L41–L64；docs/commercial-ppt-engine.md:L135–L144\nE06 docs/commercial-ppt-engine.md:L81–L93\nE08 frontend/workspace/skillPainpointMap.ts:L21–L53；server/skills/presentation/pipeline.ts:L34–L49；apps/web/src/inspiration/samples/LeaderDecisionReport.tsx:L54–L63",
+          "sources": [
+            "source-1-p-1",
+            "source-1-p-3",
+            "source-1-p-6",
+            "source-1-p-8"
+          ],
+          "bullets": [
+            "用真实授权材料检验决策主线，而非重复合成样本",
+            "对照原文核查事实、矛盾、数值和待确认项",
+            "记录实际模型调用与业务复核投入，不先承诺节省",
+            "在选定Office重开检查文字、图表和表格的可编辑性"
+          ],
+          "subtitle": "【建议】待决策；责任、资源与启动条件仍需确认。"
+        },
+        "design": {
+          "layout": "executive-summary",
+          "nature": "recommendation"
+        }
+      },
+      {
+        "id": "slide-08",
+        "sourceRefs": [
+          "source-4-table-2",
+          "source-1-p-5",
+          "source-1-p-7",
+          "source-1-p-8"
+        ],
+        "bindings": [
+          {
+            "datasetId": "source-4-table-2",
+            "rows": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "columns": [
+              "成本项",
+              "当前证据",
+              "试点需记录",
+              "批准前确认"
+            ],
+            "operation": "verbatim-cells",
+            "values": [
+              [
+                "模型调用",
+                "有用量字段",
+                "账单与实际用量",
+                "单价及上限待定"
+              ],
+              [
+                "人工复核",
+                "工时尚无记录",
+                "核对及返工工时",
+                "人员与工时待定"
+              ],
+              [
+                "部署运行",
+                "仅有执行时限",
+                "耗时与资源消耗",
+                "资源上限待定"
+              ],
+              [
+                "材料合规",
+                "需单次授权",
+                "授权与留存边界",
+                "资料范围待定"
+              ]
+            ]
+          }
+        ],
+        "content": {
+          "type": "table",
+          "title": "成本尚未测算：先明确记录口径和上限",
+          "subtitle": "【分析】没有报价、账单或工时记录；不提供虚构金额与节省比例。",
+          "speakerNotes": "目前没有服务商账单、人工工时或部署报价，因此不能给出可信的预算和节省比例。表中列出必须记录的成本项及对应口径。模型成本以服务商实际用量和计价为准，不能用未报告的token估算；人工成本需要记录逐页复核和返工时间；部署运行资源要区分配置的最大执行时限与实际耗时，不能把时限当成平均性能；材料合规则需要确认提供商留存政策和允许的资料范围。建议由领导指定资源上限的审批责任，再由试点结果形成测算。金额、单价、工时和总额目前均待确认。\n\n来源位置：source-4-table-2；source-1-p-5；source-1-p-7；source-1-p-8\n助手基于源码证据编排；未调用后台外部模型，仍需人工事实与Office验收。\n\n仓库依据（快照）：\nD04 见随附来源与字段口径\nE05 server/skills/presentation/pipeline.ts:L34–L62；server/skills/presentation/usage.ts:L1–L10；docs/commercial-ppt-engine.md:L77–L80\nE07 docs/commercial-ppt-engine.md:L75–L76\nE08 frontend/workspace/skillPainpointMap.ts:L21–L53；server/skills/presentation/pipeline.ts:L34–L49；apps/web/src/inspiration/samples/LeaderDecisionReport.tsx:L54–L63",
+          "sources": [
+            "source-4-table-2",
+            "source-1-p-5",
+            "source-1-p-7",
+            "source-1-p-8"
+          ],
+          "headers": [
+            "成本项",
+            "当前证据",
+            "试点需记录",
+            "批准前确认"
+          ],
+          "rows": [
+            [
+              "模型调用",
+              "有用量字段",
+              "账单与实际用量",
+              "单价及上限待定"
+            ],
+            [
+              "人工复核",
+              "工时尚无记录",
+              "核对及返工工时",
+              "人员与工时待定"
+            ],
+            [
+              "部署运行",
+              "仅有执行时限",
+              "耗时与资源消耗",
+              "资源上限待定"
+            ],
+            [
+              "材料合规",
+              "需单次授权",
+              "授权与留存边界",
+              "资料范围待定"
+            ]
+          ]
+        },
+        "design": {
+          "layout": "adaptive-table",
+          "nature": "analysis"
+        }
+      },
+      {
+        "id": "slide-09",
+        "sourceRefs": [
+          "source-4-table-3",
+          "source-1-p-3",
+          "source-1-p-4",
+          "source-1-p-5",
+          "source-1-p-6"
+        ],
+        "bindings": [
+          {
+            "datasetId": "source-4-table-3",
+            "rows": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "columns": [
+              "风险",
+              "触发信号",
+              "建议动作"
+            ],
+            "operation": "verbatim-cells",
+            "values": [
+              [
+                "事实误读",
+                "引用不支持结论",
+                "停止发布并核对原文"
+              ],
+              [
+                "字体或编辑异常",
+                "目标Office重排",
+                "装字体并重开验证"
+              ],
+              [
+                "规划前运行中断",
+                "尚无保存的规划",
+                "明确重新授权新建"
+              ],
+              [
+                "既存API失败",
+                "影响试点路径",
+                "评审后修复或收窄"
+              ]
+            ]
+          }
+        ],
+        "content": {
+          "type": "table",
+          "title": "风险要有触发条件和应对动作",
+          "speakerNotes": "风险管理应当说明何时触发、如何处置，而不是随意给出高低概率。事实误读的触发信号是引用存在但结论不被原文支持；应停止发布并由业务人员逐项核对。字体或编辑异常需要在选定Office中复现，先确认字体与原生对象，不用缩字掩盖问题。中断发生在规划保存前，不能假定可以继续；需要重新授权新建，避免未知外部请求静默重放。对既存API失败则先评估影响，再决定修复或收窄试点范围。以上是建议的处置方案，不代表风险已经发生或全部关闭。\n\n来源位置：source-4-table-3；source-1-p-3；source-1-p-4；source-1-p-5；source-1-p-6\n助手基于源码证据编排；未调用后台外部模型，仍需人工事实与Office验收。\n\n仓库依据（快照）：\nD05 见随附来源与字段口径\nE03 server/skills/presentation/quality.ts:L41–L64；docs/commercial-ppt-engine.md:L135–L144\nE04 docs/commercial-ppt-engine.md:L94–L110；.cache/presentation-full-skills-serial.log:L1535–L1543；.cache/presentation-ui-final.log:L32–L32；.cache/presentation-api-regression.log:L222–L230；.cache/presentation-api-head-baseline.log:L223–L231\nE05 server/skills/presentation/pipeline.ts:L34–L62；server/skills/presentation/usage.ts:L1–L10；docs/commercial-ppt-engine.md:L77–L80\nE06 docs/commercial-ppt-engine.md:L81–L93",
+          "sources": [
+            "source-4-table-3",
+            "source-1-p-3",
+            "source-1-p-4",
+            "source-1-p-5",
+            "source-1-p-6"
+          ],
+          "headers": [
+            "风险",
+            "触发信号",
+            "建议动作"
+          ],
+          "rows": [
+            [
+              "事实误读",
+              "引用不支持结论",
+              "停止发布并核对原文"
+            ],
+            [
+              "字体或编辑异常",
+              "目标Office重排",
+              "装字体并重开验证"
+            ],
+            [
+              "规划前运行中断",
+              "尚无保存的规划",
+              "明确重新授权新建"
+            ],
+            [
+              "既存API失败",
+              "影响试点路径",
+              "评审后修复或收窄"
+            ]
+          ],
+          "subtitle": "【分析】定性判断，非成本收益测算或已批准决定。"
+        },
+        "design": {
+          "layout": "risk-response",
+          "nature": "analysis"
+        }
+      },
+      {
+        "id": "slide-10",
+        "sourceRefs": [
+          "source-1-p-1",
+          "source-1-p-3",
+          "source-1-p-5",
+          "source-1-p-8"
+        ],
+        "bindings": [],
+        "content": {
+          "type": "timeline",
+          "title": "按关卡推进，不承诺未经评估的日期",
+          "speakerNotes": "建议按关卡推进，而不是现在给出没有排期依据的日历承诺。首先确认材料授权、使用对象、责任人与资源边界；其次用已确认的材料和模型通道真实试跑，并保留用量、来源、导出和告警；随后由业务人员逐页复核，并在选定Office重开检查；最后根据问题和实际投入决定停止、补齐后继续，还是扩大范围。任何前置关卡未满足都不应跳过。这里的四步是建议的执行顺序，具体负责人、开始日期、持续时间和样本数量均需确认后另行排期。\n\n来源位置：source-1-p-1；source-1-p-3；source-1-p-5；source-1-p-8\n助手基于源码证据编排；未调用后台外部模型，仍需人工事实与Office验收。\n\n仓库依据（快照）：\nE01 docs/examples/leader-decision/brief.md:L1–L8\nE03 server/skills/presentation/quality.ts:L41–L64；docs/commercial-ppt-engine.md:L135–L144\nE05 server/skills/presentation/pipeline.ts:L34–L62；server/skills/presentation/usage.ts:L1–L10；docs/commercial-ppt-engine.md:L77–L80\nE08 frontend/workspace/skillPainpointMap.ts:L21–L53；server/skills/presentation/pipeline.ts:L34–L49；apps/web/src/inspiration/samples/LeaderDecisionReport.tsx:L54–L63",
+          "sources": [
+            "source-1-p-1",
+            "source-1-p-3",
+            "source-1-p-5",
+            "source-1-p-8"
+          ],
+          "items": [
+            {
+              "label": "确认边界",
+              "body": "授权、责任、资源明确后启动"
+            },
+            {
+              "label": "真实试跑",
+              "body": "保留用量、来源、导出和告警"
+            },
+            {
+              "label": "人工验收",
+              "body": "逐页核对并在目标Office重开"
+            },
+            {
+              "label": "复盘决策",
+              "body": "依证据决定停止、补齐或扩围"
+            }
+          ],
+          "subtitle": "【建议】待决策；责任、资源与启动条件仍需确认。"
+        },
+        "design": {
+          "layout": "stage-gates",
+          "nature": "recommendation"
+        }
+      },
+      {
+        "id": "slide-11",
+        "sourceRefs": [
+          "source-1-p-1",
+          "source-1-p-3",
+          "source-1-p-6"
+        ],
+        "bindings": [],
+        "content": {
+          "type": "bullets",
+          "title": "达标才扩围：导出成功不是唯一门槛",
+          "speakerNotes": "建议把是否扩围与可验证门槛挂钩。首先，每一项关键结论和数值都能够回到材料位置，未确认项不得写成既定事实；其次，PDF和所有页图可核对，缺字、越界、重叠或其他阻止发布的问题没有被忽略；再次，接收方在选定Office中验证原生文字、图表和表格，而不是只打开了位图截图；最后，已知API问题和实际投入经过责任人评审，材料授权与留存边界持续有效。当前质量报告没有商业批准入口，技术状态不能替代人工签核。扩围仍需新的决策，不因本次试点授权自动发生。\n\n来源位置：source-1-p-1；source-1-p-3；source-1-p-6\n助手基于源码证据编排；未调用后台外部模型，仍需人工事实与Office验收。\n\n仓库依据（快照）：\nE01 docs/examples/leader-decision/brief.md:L1–L8\nE03 server/skills/presentation/quality.ts:L41–L64；docs/commercial-ppt-engine.md:L135–L144\nE06 docs/commercial-ppt-engine.md:L81–L93",
+          "sources": [
+            "source-1-p-1",
+            "source-1-p-3",
+            "source-1-p-6"
+          ],
+          "bullets": [
+            "关键结论和数值逐项回溯；未确认项不写成事实",
+            "全页渲染可核对，不忽略阻止发布的质量问题",
+            "选定Office验证原生编辑，不仅核对截图",
+            "已知接口问题、实际投入和资料边界经责任人评审"
+          ],
+          "subtitle": "【建议】待决策；责任、资源与启动条件仍需确认。"
+        },
+        "design": {
+          "layout": "executive-summary",
+          "nature": "recommendation"
+        }
+      },
+      {
+        "id": "slide-12",
+        "sourceRefs": [
+          "source-1-p-1",
+          "source-1-p-3",
+          "source-1-p-8"
+        ],
+        "bindings": [],
+        "content": {
+          "type": "bullets",
+          "title": "请确认范围、责任、资源与退出条件",
+          "speakerNotes": "最后请领导确认：是否有条件批准受控试点；由谁负责业务复核和技术执行；允许使用哪些资料和模型通道；资源上限及停止条件如何确定。我的推荐是批准有边界的试点，但在这些条件未明确前不启动，不把试点授权解释为全面上线或商业验收通过。若暂时无法确认，也可以选择完善后再议，继续补齐所需证据。汇报中的预算、人员、日期和收益没有编造，尚待确认的内容将保留在交付清单中。\n\n来源位置：source-1-p-1；source-1-p-3；source-1-p-8\n助手基于源码证据编排；未调用后台外部模型，仍需人工事实与Office验收。\n\n仓库依据（快照）：\nE01 docs/examples/leader-decision/brief.md:L1–L8\nE03 server/skills/presentation/quality.ts:L41–L64；docs/commercial-ppt-engine.md:L135–L144\nE08 frontend/workspace/skillPainpointMap.ts:L21–L53；server/skills/presentation/pipeline.ts:L34–L49；apps/web/src/inspiration/samples/LeaderDecisionReport.tsx:L54–L63",
+          "sources": [
+            "source-1-p-1",
+            "source-1-p-3",
+            "source-1-p-8"
+          ],
+          "bullets": [
+            "是否有条件批准小范围试点（建议：批准）",
+            "业务复核人与技术负责人（待指定）",
+            "资料范围、模型留存政策与资源上限（待确认）",
+            "启动关卡和停止条件；未满足则暂不启动（待确认）"
+          ],
+          "subtitle": "【建议】待决策；责任、资源与启动条件仍需确认。"
+        },
+        "design": {
+          "layout": "action-agenda",
+          "nature": "recommendation"
+        }
+      }
+    ],
+    "direction": {
+      "schemaVersion": 1,
+      "decision": "请项目决策领导判断是否有条件批准小范围试点，并确认范围、责任、资源与退出条件。",
+      "argument": "建议结论 → 可核对的历史证据与边界 → 方案选择 → 并列价值 → 成本风险 → 建议关卡 → 扩围条件与决策请求。",
+      "pages": [
+        {
+          "role": "opening",
+          "pace": "focus",
+          "message": "建议有条件批准小范围试点",
+          "evidenceRefs": [
+            "source-1-p-1",
+            "source-1-p-2",
+            "source-1-p-3"
+          ],
+          "expression": "statement",
+          "reason": "先给建议和批准边界，不把试点建议排成批准事实。",
+          "boundary": "小范围试点建议，不代表已批准或商业就绪。"
+        },
+        {
+          "role": "decision",
+          "pace": "focus",
+          "message": "本次请求：批准试点边界，不背书全面推广",
+          "evidenceRefs": [
+            "source-1-p-1",
+            "source-1-p-3",
+            "source-1-p-8"
+          ],
+          "expression": "statement",
+          "reason": "把本次请求置于主视觉，保留其余三项支撑与停止条件。",
+          "boundary": "责任、资源、范围均待确认，不能承诺启动。",
+          "focusIndex": 0
+        },
+        {
+          "role": "evidence",
+          "pace": "verify",
+          "message": "已有工程证据，但不是商业质量认证",
+          "evidenceRefs": [
+            "source-2-table-1",
+            "source-1-p-3",
+            "source-1-p-4"
+          ],
+          "expression": "data",
+          "reason": "使用原生指标呈现历史工程证据，不推导商业质量。",
+          "boundary": "沿用历史测试范围和计数，不是当前版本重新审计。"
+        },
+        {
+          "role": "evidence",
+          "pace": "explain",
+          "message": "可以交付可编辑草稿，不能承诺商业成稿",
+          "evidenceRefs": [
+            "source-1-p-2",
+            "source-1-p-3",
+            "source-1-p-6"
+          ],
+          "expression": "contrast",
+          "reason": "将可交付内容与不能承诺的效果并列对照。",
+          "boundary": "功能存在不等于商业成稿、图内理解或目标Office验收。"
+        },
+        {
+          "role": "evidence",
+          "pace": "verify",
+          "message": "扩展API仍有失败，需先判断试点影响",
+          "evidenceRefs": [
+            "source-3-table-1",
+            "source-1-p-4"
+          ],
+          "expression": "data",
+          "reason": "保留原生图表与完整绑定，明确仍有失败。",
+          "boundary": "历史不同范围结果，不作全仓通过、失败原因或试点收益推断。"
+        },
+        {
+          "role": "options",
+          "pace": "explain",
+          "message": "三种可选路径：建议选择受控试点",
+          "evidenceRefs": [
+            "source-4-table-1",
+            "source-1-p-3",
+            "source-1-p-4"
+          ],
+          "expression": "contrast",
+          "reason": "用原生方案矩阵呈现选择，不新增评分或财务测算。",
+          "boundary": "推荐为定性建议，不是批准决定或量化回报。"
+        },
+        {
+          "role": "explanation",
+          "pace": "explain",
+          "message": "试点的价值：把未知变成可核对证据",
+          "evidenceRefs": [
+            "source-1-p-1",
+            "source-1-p-3",
+            "source-1-p-6",
+            "source-1-p-8"
+          ],
+          "expression": "parallel",
+          "reason": "四项试点价值是并列论据，用原生分支结构而非无依据的因果箭头。",
+          "boundary": "并列归纳，不表示先后、从属关系或节省承诺。"
+        },
+        {
+          "role": "conditions",
+          "pace": "verify",
+          "message": "成本尚未测算：先明确记录口径和上限",
+          "evidenceRefs": [
+            "source-4-table-2",
+            "source-1-p-5",
+            "source-1-p-7",
+            "source-1-p-8"
+          ],
+          "expression": "data",
+          "reason": "保留完整成本字段、记录口径和责任人待确认项。",
+          "boundary": "未测算预算、人员或资源上限，不写估算值。"
+        },
+        {
+          "role": "conditions",
+          "pace": "verify",
+          "message": "风险要有触发条件和应对动作",
+          "evidenceRefs": [
+            "source-4-table-3",
+            "source-1-p-3",
+            "source-1-p-4",
+            "source-1-p-5",
+            "source-1-p-6"
+          ],
+          "expression": "criteria",
+          "reason": "使用风险、触发条件、处置动作的完整原生表格。",
+          "boundary": "风险建议不是已发生损失或概率预测。"
+        },
+        {
+          "role": "explanation",
+          "pace": "explain",
+          "message": "按关卡推进，不承诺未经评估的日期",
+          "evidenceRefs": [
+            "source-1-p-1",
+            "source-1-p-3",
+            "source-1-p-5",
+            "source-1-p-8"
+          ],
+          "expression": "sequence",
+          "reason": "原稿明确提出按关卡推进，用原生节点与连接箭头表达建议顺序。",
+          "boundary": "流程尚待授权和评估，不代表完成、批准、实际排期或因果。",
+          "sequence": {
+            "basis": "proposal"
+          }
+        },
+        {
+          "role": "conditions",
+          "pace": "verify",
+          "message": "达标才扩围：导出成功不是唯一门槛",
+          "evidenceRefs": [
+            "source-1-p-1",
+            "source-1-p-3",
+            "source-1-p-6"
+          ],
+          "expression": "criteria",
+          "reason": "把原有四项扩围条件做成待核对条件卡，空框不表示达标。",
+          "boundary": "条件未被认证满足；导出成功不是唯一门槛。"
+        },
+        {
+          "role": "decision",
+          "pace": "focus",
+          "message": "请确认范围、责任、资源与退出条件",
+          "evidenceRefs": [
+            "source-1-p-1",
+            "source-1-p-3",
+            "source-1-p-8"
+          ],
+          "expression": "criteria",
+          "reason": "以原有四项决策问题收束，保留待指定和待确认状态。",
+          "boundary": "批准范围、负责人、资料政策与资源上限仍需用户确认。"
+        }
+      ]
+    }
+  },
+  "planner": {
+    "origin": "assistant-authored fixture",
+    "externalProviderCalls": 0
+  },
+  "commercialApproval": false
+}

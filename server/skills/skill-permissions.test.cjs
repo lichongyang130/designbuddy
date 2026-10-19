@@ -26,7 +26,7 @@ test('the catalogue declares the tool permissions every skill really uses', () =
   }
   // Local skills must not claim network, process or third-party rights.
   for (const skill of catalog) {
-    if (['data.connect', 'code.build', 'audio.transcribe-en', 'web.verify', 'test.browser', 'document.summarize', 'image.generate', 'collaboration.sync', 'slides.compose', 'slides.inspect'].includes(skill.id)) continue;
+    if (['data.connect', 'code.build', 'audio.transcribe-en', 'web.verify', 'test.browser', 'document.summarize', 'image.generate', 'collaboration.sync', 'slides.compose', 'slides.inspect', 'slides.create', 'document.create'].includes(skill.id)) continue;
     assert.deepEqual(skill.permissions, ['local.read', 'local.write'], skill.id + ' stays local');
   }
   assert.deepEqual(skillPermissions('web.verify'), ['local.read', 'local.write', 'network', 'subprocess']);
@@ -36,6 +36,8 @@ test('the catalogue declares the tool permissions every skill really uses', () =
   assert.deepEqual(skillPermissions('document.summarize'), ['local.read', 'local.write', 'external.ai']);
   assert.deepEqual(skillPermissions('image.generate'), ['local.read', 'local.write', 'external.image']);
   assert.deepEqual(skillPermissions('collaboration.sync'), ['local.read', 'local.write', 'external.calendar', 'external.email']);
+  assert.deepEqual(skillPermissions('document.create'), ['local.read', 'local.write', 'subprocess']);
+  assert.deepEqual(skillPermissions('slides.create'), ['local.read', 'local.write', 'subprocess', 'external.ai']);
   assert.deepEqual(skillPermissions('slides.compose'), ['local.read', 'local.write', 'subprocess']);
   assert.deepEqual(skillPermissions('slides.inspect'), ['local.read', 'local.write', 'subprocess']);
 });

@@ -41,7 +41,7 @@ export async function streamTaskChat(
     (!customProvider && !Object.hasOwn(AI_PROVIDER_ENDPOINTS, input.provider))
   )) throw new TaskChatValidationError("Choose a supported provider and valid API key.");
   if (byok && customProvider && !input.model) throw new TaskChatValidationError("Custom providers require an explicit model identifier.");
-  const apiKey = input.apiKey || process.env.AI_API_KEY || process.env.OPENAI_API_KEY || "sk-5rg5xG9wpRJ9BopWlq37K46Thw0Kiah0zrBbhgDJLNN4LFzu";
+  const apiKey = input.apiKey || process.env.AI_API_KEY || process.env.OPENAI_API_KEY || "";
   if (!apiKey) throw new Error("AI 服务尚未配置，请在服务端设置 AI_API_KEY，或在 AI 服务设置中选择服务商。");
   const base = (byok
     ? customProvider

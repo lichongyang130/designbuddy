@@ -5,6 +5,7 @@ import { tmpdir } from 'node:os';
 import { isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { strToU8, zipSync } from 'fflate';
 import sharp from 'sharp';
+import { PDFDocument } from 'pdf-lib';
 import type { Output } from './executors';
 import { json, out } from './io';
 
@@ -43,35 +44,52 @@ export async function renderPresentation(
   pptxBytes: Uint8Array,
   expectedSlides: number,
   event: (message: string) => void = () => {},
+  options: { fontDirectory?: string; pdf?: boolean; workDirectory?: string } = {},
 ): Promise<PresentationRenderResult> {
   if (!presentationRendererAvailable()) throw Error('本机没有安装可用的 LibreOffice PPTX 渲染引擎。');
   if (expectedSlides < 1 || expectedSlides > 50) throw Error('渲染页数超出 1 至 50 页限制。');
 
-  const workDir = await mkdtemp(join(tmpdir(), 'designbuddy-pptx-render-'));
+  const workDir = await mkdtemp(join(options.workDirectory || tmpdir(), 'designbuddy-pptx-render-'));
   const inputPath = join(workDir, 'source.pptx');
   const outputDir = join(workDir, 'rendered');
-  let converter: { renderImages: (request: any, signal?: AbortSignal) => Promise<any>; dispose: () => Promise<void> } | undefined;
+  let converter: { dispose: () => Promise<void> } | undefined;
   try {
     await writeFile(inputPath, pptxBytes, { flag: 'wx', mode: 0o600 });
     const { createConverter, ENGINE_VERSION } = await import('@deepseek-ai/libreoffice-kit');
     const activeConverter = await createConverter({
-      timeoutMs: 90_000,
-      maxInputBytes: 2_000_000,
+      timeoutMs: options.pdf ? 60_000 : 90_000,
+      maxInputBytes: options.pdf ? 4_000_000 : 2_000_000,
       maxOutputBytes: 10_000_000,
       maxArchiveEntries: 1500,
       maxUncompressedBytes: 12_000_000,
       fontMetadataCacheDirectory: false,
+      ...(options.fontDirectory ? { fontDirectories: [options.fontDirectory], initialFontFamilies: ['Noto Sans SC'], maxFontFiles: 2, maxFontFileBytes: 20_000_000, maxLoadedFontBytes: 25_000_000 } : {}),
     });
     converter = activeConverter;
     event('正在用本地 LibreOffice 引擎逐页渲染 PPTX；文档不会发送到外部服务。');
+    let pdf: { pageCount?: number; missingFonts?: string[]; error?: string } | undefined;
+    let pdfBytes: Uint8Array | undefined;
+    if (options.pdf) {
+      event('正在用同一份原生PPTX导出PDF；字体由本机授权目录提供。');
+      try {
+        const pdfPath = join(workDir, 'presentation.pdf');
+        const result = await activeConverter.render({ inputPath, outputPath: pdfPath });
+        const b = await readFile(pdfPath);
+        if (b.length > 10_000_000 || b.length < 20) throw Error('PDF输出大小不合法。');
+        const document = await PDFDocument.load(b, { updateMetadata: false });
+        if (result.pageCount !== expectedSlides || document.getPageCount() !== expectedSlides) throw Error('PDF物理页数与规范不一致。');
+        pdf = { pageCount: document.getPageCount(), missingFonts: result.missingFonts };
+        pdfBytes = new Uint8Array(b);
+      } catch { pdf = { error: 'PDF导出或物理页数校验失败；不能作为正式交付。' }; }
+    }
     const rendered = await activeConverter.renderImages({
       inputPath,
       outputDir,
       pages: Array.from({ length: expectedSlides }, (_, index) => index + 1),
-      dpi: 48,
+      dpi: options.pdf ? 96 : 48,
       maxPages: 50,
-      maxPixels: 300_000,
-      maxDimension: 1024,
+      maxPixels: options.pdf ? 1_000_000 : 300_000,
+      maxDimension: options.pdf ? 1600 : 1024,
     });
     if (rendered.rasterEngine !== 'libreoffice') throw Error('PPTX 没有由预期的 LibreOffice 引擎渲染。');
     if (rendered.pageCount !== expectedSlides || rendered.images.length !== expectedSlides) {
@@ -90,9 +108,9 @@ export async function renderPresentation(
       if (!fromOutput || fromOutput === '..' || fromOutput.startsWith(`..${sep}`) || isAbsolute(fromOutput)) throw Error('渲染器图像路径超出受控输出目录。');
       const png = await readFile(imagePath);
       if (png.length !== image.byteLength) throw Error('渲染图像文件长度与 LibreOffice 清单不一致。');
-      const preview = await sharp(png, { limitInputPixels: 300_000 }).resize({
-        width: 480,
-        height: 480,
+      const preview = await sharp(png, { limitInputPixels: options.pdf ? 1_000_000 : 300_000 }).resize({
+        width: options.pdf ? 960 : 480,
+        height: options.pdf ? 960 : 480,
         fit: 'inside',
         withoutEnlargement: true,
       }).jpeg({ quality: 72, mozjpeg: true }).toBuffer();
@@ -140,6 +158,7 @@ export async function renderPresentation(
       : [];
     const manifest = {
       schemaVersion: 1,
+      ...(pdf ? { pdf } : {}),
       status: 'rendered-locally',
       sourceSHA256: sha256(pptxBytes),
       renderer: 'LibreOffice via @deepseek-ai/libreoffice-kit',
@@ -170,6 +189,7 @@ export async function renderPresentation(
     return {
       report: manifest,
       outputs: [
+        ...(pdfBytes ? [out('draft-presentation.pdf', 'application/pdf', pdfBytes)] : []),
         out('slide-contact-sheet.jpg', 'image/jpeg', new Uint8Array(contactSheet)),
         out('slide-01-preview.jpg', 'image/jpeg', pages[0].bytes),
         out('rendered-slides.zip', 'application/zip', new Uint8Array(archive)),

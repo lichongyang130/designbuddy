@@ -1,0 +1,356 @@
+{
+  "schemaVersion": 1,
+  "contentHash": "7062b95aa56287d07a88629c459f3eb2bc2bd6bf64dd4ba75033909eb4f973b8",
+  "nodes": [
+    {
+      "id": "summary",
+      "text": "执行摘要"
+    },
+    {
+      "id": "summary-0",
+      "text": "本报告讨论如何把文档交付从“文件能够下载”推进到“内容可核对、排版可解释、问题可追踪”。它是一份原创方法示例，不代表任何客户项目、审批决定或实测效果。"
+    },
+    {
+      "id": "summary-1",
+      "text": "建议先验证原生结构与真实分页，再扩展自动写作。生成成功仅表示执行完成；事实、视觉效果与目标办公软件的表现仍需分别核验。缺失证据应保留为待确认项，不以流畅文案掩盖。"
+    },
+    {
+      "id": "analysis",
+      "text": "分析与依据"
+    },
+    {
+      "id": "analysis-0",
+      "text": "同一段文字可以被不同引擎排成不同页面。独立生成的PDF不能证明DOCX的实际分页；应以最终DOCX为输入导出PDF，并将文件哈希、页数、字体与渲染引擎写入记录。"
+    },
+    {
+      "id": "analysis-1",
+      "text": "结构检查能够核对标题层级、表格列宽与来源引用，却不能单独证明文字没有遮挡。真实页图能提供视觉证据，但也不能自动证明事实正确或在Microsoft Word中完全一致。"
+    },
+    {
+      "id": "analysis-2",
+      "text": "正文应使用统一的段落样式，而不是逐段复制直接格式。标题需要与后文保持，长段落应允许合理跨页。对所有内容设置“不拆分”可能引发大块留白，不能把这种留白一律判定为引擎错误。"
+    },
+    {
+      "id": "analysis-3",
+      "text": "表格应先明确字段含义、单位、范围与计算规则，再处理列宽和重复表头。数字以原字符串保留，不为排版而转成百分数、合并不同统计范围或隐藏行列。跨页后的可读性需要查看全部页图。"
+    },
+    {
+      "id": "analysis-4",
+      "text": "目录有两种不同承诺：章节导航只说明结构；带页码的自动目录还要求域刷新与缓存一致。本例提供无页码章节导航，不把它冒充已经刷新正确的自动页码目录。"
+    },
+    {
+      "id": "analysis-5",
+      "text": "来源编号只证明位置存在，不证明句意被来源支持。审阅者应分别核查原始事实、合理推断和行动建议；建议关卡不是已完成的进度，空白的验收框也不等于通过。"
+    },
+    {
+      "id": "verification-table-caption",
+      "text": "交付检查矩阵"
+    },
+    {
+      "id": "verification-table-h0",
+      "text": "检查对象"
+    },
+    {
+      "id": "verification-table-h1",
+      "text": "自动检查依据"
+    },
+    {
+      "id": "verification-table-h2",
+      "text": "仍需人工确认"
+    },
+    {
+      "id": "verification-table-r0c0",
+      "text": "正文"
+    },
+    {
+      "id": "verification-table-r0c1",
+      "text": "DOCX文字与输入清单比对"
+    },
+    {
+      "id": "verification-table-r0c2",
+      "text": "事实与推断是否成立"
+    },
+    {
+      "id": "verification-table-r1c0",
+      "text": "标题"
+    },
+    {
+      "id": "verification-table-r1c1",
+      "text": "层级、保护属性与PDF位置候选"
+    },
+    {
+      "id": "verification-table-r1c2",
+      "text": "章节节奏是否合理"
+    },
+    {
+      "id": "verification-table-r2c0",
+      "text": "表格"
+    },
+    {
+      "id": "verification-table-r2c1",
+      "text": "列宽、表头、逐单元格内容"
+    },
+    {
+      "id": "verification-table-r2c2",
+      "text": "跨页观感与业务口径"
+    },
+    {
+      "id": "verification-table-r3c0",
+      "text": "图片"
+    },
+    {
+      "id": "verification-table-r3c1",
+      "text": "尺寸、比例与规范化素材哈希"
+    },
+    {
+      "id": "verification-table-r3c2",
+      "text": "内容、版权与证据范围"
+    },
+    {
+      "id": "verification-table-r4c0",
+      "text": "目录"
+    },
+    {
+      "id": "verification-table-r4c1",
+      "text": "原生章节导航链接"
+    },
+    {
+      "id": "verification-table-r4c2",
+      "text": "本例不提供自动目录页码"
+    },
+    {
+      "id": "verification-table-r5c0",
+      "text": "页码"
+    },
+    {
+      "id": "verification-table-r5c1",
+      "text": "实际PDF页数与字段配置"
+    },
+    {
+      "id": "verification-table-r5c2",
+      "text": "目标软件字段刷新"
+    },
+    {
+      "id": "verification-table-r6c0",
+      "text": "字体"
+    },
+    {
+      "id": "verification-table-r6c1",
+      "text": "部署字体哈希与渲染报告"
+    },
+    {
+      "id": "verification-table-r6c2",
+      "text": "目标客户端字体环境"
+    },
+    {
+      "id": "verification-table-r7c0",
+      "text": "修复"
+    },
+    {
+      "id": "verification-table-r7c1",
+      "text": "动作、轮次与内容清单比对"
+    },
+    {
+      "id": "verification-table-r7c2",
+      "text": "复杂遮挡与阅读体验"
+    },
+    {
+      "id": "verification-table-r8c0",
+      "text": "兼容性"
+    },
+    {
+      "id": "verification-table-r8c1",
+      "text": "本地LibreOffice渲染记录"
+    },
+    {
+      "id": "verification-table-r8c2",
+      "text": "Microsoft Word/WPS实际打开"
+    },
+    {
+      "id": "verification-table-scope",
+      "text": "原创方法示例；不是任何项目的实际验收结果"
+    },
+    {
+      "id": "verification-table-calculation",
+      "text": "文本检查矩阵，无数值计算"
+    },
+    {
+      "id": "delivery-image-caption",
+      "text": "交付关系示意（图片对象，不是可逐节点编辑图形）"
+    },
+    {
+      "id": "delivery-image-alt",
+      "text": "原生DOCX、同源PDF与全页图、质量与修复记录"
+    },
+    {
+      "id": "delivery-image-license",
+      "text": "项目原创示意图，允许用于此公开案例"
+    },
+    {
+      "id": "recommendations",
+      "text": "建议与行动"
+    },
+    {
+      "id": "recommendations-0",
+      "text": "先用固定、可追踪的材料建立排版基线，同时保存正文和单元格清单。修复只能更改受支持的版式参数，不能删除正文、隐藏数据或擅自改写结论来消除溢出。"
+    },
+    {
+      "id": "recommendations-1",
+      "text": "允许自动执行的动作应保持有限：按版心重分列宽、恢复重复表头、保护标题以及等比例缩放超框图片。无法可靠定位的问题应转人工，不通过不断重试制造虚假的成功。"
+    },
+    {
+      "id": "recommendations-2",
+      "text": "每一轮修复都要重新渲染整份文件。前文表格宽度变化会影响后文分页，因此只查看原来出错的一页是不充分的。达到次数或时间预算后停止，并保留未解决问题。"
+    },
+    {
+      "id": "recommendations-3",
+      "text": "交付前请逐页检查封面、章节导航、正文、表格、页眉页脚和来源附录。随后在目标Word或WPS版本中打开，记录字体环境与分页差异。只有完成相应验证，才能作出对应范围的结论。"
+    }
+  ],
+  "sourceBindings": [
+    {
+      "id": "summary",
+      "type": "heading",
+      "refs": [
+        "source-1"
+      ]
+    },
+    {
+      "id": "summary-0",
+      "type": "paragraph",
+      "refs": [
+        "source-1"
+      ]
+    },
+    {
+      "id": "summary-1",
+      "type": "paragraph",
+      "refs": [
+        "source-1"
+      ]
+    },
+    {
+      "id": "analysis",
+      "type": "heading",
+      "refs": [
+        "source-1"
+      ]
+    },
+    {
+      "id": "analysis-0",
+      "type": "paragraph",
+      "refs": [
+        "source-1"
+      ]
+    },
+    {
+      "id": "analysis-1",
+      "type": "paragraph",
+      "refs": [
+        "source-1"
+      ]
+    },
+    {
+      "id": "analysis-2",
+      "type": "paragraph",
+      "refs": [
+        "source-1"
+      ]
+    },
+    {
+      "id": "analysis-3",
+      "type": "paragraph",
+      "refs": [
+        "source-1"
+      ]
+    },
+    {
+      "id": "analysis-4",
+      "type": "paragraph",
+      "refs": [
+        "source-1"
+      ]
+    },
+    {
+      "id": "analysis-5",
+      "type": "paragraph",
+      "refs": [
+        "source-1"
+      ]
+    },
+    {
+      "id": "verification-table",
+      "type": "table",
+      "refs": [
+        "source-1"
+      ]
+    },
+    {
+      "id": "delivery-image",
+      "type": "image",
+      "refs": [
+        "source-image"
+      ]
+    },
+    {
+      "id": "recommendations",
+      "type": "heading",
+      "refs": [
+        "source-1"
+      ]
+    },
+    {
+      "id": "recommendations-0",
+      "type": "paragraph",
+      "refs": [
+        "source-1"
+      ]
+    },
+    {
+      "id": "recommendations-1",
+      "type": "paragraph",
+      "refs": [
+        "source-1"
+      ]
+    },
+    {
+      "id": "recommendations-2",
+      "type": "paragraph",
+      "refs": [
+        "source-1"
+      ]
+    },
+    {
+      "id": "recommendations-3",
+      "type": "paragraph",
+      "refs": [
+        "source-1"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "source-1",
+      "name": "原创排版教学案例",
+      "locator": "本请求内嵌全文；不是业务原件",
+      "text": "执行摘要\n\n本报告讨论如何把文档交付从“文件能够下载”推进到“内容可核对、排版可解释、问题可追踪”。它是一份原创方法示例，不代表任何客户项目、审批决定或实测效果。\n\n建议先验证原生结构与真实分页，再扩展自动写作。生成成功仅表示执行完成；事实、视觉效果与目标办公软件的表现仍需分别核验。缺失证据应保留为待确认项，不以流畅文案掩盖。\n\n分析与依据\n\n同一段文字可以被不同引擎排成不同页面。独立生成的PDF不能证明DOCX的实际分页；应以最终DOCX为输入导出PDF，并将文件哈希、页数、字体与渲染引擎写入记录。\n\n结构检查能够核对标题层级、表格列宽与来源引用，却不能单独证明文字没有遮挡。真实页图能提供视觉证据，但也不能自动证明事实正确或在Microsoft Word中完全一致。\n\n正文应使用统一的段落样式，而不是逐段复制直接格式。标题需要与后文保持，长段落应允许合理跨页。对所有内容设置“不拆分”可能引发大块留白，不能把这种留白一律判定为引擎错误。\n\n表格应先明确字段含义、单位、范围与计算规则，再处理列宽和重复表头。数字以原字符串保留，不为排版而转成百分数、合并不同统计范围或隐藏行列。跨页后的可读性需要查看全部页图。\n\n目录有两种不同承诺：章节导航只说明结构；带页码的自动目录还要求域刷新与缓存一致。本例提供无页码章节导航，不把它冒充已经刷新正确的自动页码目录。\n\n来源编号只证明位置存在，不证明句意被来源支持。审阅者应分别核查原始事实、合理推断和行动建议；建议关卡不是已完成的进度，空白的验收框也不等于通过。\n\n交付检查矩阵\n检查对象\n自动检查依据\n仍需人工确认\n正文\nDOCX文字与输入清单比对\n事实与推断是否成立\n标题\n层级、保护属性与PDF位置候选\n章节节奏是否合理\n表格\n列宽、表头、逐单元格内容\n跨页观感与业务口径\n图片\n尺寸、比例与规范化素材哈希\n内容、版权与证据范围\n目录\n原生章节导航链接\n本例不提供自动目录页码\n页码\n实际PDF页数与字段配置\n目标软件字段刷新\n字体\n部署字体哈希与渲染报告\n目标客户端字体环境\n修复\n动作、轮次与内容清单比对\n复杂遮挡与阅读体验\n兼容性\n本地LibreOffice渲染记录\nMicrosoft Word/WPS实际打开\n原创方法示例；不是任何项目的实际验收结果\n文本检查矩阵，无数值计算\n\n建议与行动\n\n先用固定、可追踪的材料建立排版基线，同时保存正文和单元格清单。修复只能更改受支持的版式参数，不能删除正文、隐藏数据或擅自改写结论来消除溢出。\n\n允许自动执行的动作应保持有限：按版心重分列宽、恢复重复表头、保护标题以及等比例缩放超框图片。无法可靠定位的问题应转人工，不通过不断重试制造虚假的成功。\n\n每一轮修复都要重新渲染整份文件。前文表格宽度变化会影响后文分页，因此只查看原来出错的一页是不充分的。达到次数或时间预算后停止，并保留未解决问题。\n\n交付前请逐页检查封面、章节导航、正文、表格、页眉页脚和来源附录。随后在目标Word或WPS版本中打开，记录字体环境与分页差异。只有完成相应验证，才能作出对应范围的结论。",
+      "textSHA256": "5e91474b1f9e6fb2fd53024421842c3ed2d7404eea25b5b9b391cdfb3e9ac636"
+    },
+    {
+      "id": "source-image",
+      "name": "本地脚本绘制的流程示意图",
+      "locator": "scripts/generate-word-pro.cjs diagram()",
+      "text": "图形表示本例的交付关系，不是项目进度、真实产品截图或业务证据。图中文字为图像像素，不是可逐节点编辑的流程图。",
+      "textSHA256": "6bbabc2c1b6d34fd7e83a09fd25621e3753c89e32a6df008fbeb1d2be61a7c40"
+    }
+  ],
+  "imageAssets": [
+    {
+      "id": "delivery-image",
+      "sha256": "0b0ae0aa85c1889d298dfda42c455a90f9df2613301aef8869a64064f80f48ff",
+      "originalSHA256": "e9a253e9022439fd348064b6af012e02a134f9476cdd7aa1af2fadd37f8ecf69",
+      "width": 1000,
+      "height": 280
+    }
+  ]
+}

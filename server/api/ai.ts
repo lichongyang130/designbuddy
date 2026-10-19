@@ -18,6 +18,8 @@ export function getAiUsageRecorder(): AiUsageRecorder | undefined {
 }
 
 export interface AIRequest {
+  /** Internal document workflows: configured env credentials only, OpenAI defaults, bounded response. */
+  serverConfigurationOnly?: boolean;
   model?: string;
   prompt: string;
   systemPrompt?: string;
@@ -67,6 +69,7 @@ export async function requestAI(input: AIRequest): Promise<AIResponse> {
   if (!input.userId.trim()) throw new Error("An authenticated user is required.");
   if (!input.prompt.trim()) throw new Error("Prompt is required.");
 
+  if (input.serverConfigurationOnly && (input.apiKey || input.provider || input.baseUrl || input.model)) throw new Error("Server-only workflows do not accept per-request provider overrides.");
   const customProvider = input.provider === "custom";
   if (input.apiKey && (
     input.apiKey.length > 512 ||
@@ -76,15 +79,15 @@ export async function requestAI(input: AIRequest): Promise<AIResponse> {
     (customProvider && !input.baseUrl)
   )) throw new Error("Choose a supported provider and provide a valid API key.");
   if (input.apiKey && customProvider && !input.model) throw new Error("Custom providers require an explicit model identifier.");
-  const apiKey = input.apiKey || process.env.AI_API_KEY || process.env.OPENAI_API_KEY || "sk-5rg5xG9wpRJ9BopWlq37K46Thw0Kiah0zrBbhgDJLNN4LFzu";
+  const apiKey = input.serverConfigurationOnly ? (process.env.AI_API_KEY || process.env.OPENAI_API_KEY || "") : (input.apiKey || process.env.AI_API_KEY || process.env.OPENAI_API_KEY || "");
   if (!apiKey) throw new Error("AI provider is not configured. Set AI_API_KEY or OPENAI_API_KEY on the server.");
 
   const baseUrl = (input.apiKey
     ? customProvider
       ? await normalizeOpenAICompatibleBaseUrl(input.baseUrl)
       : AI_PROVIDER_ENDPOINTS[input.provider!]
-    : process.env.AI_BASE_URL || "https://apihub.agnes-ai.com/v1").replace(/\/+$/, "");
-  const model = input.model || (input.apiKey ? AI_PROVIDER_MODELS[input.provider!] : process.env.AI_MODEL || process.env.OPENAI_MODEL || "agnes-3.0-flash");
+    : process.env.AI_BASE_URL || (input.serverConfigurationOnly ? "https://api.openai.com/v1" : "https://apihub.agnes-ai.com/v1")).replace(/\/+$/, "");
+  const model = input.model || (input.apiKey ? AI_PROVIDER_MODELS[input.provider!] : process.env.AI_MODEL || process.env.OPENAI_MODEL || (input.serverConfigurationOnly ? "gpt-4o-mini" : "agnes-3.0-flash"));
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 60_000);
   const startedAt = Date.now();
@@ -115,7 +118,20 @@ export async function requestAI(input: AIRequest): Promise<AIResponse> {
       }),
     });
 
-    const raw = await response.text();
+    let raw: string;
+    if (input.serverConfigurationOnly) {
+      const reader = response.body?.getReader(), chunks: Uint8Array[] = []; let size = 0;
+      if (!reader) throw new Error("AI provider returned an empty response.");
+      try {
+        for (;;) {
+          const next = await reader.read(); if (next.done) break;
+          size += next.value.length;
+          if (size > 1_000_000) { await reader.cancel(); throw new Error("AI provider response exceeds the 1 MB workflow limit."); }
+          chunks.push(next.value);
+        }
+      } finally { reader.releaseLock(); }
+      raw = new TextDecoder('utf-8', { fatal: true }).decode(Buffer.concat(chunks));
+    } else raw = await response.text();
     let payload: OpenAIChatResponse;
     try {
       payload = JSON.parse(raw) as OpenAIChatResponse;

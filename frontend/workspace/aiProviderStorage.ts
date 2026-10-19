@@ -1,3 +1,6 @@
+const keyRevisions = new Map<string, number>();
+export function customModelKeyRevision(id: string) { return keyRevisions.get(id) || 0; }
+
 const STORAGE_KEY = "designbuddy.ai-provider.v1";
 
 type StoredProviderSettings = {
@@ -48,6 +51,7 @@ export function writeCustomModelApiKey(modelId: string, apiKey: string): void {
   if (apiKey) modelKeys[modelId] = apiKey;
   else delete modelKeys[modelId];
   writeStored({ ...current, modelKeys });
+  if ((current.modelKeys[modelId] || "") !== apiKey) keyRevisions.set(modelId, customModelKeyRevision(modelId) + 1);
 }
 
 export function removeCustomModelApiKey(modelId: string): void {

@@ -1,4 +1,8 @@
 import { settingsDesignCopy } from "./i18nCatalogs/settingsDesign";
+import {
+  settingsDesignAliases,
+  settingsDesignLocales,
+} from "./i18nCatalogs/settingsDesignLocales";
 import type { Locale } from "./locales";
 import ja from "./i18nCatalogs/ja";
 import zhTW from "./i18nCatalogs/zh-TW";
@@ -61,7 +65,8 @@ const zh: Record<string, string> = {
   "settings.general.language": "语言",
   "settings.general.language.zh": "简体中文",
   "settings.general.language.en": "English",
-  "settings.general.language.fallback": "这个语言暂未完整翻译，当前界面暂以 English 显示。",
+  "settings.general.language.fallback":
+    "这个语言暂未完整翻译，当前界面暂以 English 显示。",
   "settings.general.links": "链接打开方式",
   "settings.general.links.help": "设置 DesignBuddy 对话中链接的默认打开策略。",
   "settings.general.links.smart": "智能打开",
@@ -79,7 +84,8 @@ const zh: Record<string, string> = {
     "任务运行期间保持屏幕常亮；关闭页面后自动释放。",
   "settings.general.wakelock.unsupported":
     "当前浏览器不支持唤醒锁定，已自动关闭。",
-  "settings.general.wakelock.denied": "浏览器或系统未授予屏幕唤醒锁，已自动关闭此设置。",
+  "settings.general.wakelock.denied":
+    "浏览器或系统未授予屏幕唤醒锁，已自动关闭此设置。",
   "settings.models.title": "自定义模型",
   "settings.models.help":
     "模型配置保存在此浏览器中，使用已配置的 AI 服务调用。",
@@ -98,7 +104,8 @@ const zh: Record<string, string> = {
   "settings.models.test": "测试连接",
   "settings.models.testing": "测试中…",
   "settings.models.test.found": "连接成功，模型 ID 已出现在服务商列表中。",
-  "settings.models.test.notFound": "连接成功，但服务商模型列表中未发现此 ID。请确认模型 ID。",
+  "settings.models.test.notFound":
+    "连接成功，但服务商模型列表中未发现此 ID。请确认模型 ID。",
   "settings.models.test.noList": "接口已响应，但服务商未返回可验证的模型列表。",
   "settings.models.test.fail": "连接失败，请检查服务商、接口地址和 API Key。",
   "settings.models.advanced": "高级配置",
@@ -109,9 +116,12 @@ const zh: Record<string, string> = {
   "settings.models.tokens.input": "输入",
   "settings.models.tokens.output": "输出",
   "settings.models.tokens.ph": "使用提供商默认值",
-  "settings.models.tokens.note": "输出上限会用于后续请求；输入上限仅作备注，应用不会估算或截断输入。",
-  "settings.models.capability.note": "复选框仅记录模型能力；当前运行时只支持 OpenAI 兼容文本对话，图片、工具、思考和自定义协议尚未接入。",
-  "settings.models.err.endpoint": "请输入可公网访问的 HTTPS OpenAI 兼容接口地址。",
+  "settings.models.tokens.note":
+    "输出上限会用于后续请求；输入上限仅作备注，应用不会估算或截断输入。",
+  "settings.models.capability.note":
+    "复选框仅记录模型能力；当前运行时只支持 OpenAI 兼容文本对话，图片、工具、思考和自定义协议尚未接入。",
+  "settings.models.err.endpoint":
+    "请输入可公网访问的 HTTPS OpenAI 兼容接口地址。",
   "settings.models.err.key": "请输入 API Key。",
   "settings.models.err.provider": "请选择支持的模型服务商。",
   "settings.models.err.tokens": "请输入有效的正整数，或留空使用服务商默认值。",
@@ -146,7 +156,8 @@ const zh: Record<string, string> = {
     "通过下方入口打开个人主页，可查看免费版本、本机使用统计与账号资料。套餐、钱包、支付和自动充值服务尚未接入；此版本无需注册或登录，服务器连接状态可在下方或左下角“工作区状态”中查看。",
   "settings.desc.memory":
     "对话会保存在本地，并在服务器可用时同步；当前没有跨对话长期记忆或可管理的记忆库。",
-  "settings.desc.agents": "可在专家页面管理任务角色。此处不会自动运行后台智能体。",
+  "settings.desc.agents":
+    "可在专家页面管理任务角色。此处不会自动运行后台智能体。",
   "settings.desc.assistant":
     "可在插件市场浏览能力规格，加入清单不代表安装或授权。",
   "settings.desc.apps": "外部应用需在连接器页面单独配置与授权。",
@@ -184,7 +195,8 @@ const zh: Record<string, string> = {
   "settings.appearance.consoleTheme.help":
     "技能执行台的运行记录与日志区使用哪个配色；跟随系统表示与上方界面主题保持一致。",
   "settings.appearance.fontStyle": "字体风格",
-  "settings.appearance.fontStyle.help": "界面正文使用的字形，切换后立即作用于整个界面。",
+  "settings.appearance.fontStyle.help":
+    "界面正文使用的字形，切换后立即作用于整个界面。",
   "settings.appearance.fontStyle.sans": "无衬线",
   "settings.appearance.fontStyle.serif": "衬线",
   "settings.appearance.language": "语言",
@@ -206,7 +218,8 @@ const zh: Record<string, string> = {
   "settings.shortcuts.title": "快捷键",
   "settings.shortcuts.subtitle": "少一点点击，让灵感更流畅。",
   "settings.shortcuts.custom": "自定义快捷键",
-  "settings.shortcuts.tip": "点击「重新录制」后按下组合键，按 Esc 取消。Ctrl / ⌘ 对应 Windows / Mac 的修饰键。",
+  "settings.shortcuts.tip":
+    "点击「重新录制」后按下组合键，按 Esc 取消。Ctrl / ⌘ 对应 Windows / Mac 的修饰键。",
   "settings.shortcuts.readonly": "不可更改",
   "settings.shortcuts.autosave": "更改自动保存",
   "settings.shortcuts.action.open-settings": "打开设置",
@@ -322,12 +335,14 @@ const zh: Record<string, string> = {
     "清空全部本地数据（保留登录态）？不可恢复，建议先导出备份。",
   "settings.data.wipe.confirm2": "最后确认：真的要清空吗？",
   "settings.data.wiped": "已清空 {n} 条本地数据。",
-  "settings.data.clearGroup.confirm": "清除「{label}」的 {n} 项数据？不可恢复。",
+  "settings.data.clearGroup.confirm":
+    "清除「{label}」的 {n} 项数据？不可恢复。",
   "settings.data.cleared": "已清除「{label}」{n} 项。",
   "settings.data.clearGroup.go": "清空",
   "settings.data.wipeFail": "清空失败。",
   "settings.data.cloud": "账号与云端数据",
-  "settings.data.cloud.help": "服务器上的账号资料、记忆与偏好请前往账号页管理。",
+  "settings.data.cloud.help":
+    "服务器上的账号资料、记忆与偏好请前往账号页管理。",
   "settings.data.cloud.go": "账号与数据",
   "settings.data.clearFail": "清除失败。",
   "settings.plan.title": "用量与套餐",
@@ -350,7 +365,8 @@ const zh: Record<string, string> = {
     "以上数字全部来自本浏览器真实统计，不上传。清理请前往数据管理。",
   "settings.source.local": "本地",
   "settings.source.server": "服务器",
-  "settings.err.storeSave": "浏览器存储不可用，配置未保存。请检查存储权限或空间。",
+  "settings.err.storeSave":
+    "浏览器存储不可用，配置未保存。请检查存储权限或空间。",
   "settings.xfer.badFileAll": "这不是有效的整机备份文件。",
   "settings.xfer.badFileSettings": "这不是有效的设置迁移文件。",
   "settings.xfer.empty": "备份文件里没有可恢复的数据。",
@@ -445,8 +461,10 @@ const zh: Record<string, string> = {
   "account.logout.fail": "退出失败，请稍后重试。",
   "account.plan.view": "查看套餐说明",
   "ai.provider": "服务商",
-  "ai.storageError": "会话存储不可用，服务商设置未保存。请重新启用浏览器存储后再试。",
-  "settings.data.sessionStorageFail": "本地数据已清除，但当前浏览器阻止了会话存储清理；本次会话中的服务商凭据可能仍保留。",
+  "ai.storageError":
+    "会话存储不可用，服务商设置未保存。请重新启用浏览器存储后再试。",
+  "settings.data.sessionStorageFail":
+    "本地数据已清除，但当前浏览器阻止了会话存储清理；本次会话中的服务商凭据可能仍保留。",
   "ai.useServer": "使用服务器默认配置",
   "ai.server": "服务器配置",
   "ai.apiKey.ph": "留空时使用服务器配置",
@@ -504,14 +522,16 @@ const en: Record<string, string> = {
   "settings.contentTitle": "{name} settings",
   "settings.storageError":
     "Browser storage is unavailable; settings were not saved. Check storage permissions or space.",
-  "settings.storageErrorShort": "Browser storage is unavailable; settings were not saved.",
+  "settings.storageErrorShort":
+    "Browser storage is unavailable; settings were not saved.",
   "settings.on": "On",
   "settings.off": "Off",
   "settings.general.regular": "General",
   "settings.general.language": "Language",
   "settings.general.language.zh": "简体中文",
   "settings.general.language.en": "English",
-  "settings.general.language.fallback": "This language is not fully translated yet; the interface is currently shown in English.",
+  "settings.general.language.fallback":
+    "This language is not fully translated yet; the interface is currently shown in English.",
   "settings.general.links": "Link behavior",
   "settings.general.links.help":
     "How links in DesignBuddy conversations open by default.",
@@ -530,7 +550,8 @@ const en: Record<string, string> = {
     "Keeps the screen awake while you work; released automatically when the page closes.",
   "settings.general.wakelock.unsupported":
     "This browser does not support Wake Lock; it has been turned off.",
-  "settings.general.wakelock.denied": "The browser or operating system denied the screen wake lock; the setting was turned off.",
+  "settings.general.wakelock.denied":
+    "The browser or operating system denied the screen wake lock; the setting was turned off.",
   "settings.models.title": "Custom models",
   "settings.models.help":
     "Saved in this browser and used with your configured AI service.",
@@ -548,10 +569,14 @@ const en: Record<string, string> = {
   "settings.models.key.hide": "Hide API key",
   "settings.models.test": "Test connection",
   "settings.models.testing": "Testing…",
-  "settings.models.test.found": "Connected. The model ID appears in the provider's model list.",
-  "settings.models.test.notFound": "Connected, but this ID was not in the provider's model list. Check the model ID.",
-  "settings.models.test.noList": "The endpoint responded, but the provider returned no verifiable model list.",
-  "settings.models.test.fail": "Connection failed. Check the provider, endpoint URL, and API key.",
+  "settings.models.test.found":
+    "Connected. The model ID appears in the provider's model list.",
+  "settings.models.test.notFound":
+    "Connected, but this ID was not in the provider's model list. Check the model ID.",
+  "settings.models.test.noList":
+    "The endpoint responded, but the provider returned no verifiable model list.",
+  "settings.models.test.fail":
+    "Connection failed. Check the provider, endpoint URL, and API key.",
   "settings.models.advanced": "Advanced settings",
   "settings.models.feature.tools": "Tool calls",
   "settings.models.feature.images": "Image input",
@@ -560,12 +585,16 @@ const en: Record<string, string> = {
   "settings.models.tokens.input": "Input",
   "settings.models.tokens.output": "Output",
   "settings.models.tokens.ph": "Use provider default",
-  "settings.models.tokens.note": "The output limit is sent with later requests. The input limit is informational; the app does not estimate or truncate input tokens.",
-  "settings.models.capability.note": "These checkboxes only record model capabilities. Runtime currently supports OpenAI-compatible text chat; image, tool, reasoning, and custom-protocol handling are not connected.",
-  "settings.models.err.endpoint": "Enter a publicly reachable HTTPS OpenAI-compatible endpoint.",
+  "settings.models.tokens.note":
+    "The output limit is sent with later requests. The input limit is informational; the app does not estimate or truncate input tokens.",
+  "settings.models.capability.note":
+    "These checkboxes only record model capabilities. Runtime currently supports OpenAI-compatible text chat; image, tool, reasoning, and custom-protocol handling are not connected.",
+  "settings.models.err.endpoint":
+    "Enter a publicly reachable HTTPS OpenAI-compatible endpoint.",
   "settings.models.err.key": "Enter an API key.",
   "settings.models.err.provider": "Choose a supported model provider.",
-  "settings.models.err.tokens": "Enter a positive whole number, or leave blank to use the provider default.",
+  "settings.models.err.tokens":
+    "Enter a positive whole number, or leave blank to use the provider default.",
   "settings.models.name": "Model name",
   "settings.models.name.ph": "e.g. My text model",
   "settings.models.id": "Model name",
@@ -591,7 +620,8 @@ const en: Record<string, string> = {
     "Enter a valid model ID: letters, digits, dot, dash, underscore, colon and slash, max 128 characters.",
   "settings.models.err.dup": "Model name or ID already exists.",
   "settings.models.err.max": "At most 20 custom models.",
-  "settings.models.err.gone": "This model was removed in another tab; add it again.",
+  "settings.models.err.gone":
+    "This model was removed in another tab; add it again.",
   "settings.desc.profile.gate":
     "Open Personal home below to review the free local version, this browser’s usage stats and account details. Paid plans, wallet, payments and auto-recharge are not connected. Use Workspace status for server signup, login and connection.",
   "settings.desc.profile.open":
@@ -645,7 +675,8 @@ const en: Record<string, string> = {
   "settings.appearance.fontStyle.serif": "Serif",
   "settings.appearance.language": "Language",
   "settings.appearance.language.label": "Interface language",
-  "settings.appearance.language.help": "Pick the interface language. It applies immediately.",
+  "settings.appearance.language.help":
+    "Pick the interface language. It applies immediately.",
   "settings.appearance.contentWidth": "Content width",
   "settings.appearance.contentWidth.help":
     "Adjust the maximum width of task bodies and the composer.",
@@ -663,7 +694,8 @@ const en: Record<string, string> = {
   "settings.shortcuts.title": "Shortcuts",
   "settings.shortcuts.subtitle": "Less clicking. More creating.",
   "settings.shortcuts.custom": "Custom shortcuts",
-  "settings.shortcuts.tip": "Click Re-record, then press a key combination. Esc cancels. Ctrl / ⌘ refers to the Windows / Mac modifier key.",
+  "settings.shortcuts.tip":
+    "Click Re-record, then press a key combination. Esc cancels. Ctrl / ⌘ refers to the Windows / Mac modifier key.",
   "settings.shortcuts.readonly": "Read only",
   "settings.shortcuts.autosave": "Changes save automatically",
   "settings.shortcuts.action.open-settings": "Open settings",
@@ -749,13 +781,15 @@ const en: Record<string, string> = {
   "settings.data.group.settings": "Preferences",
   "settings.data.group.settings.hint": "All 14 sections",
   "settings.data.group.projects": "Projects & works",
-  "settings.data.group.projects.hint": "Projects, scene versions and Studio outputs",
+  "settings.data.group.projects.hint":
+    "Projects, scene versions and Studio outputs",
   "settings.data.group.conversations": "Conversations",
   "settings.data.group.conversations.hint": "Task threads and pending drafts",
   "settings.data.group.templates": "Templates & copies",
   "settings.data.group.templates.hint": "Community edits and my copies",
   "settings.data.group.workspace": "Workspace records",
-  "settings.data.group.workspace.hint": "Workspaces, notifications, favorites, drafts",
+  "settings.data.group.workspace.hint":
+    "Workspaces, notifications, favorites, drafts",
   "settings.data.items": "{n} items",
   "settings.data.total": "Total",
   "settings.data.tokenNote":
@@ -870,8 +904,7 @@ const en: Record<string, string> = {
   "account.plan.name": "Plan",
   "account.plan.none": "Not connected",
   "account.plan.upgrade": "Upgrade plan",
-  "account.plan.upgrade.title":
-    "View plan notes; paid upgrades not supported",
+  "account.plan.upgrade.title": "View plan notes; paid upgrades not supported",
   "account.plan.credits": "Credit balance",
   "account.plan.credits.na": "Credit balance not connected",
   "account.plan.buy": "Buy credits",
@@ -908,8 +941,10 @@ const en: Record<string, string> = {
   "account.logout.fail": "Logout failed; try again later.",
   "account.plan.view": "View plan notes",
   "ai.provider": "Provider",
-  "ai.storageError": "Session storage is unavailable; provider settings were not saved. Enable browser storage and try again.",
-  "settings.data.sessionStorageFail": "Local data was cleared, but browser session storage could not be cleared; provider credentials may remain for this tab.",
+  "ai.storageError":
+    "Session storage is unavailable; provider settings were not saved. Enable browser storage and try again.",
+  "settings.data.sessionStorageFail":
+    "Local data was cleared, but browser session storage could not be cleared; provider credentials may remain for this tab.",
   "ai.useServer": "Use server defaults",
   "ai.server": "Server-side config",
   "ai.apiKey.ph": "Blank uses server config",
@@ -966,10 +1001,24 @@ const extraCatalogs: Partial<Record<Locale, Record<string, string>>> = {
 };
 
 /** True only when every frame-level key has a translation for this locale. */
+for (const [locale, catalog] of Object.entries(extraCatalogs)) {
+  const translated = settingsDesignLocales[locale as Locale];
+  if (!translated) throw new Error(`Missing settings translations: ${locale}`);
+  for (const [key, value] of Object.entries(translated))
+    catalog[`settings.design.${key}`] = value;
+  for (const [key, alias] of Object.entries(settingsDesignAliases)) {
+    if (!catalog[alias])
+      throw new Error(`Missing settings alias: ${locale}/${alias}`);
+    catalog[`settings.design.${key}`] = catalog[alias];
+  }
+}
+
 export function hasFullCatalog(locale: Locale): boolean {
   if (locale === "zh-CN" || locale === "en") return true;
   const catalog = extraCatalogs[locale];
-  return Boolean(catalog && Object.keys(en).every((key) => typeof catalog[key] === "string"));
+  return Boolean(
+    catalog && Object.keys(en).every((key) => typeof catalog[key] === "string"),
+  );
 }
 
 export function translate(
@@ -977,7 +1026,12 @@ export function translate(
   key: string,
   params?: I18nParams,
 ): string {
-  const catalog = locale === "zh-CN" ? zh : locale === "en" ? en : extraCatalogs[locale] ?? en;
+  const catalog =
+    locale === "zh-CN"
+      ? zh
+      : locale === "en"
+        ? en
+        : (extraCatalogs[locale] ?? en);
   let out = catalog[key] ?? en[key] ?? zh[key] ?? key;
   if (params) {
     for (const [name, value] of Object.entries(params)) {

@@ -1,0 +1,64 @@
+.word-composer {
+  margin: 14px 0;
+  padding: 20px;
+  border: 1px solid #d5ded9;
+  border-radius: 14px;
+  min-width: 0;
+  background: #f9faf8;
+  color: #243d34;
+}
+.word-composer legend {
+  font-weight: 650;
+  padding: 0 6px;
+}
+.word-composer > p,
+.word-composer small {
+  font-size: 13px;
+  line-height: 1.8;
+  color: #586b62;
+}
+.word-composer label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin: 12px 0;
+  font-size: 13px;
+}
+.word-composer input,
+.word-composer textarea,
+.word-composer select {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  border: 1px solid #cfd9d3;
+  background: white;
+  border-radius: 8px;
+  padding: 10px;
+  color: #22392f;
+  font: inherit;
+}
+.word-composer textarea {
+  resize: vertical;
+  line-height: 1.7;
+}
+.word-composer button {
+  margin: 8px 8px 8px 0;
+  max-width: 100%;
+  white-space: normal;
+}
+.word-composer [role="alert"] {
+  color: #a33227;
+}
+.word-composer [role="status"] {
+  color: #206646;
+}
+.word-composer small {
+  display: block;
+}
+.word-composer details {
+  border-block: 1px solid #e0e6e1;
+  padding: 12px 0;
+}
+.word-composer:disabled {
+  opacity: 0.65;
+}

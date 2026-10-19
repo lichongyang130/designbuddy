@@ -13,7 +13,7 @@
     "dev:full": "node scripts/dev-full.mjs",
     "test:backend": "pnpm exec tsc -p server/tsconfig.local.json && node --test server/api/chat.test.cjs server/api/workspace-backend.test.cjs",
     "setup:ffmpeg": "node scripts/setup-ffmpeg.mjs",
-    "test:skills": "pnpm exec tsc -p server/tsconfig.local.json && node --test server/skills/*.test.cjs",
+    "test:skills": "corepack pnpm exec tsc -p server/tsconfig.local.json && node --test --test-concurrency=1 server/skills/*.test.cjs",
     "setup:asr": "python3 scripts/setup-asr.py",
     "ocr:benchmark": "node scripts/ocr-accuracy-benchmark.mjs",
     "test:ocr-benchmark": "pnpm exec tsc -p server/tsconfig.local.json && node --test scripts/ocr-accuracy-benchmark.test.mjs",
@@ -21,7 +21,8 @@
     "test:formula-corpus": "pnpm exec tsc -p server/tsconfig.local.json && node --test scripts/verify-formula-compat.test.mjs",
     "test:acceptance": "pnpm exec tsc -p server/tsconfig.local.json && node --test scripts/acceptance/run-acceptance.test.mjs",
     "acceptance:run": "node scripts/acceptance/run-acceptance.mjs",
-    "test:scripts": "pnpm exec tsc -p server/tsconfig.local.json && node --test scripts/verify-formula-compat.test.mjs scripts/acceptance/run-acceptance.test.mjs scripts/ocr-accuracy-benchmark.test.mjs"
+    "test:scripts": "pnpm exec tsc -p server/tsconfig.local.json && node --test scripts/verify-formula-compat.test.mjs scripts/acceptance/run-acceptance.test.mjs scripts/ocr-accuracy-benchmark.test.mjs",
+    "test:presentation": "corepack pnpm exec tsc -p server/tsconfig.local.json && node --test --test-concurrency=1 server/skills/presentation*.test.cjs"
   },
   "packageManager": "pnpm@9.0.0",
   "workspaces": [
@@ -29,7 +30,6 @@
     "packages/*"
   ],
   "devDependencies": {
-    "@deepseek-ai/libreoffice-kit": "0.2.0",
     "typescript": "latest"
   },
   "dependencies": {
@@ -50,7 +50,8 @@
     "postcss": "^8.5.30",
     "pptxgenjs": "4.0.1",
     "sharp": "0.35.5",
-    "tesseract.js": "6.0.1"
+    "tesseract.js": "6.0.1",
+    "@deepseek-ai/libreoffice-kit": "0.2.0"
   },
   "pnpm": {
     "overrides": {

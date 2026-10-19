@@ -1,0 +1,412 @@
+{
+  "schemaVersion": 1,
+  "versionId": "7850b17e810407e27455c1c68a4d167d01b5265277a9b29a90cb0ea313ed7707",
+  "engineVersion": "director-1.0.0",
+  "decision": "请项目决策领导判断是否有条件批准小范围试点，并确认范围、责任、资源与退出条件。",
+  "argument": "建议结论 → 可核对的历史证据与边界 → 方案选择 → 并列价值 → 成本风险 → 建议关卡 → 扩围条件与决策请求。",
+  "origin": "assistant-authored director fixture over unchanged historical content; NOT live-provider planning acceptance",
+  "bodyDataNotesHash": "30aea7ffb48ad60ba133ccbd4f5fc96f88e013b78d80ed4aef0521299d6ae374",
+  "designs": [
+    {
+      "layout": "editorial-cover",
+      "nature": "recommendation",
+      "directed": {
+        "role": "opening",
+        "pace": "focus"
+      }
+    },
+    {
+      "layout": "message-focus",
+      "nature": "recommendation",
+      "directed": {
+        "role": "decision",
+        "pace": "focus",
+        "focusIndex": 0
+      }
+    },
+    {
+      "layout": "kpi-insight",
+      "nature": "fact",
+      "directed": {
+        "role": "evidence",
+        "pace": "verify"
+      }
+    },
+    {
+      "layout": "capability-boundary",
+      "nature": "fact",
+      "directed": {
+        "role": "evidence",
+        "pace": "explain"
+      }
+    },
+    {
+      "layout": "chart-takeaway",
+      "nature": "fact",
+      "directed": {
+        "role": "evidence",
+        "pace": "verify"
+      }
+    },
+    {
+      "layout": "decision-matrix",
+      "nature": "analysis",
+      "emphasisRows": [
+        1
+      ],
+      "directed": {
+        "role": "options",
+        "pace": "explain"
+      }
+    },
+    {
+      "layout": "native-structure",
+      "nature": "recommendation",
+      "directed": {
+        "role": "explanation",
+        "pace": "explain"
+      }
+    },
+    {
+      "layout": "adaptive-table",
+      "nature": "analysis",
+      "directed": {
+        "role": "conditions",
+        "pace": "verify"
+      }
+    },
+    {
+      "layout": "risk-response",
+      "nature": "analysis",
+      "directed": {
+        "role": "conditions",
+        "pace": "verify"
+      }
+    },
+    {
+      "layout": "connected-gates",
+      "nature": "recommendation",
+      "directed": {
+        "role": "explanation",
+        "pace": "explain",
+        "sequenceBasis": "proposal"
+      }
+    },
+    {
+      "layout": "decision-criteria",
+      "nature": "recommendation",
+      "directed": {
+        "role": "conditions",
+        "pace": "verify"
+      }
+    },
+    {
+      "layout": "decision-criteria",
+      "nature": "recommendation",
+      "directed": {
+        "role": "decision",
+        "pace": "focus"
+      }
+    }
+  ],
+  "pages": [
+    {
+      "role": "opening",
+      "pace": "focus",
+      "message": "建议有条件批准小范围试点",
+      "evidenceRefs": [
+        "source-1-p-1",
+        "source-1-p-2",
+        "source-1-p-3"
+      ],
+      "expression": "statement",
+      "reason": "先给建议和批准边界，不把试点建议排成批准事实。",
+      "boundary": "小范围试点建议，不代表已批准或商业就绪。",
+      "slideId": "slide-01",
+      "resolvedLayout": "editorial-cover",
+      "relationshipSemanticsVerified": false,
+      "imagePriority": "explanatory native diagrams before atmosphere; screenshots require explicit image layout"
+    },
+    {
+      "role": "decision",
+      "pace": "focus",
+      "message": "本次请求：批准试点边界，不背书全面推广",
+      "evidenceRefs": [
+        "source-1-p-1",
+        "source-1-p-3",
+        "source-1-p-8"
+      ],
+      "expression": "statement",
+      "reason": "把本次请求置于主视觉，保留其余三项支撑与停止条件。",
+      "boundary": "责任、资源、范围均待确认，不能承诺启动。",
+      "focusIndex": 0,
+      "slideId": "slide-02",
+      "resolvedLayout": "message-focus",
+      "relationshipSemanticsVerified": false,
+      "imagePriority": "explanatory native diagrams before atmosphere; screenshots require explicit image layout"
+    },
+    {
+      "role": "evidence",
+      "pace": "verify",
+      "message": "已有工程证据，但不是商业质量认证",
+      "evidenceRefs": [
+        "source-2-table-1",
+        "source-1-p-3",
+        "source-1-p-4"
+      ],
+      "expression": "data",
+      "reason": "使用原生指标呈现历史工程证据，不推导商业质量。",
+      "boundary": "沿用历史测试范围和计数，不是当前版本重新审计。",
+      "slideId": "slide-03",
+      "resolvedLayout": "kpi-insight",
+      "relationshipSemanticsVerified": false,
+      "imagePriority": "explanatory native diagrams before atmosphere; screenshots require explicit image layout"
+    },
+    {
+      "role": "evidence",
+      "pace": "explain",
+      "message": "可以交付可编辑草稿，不能承诺商业成稿",
+      "evidenceRefs": [
+        "source-1-p-2",
+        "source-1-p-3",
+        "source-1-p-6"
+      ],
+      "expression": "contrast",
+      "reason": "将可交付内容与不能承诺的效果并列对照。",
+      "boundary": "功能存在不等于商业成稿、图内理解或目标Office验收。",
+      "slideId": "slide-04",
+      "resolvedLayout": "capability-boundary",
+      "relationshipSemanticsVerified": false,
+      "imagePriority": "explanatory native diagrams before atmosphere; screenshots require explicit image layout"
+    },
+    {
+      "role": "evidence",
+      "pace": "verify",
+      "message": "扩展API仍有失败，需先判断试点影响",
+      "evidenceRefs": [
+        "source-3-table-1",
+        "source-1-p-4"
+      ],
+      "expression": "data",
+      "reason": "保留原生图表与完整绑定，明确仍有失败。",
+      "boundary": "历史不同范围结果，不作全仓通过、失败原因或试点收益推断。",
+      "slideId": "slide-05",
+      "resolvedLayout": "chart-takeaway",
+      "relationshipSemanticsVerified": false,
+      "imagePriority": "explanatory native diagrams before atmosphere; screenshots require explicit image layout"
+    },
+    {
+      "role": "options",
+      "pace": "explain",
+      "message": "三种可选路径：建议选择受控试点",
+      "evidenceRefs": [
+        "source-4-table-1",
+        "source-1-p-3",
+        "source-1-p-4"
+      ],
+      "expression": "contrast",
+      "reason": "用原生方案矩阵呈现选择，不新增评分或财务测算。",
+      "boundary": "推荐为定性建议，不是批准决定或量化回报。",
+      "slideId": "slide-06",
+      "resolvedLayout": "decision-matrix",
+      "relationshipSemanticsVerified": false,
+      "imagePriority": "explanatory native diagrams before atmosphere; screenshots require explicit image layout"
+    },
+    {
+      "role": "explanation",
+      "pace": "explain",
+      "message": "试点的价值：把未知变成可核对证据",
+      "evidenceRefs": [
+        "source-1-p-1",
+        "source-1-p-3",
+        "source-1-p-6",
+        "source-1-p-8"
+      ],
+      "expression": "parallel",
+      "reason": "四项试点价值是并列论据，用原生分支结构而非无依据的因果箭头。",
+      "boundary": "并列归纳，不表示先后、从属关系或节省承诺。",
+      "slideId": "slide-07",
+      "resolvedLayout": "native-structure",
+      "relationshipSemanticsVerified": false,
+      "imagePriority": "explanatory native diagrams before atmosphere; screenshots require explicit image layout"
+    },
+    {
+      "role": "conditions",
+      "pace": "verify",
+      "message": "成本尚未测算：先明确记录口径和上限",
+      "evidenceRefs": [
+        "source-4-table-2",
+        "source-1-p-5",
+        "source-1-p-7",
+        "source-1-p-8"
+      ],
+      "expression": "data",
+      "reason": "保留完整成本字段、记录口径和责任人待确认项。",
+      "boundary": "未测算预算、人员或资源上限，不写估算值。",
+      "slideId": "slide-08",
+      "resolvedLayout": "adaptive-table",
+      "relationshipSemanticsVerified": false,
+      "imagePriority": "explanatory native diagrams before atmosphere; screenshots require explicit image layout"
+    },
+    {
+      "role": "conditions",
+      "pace": "verify",
+      "message": "风险要有触发条件和应对动作",
+      "evidenceRefs": [
+        "source-4-table-3",
+        "source-1-p-3",
+        "source-1-p-4",
+        "source-1-p-5",
+        "source-1-p-6"
+      ],
+      "expression": "criteria",
+      "reason": "使用风险、触发条件、处置动作的完整原生表格。",
+      "boundary": "风险建议不是已发生损失或概率预测。",
+      "slideId": "slide-09",
+      "resolvedLayout": "risk-response",
+      "relationshipSemanticsVerified": false,
+      "imagePriority": "explanatory native diagrams before atmosphere; screenshots require explicit image layout"
+    },
+    {
+      "role": "explanation",
+      "pace": "explain",
+      "message": "按关卡推进，不承诺未经评估的日期",
+      "evidenceRefs": [
+        "source-1-p-1",
+        "source-1-p-3",
+        "source-1-p-5",
+        "source-1-p-8"
+      ],
+      "expression": "sequence",
+      "reason": "原稿明确提出按关卡推进，用原生节点与连接箭头表达建议顺序。",
+      "boundary": "流程尚待授权和评估，不代表完成、批准、实际排期或因果。",
+      "sequence": {
+        "basis": "proposal"
+      },
+      "slideId": "slide-10",
+      "resolvedLayout": "connected-gates",
+      "relationshipSemanticsVerified": false,
+      "imagePriority": "explanatory native diagrams before atmosphere; screenshots require explicit image layout"
+    },
+    {
+      "role": "conditions",
+      "pace": "verify",
+      "message": "达标才扩围：导出成功不是唯一门槛",
+      "evidenceRefs": [
+        "source-1-p-1",
+        "source-1-p-3",
+        "source-1-p-6"
+      ],
+      "expression": "criteria",
+      "reason": "把原有四项扩围条件做成待核对条件卡，空框不表示达标。",
+      "boundary": "条件未被认证满足；导出成功不是唯一门槛。",
+      "slideId": "slide-11",
+      "resolvedLayout": "decision-criteria",
+      "relationshipSemanticsVerified": false,
+      "imagePriority": "explanatory native diagrams before atmosphere; screenshots require explicit image layout"
+    },
+    {
+      "role": "decision",
+      "pace": "focus",
+      "message": "请确认范围、责任、资源与退出条件",
+      "evidenceRefs": [
+        "source-1-p-1",
+        "source-1-p-3",
+        "source-1-p-8"
+      ],
+      "expression": "criteria",
+      "reason": "以原有四项决策问题收束，保留待指定和待确认状态。",
+      "boundary": "批准范围、负责人、资料政策与资源上限仍需用户确认。",
+      "slideId": "slide-12",
+      "resolvedLayout": "decision-criteria",
+      "relationshipSemanticsVerified": false,
+      "imagePriority": "explanatory native diagrams before atmosphere; screenshots require explicit image layout"
+    }
+  ],
+  "rhythm": [
+    {
+      "slideId": "slide-01",
+      "role": "opening",
+      "pace": "focus",
+      "expression": "statement"
+    },
+    {
+      "slideId": "slide-02",
+      "role": "decision",
+      "pace": "focus",
+      "expression": "statement"
+    },
+    {
+      "slideId": "slide-03",
+      "role": "evidence",
+      "pace": "verify",
+      "expression": "data"
+    },
+    {
+      "slideId": "slide-04",
+      "role": "evidence",
+      "pace": "explain",
+      "expression": "contrast"
+    },
+    {
+      "slideId": "slide-05",
+      "role": "evidence",
+      "pace": "verify",
+      "expression": "data"
+    },
+    {
+      "slideId": "slide-06",
+      "role": "options",
+      "pace": "explain",
+      "expression": "contrast"
+    },
+    {
+      "slideId": "slide-07",
+      "role": "explanation",
+      "pace": "explain",
+      "expression": "parallel"
+    },
+    {
+      "slideId": "slide-08",
+      "role": "conditions",
+      "pace": "verify",
+      "expression": "data"
+    },
+    {
+      "slideId": "slide-09",
+      "role": "conditions",
+      "pace": "verify",
+      "expression": "criteria"
+    },
+    {
+      "slideId": "slide-10",
+      "role": "explanation",
+      "pace": "explain",
+      "expression": "sequence"
+    },
+    {
+      "slideId": "slide-11",
+      "role": "conditions",
+      "pace": "verify",
+      "expression": "criteria"
+    },
+    {
+      "slideId": "slide-12",
+      "role": "decision",
+      "pace": "focus",
+      "expression": "criteria"
+    }
+  ],
+  "flags": [],
+  "humanReviewRequired": true,
+  "commercialApproval": false,
+  "sourceSemantics": "IDs and exact quotations checked; support for claims and relations NOT independently verified",
+  "nativeLayoutIds": [
+    "message-focus",
+    "native-structure",
+    "native-process",
+    "decision-criteria",
+    "connected-gates"
+  ],
+  "externalProviderCalls": 0
+}

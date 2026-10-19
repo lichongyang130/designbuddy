@@ -10,12 +10,13 @@ import {
 import { HomeIcon, type HomeIconName } from "./HomeIcon";
 import { modeLabels } from "./homeScenes";
 import { HomeModeIcon } from "./HomeModeIcon";
-import { expertCatalog, customExpertCatalog } from "../../../../frontend/workspace/expertCatalog";
+import { expertCatalog, customExpertCatalog, configureExpert } from "../../../../frontend/workspace/expertCatalog";
 import { apiJSON } from "../api/client";
 import type { RuntimeSkill } from "../../../../shared/skillRuntime";
 import { connectorCatalog } from "../../../../frontend/workspace/connectorCatalog";
 import { useWorkspaceStore } from "../../../../frontend/workspace/store";
 import "./home-attach-menu.css";
+import { usePreferences } from "../../../../frontend/workspace/settingsStore";
 
 type Mode = "office" | "code" | "design";
 type Category = "file" | "mode" | "expert" | "skill" | "connector";
@@ -82,6 +83,7 @@ export function HomeAttachMenu(props: Props) {
   const trigger = useRef<HTMLButtonElement>(null);
   const primary = useRef<HTMLDivElement>(null);
   const secondary = useRef<HTMLDivElement>(null);
+  const expertSettings = usePreferences(s => s.expertSettings);
   const personalExperts = useWorkspaceStore((state) => state.experts);
   const [registeredSkills, setRegisteredSkills] = useState<Entry[]>([]);
   const [skillsLoading, setSkillsLoading] = useState(false);
@@ -115,8 +117,14 @@ export function HomeAttachMenu(props: Props) {
           )
           .map((item) => ({ ...item, image: item.avatar })),
         ...(props.extraExperts || []),
-      ]),
-    [personalExperts, props.recommendedExperts, props.extraExperts],
+      ]).filter(item => {
+        const role = [...expertCatalog, ...personalExperts].find(p => p.id === item.id || p.name === item.name);
+        return !role || expertSettings[role.id]?.enabled !== false;
+      }).map(item => {
+        const role = [...expertCatalog, ...personalExperts.map(customExpertCatalog)].find(p => p.id === item.id || p.name === item.name);
+        return role ? { ...item, description: configureExpert(role, expertSettings).description } : item;
+      }),
+    [personalExperts, props.recommendedExperts, props.extraExperts, expertSettings],
   );
   const skills = registeredSkills;
   const connectors = useMemo(

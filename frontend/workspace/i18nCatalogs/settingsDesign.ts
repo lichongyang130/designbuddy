@@ -222,3 +222,113 @@ export const settingsDesignCopy: Record<string, [string, string]> = {
     "Saved locally · sync failed",
   ],
 };
+
+Object.assign(settingsDesignCopy, {
+  roleLimit: [
+    "最多配置 100 个角色。请先移除不再使用的角色配置。",
+    "Up to 100 role configurations are supported. Remove unused configurations first.",
+  ],
+  publicPreferencesHelp: [
+    "这些公开设置可能同步至账号，请勿填写密码或密钥。",
+    "These public settings may sync to your account. Do not enter passwords or keys.",
+  ],
+  roleConfiguration: ["角色配置", "Role configuration"],
+  roleEnabled: ["启用角色：{name}", "Enable role: {name}"],
+  roleDisabled: [
+    "该角色已停用，请先在设置中启用。",
+    "This role is disabled. Enable it in Settings first.",
+  ],
+  roleDescription: ["职责说明", "Role description"],
+  roleInstructions: ["补充工作规范", "Additional instructions"],
+  roleScope: [
+    "停用后不参与自动匹配或手动候选。保存的规范会用于后续任务，不改写已有任务。",
+    "Disabled roles are excluded from matching and selection. Saved instructions apply to new tasks, not existing ones.",
+  ],
+  assistantPreferences: ["助理偏好", "Assistant preferences"],
+  autoMatch: ["自动匹配专家", "Automatic expert matching"],
+  autoMatchHelp: [
+    "开启后会将草稿、可读附件片段和角色资料发送给所选模型，可能产生费用。关闭后停止自动请求。",
+    "When enabled, drafts, readable attachment excerpts and role profiles are sent to the selected model and may incur charges. Disable to stop automatic requests.",
+  ],
+  matchDelay: ["停止输入后的等待时间", "Delay after typing"],
+  collaborators: ["使用协作专家规范", "Use collaborator guidance"],
+  collaboratorsHelp: [
+    "关闭后不将协作角色规范加入后续任务。",
+    "Disable to exclude collaborator guidance from new tasks.",
+  ],
+  availablePlugins: ["可安装扩展", "Available extensions"],
+  install: ["安装", "Install"],
+  uninstall: ["卸载", "Uninstall"],
+  uninstallConfirm: ["确定卸载「{name}」？", "Uninstall {name}?"],
+  incompatible: ["不兼容", "Incompatible"],
+  permissions: ["权限", "Permissions"],
+  requirements: ["运行要求", "Requirements"],
+  lifecycleUpdated: ["扩展操作已完成。", "Extension action completed."],
+  configure: ["配置", "Configure"],
+  addConnector: ["添加自定义应用", "Add custom application"],
+  connectorName: ["应用名称", "Application name"],
+  connectorDescription: ["应用说明", "Application description"],
+  connectorEndpoint: ["HTTPS 服务地址", "HTTPS service URL"],
+  connectorTransport: ["传输协议", "Transport"],
+  connectorLocalHelp: [
+    "仅保存本地公开配置，不会自动建立连接。地址不得包含凭据、查询参数或片段。",
+    "Only public configuration is saved locally; no connection is established. URLs must not contain credentials, queries or fragments.",
+  ],
+  invalidEndpoint: [
+    "请输入不含凭据、查询参数或片段的 HTTPS 公网地址。",
+    "Enter a public HTTPS URL without credentials, query parameters or fragments.",
+  ],
+  authorize: ["授权连接", "Authorize"],
+  disconnect: ["断开连接", "Disconnect"],
+  disconnectConfirm: ["确定断开「{name}」的授权？", "Disconnect {name}?"],
+  deleteConnectorConfirm: [
+    "确定删除「{name}」的本地配置？",
+    "Delete local configuration for {name}?",
+  ],
+  unsupportedConnector: [
+    "该应用尚无授权适配器，不能在此建立连接。",
+    "No authorization adapter is available for this application.",
+  ],
+  oauthHelp: [
+    "授权在服务商窗口完成；请勿在此填写第三方密码或令牌。返回后刷新核验状态。",
+    "Authorize in the provider window. Never enter provider passwords or tokens here. Refresh the verified status after returning.",
+  ],
+  popupBlocked: [
+    "浏览器阻止了授权窗口，请允许弹窗后重试。",
+    "The authorization window was blocked. Allow pop-ups and retry.",
+  ],
+  unsafeAuthorization: [
+    "服务端返回了非预期的授权地址，已阻止跳转。",
+    "The server returned an unexpected authorization URL. Navigation was blocked.",
+  ],
+  authorizationStarted: [
+    "已打开授权窗口，请完成授权后刷新状态。",
+    "Authorization opened. Complete it and refresh the status.",
+  ],
+  serviceUnavailable: [
+    "授权服务未配置；本地配置仍可管理，未进行外部授权。",
+    "Authorization service is not configured. Local configurations can still be managed; no external authorization occurred.",
+  ],
+  testConnection: ["测试连接", "Test connection"],
+  connectionChecking: ["正在核验…", "Verifying…"],
+  connectionVerified: ["模型已核验", "Model verified"],
+  connectionFailed: ["核验失败", "Verification failed"],
+  connectionUnverified: ["未核验", "Not verified"],
+  connectionReachable: [
+    "接口可达 · 模型未确认",
+    "API reachable · model unconfirmed",
+  ],
+  connectionChanged: [
+    "配置或密钥已变化，请重新核验。",
+    "Configuration or key changed. Verify again.",
+  ],
+  keyMissing: [
+    "请先在编辑器中填写 API Key。",
+    "Enter an API key in the editor first.",
+  ],
+  serverProbeHelp: [
+    "服务端默认模型不在此发送用户密钥，请使用模型与用量页核验。",
+    "Use the Models and usage page to verify server-managed models.",
+  ],
+  verifiedAt: ["核验时间", "Verified at"],
+});

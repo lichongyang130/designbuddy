@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-19T07:22:42.588Z",
+  "scope": "Word Pro W0/W1/W2 bounded new-document flow",
+  "tests": {
+    "allSkills": {
+      "passed": 278,
+      "failed": 0,
+      "skipped": 0,
+      "note": "Full serial run before final appendix presentation/source-hash placement and accessibility-label refinement."
+    },
+    "finalWordNative": {
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0
+    },
+    "finalArtifacts": {
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0
+    },
+    "finalBrowser": {
+      "passed": 50,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "typescript": "passed",
+  "webProductionBuild": "passed; existing chunk/fflate warnings remain",
+  "cases": [
+    {
+      "schemaVersion": 1,
+      "type": "business-report",
+      "title": "从文件生成到可核对交付",
+      "engineVersion": "word-pro-1.0.0",
+      "inputSHA256": "cdbae38597c867fd4e910b47727bc04b1274c99213ee175533800aadd4a579aa",
+      "pageCount": 4,
+      "repairRounds": 1,
+      "criticalIssues": 0,
+      "releaseStatus": "needs-human-review",
+      "commercialApproval": false,
+      "planningOrigin": "assistant-authored original methodology fixture; not AI quality acceptance or real business evidence"
+    },
+    {
+      "schemaVersion": 1,
+      "type": "project-plan",
+      "title": "文档交付质量提升项目方案",
+      "engineVersion": "word-pro-1.0.0",
+      "inputSHA256": "cebe276fb7b97c8eb700d1f7e05a257487b28c60f93d7e12cf7cc9b99f33ad34",
+      "pageCount": 4,
+      "repairRounds": 0,
+      "criticalIssues": 0,
+      "releaseStatus": "needs-human-review",
+      "commercialApproval": false,
+      "planningOrigin": "assistant-authored original methodology fixture; not AI quality acceptance or real business evidence"
+    }
+  ],
+  "sourceSHA256": {
+    "shared/wordDocument.ts": "49444134b8b852fa18101f547ae563b0c1547e9b5d8b0fd36a2e47eb1812b5a2",
+    "server/skills/word-pro/schema.ts": "9a4cb870cdf58b5f0795cff322babab7f0deecc7a8e46291a640fed2dce5e37e",
+    "server/skills/word-pro/generate.ts": "5c8ec0e9f64c46b20d0c631d5d3e449a53176cd899e1a6f63acfc1906d469e78",
+    "server/skills/word-pro/render.ts": "9018360cd9e17dd5234d6d5d046aa5dab6102d9e67ae5e4f905b26ab30a2eea9",
+    "server/skills/word-pro/inspect.ts": "86a9472951865b2a2ed47f578e98d5ff98119c3a92e4e4199a6c4fc9b906c2b1",
+    "server/skills/word-pro/pipeline.ts": "3e594da900ca2d2db279dc6a42cadc1d1d28345961e129eb0bd560742fbb4378",
+    "frontend/workspace/WordComposer.tsx": "b978a8d91b689d76cab14ec7c33558891c73acfe7fc9bd3238350adb4ff831d0",
+    "frontend/workspace/PdfPreview.tsx": "3c27357a29a31fd51d8994be9d46e1ac494cf769b003996ee06689db59b2231d"
+  },
+  "boundaries": {
+    "assistantAuthoredFixture": true,
+    "wordFlowExternalModelCalls": 0,
+    "autonomousAIQualityAcceptance": false,
+    "microsoftWordTested": false,
+    "wpsTested": false,
+    "calibratedQualityScore": false,
+    "commercialApproval": false
+  },
+  "history": "Earlier parallel run had a SIGKILL in an existing PPT render test and a permission expectation needing synchronization; isolated serial full run passed. Earlier browser failures concerned implicit labels; explicit accessible labels fixed them. Failed/stopped runs are not counted as passing."
+}

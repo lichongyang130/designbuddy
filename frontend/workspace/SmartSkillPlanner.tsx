@@ -8,8 +8,8 @@ import { expertCatalog } from "./expertCatalog";
 
 const labels: Record<SkillPlan["status"], string> = { planning: "模型规划中 · 未执行", review: "待你确认 · 未执行", clarify: "需要澄清 · 未执行", unsupported: "当前不支持 · 未执行", failed: "规划失败 · 未执行", cancelled: "已取消方案 · 未执行", executed: "已提交真实执行" };
 const normalizedName = (name: string) => name.replace(/[\x00-\x1f\x7f/\\]/g, "_").slice(0, 120);
-export async function identifySkillFile(file: File): Promise<SkillFileIdentity> {
-  if (!file.size || file.size > 2_000_000) throw Error("请选择不超过2MB的非空文件。");
+export async function identifySkillFile(file: File, maxBytes = 2_000_000): Promise<SkillFileIdentity> {
+  if (!file.size || file.size > maxBytes) throw Error(`请选择不超过${(maxBytes / 1_000_000).toFixed(1)}MB的非空文件。`);
   const hash = await crypto.subtle.digest("SHA-256", await file.arrayBuffer());
   return { name: normalizedName(file.name), size: file.size, sha256: [...new Uint8Array(hash)].map(b => b.toString(16).padStart(2, "0")).join("") };
 }

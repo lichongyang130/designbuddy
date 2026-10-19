@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "pdf": {
+    "pageCount": 12,
+    "missingFonts": []
+  },
+  "status": "rendered-locally",
+  "sourceSHA256": "8b5120d81d46013868a4402a70591f9f0d3961827b2d20705ba7f895f70567fc",
+  "renderer": "LibreOffice via @deepseek-ai/libreoffice-kit",
+  "engineApiVersion": "0.2.0",
+  "backend": "wasm",
+  "rasterEngine": "libreoffice",
+  "dpi": 96,
+  "pageCount": 12,
+  "missingFonts": [],
+  "missingFontCount": 0,
+  "pages": [
+    {
+      "page": 1,
+      "filename": "slides/01.jpg",
+      "width": 960,
+      "height": 540,
+      "previewBytes": 30531,
+      "sha256": "e19cce52ca93c4a3dcde0e8a2d14040957ee7ca2dc71b1470bac67de1ea1ba1d",
+      "sourcePngBytes": 465816
+    },
+    {
+      "page": 2,
+      "filename": "slides/02.jpg",
+      "width": 960,
+      "height": 540,
+      "previewBytes": 40499,
+      "sha256": "9a1ae8c5315ba8169c62026b41fdda1c84cc1f1d7e591c2d579d624b3a7dc573",
+      "sourcePngBytes": 356364
+    },
+    {
+      "page": 3,
+      "filename": "slides/03.jpg",
+      "width": 960,
+      "height": 540,
+      "previewBytes": 22949,
+      "sha256": "96b54ad3c743d1c24365609e35677552b055f59ad5d470d593327e8892fa7a9b",
+      "sourcePngBytes": 73753
+    },
+    {
+      "page": 4,
+      "filename": "slides/04.jpg",
+      "width": 960,
+      "height": 540,
+      "previewBytes": 33951,
+      "sha256": "1da3045d165716ad31cbce9f9b18b8d1a680a0803905344e0cf5bdf22a175a83",
+      "sourcePngBytes": 116782
+    },
+    {
+      "page": 5,
+      "filename": "slides/05.jpg",
+      "width": 960,
+      "height": 540,
+      "previewBytes": 31376,
+      "sha256": "d581ebda0413becd91bfb431a45b411b12317e470ca5f15dbf69a95d0cddcfd8",
+      "sourcePngBytes": 87196
+    },
+    {
+      "page": 6,
+      "filename": "slides/06.jpg",
+      "width": 960,
+      "height": 540,
+      "previewBytes": 35602,
+      "sha256": "29e1044185f1d483cad77ed96d0ab0be8a27638e02e070c676a75eb50d1875b6",
+      "sourcePngBytes": 105476
+    },
+    {
+      "page": 7,
+      "filename": "slides/07.jpg",
+      "width": 960,
+      "height": 540,
+      "previewBytes": 32598,
+      "sha256": "5fe56f66e5804a672fbf3d89198a5353e3d644708843d3b88c5f10e0877eb4a5",
+      "sourcePngBytes": 100869
+    },
+    {
+      "page": 8,
+      "filename": "slides/08.jpg",
+      "width": 960,
+      "height": 540,
+      "previewBytes": 37427,
+      "sha256": "b0edc410f38957464ae740546aaac3243516859ff1fe5a1b7cc8cb6efc4be760",
+      "sourcePngBytes": 113305
+    },
+    {
+      "page": 9,
+      "filename": "slides/09.jpg",
+      "width": 960,
+      "height": 540,
+      "previewBytes": 33390,
+      "sha256": "6dfd9e059f79cbc876e8b4679d4d2c29fe37943172626219b0cae3f4f893e240",
+      "sourcePngBytes": 105715
+    },
+    {
+      "page": 10,
+      "filename": "slides/10.jpg",
+      "width": 960,
+      "height": 540,
+      "previewBytes": 26726,
+      "sha256": "31c4819dea2e0abb817aa0a18c1815a0cd1c746929d22e9837ff4dad2eb80087",
+      "sourcePngBytes": 90292
+    },
+    {
+      "page": 11,
+      "filename": "slides/11.jpg",
+      "width": 960,
+      "height": 540,
+      "previewBytes": 36022,
+      "sha256": "30cdd3890ef87f46c6a91bc00b7e52adb4480b3a6d831ffdec4aa073ab148361",
+      "sourcePngBytes": 165361
+    },
+    {
+      "page": 12,
+      "filename": "slides/12.jpg",
+      "width": 960,
+      "height": 540,
+      "previewBytes": 28011,
+      "sha256": "506ed21914283a41ce6da5c2976d755786781ec1e01033fc9f11a0383f1ce98c",
+      "sourcePngBytes": 90756
+    }
+  ],
+  "review": {
+    "renderedByOfficeEngine": true,
+    "visualReviewRequired": true,
+    "automaticVisualPass": false,
+    "textOverflowChecked": false,
+    "note": "LibreOffice raster images are visual evidence, not a Microsoft PowerPoint pixel-match or an automatic no-overflow/legibility pass. Check every page image manually; rendering never proves facts, readability, or design quality."
+  }
+}

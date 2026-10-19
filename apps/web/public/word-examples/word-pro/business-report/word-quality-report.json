@@ -1,0 +1,526 @@
+{
+  "schemaVersion": 1,
+  "engineVersion": "word-pro-1.0.0",
+  "inputSHA256": "cdbae38597c867fd4e910b47727bc04b1274c99213ee175533800aadd4a579aa",
+  "finalDocxSHA256": "c090e984462e99b5c186ae47850cacad3f822299354791da74b18b3dd6886055",
+  "finalPdfSHA256": "cff18c769c8df0a2ddd7473e2e5a7d2a00607d4d743fb6de96badb93621a57ec",
+  "contentHash": "7062b95aa56287d07a88629c459f3eb2bc2bd6bf64dd4ba75033909eb4f973b8",
+  "contentPreserved": true,
+  "documentType": "business-report",
+  "font": {
+    "family": "Noto Sans SC",
+    "regularSHA256": "eeb06b8a64fd04a2744d95579db1571b51027cda61ed78c62e4b730791525461",
+    "boldSHA256": "a8d8569e6cf8e93e830736e64c69568c5499ff65bf6a8ff860f0cdacc3eab7d0",
+    "embeddedInDocx": false
+  },
+  "renderer": {
+    "renderer": "LibreOffice Kit",
+    "engineApiVersion": "0.2.0",
+    "backend": "wasm",
+    "rasterEngine": "libreoffice",
+    "sourceSHA256": "c090e984462e99b5c186ae47850cacad3f822299354791da74b18b3dd6886055",
+    "pdfSHA256": "cff18c769c8df0a2ddd7473e2e5a7d2a00607d4d743fb6de96badb93621a57ec",
+    "pageCount": 4,
+    "dpi": 72,
+    "missingFonts": [],
+    "pages": [
+      {
+        "page": 1,
+        "file": "pages/01.jpg",
+        "sha256": "aa8bcf932c2178fc36e3e59dbeaa0627a065e56a7b5c4f5fccc055a9aa80ab2b"
+      },
+      {
+        "page": 2,
+        "file": "pages/02.jpg",
+        "sha256": "61eb1eed61431cf454aecd8e983d605e360b20994e8cda5c0a427b5e221540d6"
+      },
+      {
+        "page": 3,
+        "file": "pages/03.jpg",
+        "sha256": "fe8e188769114b1857e1ba0126700a9c449974a72e5e2b76f5c00f51e4b7ad10"
+      },
+      {
+        "page": 4,
+        "file": "pages/04.jpg",
+        "sha256": "cc95a30a9c23e7a79ebf438b182c5913e1926f6e2547ebe8e8c5d1f51f57284d"
+      }
+    ],
+    "microsoftWordVerified": false
+  },
+  "checks": {
+    "headingHierarchy": {
+      "status": "passed",
+      "method": "strict WordSpec validation"
+    },
+    "nativeContent": {
+      "status": "passed",
+      "method": "generated DOCX text inventory verified before render"
+    },
+    "pdfTextCoverage": {
+      "status": "passed",
+      "method": "PDF text match; not semantic verification"
+    },
+    "tableWidths": {
+      "status": "passed",
+      "method": "declared DOCX widths against page margins; not pixel inspection"
+    },
+    "tocPageNumbers": {
+      "status": "not-applicable",
+      "method": "native internal chapter links without page numbers"
+    },
+    "pageNumberFields": {
+      "status": "required",
+      "method": "PAGE/NUMPAGES emitted; manual rendered and target-client check required"
+    },
+    "renderedVisualReview": {
+      "status": "required",
+      "method": null
+    },
+    "targetWordCompatibility": {
+      "status": "not-evaluated",
+      "method": null
+    }
+  },
+  "issues": [],
+  "pdfCoverage": [
+    {
+      "nodeId": "summary",
+      "status": "matched"
+    },
+    {
+      "nodeId": "summary-0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "summary-1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "analysis",
+      "status": "matched"
+    },
+    {
+      "nodeId": "analysis-0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "analysis-1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "analysis-2",
+      "status": "matched"
+    },
+    {
+      "nodeId": "analysis-3",
+      "status": "matched"
+    },
+    {
+      "nodeId": "analysis-4",
+      "status": "matched"
+    },
+    {
+      "nodeId": "analysis-5",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-caption",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-h0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-h1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-h2",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r0c0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r0c1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r0c2",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r1c0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r1c1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r1c2",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r2c0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r2c1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r2c2",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r3c0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r3c1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r3c2",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r4c0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r4c1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r4c2",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r5c0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r5c1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r5c2",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r6c0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r6c1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r6c2",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r7c0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r7c1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r7c2",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r8c0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r8c1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r8c2",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-scope",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-calculation",
+      "status": "matched"
+    },
+    {
+      "nodeId": "delivery-image-caption",
+      "status": "matched"
+    },
+    {
+      "nodeId": "delivery-image-alt",
+      "status": "matched"
+    },
+    {
+      "nodeId": "delivery-image-license",
+      "status": "matched"
+    },
+    {
+      "nodeId": "recommendations",
+      "status": "matched"
+    },
+    {
+      "nodeId": "recommendations-0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "recommendations-1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "recommendations-2",
+      "status": "matched"
+    },
+    {
+      "nodeId": "recommendations-3",
+      "status": "matched"
+    }
+  ],
+  "score": {
+    "weights": {
+      "visual": 30,
+      "content": 25,
+      "structure": 20,
+      "pagination": 15,
+      "compatibility": 10
+    },
+    "calibrated": false,
+    "weightedScore": null
+  },
+  "repairPolicy": {
+    "maxRepairRounds": 2,
+    "maxFullRenders": 3,
+    "contentChangesAllowed": false,
+    "automaticFactVerification": false
+  },
+  "repairRounds": [
+    {
+      "round": 0,
+      "docxSHA256": "3f0432a874c9e8ec76180c8b7d91f5ef547145e01ab99054cc8f8757a5483f1e",
+      "pdfSHA256": "3af4c32e072758704d3fdeee4eae6eedc53ea193fdea3c9193fb60850eb03f84",
+      "pageCount": 4,
+      "contentHash": "7062b95aa56287d07a88629c459f3eb2bc2bd6bf64dd4ba75033909eb4f973b8",
+      "issues": [
+        {
+          "id": "heading-protection-disabled:summary",
+          "type": "heading-protection-disabled",
+          "severity": "warning",
+          "nodeId": "summary",
+          "page": null,
+          "method": "DOCX-spec-rule",
+          "autoRepair": true,
+          "message": "标题未设置与后文保持；这是结构风险，不代表已证实孤立标题。"
+        },
+        {
+          "id": "table-width:verification-table",
+          "type": "table-width",
+          "severity": "critical",
+          "nodeId": "verification-table",
+          "page": null,
+          "method": "DOCX-spec-rule",
+          "autoRepair": true,
+          "message": "声明列宽超出170mm版心；可在最小12mm约束内重分配。"
+        },
+        {
+          "id": "table-header:verification-table",
+          "type": "table-header",
+          "severity": "warning",
+          "nodeId": "verification-table",
+          "page": null,
+          "method": "DOCX-spec-rule",
+          "autoRepair": true,
+          "message": "表格重复表头未启用。"
+        },
+        {
+          "id": "pdf-text-unresolved:verification-table-h2",
+          "type": "pdf-text-unresolved",
+          "severity": "warning",
+          "nodeId": "verification-table-h2",
+          "page": null,
+          "method": "PDF-text-match-whitespace-only",
+          "autoRepair": false,
+          "message": "PDF文本未完整匹配此项；可能是提取顺序/换行/跨页表头，不能据此自动断定内容丢失。"
+        },
+        {
+          "id": "pdf-text-unresolved:verification-table-r0c2",
+          "type": "pdf-text-unresolved",
+          "severity": "warning",
+          "nodeId": "verification-table-r0c2",
+          "page": null,
+          "method": "PDF-text-match-whitespace-only",
+          "autoRepair": false,
+          "message": "PDF文本未完整匹配此项；可能是提取顺序/换行/跨页表头，不能据此自动断定内容丢失。"
+        },
+        {
+          "id": "pdf-text-unresolved:verification-table-r1c2",
+          "type": "pdf-text-unresolved",
+          "severity": "warning",
+          "nodeId": "verification-table-r1c2",
+          "page": null,
+          "method": "PDF-text-match-whitespace-only",
+          "autoRepair": false,
+          "message": "PDF文本未完整匹配此项；可能是提取顺序/换行/跨页表头，不能据此自动断定内容丢失。"
+        },
+        {
+          "id": "pdf-text-unresolved:verification-table-r2c2",
+          "type": "pdf-text-unresolved",
+          "severity": "warning",
+          "nodeId": "verification-table-r2c2",
+          "page": null,
+          "method": "PDF-text-match-whitespace-only",
+          "autoRepair": false,
+          "message": "PDF文本未完整匹配此项；可能是提取顺序/换行/跨页表头，不能据此自动断定内容丢失。"
+        },
+        {
+          "id": "pdf-text-unresolved:verification-table-r3c2",
+          "type": "pdf-text-unresolved",
+          "severity": "warning",
+          "nodeId": "verification-table-r3c2",
+          "page": null,
+          "method": "PDF-text-match-whitespace-only",
+          "autoRepair": false,
+          "message": "PDF文本未完整匹配此项；可能是提取顺序/换行/跨页表头，不能据此自动断定内容丢失。"
+        },
+        {
+          "id": "pdf-text-unresolved:verification-table-r4c2",
+          "type": "pdf-text-unresolved",
+          "severity": "warning",
+          "nodeId": "verification-table-r4c2",
+          "page": null,
+          "method": "PDF-text-match-whitespace-only",
+          "autoRepair": false,
+          "message": "PDF文本未完整匹配此项；可能是提取顺序/换行/跨页表头，不能据此自动断定内容丢失。"
+        },
+        {
+          "id": "pdf-text-unresolved:verification-table-r5c2",
+          "type": "pdf-text-unresolved",
+          "severity": "warning",
+          "nodeId": "verification-table-r5c2",
+          "page": null,
+          "method": "PDF-text-match-whitespace-only",
+          "autoRepair": false,
+          "message": "PDF文本未完整匹配此项；可能是提取顺序/换行/跨页表头，不能据此自动断定内容丢失。"
+        },
+        {
+          "id": "pdf-text-unresolved:verification-table-r6c2",
+          "type": "pdf-text-unresolved",
+          "severity": "warning",
+          "nodeId": "verification-table-r6c2",
+          "page": null,
+          "method": "PDF-text-match-whitespace-only",
+          "autoRepair": false,
+          "message": "PDF文本未完整匹配此项；可能是提取顺序/换行/跨页表头，不能据此自动断定内容丢失。"
+        },
+        {
+          "id": "pdf-text-unresolved:verification-table-r7c2",
+          "type": "pdf-text-unresolved",
+          "severity": "warning",
+          "nodeId": "verification-table-r7c2",
+          "page": null,
+          "method": "PDF-text-match-whitespace-only",
+          "autoRepair": false,
+          "message": "PDF文本未完整匹配此项；可能是提取顺序/换行/跨页表头，不能据此自动断定内容丢失。"
+        },
+        {
+          "id": "pdf-text-unresolved:verification-table-r8c2",
+          "type": "pdf-text-unresolved",
+          "severity": "warning",
+          "nodeId": "verification-table-r8c2",
+          "page": null,
+          "method": "PDF-text-match-whitespace-only",
+          "autoRepair": false,
+          "message": "PDF文本未完整匹配此项；可能是提取顺序/换行/跨页表头，不能据此自动断定内容丢失。"
+        },
+        {
+          "id": "text-boundary-candidate:3",
+          "type": "text-boundary-candidate",
+          "severity": "warning",
+          "nodeId": null,
+          "page": 3,
+          "method": "PDF-text-geometry",
+          "autoRepair": false,
+          "message": "PDF文字边界接近版心外侧；未执行像素级遮挡判断。"
+        }
+      ],
+      "actions": [
+        {
+          "issueId": "heading-protection-disabled:summary",
+          "nodeId": "summary",
+          "action": "keep-heading-with-next",
+          "before": false,
+          "after": true
+        },
+        {
+          "issueId": "table-width:verification-table",
+          "nodeId": "verification-table",
+          "action": "redistribute-column-widths",
+          "before": [
+            90,
+            90,
+            90
+          ],
+          "after": [
+            56.666666666666664,
+            56.666666666666664,
+            56.666666666666664
+          ]
+        },
+        {
+          "issueId": "table-header:verification-table",
+          "nodeId": "verification-table",
+          "action": "repeat-table-header",
+          "before": false,
+          "after": true
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "docxSHA256": "c090e984462e99b5c186ae47850cacad3f822299354791da74b18b3dd6886055",
+      "pdfSHA256": "cff18c769c8df0a2ddd7473e2e5a7d2a00607d4d743fb6de96badb93621a57ec",
+      "pageCount": 4,
+      "contentHash": "7062b95aa56287d07a88629c459f3eb2bc2bd6bf64dd4ba75033909eb4f973b8",
+      "issues": [],
+      "actions": [],
+      "resolvedIssueIds": [
+        "heading-protection-disabled:summary",
+        "table-width:verification-table",
+        "table-header:verification-table",
+        "pdf-text-unresolved:verification-table-h2",
+        "pdf-text-unresolved:verification-table-r0c2",
+        "pdf-text-unresolved:verification-table-r1c2",
+        "pdf-text-unresolved:verification-table-r2c2",
+        "pdf-text-unresolved:verification-table-r3c2",
+        "pdf-text-unresolved:verification-table-r4c2",
+        "pdf-text-unresolved:verification-table-r5c2",
+        "pdf-text-unresolved:verification-table-r6c2",
+        "pdf-text-unresolved:verification-table-r7c2",
+        "pdf-text-unresolved:verification-table-r8c2",
+        "text-boundary-candidate:3"
+      ],
+      "newIssueIds": []
+    }
+  ],
+  "releaseStatus": "needs-human-review",
+  "commercialApproval": false,
+  "limitations": [
+    "不调用AI、不编辑任意旧Word；输入内容与引用仍需事实核验。",
+    "章节导航无目录页码；PAGE/NUMPAGES字段需检查目标软件刷新。",
+    "PDF文字与几何信号不等于像素级溢出/遮挡检测。",
+    "LibreOffice当前平台可能为WASM；没有Microsoft Word/WPS验收。",
+    "原生正文/表格/图像对象；没有原生可编辑图表或流程图编辑器。",
+    "DOCX不内嵌字体；接收端需安装Noto Sans SC。"
+  ]
+}

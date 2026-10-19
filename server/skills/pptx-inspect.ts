@@ -353,7 +353,7 @@ export async function inspectPresentation(input: SkillInput, event: (message: st
   let rendered: Awaited<ReturnType<typeof renderPresentation>> | undefined;
   let renderFailure: Record<string, unknown> | undefined;
   try {
-    rendered = await renderPresentation(input.bytes, inspected.slideCount, event);
+    rendered = await renderPresentation(input.bytes, inspected.slideCount, event, { workDirectory: input.workDirectory });
   } catch (error) {
     const message = error instanceof Error ? error.message.slice(0, 500) : '未知渲染错误';
     renderFailure = {

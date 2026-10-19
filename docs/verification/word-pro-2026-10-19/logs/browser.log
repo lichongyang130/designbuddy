@@ -1,0 +1,54 @@
+
+Running 50 tests using 1 worker
+
+[1/50] tests/content-director.spec.ts:2:1 › director template shows real 12 pages, task/evidence/relationship boundaries and synchronized M2 comparison, without auto upload
+[2/50] tests/content-director.spec.ts:79:1 › corrupted director evidence/path fails visibly; retry restores actual exports
+[3/50] tests/content-director.spec.ts:99:3 › director tasks, rhythm and separately authorized generator fit 320px
+[4/50] tests/content-director.spec.ts:99:3 › director tasks, rhythm and separately authorized generator fit 390px
+[5/50] tests/leader-decision.spec.ts:5:1 › built-in leadership template opens the real 12-page export, notes and provenance without publishing
+[6/50] tests/leader-decision.spec.ts:38:35 › leadership template is usable without overflow at 320px
+[7/50] tests/leader-decision.spec.ts:38:35 › leadership template is usable without overflow at 390px
+[8/50] tests/leader-decision.spec.ts:38:35 › leadership template is usable without overflow at 768px
+[9/50] tests/leader-decision.spec.ts:47:1 › template regeneration opens the real slides.create composer, never auto-uploads and respects missing dependencies
+[10/50] tests/leader-decision.spec.ts:67:1 › failed example metadata fetch is visible and retry recovers the real asset
+[11/50] tests/leader-decision.spec.ts:78:1 › missing server dependencies never fall back to an old compose skill or show a fake run button
+[12/50] tests/leader-decision.spec.ts:89:1 › same-content comparison keeps the selected page and binds downloads to the selected export version
+[13/50] tests/presentation-composer.spec.ts:19:1 › multiple sources prepare locally; both consents gate upload; actual brief/base64 envelope sent through existing skill runs
+[14/50] tests/presentation-composer.spec.ts:43:1 › changing a prepared brief revokes upload agreement; file/count/size errors do not prepare stale input
+[15/50] tests/presentation-composer.spec.ts:54:1 › commercial input remains usable at mobile width without horizontal overflow
+[16/50] tests/presentation-composer.spec.ts:62:1 › classic output remains an explicit selectable path, and changing layout revokes prepared input and consents
+[17/50] tests/presentation-composer.spec.ts:72:1 › visual assets require per-file rights, carry real bytes and metadata, and every edit revokes both consents
+[18/50] tests/presentation-composer.spec.ts:90:1 › classic removes optional visuals without changing source documents; visual editing fits mobile
+[19/50] tests/presentation-composer.spec.ts:98:1 › director selection discloses bounded extra calls, is encoded locally and revokes both consents on every change
+[20/50] tests/presentation-visual-gallery.spec.ts:4:1 › built-in M2 card, three actual decks, synchronized page comparison and native downloads without publishing
+[21/50] tests/presentation-visual-gallery.spec.ts:70:1 › M2 retry and strict preview path reject corrupted reports instead of fetching arbitrary resources
+[22/50] tests/presentation-visual-gallery.spec.ts:90:1 › M2 mobile cards and page navigation do not overflow, and opening the generator never uploads sample assets
+[23/50] tests/skill-runtime.spec.ts:16:1 › actual CSV upload produces correct downloads, graph preview and persisted run history
+[24/50] tests/skill-runtime.spec.ts:41:1 › actual document and PPTX pipelines expose honest scope and downloadable Office files
+[25/50] tests/skill-runtime.spec.ts:56:1 › invalid input fails visibly instead of fabricating completed results
+[26/50] tests/skill-runtime.spec.ts:63:1 › every listed QA skill has a real backend executor and presets are not presented as installation
+[27/50] tests/skill-runtime.spec.ts:78:3 › real execution UI fits 320px without altering homepage drafts
+[28/50] tests/skill-runtime.spec.ts:78:3 › real execution UI fits 375px without altering homepage drafts
+[29/50] tests/skill-runtime.spec.ts:78:3 › real execution UI fits 768px without altering homepage drafts
+[30/50] tests/skills.spec.ts:5:1 › skills use the expert-directory layout and list real registered capabilities by area
+[31/50] tests/skills.spec.ts:25:1 › search, area filters and favorites operate on the real skills list
+[32/50] tests/skills.spec.ts:43:1 › skill details expose real file limits and launch the matching executor
+[33/50] tests/skills.spec.ts:57:1 › every skill states the tool permissions it really uses
+[34/50] tests/skills.spec.ts:77:1 › capabilities that still miss a server credential never gain a run button
+[35/50] tests/skills.spec.ts:88:1 › skill registration explanation does not claim client-side installation
+[36/50] tests/skills.spec.ts:98:3 › expert-style skill directory stays usable at 320px without page overflow
+[37/50] tests/skills.spec.ts:98:3 › expert-style skill directory stays usable at 375px without page overflow
+[38/50] tests/skills.spec.ts:98:3 › expert-style skill directory stays usable at 681px without page overflow
+[39/50] tests/skills.spec.ts:98:3 › expert-style skill directory stays usable at 768px without page overflow
+[40/50] tests/skills.spec.ts:98:3 › expert-style skill directory stays usable at 1440px without page overflow
+[41/50] tests/skills.spec.ts:105:1 › generated photo thumbnails load as actual images in their skill cards
+[42/50] tests/skills.spec.ts:112:1 › every registered skill card has one matching task icon or generated photo
+[43/50] tests/skills.spec.ts:122:1 › skill card titles never collide with their favorite controls on compact layouts
+[44/50] tests/skills.spec.ts:135:1 › the five former placeholders now show their real executor state and what they still need
+[45/50] tests/word-pro.spec.ts:4:1 › Word template opens actual pages and source-bound repair history without uploading, then renders initial/final PDFs as canvases
+[46/50] tests/word-pro.spec.ts:70:1 › Word content form validates real sections; preparation and type/content changes revoke execution consent, preserving per-type drafts
+[47/50] tests/word-pro.spec.ts:110:1 › actual browser upload -> Word Worker -> downloadable native DOCX / PDF / report persists after refresh and supports safe PDF preview
+[48/50] tests/word-pro.spec.ts:184:1 › invalid Word request fails honestly with no artifacts or fake preview
+[49/50] tests/word-pro.spec.ts:215:1 › Word gallery, thumbnails and form stay usable at 390 and 320 pixels without horizontal page overflow
+[50/50] tests/word-pro.spec.ts:248:1 › corrupt Word evidence fails visibly without invented pages; retry returns validated local metadata
+  50 passed (3.2m)

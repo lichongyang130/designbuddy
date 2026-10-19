@@ -24,6 +24,8 @@ const elevated: Record<string, SkillPermission[]> = {
   "document.summarize": ["external.ai"],
   "image.generate": ["external.image"],
   "collaboration.sync": ["external.calendar", "external.email"],
+  "document.create": ["subprocess"],
+  "slides.create": ["subprocess", "external.ai"],
   "slides.compose": ["subprocess"],
   "slides.inspect": ["subprocess"],
 };

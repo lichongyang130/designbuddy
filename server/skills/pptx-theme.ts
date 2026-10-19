@@ -29,5 +29,9 @@ export function applyStructuredTheme(pptxBytes: Uint8Array, theme: Colors, headi
   source = replaceThemeFont(source, 'minorFont', 'latin', bodyFont);
   source = replaceThemeFont(source, 'minorFont', 'ea', bodyFont);
   parts[themePath] = strToU8(source);
+  // PptxGenJS master bullet defaults otherwise reference Arial even in a CJK-only deployment.
+  for (const path of Object.keys(parts).filter(p => /^ppt\/slideMasters\/.*\.xml$/.test(p))) {
+    parts[path] = strToU8(strFromU8(parts[path]).replace(/(<a:buFont\b[^>]*typeface=")[^"]*(")/g, `$1${bodyFont}$2`));
+  }
   return new Uint8Array(zipSync(parts, { level: 6 }));
 }

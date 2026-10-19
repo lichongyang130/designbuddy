@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "baselineVersionId": "fcf82dbac6f75d898bdd4e764e2cf7dae29864ebd4a304599939c618db1cb6cd",
+  "versionId": "03643902e26c75a9d2bdc3cae1df450c7c290f384d1c1b50eea520055d05db3a",
+  "sameContent": true,
+  "sameSources": true,
+  "samePageCount": true,
+  "semanticContentHash": "8a7a1f3458a684f670881a9a06089bd9ab61c16b1d410362c3b9116c62c00b3e",
+  "changes": [
+    "字号层次、网格与留白",
+    "图表与结论分栏",
+    "原生表格列宽/行高自适应",
+    "明确推荐行的视觉强调",
+    "原生全对象外框检查"
+  ],
+  "notChanged": [
+    "原文稿正文与讲稿",
+    "数值、来源和绑定",
+    "页序与页数",
+    "事实/分析/建议性质"
+  ],
+  "externalProviderCalls": 0,
+  "realModelAcceptance": "not-run: deterministic layout comparison is not live-model acceptance; use the explicit benchmark runner",
+  "commercialApproval": false
+}

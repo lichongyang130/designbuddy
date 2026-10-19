@@ -13,6 +13,7 @@ import {
 import { testModelConnection } from "../../../../frontend/workspace/api/models";
 import {
   closeSettings,
+  openSettings,
   refreshPreferences,
   removeCustomModel,
   saveCustomModel,
@@ -50,6 +51,71 @@ import {
   PlanSettings,
   ShortcutsSettings,
 } from "./SettingsSections";
+
+import {
+  useModelConnectionChecks,
+  modelCheckStamp,
+  recordModelCheck,
+  verifySavedModel,
+} from "../../../../frontend/workspace/modelConnectionChecks";
+
+function ModelConnectionStatus({ model }: { model: CustomModel }) {
+  const checks = useModelConnectionChecks((state) => state.checks);
+  const t = useSettingsCopy();
+  const [error, setError] = useState("");
+  const record = checks[model.id];
+  const stamp = modelCheckStamp(model);
+  const [now, setNow] = useState(Date.now);
+  useEffect(() => {
+    setNow(Date.now());
+    const timer = window.setInterval(() => setNow(Date.now()), 60000);
+    return () => window.clearInterval(timer);
+  }, [record?.checkedAt]);
+  useEffect(() => setError(""), [stamp]);
+  const current =
+    record?.stamp === stamp && now - record.checkedAt < 15 * 60_000
+      ? record
+      : undefined;
+  const labels = {
+    checking: "connectionChecking",
+    verified: "connectionVerified",
+    reachable: "connectionReachable",
+    failed: "connectionFailed",
+  } as const;
+  return (
+    <div className="settings-model-check">
+      <span
+        className={`settings-status-tag ${current?.status === "verified" ? "is-positive" : ""}`}
+        title={
+          current
+            ? `${t("verifiedAt")}: ${new Date(current.checkedAt).toLocaleString()}`
+            : t("connectionChanged")
+        }
+        data-check-status={current?.status || "unverified"}
+      >
+        {t(current ? labels[current.status] : "connectionUnverified")}
+      </span>
+      <button
+        className="settings-button"
+        disabled={current?.status === "checking" || !model.provider}
+        title={!model.provider ? t("serverProbeHelp") : undefined}
+        onClick={() => {
+          setError("");
+          void verifySavedModel(model).catch((cause) =>
+            setError(t(cause instanceof Error ? cause.message : "failure")),
+          );
+        }}
+      >
+        {t("testConnection")}
+      </button>
+      {error && (
+        <p className="settings-error" role="alert">
+          {error}
+        </p>
+      )}
+    </div>
+  );
+}
 
 type Section = {
   id: SettingsSection;
@@ -367,6 +433,11 @@ function ModelsSettings() {
   const locale = usePreferences((state) => state.locale);
   const t = (key: string, params?: Record<string, string | number>) =>
     translate(locale, key, params);
+  const editorProbe = useRef<{
+    signature: string;
+    result: Awaited<ReturnType<typeof testModelConnection>>;
+  } | null>(null);
+  const probeGeneration = useRef(0);
   const [editing, setEditing] = useState<CustomModel | "new" | null>(null);
   const [draft, setDraft] = useState<ModelDraft>(emptyModelDraft);
   const [showKey, setShowKey] = useState(false);
@@ -392,6 +463,8 @@ function ModelsSettings() {
   }, [editing]);
 
   function openEditor(model: CustomModel | "new") {
+    probeGeneration.current++;
+    editorProbe.current = null;
     const isNew = model === "new";
     const provider = isNew ? "custom" : model.provider || "server";
     setDraft({
@@ -428,17 +501,25 @@ function ModelsSettings() {
   }
 
   function closeEditor() {
+    probeGeneration.current++;
+    editorProbe.current = null;
     setEditing(null);
     setError("");
     setConnection(null);
   }
 
   function setField<K extends keyof ModelDraft>(key: K, value: ModelDraft[K]) {
+    probeGeneration.current++;
+    editorProbe.current = null;
+    setTesting(false);
     setDraft((current) => ({ ...current, [key]: value }));
     setConnection(null);
   }
 
   function changeProvider(provider: string) {
+    probeGeneration.current++;
+    editorProbe.current = null;
+    setTesting(false);
     setDraft((current) => ({
       ...current,
       provider,
@@ -474,6 +555,30 @@ function ModelsSettings() {
     }
   }
 
+  function recordEditorResult(
+    result: Awaited<ReturnType<typeof testModelConnection>>,
+  ) {
+    editorProbe.current = {
+      signature: JSON.stringify([
+        draft.provider,
+        draft.baseUrl,
+        draft.modelId,
+        draft.apiKey,
+      ]),
+      result,
+    };
+    if (
+      editing &&
+      editing !== "new" &&
+      draft.modelId === editing.modelId &&
+      draft.provider === (editing.provider || "server") &&
+      draft.baseUrl ===
+        (editing.baseUrl || modelProviderEndpoints[draft.provider] || "") &&
+      draft.apiKey === readCustomModelApiKey(editing.modelId)
+    )
+      recordModelCheck(editing, result);
+  }
+
   async function testConnection() {
     const modelId = draft.modelId.trim();
     if (!draft.apiKey.trim()) {
@@ -488,6 +593,7 @@ function ModelsSettings() {
       setConnection({ ok: false, message: t("settings.models.err.endpoint") });
       return;
     }
+    const generation = ++probeGeneration.current;
     setTesting(true);
     setConnection(null);
     try {
@@ -497,6 +603,8 @@ function ModelsSettings() {
         apiKey: draft.apiKey.trim(),
         modelId,
       });
+      if (generation !== probeGeneration.current) return;
+      recordEditorResult(result);
       if (!result.ok) {
         setConnection({
           ok: false,
@@ -513,6 +621,8 @@ function ModelsSettings() {
         });
       }
     } catch (cause) {
+      if (generation !== probeGeneration.current) return;
+      recordEditorResult({ ok: false });
       setConnection({
         ok: false,
         message:
@@ -521,7 +631,7 @@ function ModelsSettings() {
             : t("settings.models.test.fail"),
       });
     } finally {
-      setTesting(false);
+      if (generation === probeGeneration.current) setTesting(false);
     }
   }
 
@@ -580,6 +690,20 @@ function ModelsSettings() {
       });
       if (previous && previous.modelId !== modelId)
         writeCustomModelApiKey(previous.modelId, "");
+      const savedModel = usePreferences
+        .getState()
+        .models.find((item) => item.modelId === modelId);
+      if (
+        savedModel &&
+        editorProbe.current?.signature ===
+          JSON.stringify([
+            draft.provider,
+            draft.baseUrl,
+            draft.modelId,
+            draft.apiKey,
+          ])
+      )
+        recordModelCheck(savedModel, editorProbe.current.result);
       closeEditor();
       setNotice(t("settings.models.saved"));
     } catch (cause) {
@@ -663,10 +787,8 @@ function ModelsSettings() {
                   )}
                 </strong>
                 <code>{model.modelId}</code>
-                <small>
-                  {model.provider || "server"} ·{" "}
-                  {translate(locale, "settings.design.configured")}
-                </small>
+                <small>{model.provider || "server"}</small>
+                <ModelConnectionStatus model={model} />
               </div>
               <button
                 className="settings-button"
@@ -945,6 +1067,14 @@ function ModelsSettings() {
 
 export function SettingsWindow() {
   const { open, section } = useSettingsWindow();
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    if (url.searchParams.get("settings") === "apps") {
+      openSettings("apps");
+      url.searchParams.delete("settings");
+      window.history.replaceState({}, "", url.href);
+    }
+  }, []);
   const designT = useSettingsCopy();
   const sync = usePreferenceSync();
   const fontSize = usePreferences((state) => state.fontSize);
@@ -1191,9 +1321,14 @@ export function SettingsWindow() {
                 <SecuritySettings />
               )}
             </div>
-            {["general", "appearance", "shortcuts", "personalization"].includes(
-              section,
-            ) && (
+            {[
+              "general",
+              "appearance",
+              "shortcuts",
+              "personalization",
+              "agents",
+              "assistant",
+            ].includes(section) && (
               <footer
                 className="settings-sync-footer"
                 title={sync.error || undefined}

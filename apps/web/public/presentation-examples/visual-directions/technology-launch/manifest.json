@@ -1,0 +1,152 @@
+{
+  "versionId": "9ab2dc91a1f6bff818a1cb243495d7749cc33386f32cfe0e8aeca32f473fc548",
+  "pages": 12,
+  "style": "technology-launch",
+  "files": [
+    {
+      "name": "presentation.pptx",
+      "bytes": 2352612,
+      "sha256": "8b5120d81d46013868a4402a70591f9f0d3961827b2d20705ba7f895f70567fc"
+    },
+    {
+      "name": "presentation.pdf",
+      "bytes": 468341,
+      "sha256": "3c35bdc97473e39b000dc7cbdb92f17cc983920a3af6f5f411e17833f3969c30"
+    },
+    {
+      "name": "slide-contact-sheet.jpg",
+      "bytes": 92129,
+      "sha256": "c1651d3da053a327d76cfafe119344dc264b835469790794d64736dd72f6d703"
+    },
+    {
+      "name": "rendered-slides.zip",
+      "bytes": 312386,
+      "sha256": "efa735bf0ae4c30cc06705f71b6774c39989034f08e87105bdd7ff28cba2a982"
+    },
+    {
+      "name": "render-report.json",
+      "bytes": 3841,
+      "sha256": "7514bf438414b259b8d38bd90068d2a56bbd63c4d1913951d6dc204c2c01061c"
+    },
+    {
+      "name": "slides/01.jpg",
+      "bytes": 30531,
+      "sha256": "e19cce52ca93c4a3dcde0e8a2d14040957ee7ca2dc71b1470bac67de1ea1ba1d"
+    },
+    {
+      "name": "slides/02.jpg",
+      "bytes": 40499,
+      "sha256": "9a1ae8c5315ba8169c62026b41fdda1c84cc1f1d7e591c2d579d624b3a7dc573"
+    },
+    {
+      "name": "slides/03.jpg",
+      "bytes": 22949,
+      "sha256": "96b54ad3c743d1c24365609e35677552b055f59ad5d470d593327e8892fa7a9b"
+    },
+    {
+      "name": "slides/04.jpg",
+      "bytes": 33951,
+      "sha256": "1da3045d165716ad31cbce9f9b18b8d1a680a0803905344e0cf5bdf22a175a83"
+    },
+    {
+      "name": "slides/05.jpg",
+      "bytes": 31376,
+      "sha256": "d581ebda0413becd91bfb431a45b411b12317e470ca5f15dbf69a95d0cddcfd8"
+    },
+    {
+      "name": "slides/06.jpg",
+      "bytes": 35602,
+      "sha256": "29e1044185f1d483cad77ed96d0ab0be8a27638e02e070c676a75eb50d1875b6"
+    },
+    {
+      "name": "slides/07.jpg",
+      "bytes": 32598,
+      "sha256": "5fe56f66e5804a672fbf3d89198a5353e3d644708843d3b88c5f10e0877eb4a5"
+    },
+    {
+      "name": "slides/08.jpg",
+      "bytes": 37427,
+      "sha256": "b0edc410f38957464ae740546aaac3243516859ff1fe5a1b7cc8cb6efc4be760"
+    },
+    {
+      "name": "slides/09.jpg",
+      "bytes": 33390,
+      "sha256": "6dfd9e059f79cbc876e8b4679d4d2c29fe37943172626219b0cae3f4f893e240"
+    },
+    {
+      "name": "slides/10.jpg",
+      "bytes": 26726,
+      "sha256": "31c4819dea2e0abb817aa0a18c1815a0cd1c746929d22e9837ff4dad2eb80087"
+    },
+    {
+      "name": "slides/11.jpg",
+      "bytes": 36022,
+      "sha256": "30cdd3890ef87f46c6a91bc00b7e52adb4480b3a6d831ffdec4aa073ab148361"
+    },
+    {
+      "name": "slides/12.jpg",
+      "bytes": 28011,
+      "sha256": "506ed21914283a41ce6da5c2976d755786781ec1e01033fc9f11a0383f1ce98c"
+    },
+    {
+      "name": "assets/asset-concept.png",
+      "bytes": 1045495,
+      "sha256": "f0879c23520b916d32fbd4e10d3cab3af212c7c2e91695b082f4d8c5bca52046"
+    },
+    {
+      "name": "assets/asset-screenshot.png",
+      "bytes": 162326,
+      "sha256": "d759dda7db19207f4d3cfc1e81bdb53ae3863e75391c3581ca3943781693c2a3"
+    },
+    {
+      "name": "assets/asset-mark.png",
+      "bytes": 3952,
+      "sha256": "f8aa5a92b7bc51e54ad315a003d20fb3fc1886da15405abb84b982d8cdd5cea2"
+    },
+    {
+      "name": "report.json",
+      "bytes": 73713,
+      "sha256": "d4f5eecd2271d516a207ee60e9cbf07224a39bce3b982574442f3ff0f57e7255"
+    },
+    {
+      "name": "visual-plan.json",
+      "bytes": 7436,
+      "sha256": "0327c08bb39d72034df1bf52c4b0ba9e01050770c737792c6f65a45ff79b2588"
+    },
+    {
+      "name": "presentation-spec.json",
+      "bytes": 34010,
+      "sha256": "08b13935961d7af43a6ff29d5e8b0c1bd3d131b1a674be5fcb5fb588b9cf3886"
+    },
+    {
+      "name": "sources-and-notes.json",
+      "bytes": 116625,
+      "sha256": "66970e7f85c32f7b3548adf210c0b3173228797d4c60cc9022d8b063d451b161"
+    },
+    {
+      "name": "quality-report.json",
+      "bytes": 3437,
+      "sha256": "3d357eed39d0cda0809fdaa329cef0a35e1f0b91ba5575f98f45f81e75229f01"
+    },
+    {
+      "name": "resolved-layout.json",
+      "bytes": 236466,
+      "sha256": "f23ae2c720ef6ce31d5acb4a366e6d0bf5d69834c4d67136597e8367ce8766ee"
+    },
+    {
+      "name": "font-OFL.txt",
+      "bytes": 4388,
+      "sha256": "1c05c68c34f9708415aada51f17e1b0092d2cea709bf4a94cd38114f9e73d7d9"
+    },
+    {
+      "name": "README.md",
+      "bytes": 1040,
+      "sha256": "32bcc1fc10d883266481fc36abe83e195a838dd55d56f2a22c39d68fd6506e5b"
+    },
+    {
+      "name": "cover.jpg",
+      "bytes": 18366,
+      "sha256": "440e3c558335f20099c916041dfb9ca5cafcc08215c1b8162834062cfe21f072"
+    }
+  ]
+}

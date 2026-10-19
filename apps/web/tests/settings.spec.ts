@@ -14,17 +14,17 @@ async function open(page: Page, models = false) {
 async function loadHomeWithPreferences(
   page: Page,
 ): Promise<{ wakeLock?: boolean }> {
-  const responsePromise = page.waitForResponse(
-    (response) =>
-      response.url().includes("/profile/preferences") &&
-      response.request().method() === "GET" &&
-      response.ok(),
-  );
   await page.goto("/");
-  const response = await responsePromise;
-  const body = (await response.json()) as {
-    preferences?: { key: string; value: unknown }[];
-  };
+  await expect(page.locator("dialog.settings-window")).toBeAttached();
+  // Read in the new document: a late response from the previous document loses
+  // its body on navigation and must not be mistaken for the newly loaded state.
+  const body = await page.evaluate(async () => {
+    const response = await fetch("/api/profile/preferences");
+    if (!response.ok) throw new Error("Preferences could not be read");
+    return (await response.json()) as {
+      preferences?: { key: string; value: unknown }[];
+    };
+  });
   const value = body.preferences?.find(
     (entry) => entry.key === "workspace.preferences",
   )?.value;

@@ -1,0 +1,14 @@
+{
+  "sourcePathsChecked": 2037,
+  "zipContainersChecked": 37,
+  "credentialPatternFindings": [],
+  "patterns": [
+    "provider-key",
+    "github-token",
+    "npm-token",
+    "google-api-key",
+    "private-key",
+    "aws-key"
+  ],
+  "review": "Generic literal credential assignments separately reviewed; matches confined to clearly named synthetic test fixtures. No runtime DBs, browser auth state, uploads, cache or environment secrets staged. License text preserved. Does not rewrite history or prove absence of every secret format."
+}

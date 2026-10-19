@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "baselineVersionId": "03643902e26c75a9d2bdc3cae1df450c7c290f384d1c1b50eea520055d05db3a",
+  "styles": [
+    {
+      "id": "consulting",
+      "label": "咨询极简",
+      "composition": "结论先行 / 右侧主视觉 / 克制留白",
+      "versionId": "251979f681db858a90d2a8f02dcbca172bfbc4234c53b48dc845d9d6a1a0c063",
+      "cover": "consulting/cover.jpg",
+      "report": "consulting/report.json",
+      "criticalIssues": 0,
+      "pages": 12,
+      "semanticContentHash": "8a7a1f3458a684f670881a9a06089bd9ab61c16b1d410362c3b9116c62c00b3e"
+    },
+    {
+      "id": "technology-launch",
+      "label": "科技发布",
+      "composition": "深色舞台 / 大图出界 / 明确视觉焦点",
+      "versionId": "9ab2dc91a1f6bff818a1cb243495d7749cc33386f32cfe0e8aeca32f473fc548",
+      "cover": "technology-launch/cover.jpg",
+      "report": "technology-launch/report.json",
+      "criticalIssues": 0,
+      "pages": 12,
+      "semanticContentHash": "8a7a1f3458a684f670881a9a06089bd9ab61c16b1d410362c3b9116c62c00b3e"
+    },
+    {
+      "id": "brand-editorial",
+      "label": "品牌图文",
+      "composition": "暖色杂志 / 左图右文 / 章节节奏",
+      "versionId": "1a0d6ed9438b553dee5ed3f0106b52e83ba19724ff6e6bd73aaa1def51ce51ac",
+      "cover": "brand-editorial/cover.jpg",
+      "report": "brand-editorial/report.json",
+      "criticalIssues": 0,
+      "pages": 12,
+      "semanticContentHash": "8a7a1f3458a684f670881a9a06089bd9ab61c16b1d410362c3b9116c62c00b3e"
+    }
+  ],
+  "bodyDataNotesUnchanged": true,
+  "commercialApproval": false,
+  "externalTextPlanningCalls": 0
+}

@@ -1,0 +1,28 @@
+[
+  {
+    "schemaVersion": 1,
+    "type": "business-report",
+    "title": "从文件生成到可核对交付",
+    "engineVersion": "word-pro-1.0.0",
+    "inputSHA256": "cdbae38597c867fd4e910b47727bc04b1274c99213ee175533800aadd4a579aa",
+    "pageCount": 4,
+    "repairRounds": 1,
+    "criticalIssues": 0,
+    "releaseStatus": "needs-human-review",
+    "commercialApproval": false,
+    "planningOrigin": "assistant-authored original methodology fixture; not AI quality acceptance or real business evidence"
+  },
+  {
+    "schemaVersion": 1,
+    "type": "project-plan",
+    "title": "文档交付质量提升项目方案",
+    "engineVersion": "word-pro-1.0.0",
+    "inputSHA256": "cebe276fb7b97c8eb700d1f7e05a257487b28c60f93d7e12cf7cc9b99f33ad34",
+    "pageCount": 4,
+    "repairRounds": 0,
+    "criticalIssues": 0,
+    "releaseStatus": "needs-human-review",
+    "commercialApproval": false,
+    "planningOrigin": "assistant-authored original methodology fixture; not AI quality acceptance or real business evidence"
+  }
+]

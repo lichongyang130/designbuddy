@@ -1,27 +1,31 @@
 import { useEffect, useMemo, useState } from "react";
 import { apiJSON } from "../api/client";
 import { getAIProviderCredentials } from "../../../../frontend/workspace/AIProviderSettings";
-import { expertCatalog, customExpertCatalog } from "../../../../frontend/workspace/expertCatalog";
+import { expertCatalog, customExpertCatalog, configureExpert } from "../../../../frontend/workspace/expertCatalog";
 import { useWorkspaceStore } from "../../../../frontend/workspace/store";
 import { expertExecutionBrief, localExpertSuggestion, validExpertMatch, type ExpertMatch, type ExpertProfile } from "../../../../shared/expertRouting";
 
+import { usePreferences, setAssistantPreferences } from "../../../../frontend/workspace/settingsStore";
+
 const consentKey = "designbuddy.expert-match-consent.v1";
-function initialConsent() { try { const stored = localStorage.getItem(consentKey); return stored === null ? true : stored === "allowed"; } catch { return true; } }
 const defaultMethod = ["先确认交付目标、使用对象、已有材料和约束", "按专业职责拆解工作，区分事实、假设和建议", "交付主体结果、依据及待复核事项"];
 const defaultChecks = ["不编造事实、引用、数字和执行结果", "工具与外部服务必须实际接入才能使用", "资料不足只询问必要问题，外部操作遵守原有权限"];
 type Input = { prompt: string; mode: "office" | "code" | "design"; model: string; permission: string; attachments: { name: string; text?: string }[]; selectedExpert: string; enabled: boolean };
 type SkillInfo = { id: string; name: string; accepts: string[] };
+function profileFor(p: ExpertProfile): ExpertProfile {
+  return { id: p.id, name: p.name.slice(0, 100), description: p.description.slice(0, 1200), method: p.method.slice(0, 6).map(s => s.slice(0, 400)), checks: p.checks.slice(0, 6).map(s => s.slice(0, 400)) };
+}
 export function useExpertMatch(input: Input) {
+  const expertSettings = usePreferences(s => s.expertSettings);
+  const assistant = usePreferences(s => s.assistant);
   const custom = useWorkspaceStore(s => s.experts);
   const [skills, setSkills] = useState<SkillInfo[]>([]);
   const profiles = useMemo<ExpertProfile[]>(() => {
     const personal = custom.slice(0, 25).map(customExpertCatalog);
-    return [...expertCatalog, ...personal].map(p => ({
-      id: p.id, name: p.name.slice(0, 100), description: p.description.slice(0, 1200),
-      method: p.method.slice(0, 6).map(s => s.slice(0, 400)), checks: p.checks.slice(0, 6).map(s => s.slice(0, 400)),
-    }));
-  }, [custom]);
-  const [consent, setConsent] = useState(initialConsent);
+    return [...expertCatalog, ...personal].filter(p => expertSettings[p.id]?.enabled !== false).map(p => profileFor(configureExpert(p, expertSettings)));
+  }, [custom, expertSettings]);
+  const consent = assistant.autoMatch;
+  const [preferenceError, setPreferenceError] = useState("");
   const [attempt, setAttempt] = useState(0);
   const [answerState, setAnswerState] = useState({ base: "", value: "" });
   const attachmentContext = input.attachments.filter(a => a.text).map(a => `${a.name}\n${a.text}`).join("\n\n").slice(0, 6000);
@@ -29,7 +33,7 @@ export function useExpertMatch(input: Input) {
   const answer = answerState.base === base ? answerState.value : "";
   const key = JSON.stringify([base, answer, input.model, input.permission, profiles, attempt, skills]);
   const [state, setState] = useState<{ key: string; result?: ExpertMatch; error?: string; loading?: boolean }>({ key: "" });
-  const allowed = consent && input.enabled && input.permission !== "仅本地" && !input.selectedExpert && !!input.prompt.trim();
+  const allowed = profiles.length > 0 && consent && input.enabled && input.permission !== "仅本地" && !input.selectedExpert && !!input.prompt.trim();
   // Fetch skills catalog
   useEffect(() => {
     apiJSON<{ skills: SkillInfo[] }>("/skill-runtime").then(data => {
@@ -40,8 +44,12 @@ export function useExpertMatch(input: Input) {
   const current = allowed && state.key === key ? state : undefined;
   const result = current?.result;
   const suggested = result?.kind === "match" ? profiles.find(p => p.id === result.expertId) : undefined;
-  const collaborators = result?.kind === "match" ? result.collaboratorIds.map(id => profiles.find(p => p.id === id)).filter((p): p is ExpertProfile => !!p) : [];
-  const manual = input.selectedExpert ? profiles.find(p => p.name === input.selectedExpert) || { id: "manual", name: input.selectedExpert, description: "用户明确指定的专业角色；以用户需求与提供的材料为准", method: defaultMethod, checks: defaultChecks } : undefined;
+  const collaborators = assistant.collaborators && result?.kind === "match" ? result.collaboratorIds.map(id => profiles.find(p => p.id === id)).filter((p): p is ExpertProfile => !!p) : [];
+  const knownRoles = [...expertCatalog, ...custom.map(customExpertCatalog)];
+  const chosenRole = knownRoles.find(p => p.name === input.selectedExpert && expertSettings[p.id]?.enabled !== false);
+  const blockedManual = !chosenRole && knownRoles.some(p => p.name === input.selectedExpert && expertSettings[p.id]?.enabled === false);
+  // The 25-custom-role cap applies to network matching, not explicit manual choices.
+  const manual = input.selectedExpert && !blockedManual ? (chosenRole ? profileFor(configureExpert(chosenRole, expertSettings)) : undefined) || { id: "manual", name: input.selectedExpert, description: "用户明确指定的专业角色；以用户需求与提供的材料为准", method: defaultMethod, checks: defaultChecks } : undefined;
   useEffect(() => {
     if (!allowed || skills.length === 0) return;
     const controller = new AbortController(); let active = true;
@@ -57,14 +65,19 @@ export function useExpertMatch(input: Input) {
       } catch (error) {
         if (active && !controller.signal.aborted) setState({ key, error: error instanceof Error && ["TimeoutError", "AbortError"].includes(error.name) ? "匹配超时，可以重试或直接发送。" : error instanceof Error ? error.message.slice(0, 300) : "暂未完成匹配。" });
       }
-    }, 900);
+    }, assistant.debounceMs);
     return () => { active = false; clearTimeout(timer); controller.abort(); };
-  }, [allowed, key]);
-  function changeConsent(value: boolean) { setConsent(value); setState({ key: "" }); try { if (value) localStorage.setItem(consentKey, "allowed"); else localStorage.removeItem(consentKey); } catch { /* Consent still applies only in this mounted view. */ } }
+  }, [allowed, key, assistant.debounceMs]);
+  function changeConsent(value: boolean) {
+    try {
+      setAssistantPreferences({ autoMatch: value }); setPreferenceError(""); setState({ key: "" });
+      try { if (value) localStorage.setItem(consentKey, "allowed"); else localStorage.removeItem(consentKey); } catch { /* Legacy marker only; canonical preference was already saved. */ }
+    } catch (cause) { setPreferenceError(cause instanceof Error ? cause.message : "保存失败"); }
+  }
   function reset() { setState({ key: "" }); setAnswerState({ base: "", value: "" }); }
   // Use AI-suggested skill from the result, or fall back to keyword matching
   const skillSuggestion = (result && result.kind !== "clarify" && result.skillSuggestion) ? { ...result.skillSuggestion, name: skills.find(s => s.id === result.skillSuggestion?.skillId)?.name || result.skillSuggestion.skillId, accepts: skills.find(s => s.id === result.skillSuggestion?.skillId)?.accepts || [], hint: result.skillSuggestion.reason } : undefined;
-  const label = manual ? manual.name : input.permission === "仅本地" ? "仅本地 · 手动选择" : !consent || !input.prompt.trim() ? "自动匹配专家" : current?.error ? "暂未完成匹配" : result?.kind === "clarify" ? "需要确认需求" : result?.kind === "general" ? "直接处理即可" : suggested ? `推荐：${suggested.name}` : "正在匹配专家…";
+  const label = manual ? manual.name : input.permission === "仅本地" ? "仅本地 · 手动选择" : !consent || !profiles.length || !input.prompt.trim() ? "自动匹配专家" : current?.error ? "暂未完成匹配" : result?.kind === "clarify" ? "需要确认需求" : result?.kind === "general" ? "直接处理即可" : suggested ? `推荐：${suggested.name}` : "正在匹配专家…";
   const profile = manual || suggested;
   // Expert understanding may contradict the selected homepage column. Only explicit
   // web deliverables use the web artifact generator; other expert work stays in chat.
@@ -72,14 +85,14 @@ export function useExpertMatch(input: Input) {
   const replyMode: "chat" | "generation" | undefined = profile
     ? profile.id === "developer" && isWebDeliverable ? "generation" : "chat"
     : result?.kind === "general" ? "chat" : undefined;
-  return { consent, changeConsent, label, result, suggested, collaborators, manual, profile, error: current?.error, loading: allowed && !result && !current?.error, localOnly: input.permission === "仅本地", answer, skillSuggestion,
+  return { consent, changeConsent, preferenceError, label, result, suggested, collaborators, manual, profile, error: current?.error, loading: allowed && !result && !current?.error, localOnly: input.permission === "仅本地", answer, skillSuggestion,
     answerQuestion(question: string, value: string) { setAnswerState({ base, value: `${question}\n用户确认：${value.trim().slice(0, 800)}` }); },
     clearAnswer() { setAnswerState({ base: "", value: "" }); },
     retry() { setAttempt(a => a + 1); }, reset,
-    fallback: current?.error || input.permission === "仅本地" ? localExpertSuggestion(input.prompt) : undefined,
+    fallback: (() => { const fallback = current?.error || input.permission === "仅本地" ? localExpertSuggestion(input.prompt) : undefined; return profiles.find(p => p.id === fallback?.id); })(),
     executionBrief: profile ? `${expertExecutionBrief(profile, manual ? undefined : result)}${!manual && collaborators.length ? `\n协作专家（仅按明确分工提供辅助指导，不替代主责）：\n${collaborators.map(expert => `- ${expert.name}：${expert.description}\n  方法：${expert.method.join("；")}`).join("\n")}` : ""}` : "",
     confirmedContext: answer ? `\n已确认的任务要求：\n${answer}\n` : "",
-    profiles, replyMode,
+    profiles, replyMode, blockedManual,
   };
 }
 export type ExpertMatchController = ReturnType<typeof useExpertMatch>;

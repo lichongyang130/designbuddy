@@ -1,0 +1,317 @@
+{
+  "schemaVersion": 1,
+  "engineVersion": "word-pro-1.0.0",
+  "inputSHA256": "cebe276fb7b97c8eb700d1f7e05a257487b28c60f93d7e12cf7cc9b99f33ad34",
+  "finalDocxSHA256": "075414361df0290e5a45c986040a50073b38a9768d0fdf7b7d0aff4f263b8b0e",
+  "finalPdfSHA256": "bd1e9f9c3e7839bf4e98fb6c779742458b24d38b1f0f8adce553af8516b067a3",
+  "contentHash": "6be93389e3aa0fe27b68cb8c2868bc6bad11f49fbaf9a29427bec71f505ac108",
+  "contentPreserved": true,
+  "documentType": "project-plan",
+  "font": {
+    "family": "Noto Sans SC",
+    "regularSHA256": "eeb06b8a64fd04a2744d95579db1571b51027cda61ed78c62e4b730791525461",
+    "boldSHA256": "a8d8569e6cf8e93e830736e64c69568c5499ff65bf6a8ff860f0cdacc3eab7d0",
+    "embeddedInDocx": false
+  },
+  "renderer": {
+    "renderer": "LibreOffice Kit",
+    "engineApiVersion": "0.2.0",
+    "backend": "wasm",
+    "rasterEngine": "libreoffice",
+    "sourceSHA256": "075414361df0290e5a45c986040a50073b38a9768d0fdf7b7d0aff4f263b8b0e",
+    "pdfSHA256": "bd1e9f9c3e7839bf4e98fb6c779742458b24d38b1f0f8adce553af8516b067a3",
+    "pageCount": 4,
+    "dpi": 72,
+    "missingFonts": [],
+    "pages": [
+      {
+        "page": 1,
+        "file": "pages/01.jpg",
+        "sha256": "04f0bc22f1046dbd3e05462a2521575071761a741baaa71494682ba210da5faa"
+      },
+      {
+        "page": 2,
+        "file": "pages/02.jpg",
+        "sha256": "3efa69f6912ca4a3a8b71c8f6a5bf4d01b27723d085fa152e267b3e7b5eb2a75"
+      },
+      {
+        "page": 3,
+        "file": "pages/03.jpg",
+        "sha256": "22619f6f920caef72ecf7d954aefee4aa63d9e275efd73a15d3dfedd345bfe7c"
+      },
+      {
+        "page": 4,
+        "file": "pages/04.jpg",
+        "sha256": "68f3b967b4b37b04fd5fea6bb04d2ee43aac8ea30d8788bcb0d16b9c175fc0ca"
+      }
+    ],
+    "microsoftWordVerified": false
+  },
+  "checks": {
+    "headingHierarchy": {
+      "status": "passed",
+      "method": "strict WordSpec validation"
+    },
+    "nativeContent": {
+      "status": "passed",
+      "method": "generated DOCX text inventory verified before render"
+    },
+    "pdfTextCoverage": {
+      "status": "passed",
+      "method": "PDF text match; not semantic verification"
+    },
+    "tableWidths": {
+      "status": "passed",
+      "method": "declared DOCX widths against page margins; not pixel inspection"
+    },
+    "tocPageNumbers": {
+      "status": "not-applicable",
+      "method": "native internal chapter links without page numbers"
+    },
+    "pageNumberFields": {
+      "status": "required",
+      "method": "PAGE/NUMPAGES emitted; manual rendered and target-client check required"
+    },
+    "renderedVisualReview": {
+      "status": "required",
+      "method": null
+    },
+    "targetWordCompatibility": {
+      "status": "not-evaluated",
+      "method": null
+    }
+  },
+  "issues": [],
+  "pdfCoverage": [
+    {
+      "nodeId": "objectives",
+      "status": "matched"
+    },
+    {
+      "nodeId": "objectives-0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "objectives-1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "scope",
+      "status": "matched"
+    },
+    {
+      "nodeId": "scope-0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "scope-1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "deliverables",
+      "status": "matched"
+    },
+    {
+      "nodeId": "deliverables-0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "deliverables-1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-caption",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-h0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-h1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-h2",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r0c0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r0c1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r0c2",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r1c0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r1c1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r1c2",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r2c0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r2c1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r2c2",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r3c0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r3c1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r3c2",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r4c0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r4c1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r4c2",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r5c0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r5c1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r5c2",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r6c0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r6c1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r6c2",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r7c0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r7c1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r7c2",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r8c0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r8c1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-r8c2",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-scope",
+      "status": "matched"
+    },
+    {
+      "nodeId": "verification-table-calculation",
+      "status": "matched"
+    },
+    {
+      "nodeId": "risks",
+      "status": "matched"
+    },
+    {
+      "nodeId": "risks-0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "risks-1",
+      "status": "matched"
+    },
+    {
+      "nodeId": "acceptance",
+      "status": "matched"
+    },
+    {
+      "nodeId": "acceptance-0",
+      "status": "matched"
+    },
+    {
+      "nodeId": "acceptance-1",
+      "status": "matched"
+    }
+  ],
+  "score": {
+    "weights": {
+      "visual": 30,
+      "content": 25,
+      "structure": 20,
+      "pagination": 15,
+      "compatibility": 10
+    },
+    "calibrated": false,
+    "weightedScore": null
+  },
+  "repairPolicy": {
+    "maxRepairRounds": 2,
+    "maxFullRenders": 3,
+    "contentChangesAllowed": false,
+    "automaticFactVerification": false
+  },
+  "repairRounds": [
+    {
+      "round": 0,
+      "docxSHA256": "075414361df0290e5a45c986040a50073b38a9768d0fdf7b7d0aff4f263b8b0e",
+      "pdfSHA256": "bd1e9f9c3e7839bf4e98fb6c779742458b24d38b1f0f8adce553af8516b067a3",
+      "pageCount": 4,
+      "contentHash": "6be93389e3aa0fe27b68cb8c2868bc6bad11f49fbaf9a29427bec71f505ac108",
+      "issues": [],
+      "actions": []
+    }
+  ],
+  "releaseStatus": "needs-human-review",
+  "commercialApproval": false,
+  "limitations": [
+    "不调用AI、不编辑任意旧Word；输入内容与引用仍需事实核验。",
+    "章节导航无目录页码；PAGE/NUMPAGES字段需检查目标软件刷新。",
+    "PDF文字与几何信号不等于像素级溢出/遮挡检测。",
+    "LibreOffice当前平台可能为WASM；没有Microsoft Word/WPS验收。",
+    "原生正文/表格/图像对象；没有原生可编辑图表或流程图编辑器。",
+    "DOCX不内嵌字体；接收端需安装Noto Sans SC。"
+  ]
+}

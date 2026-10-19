@@ -56,6 +56,10 @@ export const museumPhotos = pack("museum"),
   handbookPhotos = pack("handbook"),
   naturePhotos = pack("nature");
 export type SampleId =
+  | "leader-decision"
+  | "visual-directions"
+  | "content-director"
+  | "word-pro"
   | "travel"
   | "luma"
   | "research"
@@ -91,6 +95,17 @@ export const samples: {
   format: string;
   photos: Photo[];
 }[] = [
+  {id:"word-pro",category:"文档",title:"Word专业排版 · 真实分页与有限修复",description:"商业报告 / 项目方案 · 同源PDF / 原生表格 / 修复证据",format:"DOCX / PDF",photos:[]},
+  {id:"content-director",category:"幻灯片",title:"内容导演 · 让表达由证据决定",description:"逐页任务 / 整套节奏 / 原生结构与流程 · 同内容对照",format:"PPTX / PDF",photos:[]},
+  {id:"visual-directions",category:"幻灯片",title:"视觉叙事 · 三种艺术方向",description:"咨询极简 / 科技发布 / 品牌图文 · 同内容真实导出",format:"PPTX / PDF",photos:[]},
+  {
+    id: "leader-decision",
+    category: "幻灯片",
+    title: "领导决策汇报 · PPT引擎试点建议",
+    description: "自适应V2 · 新旧同内容对照 · 12页/15分钟 · 来源与讲稿",
+    format: "PPTX / PDF",
+    photos: [],
+  },
   {
     id: "travel" as const,
     category: "原型",

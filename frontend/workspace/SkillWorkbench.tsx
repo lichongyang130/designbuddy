@@ -1,15 +1,19 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, lazy, Suspense } from "react";
 import { apiFetch, apiJSON } from "../../apps/web/src/api/client";
+import type { PresentationBrief } from "../../shared/presentation";
 import type { RuntimeSkill, SkillRun } from "../../shared/skillRuntime";
 import { useRuntimeActivity } from "./runtimeActivity";
 import { expertCatalog } from "./expertCatalog";
 import "./skill-workbench.css";
+import WordComposer from "./WordComposer";
+import PresentationComposer from "./PresentationComposer";
 import PosterLayoutEditor from "./PosterLayoutEditor";
 import SmartSkillPlanner, { identifySkillFile } from "./SmartSkillPlanner";
 
+const PdfPreview = lazy(() => import("./PdfPreview"));
 const labels = { queued: "等待执行", running: "正在执行", succeeded: "执行成功", failed: "执行失败", cancelled: "已取消" };
 const terminal = (run: SkillRun) => !["running", "queued"].includes(run.status);
-export default function SkillWorkbench({ expertId, taskId, initialGoal = "", model, permission, allowedSkillIds, initialSkillId, onSkillExecute, autoContent }: { expertId?: string; taskId?: string; initialGoal?: string; model?: string; permission?: string; allowedSkillIds?: string[]; initialSkillId?: string; onSkillExecute?: (skillId: string, skillName: string) => void; autoContent?: string }) {
+export default function SkillWorkbench({ expertId, taskId, initialGoal = "", model, permission, allowedSkillIds, initialSkillId, onSkillExecute, autoContent, presentationBrief }: { expertId?: string; taskId?: string; initialGoal?: string; model?: string; permission?: string; allowedSkillIds?: string[]; initialSkillId?: string; onSkillExecute?: (skillId: string, skillName: string) => void; autoContent?: string; presentationBrief?: Partial<PresentationBrief> }) {
   const scopeQuery = taskId ? `?taskId=${encodeURIComponent(taskId)}` : "";
   const mutations = useRef(0);
   const epoch = useRef(0);
@@ -67,13 +71,13 @@ export default function SkillWorkbench({ expertId, taskId, initialGoal = "", mod
   
   // Auto-populate file from AI-generated content
   useEffect(() => {
-    if (autoContent && !file) {
+    if (autoContent && !file && !["slides.create", "document.create"].includes(selected)) {
       const blob = new Blob([autoContent], { type: 'text/markdown' });
       const autoFile = new File([blob], 'ai-content.md', { type: 'text/markdown' });
       setFile(autoFile);
       setConsent(true); // Auto-consent when content is provided
     }
-  }, [autoContent, file]);
+  }, [autoContent, file, selected]);
   
   useEffect(() => () => { if (preview) URL.revokeObjectURL(preview.url); }, [preview]);
   useEffect(() => { setPreview(null); }, [focusId, expertId]);
@@ -96,8 +100,9 @@ export default function SkillWorkbench({ expertId, taskId, initialGoal = "", mod
     }
     
     try {
-      if (file.size > 2000000 || !file.size) throw Error("请选择不超过 2 MB 的非空文件。");
-      const metadata = await identifySkillFile(file);
+      const maxBytes = skill.id === "slides.create" ? 13_600_000 : 2_000_000;
+      if (file.size > maxBytes || !file.size) throw Error("文件为空或超过该技能的上传限制。");
+      const metadata = await identifySkillFile(file, maxBytes);
       if (identity !== epoch.current) return;
       const signature = JSON.stringify({ metadata, taskId, skillId: skill.id, expertId, deduplicate: skill.id === "table.analyze" && deduplicate, parameters: skill.parameterFields ? parameters : undefined });
       if (submission.current?.signature !== signature) submission.current = { signature, id: crypto.randomUUID() };
@@ -106,7 +111,7 @@ export default function SkillWorkbench({ expertId, taskId, initialGoal = "", mod
       if (permission) form.set("permission", permission);
       if (skill.parameterFields) form.set("parameters", JSON.stringify(parameters));
       submissionController.current = new AbortController();
-      const run = await apiJSON<SkillRun>("/skill-runs", { method: "POST", body: form, signal: submissionController.current.signal, retryOnIdentityChange: false });
+      const run = await apiJSON<SkillRun>(skill.id === "slides.create" ? "/skill-runs?kind=presentation" : "/skill-runs", { method: "POST", body: form, signal: submissionController.current.signal, retryOnIdentityChange: false });
       if (identity !== epoch.current) return;
       mutations.current++; setRuns(old => [run, ...old.filter(r => r.id !== run.id)]); setFocusId(run.id);
     } catch (e) { if (identity === epoch.current) setError(e instanceof Error ? e.message : "提交失败。请检查运行记录，勿重复提交。"); }
@@ -144,7 +149,7 @@ export default function SkillWorkbench({ expertId, taskId, initialGoal = "", mod
   }
   return <section className="skill-workbench" aria-label="真实技能执行台">
     <header><div><span className="skill-workbench-eyebrow">后台技能 · 实际文件交付</span><h2>{expertId ? "已接通技能" : "技能执行与运行记录"}</h2></div><button type="button" disabled={busy} onClick={() => setRefresh(r => r + 1)}>重新连接</button></header>
-    <p className="skill-workbench-intro">{taskId && "当前仅展示本任务的方案与运行；任务标识不授予其他账号访问权限。"}这里真正处理上传文件，不只是给聊天添加提示词。大多数技能使用固定程序；仅“文档语义摘要”会在单次明确授权后把正文发送给服务端配置的第三方AI模型。OCR/离线转写使用所列本地识别模型。具体文件和执行边界以技能清单为准；未接通的外部业务操作不会执行。</p>
+    <p className="skill-workbench-intro">{taskId && "当前仅展示本任务的方案与运行；任务标识不授予其他账号访问权限。"}这里真正处理上传文件，不只是给聊天添加提示词。大多数技能使用固定程序；“文档语义摘要”和“商业演示AI规划”会在单次明确授权后把正文发送给服务端配置的第三方AI模型。OCR/离线转写使用所列本地识别模型。具体文件和执行边界以技能清单为准；未接通的外部业务操作不会执行。</p>
     {error && <p className="skill-workbench-error" role="alert">{error}</p>}
     {!loaded && !error && <p role="status">正在检查后台技能与运行记录…</p>}
     <details className="skill-runtime-registry" open={!!expertId}><summary>已接入执行器 · {available.length} 项{unavailable.length ? ` · 另有 ${unavailable.length} 项未接入能力` : ""}</summary><div className="skill-runtime-catalog">{relevant.map(s => <div key={s.id} className={`skill-runtime-item ${s.status}`}><div><b>{s.name}</b><span>{s.status === "ready" ? "可执行" : s.executorState === "connected" ? "缺服务端凭据" : "未支持"}</span></div><p>{s.description}</p>{!expertId && <small>绑定专家：{s.expertIds.map(id => expertCatalog.find(e => e.id === id)?.name || id).join("、")} · v{s.version}</small>}<details><summary>格式与能力边界</summary><p>{s.limits}</p>{s.outputs.length > 0 && <p>真实交付：{s.outputs.join("、")}</p>}</details>{s.requires?.length ? <details className="skill-runtime-requires"><summary>需要你提供（{s.requires.length}）</summary><ul>{s.requires.map(item => <li key={`${item.kind}-${item.label}`}><b>{item.label}</b><span>{item.detail}</span></li>)}</ul></details> : null}</div>)}</div></details>
@@ -155,21 +160,23 @@ export default function SkillWorkbench({ expertId, taskId, initialGoal = "", mod
         return <>{connected.length > 0 && <>执行器已接入、但服务端还没配置依赖，暂不提供执行入口：{connected.map(s => s.name).join("、")}。</>}{missing.length > 0 && <>以下能力尚未实现后台执行器，不计为技能，也不会提供执行入口：{missing.map(s => s.name).join("、")}。</>}</>;
       })()}
     </p>}
-    {loaded && !relevant.length && <p className="skill-workbench-note">当前痛点没有已接入的真实技能，因此没有文件处理入口。聊天内容不等于技能执行；新增能力需先实现并验收后台执行器。</p>}
+    {loaded && !relevant.length && <p className="skill-workbench-note">当前选择尚无满足执行条件的技能，因此不提供文件执行入口。请先核对上方依赖或实现状态；普通聊天不等于技能执行。</p>}
     {loaded && relevant.length > 0 && !available.length && <p className="skill-workbench-note">该类别相关技能目前均未支持执行。不会展示虚假的执行按钮。</p>}
     {loaded && relevant.length > 0 && <SmartSkillPlanner key={`${taskId}-${expertId}-${refresh}`} expertId={expertId} taskId={taskId} initialGoal={initialGoal} model={model} permission={permission} catalog={relevant} skillScope={allowedSkillIds} onRun={run => { if (removedRuns.current.has(run.id) || (taskId && run.taskId !== taskId)) return; mutations.current++; setRuns(old => [run, ...old.filter(r => r.id !== run.id)]); setFocusId(run.id); }} />}
     {available.length > 0 && <form className="skill-runtime-form" onSubmit={e => { e.preventDefault(); void execute(); }}>
-      {autoContent && file && (
+      {autoContent && file && !["slides.create", "document.create"].includes(selected) && (
         <div className="skill-auto-content-notice">
           <strong>✓ AI 已生成内容</strong>
           <p>内容已自动填充，技能已预选。点击下方按钮即可生成文件。</p>
         </div>
       )}
       <label>执行技能<select value={selected} disabled={busy} onChange={e => { setSelected(e.target.value); setFile(null); setConsent(false); setParameters(Object.fromEntries((available.find(s => s.id === e.target.value)?.parameterFields || []).map(f => [f.name, f.defaultValue || ""]))); }}>{available.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}</select></label>
-      {selected !== "image.layout" && <label>上传实际材料<input key={`${selected}-${expertId}-${refresh}`} type="file" disabled={busy} accept={skill?.accepts.join(",")} onChange={e => { setFile(e.target.files?.[0] || null); setConsent(false); if(selected === "audio.transcribe-en") setParameters({englishConfirmed:""}); submission.current = null; }} /></label>}
+      {!["image.layout", "slides.create", "document.create"].includes(selected) && <label>上传实际材料<input key={`${selected}-${expertId}-${refresh}`} type="file" disabled={busy} accept={skill?.accepts.join(",")} onChange={e => { setFile(e.target.files?.[0] || null); setConsent(false); if(selected === "audio.transcribe-en") setParameters({englishConfirmed:""}); submission.current = null; }} /></label>}
+      {selected === "document.create" && <WordComposer key={`${taskId}-${expertId}-${refresh}`} disabled={busy} onInvalidate={() => { setFile(null); setConsent(false); setParameters({}); submission.current = null; }} onPrepare={prepared => { setFile(prepared); setConsent(false); setParameters({}); submission.current = null; }} />}
+      {selected === "slides.create" && <PresentationComposer key={`${taskId}-${expertId}-${refresh}`} disabled={busy} initialGoal={initialGoal} initialBrief={presentationBrief} onInvalidate={() => { setFile(null); setConsent(false); setParameters({ externalConsent: "" }); submission.current = null; }} onPrepare={prepared => { setFile(prepared); setConsent(false); setParameters({ externalConsent: "" }); submission.current = null; }} />}
       {selected === "image.layout" && <><PosterLayoutEditor key={`${taskId}-${expertId}-${refresh}`} disabled={busy} onInvalidate={() => { setFile(null); setConsent(false); submission.current = null; }} onPrepare={prepared => { setFile(prepared); setConsent(false); submission.current = null; }} /><p className="skill-workbench-note">{file ? `当前已准备 ${file.name}（${file.size}字节），尚未上传；请核对后勾选同意并执行。` : "尚未准备画布输入；编辑后点击“将当前画布准备为输入”。"}</p></>}
       <p className="skill-workbench-note">{skill?.limits}</p>
-      <p className="skill-workbench-note">{selected === "document.summarize" ? "此技能会将提取后的完整正文发送至服务端配置的第三方AI模型，模型服务的数据留存/训练政策由服务商决定；文件也会保存在本应用后台。只有选择下方单次正文处理授权并另行同意后台执行后才会发送。需要人工对照原文复核摘要。" : ["pdf.ocr", "pdf.ocr-batch"].includes(selected) ? "PDF OCR任务本地处理；每完成一页就持久化页图、文字和识别证据。服务重启/限时恢复会复用已校验检查点，仅重新处理未完成页；失败/取消后可由你显式继续或重试。每次运行仍有明确时限与资源上限。" : "多数手动技能不调用模型；识别类技能使用所列本地模型。同一材料与参数重复提交会返回原任务；需要新任务或重试失败任务，请重新选择文件并确认。"}</p>
+      <p className="skill-workbench-note">{["document.summarize", "slides.create"].includes(selected) ? "此技能会将提取后的完整正文发送至服务端配置的第三方AI模型，模型服务的数据留存/训练政策由服务商决定；文件也会保存在本应用后台。只有选择下方单次正文处理授权并另行同意后台执行后才会发送。需要人工对照原文复核摘要。" : ["pdf.ocr", "pdf.ocr-batch"].includes(selected) ? "PDF OCR任务本地处理；每完成一页就持久化页图、文字和识别证据。服务重启/限时恢复会复用已校验检查点，仅重新处理未完成页；失败/取消后可由你显式继续或重试。每次运行仍有明确时限与资源上限。" : "多数手动技能不调用模型；识别类技能使用所列本地模型。同一材料与参数重复提交会返回原任务；需要新任务或重试失败任务，请重新选择文件并确认。"}</p>
       {skill?.exampleFile && <><p className="skill-workbench-note">{skill.exampleFile.hint}</p><button type="button" onClick={() => { const a = document.createElement("a"); a.href = skill.exampleFile!.path; a.download = skill.exampleFile!.filename; a.click(); }}>{skill.exampleFile.buttonLabel || (skill.id === "table.join" ? "下载双表示例XLSX（不会执行）" : "下载公式示例XLSX（不会执行）")}</button>{skill.exampleFile.licensePath && <a href={skill.exampleFile.licensePath} download>下载示例来源与许可</a>}</>}
       {skill?.example && <button type="button" onClick={() => {
         const sample = skill.example!; const url = URL.createObjectURL(new Blob([sample.content], { type: "text/plain;charset=utf-8" }));
@@ -186,12 +193,12 @@ export default function SkillWorkbench({ expertId, taskId, initialGoal = "", mod
     </form>}
     <div className="skill-runtime-history"><h3>我的运行记录</h3><p className="skill-workbench-note">记录按当前服务端身份隔离；切换账号或清除浏览器会话会影响访问，请及时下载重要成果。</p>{loaded && !visibleRuns.length && <p>暂无运行记录。点击执行后才会创建真实任务。</p>}
       {!!visibleRuns.length && <label>选择运行<select aria-label="选择技能运行记录" value={current?.id || ""} onChange={e => setFocusId(e.target.value)}>{visibleRuns.map(r => <option key={r.id} value={r.id}>{r.filename} · {labels[r.status]} · {new Date(r.createdAt).toLocaleString()}</option>)}</select></label>}
-      {current && <article className="skill-run-result"><div className="skill-run-heading"><b>{current.filename}</b><span role="status">{labels[current.status]}</span></div><p>{current.summary || current.error || "仅显示后台已发生的步骤，不模拟进度。"}</p>
+      {current && <article className="skill-run-result"><div className="skill-run-heading"><b>{current.filename}</b><span role="status">{["slides.create", "document.create"].includes(current.skillId) && current.status === "succeeded" ? "草稿执行完成 · 未商业验收" : labels[current.status]}</span></div><p>{current.summary || current.error || "仅显示后台已发生的步骤，不模拟进度。"}</p>
         <small>技能 {current.skillId} · v{current.version} · 运行 {current.id}</small>
         <details><summary>执行证据与来源</summary>{current.plan && <p>已确认方案：{current.plan.id}<br/>任务：{current.plan.goal}<br/>模型建议理由：{current.plan.reason}<br/>用户确认时间：{new Date(current.plan.confirmedAt).toLocaleString()}<br/>方案摘要：<code>{current.plan.approvalDigest}</code></p>}<p>输入 SHA-256：<code>{current.inputHash}</code></p><ol>{current.events.map((e, i) => <li key={i}><time>{new Date(e.at).toLocaleTimeString()}</time> {e.message}</li>)}</ol></details>
-        {!!current.artifacts.length && <ul className="skill-artifact-list">{current.artifacts.map(a => <li key={a.id}><div><b>{a.name}</b><small>{Math.ceil(a.size / 1024)} KB · SHA-256 {a.sha256.slice(0, 12)}…</small></div><button onClick={() => void artifact(current, a.id, false)}>下载 {a.name}</button>{["image/svg+xml", "image/png", "image/jpeg", "text/html; charset=utf-8"].includes(a.mime) && <button onClick={() => void artifact(current, a.id, true)}>预览 {a.name.endsWith("html") ? "页面内容" : (a.mime === "image/svg+xml" ? "图表" : a.name)}</button>}</li>)}</ul>}
-        {preview && <div className="skill-artifact-preview"><button onClick={() => setPreview(null)}>关闭预览</button>{preview.kind.startsWith("image/") ? <img src={preview.url} alt={current.skillId === "image.layout" ? "后台实际生成的图层排版" : current.skillId === "infographic.compose" ? "实际生成的信息图" : preview.kind === "image/svg+xml" ? "程序生成的字段概览图" : "实际处理后的图片预览"} /> : <iframe title={current.skillId === "audio.transcribe-en" ? "英语音频转写核对（须人工复核）" : current.skillId === "document.structure" ? "DOCX正文结构预览（非Word渲染）" : "演示文稿内容预览（非 PowerPoint 截图）"} src={preview.url} sandbox="" />}</div>}
-        <div className="skill-run-actions">{!terminal(current) && <button disabled={busy} onClick={() => void action(current, false)}>取消执行</button>}{["failed", "cancelled"].includes(current.status) && ["pdf.ocr", "pdf.ocr-batch"].includes(current.skillId) && <button disabled={busy} onClick={() => void resume(current)}>继续/重试PDF OCR</button>}<button disabled={busy} onClick={() => void action(current, true)}>删除运行与文件</button></div>
+        {!!current.artifacts.length && <ul className="skill-artifact-list">{current.artifacts.map(a => <li key={a.id}><div><b>{a.name}</b><small>{Math.ceil(a.size / 1024)} KB · SHA-256 {a.sha256.slice(0, 12)}…</small></div><button onClick={() => void artifact(current, a.id, false)}>下载 {a.name}</button>{["image/svg+xml", "image/png", "image/jpeg", "text/html; charset=utf-8", "application/pdf"].includes(a.mime) && <button onClick={() => void artifact(current, a.id, true)}>预览 {a.name.endsWith("html") ? "页面内容" : (a.mime === "image/svg+xml" ? "图表" : a.name)}</button>}</li>)}</ul>}
+        {preview && <div className="skill-artifact-preview"><button onClick={() => setPreview(null)}>关闭预览</button>{preview.kind === "application/pdf" ? <Suspense fallback={<p>正在加载PDF预览…</p>}><PdfPreview url={preview.url} /></Suspense> : preview.kind.startsWith("image/") ? <img src={preview.url} alt={current.skillId === "image.layout" ? "后台实际生成的图层排版" : current.skillId === "infographic.compose" ? "实际生成的信息图" : preview.kind === "image/svg+xml" ? "程序生成的字段概览图" : "实际处理后的图片预览"} /> : <iframe title={preview.kind === "application/pdf" ? "实际文件PDF预览（需人工复核）" : current.skillId === "audio.transcribe-en" ? "英语音频转写核对（须人工复核）" : current.skillId === "document.structure" ? "DOCX正文结构预览（非Word渲染）" : "演示文稿内容预览（非 PowerPoint 截图）"} src={preview.url} sandbox="" />}</div>}
+        <div className="skill-run-actions">{!terminal(current) && <button disabled={busy} onClick={() => void action(current, false)}>取消执行</button>}{["failed", "cancelled"].includes(current.status) && ["pdf.ocr", "pdf.ocr-batch", "slides.create"].includes(current.skillId) && <button disabled={busy} onClick={() => void resume(current)}>{current.skillId === "slides.create" ? "从已保存规划继续（不再调用模型）" : "继续/重试PDF OCR"}</button>}<button disabled={busy} onClick={() => void action(current, true)}>删除运行与文件</button></div>
       </article>}
     </div>
   </section>;

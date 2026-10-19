@@ -1,0 +1,241 @@
+{
+  "schemaVersion": 1,
+  "versionId": "251979f681db858a90d2a8f02dcbca172bfbc4234c53b48dc845d9d6a1a0c063",
+  "engineVersion": "visual-1.0.0",
+  "palette": {
+    "primary": "#244C42",
+    "background": "#F4F1E9",
+    "surface": "#FFFFFF",
+    "text": "#172C26",
+    "muted": "#52685D",
+    "accent": "#A54525"
+  },
+  "method": "deterministic rules from declared purpose, content type and asset metadata; not autonomous image understanding",
+  "style": "consulting",
+  "logoAssetId": "asset-mark",
+  "designs": [
+    {
+      "layout": "visual-cover",
+      "nature": "recommendation",
+      "visual": {
+        "assetId": "asset-concept",
+        "fit": "cover"
+      }
+    },
+    {
+      "layout": "visual-story",
+      "nature": "recommendation",
+      "visual": {
+        "assetId": "asset-concept",
+        "fit": "cover"
+      }
+    },
+    {
+      "layout": "kpi-insight",
+      "nature": "fact"
+    },
+    {
+      "layout": "capability-boundary",
+      "nature": "fact"
+    },
+    {
+      "layout": "chart-takeaway",
+      "nature": "fact"
+    },
+    {
+      "layout": "decision-matrix",
+      "nature": "analysis",
+      "emphasisRows": [
+        1
+      ]
+    },
+    {
+      "layout": "executive-summary",
+      "nature": "recommendation"
+    },
+    {
+      "layout": "adaptive-table",
+      "nature": "analysis"
+    },
+    {
+      "layout": "risk-response",
+      "nature": "analysis"
+    },
+    {
+      "layout": "stage-gates",
+      "nature": "recommendation"
+    },
+    {
+      "layout": "screenshot-evidence",
+      "nature": "recommendation",
+      "visual": {
+        "assetId": "asset-screenshot",
+        "fit": "contain"
+      }
+    },
+    {
+      "layout": "action-agenda",
+      "nature": "recommendation"
+    }
+  ],
+  "pages": [
+    {
+      "slideId": "slide-01",
+      "layout": "visual-cover",
+      "nature": "recommendation",
+      "primaryMessage": "建议有条件批准小范围试点",
+      "image": {
+        "assetId": "asset-concept",
+        "fit": "cover",
+        "usage": "decorative"
+      },
+      "composition": "克制留白，结论左/图右"
+    },
+    {
+      "slideId": "slide-02",
+      "layout": "visual-story",
+      "nature": "recommendation",
+      "primaryMessage": "本次请求：批准试点边界，不背书全面推广",
+      "image": {
+        "assetId": "asset-concept",
+        "fit": "cover",
+        "usage": "decorative"
+      },
+      "composition": "克制留白，结论左/图右"
+    },
+    {
+      "slideId": "slide-03",
+      "layout": "kpi-insight",
+      "nature": "fact",
+      "primaryMessage": "已有工程证据，但不是商业质量认证",
+      "image": null,
+      "composition": "克制留白，结论左/图右"
+    },
+    {
+      "slideId": "slide-04",
+      "layout": "capability-boundary",
+      "nature": "fact",
+      "primaryMessage": "可以交付可编辑草稿，不能承诺商业成稿",
+      "image": null,
+      "composition": "克制留白，结论左/图右"
+    },
+    {
+      "slideId": "slide-05",
+      "layout": "chart-takeaway",
+      "nature": "fact",
+      "primaryMessage": "扩展API仍有失败，需先判断试点影响",
+      "image": null,
+      "composition": "克制留白，结论左/图右"
+    },
+    {
+      "slideId": "slide-06",
+      "layout": "decision-matrix",
+      "nature": "analysis",
+      "primaryMessage": "三种可选路径：建议选择受控试点",
+      "image": null,
+      "composition": "克制留白，结论左/图右"
+    },
+    {
+      "slideId": "slide-07",
+      "layout": "executive-summary",
+      "nature": "recommendation",
+      "primaryMessage": "试点的价值：把未知变成可核对证据",
+      "image": null,
+      "composition": "克制留白，结论左/图右"
+    },
+    {
+      "slideId": "slide-08",
+      "layout": "adaptive-table",
+      "nature": "analysis",
+      "primaryMessage": "成本尚未测算：先明确记录口径和上限",
+      "image": null,
+      "composition": "克制留白，结论左/图右"
+    },
+    {
+      "slideId": "slide-09",
+      "layout": "risk-response",
+      "nature": "analysis",
+      "primaryMessage": "风险要有触发条件和应对动作",
+      "image": null,
+      "composition": "克制留白，结论左/图右"
+    },
+    {
+      "slideId": "slide-10",
+      "layout": "stage-gates",
+      "nature": "recommendation",
+      "primaryMessage": "按关卡推进，不承诺未经评估的日期",
+      "image": null,
+      "composition": "克制留白，结论左/图右"
+    },
+    {
+      "slideId": "slide-11",
+      "layout": "screenshot-evidence",
+      "nature": "recommendation",
+      "primaryMessage": "达标才扩围：导出成功不是唯一门槛",
+      "image": {
+        "assetId": "asset-screenshot",
+        "fit": "contain",
+        "usage": "evidence"
+      },
+      "composition": "克制留白，结论左/图右"
+    },
+    {
+      "slideId": "slide-12",
+      "layout": "action-agenda",
+      "nature": "recommendation",
+      "primaryMessage": "请确认范围、责任、资源与退出条件",
+      "image": null,
+      "composition": "克制留白，结论左/图右"
+    }
+  ],
+  "assets": [
+    {
+      "id": "asset-concept",
+      "name": "concept-hero.jpg",
+      "role": "illustration",
+      "usage": "decorative",
+      "alt": "AI生成概念雕塑 · 非产品、非业务证据",
+      "source": "本次会话通过Arena图像工具实际生成；不是应用自动生图",
+      "license": "本项目概念展示；AI生成不等于独立版权核验",
+      "permissionConfirmed": true,
+      "originalSHA256": "50dedc2d81489701fe5bf402df5383f5fb1a3c81f5e4a3aa58e783610179d369",
+      "sha256": "f0879c23520b916d32fbd4e10d3cab3af212c7c2e91695b082f4d8c5bca52046",
+      "width": 1376,
+      "height": 768,
+      "mimeType": "image/png"
+    },
+    {
+      "id": "asset-screenshot",
+      "name": "historical-v2-page04.jpg",
+      "role": "screenshot",
+      "usage": "evidence",
+      "alt": "历史V2第04页完整截图，仅示范原生稿与栅格的区别",
+      "source": "冻结的leader-decision/adaptive/slides/04.jpg；由历史PPTX真实渲染",
+      "license": "本项目内置历史案例；完整显示；不扩张为当前代码审计",
+      "permissionConfirmed": true,
+      "originalSHA256": "59e9dfbf19ec81fd4b9d84bcd9ef69a1498b16b6c5288dea294136efa9c83c05",
+      "sha256": "d759dda7db19207f4d3cfc1e81bdb53ae3863e75391c3581ca3943781693c2a3",
+      "width": 960,
+      "height": 540,
+      "mimeType": "image/png"
+    },
+    {
+      "id": "asset-mark",
+      "name": "concept-mark.png",
+      "role": "logo",
+      "usage": "decorative",
+      "alt": "DB / CONCEPT · 脚本绘制的示例标识，非第三方Logo",
+      "source": "本脚本本地Canvas绘制；非外部品牌素材",
+      "license": "本项目示例演示；不宣称第三方品牌授权",
+      "permissionConfirmed": true,
+      "originalSHA256": "498ceabc8989c706bd63fe74642c6369e9e024a6f1dbd21ebdc3b365c0420559",
+      "sha256": "f8aa5a92b7bc51e54ad315a003d20fb3fc1886da15405abb84b982d8cdd5cea2",
+      "width": 440,
+      "height": 104,
+      "mimeType": "image/png"
+    }
+  ],
+  "unusedAssetIds": [],
+  "imageUnderstanding": "not performed; no OCR; metadata only",
+  "rights": "user/project declaration, not independently verified"
+}

@@ -1,0 +1,1773 @@
+
+> designbuddy@0.1.0 test:skills /home/user/designbuddy
+> corepack pnpm exec tsc -p server/tsconfig.local.json && node --test --test-concurrency=1 server/skills/*.test.cjs
+
+TAP version 13
+# (node:7083) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: all join modes are actual typed-value joins with exact row provenance, never matching blanks or coercing identifiers
+ok 1 - all join modes are actual typed-value joins with exact row provenance, never matching blanks or coercing identifiers
+  ---
+  duration_ms: 347.275874
+  type: 'test'
+  ...
+# Subtest: join preserves dates, booleans, literal formula-looking text, row gaps and case/whitespace distinctions
+ok 2 - join preserves dates, booleans, literal formula-looking text, row gaps and case/whitespace distinctions
+  ---
+  duration_ms: 39.971015
+  type: 'test'
+  ...
+# Subtest: inner join with no matches delivers a checked empty result rather than inventing matches
+ok 3 - inner join with no matches delivers a checked empty result rather than inventing matches
+  ---
+  duration_ms: 53.442721
+  type: 'test'
+  ...
+# Subtest: join rejects ambiguous right keys, formulas, links, merges, duplicated headers and missing fields/sheets
+ok 4 - join rejects ambiguous right keys, formulas, links, merges, duplicated headers and missing fields/sheets
+  ---
+  duration_ms: 98.838443
+  type: 'test'
+  ...
+# Subtest: join bounds prevent wide/long source sheets and output expansion instead of truncating results
+ok 5 - join bounds prevent wide/long source sheets and output expansion instead of truncating results
+  ---
+  duration_ms: 10411.179335
+  type: 'test'
+  ...
+# Subtest: join schema is closed; planner requires literal parameter names in goal and enforces expert and file scope
+ok 6 - join schema is closed; planner requires literal parameter names in goal and enforces expert and file scope
+  ---
+  duration_ms: 3.376957
+  type: 'test'
+  ...
+# Estimating resolution as 428
+# Estimating resolution as 430
+# Subtest: REAL multi-page PDF OCR recognizes Chinese and English, outputs actual raster hashes and per-page coordinates
+ok 7 - REAL multi-page PDF OCR recognizes Chinese and English, outputs actual raster hashes and per-page coordinates
+  ---
+  duration_ms: 1349.99599
+  type: 'test'
+  ...
+# Estimating resolution as 428
+# Estimating resolution as 441
+# Subtest: mixed scanned, text and blank PDF reports missing page honestly; wholly blank is failure
+ok 8 - mixed scanned, text and blank PDF reports missing page honestly; wholly blank is failure
+  ---
+  duration_ms: 1534.074834
+  type: 'test'
+  ...
+# Subtest: PDF OCR fails on invalid, encrypted, excessive-page, oversized-image, dynamic-form and huge-page inputs
+ok 9 - PDF OCR fails on invalid, encrypted, excessive-page, oversized-image, dynamic-form and huge-page inputs
+  ---
+  duration_ms: 1559.128581
+  type: 'test'
+  ...
+# Estimating resolution as 428
+# Estimating resolution as 430
+# Subtest: REAL bounded background workers persist both new skills and owner-only artifacts, cancellation/deadline never fake success
+ok 10 - REAL bounded background workers persist both new skills and owner-only artifacts, cancellation/deadline never fake success
+  ---
+  duration_ms: 2724.423689
+  type: 'test'
+  ...
+# Subtest: mocked join proposal freezes parameters; approval executes REAL join using only stored options
+ok 11 - mocked join proposal freezes parameters; approval executes REAL join using only stored options
+  ---
+  duration_ms: 880.642425
+  type: 'test'
+  ...
+# Estimating resolution as 428
+# Estimating resolution as 428
+# Estimating resolution as 430
+# Estimating resolution as 431
+# Estimating resolution as 430
+# Estimating resolution as 430
+# Estimating resolution as 431
+# Subtest: PDF OCR cancellation after a real first-page result discards partial files; explicit reupload processes all six pages
+ok 12 - PDF OCR cancellation after a real first-page result discards partial files; explicit reupload processes all six pages
+  ---
+  duration_ms: 4283.503199
+  type: 'test'
+  ...
+# Subtest: magazine formatter creates a real responsive standalone HTML and distributable package
+ok 13 - magazine formatter creates a real responsive standalone HTML and distributable package
+  ---
+  duration_ms: 146.708658
+  type: 'test'
+  ...
+# Subtest: magazine formatter escapes untrusted markup and rejects oversized or empty documents
+ok 14 - magazine formatter escapes untrusted markup and rejects oversized or empty documents
+  ---
+  duration_ms: 5.582803
+  type: 'test'
+  ...
+# (node:7140) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: REAL offline recognizer reads two different actual recordings with native word timing and low-score evidence
+ok 15 - REAL offline recognizer reads two different actual recordings with native word timing and low-score evidence
+  ---
+  duration_ms: 1734.437337
+  type: 'test'
+  ...
+# Subtest: actual leading silence and separated utterances retain original-audio time positions, not per-segment zero
+ok 16 - actual leading silence and separated utterances retain original-audio time positions, not per-segment zero
+  ---
+  duration_ms: 1159.392693
+  type: 'test'
+  ...
+# Subtest: strict WAV rejects wrong rates/channels/encoding, invalid lengths, multiple data and overlong recordings
+ok 17 - strict WAV rejects wrong rates/channels/encoding, invalid lengths, multiple data and overlong recordings
+  ---
+  duration_ms: 3.152434
+  type: 'test'
+  ...
+# Subtest: silence fails without a made-up transcript and metadata cannot be interpreted as audio or instructions
+ok 18 - silence fails without a made-up transcript and metadata cannot be interpreted as audio or instructions
+  ---
+  duration_ms: 2.846631
+  type: 'test'
+  ...
+# Subtest: language declaration is mandatory, additional parameters and model-generated confirmation are rejected
+ok 19 - language declaration is mandatory, additional parameters and model-generated confirmation are rejected
+  ---
+  duration_ms: 2.910434
+  type: 'test'
+  ...
+# Subtest: missing installation and same-size corrupted assets make catalog unavailable and block HTTP execution
+ok 20 - missing installation and same-size corrupted assets make catalog unavailable and block HTTP execution
+  ---
+  duration_ms: 148.394007
+  type: 'test'
+  ...
+# Subtest: real broker persists seven owner-only artifacts; unsupported WAV fails atomically
+ok 21 - real broker persists seven owner-only artifacts; unsupported WAV fails atomically
+  ---
+  duration_ms: 2175.659829
+  type: 'test'
+  ...
+# Subtest: actual cancellation kills and reaps API-owned decoder, leaves zero artifacts, and permits explicit reupload
+ok 22 - actual cancellation kills and reaps API-owned decoder, leaves zero artifacts, and permits explicit reupload
+  ---
+  duration_ms: 2238.20927
+  type: 'test'
+  ...
+# Subtest: worker crash, service shutdown and decoder deadline do not leave orphan native processes
+ok 23 - worker crash, service shutdown and decoder deadline do not leave orphan native processes
+  ---
+  duration_ms: 1446.68343
+  type: 'test'
+  ...
+# Subtest: malformed decoder words and missing recognition never become an apparently valid partial transcript
+ok 24 - malformed decoder words and missing recognition never become an apparently valid partial transcript
+  ---
+  duration_ms: 0.816339
+  type: 'test'
+  ...
+# (node:7170) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: validated brand brief emits real outlined SVG, two decoded PNGs, CSS, provenance-rich system and responsive guideline
+ok 25 - validated brand brief emits real outlined SVG, two decoded PNGs, CSS, provenance-rich system and responsive guideline
+  ---
+  duration_ms: 350.031165
+  type: 'test'
+  ...
+# Subtest: all three finite geometric mark recipes produce valid self-contained SVG and raster assets
+ok 26 - all three finite geometric mark recipes produce valid self-contained SVG and raster assets
+  ---
+  duration_ms: 46.749862
+  type: 'test'
+  ...
+# Subtest: escapes untrusted text in report and emits safe outlined logo without active markup
+ok 27 - escapes untrusted text in report and emits safe outlined logo without active markup
+  ---
+  duration_ms: 26.55396
+  type: 'test'
+  ...
+# Subtest: rejects malformed UTF-8 JSON shape, missing/unknown keys, and invalid geometry choices
+ok 28 - rejects malformed UTF-8 JSON shape, missing/unknown keys, and invalid geometry choices
+  ---
+  duration_ms: 3.419898
+  type: 'test'
+  ...
+# Subtest: rejects duplicate/invalid palette hexes, roles, count, and non-object color entries
+ok 29 - rejects duplicate/invalid palette hexes, roles, count, and non-object color entries
+  ---
+  duration_ms: 6.661069
+  type: 'test'
+  ...
+# Subtest: rejects oversized fields, controls, and unpaired/bidi manipulation characters
+ok 30 - rejects oversized fields, controls, and unpaired/bidi manipulation characters
+  ---
+  duration_ms: 1.939552
+  type: 'test'
+  ...
+# Subtest: generated raster bytes are actual alpha-preserving PNGs and outputs are safely bounded
+ok 31 - generated raster bytes are actual alpha-preserving PNGs and outputs are safely bounded
+  ---
+  duration_ms: 15.038666
+  type: 'test'
+  ...
+# Subtest: changed brand language affects actual vectors, tokens and generated usage system deterministically
+ok 32 - changed brand language affects actual vectors, tokens and generated usage system deterministically
+  ---
+  duration_ms: 38.390678
+  type: 'test'
+  ...
+# Subtest: brand expert registry binds the new real skill and unknown client/file types remain rejected
+ok 33 - brand expert registry binds the new real skill and unknown client/file types remain rejected
+  ---
+  duration_ms: 1.366788
+  type: 'test'
+  ...
+# Subtest: in-memory real queue delivers eight assets plus receipt and denies another owner every download
+ok 34 - in-memory real queue delivers eight assets plus receipt and denies another owner every download
+  ---
+  duration_ms: 1029.948319
+  type: 'test'
+  ...
+# (node:7188) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: CSV connector reads real files, maps fields, coerces types and tags every row with its source
+ok 35 - CSV connector reads real files, maps fields, coerces types and tags every row with its source
+  ---
+  duration_ms: 137.667875
+  type: 'test'
+  ...
+# Subtest: cursor makes the second run incremental and skips rows already delivered
+ok 36 - cursor makes the second run incremental and skips rows already delivered
+  ---
+  duration_ms: 3.885519
+  type: 'test'
+  ...
+# Subtest: JSON and SQLite connectors read real data without executing user SQL
+ok 37 - JSON and SQLite connectors read real data without executing user SQL
+  ---
+  duration_ms: 7.325177
+  type: 'test'
+  ...
+# Subtest: remote JSON source requires an allow-listed origin and reads the bearer token from the server environment
+ok 38 - remote JSON source requires an allow-listed origin and reads the bearer token from the server environment
+  ---
+  duration_ms: 45.647574
+  type: 'test'
+  ...
+# Subtest: paths outside the allowed roots, unknown fields, bad types and missing sources fail closed
+ok 39 - paths outside the allowed roots, unknown fields, bad types and missing sources fail closed
+  ---
+  duration_ms: 5.49074
+  type: 'test'
+  ...
+# Subtest: connector config and coercion helpers keep the documented boundaries
+ok 40 - connector config and coercion helpers keep the documented boundaries
+  ---
+  duration_ms: 0.512423
+  type: 'test'
+  ...
+# Subtest: CSV report groups and aggregates actual records and exports HTML/CSV/JSON
+ok 41 - CSV report groups and aggregates actual records and exports HTML/CSV/JSON
+  ---
+  duration_ms: 222.446835
+  type: 'test'
+  ...
+# Subtest: CSV report supports average and count and rejects ambiguous data
+ok 42 - CSV report supports average and count and rejects ambiguous data
+  ---
+  duration_ms: 7.315286
+  type: 'test'
+  ...
+# Subtest: CSV report validates its execution options and escapes spreadsheet formula cells
+ok 43 - CSV report validates its execution options and escapes spreadsheet formula cells
+  ---
+  duration_ms: 1.516509
+  type: 'test'
+  ...
+# Subtest: design brief validates declared fields and produces editable Markdown, HTML, and a completeness report
+ok 44 - design brief validates declared fields and produces editable Markdown, HTML, and a completeness report
+  ---
+  duration_ms: 142.581052
+  type: 'test'
+  ...
+# Subtest: design brief flags missing optional scope and success details without inventing them
+ok 45 - design brief flags missing optional scope and success details without inventing them
+  ---
+  duration_ms: 1.589002
+  type: 'test'
+  ...
+# Subtest: design brief rejects invalid structures and safely escapes user content
+ok 46 - design brief rejects invalid structures and safely escapes user content
+  ---
+  duration_ms: 3.460335
+  type: 'test'
+  ...
+# Subtest: design review runs real HTML and PostCSS static checks and reports its non-browser scope
+ok 47 - design review runs real HTML and PostCSS static checks and reports its non-browser scope
+  ---
+  duration_ms: 183.653351
+  type: 'test'
+  ...
+# Subtest: design review returns a bounded syntax error finding for malformed HTML/CSS without executing scripts
+ok 48 - design review returns a bounded syntax error finding for malformed HTML/CSS without executing scripts
+  ---
+  duration_ms: 3.175933
+  type: 'test'
+  ...
+# Subtest: document summary requires a separate third-party processing consent and a server identity
+ok 49 - document summary requires a separate third-party processing consent and a server identity
+  ---
+  duration_ms: 136.747746
+  type: 'test'
+  ...
+# Subtest: document summary sends text only after consent, records source references and explicit third-party processing
+ok 50 - document summary sends text only after consent, records source references and explicit third-party processing
+  ---
+  duration_ms: 19.547122
+  type: 'test'
+  ...
+# Subtest: document summary rejects invented paragraph references and does not return partial artifacts
+ok 51 - document summary rejects invented paragraph references and does not return partial artifacts
+  ---
+  duration_ms: 1.99221
+  type: 'test'
+  ...
+# Subtest: document summary does not create a deterministic fake result when the server AI provider is missing
+ok 52 - document summary does not create a deterministic fake result when the server AI provider is missing
+  ---
+  duration_ms: 1.281481
+  type: 'test'
+  ...
+# (node:7255) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: real DOCX preserves body order, title hierarchy, literal text, direct formatting and explicit omissions
+ok 53 - real DOCX preserves body order, title hierarchy, literal text, direct formatting and explicit omissions
+  ---
+  duration_ms: 505.07179
+  type: 'test'
+  ...
+# Subtest: real merged tables map exact grid locations and export literal strings, not guessed currency or formulas
+ok 54 - real merged tables map exact grid locations and export literal strings, not guessed currency or formulas
+  ---
+  duration_ms: 93.411482
+  type: 'test'
+  ...
+# Subtest: inline image delivery preserves actual original bytes and normalized preview provenance
+ok 55 - inline image delivery preserves actual original bytes and normalized preview provenance
+  ---
+  duration_ms: 48.292259
+  type: 'test'
+  ...
+# Subtest: direct outline levels, lists, page markers and content controls retain structure without inventing pagination
+ok 56 - direct outline levels, lists, page markers and content controls retain structure without inventing pagination
+  ---
+  duration_ms: 59.498072
+  type: 'test'
+  ...
+# Subtest: broken merge geometry is rejected instead of dropping content or guessing table structure
+ok 57 - broken merge geometry is rejected instead of dropping content or guessing table structure
+  ---
+  duration_ms: 124.187025
+  type: 'test'
+  ...
+# Subtest: revisions, fields, notes, text boxes, unsupported drawings and namespace rebinding fail closed
+ok 58 - revisions, fields, notes, text boxes, unsupported drawings and namespace rebinding fail closed
+  ---
+  duration_ms: 61.464105
+  type: 'test'
+  ...
+# Subtest: missing/invalid images and external relationships are rejected without network calls
+ok 59 - missing/invalid images and external relationships are rejected without network calls
+  ---
+  duration_ms: 34.515883
+  type: 'test'
+  ...
+# Subtest: resource bounds and invalid XML are rejected, including oversized image placement multiplication
+ok 60 - resource bounds and invalid XML are rejected, including oversized image placement multiplication
+  ---
+  duration_ms: 94.41842
+  type: 'test'
+  ...
+# Subtest: valid ordinary DOCX without tables/images delivers no invented table or image files
+ok 61 - valid ordinary DOCX without tables/images delivers no invented table or image files
+  ---
+  duration_ms: 26.604086
+  type: 'test'
+  ...
+# Subtest: real worker persists artifacts behind owner checks and failure yields no partial outputs
+ok 62 - real worker persists artifacts behind owner checks and failure yields no partial outputs
+  ---
+  duration_ms: 1782.919991
+  type: 'test'
+  ...
+# Subtest: planner candidate, scope and no-parameters contract reflect a DOCX structural tool, not PDF or AI summary
+ok 63 - planner candidate, scope and no-parameters contract reflect a DOCX structural tool, not PDF or AI summary
+  ---
+  duration_ms: 4.100432
+  type: 'test'
+  ...
+# Subtest: direct paragraph spacing/indent and table grid width, shading and vertical alignment survive safe DOCX reflow
+ok 64 - direct paragraph spacing/indent and table grid width, shading and vertical alignment survive safe DOCX reflow
+  ---
+  duration_ms: 57.153484
+  type: 'test'
+  ...
+# Subtest: paragraph style basedOn chains inherit paragraph layout and run formatting before direct formatting
+ok 65 - paragraph style basedOn chains inherit paragraph layout and run formatting before direct formatting
+  ---
+  duration_ms: 40.876216
+  type: 'test'
+  ...
+# Subtest: docDefaults paragraph and run properties precede named style properties in the OOXML cascade
+ok 66 - docDefaults paragraph and run properties precede named style properties in the OOXML cascade
+  ---
+  duration_ms: 35.333365
+  type: 'test'
+  ...
+# Subtest: character style basedOn chains overlay paragraph styles while direct run formatting remains strongest
+ok 67 - character style basedOn chains overlay paragraph styles while direct run formatting remains strongest
+  ---
+  duration_ms: 38.647348
+  type: 'test'
+  ...
+# Subtest: theme colors and declared East Asian font names are applied without trusting arbitrary CSS
+ok 68 - theme colors and declared East Asian font names are applied without trusting arbitrary CSS
+  ---
+  duration_ms: 38.54615
+  type: 'test'
+  ...
+# Subtest: section page size/margins/equal columns and referenced static header are carried into page-based HTML preview
+ok 69 - section page size/margins/equal columns and referenced static header are carried into page-based HTML preview
+  ---
+  duration_ms: 37.721391
+  type: 'test'
+  ...
+# Subtest: floating image anchor reference frames, offsets, z-order and wrap behavior are preserved in the preview evidence
+ok 70 - floating image anchor reference frames, offsets, z-order and wrap behavior are preserved in the preview evidence
+  ---
+  duration_ms: 53.084171
+  type: 'test'
+  ...
+# Subtest: pinned LibreOffice engine renders the DOCX fixture to traceable page images
+ok 71 - pinned LibreOffice engine renders the DOCX fixture to traceable page images
+  ---
+  duration_ms: 3512.770094
+  type: 'test'
+  ...
+# Subtest: email marketing skill produces usable table-layout HTML, plain text, and a no-send report
+ok 72 - email marketing skill produces usable table-layout HTML, plain text, and a no-send report
+  ---
+  duration_ms: 132.711255
+  type: 'test'
+  ...
+# Subtest: email template escapes user HTML and rejects unsafe links and invalid palettes
+ok 73 - email template escapes user HTML and rejects unsafe links and invalid palettes
+  ---
+  duration_ms: 7.090314
+  type: 'test'
+  ...
+# Subtest: engineering runbook checks phase coverage and creates a real interactive offline checklist
+ok 74 - engineering runbook checks phase coverage and creates a real interactive offline checklist
+  ---
+  duration_ms: 145.407359
+  type: 'test'
+  ...
+# Subtest: engineering runbook flags missing phases and rollback guidance, and escapes all supplied text
+ok 75 - engineering runbook flags missing phases and rollback guidance, and escapes all supplied text
+  ---
+  duration_ms: 1.751332
+  type: 'test'
+  ...
+# Subtest: engineering runbook rejects duplicate step IDs and unsupported severity values
+ok 76 - engineering runbook rejects duplicate step IDs and unsupported severity values
+  ---
+  duration_ms: 2.405967
+  type: 'test'
+  ...
+# Subtest: FAQ skill creates a functional searchable and category-filtered static page package
+ok 77 - FAQ skill creates a functional searchable and category-filtered static page package
+  ---
+  duration_ms: 192.455167
+  type: 'test'
+  ...
+# Subtest: FAQ skill escapes all user content and rejects duplicate or invalid content
+ok 78 - FAQ skill escapes all user content and rejects duplicate or invalid content
+  ---
+  duration_ms: 8.645786
+  type: 'test'
+  ...
+# Subtest: financial report computes decimal totals, period filtering, margins and category breakdown
+ok 79 - financial report computes decimal totals, period filtering, margins and category breakdown
+  ---
+  duration_ms: 166.026459
+  type: 'test'
+  ...
+# Subtest: financial report enforces selected ledger semantics and rejects invalid dates and negative entries
+ok 80 - financial report enforces selected ledger semantics and rejects invalid dates and negative entries
+  ---
+  duration_ms: 5.647133
+  type: 'test'
+  ...
+# Subtest: financial report validates parameters and protects CSV formula cells
+ok 81 - financial report validates parameters and protects CSV formula cells
+  ---
+  duration_ms: 1.884772
+  type: 'test'
+  ...
+# (node:7362) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: closed arithmetic grammar handles precedence, decimals, percent on divisor, ROUND and scientific literals
+ok 82 - closed arithmetic grammar handles precedence, decimals, percent on divisor, ROUND and scientific literals
+  ---
+  duration_ms: 19.970567
+  type: 'test'
+  ...
+# Subtest: actual XLSX formulas ignore deliberately stale caches, resolve cross-sheet dependencies and export ONLY calculated values
+ok 83 - actual XLSX formulas ignore deliberately stale caches, resolve cross-sheet dependencies and export ONLY calculated values
+  ---
+  duration_ms: 484.855971
+  type: 'test'
+  ...
+# Subtest: absolute refs, escaped quoted sheet names, case-insensitive sheet refs and shared-formula translation work
+ok 84 - absolute refs, escaped quoted sheet names, case-insensitive sheet refs and shared-formula translation work
+  ---
+  duration_ms: 84.174628
+  type: 'test'
+  ...
+# Subtest: aggregate semantics distinguish empty, text, booleans and numbers; dates are rejected instead of silently skipped
+ok 85 - aggregate semantics distinguish empty, text, booleans and numbers; dates are rejected instead of silently skipped
+  ---
+  duration_ms: 171.903595
+  type: 'test'
+  ...
+# Subtest: errors are fail-closed for cycles, missing sheets, divide by zero and unsupported functions even with valid cached values
+ok 86 - errors are fail-closed for cycles, missing sheets, divide by zero and unsupported functions even with valid cached values
+  ---
+  duration_ms: 76.465203
+  type: 'test'
+  ...
+# Subtest: formula syntax is never JavaScript, external data, named ranges, implicit intersection or arbitrary function execution
+ok 87 - formula syntax is never JavaScript, external data, named ranges, implicit intersection or arbitrary function execution
+  ---
+  duration_ms: 0.384193
+  type: 'test'
+  ...
+# Subtest: resource bounds enforce formula length, nesting, reference area and dependency chain
+ok 88 - resource bounds enforce formula length, nesting, reference area and dependency chain
+  ---
+  duration_ms: 279.475993
+  type: 'test'
+  ...
+# Subtest: unsupported array formula, merged cells, errors and links fail; blank constants-only workbooks are not called recalculated
+ok 89 - unsupported array formula, merged cells, errors and links fail; blank constants-only workbooks are not called recalculated
+  ---
+  duration_ms: 39.714881
+  type: 'test'
+  ...
+# Subtest: real service worker stores computed artifacts and receipts behind owner checks and rejects unexpected parameters
+ok 90 - real service worker stores computed artifacts and receipts behind owner checks and rejects unexpected parameters
+  ---
+  duration_ms: 1662.360257
+  type: 'test'
+  ...
+# Subtest: planner accepts only matching candidate/expert/format and no calculation parameters
+ok 91 - planner accepts only matching candidate/expert/format and no calculation parameters
+  ---
+  duration_ms: 3.39722
+  type: 'test'
+  ...
+# Subtest: tier-2 text, boolean, comparison and concatenation semantics never coerce number into text
+ok 92 - tier-2 text, boolean, comparison and concatenation semantics never coerce number into text
+  ---
+  duration_ms: 3.151975
+  type: 'test'
+  ...
+# Subtest: VLOOKUP, INDEX, MATCH, SUMIF and COUNTIF read real ranges with exact-match and no-silent-coercion rules
+ok 93 - VLOOKUP, INDEX, MATCH, SUMIF and COUNTIF read real ranges with exact-match and no-silent-coercion rules
+  ---
+  duration_ms: 175.724965
+  type: 'test'
+  ...
+# Subtest: text and boolean results keep their real type in the report and in the exported workbook
+ok 94 - text and boolean results keep their real type in the report and in the exported workbook
+  ---
+  duration_ms: 44.957386
+  type: 'test'
+  ...
+# (node:7390) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: CSS audit parses a real stylesheet and reports concrete responsive and token risks
+ok 95 - CSS audit parses a real stylesheet and reports concrete responsive and token risks
+  ---
+  duration_ms: 151.261758
+  type: 'test'
+  ...
+# Subtest: design tokens are validated, exported as actual CSS, and contrast ratios are computed
+ok 96 - design tokens are validated, exported as actual CSS, and contrast ratios are computed
+  ---
+  duration_ms: 4.793233
+  type: 'test'
+  ...
+# Subtest: static site scaffold produces a real ZIP with semantic responsive HTML, CSS, and working menu JS
+ok 97 - static site scaffold produces a real ZIP with semantic responsive HTML, CSS, and working menu JS
+  ---
+  duration_ms: 21.631369
+  type: 'test'
+  ...
+# Subtest: responsive web image pack transforms a real raster into bounded WebP variants
+ok 98 - responsive web image pack transforms a real raster into bounded WebP variants
+  ---
+  duration_ms: 28.830879
+  type: 'test'
+  ...
+# Subtest: social carousel renders a real set of sized PNG slides and a bounded manifest
+ok 99 - social carousel renders a real set of sized PNG slides and a bounded manifest
+  ---
+  duration_ms: 250.22154
+  type: 'test'
+  ...
+# Subtest: new front-end and design tools are registered as ready and execute through the real owner-scoped worker
+ok 100 - new front-end and design tools are registered as ready and execute through the real owner-scoped worker
+  ---
+  duration_ms: 765.702945
+  type: 'test'
+  ...
+# Subtest: onboarding plan computes calendar dates, sorts tasks, and exports HTML, CSV, and valid all-day ICS
+ok 101 - onboarding plan computes calendar dates, sorts tasks, and exports HTML, CSV, and valid all-day ICS
+  ---
+  duration_ms: 138.6379
+  type: 'test'
+  ...
+# Subtest: onboarding plan rejects impossible dates, duplicate identifiers, and offsets beyond 90 days
+ok 102 - onboarding plan rejects impossible dates, duplicate identifiers, and offsets beyond 90 days
+  ---
+  duration_ms: 3.576715
+  type: 'test'
+  ...
+# (node:7423) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: REAL SVG and PNG infographic contains actual values, source hashes and disclosed rule selection
+ok 103 - REAL SVG and PNG infographic contains actual values, source hashes and disclosed rule selection
+  ---
+  duration_ms: 553.955637
+  type: 'test'
+  ...
+# Subtest: comparison uses a real shared zero baseline for negative values and retains source order
+ok 104 - comparison uses a real shared zero baseline for negative values and retains source order
+  ---
+  duration_ms: 53.310955
+  type: 'test'
+  ...
+# Subtest: trend sorts actual dates while preserving provenance and plots elapsed time instead of ordinal spacing
+ok 105 - trend sorts actual dates while preserving provenance and plots elapsed time instead of ordinal spacing
+  ---
+  duration_ms: 82.322925
+  type: 'test'
+  ...
+# Subtest: zero/negative base dates produce no invented percentage or misleading artificial nonzero observations
+ok 106 - zero/negative base dates produce no invented percentage or misleading artificial nonzero observations
+  ---
+  duration_ms: 132.73185
+  type: 'test'
+  ...
+# Subtest: composition uses actual decimal total, preserves zero shares and discloses rounded share sum
+ok 107 - composition uses actual decimal total, preserves zero shares and discloses rounded share sum
+  ---
+  duration_ms: 84.701372
+  type: 'test'
+  ...
+# Subtest: schema rejects unconfirmed composition, negatives, invalid dates, duplicate categories and missing/mixed-unit data
+ok 108 - schema rejects unconfirmed composition, negatives, invalid dates, duplicate categories and missing/mixed-unit data
+  ---
+  duration_ms: 1.335695
+  type: 'test'
+  ...
+# Subtest: resource/cardinality and label limits fail without silently truncating input
+ok 109 - resource/cardinality and label limits fail without silently truncating input
+  ---
+  duration_ms: 0.5588
+  type: 'test'
+  ...
+# Subtest: boundary-sized labels and values render all data rows within image dimension bounds
+ok 110 - boundary-sized labels and values render all data rows within image dimension bounds
+  ---
+  duration_ms: 417.898879
+  type: 'test'
+  ...
+# Subtest: untrusted markup is escaped in metadata and rendered as glyphs, not executable SVG or remote content
+ok 111 - untrusted markup is escaped in metadata and rendered as glyphs, not executable SVG or remote content
+  ---
+  duration_ms: 66.02042
+  type: 'test'
+  ...
+# Subtest: actual bounded worker persists artifacts and source receipt with owner-only downloads; malformed data gets no artifact
+ok 112 - actual bounded worker persists artifacts and source receipt with owner-only downloads; malformed data gets no artifact
+  ---
+  duration_ms: 1799.217093
+  type: 'test'
+  ...
+# Subtest: planner does not substitute this explicit JSON workflow for arbitrary CSV, prose or another expert
+ok 113 - planner does not substitute this explicit JSON workflow for arbitrary CSV, prose or another expert
+  ---
+  duration_ms: 2.610345
+  type: 'test'
+  ...
+# Subtest: JSON numeric lexemes preserve decimal precision and reject silently rounded or underflowed values
+ok 114 - JSON numeric lexemes preserve decimal precision and reject silently rounded or underflowed values
+  ---
+  duration_ms: 54.417546
+  type: 'test'
+  ...
+# (node:7442) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Estimating resolution as 428
+# Estimating resolution as 428
+# Estimating resolution as 441
+# Subtest: REAL two-file PDF OCR preserves source mapping, per-file evidence/hashes and mixed blank warnings inside downloadable ZIP
+ok 115 - REAL two-file PDF OCR preserves source mapping, per-file evidence/hashes and mixed blank warnings inside downloadable ZIP
+  ---
+  duration_ms: 2260.924122
+  type: 'test'
+  ...
+# Estimating resolution as 428
+# Estimating resolution as 430
+# Estimating resolution as 428
+# Estimating resolution as 430
+# Estimating resolution as 428
+# Estimating resolution as 430
+# Estimating resolution as 428
+# Estimating resolution as 430
+# Subtest: four files and eight total pages are all processed, not silently truncated
+ok 116 - four files and eight total pages are all processed, not silently truncated
+  ---
+  duration_ms: 3417.274015
+  type: 'test'
+  ...
+# Estimating resolution as 428
+# Estimating resolution as 430
+# Estimating resolution as 431
+# Estimating resolution as 428
+# Estimating resolution as 430
+# Estimating resolution as 431
+# Estimating resolution as 428
+# Estimating resolution as 430
+# Estimating resolution as 431
+# Estimating resolution as 428
+# Estimating resolution as 430
+# Estimating resolution as 431
+# Subtest: interrupted PDF batch is durably requeued after service restart and explicit retry is owner-scoped
+ok 117 - interrupted PDF batch is durably requeued after service restart and explicit retry is owner-scoped
+  ---
+  duration_ms: 9181.232851
+  type: 'test'
+  ...
+# Subtest: ZIP rejects file count, paths, non-PDF files, declared oversize, encrypted flags, length/CRC damage
+ok 118 - ZIP rejects file count, paths, non-PDF files, declared oversize, encrypted flags, length/CRC damage
+  ---
+  duration_ms: 3.214336
+  type: 'test'
+  ...
+# Subtest: fake PDFs and more than eight total pages fail before OCR instead of processing only a subset
+ok 119 - fake PDFs and more than eight total pages fail before OCR instead of processing only a subset
+  ---
+  duration_ms: 16.366437
+  type: 'test'
+  ...
+# Estimating resolution as 428
+# Estimating resolution as 428
+# Estimating resolution as 430
+# Estimating resolution as 428
+# Estimating resolution as 430
+# Estimating resolution as 428
+# Estimating resolution as 430
+# Estimating resolution as 428
+# Estimating resolution as 430
+# Subtest: real worker uses atomic delivery: a blank second file discards first-file outputs; successful batch remains owner-only
+ok 120 - real worker uses atomic delivery: a blank second file discards first-file outputs; successful batch remains owner-only
+  ---
+  duration_ms: 6819.652919
+  type: 'test'
+  ...
+# Estimating resolution as 428
+# Estimating resolution as 428
+# Subtest: gold-standard reference text produces a real character error rate and files without a reference are not counted as passing
+ok 121 - gold-standard reference text produces a real character error rate and files without a reference are not counted as passing
+  ---
+  duration_ms: 1503.918831
+  type: 'test'
+  ...
+# Estimating resolution as 428
+# Estimating resolution as 428
+# Estimating resolution as 428
+# Subtest: batch caps come from the server environment and stay at the documented defaults otherwise
+ok 122 - batch caps come from the server environment and stay at the documented defaults otherwise
+  ---
+  duration_ms: 2091.389551
+  type: 'test'
+  ...
+# Estimating resolution as 428
+# Estimating resolution as 428
+# Estimating resolution as 428
+# Estimating resolution as 430
+# Estimating resolution as 430
+# Estimating resolution as 430
+# Subtest: bounded concurrency still produces complete per-file evidence
+ok 123 - bounded concurrency still produces complete per-file evidence
+  ---
+  duration_ms: 1507.958124
+  type: 'test'
+  ...
+# (node:7491) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: all twelve experts bind a real ready executor; browser/build skills are connected and only credential-bound ones stay unavailable
+ok 124 - all twelve experts bind a real ready executor; browser/build skills are connected and only credential-bound ones stay unavailable
+  ---
+  duration_ms: 1.310297
+  type: 'test'
+  ...
+# Subtest: Chinese document produces an actual selectable-text PDF that reads back with page provenance
+ok 125 - Chinese document produces an actual selectable-text PDF that reads back with page provenance
+  ---
+  duration_ms: 606.892773
+  type: 'test'
+  ...
+# Subtest: scanned/blank and excessive-page PDFs fail, mixed text/blank PDF reports incompleteness
+ok 126 - scanned/blank and excessive-page PDFs fail, mixed text/blank PDF reports incompleteness
+  ---
+  duration_ms: 133.569861
+  type: 'test'
+  ...
+# Subtest: real RGB palette extraction emits tokens and WCAG ratios, no external image service
+ok 127 - real RGB palette extraction emits tokens and WCAG ratios, no external image service
+  ---
+  duration_ms: 26.879131
+  type: 'test'
+  ...
+# Subtest: product images preserve content with white padding at three exact sizes and strip EXIF
+ok 128 - product images preserve content with white padding at three exact sizes and strip EXIF
+  ---
+  duration_ms: 171.12346
+  type: 'test'
+  ...
+# Subtest: real poster rasterization produces two sizes, outlined Chinese typography, preserved input and parameter receipt
+ok 129 - real poster rasterization produces two sizes, outlined Chinese typography, preserved input and parameter receipt
+  ---
+  duration_ms: 179.242929
+  type: 'test'
+  ...
+# Subtest: image formats, pixel limits, empty alpha and overlong poster copy are rejected
+ok 130 - image formats, pixel limits, empty alpha and overlong poster copy are rejected
+  ---
+  duration_ms: 12.457611
+  type: 'test'
+  ...
+# Subtest: local OCR recognizes actual Chinese/English pixels and records confidence/coordinates
+ok 131 - local OCR recognizes actual Chinese/English pixels and records confidence/coordinates
+  ---
+  duration_ms: 687.530446
+  type: 'test'
+  ...
+# Warning: Invalid resolution 25 dpi. Using 70 instead.
+# Subtest: OCR of blank image does not invent text or claim success
+ok 132 - OCR of blank image does not invent text or claim success
+  ---
+  duration_ms: 509.945959
+  type: 'test'
+  ...
+# Subtest: schedule export computes timezone offsets and folds UTF8 calendar lines without sending events
+ok 133 - schedule export computes timezone offsets and folds UTF8 calendar lines without sending events
+  ---
+  duration_ms: 5.872816
+  type: 'test'
+  ...
+# Subtest: schedule detects overlap, dependency cycles, missing references, invalid dates and withholds calendar
+ok 134 - schedule detects overlap, dependency cycles, missing references, invalid dates and withholds calendar
+  ---
+  duration_ms: 1.690121
+  type: 'test'
+  ...
+# Subtest: requirements validator generates actual traceability and detects missing acceptance/references/cycles
+ok 135 - requirements validator generates actual traceability and detects missing acceptance/references/cycles
+  ---
+  duration_ms: 4.465871
+  type: 'test'
+  ...
+# Subtest: HTML checker reports genuine line-level static problems without executing script or claiming browser coverage
+ok 136 - HTML checker reports genuine line-level static problems without executing script or claiming browser coverage
+  ---
+  duration_ms: 26.956406
+  type: 'test'
+  ...
+# Subtest: JavaScript parser catches syntax and actual risky constructs, never runs uploaded code
+ok 137 - JavaScript parser catches syntax and actual risky constructs, never runs uploaded code
+  ---
+  duration_ms: 7.126985
+  type: 'test'
+  ...
+# Subtest: real service worker persists image parameters, rejects forged parameters and protects resulting files
+ok 138 - real service worker persists image parameters, rejects forged parameters and protects resulting files
+  ---
+  duration_ms: 1009.411611
+  type: 'test'
+  ...
+# Subtest: OCR runs inside the bounded service worker, not only when called directly
+ok 139 - OCR runs inside the bounded service worker, not only when called directly
+  ---
+  duration_ms: 1454.273141
+  type: 'test'
+  ...
+# Subtest: the catalogue reports the five former placeholders as real executors with honest dependency state
+ok 140 - the catalogue reports the five former placeholders as real executors with honest dependency state
+  ---
+  duration_ms: 145.942718
+  type: 'test'
+  ...
+# Subtest: code.build really runs the project build and refuses anything that is not a clean build
+ok 141 - code.build really runs the project build and refuses anything that is not a clean build
+  ---
+  duration_ms: 512.296648
+  type: 'test'
+  ...
+# Subtest: image.generate talks to a real image endpoint and refuses to fabricate output without one
+ok 142 - image.generate talks to a real image endpoint and refuses to fabricate output without one
+  ---
+  duration_ms: 49.4449
+  type: 'test'
+  ...
+# Subtest: collaboration.sync sends only with per-run confirmation and never twice for one idempotency key
+ok 143 - collaboration.sync sends only with per-run confirmation and never twice for one idempotency key
+  ---
+  duration_ms: 12.503226
+  type: 'test'
+  ...
+# Subtest: web.verify and test.browser run a real browser and publish evidence only when every check passes
+ok 144 - web.verify and test.browser run a real browser and publish evidence only when every check passes
+  ---
+  duration_ms: 1533.407901
+  type: 'test'
+  ...
+# (node:7657) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: real layered poster exports Chinese glyph paths, actual PNG and a round-trippable editable project
+ok 145 - real layered poster exports Chinese glyph paths, actual PNG and a round-trippable editable project
+  ---
+  duration_ms: 316.701076
+  type: 'test'
+  ...
+# Subtest: actual pixels obey layer order, opacity, visibility and transparent background rather than only recording geometry
+ok 146 - actual pixels obey layer order, opacity, visibility and transparent background rather than only recording geometry
+  ---
+  duration_ms: 26.561864
+  type: 'test'
+  ...
+# Subtest: actual image contain/cover pixels match reported source crop and reused assets are embedded once
+ok 147 - actual image contain/cover pixels match reported source crop and reused assets are embedded once
+  ---
+  duration_ms: 21.230127
+  type: 'test'
+  ...
+# Subtest: real JPEG EXIF orientation and WebP assets normalize with actual source and normalized dimensions
+ok 148 - real JPEG EXIF orientation and WebP assets normalize with actual source and normalized dimensions
+  ---
+  duration_ms: 40.391739
+  type: 'test'
+  ...
+# Subtest: closed schema rejects unknown fields, CSS/URLs, missing assets, duplicate IDs and off-canvas coordinates
+ok 149 - closed schema rejects unknown fields, CSS/URLs, missing assets, duplicate IDs and off-canvas coordinates
+  ---
+  duration_ms: 3.094346
+  type: 'test'
+  ...
+# Subtest: cardinality, input/pixel and hidden-asset budgets reject rather than silently truncate
+ok 150 - cardinality, input/pixel and hidden-asset budgets reject rather than silently truncate
+  ---
+  duration_ms: 48.804985
+  type: 'test'
+  ...
+# Subtest: SVG disguised as PNG, MIME mismatches, animation markers and malformed base64 cannot reach an external renderer
+ok 151 - SVG disguised as PNG, MIME mismatches, animation markers and malformed base64 cannot reach an external renderer
+  ---
+  duration_ms: 3.061508
+  type: 'test'
+  ...
+# Subtest: visible text overflow and unsupported glyphs fail; hidden content remains explicit only in editable source
+ok 152 - visible text overflow and unsupported glyphs fail; hidden content remains explicit only in editable source
+  ---
+  duration_ms: 35.660014
+  type: 'test'
+  ...
+# Subtest: boundary canvas and layer count really render at 2000 by 2000 with all 24 declared layers
+ok 153 - boundary canvas and layer count really render at 2000 by 2000 with all 24 declared layers
+  ---
+  duration_ms: 35.081797
+  type: 'test'
+  ...
+# Subtest: actual worker persists six owner-only artifacts and a text overflow yields zero partial files
+ok 154 - actual worker persists six owner-only artifacts and a text overflow yields zero partial files
+  ---
+  duration_ms: 1824.233014
+  type: 'test'
+  ...
+# Subtest: planning only admits existing JSON rendering for the authorized marketing expert, not raw image generation
+ok 155 - planning only admits existing JSON rendering for the authorized marketing expert, not raw image generation
+  ---
+  duration_ms: 2.525335
+  type: 'test'
+  ...
+# Subtest: header-valid corrupt PNG fails native decode, and aggregate byte/pixel budgets include unused assets
+ok 156 - header-valid corrupt PNG fails native decode, and aggregate byte/pixel budgets include unused assets
+  ---
+  duration_ms: 212.139639
+  type: 'test'
+  ...
+# Subtest: markup in title remains escaped metadata and text is rendered as glyph outlines, not executable SVG
+ok 157 - markup in title remains escaped metadata and text is rendered as glyph outlines, not executable SVG
+  ---
+  duration_ms: 65.791858
+  type: 'test'
+  ...
+# Subtest: structured JSON builds editable PowerPoint objects, native charts, rendering evidence and extracted design tokens
+ok 158 - structured JSON builds editable PowerPoint objects, native charts, rendering evidence and extracted design tokens
+  ---
+  duration_ms: 9094.343048
+  type: 'test'
+  ...
+# Subtest: structured deck validation rejects unsupported content, unsafe theme fields and mismatched native chart data
+ok 159 - structured deck validation rejects unsupported content, unsafe theme fields and mismatched native chart data
+  ---
+  duration_ms: 13.037918
+  type: 'test'
+  ...
+# Subtest: director is explicit opt-in and cannot upgrade classic or accept unknown model/code fields
+ok 160 - director is explicit opt-in and cannot upgrade classic or accept unknown model/code fields
+  ---
+  duration_ms: 16.729559
+  type: 'test'
+  ...
+# Subtest: task metadata validates evidence, exact quotations, proposal boundaries, focus index and writer drift
+ok 161 - task metadata validates evidence, exact quotations, proposal boundaries, focus index and writer drift
+  ---
+  duration_ms: 12.455504
+  type: 'test'
+  ...
+# Subtest: all five explanations author native, complete text/shapes with immutable original content and no hidden rows
+ok 162 - all five explanations author native, complete text/shapes with immutable original content and no hidden rows
+  ---
+  duration_ms: 306.399059
+  type: 'test'
+  ...
+# Subtest: checkpoint stages reject mixed state, bad input hashes and usage beyond per-stage call ceilings
+ok 163 - checkpoint stages reject mixed state, bad input hashes and usage beyond per-stage call ceilings
+  ---
+  duration_ms: 3.887788
+  type: 'test'
+  ...
+# Subtest: actual two-stage adapter, bounded retries, locked plan, four usage records, checkpoints and native PDF; resume planned makes zero model calls
+ok 164 - actual two-stage adapter, bounded retries, locked plan, four usage records, checkpoints and native PDF; resume planned makes zero model calls
+  ---
+  duration_ms: 28625.449007
+  type: 'test'
+  ...
+# Subtest: invalid director stops before writer; locked-plan drift fails after one writer retry, leaving only the valid director checkpoint
+ok 165 - invalid director stops before writer; locked-plan drift fails after one writer retry, leaving only the valid director checkpoint
+  ---
+  duration_ms: 27.725521
+  type: 'test'
+  ...
+# (node:7785) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: real Office pipeline: business-report/consulting -> editable PPTX, Chinese PDF, all pages and honest quality
+ok 166 - real Office pipeline: business-report/consulting -> editable PPTX, Chinese PDF, all pages and honest quality
+  ---
+  duration_ms: 9771.653942
+  type: 'test'
+  ...
+# Subtest: real Office pipeline: pitch-deck/corporate -> editable PPTX, Chinese PDF, all pages and honest quality
+ok 167 - real Office pipeline: pitch-deck/corporate -> editable PPTX, Chinese PDF, all pages and honest quality
+  ---
+  duration_ms: 9065.221326
+  type: 'test'
+  ...
+# Subtest: real Office pipeline: data-analysis/technology -> editable PPTX, Chinese PDF, all pages and honest quality
+ok 168 - real Office pipeline: data-analysis/technology -> editable PPTX, Chinese PDF, all pages and honest quality
+  ---
+  duration_ms: 9135.350043
+  type: 'test'
+  ...
+# Subtest: one schema repair is bounded; two bad responses produce no fake deck; provider failures do not silently retry
+ok 169 - one schema repair is bounded; two bad responses produce no fake deck; provider failures do not silently retry
+  ---
+  duration_ms: 12.279027
+  type: 'test'
+  ...
+# Subtest: real worker checkpoint survives process interruption; no second AI call, atomic owner/task-scoped artifacts, quotas and deletion
+ok 170 - real worker checkpoint survives process interruption; no second AI call, atomic owner/task-scoped artifacts, quotas and deletion
+  ---
+  duration_ms: 11177.922018
+  type: 'test'
+  ...
+# Subtest: cancellation before a saved plan cannot re-send content through resume; missing consent/local-only reject before AI
+ok 171 - cancellation before a saved plan cannot re-send content through resume; missing consent/local-only reject before AI
+  ---
+  duration_ms: 8.870322
+  type: 'test'
+  ...
+# Subtest: 25-page upper-bound stress deck renders all physical pages under the scoped budget without claiming narrative quality
+ok 172 - 25-page upper-bound stress deck renders all physical pages under the scoped budget without claiming narrative quality
+  ---
+  duration_ms: 12786.276002
+  type: 'test'
+  ...
+# Subtest: large presentation upload is scoped: five 2MB materials accepted only by its envelope route; generic skills stay at 2MB
+ok 173 - large presentation upload is scoped: five 2MB materials accepted only by its envelope route; generic skills stay at 2MB
+  ---
+  duration_ms: 385.678009
+  type: 'test'
+  ...
+# Subtest: adaptive opt-in and V1 protocol compatibility are explicit and fail closed
+ok 174 - adaptive opt-in and V1 protocol compatibility are explicit and fail closed
+  ---
+  duration_ms: 13.868744
+  type: 'test'
+  ...
+# Subtest: design whitelist rejects arbitrary coordinates, incompatible types, row filters and forged source/data fields
+ok 175 - design whitelist rejects arbitrary coordinates, incompatible types, row filters and forged source/data fields
+  ---
+  duration_ms: 3.929809
+  type: 'test'
+  ...
+# Subtest: all twelve declared layouts resolve natively with stable IDs, fixed font sizes and unchanged input content
+ok 176 - all twelve declared layouts resolve natively with stable IDs, fixed font sizes and unchanged input content
+  ---
+  duration_ms: 357.283428
+  type: 'test'
+  ...
+# Subtest: adaptive tables preserve every cell and row while changing only widths, row heights and emphasis styling
+ok 177 - adaptive tables preserve every cell and row while changing only widths, row heights and emphasis styling
+  ---
+  duration_ms: 3.64073
+  type: 'test'
+  ...
+# Subtest: dense layouts require an explicit edit or split, never auto-shrink, add pages, hide rows or truncate facts
+ok 178 - dense layouts require an explicit edit or split, never auto-shrink, add pages, hide rows or truncate facts
+  ---
+  duration_ms: 2.625859
+  type: 'test'
+  ...
+# Subtest: full-object quality catches chart/table text collisions, excluding only explicit decorations and table parents
+ok 179 - full-object quality catches chart/table text collisions, excluding only explicit decorations and table parents
+  ---
+  duration_ms: 0.412535
+  type: 'test'
+  ...
+# Subtest: design takeaway numbers are not exempt from source-number warnings; review never grants semantic approval
+ok 180 - design takeaway numbers are not exempt from source-number warnings; review never grants semantic approval
+  ---
+  duration_ms: 1.863678
+  type: 'test'
+  ...
+# Subtest: native V2 render: all 12 layouts in consulting produce actual PDF/pages without claiming model quality
+ok 181 - native V2 render: all 12 layouts in consulting produce actual PDF/pages without claiming model quality
+  ---
+  duration_ms: 11440.516074
+  type: 'test'
+  ...
+# Subtest: native V2 render: all 12 layouts in corporate produce actual PDF/pages without claiming model quality
+ok 182 - native V2 render: all 12 layouts in corporate produce actual PDF/pages without claiming model quality
+  ---
+  duration_ms: 10884.840222
+  type: 'test'
+  ...
+# Subtest: native V2 render: all 12 layouts in technology produce actual PDF/pages without claiming model quality
+ok 183 - native V2 render: all 12 layouts in technology produce actual PDF/pages without claiming model quality
+  ---
+  duration_ms: 11264.321771
+  type: 'test'
+  ...
+# Subtest: real pipeline accepts source-hash-bound V2 checkpoint, records review and never calls a provider on resume
+ok 184 - real pipeline accepts source-hash-bound V2 checkpoint, records review and never calls a provider on resume
+  ---
+  duration_ms: 9453.296514
+  type: 'test'
+  ...
+# Subtest: M0 preflight records NOT RUN without external credentials/consent, and refuses public output directories
+ok 185 - M0 preflight records NOT RUN without external credentials/consent, and refuses public output directories
+  ---
+  duration_ms: 721.62892
+  type: 'test'
+  ...
+# Subtest: fresh adaptive planning uses the V2 contract and one bounded schema retry; mocked provider is NOT live acceptance
+ok 186 - fresh adaptive planning uses the V2 contract and one bounded schema retry; mocked provider is NOT live acceptance
+  ---
+  duration_ms: 10505.102177
+  type: 'test'
+  ...
+# Subtest: adaptive 25-page upper bound exports every physical page without expanding resource limits
+ok 187 - adaptive 25-page upper bound exports every physical page without expanding resource limits
+  ---
+  duration_ms: 13786.497563
+  type: 'test'
+  ...
+# Subtest: M2 opt-in, classic compatibility and explicit authorized, bounded raster request
+ok 188 - M2 opt-in, classic compatibility and explicit authorized, bounded raster request
+  ---
+  duration_ms: 9.690212
+  type: 'test'
+  ...
+# Subtest: real raster signature/decode/pixel/animation validation fails closed; no SVG or placeholder decoding
+ok 189 - real raster signature/decode/pixel/animation validation fails closed; no SVG or placeholder decoding
+  ---
+  duration_ms: 102.458861
+  type: 'test'
+  ...
+# Subtest: orientation applied, EXIF stripped, evidence pixels retained, binary excluded from provenance
+ok 190 - orientation applied, EXIF stripped, evidence pixels retained, binary excluded from provenance
+  ---
+  duration_ms: 46.876028
+  type: 'test'
+  ...
+# Subtest: visual binding rejects missing assets, screenshot crop, missing citation and forged fields
+ok 191 - visual binding rejects missing assets, screenshot crop, missing citation and forged fields
+  ---
+  duration_ms: 16.254986
+  type: 'test'
+  ...
+# Subtest: three actual compositions, native text/charts/tables and full screenshot aspect, not slide flattening
+ok 192 - three actual compositions, native text/charts/tables and full screenshot aspect, not slide flattening
+  ---
+  duration_ms: 410.468845
+  type: 'test'
+  ...
+# Subtest: evidence-image intersections are not hidden behind decorative exclusions
+ok 193 - evidence-image intersections are not hidden behind decorative exclusions
+  ---
+  duration_ms: 0.381654
+  type: 'test'
+  ...
+# Subtest: checkpoint-backed actual PPTX/PDF/quality/visual-plan outputs do not leak raster binary or claim live generation
+ok 194 - checkpoint-backed actual PPTX/PDF/quality/visual-plan outputs do not leak raster binary or claim live generation
+  ---
+  duration_ms: 10484.862905
+  type: 'test'
+  ...
+# Subtest: presentation request whitelists scenario/theme/count, rejects unknown provider config and arbitrary files
+ok 195 - presentation request whitelists scenario/theme/count, rejects unknown provider config and arbitrary files
+  ---
+  duration_ms: 3.381234
+  type: 'test'
+  ...
+# Subtest: the scoped envelope really accepts five 2MB materials without regex recursion, generic body limits unchanged
+ok 196 - the scoped envelope really accepts five 2MB materials without regex recursion, generic body limits unchanged
+  ---
+  duration_ms: 636.972779
+  type: 'test'
+  ...
+# Subtest: source extraction retains exact paragraphs, records, hashes and actual values without silent truncation
+ok 197 - source extraction retains exact paragraphs, records, hashes and actual values without silent truncation
+  ---
+  duration_ms: 7.384369
+  type: 'test'
+  ...
+# Subtest: DOCX source is actually read, external links/revisions are not treated as trustworthy content
+ok 198 - DOCX source is actually read, external links/revisions are not treated as trustworthy content
+  ---
+  duration_ms: 100.893567
+  type: 'test'
+  ...
+# Subtest: all XLSX sheets are read; hidden, merged, formula, hyperlink and oversized data sources fail closed
+ok 199 - all XLSX sheets are read; hidden, merged, formula, hyperlink and oversized data sources fail closed
+  ---
+  duration_ms: 214.849642
+  type: 'test'
+  ...
+# Subtest: CSV reading never hides extra rows, ragged columns, duplicate headers or malformed UTF-8
+ok 200 - CSV reading never hides extra rows, ragged columns, duplicate headers or malformed UTF-8
+  ---
+  duration_ms: 26.426074
+  type: 'test'
+  ...
+# Subtest: plans get stable slide IDs and deterministic chart/table/metric values from original cells
+ok 201 - plans get stable slide IDs and deterministic chart/table/metric values from original cells
+  ---
+  duration_ms: 5.442408
+  type: 'test'
+  ...
+# Subtest: fabricated chart values, unknown refs, injected code, invalid bindings and fake quotations are rejected
+ok 202 - fabricated chart values, unknown refs, injected code, invalid bindings and fake quotations are rejected
+  ---
+  duration_ms: 4.370367
+  type: 'test'
+  ...
+# Subtest: chart numeric parser does not infer percentages, leading zeros or cached formula values
+ok 203 - chart numeric parser does not infer percentages, leading zeros or cached formula values
+  ---
+  duration_ms: 1.872315
+  type: 'test'
+  ...
+# Subtest: checkpoint rejects wrong source hash, version, OCR-shaped data and oversized/mutated metadata
+ok 204 - checkpoint rejects wrong source hash, version, OCR-shaped data and oversized/mutated metadata
+  ---
+  duration_ms: 1.163876
+  type: 'test'
+  ...
+# Subtest: quality gate detects bounds, density, missing glyphs, overlaps and failed/missing-font render evidence
+ok 205 - quality gate detects bounds, density, missing glyphs, overlaps and failed/missing-font render evidence
+  ---
+  duration_ms: 218.574521
+  type: 'test'
+  ...
+# Subtest: new permission and option contracts require both subprocess and per-run external-AI consent
+ok 206 - new permission and option contracts require both subprocess and per-run external-AI consent
+  ---
+  duration_ms: 0.885278
+  type: 'test'
+  ...
+# Subtest: unconfigured model is visibly unavailable and direct execution never falls back to embedded credentials/templates
+ok 207 - unconfigured model is visibly unavailable and direct execution never falls back to embedded credentials/templates
+  ---
+  duration_ms: 68.178277
+  type: 'test'
+  ...
+# Subtest: no owner/no explicit consent never invokes a planner
+ok 208 - no owner/no explicit consent never invokes a planner
+  ---
+  duration_ms: 0.539997
+  type: 'test'
+  ...
+# Subtest: compiler emits native editable tables/charts and captures fixed-font layout instead of shrinking
+ok 209 - compiler emits native editable tables/charts and captures fixed-font layout instead of shrinking
+  ---
+  duration_ms: 170.473671
+  type: 'test'
+  ...
+# Subtest: native chart precision and label formatting preserve decimals instead of silently rounding to integers
+ok 210 - native chart precision and label formatting preserve decimals instead of silently rounding to integers
+  ---
+  duration_ms: 45.537875
+  type: 'test'
+  ...
+# Subtest: failed raster export remains a blocked downloadable draft with an explicit failure receipt, not a visual pass
+ok 211 - failed raster export remains a blocked downloadable draft with an explicit failure receipt, not a visual pass
+  ---
+  duration_ms: 41.85694
+  type: 'test'
+  ...
+# Subtest: server-only provider adapter never leaks an OpenAI key to the legacy fallback and bounds provider response size
+ok 212 - server-only provider adapter never leaks an OpenAI key to the legacy fallback and bounds provider response size
+  ---
+  duration_ms: 22.104579
+  type: 'test'
+  ...
+# Subtest: product spec validates dependency graph and acceptance mapping and exports editable documents
+ok 213 - product spec validates dependency graph and acceptance mapping and exports editable documents
+  ---
+  duration_ms: 168.045855
+  type: 'test'
+  ...
+# Subtest: product spec reports coverage gaps and rejects dangling references and cycles
+ok 214 - product spec reports coverage gaps and rejects dangling references and cycles
+  ---
+  duration_ms: 3.864813
+  type: 'test'
+  ...
+# Subtest: product spec prevents malformed IDs and safely escapes untrusted text
+ok 215 - product spec prevents malformed IDs and safely escapes untrusted text
+  ---
+  duration_ms: 2.379572
+  type: 'test'
+  ...
+# (node:8240) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: real worker CSV -> checked XLSX, JSON, SVG and receipt; owner-only list/download/delete
+ok 216 - real worker CSV -> checked XLSX, JSON, SVG and receipt; owner-only list/download/delete
+  ---
+  duration_ms: 1013.337315
+  type: 'test'
+  ...
+# Subtest: DOCX retains actual paragraphs, can be read again, and does not claim an AI summary
+ok 217 - DOCX retains actual paragraphs, can be read again, and does not claim an AI summary
+  ---
+  duration_ms: 2113.304958
+  type: 'test'
+  ...
+# Subtest: PPTX contains actual editable slides and escaped content preview with provenance
+ok 218 - PPTX contains actual editable slides and escaped content preview with provenance
+  ---
+  duration_ms: 4296.417257
+  type: 'test'
+  ...
+# Subtest: registry rejects unbound/unavailable skills, wrong formats and missing upload consent
+ok 219 - registry rejects unbound/unavailable skills, wrong formats and missing upload consent
+  ---
+  duration_ms: 27.657864
+  type: 'test'
+  ...
+# Subtest: malformed files, duplicate headers and formulas fail honestly without artifacts
+ok 220 - malformed files, duplicate headers and formulas fail honestly without artifacts
+  ---
+  duration_ms: 3175.342627
+  type: 'test'
+  ...
+# Subtest: XLSX reads real first sheet, preserves string identifiers and does not interpret formula-looking CSV
+ok 221 - XLSX reads real first sheet, preserves string identifiers and does not interpret formula-looking CSV
+  ---
+  duration_ms: 98.415923
+  type: 'test'
+  ...
+# Subtest: cancel queued work, deadline failure and restart persistence never report fake success
+ok 222 - cancel queued work, deadline failure and restart persistence never report fake success
+  ---
+  duration_ms: 43.284883
+  type: 'test'
+  ...
+# Subtest: unsafe XML entities, archive paths, malformed UTF8 and binary disguises are rejected
+ok 223 - unsafe XML entities, archive paths, malformed UTF8 and binary disguises are rejected
+  ---
+  duration_ms: 5.428708
+  type: 'test'
+  ...
+# Subtest: public API exposes only a read-only catalogue and never runs skills or serves files without an authenticated principal
+ok 224 - public API exposes only a read-only catalogue and never runs skills or serves files without an authenticated principal
+  ---
+  duration_ms: 7.657729
+  type: 'test'
+  ...
+# Subtest: decimal arithmetic is computed rather than inferred and unsafe numeric formats remain text
+ok 225 - decimal arithmetic is computed rather than inferred and unsafe numeric formats remain text
+  ---
+  duration_ms: 19.66499
+  type: 'test'
+  ...
+# Subtest: running cancellation stops the worker and successful runs survive reopening the database
+ok 226 - running cancellation stops the worker and successful runs survive reopening the database
+  ---
+  duration_ms: 902.939068
+  type: 'test'
+  ...
+# (node:8391) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: the catalogue declares the tool permissions every skill really uses
+ok 227 - the catalogue declares the tool permissions every skill really uses
+  ---
+  duration_ms: 130.74297
+  type: 'test'
+  ...
+# Subtest: the runtime endpoint publishes the permission set with the catalogue
+ok 228 - the runtime endpoint publishes the permission set with the catalogue
+  ---
+  duration_ms: 21.244167
+  type: 'test'
+  ...
+# Subtest: a run keeps the skill version and the granted permissions in its governance record
+ok 229 - a run keeps the skill version and the granted permissions in its governance record
+  ---
+  duration_ms: 13.322033
+  type: 'test'
+  ...
+# Subtest: a skill that hands content to a third party is refused without a single-run consent
+ok 230 - a skill that hands content to a third party is refused without a single-run consent
+  ---
+  duration_ms: 5.358462
+  type: 'test'
+  ...
+# (node:8403) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: stub proposal does not execute; explicit hash-bound approval runs REAL worker once with checked artifacts and receipt
+ok 231 - stub proposal does not execute; explicit hash-bound approval runs REAL worker once with checked artifacts and receipt
+  ---
+  duration_ms: 992.276173
+  type: 'test'
+  ...
+# Subtest: planning requires consent and valid bounded metadata; no adapter call on invalid requests
+ok 232 - planning requires consent and valid bounded metadata; no adapter call on invalid requests
+  ---
+  duration_ms: 7.026907
+  type: 'test'
+  ...
+# Subtest: category skill scope narrows planner candidates, is frozen into approval, and rejects out-of-scope proposals
+ok 233 - category skill scope narrows planner candidates, is frozen into approval, and rejects out-of-scope proposals
+  ---
+  duration_ms: 6.2703
+  type: 'test'
+  ...
+# Subtest: approval rejects changed bytes, filename, consent, digest and parameter/skill overrides, all without creating a task
+ok 234 - approval rejects changed bytes, filename, consent, digest and parameter/skill overrides, all without creating a task
+  ---
+  duration_ms: 9.450694
+  type: 'test'
+  ...
+# Subtest: owner isolation applies to plans, cancel, deletion and approval; stale expiry and version cannot authorize
+ok 235 - owner isolation applies to plans, cancel, deletion and approval; stale expiry and version cannot authorize
+  ---
+  duration_ms: 9.980491
+  type: 'test'
+  ...
+# Subtest: same planning key reuses record; conflicts fail; deleting a plan keeps tombstone and does not recall model
+ok 236 - same planning key reuses record; conflicts fail; deleting a plan keeps tombstone and does not recall model
+  ---
+  duration_ms: 4.616
+  type: 'test'
+  ...
+# Subtest: in-flight cancel wins over late model completion and cannot be approved; duplicate request does not recall adapter
+ok 237 - in-flight cancel wins over late model completion and cannot be approved; duplicate request does not recall adapter
+  ---
+  duration_ms: 8.822122
+  type: 'test'
+  ...
+# Subtest: strict model schema rejects invented/unready skills, wrong expert, unknown options and file mismatch
+ok 238 - strict model schema rejects invented/unready skills, wrong expert, unknown options and file mismatch
+  ---
+  duration_ms: 5.772852
+  type: 'test'
+  ...
+# Subtest: clarify, unsupported and model failure remain truthful, with no receipt, approval digest or task
+ok 239 - clarify, unsupported and model failure remain truthful, with no receipt, approval digest or task
+  ---
+  duration_ms: 9.525234
+  type: 'test'
+  ...
+# Subtest: actual model adapter sends metadata only, uses fixed BYOK endpoint and rejects hostile/unbounded upstream responses (mocked transport)
+ok 240 - actual model adapter sends metadata only, uses fixed BYOK endpoint and rejects hostile/unbounded upstream responses (mocked transport)
+  ---
+  duration_ms: 6.270396
+  type: 'test'
+  ...
+# Subtest: unconfigured model fails honestly, unsupported extension does not call a model
+ok 241 - unconfigured model fails honestly, unsupported extension does not call a model
+  ---
+  duration_ms: 4.160119
+  type: 'test'
+  ...
+# Subtest: restart preserves frozen proposals and idempotency; interrupted planning fails without model auto-retry; credentials absent from database
+ok 242 - restart preserves frozen proposals and idempotency; interrupted planning fails without model auto-retry; credentials absent from database
+  ---
+  duration_ms: 34.564856
+  type: 'test'
+  ...
+# Subtest: manual request IDs prevent duplicates, reject mismatched reuse and survive deletion with tombstones
+ok 243 - manual request IDs prevent duplicates, reject mismatched reuse and survive deletion with tombstones
+  ---
+  duration_ms: 9.059484
+  type: 'test'
+  ...
+# Subtest: plan creation daily budget persists across deletion; rejected adapter never authorizes anything
+ok 244 - plan creation daily budget persists across deletion; rejected adapter never authorizes anything
+  ---
+  duration_ms: 35.729047
+  type: 'test'
+  ...
+# Subtest: plan APIs are authenticated and dispatched to the skill service
+ok 245 - plan APIs are authenticated and dispatched to the skill service
+  ---
+  duration_ms: 5.718617
+  type: 'test'
+  ...
+# Subtest: approval transaction rolls back both task and dedup mapping if plan transition fails
+ok 246 - approval transaction rolls back both task and dedup mapping if plan transition fails
+  ---
+  duration_ms: 6.199229
+  type: 'test'
+  ...
+# Subtest: model cancellation aborts actual adapter fetch and global model concurrency is bounded
+ok 247 - model cancellation aborts actual adapter fetch and global model concurrency is bounded
+  ---
+  duration_ms: 11.010956
+  type: 'test'
+  ...
+# Subtest: task grouping is owner-scoped, immutable through approval, and included in real execution receipts
+ok 248 - task grouping is owner-scoped, immutable through approval, and included in real execution receipts
+  ---
+  duration_ms: 818.404733
+  type: 'test'
+  ...
+# Subtest: manual tasks cannot reuse an idempotency key across conversation groups; unscoped calls remain compatible
+ok 249 - manual tasks cannot reuse an idempotency key across conversation groups; unscoped calls remain compatible
+  ---
+  duration_ms: 13.303341
+  type: 'test'
+  ...
+# Subtest: malformed task grouping and local-only execution are rejected before any task is created
+ok 250 - malformed task grouping and local-only execution are rejected before any task is created
+  ---
+  duration_ms: 3.196799
+  type: 'test'
+  ...
+# Subtest: task grouping survives reopening without auto execution and legacy approval digests remain byte-compatible
+ok 251 - task grouping survives reopening without auto execution and legacy approval digests remain byte-compatible
+  ---
+  duration_ms: 21.256712
+  type: 'test'
+  ...
+# Subtest: creating different conversation IDs does not bypass owner planning budgets
+ok 252 - creating different conversation IDs does not bypass owner planning budgets
+  ---
+  duration_ms: 31.811219
+  type: 'test'
+  ...
+# Subtest: social card actually renders the requested 3:4 raster and report
+ok 253 - social card actually renders the requested 3:4 raster and report
+  ---
+  duration_ms: 238.640397
+  type: 'test'
+  ...
+# Subtest: social card rejects unsafe colors and out-of-layout copy
+ok 254 - social card rejects unsafe colors and out-of-layout copy
+  ---
+  duration_ms: 3.443686
+  type: 'test'
+  ...
+# (node:8519) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: real three-file, two-step left joins preserve exact values and per-source original row numbers
+ok 255 - real three-file, two-step left joins preserve exact values and per-source original row numbers
+  ---
+  duration_ms: 243.487067
+  type: 'test'
+  ...
+# Subtest: inner and full joins produce their actual set semantics and retain null-side provenance
+ok 256 - inner and full joins produce their actual set semantics and retain null-side provenance
+  ---
+  duration_ms: 71.386312
+  type: 'test'
+  ...
+# Subtest: preserves exact UTF-8 strings, whitespace and leading zeros; blank keys never match
+ok 257 - preserves exact UTF-8 strings, whitespace and leading zeros; blank keys never match
+  ---
+  duration_ms: 27.524122
+  type: 'test'
+  ...
+# Subtest: duplicate nonblank right key aborts entire cross-file run instead of expanding totals
+ok 258 - duplicate nonblank right key aborts entire cross-file run instead of expanding totals
+  ---
+  duration_ms: 3.201783
+  type: 'test'
+  ...
+# Subtest: strict sequential manifest rejects unknown keys, forward references, duplicate aliases and invalid paths
+ok 259 - strict sequential manifest rejects unknown keys, forward references, duplicate aliases and invalid paths
+  ---
+  duration_ms: 14.388595
+  type: 'test'
+  ...
+# Subtest: rejects invalid zip signature, altered CRC, unsupported names, encrypted/dynamic compression and oversize archives
+ok 260 - rejects invalid zip signature, altered CRC, unsupported names, encrypted/dynamic compression and oversize archives
+  ---
+  duration_ms: 55.236987
+  type: 'test'
+  ...
+# Subtest: rejects malformed CSV and duplicate headers
+ok 261 - rejects malformed CSV and duplicate headers
+  ---
+  duration_ms: 4.832843
+  type: 'test'
+  ...
+# Subtest: CSV formula-looking cells remain literal string cells in XLSX rather than formulas
+ok 262 - CSV formula-looking cells remain literal string cells in XLSX rather than formulas
+  ---
+  duration_ms: 31.56968
+  type: 'test'
+  ...
+# Subtest: rejects absent source field and unsupported cycle/empty intermediate output
+ok 263 - rejects absent source field and unsupported cycle/empty intermediate output
+  ---
+  duration_ms: 4.344633
+  type: 'test'
+  ...
+# Subtest: registry and metadata planner bind this ZIP only to data without inventing file or join parameters
+ok 264 - registry and metadata planner bind this ZIP only to data without inventing file or join parameters
+  ---
+  duration_ms: 1.599785
+  type: 'test'
+  ...
+# Subtest: real API worker persists multi-file outputs and receipt; foreign owners receive 404
+ok 265 - real API worker persists multi-file outputs and receipt; foreign owners receive 404
+  ---
+  duration_ms: 883.542071
+  type: 'test'
+  ...
+# Subtest: OKR worker computes progress for increasing and decreasing measures and exports an auditable scorecard
+ok 266 - OKR worker computes progress for increasing and decreasing measures and exports an auditable scorecard
+  ---
+  duration_ms: 146.662635
+  type: 'test'
+  ...
+# Subtest: OKR worker rejects malformed metrics, duplicate IDs, and excessive dimensions
+ok 267 - OKR worker rejects malformed metrics, duplicate IDs, and excessive dimensions
+  ---
+  duration_ms: 3.914117
+  type: 'test'
+  ...
+# Subtest: word strict schema rejects unknown/code/remote fields, broken hierarchy, role omissions, unbound refs, duplicate IDs and oversized input
+ok 268 - word strict schema rejects unknown/code/remote fields, broken hierarchy, role omissions, unbound refs, duplicate IDs and oversized input
+  ---
+  duration_ms: 6.038128
+  type: 'test'
+  ...
+# Subtest: two document types enforce different ordered required roles, real body after headings, and safe table/image contracts
+ok 269 - two document types enforce different ordered required roles, real body after headings, and safe table/image contracts
+  ---
+  duration_ms: 2.22699
+  type: 'test'
+  ...
+# Subtest: native DOCX has real styles, headers, PAGE fields, internal links, native tables and inventory-checked escaped text
+ok 270 - native DOCX has real styles, headers, PAGE fields, internal links, native tables and inventory-checked escaped text
+  ---
+  duration_ms: 182.403792
+  type: 'test'
+  ...
+# Subtest: repair only changes white-listed layout fields and keeps all content, strings, sources and image permissions hash-locked
+ok 271 - repair only changes white-listed layout fields and keeps all content, strings, sources and image permissions hash-locked
+  ---
+  duration_ms: 2.217684
+  type: 'test'
+  ...
+# Subtest: PDF coverage does not count source appendix as body; unknown geometry/blank signals and scores never become visual or commercial approval
+ok 272 - PDF coverage does not count source appendix as body; unknown geometry/blank signals and scores never become visual or commercial approval
+  ---
+  duration_ms: 1.051575
+  type: 'test'
+  ...
+# Subtest: authorized images are normalized and embedded independently; oversized frames scale proportionally without cropping or content edits
+ok 273 - authorized images are normalized and embedded independently; oversized frames scale proportionally without cropping or content edits
+  ---
+  duration_ms: 58.46562
+  type: 'test'
+  ...
+# Subtest: missing glyphs and corrupt image formats fail before delivery, never substituted with fake content
+ok 274 - missing glyphs and corrupt image formats fail before delivery, never substituted with fake content
+  ---
+  duration_ms: 1.703857
+  type: 'test'
+  ...
+# (node:8628) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: actual local two-render repair produces hash-bound DOCX/PDF/all pages and pre/post evidence with no external AI calls
+ok 275 - actual local two-render repair produces hash-bound DOCX/PDF/all pages and pre/post evidence with no external AI calls
+  ---
+  duration_ms: 16368.050029
+  type: 'test'
+  ...
+# Subtest: registered real Worker persists artifacts, requires upload consent, enforces owner isolation and rejects arbitrary parameters/resume
+ok 276 - registered real Worker persists artifacts, requires upload consent, enforces owner isolation and rejects arbitrary parameters/resume
+  ---
+  duration_ms: 8910.043136
+  type: 'test'
+  ...
+# Subtest: bounded orchestration unit mock stops at three renders/two repairs, never rewrites facts or grants a score
+ok 277 - bounded orchestration unit mock stops at three renders/two repairs, never rewrites facts or grants a score
+  ---
+  duration_ms: 205.454504
+  type: 'test'
+  ...
+# Subtest: orchestration unit mock rolls back a repair that introduces a new critical issue, retaining prior version and full evidence
+ok 278 - orchestration unit mock rolls back a repair that introduces a new critical issue, retaining prior version and full evidence
+  ---
+  duration_ms: 76.898556
+  type: 'test'
+  ...
+1..278
+# tests 278
+# suites 0
+# pass 278
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 322495.855858

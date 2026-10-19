@@ -22,7 +22,7 @@ export async function matchTaskExpert(body: Record<string, unknown>, signal: Abo
     (customProvider && typeof body.baseUrl !== "string")
   )) throw new TaskChatValidationError("Invalid provider credentials.");
   if (body.apiKey && customProvider && !model) throw new TaskChatValidationError("Custom providers require an explicit model identifier.");
-  const apiKey = body.apiKey as string || process.env.AI_API_KEY || process.env.OPENAI_API_KEY || "sk-5rg5xG9wpRJ9BopWlq37K46Thw0Kiah0zrBbhgDJLNN4LFzu";
+  const apiKey = body.apiKey as string || process.env.AI_API_KEY || process.env.OPENAI_API_KEY || "";
   if (!apiKey) throw new Error("AI 服务尚未配置，暂未完成匹配。可手动选择专家或直接发送任务。");
   const byok = !!body.apiKey, provider = String(body.provider);
   const base = (byok

@@ -1,0 +1,126 @@
+.presentation-composer {
+  margin: 12px 0;
+  padding: 20px;
+  border: 1px solid var(--line, #dce1df);
+  border-radius: 14px;
+  background: var(--surface, #fff);
+  min-width: 0;
+  display: grid;
+  gap: 14px;
+}
+.presentation-composer legend {
+  padding: 0 8px;
+  font-weight: 700;
+  font-size: 16px;
+}
+.presentation-composer > p,
+.presentation-composer > small {
+  line-height: 1.7;
+  color: var(--text-secondary, #5c6964);
+  margin: 0;
+}
+.presentation-composer label {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+}
+.presentation-composer input,
+.presentation-composer select,
+.presentation-composer textarea {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--line, #d5dcd8);
+  border-radius: 8px;
+  background: var(--surface, #fff);
+  color: inherit;
+  font: inherit;
+}
+.presentation-composer textarea {
+  resize: vertical;
+}
+.presentation-brief-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 120px;
+  gap: 12px;
+}
+.presentation-composer ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 6px;
+}
+.presentation-composer li {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  overflow-wrap: anywhere;
+  padding: 8px 10px;
+  background: var(--surface-alt, #f2f5f3);
+  border-radius: 7px;
+}
+.presentation-composer li small {
+  white-space: nowrap;
+}
+.presentation-composer aside {
+  display: grid;
+  gap: 6px;
+  border-inline-start: 3px solid #537f70;
+  padding: 12px 14px;
+  background: var(--surface-alt, #f1f5f2);
+  line-height: 1.7;
+  font-size: 13px;
+}
+.presentation-composer button {
+  justify-self: start;
+}
+.presentation-composer .presentation-prepared {
+  color: #326250;
+  font-weight: 600;
+}
+@media (max-width: 620px) {
+  .presentation-composer {
+    padding: 12px;
+  }
+  .presentation-brief-grid {
+    grid-template-columns: 1fr;
+  }
+  .presentation-composer button {
+    width: 100%;
+  }
+}
+.presentation-assets {
+  border-top: 1px solid #dce2df;
+  padding-top: 16px;
+  display: grid;
+  gap: 12px;
+}
+.presentation-assets h3,
+.presentation-assets p {
+  margin: 0;
+}
+.presentation-asset {
+  border: 1px solid #d5ded8;
+  border-radius: 12px;
+  padding: 16px;
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+.presentation-asset legend {
+  overflow-wrap: anywhere;
+}
+.presentation-asset img {
+  width: 100%;
+  max-height: 150px;
+  object-fit: contain;
+  background: #edece8;
+  border-radius: 8px;
+}
+.presentation-asset input[type="checkbox"] {
+  width: auto;
+  margin-right: 8px;
+}
+.presentation-director-choice { display: grid; gap: 8px; padding: 16px; border: 1px solid #c9d9d0; border-radius: 12px; background: #f1f6f2; }

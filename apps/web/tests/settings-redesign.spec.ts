@@ -1,5 +1,18 @@
 import { test, expect, type Page } from "@playwright/test";
 
+// UI cases must not inherit another test's account-synced locale or shortcuts.
+// Persistence itself is covered by settings.spec.ts; other APIs remain real.
+test.beforeEach(async ({ page }) => {
+  await page.route("**/api/profile/preferences", (route) =>
+    route.fulfill({
+      json:
+        route.request().method() === "GET"
+          ? { preferences: [] }
+          : { preference: { updatedAt: Date.now() } },
+    }),
+  );
+});
+
 const sections = [
   "通用",
   "个人主页",
@@ -113,8 +126,9 @@ test("resource errors offer retry instead of claiming an empty or connected stat
     dialog(page).getByText("暂无应用连接记录", { exact: true }),
   ).toHaveCount(0);
   await page.unroute("**/api/connectors");
+  await page.route("**/api/connectors", (route) => route.fulfill({ json: [] }));
   await dialog(page)
-    .locator(".settings-empty")
+    .locator(".settings-connection-warning")
     .getByRole("button", { name: "重新加载" })
     .click();
   await expect(dialog(page).getByRole("alert")).toHaveCount(0);

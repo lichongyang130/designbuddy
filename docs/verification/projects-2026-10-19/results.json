@@ -1,0 +1,77 @@
+{
+  "date": "2026-10-19",
+  "branch": "arena/b08c8d3f-designbuddy",
+  "baseCommit": "40835108524b47286cc9c094db5aa60d2ca69bb9",
+  "tests": {
+    "browser": {
+      "passed": 54,
+      "failed": 0,
+      "projectSpecific": 9,
+      "log": "logs/browser.log",
+      "note": "Final run after preference test isolation fix and final dark CSS refinement. Includes home, projects, shares, versions, workspaces and three settings suites."
+    },
+    "skills": {
+      "passed": 278,
+      "failed": 0,
+      "log": "logs/all-skills.log"
+    },
+    "aiBackend": {
+      "passed": 41,
+      "failed": 0,
+      "log": "logs/ai-backend.log"
+    },
+    "webBuild": {
+      "exitCode": 0,
+      "log": "logs/web-build.log",
+      "warnings": "Existing bundle chunk size / mixed static-dynamic import warnings. Not a build failure."
+    },
+    "serverTypecheck": {
+      "exitCode": 0,
+      "command": "corepack pnpm exec tsc -p server/tsconfig.local.json"
+    }
+  },
+  "postRestartHttp": {
+    "/projects": {
+      "status": 200,
+      "bytes": 744
+    },
+    "/api/health": {
+      "status": 200,
+      "bytes": 265
+    },
+    "/word-examples/word-pro/business-report/document.docx": {
+      "status": 200,
+      "bytes": 23089
+    },
+    "/presentation-examples/content-director/presentation.pptx": {
+      "status": 200,
+      "bytes": 1107848
+    }
+  },
+  "sourceSHA256": {
+    "frontend/workspace/pages/ProjectsPage.tsx": "d4b09e5cad6a29e9232bc1fdc3db55b73f3258986bc98737cce50a9fb6fb241b",
+    "frontend/workspace/pages/projects.css": "fa4cf5f66f28e47f723bdcd035ef94f2b5af4dc08615652c71b058ac5707fb59",
+    "apps/web/src/components/WorkBuddySidebar.tsx": "80324b46b4391eaa2f9c655a60e7e0d4f238eefdffeb200be3bfbb2dbbac2e3d",
+    "server/api/ai.ts": "4c7349159ca0441ddfa9c16ccfde9f6adfc9d158fcd732c052ac1eacc7cfde8b",
+    "server/api/chat.ts": "85d7f98b02054c76b9d5d65a2bef784398735ad1e8c7215e15b1dbe65ed4b036",
+    "server/api/expert-match.ts": "ba93c587be92e64c7224faa7ff0003749893e19993520346db64096a826cfd63",
+    "server/api/ai-models.ts": "2d51aef96e3a22407b47a402f4746a99d8600952bfe8834c237bf695963d0ab7"
+  },
+  "screenshots": {
+    "desktop.png": {
+      "viewportWidth": 1440
+    },
+    "mobile.png": {
+      "viewportWidth": 390
+    },
+    "dark.png": {
+      "viewportWidth": 1024
+    },
+    "data": "Fictional browser-test fixtures, not real user projects and not preinstalled product data."
+  },
+  "boundaries": [
+    "No automatic cloud upload/sync or actual website-thumbnail rendering was added.",
+    "Credential-pattern scanning is not a guarantee against every secret format. Existing history remains intact; old embedded keys must be revoked/rotated by owner.",
+    "Upstream OFL license text and intentional Markdown hard breaks retained verbatim; source whitespace check excludes those text files."
+  ]
+}

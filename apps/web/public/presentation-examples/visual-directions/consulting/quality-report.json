@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "executionStatus": "completed",
+  "releaseStatus": "needs-human-review",
+  "commercialApproval": false,
+  "checks": {
+    "schema": "passed",
+    "sourceReferences": "all IDs resolved; semantic support NOT verified",
+    "chartAndTableData": "deterministic verbatim cell bindings; no model-supplied values or implicit aggregation",
+    "nativeEditableObjects": "compiler-authored text/shapes/charts/tables with separately bounded raster assets; no target-application editing certification",
+    "boundingBoxesAndTextMetrics": "checked with bundled font; conservative heuristic, not Office text-overflow proof",
+    "textIntersections": "checked; backgrounds and chart-internal labels excluded",
+    "objectGeometry": "V2 outer boxes checked; explicit decorative and table-parent relationships excluded except evidence-image collisions; chart internals NOT checked",
+    "raster": "all pages rendered by LibreOffice",
+    "pdf": "12 physical pages checked"
+  },
+  "issues": [
+    {
+      "severity": "warning",
+      "code": "MISSING_INFORMATION",
+      "message": "试点业务复核人与技术负责人尚未指定。"
+    },
+    {
+      "severity": "warning",
+      "code": "MISSING_INFORMATION",
+      "message": "实际模型通道、账单/单价、复核工时、部署资源成本尚未测算。"
+    },
+    {
+      "severity": "warning",
+      "code": "MISSING_INFORMATION",
+      "message": "试点材料、人数/份数、开始日期、资源上限和停止条件待确认。"
+    },
+    {
+      "severity": "warning",
+      "code": "MISSING_INFORMATION",
+      "message": "真实商业材料、真实外部模型与目标Office人工编辑尚未验收。"
+    }
+  ],
+  "sourceWarnings": [
+    "来源引用证明位置存在，不代表 AI 陈述与来源语义一致；商业发布前必须核对事实、权限和结论。",
+    "视觉素材仅传递元数据给文字规划模型；不发送图片像素，不隐式OCR。来源和许可为用户声明，仍需复核。截图/证据素材必须完整显示。"
+  ],
+  "font": {
+    "family": "Noto Sans SC",
+    "sha256": "eeb06b8a64fd04a2744d95579db1571b51027cda61ed78c62e4b730791525461",
+    "boldSHA256": "a8d8569e6cf8e93e830736e64c69568c5499ff65bf6a8ff860f0cdacc3eab7d0",
+    "license": "SIL Open Font License 1.1",
+    "source": "https://api.github.com/repos/google/fonts/git/blobs/fb0637bafbcd804fe32152370a1225990745b4bc",
+    "bundledFontHashVerified": true,
+    "embeddedInPPTX": false
+  },
+  "repair": {
+    "maxPlanningSchemaRetries": 1,
+    "automaticVisualRepair": false,
+    "factsDroppedToFit": false,
+    "fontShrinkingEnabled": false
+  },
+  "notChecked": [
+    "Independent semantic fact verification and contradiction resolution",
+    "Source rights, trademarks, confidential-data policy and provider retention",
+    "Office-native line breaking, native chart label collisions, aesthetic balance and all shape/shape occlusions",
+    "Editable reopening in Microsoft PowerPoint / Keynote / WPS and font substitution on recipient machines",
+    "Commercial approval by a named human reviewer"
+  ],
+  "nextAction": "对照 sources-and-notes.json、PDF及每页JPEG复核；blocked 时不得作为正式稿。没有critical也仍是待人工验收的草稿。",
+  "versionId": "251979f681db858a90d2a8f02dcbca172bfbc4234c53b48dc845d9d6a1a0c063",
+  "pptxSHA256": "938dfff21f9ab3e0ae10bdbe1bd9057a03ec369851e2bf76ca6095d4d2776f5e"
+}

@@ -1,0 +1,1054 @@
+{
+  "schemaVersion": 1,
+  "caseId": "leader-decision",
+  "preparedOn": "2026-10-19",
+  "brief": {
+    "goal": "向项目决策领导汇报是否有条件批准当前PPT引擎进入小范围试点。结论先行；比较维持现状、受控试点、完善后再试点；不将工程测试等同于商业验收。",
+    "audience": "项目决策领导",
+    "scenario": "business-report",
+    "theme": "consulting",
+    "slideCount": 12
+  },
+  "durationMinutes": 15,
+  "decision": "是否有条件批准当前PPT引擎进入小范围试点",
+  "recommendation": "建议有条件批准；范围、责任、资料授权和资源/退出条件未明确前不启动。",
+  "planningOrigin": "original assistant-authored content; deterministic adaptive layout comparison, NOT live provider planning",
+  "missingInformation": [
+    "试点业务复核人与技术负责人尚未指定。",
+    "实际模型通道、账单/单价、复核工时、部署资源成本尚未测算。",
+    "试点材料、人数/份数、开始日期、资源上限和停止条件待确认。",
+    "真实商业材料、真实外部模型与目标Office人工编辑尚未验收。"
+  ],
+  "pages": [
+    {
+      "classification": "建议",
+      "chartSuggestion": "结论型封面；保留“建议”和“待决策”标签，不使用虚构业绩图。",
+      "content": {
+        "type": "cover",
+        "title": "建议有条件批准小范围试点",
+        "subtitle": "【建议】领导决策汇报 · 15分钟建议讲述 · 待拍板，非已批准",
+        "speakerNotes": "各位领导，本次汇报只讨论一个决定：当前PPT引擎是否可以进入有边界的小范围试点。我的建议是有条件批准，而不是宣布商业就绪或全面推广。源码已经具备材料规划、原生PPTX编译、PDF及预览导出和质量报告链路；但真实商业材料、真实模型表现和目标Office编辑效果仍未完成验收。后面会把已证实的事实、选项分析及待确认事项分开呈现。今天不请求未经测算的预算，也不承诺没有证据的上线日期。\n\n来源位置：source-1-p-1；source-1-p-2；source-1-p-3\n助手基于源码证据编排；未调用后台外部模型，仍需人工事实与Office验收。\n\n仓库依据（快照）：\nE01 docs/examples/leader-decision/brief.md:L1–L8\nE02 server/skills/presentation/pipeline.ts:L63–L73；shared/presentation.ts:L1–L8\nE03 server/skills/presentation/quality.ts:L41–L64；docs/commercial-ppt-engine.md:L135–L144",
+        "sources": [
+          "source-1-p-1",
+          "source-1-p-2",
+          "source-1-p-3"
+        ]
+      },
+      "id": "slide-01",
+      "suggestedSeconds": 45,
+      "sourceRefs": [
+        "E01",
+        "E02",
+        "E03"
+      ],
+      "bindings": [],
+      "resolvedSourceRefs": [
+        "source-1-p-1",
+        "source-1-p-2",
+        "source-1-p-3"
+      ],
+      "preview": "adaptive/slides/01.jpg",
+      "design": {
+        "layout": "editorial-cover",
+        "nature": "recommendation"
+      }
+    },
+    {
+      "classification": "建议",
+      "chartSuggestion": "四项决策卡；分别显示授权范围、复核责任、停止条件和资源约束。",
+      "content": {
+        "type": "bullets",
+        "title": "本次请求：批准试点边界，不背书全面推广",
+        "speakerNotes": "需要领导确认的是试点授权的边界，而不是替每一份PPT作事实担保。建议仅选有明确使用目的、可访问且有授权的材料；先产生可复核草稿，再由指定人员核对事实、口径和编辑效果。任何关键质量问题、授权不清或成本无法控制，都应暂停试跑。业务复核人、技术负责人、资源上限和停止条件目前没有提供，必须在启动前确认。源码中的执行成功状态不能自动转化为商业发布批准。本页全部是建议条件，不是已经生效的管理制度。\n\n来源位置：source-1-p-1；source-1-p-3；source-1-p-8\n助手基于源码证据编排；未调用后台外部模型，仍需人工事实与Office验收。\n\n仓库依据（快照）：\nE01 docs/examples/leader-decision/brief.md:L1–L8\nE03 server/skills/presentation/quality.ts:L41–L64；docs/commercial-ppt-engine.md:L135–L144\nE08 frontend/workspace/skillPainpointMap.ts:L21–L53；server/skills/presentation/pipeline.ts:L34–L49；apps/web/src/inspiration/samples/LeaderDecisionReport.tsx:L54–L63",
+        "sources": [
+          "source-1-p-1",
+          "source-1-p-3",
+          "source-1-p-8"
+        ],
+        "body": "建议授权，不代表试点已启动或领导已批准。",
+        "bullets": [
+          "仅使用有授权、可追溯的材料，先产出草稿",
+          "指定业务复核人与技术负责人；人选待确认",
+          "关键问题、授权或成本不清时暂停，不直接发布",
+          "范围、资源上限及退出条件批准后才启动"
+        ],
+        "subtitle": "【建议】待决策；责任、资源与启动条件仍需确认。"
+      },
+      "id": "slide-02",
+      "suggestedSeconds": 90,
+      "sourceRefs": [
+        "E01",
+        "E03",
+        "E08"
+      ],
+      "bindings": [],
+      "resolvedSourceRefs": [
+        "source-1-p-1",
+        "source-1-p-3",
+        "source-1-p-8"
+      ],
+      "preview": "adaptive/slides/02.jpg",
+      "design": {
+        "layout": "executive-summary",
+        "nature": "recommendation"
+      }
+    },
+    {
+      "classification": "事实",
+      "chartSuggestion": "原生指标卡；三个指标分别标注口径，不拼成综合成功率。",
+      "content": {
+        "type": "metrics",
+        "title": "已有工程证据，但不是商业质量认证",
+        "speakerNotes": "这里引用的是上一轮已保存的测试记录，不是今天重新跑出来的覆盖率。技能后端回归有240项通过，相关界面回归有25项通过；另外扩展API检查仍有4项失败。这三项采用不同测试范围，不能相加计算一个所谓全仓通过率，也不能用界面通过数推导客户满意度或商业视觉水平。后端测试覆盖原生对象、来源绑定、导出、恢复和隔离等工程链路；仍需用真实业务材料和目标Office完成验收。测试记录中的0跳过也只属于该批测试，不代表所有可能环境均已覆盖。\n\n来源位置：source-2-table-1；source-1-p-3；source-1-p-4\n助手基于源码证据编排；未调用后台外部模型，仍需人工事实与Office验收。\n\n仓库依据（快照）：\nD01 见随附来源与字段口径\nE03 server/skills/presentation/quality.ts:L41–L64；docs/commercial-ppt-engine.md:L135–L144\nE04 docs/commercial-ppt-engine.md:L94–L110；.cache/presentation-full-skills-serial.log:L1535–L1543；.cache/presentation-ui-final.log:L32–L32；.cache/presentation-api-regression.log:L222–L230；.cache/presentation-api-head-baseline.log:L223–L231",
+        "sources": [
+          "source-2-table-1",
+          "source-1-p-3",
+          "source-1-p-4"
+        ],
+        "items": [
+          {
+            "label": "技能用例通过数",
+            "value": "240",
+            "note": "上一轮技能后端回归"
+          },
+          {
+            "label": "界面用例通过数",
+            "value": "25",
+            "note": "上一轮相关界面回归"
+          },
+          {
+            "label": "扩展API失败项",
+            "value": "4",
+            "note": "HEAD对照同样复现"
+          }
+        ],
+        "subtitle": "【事实】仅限所列源码与历史测试范围；不等于商业验收。"
+      },
+      "id": "slide-03",
+      "suggestedSeconds": 75,
+      "sourceRefs": [
+        "D01",
+        "E03",
+        "E04"
+      ],
+      "bindings": [
+        {
+          "datasetId": "source-2-table-1",
+          "rows": [
+            2
+          ],
+          "columns": [
+            "通过数"
+          ],
+          "operation": "verbatim-cells",
+          "values": [
+            [
+              "240"
+            ]
+          ]
+        },
+        {
+          "datasetId": "source-2-table-1",
+          "rows": [
+            3
+          ],
+          "columns": [
+            "通过数"
+          ],
+          "operation": "verbatim-cells",
+          "values": [
+            [
+              "25"
+            ]
+          ]
+        },
+        {
+          "datasetId": "source-2-table-1",
+          "rows": [
+            4
+          ],
+          "columns": [
+            "失败数"
+          ],
+          "operation": "verbatim-cells",
+          "values": [
+            [
+              "4"
+            ]
+          ]
+        }
+      ],
+      "resolvedSourceRefs": [
+        "source-2-table-1",
+        "source-1-p-3",
+        "source-1-p-4"
+      ],
+      "preview": "adaptive/slides/03.jpg",
+      "design": {
+        "layout": "kpi-insight",
+        "nature": "fact"
+      }
+    },
+    {
+      "classification": "事实",
+      "chartSuggestion": "两栏能力边界对照；“已实现”和“未验收/未实现”同屏。",
+      "content": {
+        "type": "comparison",
+        "title": "可以交付可编辑草稿，不能承诺商业成稿",
+        "speakerNotes": "源码可以接收明确需求和多份材料，在单次授权后进行逐页规划，再由代码生成可编辑文字、形状、图表、表格和讲稿；本机LibreOffice提供PDF和逐页预览，质量报告保留来源和告警。边界同样重要：当前没有独立语义事实核查，没有自动商业视觉批准，也没有任意旧PPT无损编辑或会话局部修订。PPTX不内嵌字体，接收方需要相应字体并复核重排。判断是否试点，应建立在这些真实能力与限制上，而不是把规范导出误称为咨询公司定制成稿。\n\n来源位置：source-1-p-2；source-1-p-3；source-1-p-6\n助手基于源码证据编排；未调用后台外部模型，仍需人工事实与Office验收。\n\n仓库依据（快照）：\nE02 server/skills/presentation/pipeline.ts:L63–L73；shared/presentation.ts:L1–L8\nE03 server/skills/presentation/quality.ts:L41–L64；docs/commercial-ppt-engine.md:L135–L144\nE06 docs/commercial-ppt-engine.md:L81–L93",
+        "sources": [
+          "source-1-p-2",
+          "source-1-p-3",
+          "source-1-p-6"
+        ],
+        "columns": [
+          {
+            "heading": "已实现的工程能力",
+            "bullets": [
+              "授权材料规划与来源引用",
+              "原生文字、图表、表格及讲稿",
+              "实际PDF与全页渲染证据",
+              "规划恢复与独立质量报告"
+            ]
+          },
+          {
+            "heading": "不能据此承诺的效果",
+            "bullets": [
+              "独立事实核查与商业视觉批准",
+              "真实商业材料与真实模型已验收",
+              "任意旧PPT无损编辑",
+              "会话修订、版本对比与目标Office认证"
+            ]
+          }
+        ],
+        "subtitle": "【事实】仅限所列源码与历史测试范围；不等于商业验收。"
+      },
+      "id": "slide-04",
+      "suggestedSeconds": 75,
+      "sourceRefs": [
+        "E02",
+        "E03",
+        "E06"
+      ],
+      "bindings": [],
+      "resolvedSourceRefs": [
+        "source-1-p-2",
+        "source-1-p-3",
+        "source-1-p-6"
+      ],
+      "preview": "adaptive/slides/04.jpg",
+      "design": {
+        "layout": "capability-boundary",
+        "nature": "fact"
+      }
+    },
+    {
+      "classification": "事实",
+      "chartSuggestion": "原生柱状图，只比较同一API检查批次中的通过/失败数量；不得标为全仓成功率。",
+      "content": {
+        "type": "chart",
+        "title": "扩展API仍有失败，需先判断试点影响",
+        "subtitle": "【事实】同一批扩展API检查；HEAD对照复现，不等于自动放行。",
+        "speakerNotes": "这张图只展示同一批23项扩展API检查的结果：19项通过、4项失败。隔离的HEAD源码树复现了相同失败，因此没有证据把它们归因于本次PPT变更；但既存不等于可以忽略。失败涉及未配置通道时的错误、模型目录配置状态、未配置额度接口和匿名HTTP接口鉴权期望。下一步需要逐项确认它们是否影响拟选的试点路径，以及应当修复、限制范围还是设置启动阻断。这里不推断生产事故已经发生，也不把“基线同样失败”当成自动放行理由。\n\n来源位置：source-3-table-1；source-1-p-4\n助手基于源码证据编排；未调用后台外部模型，仍需人工事实与Office验收。\n\n仓库依据（快照）：\nD02 见随附来源与字段口径\nE04 docs/commercial-ppt-engine.md:L94–L110；.cache/presentation-full-skills-serial.log:L1535–L1543；.cache/presentation-ui-final.log:L32–L32；.cache/presentation-api-regression.log:L222–L230；.cache/presentation-api-head-baseline.log:L223–L231",
+        "sources": [
+          "source-3-table-1",
+          "source-1-p-4"
+        ],
+        "chartType": "bar",
+        "categories": [
+          "通过",
+          "失败"
+        ],
+        "series": [
+          {
+            "name": "用例数",
+            "values": [
+              19,
+              4
+            ]
+          }
+        ]
+      },
+      "id": "slide-05",
+      "suggestedSeconds": 75,
+      "sourceRefs": [
+        "D02",
+        "E04"
+      ],
+      "bindings": [
+        {
+          "datasetId": "source-3-table-1",
+          "rows": [
+            2,
+            3
+          ],
+          "columns": [
+            "检查结果",
+            "用例数"
+          ],
+          "operation": "verbatim-cells",
+          "values": [
+            [
+              "通过",
+              "19"
+            ],
+            [
+              "失败",
+              "4"
+            ]
+          ]
+        }
+      ],
+      "resolvedSourceRefs": [
+        "source-3-table-1",
+        "source-1-p-4"
+      ],
+      "preview": "adaptive/slides/05.jpg",
+      "design": {
+        "layout": "chart-takeaway",
+        "nature": "fact"
+      }
+    },
+    {
+      "classification": "分析",
+      "chartSuggestion": "原生三方案比较表；不编造评分、ROI、预算或概率。",
+      "content": {
+        "type": "table",
+        "title": "三种可选路径：建议选择受控试点",
+        "subtitle": "【分析】定性分析与建议，不是已测算成本收益。",
+        "speakerNotes": "当前有三种实际可讨论的路径。维持现状，不新增试点投入，但无法获得真实材料的使用反馈；在明确边界下小范围试点，能够把模型表现、复核投入和目标Office兼容性转化为可记录证据，但必须承担受控的试跑与复核工作；继续完善后再试点，可以先处理部分缺口，但在真实反馈不足时可能扩大开发范围。表内是基于当前能力和缺口作出的定性分析，不是已经测得的成本收益或项目排期。建议选择受控试点，并以前述授权、责任和退出条件为前提。\n\n来源位置：source-4-table-1；source-1-p-3；source-1-p-4\n助手基于源码证据编排；未调用后台外部模型，仍需人工事实与Office验收。\n\n仓库依据（快照）：\nD03 见随附来源与字段口径\nE03 server/skills/presentation/quality.ts:L41–L64；docs/commercial-ppt-engine.md:L135–L144\nE04 docs/commercial-ppt-engine.md:L94–L110；.cache/presentation-full-skills-serial.log:L1535–L1543；.cache/presentation-ui-final.log:L32–L32；.cache/presentation-api-regression.log:L222–L230；.cache/presentation-api-head-baseline.log:L223–L231",
+        "sources": [
+          "source-4-table-1",
+          "source-1-p-3",
+          "source-1-p-4"
+        ],
+        "headers": [
+          "方案",
+          "可获得价值",
+          "主要代价或风险",
+          "建议判断"
+        ],
+        "rows": [
+          [
+            "维持现状",
+            "不新增试跑投入",
+            "缺少真实使用反馈",
+            "不优先"
+          ],
+          [
+            "受控小范围试点",
+            "获得真实复核证据",
+            "需授权与复核投入",
+            "有条件推荐"
+          ],
+          [
+            "完善后再试点",
+            "先补部分能力缺口",
+            "真实反馈仍然缺少",
+            "条件不足时采用"
+          ]
+        ]
+      },
+      "id": "slide-06",
+      "suggestedSeconds": 105,
+      "sourceRefs": [
+        "D03",
+        "E03",
+        "E04"
+      ],
+      "bindings": [
+        {
+          "datasetId": "source-4-table-1",
+          "rows": [
+            2,
+            3,
+            4
+          ],
+          "columns": [
+            "方案",
+            "可获得价值",
+            "主要代价或风险",
+            "建议判断"
+          ],
+          "operation": "verbatim-cells",
+          "values": [
+            [
+              "维持现状",
+              "不新增试跑投入",
+              "缺少真实使用反馈",
+              "不优先"
+            ],
+            [
+              "受控小范围试点",
+              "获得真实复核证据",
+              "需授权与复核投入",
+              "有条件推荐"
+            ],
+            [
+              "完善后再试点",
+              "先补部分能力缺口",
+              "真实反馈仍然缺少",
+              "条件不足时采用"
+            ]
+          ]
+        }
+      ],
+      "resolvedSourceRefs": [
+        "source-4-table-1",
+        "source-1-p-3",
+        "source-1-p-4"
+      ],
+      "preview": "adaptive/slides/06.jpg",
+      "design": {
+        "layout": "decision-matrix",
+        "nature": "analysis",
+        "emphasisRows": [
+          1
+        ]
+      }
+    },
+    {
+      "classification": "建议",
+      "chartSuggestion": "四项验证任务卡；每项对应明确的证据，而非泛化“提升效率”。",
+      "content": {
+        "type": "bullets",
+        "title": "试点的价值：把未知变成可核对证据",
+        "speakerNotes": "推荐试点，不是因为全部问题已经解决，而是已有链路足以承载受控验证。试点应该回答四个尚未有答案的问题：真实材料能否形成领导可用的决策主线；模型会不会误解事实、遗漏矛盾或给出无依据结论；业务人员需要投入多少复核时间；接收方在目标Office打开后，图表、表格和字体是否保持可编辑、可读。建议把这些问题作为每次试跑的记录项。若只是重复导出既有合成样本，或只看截图漂亮而不核对原文，就不能证明试点取得了有效结果。\n\n来源位置：source-1-p-1；source-1-p-3；source-1-p-6；source-1-p-8\n助手基于源码证据编排；未调用后台外部模型，仍需人工事实与Office验收。\n\n仓库依据（快照）：\nE01 docs/examples/leader-decision/brief.md:L1–L8\nE03 server/skills/presentation/quality.ts:L41–L64；docs/commercial-ppt-engine.md:L135–L144\nE06 docs/commercial-ppt-engine.md:L81–L93\nE08 frontend/workspace/skillPainpointMap.ts:L21–L53；server/skills/presentation/pipeline.ts:L34–L49；apps/web/src/inspiration/samples/LeaderDecisionReport.tsx:L54–L63",
+        "sources": [
+          "source-1-p-1",
+          "source-1-p-3",
+          "source-1-p-6",
+          "source-1-p-8"
+        ],
+        "bullets": [
+          "用真实授权材料检验决策主线，而非重复合成样本",
+          "对照原文核查事实、矛盾、数值和待确认项",
+          "记录实际模型调用与业务复核投入，不先承诺节省",
+          "在选定Office重开检查文字、图表和表格的可编辑性"
+        ],
+        "subtitle": "【建议】待决策；责任、资源与启动条件仍需确认。"
+      },
+      "id": "slide-07",
+      "suggestedSeconds": 90,
+      "sourceRefs": [
+        "E01",
+        "E03",
+        "E06",
+        "E08"
+      ],
+      "bindings": [],
+      "resolvedSourceRefs": [
+        "source-1-p-1",
+        "source-1-p-3",
+        "source-1-p-6",
+        "source-1-p-8"
+      ],
+      "preview": "adaptive/slides/07.jpg",
+      "design": {
+        "layout": "executive-summary",
+        "nature": "recommendation"
+      }
+    },
+    {
+      "classification": "分析",
+      "chartSuggestion": "原生成本口径表；金额、单价与工时全部待确认，不画虚构成本饼图。",
+      "content": {
+        "type": "table",
+        "title": "成本尚未测算：先明确记录口径和上限",
+        "subtitle": "【分析】没有报价、账单或工时记录；不提供虚构金额与节省比例。",
+        "speakerNotes": "目前没有服务商账单、人工工时或部署报价，因此不能给出可信的预算和节省比例。表中列出必须记录的成本项及对应口径。模型成本以服务商实际用量和计价为准，不能用未报告的token估算；人工成本需要记录逐页复核和返工时间；部署运行资源要区分配置的最大执行时限与实际耗时，不能把时限当成平均性能；材料合规则需要确认提供商留存政策和允许的资料范围。建议由领导指定资源上限的审批责任，再由试点结果形成测算。金额、单价、工时和总额目前均待确认。\n\n来源位置：source-4-table-2；source-1-p-5；source-1-p-7；source-1-p-8\n助手基于源码证据编排；未调用后台外部模型，仍需人工事实与Office验收。\n\n仓库依据（快照）：\nD04 见随附来源与字段口径\nE05 server/skills/presentation/pipeline.ts:L34–L62；server/skills/presentation/usage.ts:L1–L10；docs/commercial-ppt-engine.md:L77–L80\nE07 docs/commercial-ppt-engine.md:L75–L76\nE08 frontend/workspace/skillPainpointMap.ts:L21–L53；server/skills/presentation/pipeline.ts:L34–L49；apps/web/src/inspiration/samples/LeaderDecisionReport.tsx:L54–L63",
+        "sources": [
+          "source-4-table-2",
+          "source-1-p-5",
+          "source-1-p-7",
+          "source-1-p-8"
+        ],
+        "headers": [
+          "成本项",
+          "当前证据",
+          "试点需记录",
+          "批准前确认"
+        ],
+        "rows": [
+          [
+            "模型调用",
+            "有用量字段",
+            "账单与实际用量",
+            "单价及上限待定"
+          ],
+          [
+            "人工复核",
+            "工时尚无记录",
+            "核对及返工工时",
+            "人员与工时待定"
+          ],
+          [
+            "部署运行",
+            "仅有执行时限",
+            "耗时与资源消耗",
+            "资源上限待定"
+          ],
+          [
+            "材料合规",
+            "需单次授权",
+            "授权与留存边界",
+            "资料范围待定"
+          ]
+        ]
+      },
+      "id": "slide-08",
+      "suggestedSeconds": 90,
+      "sourceRefs": [
+        "D04",
+        "E05",
+        "E07",
+        "E08"
+      ],
+      "bindings": [
+        {
+          "datasetId": "source-4-table-2",
+          "rows": [
+            2,
+            3,
+            4,
+            5
+          ],
+          "columns": [
+            "成本项",
+            "当前证据",
+            "试点需记录",
+            "批准前确认"
+          ],
+          "operation": "verbatim-cells",
+          "values": [
+            [
+              "模型调用",
+              "有用量字段",
+              "账单与实际用量",
+              "单价及上限待定"
+            ],
+            [
+              "人工复核",
+              "工时尚无记录",
+              "核对及返工工时",
+              "人员与工时待定"
+            ],
+            [
+              "部署运行",
+              "仅有执行时限",
+              "耗时与资源消耗",
+              "资源上限待定"
+            ],
+            [
+              "材料合规",
+              "需单次授权",
+              "授权与留存边界",
+              "资料范围待定"
+            ]
+          ]
+        }
+      ],
+      "resolvedSourceRefs": [
+        "source-4-table-2",
+        "source-1-p-5",
+        "source-1-p-7",
+        "source-1-p-8"
+      ],
+      "preview": "adaptive/slides/08.jpg",
+      "design": {
+        "layout": "adaptive-table",
+        "nature": "analysis"
+      }
+    },
+    {
+      "classification": "分析",
+      "chartSuggestion": "原生风险/触发/处置表；不编造概率、损失金额或严重性评分。",
+      "content": {
+        "type": "table",
+        "title": "风险要有触发条件和应对动作",
+        "speakerNotes": "风险管理应当说明何时触发、如何处置，而不是随意给出高低概率。事实误读的触发信号是引用存在但结论不被原文支持；应停止发布并由业务人员逐项核对。字体或编辑异常需要在选定Office中复现，先确认字体与原生对象，不用缩字掩盖问题。中断发生在规划保存前，不能假定可以继续；需要重新授权新建，避免未知外部请求静默重放。对既存API失败则先评估影响，再决定修复或收窄试点范围。以上是建议的处置方案，不代表风险已经发生或全部关闭。\n\n来源位置：source-4-table-3；source-1-p-3；source-1-p-4；source-1-p-5；source-1-p-6\n助手基于源码证据编排；未调用后台外部模型，仍需人工事实与Office验收。\n\n仓库依据（快照）：\nD05 见随附来源与字段口径\nE03 server/skills/presentation/quality.ts:L41–L64；docs/commercial-ppt-engine.md:L135–L144\nE04 docs/commercial-ppt-engine.md:L94–L110；.cache/presentation-full-skills-serial.log:L1535–L1543；.cache/presentation-ui-final.log:L32–L32；.cache/presentation-api-regression.log:L222–L230；.cache/presentation-api-head-baseline.log:L223–L231\nE05 server/skills/presentation/pipeline.ts:L34–L62；server/skills/presentation/usage.ts:L1–L10；docs/commercial-ppt-engine.md:L77–L80\nE06 docs/commercial-ppt-engine.md:L81–L93",
+        "sources": [
+          "source-4-table-3",
+          "source-1-p-3",
+          "source-1-p-4",
+          "source-1-p-5",
+          "source-1-p-6"
+        ],
+        "headers": [
+          "风险",
+          "触发信号",
+          "建议动作"
+        ],
+        "rows": [
+          [
+            "事实误读",
+            "引用不支持结论",
+            "停止发布并核对原文"
+          ],
+          [
+            "字体或编辑异常",
+            "目标Office重排",
+            "装字体并重开验证"
+          ],
+          [
+            "规划前运行中断",
+            "尚无保存的规划",
+            "明确重新授权新建"
+          ],
+          [
+            "既存API失败",
+            "影响试点路径",
+            "评审后修复或收窄"
+          ]
+        ],
+        "subtitle": "【分析】定性判断，非成本收益测算或已批准决定。"
+      },
+      "id": "slide-09",
+      "suggestedSeconds": 90,
+      "sourceRefs": [
+        "D05",
+        "E03",
+        "E04",
+        "E05",
+        "E06"
+      ],
+      "bindings": [
+        {
+          "datasetId": "source-4-table-3",
+          "rows": [
+            2,
+            3,
+            4,
+            5
+          ],
+          "columns": [
+            "风险",
+            "触发信号",
+            "建议动作"
+          ],
+          "operation": "verbatim-cells",
+          "values": [
+            [
+              "事实误读",
+              "引用不支持结论",
+              "停止发布并核对原文"
+            ],
+            [
+              "字体或编辑异常",
+              "目标Office重排",
+              "装字体并重开验证"
+            ],
+            [
+              "规划前运行中断",
+              "尚无保存的规划",
+              "明确重新授权新建"
+            ],
+            [
+              "既存API失败",
+              "影响试点路径",
+              "评审后修复或收窄"
+            ]
+          ]
+        }
+      ],
+      "resolvedSourceRefs": [
+        "source-4-table-3",
+        "source-1-p-3",
+        "source-1-p-4",
+        "source-1-p-5",
+        "source-1-p-6"
+      ],
+      "preview": "adaptive/slides/09.jpg",
+      "design": {
+        "layout": "risk-response",
+        "nature": "analysis"
+      }
+    },
+    {
+      "classification": "建议",
+      "chartSuggestion": "四阶段关卡时间线，无虚构日期、工期或人名。",
+      "content": {
+        "type": "timeline",
+        "title": "按关卡推进，不承诺未经评估的日期",
+        "speakerNotes": "建议按关卡推进，而不是现在给出没有排期依据的日历承诺。首先确认材料授权、使用对象、责任人与资源边界；其次用已确认的材料和模型通道真实试跑，并保留用量、来源、导出和告警；随后由业务人员逐页复核，并在选定Office重开检查；最后根据问题和实际投入决定停止、补齐后继续，还是扩大范围。任何前置关卡未满足都不应跳过。这里的四步是建议的执行顺序，具体负责人、开始日期、持续时间和样本数量均需确认后另行排期。\n\n来源位置：source-1-p-1；source-1-p-3；source-1-p-5；source-1-p-8\n助手基于源码证据编排；未调用后台外部模型，仍需人工事实与Office验收。\n\n仓库依据（快照）：\nE01 docs/examples/leader-decision/brief.md:L1–L8\nE03 server/skills/presentation/quality.ts:L41–L64；docs/commercial-ppt-engine.md:L135–L144\nE05 server/skills/presentation/pipeline.ts:L34–L62；server/skills/presentation/usage.ts:L1–L10；docs/commercial-ppt-engine.md:L77–L80\nE08 frontend/workspace/skillPainpointMap.ts:L21–L53；server/skills/presentation/pipeline.ts:L34–L49；apps/web/src/inspiration/samples/LeaderDecisionReport.tsx:L54–L63",
+        "sources": [
+          "source-1-p-1",
+          "source-1-p-3",
+          "source-1-p-5",
+          "source-1-p-8"
+        ],
+        "items": [
+          {
+            "label": "确认边界",
+            "body": "授权、责任、资源明确后启动"
+          },
+          {
+            "label": "真实试跑",
+            "body": "保留用量、来源、导出和告警"
+          },
+          {
+            "label": "人工验收",
+            "body": "逐页核对并在目标Office重开"
+          },
+          {
+            "label": "复盘决策",
+            "body": "依证据决定停止、补齐或扩围"
+          }
+        ],
+        "subtitle": "【建议】待决策；责任、资源与启动条件仍需确认。"
+      },
+      "id": "slide-10",
+      "suggestedSeconds": 75,
+      "sourceRefs": [
+        "E01",
+        "E03",
+        "E05",
+        "E08"
+      ],
+      "bindings": [],
+      "resolvedSourceRefs": [
+        "source-1-p-1",
+        "source-1-p-3",
+        "source-1-p-5",
+        "source-1-p-8"
+      ],
+      "preview": "adaptive/slides/10.jpg",
+      "design": {
+        "layout": "stage-gates",
+        "nature": "recommendation"
+      }
+    },
+    {
+      "classification": "建议",
+      "chartSuggestion": "四条验收门槛；注明是建议的试点标准，非已完成验收。",
+      "content": {
+        "type": "bullets",
+        "title": "达标才扩围：导出成功不是唯一门槛",
+        "speakerNotes": "建议把是否扩围与可验证门槛挂钩。首先，每一项关键结论和数值都能够回到材料位置，未确认项不得写成既定事实；其次，PDF和所有页图可核对，缺字、越界、重叠或其他阻止发布的问题没有被忽略；再次，接收方在选定Office中验证原生文字、图表和表格，而不是只打开了位图截图；最后，已知API问题和实际投入经过责任人评审，材料授权与留存边界持续有效。当前质量报告没有商业批准入口，技术状态不能替代人工签核。扩围仍需新的决策，不因本次试点授权自动发生。\n\n来源位置：source-1-p-1；source-1-p-3；source-1-p-6\n助手基于源码证据编排；未调用后台外部模型，仍需人工事实与Office验收。\n\n仓库依据（快照）：\nE01 docs/examples/leader-decision/brief.md:L1–L8\nE03 server/skills/presentation/quality.ts:L41–L64；docs/commercial-ppt-engine.md:L135–L144\nE06 docs/commercial-ppt-engine.md:L81–L93",
+        "sources": [
+          "source-1-p-1",
+          "source-1-p-3",
+          "source-1-p-6"
+        ],
+        "bullets": [
+          "关键结论和数值逐项回溯；未确认项不写成事实",
+          "全页渲染可核对，不忽略阻止发布的质量问题",
+          "选定Office验证原生编辑，不仅核对截图",
+          "已知接口问题、实际投入和资料边界经责任人评审"
+        ],
+        "subtitle": "【建议】待决策；责任、资源与启动条件仍需确认。"
+      },
+      "id": "slide-11",
+      "suggestedSeconds": 60,
+      "sourceRefs": [
+        "E01",
+        "E03",
+        "E06"
+      ],
+      "bindings": [],
+      "resolvedSourceRefs": [
+        "source-1-p-1",
+        "source-1-p-3",
+        "source-1-p-6"
+      ],
+      "preview": "adaptive/slides/11.jpg",
+      "design": {
+        "layout": "executive-summary",
+        "nature": "recommendation"
+      }
+    },
+    {
+      "classification": "建议",
+      "chartSuggestion": "结尾拍板清单；提供“有条件批准/补齐后再议”的明确决策动作。",
+      "content": {
+        "type": "bullets",
+        "title": "请确认范围、责任、资源与退出条件",
+        "speakerNotes": "最后请领导确认：是否有条件批准受控试点；由谁负责业务复核和技术执行；允许使用哪些资料和模型通道；资源上限及停止条件如何确定。我的推荐是批准有边界的试点，但在这些条件未明确前不启动，不把试点授权解释为全面上线或商业验收通过。若暂时无法确认，也可以选择完善后再议，继续补齐所需证据。汇报中的预算、人员、日期和收益没有编造，尚待确认的内容将保留在交付清单中。\n\n来源位置：source-1-p-1；source-1-p-3；source-1-p-8\n助手基于源码证据编排；未调用后台外部模型，仍需人工事实与Office验收。\n\n仓库依据（快照）：\nE01 docs/examples/leader-decision/brief.md:L1–L8\nE03 server/skills/presentation/quality.ts:L41–L64；docs/commercial-ppt-engine.md:L135–L144\nE08 frontend/workspace/skillPainpointMap.ts:L21–L53；server/skills/presentation/pipeline.ts:L34–L49；apps/web/src/inspiration/samples/LeaderDecisionReport.tsx:L54–L63",
+        "sources": [
+          "source-1-p-1",
+          "source-1-p-3",
+          "source-1-p-8"
+        ],
+        "bullets": [
+          "是否有条件批准小范围试点（建议：批准）",
+          "业务复核人与技术负责人（待指定）",
+          "资料范围、模型留存政策与资源上限（待确认）",
+          "启动关卡和停止条件；未满足则暂不启动（待确认）"
+        ],
+        "subtitle": "【建议】待决策；责任、资源与启动条件仍需确认。"
+      },
+      "id": "slide-12",
+      "suggestedSeconds": 30,
+      "sourceRefs": [
+        "E01",
+        "E03",
+        "E08"
+      ],
+      "bindings": [],
+      "resolvedSourceRefs": [
+        "source-1-p-1",
+        "source-1-p-3",
+        "source-1-p-8"
+      ],
+      "preview": "adaptive/slides/12.jpg",
+      "design": {
+        "layout": "action-agenda",
+        "nature": "recommendation"
+      }
+    }
+  ],
+  "versionId": "03643902e26c75a9d2bdc3cae1df450c7c290f384d1c1b50eea520055d05db3a",
+  "inputHash": "eb3a945e59eda0c3983e53f509ad71ffa0e87eb09e261ce6847d055e5a1e2cb9",
+  "externalProviderCalls": 0,
+  "qualitySummary": {
+    "releaseStatus": "needs-human-review",
+    "commercialApproval": false,
+    "criticalIssues": 0
+  },
+  "evidenceScope": "经白名单选择的源码摘录与历史测试摘要；非全仓审计，不包含凭据、环境变量值或完整日志。",
+  "sourceCatalog": [
+    {
+      "id": "E01",
+      "label": "用户确认的决策需求",
+      "classification": "需求",
+      "summary": "15分钟、12页、领导决策、内置模板及文件；资源与人员未提供，不发布外部社区。",
+      "locations": [
+        {
+          "path": "docs/examples/leader-decision/brief.md",
+          "startLine": 1,
+          "endLine": 8,
+          "fileSHA256": "16e9b3629e759f918ed7c539ce2ea91e85e3ad901e1043c31f4ea0b5e26ec6cc",
+          "excerpt": "# 领导决策汇报：当前 PPT 引擎是否进入试点\n\n这是用户已确认的需求记录，不是既成业务事实或批准文件。所属任务：汇报PPT / 汇报没有清晰主线 / 领导决策汇报。\n决策对象：是否有条件批准当前 PPT 引擎进入小范围试点。材料：实际可访问的项目源码和已有测试证据。受众：项目决策领导。建议讲述 15 分钟，输出 12 页。\n对比维持现状、受控小范围试点、完善后再试点；结论先行，每页实质内容、来源、图示与讲稿。事实、分析和建议分别标明。\n交付：应用内置模板示例、原生可编辑 PPTX、实际 PDF、全页预览及证据/讲稿包。不向外部社区发布；文件交付会成为本项目内置资源。\n没有提供预算、单价、工时、试点人数/份数、启动日期和具体负责人。不得虚构收益、人员、排期或已批准决定。全部保持待确认。\n本次由助手基于已检查的源码证据编排内容，调用项目本机材料解析、规范编译、原生 PPTX、LibreOffice PDF/渲染及质量检查；不伪称调用了生产外部模型或完成目标 Office 商业验收。"
+        }
+      ],
+      "resolvedRef": "source-1-p-1"
+    },
+    {
+      "id": "E02",
+      "label": "实际编译与导出链路",
+      "classification": "事实",
+      "summary": "规划到原生对象、PDF和逐页预览已在代码中实现，不等于独立事实核查。",
+      "locations": [
+        {
+          "path": "server/skills/presentation/pipeline.ts",
+          "startLine": 63,
+          "endLine": 73,
+          "fileSHA256": "a9f8c405747cffa4a1ed0451c08268304ebdbe7fdf75368885bca47b0159f00d",
+          "excerpt": "  const spec = compilePresentationSpec(proposal, request.brief, sources);\n  const versionId = sha256(JSON.stringify({ brief: request.brief, inputHash: hash, spec }));\n  event('阶段 3/5：用固定主题和真实单元格编译原生文字、形状、图表、表格及讲稿；不执行AI生成代码。');\n  const built = await buildStructuredPresentation(Buffer.from(JSON.stringify({ title: spec.title, theme: { ...spec.theme, headingFont: 'Noto Sans SC', bodyFont: 'Noto Sans SC' }, slides: spec.slides.map(s => s.content) })), { strictLayout: true, contentOrigin: 'ai-planned' });\n  event('阶段 4/5：本机LibreOffice输出PDF与全页渲染证据；字体缺失/渲染失败将阻止发布通过。');\n  let rendered: Awaited<ReturnType<typeof renderPresentation>> | undefined, renderError: string | undefined;\n  try { rendered = await renderPresentation(built.pptxBytes, spec.slides.length, event, { fontDirectory: fonts.directory, pdf: true, workDirectory: input.workDirectory }); }\n  catch { renderError = 'LibreOffice全页渲染未完成或输出校验失败；仅交付阻止发布的草稿与诊断，不冒充成功渲染。'; event(renderError); }\n  event('阶段 5/5：校验来源绑定、数值、文字边界/密度/交叠、对比度、字体、PDF及渲染证据。');\n  const pdf = rendered?.report.pdf as { pageCount?: number; missingFonts?: string[]; error?: string } | undefined;\n  const quality = presentationQuality(spec, sources, built.layout, { report: rendered?.report, error: renderError }, pdf || { error: '没有可校验的PDF。' });"
+        },
+        {
+          "path": "shared/presentation.ts",
+          "startLine": 1,
+          "endLine": 8,
+          "fileSHA256": "e33935e7884d28c1598c91bcbb32fecce2c18be01498a634433512f5b182cc67",
+          "excerpt": "/** First commercial-generation milestone. Not the P2 arbitrary-page editor. */\nexport const presentationLimits = { files: 5, fileBytes: 2_000_000, totalBytes: 10_000_000, envelopeBytes: 13_600_000, sourceCharacters: 40_000, slides: 25 } as const;\nexport type PresentationBrief = { goal: string; audience: string; scenario: 'business-report' | 'pitch-deck' | 'data-analysis'; theme: 'consulting' | 'corporate' | 'technology'; slideCount: number };\nexport type PresentationRequest = { schemaVersion: 1; brief: PresentationBrief; files: { name: string; base64: string }[] };\nexport type PresentationBlock = { id: string; sourceId: string; locator: string; text: string };\nexport type PresentationDataset = { id: string; sourceId: string; sheet: string; headers: string[]; rows: { row: number; values: string[] }[] };\nexport type PresentationSources = { inputHash: string; files: { id: string; name: string; sha256: string; bytes: number }[]; blocks: PresentationBlock[]; datasets: PresentationDataset[]; warnings: string[] };\nexport type PresentationCheckpoint = { kind: 'presentation'; schemaVersion: 1; inputHash: string; stage: 'planned'; spec: unknown; plannerModel?: string; usage?: unknown[] };"
+        }
+      ],
+      "resolvedRef": "source-1-p-2"
+    },
+    {
+      "id": "E03",
+      "label": "质量状态及未完成验收",
+      "classification": "事实",
+      "summary": "所有输出仍需人工复核；commercialApproval始终false；真实模型/商业材料、目标Office和P2尚未验收。",
+      "locations": [
+        {
+          "path": "server/skills/presentation/quality.ts",
+          "startLine": 41,
+          "endLine": 64,
+          "fileSHA256": "c6a841bdb66529426642a55d8f51b8c0cb3d5f1899149cdf30ddbe498edaeac2",
+          "excerpt": "export function presentationQuality(spec: PresentationSpec, sources: PresentationSources, layout: ResolvedText[], render: { report?: Record<string, any>; error?: string }, pdf: { pageCount?: number; missingFonts?: string[]; error?: string }) {\n  const issues = checkPresentationLayout(layout);\n  const sourceNumbers = new Set((sources.blocks.map(b => b.text).join('\\n').match(/[-+]?\\d+(?:\\.\\d+)?(?:%|％)?/g) || []));\n  for (const slide of spec.slides) {\n    const { sources: _refs, speakerNotes: _notes, ...visible } = slide.content;\n    const numbers = [...new Set(JSON.stringify(visible).match(/[-+]?\\d+(?:\\.\\d+)?(?:%|％)?/g) || [])].filter(n => !sourceNumbers.has(n));\n    if (numbers.length) issues.push({ severity: 'warning', code: 'UNMATCHED_NUMBER', slideId: slide.id, message: `材料中未按相同字面找到数字 ${numbers.slice(0, 12).join('、')}；可能是建议/编号/格式差异，必须逐项核对，不自动认定真实或伪造。` });\n  }\n  for (const box of layout) {\n    if (box.color && ratio(box.color, box.fill || spec.theme.background) < (box.fontSize >= 18 ? 3 : 4.5)) issues.push({ severity: 'critical', code: 'LOW_TEXT_CONTRAST', slideId: box.slideId, elementId: box.elementId, message: '文字与已知背景的色彩对比度不足。' });\n  }\n  if (render.error || !render.report) issues.push({ severity: 'critical', code: 'RENDER_FAILED', message: render.error || '无逐页渲染证据。' });\n  if (render.report && (render.report.pageCount !== spec.slides.length || render.report.missingFontCount)) issues.push({ severity: 'critical', code: 'RENDER_COUNT_OR_FONTS', message: '渲染页数不一致或存在缺失字体。' });\n  if (pdf.error || pdf.pageCount !== spec.slides.length || pdf.missingFonts?.length) issues.push({ severity: 'critical', code: 'PDF_FAILED', message: pdf.error || 'PDF页数不一致或字体缺失。' });\n  spec.missingInformation.forEach(message => issues.push({ severity: 'warning', code: 'MISSING_INFORMATION', message }));\n  return {\n    schemaVersion: 1, executionStatus: 'completed', releaseStatus: issues.some(i => i.severity === 'critical') ? 'blocked' : 'needs-human-review', commercialApproval: false,\n    checks: { schema: 'passed', sourceReferences: 'all IDs resolved; semantic support NOT verified', chartAndTableData: 'deterministic verbatim cell bindings; no model-supplied values or implicit aggregation', nativeEditableObjects: 'compiler-authored text/shapes/charts/tables; no target-application editing certification', boundingBoxesAndTextMetrics: 'checked with bundled font; conservative heuristic, not Office text-overflow proof', textIntersections: 'checked; backgrounds and chart-internal labels excluded', raster: render.report ? 'all pages rendered by LibreOffice' : 'failed', pdf: pdf.error ? 'failed' : `${pdf.pageCount ?? 0} physical pages checked` },\n    issues, sourceWarnings: sources.warnings, font: { ...presentationFont, bundledFontHashVerified: true, embeddedInPPTX: false },\n    repair: { maxPlanningSchemaRetries: 1, automaticVisualRepair: false, factsDroppedToFit: false, fontShrinkingEnabled: false },\n    notChecked: ['Independent semantic fact verification and contradiction resolution', 'Source rights, trademarks, confidential-data policy and provider retention', 'Office-native line breaking, native chart label collisions, aesthetic balance and all shape/shape occlusions', 'Editable reopening in Microsoft PowerPoint / Keynote / WPS and font substitution on recipient machines', 'Commercial approval by a named human reviewer'],\n    nextAction: '对照 sources-and-notes.json、PDF及每页JPEG复核；blocked 时不得作为正式稿。没有critical也仍是待人工验收的草稿。',\n  };\n}"
+        },
+        {
+          "path": "docs/commercial-ppt-engine.md",
+          "startLine": 135,
+          "endLine": 144,
+          "fileSHA256": "33a315a522daf2c0dfe415e17b27e5b484a94c450b44ea997911eaa4fa9deb13",
+          "excerpt": "## 7. 未完成清单（不提前打勾）\n\n- 真实外部模型与真实商业材料的叙事/事实/商业视觉验收，以及 PowerPoint/Keynote/WPS 人工编辑验收。\n- 自动语义事实核查、完整矛盾发现、视觉修复及自动发布审批。\n- P2 缩略图/画布/属性专用编辑器、对话局部修订、不可变修订历史/版本比较、保留未改页。\n- 自定义品牌资产/Logo/高级模板和更丰富图形版式；当前只是三组固定主题与八种原生页型。\n- PDF/OCR/图片/旧 PPT 多材料导入；旧稿仅现有结构检查，不是任意无损编辑。\n- 分布式渲染队列、完整跨平台打包和企业审批/审计运营。\n\n此前设置改版修改保持原样；本轮没有提交或推送，不覆盖已有未提交工作。"
+        }
+      ],
+      "resolvedRef": "source-1-p-3"
+    },
+    {
+      "id": "E04",
+      "label": "上一轮回归与隔离基线记录",
+      "classification": "历史事实",
+      "summary": "技能240/240、相关UI25/25；扩展API19/23，隔离HEAD复现相同4项失败；不是本次重新跑的全仓结果。",
+      "locations": [
+        {
+          "path": "docs/commercial-ppt-engine.md",
+          "startLine": 94,
+          "endLine": 110,
+          "fileSHA256": "33a315a522daf2c0dfe415e17b27e5b484a94c450b44ea997911eaa4fa9deb13",
+          "excerpt": "## 5. 本轮验证结果\n\n| 检查 | 最终结果 | 证据 |\n|---|---|---|\n| 全部技能后端测试 | **240/240 通过，0 skip** | `.cache/presentation-full-skills-serial.log` |\n| 其中新增演示验证 | 18 条单元/安全/质量测试 + 8 条集成/上限/恢复测试，包含在上述 240 项内 | `server/skills/presentation*.test.cjs` |\n| 相关浏览器回归 | **25/25 通过**（新增输入 3 项 + 原技能工作台/目录 22 项） | `.cache/presentation-ui-final.log` |\n| Web 生产构建 | 通过；保留既有分包体积/静动导入警告 | `.cache/presentation-final-build.log` |\n| 服务端 TypeScript / diff 检查 | 通过 | 最终 `tsc` / `git diff --check` |\n| 扩展 API 回归 | **19/23；4 项基线失败未修复** | 见下文，不能称全仓测试通过 |\n\n新增测试实际覆盖：授权/所有者、每个材料的解析、5×2 MB 封装与普通技能限额隔离、来源/未知字段拒绝、公式/隐藏表/链接拒绝、真实数据绑定和小数精度、稳定 ID、缺字/密度/边界/交叠、失败渲染的阻止发布、常规/粗体字体、三种主题真实 PDF/全页渲染、PDF 中文文本提取、PPTX 原生表格/图表/嵌入工作簿值与讲稿、25 页上限压力、一次规划重试、提供商错误不自动重试、Worker 检查点中断/重启恢复、无重复模型调用/计量、所有者隔离/任务关联、幂等、UTF-8 检查点字节计量、close 后临时目录清理和原子成果发布。\n\n第一次把多个 Office/OCR 后端测试和浏览器测试同时跑，出现资源竞争导致的超时/进程 SIGKILL，另有一项旧权限测试未包含新技能。补齐明确权限断言后，采用文件级串行、匹配执行预算的测试时限重新完整验证，得到上表最终结果；没有把第一次结果当通过。`test:skills` / `test:presentation` 固定串行，避免测试自身启动过多独立渲染调度器。\n\n扩展 API 的 4 项失败分别涉及：聊天未配置通道时的错误、模型目录配置状态、未配置额度接口、匿名 HTTP/健康接口的鉴权期望。本轮在 **隔离的 HEAD 源码树** 重新编译并运行相同 23 项，复现 **同样 19 通过/同样 4 项失败**（外部 HTTP 被阻止），证明它们不是本次 PPT 修改引入；没有修改认证语义或假改断言凑绿灯。对照日志：`.cache/presentation-api-regression.log` 与 `.cache/presentation-api-head-baseline.log`。真实外部模型、全仓所有测试、跨浏览器及目标 Office 软件商业验收不在“通过”范围。\n"
+        },
+        {
+          "path": ".cache/presentation-full-skills-serial.log",
+          "startLine": 1535,
+          "endLine": 1543,
+          "fileSHA256": "984f8373294b110b86800dd8612ca1317dceae322f5b7820b260804fdf28d8b3",
+          "excerpt": "1..240\n# tests 240\n# suites 0\n# pass 240\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 159389.489827"
+        },
+        {
+          "path": ".cache/presentation-ui-final.log",
+          "startLine": 32,
+          "endLine": 32,
+          "fileSHA256": "ca428defb26e6728a2ca7ef7d94888a7860df9de8f52a2a902236e029b89afa7",
+          "excerpt": "  25 passed (1.6m)"
+        },
+        {
+          "path": ".cache/presentation-api-regression.log",
+          "startLine": 222,
+          "endLine": 230,
+          "fileSHA256": "c7cdcf98e3dbe2a64c933bfe0782d0d558d5ebf150f2a9446a9abb3ce7bb1cce",
+          "excerpt": "1..23\n# tests 23\n# suites 0\n# pass 19\n# fail 4\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 2080.083342"
+        },
+        {
+          "path": ".cache/presentation-api-head-baseline.log",
+          "startLine": 223,
+          "endLine": 231,
+          "fileSHA256": "a0dd28ae2464ad13d820b5c1533687462d9e0425ce143aadc43cc397a366f629",
+          "excerpt": "1..23\n# tests 23\n# suites 0\n# pass 19\n# fail 4\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 662.731624"
+        }
+      ],
+      "resolvedRef": "source-1-p-4"
+    },
+    {
+      "id": "E05",
+      "label": "授权、恢复与用量边界",
+      "classification": "事实",
+      "summary": "外部正文处理必须授权；已有检查点复用，未保存规划不能静默重放；用量字段不是价格或预算。",
+      "locations": [
+        {
+          "path": "server/skills/presentation/pipeline.ts",
+          "startLine": 34,
+          "endLine": 62,
+          "fileSHA256": "a9f8c405747cffa4a1ed0451c08268304ebdbe7fdf75368885bca47b0159f00d",
+          "excerpt": "export async function createPresentation(input: SkillInput, event: (s: string) => void) {\n  if (!input.owner || input.parameters?.externalConsent !== 'yes') throw Error('需要已认证的所有者和本次正文处理授权；未发送材料。');\n  const request = parsePresentationRequest(input.bytes), hash = sha256(input.bytes);\n  event('阶段 1/5：校验需求与所有材料；不截断、不执行公式或材料中的指令。');\n  const sources = await readPresentationSources(request, hash);\n  const fonts = presentationFonts();\n  let proposal: unknown, model = '', planningCalls = 0;\n  let usage: UsageRecord[] = [];\n  if (input.resumePresentation) {\n    const cp = validatePresentationCheckpoint(input.resumePresentation, hash);\n    proposal = cp.spec; model = cp.plannerModel || 'checkpoint'; usage = (cp.usage || []).map(validatePresentationUsage);\n    compilePresentationSpec(proposal, request.brief, sources);\n    event('阶段 2/5：已校验并复用持久化规划检查点；不重复发送正文、不重复调用模型。');\n  } else {\n    if (!process.env.AI_API_KEY && !process.env.OPENAI_API_KEY) throw Error('服务端AI模型未配置；不会用模板冒充AI规划。');\n    event('阶段 2/5：将已授权的需求、提取正文与数据位置发送给服务端模型，规划叙事、页型与讲稿。');\n    const prompt = JSON.stringify({ brief: request.brief, files: sources.files, blocks: sources.blocks, datasets: sources.datasets.map(({ rows: _rows, ...d }) => d), warnings: sources.warnings });\n    let validationError = '';\n    for (let attempt = 0; attempt < 2; attempt++) {\n      // The existing provider adapter owns credentials, deadlines and usage accounting. No uploaded endpoint/key/model is accepted.\n      const response = await requestAI({ serverConfigurationOnly: true, onUsage: record => { usage.push(validatePresentationUsage(record)); input.onAIUsage?.(record); }, userId: input.owner, systemPrompt: presentationPlanningInstructions, prompt: prompt + (validationError ? `\\nThe previous proposal failed deterministic validation: ${validationError}. Return a corrected COMPLETE JSON object; preserve the supported facts, do not invent substitutes.` : ''), options: { temperature: 0.2, maxTokens: 14000 } });\n      planningCalls++; model = response.model.slice(0, 200);\n      try { proposal = parseModelJSON(response.content); compilePresentationSpec(proposal, request.brief, sources); validationError = ''; break; }\n      catch (error) { validationError = error instanceof Error ? error.message.slice(0, 400) : '规划格式不合法。'; if (attempt === 1) throw Error(`规划两次均未通过校验，未生成误导性文件：${validationError}`); event('模型规划未通过来源/数据/结构校验；仅进行一次受限的规划重试。'); }\n    }\n    const cp: PresentationCheckpoint = { kind: 'presentation', schemaVersion: 1, inputHash: hash, stage: 'planned', spec: proposal, plannerModel: model, usage };\n    validatePresentationCheckpoint(cp, hash);\n    if (input.onPresentationCheckpoint) await input.onPresentationCheckpoint(cp);\n  }"
+        },
+        {
+          "path": "server/skills/presentation/usage.ts",
+          "startLine": 1,
+          "endLine": 10,
+          "fileSHA256": "8f11a2d0602ed27913c67bd5e05e0f6044fd067e46ba987b7366a731fc4f4b9f",
+          "excerpt": "import type { UsageRecord } from '../../api/model-registry';\nimport { object, safeText } from './sources';\n/** Worker messages are attributed to the authenticated run owner, never an owner named by a model. */\nexport function validatePresentationUsage(value: unknown): UsageRecord {\n  const u = object(value, ['model', 'provider', 'promptTokens', 'completionTokens', 'totalTokens', 'reported', 'latencyMs', 'status', 'error', 'createdAt'], '模型用量');\n  safeText(u.model, 200, '模型标识'); safeText(u.provider, 50, '通道标识');\n  for (const key of ['promptTokens', 'completionTokens', 'totalTokens']) if (u[key] !== null && (!Number.isSafeInteger(u[key]) || u[key] < 0 || u[key] > 1_000_000_000)) throw Error('模型用量未报告或格式不合法。');\n  if (typeof u.reported !== 'boolean' || !['succeeded', 'failed'].includes(u.status) || typeof u.error !== 'string' || u.error.length > 1000 || !Number.isFinite(u.latencyMs) || u.latencyMs < 0 || u.latencyMs > 300000 || !Number.isSafeInteger(u.createdAt) || u.createdAt <= 0) throw Error('模型用量时间或状态不合法。');\n  return u as UsageRecord;\n}"
+        },
+        {
+          "path": "docs/commercial-ppt-engine.md",
+          "startLine": 77,
+          "endLine": 80,
+          "fileSHA256": "33a315a522daf2c0dfe415e17b27e5b484a94c450b44ea997911eaa4fa9deb13",
+          "excerpt": "规划完成后通过独立的 `skill_presentation_checkpoints` 表持久化，**没有混用 OCR 的页/PNG 检查点**。检查点绑定输入 SHA-256、版本、阶段与 schema，≤400 KB，UTF-8 字节计入所有者/全局存储。取消或失败保留规划；重启和显式继续仅复用已有规划，重新编译/渲染，不再发送正文或调用模型。没有已保存规划时拒绝 resume，必须重新明确授权新建，避免未知外部请求被静默重放。\n\n最终成果在事务中原子发布，再清除规划检查点；删除运行级联清除输入、成果和检查点。服务创建的 PPTX 临时目录由父进程持有，正常终止/取消/close 后清理。整个主机进程崩溃时遗留的系统临时目录仍需部署环境常规清理；这不是跨机器分布式队列或通用沙箱。\n"
+        }
+      ],
+      "resolvedRef": "source-1-p-5"
+    },
+    {
+      "id": "E06",
+      "label": "字体和人工验收边界",
+      "classification": "事实",
+      "summary": "字体未嵌入；Office重排、原生图表内部及语义事实需人工验收。",
+      "locations": [
+        {
+          "path": "docs/commercial-ppt-engine.md",
+          "startLine": 81,
+          "endLine": 93,
+          "fileSHA256": "33a315a522daf2c0dfe415e17b27e5b484a94c450b44ea997911eaa4fa9deb13",
+          "excerpt": "## 4. 字体与质量状态\n\nLibreOffice Kit **0.2.0 已从开发依赖提升为生产依赖**。Linux 仍需要它的平台 WASM 包，macOS/Windows 需要对应引擎；缺依赖明确禁用。\n\n`assets/presentation-fonts` 内提供 OFL 许可的 Noto Sans SC 常规 400 / 粗体 700 两个静态实例，校验 SHA-256，并限制渲染字体目录/文件/加载字节。提供可复现的 FontTools 4.60.1 构建脚本及上游 Git blob 溯源。生产部署须保留该目录；运行时不下载字体。PPTX 没有内嵌字体，接收方仍须安装 Noto Sans SC。\n\n质量报告只会给出：\n\n- `blocked`：缺字/字体缺失、越界、过密、文字框交叠、已知背景对比不足、页数错误、PDF或全页渲染失败等关键问题。只允许明确标记的草稿和诊断下载，不能视为正式稿。\n- `needs-human-review`：已执行规则没有发现 critical，但依然需要人工验收。\n\n`commercialApproval` **始终为 false**。文字度量使用实际常规/粗体字体，但仍是保守估算，不是 Office 的原生断行证明。`resolved-layout` 只覆盖文字与表格单元格，不谎称覆盖图表内部标签或全部装饰形状。原生图表标签碰撞、完整遮挡、审美质量、来源语义、版权、目标软件重新打开编辑等明确列入 `notChecked`。不会通过不断缩字或删事实来消掉告警；尚无自动视觉修复。\n"
+        }
+      ],
+      "resolvedRef": "source-1-p-6"
+    },
+    {
+      "id": "E07",
+      "label": "执行预算不是实测耗时/成本",
+      "classification": "事实",
+      "summary": "300秒是技能时限，不是平均性能、报价或资源消耗实测。",
+      "locations": [
+        {
+          "path": "docs/commercial-ppt-engine.md",
+          "startLine": 75,
+          "endLine": 76,
+          "fileSHA256": "33a315a522daf2c0dfe415e17b27e5b484a94c450b44ea997911eaa4fa9deb13",
+          "excerpt": "时间预算按技能限定：普通技能原有 45 秒；PPTX compose/inspect 默认 150 秒，覆盖内部 90 秒渲染；`slides.create` 默认总计 300 秒，内部模型与 PDF/位图阶段各有时限。测试注入的自定义较短期限不被无条件放大。\n"
+        }
+      ],
+      "resolvedRef": "source-1-p-7"
+    },
+    {
+      "id": "E08",
+      "label": "汇报场景入口与执行授权",
+      "classification": "事实",
+      "summary": "内置汇报案例有显式“用自己的材料生成”入口，限定slides.create，默认关闭、不自动上传、不回退冒充生成；普通聊天不等同于文件交付，必须满足服务端依赖并分别授权。",
+      "locations": [
+        {
+          "path": "frontend/workspace/skillPainpointMap.ts",
+          "startLine": 21,
+          "endLine": 53,
+          "fileSHA256": "7ab43ad120fecbc4c470d7d6c1350dd7199f7ef75ba9cab07074a8097be77d59",
+          "excerpt": "    { id: \"office-slides\", title: \"汇报PPT\", expertId: \"slides\", summary: \"授权后按真实材料规划商业演示，交付原生PPTX/PDF、逐页预览及来源/质量报告；另支持结构编排与PPTX检查，所有草稿仍需人工验收。\", skillIds: [\"slides.create\", \"slides.compose\", \"slides.inspect\", \"pdf.extract\"] },\n    { id: \"office-email\", title: \"邮件沟通\", expertId: \"communication\", summary: \"可生成可预览的HTML营销邮件与纯文本；不接收收件人、不自动发送或管理退订。\", skillIds: [\"email.marketing\"] },\n    { id: \"office-planning\", title: \"计划排期\", expertId: \"communication\", summary: \"排期校验、OKR进度记分卡与入职任务日历导出；不写入外部日历或持续同步。\", skillIds: [\"collaboration.schedule\", \"team.okrs\", \"hr.onboarding\"] },\n    { id: \"office-research\", title: \"调研分析\", expertId: \"research-summary\", summary: \"基于实际提供的资料整理；没有联网检索或已授权的专属摘要绑定。\", skillIds: [] },\n    { id: \"office-process\", title: \"流程规范\", expertId: \"documents\", summary: \"可整理流程文档；没有组织制度或审批规则验证器。\", skillIds: [\"document.format\", \"document.structure\"] },\n    { id: \"office-followup\", title: \"协作跟进\", expertId: \"communication\", summary: \"可校验排期并导出 ICS；消息发送与外部日历同步未接入。\", skillIds: [\"collaboration.schedule\", \"collaboration.sync\"] },\n    { id: \"office-other\", title: \"其他问题\", expertId: \"triage\", summary: \"先澄清并分诊；确认具体任务后再选择已接通的工具。\", skillIds: [] },\n  ],\n  design: [\n    { id: \"design-posters\", title: \"海报配图\", expertId: \"visual\", summary: \"用用户提供素材进行固定版式或图层排版导出，不生成新图。\", skillIds: [\"image.marketing\", \"image.layout\", \"image.web-pack\"] },\n    { id: \"design-products\", title: \"产品展示\", expertId: \"product-visual\", summary: \"商品图尺寸适配；抠图、重绘与生成式图片未接入。\", skillIds: [\"image.product\", \"image.web-pack\"] },\n    { id: \"design-social\", title: \"社媒内容\", expertId: \"visual\", summary: \"可生成3:4封面卡片与多页轮播图；不自动创作文案或发布社媒。\", skillIds: [\"image.marketing\", \"image.layout\", \"image.web-pack\", \"social.carousel\", \"social.card\"] },\n    { id: \"design-brand\", title: \"品牌物料\", expertId: \"brand\", summary: \"真实校验品牌色板、设计令牌并导出CSS及受限品牌资产；不是商标检索。\", skillIds: [\"brand.assets\", \"brand.system\", \"design.tokens\"] },\n    { id: \"design-infographics\", title: \"信息图表\", expertId: \"infographics\", summary: \"按明确数据、口径和图表目的导出图表；不推断业务含义。\", skillIds: [\"infographic.compose\"] },\n    { id: \"design-commerce\", title: \"电商物料\", expertId: \"product-visual\", summary: \"商品图片有限尺寸适配；不抠图、改商品细节或生成背景。\", skillIds: [\"image.product\", \"image.web-pack\"] },\n    { id: \"design-longform\", title: \"宣传长图\", expertId: \"visual\", summary: \"可使用素材做受限排版导出，并将用户提供的长文整理为杂志风格HTML。\", skillIds: [\"image.marketing\", \"image.layout\", \"image.web-pack\", \"article.magazine\"] },\n    { id: \"design-slides\", title: \"演示制作与检查\", expertId: \"slides\", summary: \"用设计 token 生成原生文本/形状/柱状图/折线图，或提取PPTX结构并逐页渲染；不等于模板导入、整套视觉自动验收或语义可编辑性认证。\", skillIds: [\"slides.create\", \"slides.compose\", \"slides.inspect\"] },\n    { id: \"design-direction\", title: \"视觉方案\", expertId: \"visual\", summary: \"可校验现有设计令牌并整理需求简报；不会凭空生成视觉创意。\", skillIds: [\"design.tokens\", \"design.brief\"] },\n    { id: \"design-image\", title: \"图片优化\", expertId: \"visual\", summary: \"可执行图层排版和多尺寸WebP压缩；生成、抠图、修复未接入。\", skillIds: [\"image.layout\", \"image.web-pack\"] },\n  ],\n  code: [\n    { id: \"web-corporate\", title: \"企业官网\", expertId: \"web-design\", summary: \"生成受限的真实静态网站文件，并对HTML/CSS做静态检查；不等于浏览器运行验收。\", skillIds: [\"web.scaffold\", \"web.audit\", \"web.css-audit\", \"design.review\", \"web.verify\"] },\n    { id: \"web-events\", title: \"活动页面\", expertId: \"web-design\", summary: \"生成静态活动页面并审查HTML/CSS；表单提交与发布服务仍未接入。\", skillIds: [\"web.scaffold\", \"web.audit\", \"web.css-audit\", \"design.review\", \"web.verify\"] },\n    { id: \"web-prototypes\", title: \"产品原型\", expertId: \"product\", summary: \"整理设计需求简报、结构化产品规格并生成受限静态原型；不是交互原型或运行验收。\", skillIds: [\"requirements.check\", \"design.brief\", \"product.spec\", \"web.scaffold\"] },\n    { id: \"web-dashboards\", title: \"数据看板\", expertId: \"developer\", summary: \"可生成静态页面骨架并审查CSS/JS；不连接业务数据或运行看板。\", skillIds: [\"web.scaffold\", \"web.css-audit\", \"design.review\", \"code.inspect\", \"code.build\"] },\n    { id: \"web-tools\", title: \"实用工具\", expertId: \"developer\", summary: \"可生成静态页面、检查CSS/JS并整理工程事故Runbook；隔离构建与生产处置未接入。\", skillIds: [\"web.scaffold\", \"web.css-audit\", \"design.review\", \"code.inspect\", \"engineering.runbook\", \"code.build\"] },\n    { id: \"web-portfolios\", title: \"作品展示\", expertId: \"web-design\", summary: \"生成静态展示页骨架并审查HTML/CSS；浏览器视觉验收未接通。\", skillIds: [\"web.scaffold\", \"web.audit\", \"web.css-audit\", \"design.review\", \"web.verify\"] },\n    { id: \"web-services\", title: \"商品服务\", expertId: \"web-design\", summary: \"可生成真实静态展示页；交易、支付或服务接口未接通。\", skillIds: [\"web.scaffold\", \"web.audit\", \"web.css-audit\", \"design.review\", \"web.verify\"] },\n    { id: \"web-forms\", title: \"表单收集\", expertId: \"developer\", summary: \"可生成静态表单展示骨架；后端存储、隐私和真实提交未接入。\", skillIds: [\"web.scaffold\", \"web.css-audit\", \"design.review\", \"code.inspect\", \"code.build\"] },\n    { id: \"web-admin\", title: \"业务后台\", expertId: \"developer\", summary: \"可生成静态前端展示骨架；数据库、权限与后台运行技能未接入。\", skillIds: [\"web.scaffold\", \"web.css-audit\", \"design.review\", \"code.inspect\", \"code.build\"] },\n    { id: \"web-content\", title: \"内容站点\", expertId: \"web-design\", summary: \"生成静态内容页、杂志式长文和可搜索FAQ，并检查HTML/CSS；发布与CMS未接通。\", skillIds: [\"web.scaffold\", \"article.magazine\", \"faq.page\", \"web.audit\", \"web.css-audit\", \"design.review\", \"web.verify\"] },\n  ],\n};"
+        },
+        {
+          "path": "server/skills/presentation/pipeline.ts",
+          "startLine": 34,
+          "endLine": 49,
+          "fileSHA256": "a9f8c405747cffa4a1ed0451c08268304ebdbe7fdf75368885bca47b0159f00d",
+          "excerpt": "export async function createPresentation(input: SkillInput, event: (s: string) => void) {\n  if (!input.owner || input.parameters?.externalConsent !== 'yes') throw Error('需要已认证的所有者和本次正文处理授权；未发送材料。');\n  const request = parsePresentationRequest(input.bytes), hash = sha256(input.bytes);\n  event('阶段 1/5：校验需求与所有材料；不截断、不执行公式或材料中的指令。');\n  const sources = await readPresentationSources(request, hash);\n  const fonts = presentationFonts();\n  let proposal: unknown, model = '', planningCalls = 0;\n  let usage: UsageRecord[] = [];\n  if (input.resumePresentation) {\n    const cp = validatePresentationCheckpoint(input.resumePresentation, hash);\n    proposal = cp.spec; model = cp.plannerModel || 'checkpoint'; usage = (cp.usage || []).map(validatePresentationUsage);\n    compilePresentationSpec(proposal, request.brief, sources);\n    event('阶段 2/5：已校验并复用持久化规划检查点；不重复发送正文、不重复调用模型。');\n  } else {\n    if (!process.env.AI_API_KEY && !process.env.OPENAI_API_KEY) throw Error('服务端AI模型未配置；不会用模板冒充AI规划。');\n    event('阶段 2/5：将已授权的需求、提取正文与数据位置发送给服务端模型，规划叙事、页型与讲稿。');"
+        },
+        {
+          "path": "apps/web/src/inspiration/samples/LeaderDecisionReport.tsx",
+          "startLine": 54,
+          "endLine": 63,
+          "fileSHA256": "cb09af9eea8a81e849fa917b0fba6cab12b258af0e29bd0568fe83142cdc0847",
+          "excerpt": "        <button type=\"button\" aria-expanded={generatorOpen} onClick={() => { openGenerator(!generatorOpen); if (!generatorOpen) requestAnimationFrame(() => generatorRef.current?.scrollIntoView({ block: \"start\", behavior: \"instant\" })); }}>{generatorOpen ? \"收起生成工作台\" : \"用自己的材料生成\"}</button>\n      </nav>\n    </header>\n    <section className=\"leader-report-intro\" aria-label=\"案例边界\">\n      <span className=\"leader-report-kicker\">源码实证案例 · 内置示例 · 不发布外部社区</span>\n      <h2>建议有条件批准，而不是宣布商业就绪。</h2>\n      <p>12页 / 15分钟建议讲述。由助手基于实际源码与历史测试编排，经项目原生编译器和本机LibreOffice真实导出；未调用后台外部模型。</p>\n      <p>这里查看的是同一份PPTX的全页渲染，不是网页模拟稿。浏览器仅供查看；下载PPTX可编辑原生文字、图表、表格与讲稿。字体未嵌入，接收端需安装Noto Sans SC。</p>\n    </section>\n    {generatorOpen && <section ref={generatorRef} className=\"leader-report-pending\" aria-label=\"基于此模板重新生成\"><h2>新建一份领导决策汇报</h2><p>这是独立的新运行，不会修改本例或自动上传示例材料。请补充你自己的决策目标、受众和来源材料，再分别确认上传与正文处理授权。后台模型必须由服务端配置；未配置时不会用模板冒充AI结果。</p><SkillWorkbench expertId=\"slides\" allowedSkillIds={[\"slides.create\"]} initialSkillId=\"slides.create\" presentationBrief={{ audience: \"项目决策领导\", scenario: \"business-report\", theme: \"consulting\", slideCount: 12 }} initialGoal=\"为项目决策领导生成15分钟领导决策汇报；结论先行，对比方案，说明成本和风险。仅用我选择的材料，不虚构预算、人员、日期或已批准决定；事实、分析、建议分开，提供来源和讲稿。\" /></section>}"
+        }
+      ],
+      "resolvedRef": "source-1-p-8"
+    },
+    {
+      "id": "D01",
+      "resolvedRef": "source-2-table-1",
+      "label": "历史测试计数",
+      "classification": "事实",
+      "summary": "test-records.csv：范围/通过数/失败数/口径。逐行抄录历史记录；不跨范围计算通过率。",
+      "locations": []
+    },
+    {
+      "id": "D02",
+      "resolvedRef": "source-3-table-1",
+      "label": "扩展API同批计数",
+      "classification": "事实",
+      "summary": "api-records.csv：同一批23项，用例数按通过19/失败4原样抄录；无汇总计算。",
+      "locations": []
+    },
+    {
+      "id": "D03",
+      "resolvedRef": "source-4-table-1",
+      "label": "三方案比较",
+      "classification": "分析",
+      "summary": "analysis-tables.xlsx/方案比较：方案、价值、代价与建议判断均为助手定性分析，不是观测数据或评分。",
+      "locations": []
+    },
+    {
+      "id": "D04",
+      "resolvedRef": "source-4-table-2",
+      "label": "成本口径",
+      "classification": "分析",
+      "summary": "analysis-tables.xlsx/成本口径：成本项、当前证据、需记录项与待确认事项；无单价、金额、工时或总额计算。",
+      "locations": []
+    },
+    {
+      "id": "D05",
+      "resolvedRef": "source-4-table-3",
+      "label": "风险处置",
+      "classification": "分析",
+      "summary": "analysis-tables.xlsx/风险处置：风险、触发信号与建议动作；无概率/损失评分，不表示已发生事故。",
+      "locations": []
+    }
+  ],
+  "layoutVersion": "adaptive-v2",
+  "layoutEngine": "adaptive-2.0.0",
+  "sourceSnapshotNotice": "沿用原案例的源码/历史测试证据快照；本次只作同内容排版对照，不重新认证旧测试或声称当前代码未变化。",
+  "baselineVersionId": "fcf82dbac6f75d898bdd4e764e2cf7dae29864ebd4a304599939c618db1cb6cd",
+  "semanticContentHash": "8a7a1f3458a684f670881a9a06089bd9ab61c16b1d410362c3b9116c62c00b3e"
+}

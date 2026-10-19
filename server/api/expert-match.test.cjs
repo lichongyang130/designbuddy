@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const { createApiHandler } = require('../../dist/local/server/api/http-handler.js');
 const { matchTaskExpert } = require('../../dist/local/server/api/expert-match.js');
 const { routingExperts, validExpertMatch, expertExecutionBrief, localExpertSuggestion } = require('../../dist/local/shared/expertRouting.js');
-const input = () => ({ consent: true, permission: '默认权限', prompt: '整理设计部门的报销表，核对金额', mode: 'design', attachmentContext: 'reimburse.csv\n日期,金额\n2026-10-15,100', answer: '', experts: routingExperts });
+const input = () => ({ consent: true, permission: '默认权限', prompt: '整理设计部门的报销表，核对金额', mode: 'design', attachmentContext: 'reimburse.csv\n日期,金额\n2026-10-15,100', answer: '', experts: routingExperts, skills: [{ id: "data.csv", name: "CSV测试技能", accepts: [".csv"] }] });
 const result = { kind: 'match', expertId: 'data', collaboratorIds: [], reason: '实际目标是核对报销数据，而非制作视觉稿。', responsibilities: ['核对金额与统计口径', '标记缺失与重复记录'], missing: [] };
 function setup(t) {
   const original = global.fetch;
@@ -38,6 +38,7 @@ test('model classification receives deliverable context and candidate contracts,
   const context = JSON.parse(captured.body.messages[1].content);
   assert.equal(context.modeHint, 'design'); assert.match(context.task, /报销/);
   assert.equal(context.candidates[0].method.length, 3);
+  assert.deepEqual(context.skills, input().skills);
   assert.match(context.readableAttachmentExcerpts, /reimburse/);
 });
 
@@ -45,7 +46,7 @@ test('general and one-question responses work; malformed or out-of-catalog resul
   setup(t);
   for (const value of [{ kind: 'general', reason: '一句话润色无需专业分工。' }, { kind: 'clarify', question: '最终希望做成什么？', options: ['PPT', '网页'] }]) {
     global.fetch = async () => reply(value);
-    assert.deepEqual(await matchTaskExpert(input(), new AbortController().signal), value);
+    assert.deepEqual(JSON.parse(JSON.stringify(await matchTaskExpert(input(), new AbortController().signal))), value);
   }
   for (const value of [{ ...result, expertId: 'invented' }, { ...result, responsibilities: [] }, { ...result, collaboratorIds: ['data'] }, { ...result, collaboratorIds: ['unknown'] }, { kind: 'clarify', question: '请选择', options: ['一样', '一样'] }, { kind: 'general', reason: '' }, { kind: 'team', experts: ['data', 'slides'] }]) {
     global.fetch = async () => reply(value);

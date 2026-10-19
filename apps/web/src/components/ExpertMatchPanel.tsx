@@ -16,13 +16,14 @@ export function ExpertMatchPanel({ match, onManual, onSelect, onConfigure, onClo
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
       </button>
     </header>
+    {match.preferenceError && <p role="alert">{match.preferenceError}</p>}
     {match.manual ? <>
       <h3 className="expert-match-identity">{portrait}{match.manual.name}</h3><p>{match.manual.description}</p>
       <h4>工作方法</h4><ul>{match.manual.method.map(s => <li key={s}>{s}</li>)}</ul>
       <button onClick={() => { onSelect(""); match.retry(); }}>恢复自动匹配</button>
     </> : <>
       {match.localOnly ? <p className="expert-match-note">仅本地模式不会向模型发送草稿或附件。可手动选择专家；不会执行云端匹配。</p> : !match.consent ? <div className="expert-match-consent">
-        <p>开启后，停止输入约 1 秒会将当前草稿、已读取的附件片段及候选专家资料发送给所选模型，用于判断任务，而不是执行任务。</p>
+        <p>开启后，停止输入后，会按助理设置中的等待时间，将当前草稿、已读取的附件片段及候选专家资料发送给所选模型，用于判断任务，而不是执行任务。</p>
         <p>每次最多发送草稿前 16,000 字、附件前 6,000 字；可能产生模型费用。不会读取未解析的图片或 PDF。允许设置保存在本机，可随时关闭。</p>
         <button onClick={() => match.changeConsent(true)}>允许并开启自动匹配</button>
         <small>不开启也能手动选择或直接发送任务。</small>

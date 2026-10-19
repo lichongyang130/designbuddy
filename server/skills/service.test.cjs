@@ -76,6 +76,7 @@ test('registry rejects unbound/unavailable skills, wrong formats and missing upl
   if(connected.includes(skill.id)){assert.equal(skill.status,'ready',skill.id);assert.equal(skill.executorState,'connected',skill.id);continue;}
   if(skill.id==='audio.transcribe-en'){assert.equal(skill.status,asrConfiguration().ready?'ready':'unavailable',skill.id);continue;}
   if(skill.id==='document.summarize'){assert.equal(skill.status,(process.env.AI_API_KEY||process.env.OPENAI_API_KEY)?'ready':'unavailable',skill.id);continue;}
+  if(skill.id==='slides.create'){const {presentationRendererAvailable}=require('../../dist/local/server/skills/pptx-render.js');const {presentationFontsAvailable}=require('../../dist/local/server/skills/presentation/fonts.js');assert.equal(skill.status,(process.env.AI_API_KEY||process.env.OPENAI_API_KEY)&&presentationRendererAvailable()&&presentationFontsAvailable()?'ready':'unavailable',skill.id);assert.equal(skill.executorState,'connected');continue;}
   if(skill.id==='slides.inspect'){const {presentationRendererAvailable}=require('../../dist/local/server/skills/pptx-render.js');assert.equal(skill.status,presentationRendererAvailable()?'ready':'unavailable',skill.id);continue;}
   assert.equal(skill.status,'ready',skill.id);
  }

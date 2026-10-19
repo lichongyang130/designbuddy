@@ -7,6 +7,11 @@ export function validateSkillOptions(skillId: string, value: unknown): SkillOpti
   const o = value as Record<string, unknown>;
   if (Object.keys(o).some(k => !["deduplicate", "parameters"].includes(k)) || typeof o.deduplicate !== "boolean") throw new SkillRequestError("技能选项不符合白名单。");
   if (skillId !== "table.analyze" && o.deduplicate) throw new SkillRequestError("该技能不支持表格去重。");
+  if (skillId === "slides.create") {
+    const p = o.parameters;
+    if (!p || typeof p !== "object" || Array.isArray(p) || Object.keys(p).length !== 1 || (p as Record<string, unknown>).externalConsent !== "yes") throw new SkillRequestError("演示规划会将需求与提取正文发送至服务端第三方AI模型；须单次明确授权，且不接受上传凭据/端点/模型参数。");
+    return { deduplicate: false, parameters: { externalConsent: "yes" } };
+  }
   if (skillId === "document.summarize") {
     const p=o.parameters;
     if (!p || typeof p!=="object" || Array.isArray(p) || Object.keys(p).length!==1 || (p as Record<string,unknown>).externalConsent!=="yes") throw new SkillRequestError("该摘要会把完整正文发送给服务端配置的第三方AI模型；请单次明确授权后再执行。");

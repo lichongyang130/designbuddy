@@ -1,0 +1,34 @@
+{
+  "renderer": "LibreOffice Kit",
+  "engineApiVersion": "0.2.0",
+  "backend": "wasm",
+  "rasterEngine": "libreoffice",
+  "sourceSHA256": "075414361df0290e5a45c986040a50073b38a9768d0fdf7b7d0aff4f263b8b0e",
+  "pdfSHA256": "bd1e9f9c3e7839bf4e98fb6c779742458b24d38b1f0f8adce553af8516b067a3",
+  "pageCount": 4,
+  "dpi": 72,
+  "missingFonts": [],
+  "pages": [
+    {
+      "page": 1,
+      "file": "pages/01.jpg",
+      "sha256": "04f0bc22f1046dbd3e05462a2521575071761a741baaa71494682ba210da5faa"
+    },
+    {
+      "page": 2,
+      "file": "pages/02.jpg",
+      "sha256": "3efa69f6912ca4a3a8b71c8f6a5bf4d01b27723d085fa152e267b3e7b5eb2a75"
+    },
+    {
+      "page": 3,
+      "file": "pages/03.jpg",
+      "sha256": "22619f6f920caef72ecf7d954aefee4aa63d9e275efd73a15d3dfedd345bfe7c"
+    },
+    {
+      "page": 4,
+      "file": "pages/04.jpg",
+      "sha256": "68f3b967b4b37b04fd5fea6bb04d2ee43aac8ea30d8788bcb0d16b9c175fc0ca"
+    }
+  ],
+  "microsoftWordVerified": false
+}

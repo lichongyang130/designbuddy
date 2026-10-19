@@ -41,12 +41,36 @@ export type KeybindingAction =
   | "go-home"
   | "focus-composer"
   | "go-templates";
-export const KEYBINDING_ACTIONS: { id: KeybindingAction; labelKey: string; hintKey: string }[] = [
-  { id: "open-settings", labelKey: "settings.shortcuts.action.open-settings", hintKey: "settings.shortcuts.hint.open-settings" },
-  { id: "send-task", labelKey: "settings.shortcuts.action.send-task", hintKey: "settings.shortcuts.hint.send-task" },
-  { id: "go-home", labelKey: "settings.shortcuts.action.go-home", hintKey: "settings.shortcuts.hint.go-home" },
-  { id: "focus-composer", labelKey: "settings.shortcuts.action.focus-composer", hintKey: "settings.shortcuts.hint.focus-composer" },
-  { id: "go-templates", labelKey: "settings.shortcuts.action.go-templates", hintKey: "settings.shortcuts.hint.go-templates" },
+export const KEYBINDING_ACTIONS: {
+  id: KeybindingAction;
+  labelKey: string;
+  hintKey: string;
+}[] = [
+  {
+    id: "open-settings",
+    labelKey: "settings.shortcuts.action.open-settings",
+    hintKey: "settings.shortcuts.hint.open-settings",
+  },
+  {
+    id: "send-task",
+    labelKey: "settings.shortcuts.action.send-task",
+    hintKey: "settings.shortcuts.hint.send-task",
+  },
+  {
+    id: "go-home",
+    labelKey: "settings.shortcuts.action.go-home",
+    hintKey: "settings.shortcuts.hint.go-home",
+  },
+  {
+    id: "focus-composer",
+    labelKey: "settings.shortcuts.action.focus-composer",
+    hintKey: "settings.shortcuts.hint.focus-composer",
+  },
+  {
+    id: "go-templates",
+    labelKey: "settings.shortcuts.action.go-templates",
+    hintKey: "settings.shortcuts.hint.go-templates",
+  },
 ];
 export const DEFAULT_KEYBINDINGS: Record<KeybindingAction, string> = {
   "open-settings": "mod+,",
@@ -55,7 +79,19 @@ export const DEFAULT_KEYBINDINGS: Record<KeybindingAction, string> = {
   "focus-composer": "mod+/",
   "go-templates": "mod+u",
 };
+export type ExpertConfiguration = {
+  enabled: boolean;
+  description: string;
+  instructions: string;
+};
+export type AssistantPreferences = {
+  autoMatch: boolean;
+  debounceMs: number;
+  collaborators: boolean;
+};
 type Preferences = {
+  expertSettings: Record<string, ExpertConfiguration>;
+  assistant: AssistantPreferences;
   fontSize: number;
   linkMode: "smart" | "new-tab" | "same-tab";
   models: CustomModel[];
@@ -75,8 +111,17 @@ type Preferences = {
   homeScenes: string[];
   keybindings: Record<KeybindingAction, string>;
 };
-export const DEFAULT_HOME_SCENES = ["doc", "finance", "data-viz", "desk", "slides", "website"];
+export const DEFAULT_HOME_SCENES = [
+  "doc",
+  "finance",
+  "data-viz",
+  "desk",
+  "slides",
+  "website",
+];
 const defaults: Preferences = {
+  expertSettings: {},
+  assistant: { autoMatch: false, debounceMs: 900, collaborators: true },
   fontSize: 15,
   linkMode: "smart",
   models: [],
@@ -97,20 +142,63 @@ const defaults: Preferences = {
   keybindings: { ...DEFAULT_KEYBINDINGS },
 };
 const validModelId = /^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$/;
-const validBinding = /^(mod\+)?(alt\+)?(shift\+)?[a-z0-9,./;'[\]\\\-=]$|^(mod\+)?(alt\+)?(shift\+)?(enter|space|tab|up|down|left|right)$/;
+const validBinding =
+  /^(mod\+)?(alt\+)?(shift\+)?[a-z0-9,./;'[\]\\\-=]$|^(mod\+)?(alt\+)?(shift\+)?(enter|space|tab|up|down|left|right)$/;
 
 function readPreferences(): Preferences {
   try {
-    return sanitizePreferences(JSON.parse(localStorage.getItem(SETTINGS_KEY) || "{}"));
+    const raw = JSON.parse(localStorage.getItem(SETTINGS_KEY) || "{}");
+    if (
+      raw &&
+      typeof raw === "object" &&
+      !raw.assistant &&
+      localStorage.getItem("designbuddy.expert-match-consent.v1") === "allowed"
+    )
+      raw.assistant = { ...defaults.assistant, autoMatch: true };
+    return sanitizePreferences(raw);
   } catch {
     return { ...defaults, models: [] };
   }
 }
 
 /** Keep only the shapes the settings screens understand. */
-function sanitizePreferences(raw: unknown): Preferences {
+export function sanitizePreferences(raw: unknown): Preferences {
   try {
-    const source = (raw && typeof raw === "object" ? raw : {}) as Record<string, unknown>;
+    const source = (raw && typeof raw === "object" ? raw : {}) as Record<
+      string,
+      unknown
+    >;
+    const expertSettings: Record<string, ExpertConfiguration> = {};
+    if (source.expertSettings && typeof source.expertSettings === "object") {
+      for (const [id, raw] of Object.entries(source.expertSettings).slice(
+        0,
+        100,
+      )) {
+        if (
+          ["__proto__", "constructor", "prototype"].includes(id) ||
+          !/^[A-Za-z0-9_-]{1,100}$/.test(id) ||
+          !raw ||
+          typeof raw !== "object"
+        )
+          continue;
+        const value = raw as Record<string, unknown>;
+        expertSettings[id] = {
+          enabled: value.enabled !== false,
+          description:
+            typeof value.description === "string"
+              ? value.description.slice(0, 1200)
+              : "",
+          instructions:
+            typeof value.instructions === "string"
+              ? value.instructions.slice(0, 400)
+              : "",
+        };
+      }
+    }
+    const assistant =
+      source.assistant && typeof source.assistant === "object"
+        ? (source.assistant as Record<string, unknown>)
+        : {};
     const models: CustomModel[] = [];
     if (Array.isArray(source.models))
       for (const item of source.models.slice(0, 20)) {
@@ -132,34 +220,56 @@ function sanitizePreferences(raw: unknown): Preferences {
           )
         )
           continue;
-        const provider = ["custom", "openai", "openrouter", "deepseek", "groq", "mistral", "google"].includes(item.provider)
-          ? item.provider as string
+        const provider = [
+          "custom",
+          "openai",
+          "openrouter",
+          "deepseek",
+          "groq",
+          "mistral",
+          "google",
+        ].includes(item.provider)
+          ? (item.provider as string)
           : undefined;
-        const baseUrl = typeof item.baseUrl === "string" && item.baseUrl.length <= 2048
-          ? (() => {
-              try {
-                const url = new URL(item.baseUrl.trim());
-                return url.protocol === "https:" && !url.username && !url.password && !url.search && !url.hash
-                  ? item.baseUrl.trim()
-                  : undefined;
-              } catch { return undefined; }
-            })()
-          : undefined;
-        const capabilitiesValue = item.capabilities && typeof item.capabilities === "object"
-          ? item.capabilities as Record<string, unknown>
-          : {};
+        const baseUrl =
+          typeof item.baseUrl === "string" && item.baseUrl.length <= 2048
+            ? (() => {
+                try {
+                  const url = new URL(item.baseUrl.trim());
+                  return url.protocol === "https:" &&
+                    !url.username &&
+                    !url.password &&
+                    !url.search &&
+                    !url.hash
+                    ? item.baseUrl.trim()
+                    : undefined;
+                } catch {
+                  return undefined;
+                }
+              })()
+            : undefined;
+        const capabilitiesValue =
+          item.capabilities && typeof item.capabilities === "object"
+            ? (item.capabilities as Record<string, unknown>)
+            : {};
         const capabilities: ModelCapabilities = {
           tools: capabilitiesValue.tools === true,
           images: capabilitiesValue.images === true,
           reasoning: capabilitiesValue.reasoning === true,
           customProtocol: capabilitiesValue.customProtocol === true,
         };
-        const inputTokens = Number.isInteger(item.inputTokens) && Number(item.inputTokens) > 0 && Number(item.inputTokens) <= 1_000_000
-          ? Number(item.inputTokens)
-          : undefined;
-        const outputTokens = Number.isInteger(item.outputTokens) && Number(item.outputTokens) > 0 && Number(item.outputTokens) <= 128_000
-          ? Number(item.outputTokens)
-          : undefined;
+        const inputTokens =
+          Number.isInteger(item.inputTokens) &&
+          Number(item.inputTokens) > 0 &&
+          Number(item.inputTokens) <= 1_000_000
+            ? Number(item.inputTokens)
+            : undefined;
+        const outputTokens =
+          Number.isInteger(item.outputTokens) &&
+          Number(item.outputTokens) > 0 &&
+          Number(item.outputTokens) <= 128_000
+            ? Number(item.outputTokens)
+            : undefined;
         models.push({
           id: item.id,
           name,
@@ -171,13 +281,21 @@ function sanitizePreferences(raw: unknown): Preferences {
           capabilities,
         });
       }
-    const rawDefaultModel = typeof source.defaultModel === "string" ? source.defaultModel.slice(0, 128) : "";
-    const defaultModel = modelOptions.some((option) => option.id === rawDefaultModel) || models.some((model) => model.modelId === rawDefaultModel)
-      ? rawDefaultModel
-      : "";
+    const rawDefaultModel =
+      typeof source.defaultModel === "string"
+        ? source.defaultModel.slice(0, 128)
+        : "";
+    const defaultModel =
+      modelOptions.some((option) => option.id === rawDefaultModel) ||
+      models.some((model) => model.modelId === rawDefaultModel)
+        ? rawDefaultModel
+        : "";
     const homeScenes = Array.isArray(source.homeScenes)
       ? source.homeScenes
-          .filter((id): id is string => typeof id === "string" && /^[a-z0-9-]{1,40}$/.test(id))
+          .filter(
+            (id): id is string =>
+              typeof id === "string" && /^[a-z0-9-]{1,40}$/.test(id),
+          )
           .slice(0, 6)
       : [];
     while (homeScenes.length < 6) {
@@ -189,51 +307,88 @@ function sanitizePreferences(raw: unknown): Preferences {
     if (source.keybindings && typeof source.keybindings === "object") {
       const raw = source.keybindings as Record<string, unknown>;
       const seen = new Set<string>();
-      for (const action of Object.keys(DEFAULT_KEYBINDINGS) as KeybindingAction[]) {
+      for (const action of Object.keys(
+        DEFAULT_KEYBINDINGS,
+      ) as KeybindingAction[]) {
         const value = raw[action];
-        if (typeof value === "string" && validBinding.test(value) && !seen.has(value)) {
+        if (
+          typeof value === "string" &&
+          validBinding.test(value) &&
+          !seen.has(value)
+        ) {
           keybindings[action] = value;
           seen.add(value);
         }
       }
     }
     return {
+      expertSettings,
+      assistant: {
+        autoMatch: assistant.autoMatch === true,
+        debounceMs: [900, 1500, 3000].includes(Number(assistant.debounceMs))
+          ? Number(assistant.debounceMs)
+          : 900,
+        collaborators: assistant.collaborators !== false,
+      },
       fontSize:
         typeof source.fontSize === "number" && Number.isFinite(source.fontSize)
           ? Math.min(20, Math.max(12, Math.round(source.fontSize)))
           : defaults.fontSize,
-      linkMode: ["smart", "new-tab", "same-tab"].includes(source.linkMode as string)
+      linkMode: ["smart", "new-tab", "same-tab"].includes(
+        source.linkMode as string,
+      )
         ? (source.linkMode as Preferences["linkMode"])
         : "smart",
       models,
       locale: isLocale(source.locale) ? source.locale : defaults.locale,
       wakeLock: source.wakeLock === true,
-      theme: (["system", "light", "dark"] as const).includes(source.theme as ThemeMode)
+      theme: (["system", "light", "dark"] as const).includes(
+        source.theme as ThemeMode,
+      )
         ? (source.theme as ThemeMode)
         : "system",
-      density: (["comfortable", "compact"] as const).includes(source.density as DensityMode)
+      density: (["comfortable", "compact"] as const).includes(
+        source.density as DensityMode,
+      )
         ? (source.density as DensityMode)
         : "comfortable",
-      consoleTheme: (["system", "light", "dark"] as const).includes(source.consoleTheme as ConsoleTheme)
+      consoleTheme: (["system", "light", "dark"] as const).includes(
+        source.consoleTheme as ConsoleTheme,
+      )
         ? (source.consoleTheme as ConsoleTheme)
         : "system",
-      fontStyle: (["sans", "serif"] as const).includes(source.fontStyle as FontStyle)
+      fontStyle: (["sans", "serif"] as const).includes(
+        source.fontStyle as FontStyle,
+      )
         ? (source.fontStyle as FontStyle)
         : "sans",
-      contentWidth: (["narrow", "standard", "wide"] as const).includes(source.contentWidth as ContentWidth)
+      contentWidth: (["narrow", "standard", "wide"] as const).includes(
+        source.contentWidth as ContentWidth,
+      )
         ? (source.contentWidth as ContentWidth)
         : "standard",
-      fileIcons: (["color", "mono"] as const).includes(source.fileIcons as FileIconStyle)
+      fileIcons: (["color", "mono"] as const).includes(
+        source.fileIcons as FileIconStyle,
+      )
         ? (source.fileIcons as FileIconStyle)
         : "color",
       glassEffects: source.glassEffects === false ? false : true,
       defaultModel,
-      defaultMode: (["office", "code", "design"] as const).includes(source.defaultMode as ComposerMode)
+      defaultMode: (["office", "code", "design"] as const).includes(
+        source.defaultMode as ComposerMode,
+      )
         ? (source.defaultMode as ComposerMode)
         : "office",
-      defaultWorkspace: typeof source.defaultWorkspace === "string" ? source.defaultWorkspace.trim().slice(0, 40) : "",
-      defaultPermission: typeof source.defaultPermission === "string" ? source.defaultPermission.trim().slice(0, 40) : "",
-      homeScenes: homeScenes.length === 6 ? homeScenes : [...DEFAULT_HOME_SCENES],
+      defaultWorkspace:
+        typeof source.defaultWorkspace === "string"
+          ? source.defaultWorkspace.trim().slice(0, 40)
+          : "",
+      defaultPermission:
+        typeof source.defaultPermission === "string"
+          ? source.defaultPermission.trim().slice(0, 40)
+          : "",
+      homeScenes:
+        homeScenes.length === 6 ? homeScenes : [...DEFAULT_HOME_SCENES],
       keybindings,
     };
   } catch {
@@ -267,12 +422,24 @@ export async function pushPreferencesToAccount(): Promise<void> {
     error: "",
   });
   try {
-    const body = await apiJSON<{ preference: { updatedAt: number } }>("/profile/preferences", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ key: SYNCED_PREFERENCE_KEY, value: usePreferences.getState() }),
+    const state = usePreferences.getState();
+    const { autoMatch: _localConsent, ...assistant } = state.assistant;
+    const body = await apiJSON<{ preference: { updatedAt: number } }>(
+      "/profile/preferences",
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          key: SYNCED_PREFERENCE_KEY,
+          value: { ...state, assistant },
+        }),
+      },
+    );
+    usePreferenceSync.setState({
+      status: "synced",
+      lastSyncedAt: body.preference.updatedAt,
+      error: "",
     });
-    usePreferenceSync.setState({ status: "synced", lastSyncedAt: body.preference.updatedAt, error: "" });
   } catch {
     usePreferenceSync.setState({
       status: "offline",
@@ -297,10 +464,28 @@ export async function syncPreferencesFromAccount(): Promise<void> {
     error: "",
   });
   try {
-    const body = await apiJSON<{ preferences: { key: string; value: unknown }[] }>("/profile/preferences");
-    const entry = body.preferences.find((item) => item.key === SYNCED_PREFERENCE_KEY);
+    const body = await apiJSON<{
+      preferences: { key: string; value: unknown }[];
+    }>("/profile/preferences");
+    const entry = body.preferences.find(
+      (item) => item.key === SYNCED_PREFERENCE_KEY,
+    );
     if (entry && entry.value && typeof entry.value === "object") {
-      const merged = sanitizePreferences({ ...readPreferences(), ...(entry.value as Record<string, unknown>) });
+      const local = readPreferences();
+      const remote = entry.value as Record<string, unknown>;
+      const assistant =
+        remote.assistant && typeof remote.assistant === "object"
+          ? remote.assistant
+          : local.assistant;
+      // Consent to sharing drafts is never restored from another device/account.
+      const merged = sanitizePreferences({
+        ...local,
+        ...remote,
+        assistant: {
+          ...assistant,
+          autoMatch: usePreferences.getState().assistant.autoMatch,
+        },
+      });
       try {
         localStorage.setItem(SETTINGS_KEY, JSON.stringify(merged));
       } catch {
@@ -308,7 +493,11 @@ export async function syncPreferencesFromAccount(): Promise<void> {
       }
       usePreferences.setState(merged);
     }
-    usePreferenceSync.setState({ status: "synced", lastSyncedAt: Date.now(), error: "" });
+    usePreferenceSync.setState({
+      status: "synced",
+      lastSyncedAt: Date.now(),
+      error: "",
+    });
   } catch {
     usePreferenceSync.setState({
       status: "offline",
@@ -324,7 +513,9 @@ function save(next: Preferences) {
   try {
     localStorage.setItem(SETTINGS_KEY, JSON.stringify(next));
   } catch {
-    throw new Error(translate(usePreferences.getState().locale, "settings.err.storeSave"));
+    throw new Error(
+      translate(usePreferences.getState().locale, "settings.err.storeSave"),
+    );
   }
   usePreferences.setState(next);
   schedulePreferencePush();
@@ -374,16 +565,29 @@ export function setComposerDefaults(patch: {
   const state = usePreferences.getState();
   save({
     ...state,
-    defaultModel: patch.defaultModel !== undefined ? patch.defaultModel.slice(0, 128) : state.defaultModel,
+    defaultModel:
+      patch.defaultModel !== undefined
+        ? patch.defaultModel.slice(0, 128)
+        : state.defaultModel,
     defaultMode: patch.defaultMode || state.defaultMode,
-    defaultWorkspace: patch.defaultWorkspace !== undefined ? patch.defaultWorkspace.slice(0, 40) : state.defaultWorkspace,
-    defaultPermission: patch.defaultPermission !== undefined ? patch.defaultPermission.slice(0, 40) : state.defaultPermission,
+    defaultWorkspace:
+      patch.defaultWorkspace !== undefined
+        ? patch.defaultWorkspace.slice(0, 40)
+        : state.defaultWorkspace,
+    defaultPermission:
+      patch.defaultPermission !== undefined
+        ? patch.defaultPermission.slice(0, 40)
+        : state.defaultPermission,
   });
 }
 export function setHomeScenes(ids: string[]) {
-  const clean = ids.filter((id) => typeof id === "string" && /^[a-z0-9-]{1,40}$/.test(id)).slice(0, 6);
+  const clean = ids
+    .filter((id) => typeof id === "string" && /^[a-z0-9-]{1,40}$/.test(id))
+    .slice(0, 6);
   if (clean.length !== 6 || new Set(clean).size !== 6)
-    throw new Error(translate(usePreferences.getState().locale, "settings.personal.err.dup"));
+    throw new Error(
+      translate(usePreferences.getState().locale, "settings.personal.err.dup"),
+    );
   save({ ...usePreferences.getState(), homeScenes: clean });
 }
 export function resetHomeScenes() {
@@ -391,20 +595,29 @@ export function resetHomeScenes() {
 }
 export function setKeybinding(action: KeybindingAction, binding: string) {
   const locale = usePreferences.getState().locale;
-  if (!validBinding.test(binding)) throw new Error(translate(locale, "settings.shortcuts.err.binding"));
+  if (!validBinding.test(binding))
+    throw new Error(translate(locale, "settings.shortcuts.err.binding"));
   const state = usePreferences.getState();
   const clash = (Object.keys(state.keybindings) as KeybindingAction[]).find(
     (other) => other !== action && state.keybindings[other] === binding,
   );
   if (clash) {
-    const labelKey = KEYBINDING_ACTIONS.find((item) => item.id === clash)?.labelKey;
+    const labelKey = KEYBINDING_ACTIONS.find(
+      (item) => item.id === clash,
+    )?.labelKey;
     const label = labelKey ? translate(locale, labelKey) : clash;
     throw new Error(translate(locale, "settings.shortcuts.clash", { label }));
   }
-  save({ ...usePreferences.getState(), keybindings: { ...state.keybindings, [action]: binding } });
+  save({
+    ...usePreferences.getState(),
+    keybindings: { ...state.keybindings, [action]: binding },
+  });
 }
 export function resetKeybindings() {
-  save({ ...usePreferences.getState(), keybindings: { ...DEFAULT_KEYBINDINGS } });
+  save({
+    ...usePreferences.getState(),
+    keybindings: { ...DEFAULT_KEYBINDINGS },
+  });
 }
 /** Canonical binding string from a key event, or "" for bare modifiers. */
 export function bindingFromEvent(event: KeyboardEvent): string {
@@ -423,7 +636,15 @@ export function matchBinding(event: KeyboardEvent, binding: string): boolean {
 export function formatBinding(binding: string): string {
   return binding
     .split("+")
-    .map((part) => (part === "mod" ? "Ctrl/⌘" : part === " " ? "Space" : part.length === 1 ? part.toUpperCase() : part[0].toUpperCase() + part.slice(1)))
+    .map((part) =>
+      part === "mod"
+        ? "Ctrl/⌘"
+        : part === " "
+          ? "Space"
+          : part.length === 1
+            ? part.toUpperCase()
+            : part[0].toUpperCase() + part.slice(1),
+    )
     .join(" + ");
 }
 export function saveCustomModel(input: {
@@ -439,7 +660,8 @@ export function saveCustomModel(input: {
   const name = input.name.trim(),
     modelId = input.modelId.trim();
   const locale = usePreferences.getState().locale;
-  if (!name || name.length > 60) throw new Error(translate(locale, "settings.models.err.name"));
+  if (!name || name.length > 60)
+    throw new Error(translate(locale, "settings.models.err.name"));
   if (!validModelId.test(modelId))
     throw new Error(translate(locale, "settings.models.err.id"));
   const state = usePreferences.getState();
@@ -457,17 +679,40 @@ export function saveCustomModel(input: {
     throw new Error(translate(locale, "settings.models.err.max"));
   if (input.id && !state.models.some((model) => model.id === input.id))
     throw new Error(translate(locale, "settings.models.err.gone"));
-  const previous = input.id ? state.models.find((item) => item.id === input.id) : undefined;
-  const allowedProviders = ["custom", "openai", "openrouter", "deepseek", "groq", "mistral", "google"];
-  if (input.provider !== undefined && !allowedProviders.includes(input.provider))
+  const previous = input.id
+    ? state.models.find((item) => item.id === input.id)
+    : undefined;
+  const allowedProviders = [
+    "custom",
+    "openai",
+    "openrouter",
+    "deepseek",
+    "groq",
+    "mistral",
+    "google",
+  ];
+  if (
+    input.provider !== undefined &&
+    !allowedProviders.includes(input.provider)
+  )
     throw new Error(translate(locale, "settings.models.err.provider"));
   const baseUrl = input.baseUrl?.trim();
   if (input.provider === "custom" && !baseUrl)
     throw new Error(translate(locale, "settings.models.err.endpoint"));
   if (input.provider === "custom" && baseUrl) {
     let parsed: URL;
-    try { parsed = new URL(baseUrl); } catch { throw new Error(translate(locale, "settings.models.err.endpoint")); }
-    if (parsed.protocol !== "https:" || parsed.username || parsed.password || parsed.search || parsed.hash)
+    try {
+      parsed = new URL(baseUrl);
+    } catch {
+      throw new Error(translate(locale, "settings.models.err.endpoint"));
+    }
+    if (
+      parsed.protocol !== "https:" ||
+      parsed.username ||
+      parsed.password ||
+      parsed.search ||
+      parsed.hash
+    )
       throw new Error(translate(locale, "settings.models.err.endpoint"));
   }
   const model = {
@@ -476,16 +721,25 @@ export function saveCustomModel(input: {
     modelId,
     ...(input.provider ? { provider: input.provider } : {}),
     ...(baseUrl && baseUrl.length <= 2048 ? { baseUrl } : {}),
-    ...(Number.isInteger(input.inputTokens) && input.inputTokens! > 0 && input.inputTokens! <= 1_000_000 ? { inputTokens: input.inputTokens } : {}),
-    ...(Number.isInteger(input.outputTokens) && input.outputTokens! > 0 && input.outputTokens! <= 128_000 ? { outputTokens: input.outputTokens } : {}),
+    ...(Number.isInteger(input.inputTokens) &&
+    input.inputTokens! > 0 &&
+    input.inputTokens! <= 1_000_000
+      ? { inputTokens: input.inputTokens }
+      : {}),
+    ...(Number.isInteger(input.outputTokens) &&
+    input.outputTokens! > 0 &&
+    input.outputTokens! <= 128_000
+      ? { outputTokens: input.outputTokens }
+      : {}),
     ...(input.capabilities ? { capabilities: { ...input.capabilities } } : {}),
   };
   const models = input.id
     ? state.models.map((item) => (item.id === input.id ? model : item))
     : [...state.models, model];
-  const defaultModel = previous && state.defaultModel === previous.modelId
-    ? modelId
-    : state.defaultModel;
+  const defaultModel =
+    previous && state.defaultModel === previous.modelId
+      ? modelId
+      : state.defaultModel;
   save({ ...state, models, defaultModel });
 }
 export function removeCustomModel(id: string) {
@@ -494,7 +748,10 @@ export function removeCustomModel(id: string) {
   save({
     ...state,
     models: state.models.filter((model) => model.id !== id),
-    defaultModel: removed && state.defaultModel === removed.modelId ? "" : state.defaultModel,
+    defaultModel:
+      removed && state.defaultModel === removed.modelId
+        ? ""
+        : state.defaultModel,
   });
   if (removed) removeCustomModelApiKey(removed.modelId);
 }
@@ -556,4 +813,59 @@ export function closeSettings() {
   requestAnimationFrame(() => {
     if (target?.isConnected) target.focus({ preventScroll: true });
   });
+}
+
+export function setExpertConfiguration(
+  id: string,
+  patch: Partial<ExpertConfiguration>,
+) {
+  if (
+    ["__proto__", "constructor", "prototype"].includes(id) ||
+    !/^[A-Za-z0-9_-]{1,100}$/.test(id)
+  )
+    throw new Error("Invalid expert ID");
+  const state = usePreferences.getState();
+  if (
+    !Object.hasOwn(state.expertSettings, id) &&
+    Object.keys(state.expertSettings).length >= 100
+  )
+    throw new Error(translate(state.locale, "settings.design.roleLimit"));
+  const next = {
+    ...(state.expertSettings[id] || {
+      enabled: true,
+      description: "",
+      instructions: "",
+    }),
+    ...patch,
+  };
+  save(
+    sanitizePreferences({
+      ...state,
+      expertSettings: { ...state.expertSettings, [id]: next },
+    }),
+  );
+}
+export function resetExpertConfiguration(id: string) {
+  const state = usePreferences.getState();
+  const expertSettings = { ...state.expertSettings };
+  delete expertSettings[id];
+  save({ ...state, expertSettings });
+}
+
+export function setAssistantPreferences(patch: Partial<AssistantPreferences>) {
+  const state = usePreferences.getState();
+  const next = sanitizePreferences({
+    ...state,
+    assistant: { ...state.assistant, ...patch },
+  });
+  try {
+    save(next);
+  } catch (cause) {
+    // Stop sharing even if the browser cannot persist the disabled preference.
+    if (patch.autoMatch === false)
+      usePreferences.setState({
+        assistant: { ...state.assistant, autoMatch: false },
+      });
+    throw cause;
+  }
 }

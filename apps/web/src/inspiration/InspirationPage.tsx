@@ -39,6 +39,10 @@ import { AICover, aiCoverIds } from "./samples/aiCovers";
 import { NatureArtwork } from "./samples/NatureArtwork";
 import "./samples/samples.css";
 import "./samples/expansion.css";
+const WordProReport=lazy(()=>import("./samples/WordProReport"));
+const ContentDirectorReport=lazy(()=>import("./samples/ContentDirectorReport"));
+const PresentationVisualGallery = lazy(() => import("./samples/PresentationVisualGallery"));
+const LeaderDecisionReport = lazy(() => import("./samples/LeaderDecisionReport"));
 const MorrowPrototype = lazy(() => import("./samples/morrow/MorrowPrototype"));
 const TidePrototype = lazy(() => import("./samples/tide/TidePrototype"));
 const DaylightPrototype = lazy(
@@ -80,7 +84,9 @@ const workCategories: { label: string; icon?: HomeIconName }[] = [
 function Preview({ id }: { id: SampleId }) {
   return (
     <div className={`sample-preview preview-${id}`} aria-hidden="true">
-      {(mediaIds as readonly string[]).includes(id) ? (
+      {id === "word-pro" ? (<img src={`${import.meta.env.BASE_URL}word-examples/word-pro/business-report/pages/02.jpg`} alt="" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"top"}} loading="lazy" />) : id === "content-director" ? (<img src={`${import.meta.env.BASE_URL}presentation-examples/content-director/slides/07.jpg`} alt="" style={{width:"100%",height:"100%",objectFit:"cover"}} loading="lazy" />) : id === "visual-directions" ? (<img src={`${import.meta.env.BASE_URL}presentation-examples/visual-directions/brand-editorial/cover.jpg`} alt="" style={{width:"100%",height:"100%",objectFit:"cover"}} loading="lazy" />) : id === "leader-decision" ? (
+        <img src={`${import.meta.env.BASE_URL}presentation-examples/leader-decision/adaptive/cover.jpg`} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} loading="lazy" />
+      ) : (mediaIds as readonly string[]).includes(id) ? (
         <MediaCover id={id as (typeof mediaIds)[number]} />
       ) : id === "morrow" ? (
         <MorrowCover />
@@ -135,6 +141,10 @@ export default function InspirationPage({ pathname }: { pathname: string }) {
         draftId &&
         drafts().some((d) => d.id === draftId && d.sample === sample.id)));
   const viewers = {
+    "leader-decision": LeaderDecisionReport,
+    "content-director":ContentDirectorReport,
+    "word-pro":WordProReport,
+    "visual-directions": PresentationVisualGallery,
     travel: TravelPrototype,
     luma: SlideDeck,
     research: ResearchReport,

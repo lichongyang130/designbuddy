@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "type": "business-report",
+  "title": "从文件生成到可核对交付",
+  "engineVersion": "word-pro-1.0.0",
+  "inputSHA256": "cdbae38597c867fd4e910b47727bc04b1274c99213ee175533800aadd4a579aa",
+  "pageCount": 4,
+  "repairRounds": 1,
+  "criticalIssues": 0,
+  "releaseStatus": "needs-human-review",
+  "commercialApproval": false,
+  "planningOrigin": "assistant-authored original methodology fixture; not AI quality acceptance or real business evidence",
+  "files": [
+    {
+      "file": "OFL.txt",
+      "bytes": 4388,
+      "sha256": "1c05c68c34f9708415aada51f17e1b0092d2cea709bf4a94cd38114f9e73d7d9"
+    },
+    {
+      "file": "content-manifest.json",
+      "bytes": 13714,
+      "sha256": "3912aaca829b3630f948dc282fe9e2f03dc6584d971e5a6763bd7e4fec89555b"
+    },
+    {
+      "file": "document.docx",
+      "bytes": 23089,
+      "sha256": "c090e984462e99b5c186ae47850cacad3f822299354791da74b18b3dd6886055"
+    },
+    {
+      "file": "document.pdf",
+      "bytes": 176150,
+      "sha256": "cff18c769c8df0a2ddd7473e2e5a7d2a00607d4d743fb6de96badb93621a57ec"
+    },
+    {
+      "file": "input.json",
+      "bytes": 32562,
+      "sha256": "cdbae38597c867fd4e910b47727bc04b1274c99213ee175533800aadd4a579aa"
+    },
+    {
+      "file": "iterations/0/document.docx",
+      "bytes": 23092,
+      "sha256": "3f0432a874c9e8ec76180c8b7d91f5ef547145e01ab99054cc8f8757a5483f1e"
+    },
+    {
+      "file": "iterations/0/document.pdf",
+      "bytes": 175915,
+      "sha256": "3af4c32e072758704d3fdeee4eae6eedc53ea193fdea3c9193fb60850eb03f84"
+    },
+    {
+      "file": "iterations/0/render-manifest.json",
+      "bytes": 965,
+      "sha256": "aa031c0409bf700cd77d19310b794a4ac442ae00c96145078cdf9a6684c3262a"
+    },
+    {
+      "file": "iterations/1/document.docx",
+      "bytes": 23089,
+      "sha256": "c090e984462e99b5c186ae47850cacad3f822299354791da74b18b3dd6886055"
+    },
+    {
+      "file": "iterations/1/document.pdf",
+      "bytes": 176150,
+      "sha256": "cff18c769c8df0a2ddd7473e2e5a7d2a00607d4d743fb6de96badb93621a57ec"
+    },
+    {
+      "file": "iterations/1/render-manifest.json",
+      "bytes": 965,
+      "sha256": "02063294c4d7650da063f57f7aef8aeb988ac3506e1dd7a22434e9c9f1c86c1b"
+    },
+    {
+      "file": "pages/01.jpg",
+      "bytes": 15807,
+      "sha256": "aa8bcf932c2178fc36e3e59dbeaa0627a065e56a7b5c4f5fccc055a9aa80ab2b"
+    },
+    {
+      "file": "pages/02.jpg",
+      "bytes": 52116,
+      "sha256": "61eb1eed61431cf454aecd8e983d605e360b20994e8cda5c0a427b5e221540d6"
+    },
+    {
+      "file": "pages/03.jpg",
+      "bytes": 53676,
+      "sha256": "fe8e188769114b1857e1ba0126700a9c449974a72e5e2b76f5c00f51e4b7ad10"
+    },
+    {
+      "file": "pages/04.jpg",
+      "bytes": 54530,
+      "sha256": "cc95a30a9c23e7a79ebf438b182c5913e1926f6e2547ebe8e8c5d1f51f57284d"
+    },
+    {
+      "file": "render-manifest.json",
+      "bytes": 965,
+      "sha256": "02063294c4d7650da063f57f7aef8aeb988ac3506e1dd7a22434e9c9f1c86c1b"
+    },
+    {
+      "file": "word-delivery.zip",
+      "bytes": 722304,
+      "sha256": "320db7c50012d3f6f46ffa91527f5d5c6a5993e86525fd0c8833af63947ebe3b"
+    },
+    {
+      "file": "word-pages.jpg",
+      "bytes": 27846,
+      "sha256": "18280fc4f7f12e783389a278e800a873821fdd6f5c73e0fb459cfeb4004eb630"
+    },
+    {
+      "file": "word-quality-report.json",
+      "bytes": 16030,
+      "sha256": "f91237131db2435c3ef5e3082820a3086b51c0ca951ed6345588e0b2e2e3c73e"
+    },
+    {
+      "file": "word-spec.json",
+      "bytes": 32608,
+      "sha256": "9afe9d88197da02dc789d7305ab8ebea47044d611a201b60bfda960743d249a6"
+    }
+  ]
+}

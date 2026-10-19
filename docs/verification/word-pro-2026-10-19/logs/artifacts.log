@@ -1,0 +1,124 @@
+TAP version 13
+# Subtest: the built-in report has 12 substantive source-bound pages, explicit epistemic labels and 15-minute notes
+ok 1 - the built-in report has 12 substantive source-bound pages, explicit epistemic labels and 15-minute notes
+  ---
+  duration_ms: 76.973442
+  type: 'test'
+  ...
+# Subtest: PPTX uses native chart/table/text and every page includes speaker notes with repository positions
+ok 2 - PPTX uses native chart/table/text and every page includes speaker notes with repository positions
+  ---
+  duration_ms: 18.630688
+  type: 'test'
+  ...
+# Subtest: the actual PDF has 12 readable Chinese pages, with matching raster evidence and draft quality boundary
+ok 3 - the actual PDF has 12 readable Chinese pages, with matching raster evidence and draft quality boundary
+  ---
+  duration_ms: 301.75697
+  type: 'test'
+  ...
+# Subtest: manifest hashes match both delivered assets and the complete reusable evidence archive
+ok 4 - manifest hashes match both delivered assets and the complete reusable evidence archive
+  ---
+  duration_ms: 57.931657
+  type: 'test'
+  ...
+# Subtest: V2 comparison preserves V1 content, source bindings and page order and does not masquerade as live planning
+ok 5 - V2 comparison preserves V1 content, source bindings and page order and does not masquerade as live planning
+  ---
+  duration_ms: 3.101629
+  type: 'test'
+  ...
+# Subtest: V2 manifest and packaged native files are independently verifiable
+ok 6 - V2 manifest and packaged native files are independently verifiable
+  ---
+  duration_ms: 249.292517
+  type: 'test'
+  ...
+# Subtest: all substantive original strings remain extractable from the actual V2 PDF, including all table rows
+ok 7 - all substantive original strings remain extractable from the actual V2 PDF, including all table rows
+  ---
+  duration_ms: 89.19262
+  type: 'test'
+  ...
+# Subtest: same historical content, notes, exact bindings, sources, titles and page sequence are locked under the director
+ok 8 - same historical content, notes, exact bindings, sources, titles and page sequence are locked under the director
+  ---
+  duration_ms: 3.283503
+  type: 'test'
+  ...
+# Subtest: native explanations retain every original point and do not flatten slides or invent causal/order claims
+ok 9 - native explanations retain every original point and do not flatten slides or invent causal/order claims
+  ---
+  duration_ms: 56.186359
+  type: 'test'
+  ...
+# Subtest: actual 12-page PDF and all-page rasters preserve text, with no critical quality issue or commercial approval
+ok 10 - actual 12-page PDF and all-page rasters preserve text, with no critical quality issue or commercial approval
+  ---
+  duration_ms: 356.303622
+  type: 'test'
+  ...
+# Subtest: complete hashed evidence package includes task sheets, rhythm, source snapshots and native outputs
+ok 11 - complete hashed evidence package includes task sheets, rhythm, source snapshots and native outputs
+  ---
+  duration_ms: 69.149313
+  type: 'test'
+  ...
+# Subtest: actual M2 consulting: 12-page same-content native/PDF, full evidence raster, complete artifact hashes
+ok 12 - actual M2 consulting: 12-page same-content native/PDF, full evidence raster, complete artifact hashes
+  ---
+  duration_ms: 211.987096
+  type: 'test'
+  ...
+# Subtest: actual M2 technology-launch: 12-page same-content native/PDF, full evidence raster, complete artifact hashes
+ok 13 - actual M2 technology-launch: 12-page same-content native/PDF, full evidence raster, complete artifact hashes
+  ---
+  duration_ms: 171.544266
+  type: 'test'
+  ...
+# Subtest: actual M2 brand-editorial: 12-page same-content native/PDF, full evidence raster, complete artifact hashes
+ok 14 - actual M2 brand-editorial: 12-page same-content native/PDF, full evidence raster, complete artifact hashes
+  ---
+  duration_ms: 120.712793
+  type: 'test'
+  ...
+# Subtest: three real cover geometries, stable factual content hash and historical baseline untouched
+ok 15 - three real cover geometries, stable factual content hash and historical baseline untouched
+  ---
+  duration_ms: 11.28709
+  type: 'test'
+  ...
+# Subtest: Word public cases have complete actual file/hash inventories, full pages and honest authored/approval labels
+ok 16 - Word public cases have complete actual file/hash inventories, full pages and honest authored/approval labels
+  ---
+  duration_ms: 7.650802
+  type: 'test'
+  ...
+# Subtest: Word case native OOXML contains styles, internal navigation, PAGE fields, editable tables and separate illustration rather than flattened pages
+ok 17 - Word case native OOXML contains styles, internal navigation, PAGE fields, editable tables and separate illustration rather than flattened pages
+  ---
+  duration_ms: 11.863756
+  type: 'test'
+  ...
+# Subtest: repair evidence retains actual pre/post files, stable content/source bindings, bounded rounds and no fake quality score
+ok 18 - repair evidence retains actual pre/post files, stable content/source bindings, bounded rounds and no fake quality score
+  ---
+  duration_ms: 57.051263
+  type: 'test'
+  ...
+# Subtest: actual Word PDFs reopen with matching physical page counts and extractable Chinese titles/body; figures are not claimed as native charts
+ok 19 - actual Word PDFs reopen with matching physical page counts and extractable Chinese titles/body; figures are not claimed as native charts
+  ---
+  duration_ms: 518.228957
+  type: 'test'
+  ...
+1..19
+# tests 19
+# suites 0
+# pass 19
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3426.35392

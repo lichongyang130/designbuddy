@@ -1,17 +1,21 @@
 import PptxGenJS from 'pptxgenjs';
+import { buildAdaptivePresentation, type ResolvedObject, type ResolvedSlide } from './presentation/layouts';
+import type { PresentationDesign } from '../../shared/presentationDesign';
 import { applyStructuredTheme } from './pptx-theme';
 import { json, out, text, xml } from './io';
 import type { Output } from './executors';
 
-type Colors = { primary: string; background: string; surface: string; text: string; muted: string; accent: string };
+export type Colors = { primary: string; background: string; surface: string; text: string; muted: string; accent: string };
 type SlideBase = { type: string; title: string; subtitle?: string; speakerNotes?: string; sources?: string[] };
-type StructuredSlide =
+export type StructuredSlide =
   | (SlideBase & { type: 'cover'; subtitle?: string })
   | (SlideBase & { type: 'bullets'; body?: string; bullets: string[] })
   | (SlideBase & { type: 'metrics'; items: { label: string; value: string; note?: string }[] })
   | (SlideBase & { type: 'timeline'; items: { date?: string; label: string; body: string }[] })
   | (SlideBase & { type: 'chart'; chartType: 'bar' | 'line'; categories: string[]; series: { name: string; values: number[] }[]; unit?: string })
-  | (SlideBase & { type: 'quote'; quote: string; attribution?: string });
+  | (SlideBase & { type: 'quote'; quote: string; attribution?: string })
+  | (SlideBase & { type: 'comparison'; columns: { heading: string; bullets: string[] }[] })
+  | (SlideBase & { type: 'table'; headers: string[]; rows: string[][] });
 
 type StructuredDeck = { title: string; theme: Colors; headingFont: string; bodyFont: string; slides: StructuredSlide[] };
 
@@ -26,6 +30,8 @@ const SLIDE_KEYS: Record<string, Set<string>> = {
   metrics: new Set(['type', 'title', 'subtitle', 'items', 'speakerNotes', 'sources']),
   timeline: new Set(['type', 'title', 'subtitle', 'items', 'speakerNotes', 'sources']),
   chart: new Set(['type', 'title', 'subtitle', 'chartType', 'categories', 'series', 'unit', 'speakerNotes', 'sources']),
+  table: new Set(['type', 'title', 'subtitle', 'headers', 'rows', 'speakerNotes', 'sources']),
+  comparison: new Set(['type', 'title', 'subtitle', 'columns', 'speakerNotes', 'sources']),
   quote: new Set(['type', 'title', 'subtitle', 'quote', 'attribution', 'speakerNotes', 'sources']),
 };
 
@@ -79,12 +85,29 @@ function parseSlide(value: unknown, index: number): StructuredSlide {
   const raw = record(value, `slides[${index + 1}]`);
   const type = stringValue(raw.type, `slides[${index + 1}].type`, 20)!;
   const keys = SLIDE_KEYS[type];
-  if (!keys) throw Error(`第 ${index + 1} 页类型不支持；可用 cover/bullets/metrics/timeline/chart/quote。`);
+  if (!keys) throw Error(`第 ${index + 1} 页类型不支持；可用 cover/bullets/metrics/timeline/chart/quote/comparison/table。`);
   rejectUnknownKeys(raw, keys, `第 ${index + 1} 页`);
   const title = stringValue(raw.title, `slides[${index + 1}].title`, 80)!;
   const common = optionalCommon(raw);
   if (type === 'cover') return { type, title, ...common };
   if (type === 'bullets') return { type, title, ...common, ...(raw.body === undefined ? {} : { body: stringValue(raw.body, 'body', 500, false) }), bullets: stringArray(raw.bullets, 'bullets', 2, 6, 180) };
+  if (type === 'table') {
+    const headers = stringArray(raw.headers, 'headers', 2, 5, 40);
+    if (!Array.isArray(raw.rows) || raw.rows.length < 1 || raw.rows.length > 6) throw Error('表格需要 1–6 行数据。');
+    const rows = raw.rows.map((r, i) => {
+      if (!Array.isArray(r) || r.length !== headers.length || r.some(v => typeof v !== 'string' || v.length > 80 || /[\x00-\x08\x0b\x0c\x0e-\x1f]/.test(v))) throw Error(`表格第 ${i + 1} 行不合法。`);
+      return r as string[];
+    });
+    return { type, title, ...common, headers, rows };
+  }
+  if (type === 'comparison') {
+    if (!Array.isArray(raw.columns) || raw.columns.length !== 2) throw Error('对比页需要两栏。');
+    const columns = raw.columns.map(v => {
+      const c = record(v, 'comparison.columns'); rejectUnknownKeys(c, new Set(['heading', 'bullets']), 'comparison.columns');
+      return { heading: stringValue(c.heading, 'heading', 30)!, bullets: stringArray(c.bullets, 'bullets', 2, 4, 100) };
+    });
+    return { type, title, ...common, columns };
+  }
   if (type === 'metrics') {
     if (!Array.isArray(raw.items) || raw.items.length < 2 || raw.items.length > 4) throw Error('metrics.items 须为 2 至 4 项。');
     const items = raw.items.map((item, i) => {
@@ -168,8 +191,19 @@ function addTitle(slide: any, deck: StructuredDeck, title: string, subtitle?: st
 function shape(slide: any, pptx: any, x: number, y: number, w: number, h: number, fill: string, transparency = 0) {
   slide.addShape(pptx.ShapeType.roundRect, { x, y, w, h, rectRadius: 0.08, fill: { color: emu(fill), transparency }, line: { color: emu(fill), transparency: 100 } });
 }
-function createSlide(pptx: any, deck: StructuredDeck, spec: StructuredSlide, page: number) {
+export type ResolvedText = { slideId: string; elementId: string; text: string; x: number; y: number; w: number; h: number; fontSize: number; fontFace: string; color?: string; fill?: string; bold?: boolean; role: 'text' | 'table-cell' };
+export type PresentationBuildOptions = { strictLayout?: boolean; contentOrigin?: 'ai-planned'; adaptiveDesigns?: PresentationDesign[]; visual?: import("./presentation/visuals").VisualBuildOptions };
+function createSlide(pptx: any, deck: StructuredDeck, spec: StructuredSlide, page: number, layout: ResolvedText[], options: PresentationBuildOptions) {
   const slide = pptx.addSlide();
+  let element = 0;
+  const capture = (value: string, o: any, role: ResolvedText['role'] = 'text') => layout.push({ slideId: `slide-${String(page).padStart(2, '0')}`, elementId: `slide-${String(page).padStart(2, '0')}-text-${++element}`, text: value, x: o.x, y: o.y, w: o.w, h: o.h, fontSize: o.fontSize, fontFace: o.fontFace, color: o.color, fill: o.fill?.color, bold: !!o.bold, role });
+  const original = slide.addText.bind(slide);
+  slide.addText = (value: string, o: any) => {
+    capture(value, o);
+    // P1 never hides overflow by shrinking or dropping facts. The quality gate checks these boxes.
+    const fixed = { ...o }; if (options.strictLayout) delete fixed.fit;
+    return original(value, fixed);
+  };
   const colors = deck.theme;
   addCommonChrome(slide, pptx, deck, page);
   const sources = spec.sources?.length ? `\n\n来源：${spec.sources.join('；')}` : '';
@@ -218,8 +252,8 @@ function createSlide(pptx: any, deck: StructuredDeck, spec: StructuredSlide, pag
         slide.addShape(pptx.ShapeType.ellipse, { x: x + cardW / 2 - 0.11, y: y + 0.11, w: 0.22, h: 0.22, fill: { color: emu(index % 2 ? colors.accent : colors.primary) }, line: { color: emu(colors.background), width: 1 } });
         shape(slide, pptx, x, y + 0.66, cardW, 2.55, colors.surface);
         if (item.date) addText(slide, item.date, { x: x + 0.15, y: y + 0.85, w: cardW - 0.3, h: 0.28, fontSize: 9, bold: true, color: emu(colors.accent) }, deck.bodyFont);
-        addText(slide, item.label, { x: x + 0.15, y: y + 1.2, w: cardW - 0.3, h: 0.55, fontSize: 13, bold: true, color: emu(colors.text), valign: 'top' }, deck.headingFont);
-        addText(slide, item.body, { x: x + 0.15, y: y + 1.82, w: cardW - 0.3, h: 1.15, fontSize: 10, color: emu(colors.muted), valign: 'top' }, deck.bodyFont);
+        addText(slide, item.label, { x: x + 0.15, y: y + 1.2, w: cardW - 0.3, h: 0.55, fontSize: 16, bold: true, color: emu(colors.text), valign: 'top' }, deck.headingFont);
+        addText(slide, item.body, { x: x + 0.15, y: y + 1.82, w: cardW - 0.3, h: 1.15, fontSize: 14, color: emu(colors.muted), valign: 'top' }, deck.bodyFont);
       });
     } else if (spec.type === 'chart') {
       if (spec.unit) addText(slide, `单位：${spec.unit}`, { x: 9.85, y: 1.61, w: 2.4, h: 0.22, fontSize: 9, color: emu(colors.muted), align: 'right' }, deck.bodyFont);
@@ -229,6 +263,11 @@ function createSlide(pptx: any, deck: StructuredDeck, spec: StructuredSlide, pag
           x: 0.82, y: 2.0, w: 11.55, h: 4.35,
           showLegend: spec.series.length > 1, legendPos: 'b',
           showValue: spec.categories.length <= 8,
+          dataLabelFormatCode: '0.############', valAxisLabelFormatCode: '0.############',
+          dataLabelFontFace: deck.bodyFont, dataLabelFontSize: 10, dataLabelColor: emu(colors.text),
+          legendFontFace: deck.bodyFont, legendFontSize: 10, legendColor: emu(colors.text),
+          catAxisLabelColor: emu(colors.muted), valAxisLabelColor: emu(colors.muted),
+          chartArea: { fill: { color: emu(colors.background) } }, plotArea: { fill: { color: emu(colors.background) } },
           catAxisLabelFontFace: deck.bodyFont, catAxisLabelFontSize: 10,
           valAxisLabelFontFace: deck.bodyFont, valAxisLabelFontSize: 9,
           chartColors: [emu(colors.primary), emu(colors.accent), '6B8E7D'],
@@ -236,6 +275,18 @@ function createSlide(pptx: any, deck: StructuredDeck, spec: StructuredSlide, pag
           showTitle: false,
           border: { pt: 0, color: emu(colors.background) },
         });
+    } else if (spec.type === 'comparison') {
+      spec.columns.forEach((column, index) => {
+        const x = 0.82 + index * 5.88;
+        shape(slide, pptx, x, 2.05, 5.67, 4.55, colors.surface);
+        addText(slide, column.heading, { x: x + 0.25, y: 2.35, w: 5.17, h: 0.6, fontSize: 21, bold: true, color: emu(index ? colors.accent : colors.primary) }, deck.headingFont);
+        column.bullets.forEach((bullet, i) => addText(slide, bullet, { x: x + 0.25, y: 3.15 + i * 0.78, w: 5.17, h: 0.66, fontSize: 15, color: emu(colors.text), valign: 'top' }, deck.bodyFont));
+      });
+    } else if (spec.type === 'table') {
+      const colW = 11.55 / spec.headers.length, rowH = 0.58;
+      const values = [spec.headers, ...spec.rows];
+      values.forEach((row, r) => row.forEach((cell, c) => capture(cell, { x: 0.82 + c * colW + 0.08, y: 2.1 + r * rowH + 0.06, w: colW - 0.16, h: rowH - 0.12, fontSize: 14, fontFace: deck.bodyFont, bold: !r, color: emu(r ? colors.text : colors.background), fill: { color: emu(r ? colors.surface : colors.primary) } }, 'table-cell')));
+      slide.addTable(values.map((row, r) => row.map(cell => ({ text: cell, options: { bold: !r, color: emu(r ? colors.text : colors.background), fill: emu(r ? colors.surface : colors.primary) } }))), { x: 0.82, y: 2.1, w: 11.55, h: rowH * values.length, colW: Array(spec.headers.length).fill(colW), rowH, fontFace: deck.bodyFont, fontSize: 14, margin: [4, 6, 4, 6], border: { type: 'solid', pt: 0.5, color: emu(colors.muted) }, autoPage: false, valign: 'mid', verbose: false });
     } else if (spec.type === 'quote') {
       shape(slide, pptx, 0.9, 2.35, 0.15, 2.7, colors.accent);
       addText(slide, `“${spec.quote}”`, { x: 1.45, y: 2.45, w: 10.25, h: 2.45, fontSize: 24, bold: true, color: emu(colors.text), valign: 'middle' }, deck.headingFont);
@@ -253,30 +304,34 @@ function previewSlide(spec: StructuredSlide): string {
   if (spec.type === 'metrics') return `<section><small>指标页</small><h2>${xml(spec.title)}</h2>${subtitle}<div class="grid">${spec.items.map(item => `<article><b>${xml(item.value)}</b><strong>${xml(item.label)}</strong>${item.note ? `<p>${xml(item.note)}</p>` : ''}</article>`).join('')}</div></section>`;
   if (spec.type === 'timeline') return `<section><small>时间线</small><h2>${xml(spec.title)}</h2>${subtitle}<div class="grid">${spec.items.map(item => `<article><b>${xml(item.date || '')}</b><strong>${xml(item.label)}</strong><p>${xml(item.body)}</p></article>`).join('')}</div></section>`;
   if (spec.type === 'chart') return `<section><small>原生图表 · ${xml(spec.chartType)}</small><h2>${xml(spec.title)}</h2>${subtitle}<table><thead><tr><th>序列</th>${spec.categories.map(category => `<th>${xml(category)}</th>`).join('')}</tr></thead><tbody>${spec.series.map(series => `<tr><th>${xml(series.name)}</th>${series.values.map(value => `<td>${xml(value)}</td>`).join('')}</tr>`).join('')}</tbody></table>${spec.unit ? `<p>单位：${xml(spec.unit)}</p>` : ''}</section>`;
+  if (spec.type === 'table') return `<section><h2>${xml(spec.title)}</h2><table>${[spec.headers, ...spec.rows].map(row => `<tr>${row.map(v => `<td>${xml(v)}</td>`).join('')}</tr>`).join('')}</table></section>`;
+  if (spec.type === 'comparison') return `<section><h2>${xml(spec.title)}</h2><div class="grid">${spec.columns.map(c => `<article><h3>${xml(c.heading)}</h3><ul>${c.bullets.map(v => `<li>${xml(v)}</li>`).join('')}</ul></article>`).join('')}</div></section>`;
   return `<section><small>引用页</small><h2>${xml(spec.title)}</h2>${subtitle}<blockquote>${xml(spec.quote)}</blockquote>${spec.attribution ? `<p>${xml(spec.attribution)}</p>` : ''}</section>`;
 }
 
-export async function buildStructuredPresentation(bytes: Uint8Array): Promise<{ title: string; slideCount: number; pptxBytes: Uint8Array; outputs: Output[] }> {
+export async function buildStructuredPresentation(bytes: Uint8Array, options: PresentationBuildOptions = {}): Promise<{ title: string; slideCount: number; pptxBytes: Uint8Array; outputs: Output[]; layout: ResolvedText[]; resolvedObjects?: ResolvedObject[]; adaptiveLayout?: { schemaVersion: number; engineVersion: string; slides: ResolvedSlide[] } }> {
   const deck = parseStructuredDeck(bytes);
+  if (options.adaptiveDesigns) return buildAdaptivePresentation(deck, options.adaptiveDesigns, options.visual);
   const pptx = new PptxGenJS();
   pptx.layout = 'LAYOUT_WIDE';
   pptx.author = 'DesignBuddy';
   pptx.title = deck.title;
   pptx.subject = '结构化内容生成的原生可编辑幻灯片';
   pptx.theme = { headFontFace: deck.headingFont, bodyFontFace: deck.bodyFont };
-  deck.slides.forEach((slide, index) => createSlide(pptx, deck, slide, index + 1));
+  const layout: ResolvedText[] = [];
+  deck.slides.forEach((slide, index) => createSlide(pptx, deck, slide, index + 1, layout, options));
   const rawBytes = new Uint8Array(await pptx.write({ outputType: 'nodebuffer' }) as Buffer);
   const bytesOut = applyStructuredTheme(rawBytes, deck.theme, deck.headingFont, deck.bodyFont);
   const html = `<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${xml(deck.title)}</title><style>body{font:16px/1.7 system-ui,sans-serif;background:#e8ece8;color:${deck.theme.text};padding:24px}section{max-width:960px;min-height:440px;background:${deck.theme.background};margin:24px auto;padding:48px;border-radius:14px;box-shadow:0 2px 14px #0001}small{color:${deck.theme.accent};font-weight:700;letter-spacing:.08em}h2{font-size:30px;margin:12px 0 16px}li{margin:10px 0}blockquote{font-size:22px;border-left:4px solid ${deck.theme.accent};padding:18px 24px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-top:28px}article{background:${deck.theme.surface};padding:20px;border-radius:10px}article b{display:block;font-size:26px;color:${deck.theme.primary}}article strong{display:block}table{border-collapse:collapse;width:100%;background:${deck.theme.surface}}td,th{border:1px solid #d7ddd8;padding:10px;text-align:left}footer{max-width:960px;margin:8px auto;color:#65736b}</style><h1>${xml(deck.title)}</h1>${deck.slides.map(previewSlide).join('')}${deck.slides.map((slide, index) => slide.sources?.length ? `<footer>第 ${index + 1} 页来源：${slide.sources.map(xml).join('；')}</footer>` : '').join('')}</html>`;
   const sourceMap = {
     schemaVersion: 1,
-    source: 'user-provided structured JSON; content was not AI-rewritten or fact-checked',
+    source: options.contentOrigin === 'ai-planned' ? 'AI-planned from explicitly authorized source content; source references require human fact review' : 'user-provided structured JSON; content was not AI-rewritten or fact-checked',
     title: deck.title,
     theme: { ...deck.theme, headingFont: deck.headingFont, bodyFont: deck.bodyFont },
     slides: deck.slides.map((slide, index) => ({ page: index + 1, ...slide, editableObjectTypes: slide.type === 'chart' ? ['text', 'shape', 'native-chart'] : ['text', 'shape'] })),
     limitations: [
       'Text, shape cards and bar/line charts are authored as native PowerPoint objects; style tokens are not a template-import or pixel-matching system.',
-      'No AI content planning, external research, image generation, or fact checking is performed.',
+      options.contentOrigin === 'ai-planned' ? 'AI planned the supplied content; no external research or independent semantic fact verification was performed.' : 'No AI content planning, external research, image generation, or fact checking is performed.',
       'The output PPTX can still reflow when opened with different fonts or PowerPoint-compatible applications.',
     ],
   };
@@ -284,6 +339,7 @@ export async function buildStructuredPresentation(bytes: Uint8Array): Promise<{ 
     title: deck.title,
     slideCount: deck.slides.length,
     pptxBytes: bytesOut,
+    layout,
     outputs: [
       out('content-preview.html', 'text/html; charset=utf-8', html),
       json('source-slides.json', sourceMap),

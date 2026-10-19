@@ -61,3 +61,10 @@ export function customExpertCatalog(expert: Expert): CatalogExpert {
 }
 /** Only closely corresponding legacy URLs resolve to replacements; unrelated retired roles stay unavailable. */
 export const expertLegacyIds: Record<string, string> = { "builtin-developer": "developer", "builtin-product": "product" };
+
+/** Public role overrides; disabling removes a role from matching and manual candidates. */
+export function configureExpert(expert: CatalogExpert, settings: Record<string, { enabled: boolean; description: string; instructions: string }>): CatalogExpert {
+  const config = settings[expert.id];
+  if (!config) return expert;
+  return { ...expert, description: config.description || expert.description, method: config.instructions ? [config.instructions, ...expert.method.slice(0, 5)] : expert.method };
+}

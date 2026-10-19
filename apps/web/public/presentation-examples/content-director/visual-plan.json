@@ -1,0 +1,243 @@
+{
+  "schemaVersion": 1,
+  "versionId": "7850b17e810407e27455c1c68a4d167d01b5265277a9b29a90cb0ea313ed7707",
+  "engineVersion": "visual-1.0.0",
+  "palette": {
+    "primary": "#244C42",
+    "background": "#F4F1E9",
+    "surface": "#FFFFFF",
+    "text": "#172C26",
+    "muted": "#52685D",
+    "accent": "#A54525"
+  },
+  "method": "deterministic rules from declared purpose, content type and asset metadata; not autonomous image understanding",
+  "style": "consulting",
+  "designs": [
+    {
+      "layout": "visual-cover",
+      "nature": "recommendation",
+      "directed": {
+        "role": "opening",
+        "pace": "focus"
+      },
+      "visual": {
+        "assetId": "asset-concept",
+        "fit": "cover"
+      }
+    },
+    {
+      "layout": "message-focus",
+      "nature": "recommendation",
+      "directed": {
+        "role": "decision",
+        "pace": "focus",
+        "focusIndex": 0
+      }
+    },
+    {
+      "layout": "kpi-insight",
+      "nature": "fact",
+      "directed": {
+        "role": "evidence",
+        "pace": "verify"
+      }
+    },
+    {
+      "layout": "capability-boundary",
+      "nature": "fact",
+      "directed": {
+        "role": "evidence",
+        "pace": "explain"
+      }
+    },
+    {
+      "layout": "chart-takeaway",
+      "nature": "fact",
+      "directed": {
+        "role": "evidence",
+        "pace": "verify"
+      }
+    },
+    {
+      "layout": "decision-matrix",
+      "nature": "analysis",
+      "emphasisRows": [
+        1
+      ],
+      "directed": {
+        "role": "options",
+        "pace": "explain"
+      }
+    },
+    {
+      "layout": "native-structure",
+      "nature": "recommendation",
+      "directed": {
+        "role": "explanation",
+        "pace": "explain"
+      }
+    },
+    {
+      "layout": "adaptive-table",
+      "nature": "analysis",
+      "directed": {
+        "role": "conditions",
+        "pace": "verify"
+      }
+    },
+    {
+      "layout": "risk-response",
+      "nature": "analysis",
+      "directed": {
+        "role": "conditions",
+        "pace": "verify"
+      }
+    },
+    {
+      "layout": "connected-gates",
+      "nature": "recommendation",
+      "directed": {
+        "role": "explanation",
+        "pace": "explain",
+        "sequenceBasis": "proposal"
+      }
+    },
+    {
+      "layout": "decision-criteria",
+      "nature": "recommendation",
+      "directed": {
+        "role": "conditions",
+        "pace": "verify"
+      }
+    },
+    {
+      "layout": "decision-criteria",
+      "nature": "recommendation",
+      "directed": {
+        "role": "decision",
+        "pace": "focus"
+      }
+    }
+  ],
+  "pages": [
+    {
+      "slideId": "slide-01",
+      "layout": "visual-cover",
+      "nature": "recommendation",
+      "primaryMessage": "建议有条件批准小范围试点",
+      "image": {
+        "assetId": "asset-concept",
+        "fit": "cover",
+        "usage": "decorative"
+      },
+      "composition": "克制留白，结论左/图右"
+    },
+    {
+      "slideId": "slide-02",
+      "layout": "message-focus",
+      "nature": "recommendation",
+      "primaryMessage": "本次请求：批准试点边界，不背书全面推广",
+      "image": null,
+      "composition": "克制留白，结论左/图右"
+    },
+    {
+      "slideId": "slide-03",
+      "layout": "kpi-insight",
+      "nature": "fact",
+      "primaryMessage": "已有工程证据，但不是商业质量认证",
+      "image": null,
+      "composition": "克制留白，结论左/图右"
+    },
+    {
+      "slideId": "slide-04",
+      "layout": "capability-boundary",
+      "nature": "fact",
+      "primaryMessage": "可以交付可编辑草稿，不能承诺商业成稿",
+      "image": null,
+      "composition": "克制留白，结论左/图右"
+    },
+    {
+      "slideId": "slide-05",
+      "layout": "chart-takeaway",
+      "nature": "fact",
+      "primaryMessage": "扩展API仍有失败，需先判断试点影响",
+      "image": null,
+      "composition": "克制留白，结论左/图右"
+    },
+    {
+      "slideId": "slide-06",
+      "layout": "decision-matrix",
+      "nature": "analysis",
+      "primaryMessage": "三种可选路径：建议选择受控试点",
+      "image": null,
+      "composition": "克制留白，结论左/图右"
+    },
+    {
+      "slideId": "slide-07",
+      "layout": "native-structure",
+      "nature": "recommendation",
+      "primaryMessage": "试点的价值：把未知变成可核对证据",
+      "image": null,
+      "composition": "克制留白，结论左/图右"
+    },
+    {
+      "slideId": "slide-08",
+      "layout": "adaptive-table",
+      "nature": "analysis",
+      "primaryMessage": "成本尚未测算：先明确记录口径和上限",
+      "image": null,
+      "composition": "克制留白，结论左/图右"
+    },
+    {
+      "slideId": "slide-09",
+      "layout": "risk-response",
+      "nature": "analysis",
+      "primaryMessage": "风险要有触发条件和应对动作",
+      "image": null,
+      "composition": "克制留白，结论左/图右"
+    },
+    {
+      "slideId": "slide-10",
+      "layout": "connected-gates",
+      "nature": "recommendation",
+      "primaryMessage": "按关卡推进，不承诺未经评估的日期",
+      "image": null,
+      "composition": "克制留白，结论左/图右"
+    },
+    {
+      "slideId": "slide-11",
+      "layout": "decision-criteria",
+      "nature": "recommendation",
+      "primaryMessage": "达标才扩围：导出成功不是唯一门槛",
+      "image": null,
+      "composition": "克制留白，结论左/图右"
+    },
+    {
+      "slideId": "slide-12",
+      "layout": "decision-criteria",
+      "nature": "recommendation",
+      "primaryMessage": "请确认范围、责任、资源与退出条件",
+      "image": null,
+      "composition": "克制留白，结论左/图右"
+    }
+  ],
+  "assets": [
+    {
+      "id": "asset-concept",
+      "name": "concept-hero.jpg",
+      "role": "illustration",
+      "usage": "decorative",
+      "alt": "AI生成概念装饰；不是业务事实或真实产品",
+      "source": "此前本会话Arena工具真实生成；沿用M2素材，不是应用自动生图",
+      "license": "本项目概念展示，非独立版权认证",
+      "permissionConfirmed": true,
+      "originalSHA256": "50dedc2d81489701fe5bf402df5383f5fb1a3c81f5e4a3aa58e783610179d369",
+      "sha256": "f0879c23520b916d32fbd4e10d3cab3af212c7c2e91695b082f4d8c5bca52046",
+      "width": 1376,
+      "height": 768,
+      "mimeType": "image/png"
+    }
+  ],
+  "unusedAssetIds": [],
+  "automaticImageGeneration": false
+}

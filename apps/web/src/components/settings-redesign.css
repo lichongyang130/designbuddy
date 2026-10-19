@@ -1379,3 +1379,79 @@ html[data-density="compact"]
     padding-inline: 14px;
   }
 }
+
+/* In-pane configuration: retain wrapping and keyboard access at 320px. */
+.settings-window .settings-role-editor,
+.settings-window .settings-assistant-advanced {
+  margin-block: 12px;
+  min-width: 0;
+}
+.settings-window .settings-role-editor summary,
+.settings-window .settings-assistant-advanced summary,
+.settings-window .settings-extension-row summary {
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--set-accent);
+  padding-block: 6px;
+}
+.settings-window .settings-role-methods {
+  padding-inline-start: 20px;
+  font-size: 11px;
+  color: var(--set-muted);
+  line-height: 1.7;
+}
+.settings-window .settings-expert-top h3 {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.settings-window .settings-expert-top .settings-switch {
+  flex-shrink: 0;
+}
+.settings-window .settings-app-card + .settings-app-card {
+  border-top: 1px solid var(--set-line);
+  margin-top: 18px;
+  padding-top: 18px;
+}
+.settings-window .settings-app-card .settings-form-actions {
+  justify-content: flex-start;
+}
+.settings-window .settings-model-check {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+.settings-window .settings-model-check .settings-status-tag {
+  white-space: normal;
+}
+.settings-window .settings-model-check .settings-button {
+  padding: 4px 8px;
+  font-size: 11px;
+}
+.settings-window .settings-connection-warning {
+  padding-block: 10px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.settings-window .settings-edit-form select,
+.settings-window .settings-assistant-advanced select {
+  max-width: 100%;
+  min-height: 34px;
+  padding: 6px 10px;
+  border: 1px solid var(--set-line);
+  border-radius: 7px;
+  background: var(--set-soft);
+  color: var(--set-ink);
+}
+.settings-window .settings-detail-list dd {
+  overflow-wrap: anywhere;
+}
+html[dir="rtl"] .settings-window {
+  text-align: right;
+}
+
+.settings-window .settings-expert-grid {
+  align-items: start;
+}
