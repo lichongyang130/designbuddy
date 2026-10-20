@@ -52,6 +52,7 @@ export function HomePluginsRail({ onPick, onNavigatePlugins }: Props) {
   const [totals, setTotals] = useState<{ enabled: number; readySkills: number; blockedSkills: number }>({ enabled: 0, readySkills: 0, blockedSkills: 0 });
   const [catalog, setCatalog] = useState<CatalogItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [blockedOpen, setBlockedOpen] = useState(false);
 
   // Bundles: render from cache instantly, then revalidate once in the background.
   useEffect(() => {
@@ -145,6 +146,17 @@ export function HomePluginsRail({ onPick, onNavigatePlugins }: Props) {
     return rows;
   }, [bundles, savedIds, byId, loading]);
 
+  // Skills the server already knows it cannot run: missing credentials, an
+  // unwired renderer, or an environment the host does not provide.
+  const blocked = useMemo(
+    () => bundles.flatMap((bundle) =>
+      bundle.skills
+        .filter((skill) => skill.status !== "ready")
+        .map((skill) => ({ bundle: bundle.name, skill })),
+    ),
+    [bundles],
+  );
+
   return (
     <section className="home-plugins-rail" aria-label="我的插件">
       <header className="hpr-head">
@@ -161,9 +173,16 @@ export function HomePluginsRail({ onPick, onNavigatePlugins }: Props) {
                   : "尚未启用"}
           </span>
         </div>
-        <button type="button" className="hpr-manage" onClick={onNavigatePlugins}>
-          管理插件 <span aria-hidden="true">→</span>
-        </button>
+        <div className="hpr-head-actions">
+          {blocked.length > 0 && (
+            <button type="button" className="hpr-blocked" onClick={() => setBlockedOpen(true)} title="查看还需要配置什么">
+              <HomeIcon name="shield" size={12} /> {blocked.length} 个待配置
+            </button>
+          )}
+          <button type="button" className="hpr-manage" onClick={onNavigatePlugins}>
+            管理插件 <span aria-hidden="true">→</span>
+          </button>
+        </div>
       </header>
 
       {items.length > 0 ? (
@@ -201,6 +220,41 @@ export function HomePluginsRail({ onPick, onNavigatePlugins }: Props) {
         <HomeIcon name="shield" size={12} />
         点击只把示例需求填进输入框，不会安装或授权；权限在执行前二次确认。
       </p>
+
+      {blockedOpen && (
+        <div className="hpr-blocked-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setBlockedOpen(false); }}>
+          <div className="hpr-blocked-dialog" role="dialog" aria-modal="true" aria-label="待配置的技能">
+            <header>
+              <div>
+                <h4>{blocked.length} 个技能还不能运行</h4>
+                <p>这些技能所属的插件包已启用，但服务端缺少它们需要的条件。配置好之前，它们不会出现在一键入口里，也不会假装成功。</p>
+              </div>
+              <button type="button" className="hpr-blocked-close" onClick={() => setBlockedOpen(false)} aria-label="关闭">×</button>
+            </header>
+            <ul>
+              {blocked.map(({ bundle, skill }) => (
+                <li key={`${bundle}:${skill.id}`}>
+                  <div className="hpr-blocked-title">
+                    <strong>{skill.name}</strong>
+                    <span>{bundle}</span>
+                  </div>
+                  {skill.unavailableReason && <p className="hpr-blocked-reason">{skill.unavailableReason}</p>}
+                  {skill.requires.length > 0 && (
+                    <ul className="hpr-blocked-needs">
+                      {skill.requires.map((requirement) => (
+                        <li key={requirement.label}>
+                          <span>{requirement.label}</span>
+                          <small>{requirement.detail}</small>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

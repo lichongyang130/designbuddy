@@ -77,6 +77,8 @@
 | 样式（极简白底，对齐 01 方向） | `apps/web/src/home-plugins.css` |
 | 轻量接口 `GET /api/plugins?scope=home` | `server/api/plugin-registry.ts` |
 | 首页数据 + 缓存失效 | `frontend/workspace/api/plugins.ts` |
-| `/plugins` 路由懒加载 | `apps/web/src/App.tsx` |
+| `/plugins`、`/library`、技能目录按需加载 | `apps/web/src/App.tsx`、`frontend/workspace/WorkspaceHub.tsx` |
+| ⌘K 联合搜索（场景/技能/插件/页面） | `apps/web/src/components/HomeCommandPalette.tsx` + `apps/web/src/command-palette.css` |
+| 发送前校验（缺文件/技能不可用直接拦住） | `apps/web/src/components/useRuntimeSkill.ts` |
 
-实测：首页新增请求 1.0 KB（无包时 90 B），主包 −27.7 kB，480 项目录不再随首页加载。
+实测：首页新增请求 1.0 KB（无包时 90 B）；主包 3 426 → 2 398 kB（gzip 780 → 700 kB），480 项目录与技能声明都不再随首页加载。

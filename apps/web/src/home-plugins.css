@@ -322,3 +322,159 @@
   border-color: #cfcaee;
   background: #f8f7fe;
 }
+
+/* "N 个待配置": the rail only advertises what the server will actually run. */
+.home-plugins-rail .hpr-head-actions {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 10px;
+}
+
+.home-plugins-rail .hpr-blocked {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border: 1px solid #f0e1cd;
+  border-radius: 999px;
+  background: #fffdf8;
+  color: #9c5c19;
+  font-size: 10.5px;
+}
+
+.home-plugins-rail .hpr-blocked:hover {
+  border-color: #e6cda8;
+  background: #fdf7ee;
+}
+
+.hpr-blocked-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 950;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  background: rgba(20, 22, 30, 0.3);
+}
+
+.hpr-blocked-dialog {
+  width: min(520px, 100%);
+  max-height: min(74vh, 620px);
+  display: flex;
+  flex-direction: column;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 24px 80px rgba(20, 22, 30, 0.2);
+  overflow: hidden;
+  color: #2b3038;
+}
+
+.hpr-blocked-dialog header {
+  display: flex;
+  flex: none;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 18px 12px;
+  border-bottom: 1px solid #f2f2f7;
+}
+
+.hpr-blocked-dialog h4 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.hpr-blocked-dialog header p {
+  margin: 5px 0 0;
+  color: #8b91a0;
+  font-size: 11.5px;
+  line-height: 1.6;
+}
+
+.hpr-blocked-close {
+  flex: none;
+  margin-left: auto;
+  border: 0;
+  background: transparent;
+  color: #b3b7c2;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.hpr-blocked-close:hover {
+  color: #6753c6;
+}
+
+.hpr-blocked-dialog > ul {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  padding: 6px 18px 16px;
+  list-style: none;
+  overflow-y: auto;
+}
+
+.hpr-blocked-dialog > ul > li {
+  padding: 12px 0;
+  border-bottom: 1px solid #f5f5f9;
+}
+
+.hpr-blocked-dialog > ul > li:last-child {
+  border-bottom: 0;
+}
+
+.hpr-blocked-title {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+}
+
+.hpr-blocked-title strong {
+  font-size: 12.5px;
+  font-weight: 550;
+}
+
+.hpr-blocked-title span {
+  color: #a9aeb9;
+  font-size: 10.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hpr-blocked-reason {
+  margin: 5px 0 0;
+  color: #9c5c19;
+  font-size: 11.5px;
+  line-height: 1.65;
+}
+
+.hpr-blocked-needs {
+  margin: 7px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hpr-blocked-needs li {
+  margin-top: 5px;
+  padding: 6px 9px;
+  border-radius: 8px;
+  background: #fbfbfd;
+}
+
+.hpr-blocked-needs span {
+  display: block;
+  font-size: 11.5px;
+  color: #454b58;
+}
+
+.hpr-blocked-needs small {
+  display: block;
+  margin-top: 2px;
+  color: #9aa0ad;
+  font-size: 10.5px;
+  line-height: 1.6;
+}

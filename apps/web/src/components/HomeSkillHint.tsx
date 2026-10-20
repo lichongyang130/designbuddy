@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
 import type { RuntimeSkill } from "../../../../shared/skillRuntime";
 import { HomeIcon } from "./HomeIcon";
+import { skillGate, useRuntimeSkill } from "./useRuntimeSkill";
 
 type Props = {
   /** The skill the composer is currently holding, as a skill id or a skill name. */
@@ -13,68 +13,53 @@ type Props = {
 /**
  * Shows, right under the composer, what the selected skill will actually accept
  * and what it still needs from the person. It is a read-only projection of the
- * runtime catalogue: no permission is granted here, nothing is installed.
+ * runtime catalogue: no permission is granted here, nothing is installed, and
+ * the same check blocks the send button before a task is created.
  */
 export function HomeSkillHint({ selected, attachmentCount, onUpload, onClear }: Props) {
-  const [skills, setSkills] = useState<RuntimeSkill[]>([]);
-
-  useEffect(() => {
-    if (!selected || skills.length) return;
-    let cancelled = false;
-    void import("../../../../shared/skillRuntime")
-      .then((mod) => { if (!cancelled) setSkills(mod.runtimeSkills); })
-      .catch(() => { /* hint simply stays hidden */ });
-    return () => { cancelled = true; };
-  }, [selected, skills.length]);
-
-  const skill = useMemo(() => {
-    if (!selected) return undefined;
-    return skills.find((item) => item.id === selected)
-      ?? skills.find((item) => item.name === selected)
-      ?? skills.find((item) => item.name.includes(selected) || selected.includes(item.name));
-  }, [skills, selected]);
-
+  const skill = useRuntimeSkill(selected);
   if (!selected || !skill) return null;
 
-  const needsFile = !skill.accepts.includes(".json") && attachmentCount === 0;
-  const unavailable = skill.status !== "ready";
+  const gate = skillGate(skill, attachmentCount);
+  const blocked = skill.status !== "ready";
   const permissions = skill.permissions ?? [];
+  const needsFile = gate?.action?.kind === "upload";
 
   return (
-    <div className={`home-skill-hint${unavailable ? " is-blocked" : ""}`} role="note">
+    <div className={`home-skill-hint${blocked || gate ? " is-blocked" : ""}`} role="note">
       <div className="hsh-line">
-        <span className="hsh-tag">{unavailable ? "暂不可用" : "已装入输入框"}</span>
+        <span className="hsh-tag">{blocked ? "暂不可用" : needsFile ? "待上传文件" : "已装入输入框"}</span>
         <strong>{skill.name}</strong>
-        {skill.accepts.length > 0 && (
-          <span className="hsh-meta">接受 {skill.accepts.join(" / ")}</span>
-        )}
+        {skill.accepts.length > 0 && <span className="hsh-meta">接受 {skill.accepts.join(" / ")}</span>}
         <button type="button" className="hsh-clear" onClick={onClear} aria-label="清除已选技能">×</button>
       </div>
 
-      {unavailable && <p className="hsh-note">{skill.description}</p>}
+      {blocked && <p className="hsh-note">{skill.description}</p>}
 
-      {!unavailable && needsFile && (
+      {needsFile && (
         <p className="hsh-note">
-          这个技能需要你提供文件，上传后才会真正执行。
+          {gate?.blocked}
           <button type="button" className="hsh-action" onClick={onUpload}>
             <HomeIcon name="folder" size={12} /> 选择文件
           </button>
         </p>
       )}
 
-      {!unavailable && skill.requires && skill.requires.length > 0 && (
-        <p className="hsh-note is-quiet">
-          还需要：{skill.requires.map((item) => item.label).join("、")}
-        </p>
+      {!gate && requirements(skill) && (
+        <p className="hsh-note is-quiet">还需要：{requirements(skill)}</p>
       )}
 
-      {!unavailable && permissions.length > 0 && (
+      {!blocked && permissions.length > 0 && (
         <p className="hsh-note is-quiet">
           执行时会用到：{permissions.map((permission) => permissionLabels[permission] ?? permission).join("、")}
         </p>
       )}
     </div>
   );
+}
+
+function requirements(skill: RuntimeSkill): string {
+  return (skill.requires ?? []).map((item) => item.label).join("、");
 }
 
 /** Mirrors shared/skillRuntime.skillPermissionLabels without importing the catalogue eagerly. */

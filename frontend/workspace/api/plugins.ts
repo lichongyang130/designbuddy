@@ -95,8 +95,10 @@ export type HomePluginSkill = {
   name: string;
   status: "ready" | "unavailable";
   accepts: string[];
-  requires: { kind: string; label: string }[];
+  outputs: string[];
+  requires: { kind: string; label: string; detail: string }[];
   permissions: SkillPermission[];
+  unavailableReason: string;
 };
 
 export type HomePluginBundle = {

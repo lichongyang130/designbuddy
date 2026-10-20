@@ -1,5 +1,5 @@
 import { Suspense, lazy, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { DesignLibrary, ProjectEditorPage, ProjectsPage, ShareProjectPage, StudioPage, WorkspaceHub } from "../../../frontend/workspace";
+import { ProjectEditorPage, ProjectsPage, ShareProjectPage, StudioPage, WorkspaceHub } from "../../../frontend/workspace";
 import type { DesignProject } from "../../../frontend/workspace/models/project";
 import { createProject, listProjects, updateProject } from "../../../frontend/workspace/projectStore";
 import { useExpertMatch } from "./components/useExpertMatch";
@@ -29,6 +29,8 @@ import { fetchAccount } from "../../../frontend/workspace/api/account";
 import InspirationPage from "./inspiration/InspirationPage";
 import { HomePluginsRail } from "./components/HomePluginsRail";
 import { HomeSkillHint } from "./components/HomeSkillHint";
+import { HomeCommandPalette } from "./components/HomeCommandPalette";
+import { skillGate, useRuntimeSkill } from "./components/useRuntimeSkill";
 import TaskConversationPage from "../../../frontend/workspace/pages/TaskConversationPage";
 import { saveTaskConversation, pendingTaskKey, type TaskConversation } from "../../../frontend/workspace/taskConversation";
 import { matchBinding, openSettings, setWakeLock, syncPreferencesFromAccount, useModelOptions, usePreferences, useSettingsWindow } from "../../../frontend/workspace/settingsStore";
@@ -40,6 +42,7 @@ import "./home-workspace.css";
 import "./home-reference.css";
 import "./home-layout.css";
 import "./home-plugins.css";
+import "./command-palette.css";
 import { HomeDiscovery, HomeShortcuts, type HomeScene } from "./components/HomeDiscovery";
 import "./components/auth.css";
 import LoginPage from "./components/LoginPage";
@@ -50,6 +53,9 @@ import { AUTH_GATE_ENABLED } from "../../../frontend/workspace/authGate";
 // The plugin directory ships the whole 480-item catalogue plus its filters, so
 // it is loaded on demand: the homepage only renders the small "我的插件" rail.
 const PluginsPage = lazy(() => import("../../../frontend/workspace/pages/PluginsPage"));
+// The library carries three catalogues (design systems, templates, 480 plugins,
+// skills) worth ~400 KB of JSON; nobody needs them to see the homepage.
+const DesignLibrary = lazy(() => import("../../../frontend/workspace/pages/DesignLibrary"));
 
 
 type WorkMode = "office" | "code" | "design";
@@ -107,11 +113,13 @@ export default function App() {
   const [attachments, setAttachments] = useState<TaskAttachment[]>([]);
   const [selectedExpert, setSelectedExpert] = useState("");
   const [selectedSkill, setSelectedSkill] = useState("");
+  const [paletteOpen, setPaletteOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const modelMenuRef = useRef<HTMLDivElement>(null);
   const composerRef = useRef<HTMLElement>(null);
   const startProjectRef = useRef<() => void>(() => {});
   const expertMatch = useExpertMatch({ prompt, mode, model, permission, attachments, selectedExpert, enabled: currentPath === "/" });
+  const activeSkill = useRuntimeSkill(selectedSkill);
 
   useEffect(() => {
     void syncPreferencesFromAccount();
@@ -269,6 +277,14 @@ export default function App() {
   useEffect(() => {
     const dispatch = (event: KeyboardEvent) => {
       const bindings = usePreferences.getState().keybindings;
+      // ⌘K / Ctrl+K: one search for scenes, plugins, skills and pages. The
+      // palette lives on the homepage only, so the shortcut is scoped to it.
+      if ((event.metaKey || event.ctrlKey) && !event.altKey && !event.shiftKey && event.key.toLowerCase() === "k") {
+        if (currentPath !== "/") return;
+        event.preventDefault();
+        setPaletteOpen((open) => !open);
+        return;
+      }
       if (matchBinding(event, bindings["open-settings"])) {
         event.preventDefault();
         if (!useSettingsWindow.getState().open) openSettings();
@@ -503,6 +519,13 @@ export default function App() {
     if (isPptPrompt(initialPrompt)) {
       return startPptProject(initialPrompt);
     }
+    // A selected skill is a promise about what will run. Refuse to send when the
+    // declaration already says it cannot run, instead of failing inside the task.
+    const gate = skillGate(activeSkill, attachments.length, { requireFile: workflow !== "skills" });
+    if (gate) {
+      setNotice(`${gate.blocked}${gate.action?.kind === "clear" ? " 清除技能后可退回普通对话。" : ""}`);
+      return;
+    }
     try {
       setBusy(true);
       const prefix = `${modeLabels[mode]}需求：`;
@@ -588,7 +611,12 @@ export default function App() {
   if (currentPath === "/workflows") return <WorkflowsPage />;
   if (currentPath === "/admin") return <AdminPage />;
   if (currentPath === "/inspiration" || currentPath.startsWith("/inspiration/")) return <InspirationPage pathname={currentPath} />;
-  if (currentPath.startsWith("/library")) return <DesignLibrary />;
+  if (currentPath.startsWith("/library"))
+    return (
+      <Suspense fallback={<div className="auth-loading" role="status" aria-label="正在加载素材库"><span className="auth-loading-spinner" aria-hidden="true" />正在加载素材库…</div>}>
+        <DesignLibrary />
+      </Suspense>
+    );
   if (currentPath === "/studio" || currentPath.startsWith("/studio/")) return <StudioPage />;
   if (currentPath === "/share") return <ShareProjectPage />;
   const shareMatch = currentPath.match(/^\/share\/([^/]+)$/);
@@ -844,6 +872,19 @@ export default function App() {
           <button className="home27-explore" onClick={() => go("/workflows")}><span aria-hidden="true">—</span> {t("home.explore.workflows")} <span aria-hidden="true">→</span></button>
         </div>
       </main>
+      <HomeCommandPalette
+        open={paletteOpen}
+        mode={mode}
+        onClose={() => setPaletteOpen(false)}
+        onSelectScene={(scene) => { setPaletteOpen(false); selectHomeScene(scene); }}
+        onSelectSkill={(name) => {
+          setPaletteOpen(false);
+          setSelectedSkill(name);
+          setNotice(`已选择技能「${name}」，补充需求后发送；执行前的权限会再次确认。`);
+          requestAnimationFrame(() => composerRef.current?.querySelector("textarea")?.focus({ preventScroll: true }));
+        }}
+        onNavigate={go}
+      />
     </div>
   );
 }

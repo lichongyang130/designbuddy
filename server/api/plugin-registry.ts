@@ -61,8 +61,12 @@ export type HomePluginSkill = {
   name: string;
   status: "ready" | "unavailable";
   accepts: string[];
-  requires: { kind: string; label: string }[];
+  outputs: string[];
+  /** What the person must provide before this skill can run, with the server's own explanation. */
+  requires: { kind: string; label: string; detail: string }[];
   permissions: SkillPermission[];
+  /** The server's own words for why an unavailable skill is unavailable. */
+  unavailableReason: string;
 };
 
 export type HomePluginBundle = {
@@ -314,8 +318,12 @@ export class PluginRegistry {
           name: skill?.name ?? id,
           status: skill?.status === "ready" ? "ready" : "unavailable",
           accepts: skill?.accepts ?? [],
-          requires: (skill?.requires ?? []).map((requirement) => ({ kind: requirement.kind, label: requirement.label })),
+          outputs: skill?.outputs ?? [],
+          requires: (skill?.requires ?? []).map((requirement) => ({ kind: requirement.kind, label: requirement.label, detail: requirement.detail })),
           permissions: skill?.permissions ?? [],
+          // Only an unavailable skill carries a reason; for a ready skill the
+          // description is a capability statement, not an error.
+          unavailableReason: skill && skill.status !== "ready" ? skill.description : "",
         };
       });
       const readySkills = skills.filter((skill) => skill.status === "ready").length;

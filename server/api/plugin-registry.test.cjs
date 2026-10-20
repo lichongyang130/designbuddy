@@ -232,6 +232,14 @@ test("the homepage projection only carries enabled bundles, with per-skill readi
       assert.ok(skill.name && skill.name !== skill.id, "the rail shows human skill names");
       assert.ok(["ready", "unavailable"].includes(skill.status));
       assert.ok(Array.isArray(skill.accepts) && Array.isArray(skill.permissions));
+      assert.ok(Array.isArray(skill.outputs) && skill.outputs.length > 0, "the rail can state what comes out");
+      assert.equal(typeof skill.unavailableReason, "string");
+      if (skill.status === "ready") assert.equal(skill.unavailableReason, "", "a ready skill carries no error text");
+      for (const requirement of skill.requires) {
+        assert.equal(typeof requirement.kind, "string");
+        assert.equal(typeof requirement.label, "string");
+        assert.equal(typeof requirement.detail, "string");
+      }
     }
     assert.equal(home.totals.readySkills, skills.filter(skill => skill.status === "ready").length);
     assert.equal(home.totals.blockedSkills, skills.filter(skill => skill.status !== "ready").length);
