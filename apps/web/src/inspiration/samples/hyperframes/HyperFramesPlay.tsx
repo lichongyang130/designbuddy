@@ -101,6 +101,20 @@ export function HFQuest({ draftId }: { draftId?: string }) {
     return () => window.clearInterval(timer);
   }, [nodeId, node.text.length]);
 
+  const handleSkip = () => {
+    if (!done) {
+      setShown(node.text.length);
+    }
+  };
+
+  const handleRestart = () => {
+    set((v) => ({
+      ...v,
+      node: "start",
+      message: JSON.stringify({ v: ["start"], e: [] } as QuestBlob),
+    }));
+  };
+
   useEffect(() => {
     if (!node.ending || blob.e.includes(node.ending)) return;
     const next = { v: blob.v, e: [...blob.e, node.ending] };
@@ -126,7 +140,12 @@ export function HFQuest({ draftId }: { draftId?: string }) {
       draftId={draftId}
       state={state}
       error={error}
-      actions={<button onClick={exportScript}>下载路线剧本</button>}
+      actions={
+        <>
+          <button onClick={exportScript}>下载路线剧本</button>
+          <button onClick={handleRestart}>重新开始游玩</button>
+        </>
+      }
     >
       <div className="hf-layout">
         <section className="hf-stage">
@@ -134,8 +153,9 @@ export function HFQuest({ draftId }: { draftId?: string }) {
             <small>{node.title}</small>
             <p
               className="hf-typewriter"
-              onClick={() => setShown(node.text.length)}
+              onClick={handleSkip}
               title={done ? "" : "点击跳过打字效果"}
+              style={{ cursor: done ? "default" : "pointer" }}
             >
               {node.text.slice(0, shown)}
               {!done && <i className="hf-caret" />}
@@ -143,16 +163,22 @@ export function HFQuest({ draftId }: { draftId?: string }) {
             {done && node.choices.length > 0 && (
               <div className="hf-choices">
                 {node.choices.map((c) => (
-                  <button key={c.next} onClick={() => go(c.next)}>{c.label}</button>
+                  <button 
+                    key={c.next} 
+                    onClick={() => go(c.next)}
+                    className="hf-choice-btn"
+                  >
+                    {c.label}
+                  </button>
                 ))}
               </div>
             )}
             {done && node.ending && (
               <div className="hf-ending">
                 <strong>结局 {node.ending} · 已收录</strong>
-                <div>
-                  <button onClick={restart}>重新开始</button>
-                  <button onClick={() => go("start")}>回到序幕换条路</button>
+                <div style={{ display: 'flex', gap: '8px', marginTop: '16px' }}>
+                  <button onClick={handleRestart} className="hf-action-btn">清除存档并重启</button>
+                  <button onClick={() => go("start")} className="hf-action-btn primary">回到序幕换条路</button>
                 </div>
               </div>
             )}
@@ -286,7 +312,11 @@ export function HFLesson({ draftId }: { draftId?: string }) {
       draftId={draftId}
       state={state}
       error={error}
-      actions={<button onClick={exportNotes}>下载讲义 HTML</button>}
+      actions={
+        <>
+          <button className="hf-action-btn primary" onClick={exportNotes}>下载讲义 HTML</button>
+        </>
+      }
     >
       <div className="hf-layout">
         <section className="hf-stage">
@@ -298,14 +328,17 @@ export function HFLesson({ draftId }: { draftId?: string }) {
               <em>{fmt(time)} / {fmt(current.duration)}</em>
             </div>
             <div className="hf-transport">
-              <button onClick={() => { if (time >= current.duration) setTime(0); setPlaying((p) => !p); }}>
-                {playing ? "暂停" : "播放"}
+              <button 
+                className={`hf-action-btn ${playing ? '' : 'primary'}`}
+                onClick={() => { if (time >= current.duration) setTime(0); setPlaying((p) => !p); }}
+              >
+                {playing ? "⏸ 暂停" : "▶ 播放"}
               </button>
               <input aria-label="播放位置" type="range" min={0} max={current.duration} step={0.5} value={time} onChange={(e) => setTime(+e.target.value)} />
               <select aria-label="播放倍速" value={rate} onChange={(e) => setRate(+e.target.value)}>
                 {[1, 1.5, 2].map((r) => (<option key={r} value={r}>{r}x</option>))}
               </select>
-              {blob.d[chapter] && <span className="hf-done-flag">已学完</span>}
+              {blob.d[chapter] && <span className="hf-done-flag">✅ 已学完</span>}
             </div>
             <ul className="hf-points">
               {current.points.map((p) => (<li key={p}>{p}</li>))}
@@ -323,24 +356,27 @@ export function HFLesson({ draftId }: { draftId?: string }) {
                     <button
                       key={opt}
                       disabled={picked >= 0}
-                      className={`${picked === oi ? "is-picked" : ""} ${picked >= 0 && oi === q.answer ? "is-answer" : ""}`}
+                      className={`hf-quiz-btn ${picked === oi ? "is-picked" : ""} ${picked >= 0 && oi === q.answer ? "is-answer" : ""}`}
                       onClick={() => answer(qi, oi)}
                     >
                       {opt}
+                      {picked === oi && <span className="hf-quiz-icon">{picked === q.answer ? "✨" : "❌"}</span>}
                     </button>
                   ))}
                   {picked >= 0 && (
-                    <p className="hf-explain">{picked === q.answer ? "回答正确。" : "再想想——"} {q.explain}</p>
+                    <p className={`hf-explain ${picked === q.answer ? 'is-correct' : 'is-wrong-hint'}`}>
+                      {picked === q.answer ? "回答正确。" : "再想想——"} {q.explain}
+                    </p>
                   )}
                 </fieldset>
               );
             })}
             {answered === lessonQuiz.length && (
-              <div className="hf-score">
+              <div className={`hf-score ${score === 3 ? 'is-perfect' : ''}`}>
                 <strong>
-                  {score === 3 ? "三题全对，可以出师了。" : score === 2 ? "答对两题，再看一遍第 2 节就稳了。" : "建议重看第 2 节，然后再测一次。"}
+                  {score === 3 ? "🏆 三题全对，可以出师了。" : score === 2 ? "答对两题，再看一遍第 2 节就稳了。" : "建议重看第 2 节，然后再测一次。"}
                 </strong>
-                <button onClick={retryQuiz}>重新测验</button>
+                <button className="hf-action-btn primary" onClick={retryQuiz}>重新测验</button>
               </div>
             )}
           </div>

@@ -92,20 +92,20 @@ export function LiveForm({ draftId }: { draftId?: string }) {
       draftId={draftId}
       state={state}
       error={error}
-      actions={<button onClick={exportCsv}>导出结果 CSV</button>}
+      actions={<button className="lv-action-btn primary" onClick={exportCsv}>导出结果 CSV</button>}
     >
       <div className="lv-layout">
-        <section className="lv-stage">
+        <section className="lv-stage" style={{ animation: 'lv-fade-in 0.4s ease' }}>
           <div className="lv-tabs" role="tablist" aria-label="问卷视图">
-            {(["填写问卷", "实时统计"] as const).map((label, i) => (
+            {(["📝 填写问卷", "📊 实时统计"] as const).map((label, i) => (
               <button key={label} role="tab" aria-selected={state.tab === i} className={state.tab === i ? "is-active" : ""} onClick={() => set((v) => ({ ...v, tab: i }))}>
                 {label}
               </button>
             ))}
           </div>
-          {notice && <p className="lv-inline-notice" role="status">{notice}</p>}
+          {notice && <p className="lv-inline-notice" role="status" style={{ animation: 'lv-rise 0.3s ease', color: notice.includes('成功') ? 'var(--lv-lime)' : '' }}>{notice}</p>}
           {state.tab === 0 ? (
-            <div className="lv-quiz">
+            <div className="lv-quiz" style={{ animation: 'lv-rise 0.4s ease' }}>
               <p className="lv-hint">已答 {answered} / {formQs.length} 题 · 提交后可在统计页实时看到结果</p>
               {formQs.map((q, qi) => (
                 <fieldset key={q.q}>
@@ -119,12 +119,12 @@ export function LiveForm({ draftId }: { draftId?: string }) {
                 </fieldset>
               ))}
               <div className="lv-row">
-                <button className="is-primary" onClick={submit}>提交问卷</button>
-                {blob.s && <button onClick={clearMine}>清空我的投票</button>}
+                <button className={`lv-action-btn ${answered === formQs.length ? 'primary' : ''}`} onClick={submit}>提交问卷</button>
+                {blob.s && <button className="lv-action-btn" onClick={clearMine}>清空我的投票</button>}
               </div>
             </div>
           ) : (
-            <div className="lv-results" key={blob.c.flat().join("-")}>
+            <div className="lv-results" key={blob.c.flat().join("-")} style={{ animation: 'lv-rise 0.4s ease' }}>
               {!blob.s && <p className="lv-hint">你还没有投票——以下为已有 {blob.c[0].reduce((a, b) => a + b, 0)} 份答卷的实时统计。</p>}
               {formQs.map((q, qi) => {
                 const total = blob.c[qi].reduce((a, b) => a + b, 0);
@@ -278,15 +278,15 @@ export function LiveStatus({ draftId }: { draftId?: string }) {
       draftId={draftId}
       state={state}
       error={error}
-      actions={<button onClick={exportLog}>导出事件线</button>}
+      actions={<button className="lv-action-btn primary" onClick={exportLog}>导出事件线</button>}
     >
       <div className="lv-layout">
-        <section className="lv-stage">
-          <div className={`lv-banner is-${overall}`} role="status">
+        <section className="lv-stage" style={{ animation: 'lv-fade-in 0.4s ease' }}>
+          <div className={`lv-banner is-${overall}`} role="status" style={{ transition: 'all 0.4s ease', transform: overall === 'down' ? 'scale(1.02)' : 'scale(1)' }}>
             <span className="lv-pulse" aria-hidden="true" />
             <div>
               <strong>
-                {overall === "up" ? "所有系统正常运行" : overall === "degraded" ? "部分服务出现波动" : "有服务发生故障，正在处理"}
+                {overall === "up" ? "🟢 所有系统正常运行" : overall === "degraded" ? "🟡 部分服务出现波动" : "🔴 有服务发生故障，正在处理"}
               </strong>
               <small>90 天在线率 {uptime}% · 每 30 秒拨测一次</small>
             </div>
@@ -298,7 +298,7 @@ export function LiveStatus({ draftId }: { draftId?: string }) {
               const ms = Math.round(s.latency * (0.9 + rand * 0.25));
               return (
                 <li key={s.id}>
-                  <button className={`lv-svc is-${st}`} onClick={() => cycle(s)} title="点击模拟状态变化">
+                  <button className={`lv-svc is-${st}`} onClick={() => cycle(s)} title="点击模拟状态变化" style={{ transition: 'all 0.3s', transform: st === 'down' ? 'translateX(4px)' : 'none' }}>
                     <span className="lv-dot" aria-hidden="true" />
                     <span className="lv-svc-name">{s.name}</span>
                     <span className="lv-svc-ms">{st === "down" ? "超时" : `${ms} ms`}</span>
@@ -312,14 +312,14 @@ export function LiveStatus({ draftId }: { draftId?: string }) {
           <h3 className="lv-sub">90 天在线率</h3>
           <div className="lv-days" role="img" aria-label={`90 天在线率 ${uptime}%，绿色为正常`}>
             {days.map((d) => (
-              <i key={d.day} className={`is-${d.state}`} title={`第 ${d.day + 1} 天：${svcLabels[d.state]}`} />
+              <i key={d.day} className={`is-${d.state}`} title={`第 ${d.day + 1} 天：${svcLabels[d.state]}`} style={{ transition: 'background-color 0.3s' }} />
             ))}
           </div>
           <div className="lv-days-legend"><span><i className="is-up" />正常</span><span><i className="is-degraded" />波动</span><span><i className="is-down" />故障</span></div>
           <h3 className="lv-sub">事件时间线</h3>
           <ol className="lv-timeline">
             {blob.inc.map((i, idx) => (
-              <li key={`${i.t}-${idx}`} className={`is-${i.state}`}>
+              <li key={`${i.t}-${idx}`} className={`is-${i.state}`} style={{ animation: idx === 0 ? 'lv-rise 0.4s ease forwards' : 'none' }}>
                 <b>{i.t}</b>
                 <div><strong>{i.title}</strong><p>{i.detail}</p></div>
               </li>
@@ -329,14 +329,14 @@ export function LiveStatus({ draftId }: { draftId?: string }) {
         <aside className="lv-side">
           <h2>订阅通知</h2>
           {subscribed ? (
-            <p className="lv-hint">已订阅事件通知，演示环境不会真实发送。</p>
+            <p className="lv-hint" style={{ color: 'var(--lv-lime)' }}>✅ 已订阅事件通知，演示环境不会真实发送。</p>
           ) : (
             <>
               <label>邮箱<input type="email" placeholder="you@company.com" value={email} onChange={(e) => setEmail(e.target.value)} aria-label="订阅邮箱" /></label>
-              <button className="is-primary" onClick={subscribe}>订阅事件通知</button>
+              <button className="lv-action-btn primary" onClick={subscribe}>订阅事件通知</button>
             </>
           )}
-          {notice && <p className="lv-inline-notice" role="status">{notice}</p>}
+          {notice && <p className="lv-inline-notice" role="status" style={{ animation: 'lv-fade-in 0.3s', color: notice.includes('已订阅') ? 'var(--lv-lime)' : 'var(--lv-red)' }}>{notice}</p>}
           <dl className="lv-facts">
             <div><dt>监控服务</dt><dd>{statusSvcs.length} 个</dd></div>
             <div><dt>拨测间隔</dt><dd>30 秒</dd></div>

@@ -320,9 +320,9 @@ export default function DaylightPrototype({ draftId }: { draftId?: string }) {
   switch (s.page) {
     case 0:
       body = (
-        <>
+        <div style={{ animation: 'dl-fade-in 0.6s ease' }}>
           <div className="dl-hero">
-            <div>
+            <div style={{ animation: 'dl-slide-up 0.8s ease 0.2s both' }}>
               <small>SPACE FOR A BETTER WORKDAY</small>
               <h1>
                 Make room
@@ -350,7 +350,7 @@ export default function DaylightPrototype({ draftId }: { draftId?: string }) {
             {badge("03 / CREATE", "表达", "2 人录音室，记录创作需求。")}
           </div>
           <p>{pages[0][2]}</p>
-        </>
+        </div>
       );
       break;
     case 1:
@@ -526,15 +526,16 @@ export default function DaylightPrototype({ draftId }: { draftId?: string }) {
                   }
                 </p>
                 <button
+                  className={`dl-action-btn ${s.pass === i ? 'dl-primary' : ''}`}
                   aria-pressed={s.pass === i}
                   onClick={() => change({ pass: i })}
                 >
-                  选择{v}
+                  {s.pass === i ? "✓ 已选择" : `选择${v}`}
                 </button>
               </article>
             ))}
           </div>
-          <div className="dl-three">
+          <div className="dl-three" style={{ animation: 'dl-slide-up 0.4s ease' }}>
             {num("计划团队人数", "teamSize", 1, 12)}
             {s.pass < 2 ? (
               num(s.pass === 0 ? "计划小时数" : "计划天数", "days", 1, 31)
@@ -552,7 +553,7 @@ export default function DaylightPrototype({ draftId }: { draftId?: string }) {
       break;
     case 8:
       body = (
-        <div className="dl-two">
+        <div className="dl-two" style={{ animation: 'dl-fade-in 0.4s ease' }}>
           <div>
             {text("新增成员称呼", "memberName")}
             {select(
@@ -562,6 +563,7 @@ export default function DaylightPrototype({ draftId }: { draftId?: string }) {
               (memberRole) => change({ memberRole }),
             )}
             <button
+              className="dl-primary"
               disabled={s.members.length >= 12}
               onClick={() => {
                 if (!s.memberName.trim()) {
@@ -583,10 +585,10 @@ export default function DaylightPrototype({ draftId }: { draftId?: string }) {
                   ],
                   memberName: "",
                 });
-                msg("成员已加入本地规划名册；没有发送邀请。");
+                msg("👥 成员已加入本地规划名册；没有发送邀请。");
               }}
             >
-              加入规划名册
+              + 加入规划名册
             </button>
             <p>
               最多十二人；移除成员会同时释放其座位并移除关联访客计划，需先确认。
@@ -683,7 +685,7 @@ export default function DaylightPrototype({ draftId }: { draftId?: string }) {
       break;
     case 10:
       body = (
-        <>
+        <div style={{ animation: 'dl-fade-in 0.4s ease' }}>
           <div className="dl-three">
             {badge(
               "ACTIVE",
@@ -703,12 +705,12 @@ export default function DaylightPrototype({ draftId }: { draftId?: string }) {
             )}
           </div>
           {bookingList()}
-        </>
+        </div>
       );
       break;
     case 11:
       body = (
-        <>
+        <div style={{ animation: 'dl-fade-in 0.4s ease' }}>
           <div className="dl-three">
             {select(
               "费用计费口径",
@@ -726,12 +728,12 @@ export default function DaylightPrototype({ draftId }: { draftId?: string }) {
               ? "当前不叠加预约费用，通行预算仅作独立情景估算。"
               : "已取消预约不计费；未叠加通行预算。"}
           </p>
-        </>
+        </div>
       );
       break;
     case 12:
       body = (
-        <div className="dl-checkin">
+        <div className="dl-checkin" style={{ animation: 'dl-slide-up 0.4s ease' }}>
           {s.bookings
             .filter((b) => !b.cancelled)
             .map((b) => (
@@ -743,6 +745,7 @@ export default function DaylightPrototype({ draftId }: { draftId?: string }) {
                 </p>
                 <code>{b.id.slice(0, 8).toUpperCase()}</code>
                 <button
+                  className={b.checked ? '' : 'dl-primary'}
                   disabled={b.checked}
                   onClick={() => {
                     change({
@@ -802,18 +805,20 @@ export default function DaylightPrototype({ draftId }: { draftId?: string }) {
                     : "尚未记录意向"}
                 </p>
                 <button
+                  className={s.event === i ? 'dl-primary' : ''}
                   onClick={() => change({ event: i })}
                   aria-pressed={s.event === i}
                 >
-                  选择这个活动
+                  {s.event === i ? "✓ 已选定" : "选择这个活动"}
                 </button>
               </article>
             ))}
           </div>
           <div className="dl-two">
-            <div>
+            <div style={{ animation: 'dl-slide-up 0.4s ease' }}>
               {num("活动意向人数", "attendees", 1, 16)}
               <button
+                className="dl-primary"
                 disabled={s.attendees > events[s.event].cap}
                 onClick={() => {
                   change({
@@ -875,7 +880,7 @@ export default function DaylightPrototype({ draftId }: { draftId?: string }) {
               </div>
             ))}
           </div>
-          <button onClick={() => calendar(s)}>导出东京时区 ICS</button>
+          <button className="dl-primary" onClick={() => calendar(s)}>导出东京时区 ICS</button>
           <p>
             ICS
             包含全部有效本地预约。取消后重新导出不会删除外部日历中已导入的事件，需要自行处理。

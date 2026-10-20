@@ -26,7 +26,7 @@ export const wellspring: KitTemplate = {
       title: "WELLSPRING",
       subtitle: "把团体课的排期、候补与教练排班，收进一套不会互相打架的规则里。",
       meta: ["课程管理", "24 页", "成都 · 城南"],
-      art: "art-01.svg",
+      art: "expansion/wellspring-1.jpg",
       note: "两间教室 · 32 个团课位 · 教练排班与会员候补实时同步",
     },
     {
@@ -42,16 +42,16 @@ export const wellspring: KitTemplate = {
         { title: "候补自动递补", body: "退课释放的位置按候补顺序自动发放，并推送确认。" },
         { title: "改期可追课", body: "课程取消时，受影响会员自动获得一次免费补课额度。" },
       ],
-      art: "art-02.svg",
+      art: "expansion/wellspring-2.jpg",
     },
     {
       kind: "gallery",
       title: "两间教室",
       lead: "场地与器械决定了每节课的容量上限，排课台按这个上限做校验。",
       items: [
-        { title: "A 教室 · 团操", body: "48 ㎡，镜面墙与木地板，配 30 套瑜伽垫与 20 套哑铃，可做团操、普拉提与体能循环。", art: "art-03.svg", meta: ["48㎡", "上限 24 人", "有镜面"] },
-        { title: "B 教室 · 循环", body: "72 ㎡，可重排的训练区，配划船机 4 台、战绳 2 套与壶铃 12 只，循环式小班课。", art: "art-04.svg", meta: ["72㎡", "上限 16 人", "循环训练"] },
-        { title: "C 区 · 开放器械", body: "240 ㎡ 自主训练区，有氧 12 台与力量器械 9 组，团课之外的会员可刷卡进入。", art: "art-05.svg", meta: ["240㎡", "12 台有氧", "9 组力量"] },
+        { title: "A 教室 · 团操", body: "48 ㎡，镜面墙与木地板，配 30 套瑜伽垫与 20 套哑铃，可做团操、普拉提与体能循环。", art: "expansion/wellspring-3.jpg", meta: ["48㎡", "上限 24 人", "有镜面"] },
+        { title: "B 教室 · 循环", body: "72 ㎡，可重排的训练区，配划船机 4 台、战绳 2 套与壶铃 12 只，循环式小班课。", art: "expansion/wellspring-4.jpg", meta: ["72㎡", "上限 16 人", "循环训练"] },
+        { title: "C 区 · 开放器械", body: "240 ㎡ 自主训练区，有氧 12 台与力量器械 9 组，团课之外的会员可刷卡进入。", art: "expansion/wellspring-5.jpg", meta: ["240㎡", "12 台有氧", "9 组力量"] },
       ],
     },
     {
@@ -69,7 +69,7 @@ export const wellspring: KitTemplate = {
         { label: "无障碍", value: "无台阶入口，配备无障碍淋浴与器械位" },
       ],
       note: "场馆节假日安排在每年 12 月中旬公布，公布后系统会按新时间重排课表。",
-      art: "art-05.svg",
+      art: "expansion/wellspring-5.jpg",
     },
     {
       kind: "table",
@@ -138,7 +138,7 @@ export const wellspring: KitTemplate = {
       ],
       quote: "排课这件事一旦乱起来，学员记住的就是你取消，而不是你做得好。",
       quoteBy: "团操教练 · 林可",
-      art: "art-06.svg",
+      art: "expansion/wellspring-1.jpg",
     },
     {
       kind: "faq",
@@ -159,9 +159,9 @@ export const wellspring: KitTemplate = {
       title: "教练与课程",
       lead: "13 名认证教练，按教学方向排布，避免同一时段同类型重叠。",
       items: [
-        { title: "流瑜伽 · 周老师", body: "教龄 6 年，擅长呼吸与体式串联，晚间班固定在 A 教室。", art: "art-07.svg", meta: ["认证 RYT-500", "A 教室", "晚班"] },
-        { title: "战绳循环 · 郑教练", body: "前省队体能训练背景，课程强度高，限 16 人以保证安全间距。", art: "art-08.svg", meta: ["NSCA-CPT", "B 教室", "晚班"] },
-        { title: "普拉提 · 陈教练", body: "康复方向背景，会针对产后与久坐人群调整动作难度。", art: "art-03.svg", meta: ["STOTT", "A 教室", "下午"] },
+        { title: "流瑜伽 · 周老师", body: "教龄 6 年，擅长呼吸与体式串联，晚间班固定在 A 教室。", art: "expansion/wellspring-2.jpg", meta: ["认证 RYT-500", "A 教室", "晚班"] },
+        { title: "战绳循环 · 郑教练", body: "前省队体能训练背景，课程强度高，限 16 人以保证安全间距。", art: "expansion/wellspring-3.jpg", meta: ["NSCA-CPT", "B 教室", "晚班"] },
+        { title: "普拉提 · 陈教练", body: "康复方向背景，会针对产后与久坐人群调整动作难度。", art: "expansion/wellspring-3.jpg", meta: ["STOTT", "A 教室", "下午"] },
       ],
     },
     {
@@ -205,17 +205,17 @@ export const wellspring: KitTemplate = {
         { label: "请假流程", value: "提前 48 小时提交，代课需同认证教练接替" },
       ],
       note: "排班表每月 25 日发布次月版本，临时调整在系统内留痕并通知会员。",
-      art: "art-05.svg",
+      art: "expansion/wellspring-5.jpg",
     },
     {
       kind: "gallery",
       title: "器械与场地",
       lead: "课程能排成什么样，取决于场地里有什么。",
       items: [
-        { title: "战绳与跳箱", body: "12 米战绳 2 套，跳箱 4 只，循环课的爆发段落用。", art: "art-04.svg", meta: ["2 套", "4 只", "B 教室"] },
-        { title: "划船机", body: "Concept2 四台，课程中按配速排名，屏幕实时同步。", art: "art-06.svg", meta: ["4 台", "配速排名", "B 教室"] },
-        { title: "瑜伽与普拉提区", body: "垫子 30 套，弹力带与泡沫轴各 20 件，课后消毒登记。", art: "art-07.svg", meta: ["30 套", "课后消毒", "A 教室"] },
-        { title: "壶铃与哑铃", body: "壶铃 8–24kg 共 12 只，哑铃 2–15kg 共 20 对，按重量分区。", art: "art-08.svg", meta: ["12 + 20 对", "分区存放", "开放区"] },
+        { title: "战绳与跳箱", body: "12 米战绳 2 套，跳箱 4 只，循环课的爆发段落用。", art: "expansion/wellspring-4.jpg", meta: ["2 套", "4 只", "B 教室"] },
+        { title: "划船机", body: "Concept2 四台，课程中按配速排名，屏幕实时同步。", art: "expansion/wellspring-1.jpg", meta: ["4 台", "配速排名", "B 教室"] },
+        { title: "瑜伽与普拉提区", body: "垫子 30 套，弹力带与泡沫轴各 20 件，课后消毒登记。", art: "expansion/wellspring-2.jpg", meta: ["30 套", "课后消毒", "A 教室"] },
+        { title: "壶铃与哑铃", body: "壶铃 8–24kg 共 12 只，哑铃 2–15kg 共 20 对，按重量分区。", art: "expansion/wellspring-3.jpg", meta: ["12 + 20 对", "分区存放", "开放区"] },
       ],
     },
     {
@@ -232,7 +232,7 @@ export const wellspring: KitTemplate = {
         { title: "器械报修", body: "扫码报修进入工单，运营每日巡检两次。" },
         { title: "活动报名", body: "公开课与体测活动在活动模块管理，独立于常规课表。" },
       ],
-      art: "art-02.svg",
+      art: "expansion/wellspring-2.jpg",
     },
     {
       kind: "table",
@@ -307,10 +307,10 @@ export const wellspring: KitTemplate = {
       title: "空间与周边",
       lead: "到店动线与周边配套，导航与指引都写在同一页。",
       items: [
-        { title: "前台与签到", body: "进门左手为前台，扫码签到与寄存一体，储物柜可用小程序开。", art: "art-01.svg", meta: ["入口左手", "扫码", "存包"] },
-        { title: "淋浴与更衣", body: "男女各 12 个淋浴位，设无障碍淋浴与干湿分离更衣区。", art: "art-03.svg", meta: ["12 + 12", "无障碍", "干湿分离"] },
-        { title: "开放器械区", body: "有氧 12 台与力量器械 9 组，团课之外的自主训练区域。", art: "art-05.svg", meta: ["12 + 9 组", "开放区", "刷卡进入"] },
-        { title: "周边配套", body: "商场同层有餐饮与便利店，地面停车位在北侧，工作日免费两小时。", art: "art-06.svg", meta: ["同层商业", "北侧停车", "2 小时免费"] },
+        { title: "前台与签到", body: "进门左手为前台，扫码签到与寄存一体，储物柜可用小程序开。", art: "expansion/wellspring-1.jpg", meta: ["入口左手", "扫码", "存包"] },
+        { title: "淋浴与更衣", body: "男女各 12 个淋浴位，设无障碍淋浴与干湿分离更衣区。", art: "expansion/wellspring-3.jpg", meta: ["12 + 12", "无障碍", "干湿分离"] },
+        { title: "开放器械区", body: "有氧 12 台与力量器械 9 组，团课之外的自主训练区域。", art: "expansion/wellspring-5.jpg", meta: ["12 + 9 组", "开放区", "刷卡进入"] },
+        { title: "周边配套", body: "商场同层有餐饮与便利店，地面停车位在北侧，工作日免费两小时。", art: "expansion/wellspring-1.jpg", meta: ["同层商业", "北侧停车", "2 小时免费"] },
       ],
     },
     {
@@ -328,7 +328,7 @@ export const wellspring: KitTemplate = {
         { label: "闭馆通知", value: "计划闭馆提前 7 天在会员端公告" },
       ],
       note: "安全承诺每年随保险与场地资质复检更新，更新后页面版本号会变化。",
-      art: "art-04.svg",
+      art: "expansion/wellspring-4.jpg",
     },
     {
       kind: "cta",

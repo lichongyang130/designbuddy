@@ -1,0 +1,17 @@
+{
+  "id": "visual-regression",
+  "name": "Code Visual Regression",
+  "description": "Compare two local images and generate a visual difference map using sharp.",
+  "version": "1.0.0",
+  "entrypoint": "node main.mjs",
+  "permissions": ["workspace:read", "workspace:write"],
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "imagePath1": { "type": "string" },
+      "imagePath2": { "type": "string" },
+      "diffOutputPath": { "type": "string" }
+    },
+    "required": ["imagePath1", "imagePath2", "diffOutputPath"]
+  }
+}

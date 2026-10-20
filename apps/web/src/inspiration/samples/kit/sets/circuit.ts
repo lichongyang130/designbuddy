@@ -26,7 +26,7 @@ export const circuit: KitTemplate = {
       title: "CIRCUIT",
       subtitle: "一台二手机值多少，不靠卖家的一句话，而靠 46 项可复现的检测。",
       meta: ["二手交易", "24 页", "深圳 · 华强北"],
-      art: "art-01.svg",
+      art: "expansion/circuit-1.jpg",
       note: "46 项检测 · 三级成色 · 30 天质保 · 检测报告可复查",
     },
     {
@@ -42,17 +42,17 @@ export const circuit: KitTemplate = {
         { title: "照片留证", body: "每台机器的瑕疵点单独拍照存档，寄回时一一对应。" },
         { title: "行情可见", body: "同型号近 30 天成交价区间公开，避免卖家凭感觉报价。" },
       ],
-      art: "art-02.svg",
+      art: "expansion/circuit-2.jpg",
     },
     {
       kind: "gallery",
       title: "我们在收什么",
       lead: "覆盖手机、平板、笔记本、相机与耳机，每类有各自的检测重点。",
       items: [
-        { title: "手机与平板", body: "重点看屏幕显示与触控、电池循环、摄像头对焦与面容/指纹，以及是否换过屏或主板。", art: "art-03.svg", meta: ["12 项重点", "电池循环", "维修史"] },
-        { title: "笔记本", body: "重点看键盘与屏幕贴合、SSD 健康度、内存与电池、接口与散热，长期插电使用痕迹单独评估。", art: "art-04.svg", meta: ["15 项重点", "SSD 健康", "散热"] },
-        { title: "相机与镜头", body: "重点看快门数、感光元件坏点、对焦精度与镜片霉雾，附实拍样张与光轴检测。", art: "art-05.svg", meta: ["14 项重点", "快门数", "坏点图"] },
-        { title: "耳机与音频", body: "重点看单元一致性、底噪、蓝牙稳定性与电池续航，含左右声道对比录音。", art: "art-06.svg", meta: ["9 项重点", "底噪曲线", "续航实测"] },
+        { title: "手机与平板", body: "重点看屏幕显示与触控、电池循环、摄像头对焦与面容/指纹，以及是否换过屏或主板。", art: "expansion/circuit-3.jpg", meta: ["12 项重点", "电池循环", "维修史"] },
+        { title: "笔记本", body: "重点看键盘与屏幕贴合、SSD 健康度、内存与电池、接口与散热，长期插电使用痕迹单独评估。", art: "expansion/circuit-4.jpg", meta: ["15 项重点", "SSD 健康", "散热"] },
+        { title: "相机与镜头", body: "重点看快门数、感光元件坏点、对焦精度与镜片霉雾，附实拍样张与光轴检测。", art: "expansion/circuit-5.jpg", meta: ["14 项重点", "快门数", "坏点图"] },
+        { title: "耳机与音频", body: "重点看单元一致性、底噪、蓝牙稳定性与电池续航，含左右声道对比录音。", art: "expansion/circuit-1.jpg", meta: ["9 项重点", "底噪曲线", "续航实测"] },
       ],
     },
     {
@@ -70,7 +70,7 @@ export const circuit: KitTemplate = {
         { label: "复核", value: "争议订单由第二检测员复核，复核记录同样进报告" },
       ],
       note: "检测工位每天开班前用标准样机校准，校准记录随报告附带。",
-      art: "art-07.svg",
+      art: "expansion/circuit-2.jpg",
     },
     {
       kind: "table",
@@ -136,7 +136,7 @@ export const circuit: KitTemplate = {
       ],
       quote: "报告上每一句话，后面都得有照片或者读数撑着。",
       quoteBy: "高级检测员 · 罗敏",
-      art: "art-08.svg",
+      art: "expansion/circuit-3.jpg",
     },
     {
       kind: "faq",
@@ -157,10 +157,10 @@ export const circuit: KitTemplate = {
       title: "检测现场",
       lead: "六个工位同时作业，每台机器有自己的检测码。",
       items: [
-        { title: "灯箱外观", body: "800 lux 恒定照度下拍摄 8 个角度，划痕与磕碰在照片里无处可藏。", art: "art-02.svg", meta: ["800 lux", "8 角度", "恒湿"] },
-        { title: "屏幕检测", body: "纯色背景逐色阶检查亮点与漏光，触控用自动划线轨迹验证。", art: "art-03.svg", meta: ["逐色阶", "自动划线", "轨迹留档"] },
-        { title: "电池工位", body: "满充满放实测容量，配合循环次数读数，两项同时达标才判合格。", art: "art-05.svg", meta: ["实测容量", "循环次数", "双项判定"] },
-        { title: "主板与接口", body: "读取维修史与零件更换记录，接口逐个插拔测试并测速。", art: "art-07.svg", meta: ["维修史", "插拔测试", "读写测速"] },
+        { title: "灯箱外观", body: "800 lux 恒定照度下拍摄 8 个角度，划痕与磕碰在照片里无处可藏。", art: "expansion/circuit-2.jpg", meta: ["800 lux", "8 角度", "恒湿"] },
+        { title: "屏幕检测", body: "纯色背景逐色阶检查亮点与漏光，触控用自动划线轨迹验证。", art: "expansion/circuit-3.jpg", meta: ["逐色阶", "自动划线", "轨迹留档"] },
+        { title: "电池工位", body: "满充满放实测容量，配合循环次数读数，两项同时达标才判合格。", art: "expansion/circuit-5.jpg", meta: ["实测容量", "循环次数", "双项判定"] },
+        { title: "主板与接口", body: "读取维修史与零件更换记录，接口逐个插拔测试并测速。", art: "expansion/circuit-2.jpg", meta: ["维修史", "插拔测试", "读写测速"] },
       ],
     },
     {
@@ -208,17 +208,17 @@ export const circuit: KitTemplate = {
         { label: "数据清除", value: "发货前强制执行，清除过程录屏并出具证明" },
       ],
       note: "质保不覆盖电池自然衰减，电池容量低于标称 80% 属于正常衰减。",
-      art: "art-04.svg",
+      art: "expansion/circuit-4.jpg",
     },
     {
       kind: "gallery",
       title: "配件与整备",
       lead: "原厂配件、第三方配件与缺失，分别计价。",
       items: [
-        { title: "原装配件", body: "数据线、充电头与说明书齐全的原装件按标准计价，缺件会写进报告。", art: "art-01.svg", meta: ["原厂", "按标准计价", "拍照留证"] },
-        { title: "第三方配件", body: "兼容充电头与数据线按配件包单独定价，报告中明确标注非原装。", art: "art-06.svg", meta: ["兼容", "单独计价", "明确标注"] },
-        { title: "深度清洁", body: "超声清洗与除尘，镜头与屏幕单独处理，清洁前后照片都会留档。", art: "art-08.svg", meta: ["超声", "除尘", "前后对照"] },
-        { title: "数据清除", body: "多级擦除加恢复出厂，过程录屏，交付时附清除证明。", art: "art-05.svg", meta: ["多级擦除", "录屏", "出具证明"] },
+        { title: "原装配件", body: "数据线、充电头与说明书齐全的原装件按标准计价，缺件会写进报告。", art: "expansion/circuit-1.jpg", meta: ["原厂", "按标准计价", "拍照留证"] },
+        { title: "第三方配件", body: "兼容充电头与数据线按配件包单独定价，报告中明确标注非原装。", art: "expansion/circuit-1.jpg", meta: ["兼容", "单独计价", "明确标注"] },
+        { title: "深度清洁", body: "超声清洗与除尘，镜头与屏幕单独处理，清洁前后照片都会留档。", art: "expansion/circuit-3.jpg", meta: ["超声", "除尘", "前后对照"] },
+        { title: "数据清除", body: "多级擦除加恢复出厂，过程录屏，交付时附清除证明。", art: "expansion/circuit-5.jpg", meta: ["多级擦除", "录屏", "出具证明"] },
       ],
     },
     {
@@ -235,7 +235,7 @@ export const circuit: KitTemplate = {
         { title: "平台", body: "检测、定价、结算、发货与争议仲裁。" },
         { title: "寄送方", body: "顺丰到付或到店寄件，物流异常由寄送方先行处理。" },
       ],
-      art: "art-02.svg",
+      art: "expansion/circuit-2.jpg",
     },
     {
       kind: "table",
@@ -311,10 +311,10 @@ export const circuit: KitTemplate = {
       title: "门店与服务网点",
       lead: "不想寄件的，可以直接送到门店。",
       items: [
-        { title: "华强北旗舰店", body: "现场检测 40 分钟出结果，含柜台体验机与配件区，可现场议价。", art: "art-03.svg", meta: ["40 分钟出结果", "现场议价", "每日 10:00–19:00"] },
-        { title: "南山体验店", body: "以寄卖为主，可现场估价与签委托书，机器由门店当日送仓。", art: "art-04.svg", meta: ["当日送仓", "现场估价", "周末营业"] },
-        { title: "上门取件", body: "同城下单可预约上门取件，工作日 19:00 后可约。", art: "art-07.svg", meta: ["同城", "预约上门", "晚间可约"] },
-        { title: "质检中心", body: "仓内 6 个检测工位与 8 台自动化设备，日均可检 120 台。", art: "art-08.svg", meta: ["6 工位", "日均 120 台", "全项检测"] },
+        { title: "华强北旗舰店", body: "现场检测 40 分钟出结果，含柜台体验机与配件区，可现场议价。", art: "expansion/circuit-3.jpg", meta: ["40 分钟出结果", "现场议价", "每日 10:00–19:00"] },
+        { title: "南山体验店", body: "以寄卖为主，可现场估价与签委托书，机器由门店当日送仓。", art: "expansion/circuit-4.jpg", meta: ["当日送仓", "现场估价", "周末营业"] },
+        { title: "上门取件", body: "同城下单可预约上门取件，工作日 19:00 后可约。", art: "expansion/circuit-2.jpg", meta: ["同城", "预约上门", "晚间可约"] },
+        { title: "质检中心", body: "仓内 6 个检测工位与 8 台自动化设备，日均可检 120 台。", art: "expansion/circuit-3.jpg", meta: ["6 工位", "日均 120 台", "全项检测"] },
       ],
     },
     {
@@ -332,7 +332,7 @@ export const circuit: KitTemplate = {
         { label: "删除请求", value: "质保期结束后可申请删除影像留存，客服 7 个工作日内处理" },
       ],
       note: "以上流程在检测岗培训中逐条演练，抽查记录每季度抽样复核。",
-      art: "art-06.svg",
+      art: "expansion/circuit-1.jpg",
     },
     {
       kind: "cta",

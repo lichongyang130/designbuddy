@@ -32,7 +32,12 @@ import BrandGallery, {
   NatureGallery,
 } from "./samples/BrandGallery";
 import GenericTemplate from './samples/GenericTemplate';
+import { GenericFilm, GenericSound } from './samples/GenericMedia';
+import { GenericDocument } from './samples/GenericDocument';
+import { GenericPrototype } from './samples/GenericPrototype';
+import { GenericSlide } from './samples/GenericSlide';
 import { drafts, samples, type SampleId, type DraftRecord } from './samples/shared';
+import { commercialViewers } from './commercialRegistry';
 import MuseumPrototype, { MuseumCover } from "./samples/MuseumPrototype";
 import { HandbookPaper } from "./samples/HandbookPaper";
 import { AICover, aiCoverIds } from "./samples/aiCovers";
@@ -111,7 +116,13 @@ function Preview({ id }: { id: SampleId }) {
       ) : (aiCoverIds as readonly string[]).includes(id) ? (
         <AICover id={id} />
       ) : (
-        <BrandArtwork />
+        (() => {
+          const s = samples.find(x => x.id === id);
+          if (s?.photos?.[0]) {
+            return <div style={{ width: '100%', height: '100%', background: `url(${s.photos[0].url}) center/cover no-repeat` }} />;
+          }
+          return <BrandArtwork />;
+        })()
       )}
     </div>
   );
@@ -162,8 +173,34 @@ export default function InspirationPage({ pathname }: { pathname: string }) {
     "live-event": LiveEvent,
     "live-form": LiveForm,
     "live-status": LiveStatus,
-  };
-  const Viewer = sample ? viewers[sample.id] : null;
+  } as Record<string, any>;
+  const ViewerComponent = sample ? (
+    viewers[sample.id] || commercialViewers[sample.id] || ((props: any) => {
+      if (sample.category === "视频") {
+        return <GenericFilm draftId={props.draftId} sample={sample} />;
+      }
+      if (sample.category === "原型") {
+        return <GenericPrototype draftId={props.draftId} sample={sample} />;
+      }
+      if (sample.category === "幻灯片") {
+        return <GenericSlide draftId={props.draftId} sample={sample} />;
+      }
+      if (sample.category === "文档") {
+        return <GenericDocument draftId={props.draftId} sample={sample} />;
+      }
+      if (sample.category === "音频") {
+        return <GenericSound draftId={props.draftId} sample={sample} />;
+      }
+      return <GenericTemplate 
+        templateId={sample.id} 
+        category={sample.category}
+        templateTitle={sample.title} 
+        templateDescription={sample.description} 
+        photos={sample.photos} 
+        draftId={props.draftId} 
+      />;
+    })
+  ) : null;
   const visible = samples.filter(
     (x) =>
       (category === "全部" || category === x.category) &&
@@ -186,7 +223,7 @@ export default function InspirationPage({ pathname }: { pathname: string }) {
         setNotice={msg}
       />
       {parts.length > 1 ? (
-        valid && Viewer ? (
+        valid && ViewerComponent ? (
           <Suspense
             fallback={
               <main className="sample-unavailable" role="status">
@@ -199,7 +236,7 @@ export default function InspirationPage({ pathname }: { pathname: string }) {
               sample={sample.id}
               draft={draftId}
             >
-              <Viewer draftId={draftId} />
+              <ViewerComponent draftId={draftId} />
             </TemplateCloudProvider>
           </Suspense>
         ) : (

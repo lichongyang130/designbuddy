@@ -184,21 +184,25 @@ export function LiveBoard({ draftId }: { draftId?: string }) {
       draftId={draftId}
       state={state}
       error={error}
-      actions={<button onClick={snapshot}>导出快照 CSV</button>}
+      actions={
+        <>
+          <button className="lv-action-btn primary" onClick={snapshot}>导出快照 CSV</button>
+        </>
+      }
     >
       <div className={`lv-layout ${present ? "is-present" : ""}`}>
         <section className="lv-stage">
           <div className="lv-board-head">
             <div>
-              <small>{state.paused ? "数据流已暂停" : "● 数据流实时更新中"} · {range.label} · 第 {tick + 1} 拍</small>
+              <small className={state.paused ? "lv-status-paused" : "lv-status-live"}>{state.paused ? "⏸ 数据流已暂停" : "🟢 数据流实时更新中"} · {range.label} · 第 {tick + 1} 拍</small>
               <h2>今日经营总览</h2>
             </div>
             <div className="lv-board-controls">
-              <select aria-label="时间范围" value={range.id} onChange={(e) => set((v) => ({ ...v, range: e.target.value }))}>
+              <select className="lv-select" aria-label="时间范围" value={range.id} onChange={(e) => set((v) => ({ ...v, range: e.target.value }))}>
                 {boardRanges.map((r) => (<option key={r.id} value={r.id}>{r.label}</option>))}
               </select>
-              <button onClick={() => set((v) => ({ ...v, paused: !v.paused }))}>{state.paused ? "恢复推送" : "暂停推送"}</button>
-              <button onClick={() => setPresent((p) => !p)} aria-pressed={present}>{present ? "退出投屏" : "投屏模式"}</button>
+              <button className={`lv-action-btn ${state.paused ? 'primary' : ''}`} onClick={() => set((v) => ({ ...v, paused: !v.paused }))}>{state.paused ? "恢复推送" : "暂停推送"}</button>
+              <button className={`lv-action-btn ${present ? 'is-active' : ''}`} onClick={() => setPresent((p) => !p)} aria-pressed={present}>{present ? "⤡ 退出投屏" : "⤢ 投屏模式"}</button>
             </div>
           </div>
           <div className="lv-metrics">
@@ -397,24 +401,34 @@ export function LiveEvent({ draftId }: { draftId?: string }) {
                   onChange={(e) => setName(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && checkin()}
                 />
-                <button onClick={checkin}>签到</button>
-                <button onClick={() => set((v) => ({ ...v, signed: Math.min(v.signed + 1, 9999) }))} title="无名单的现场到场人数">＋补录</button>
+                <button 
+                  className={`lv-action-btn ${notice.includes('欢迎') && notice.includes(name) ? 'is-success' : 'primary'}`}
+                  onClick={checkin}
+                >
+                  签到
+                </button>
+                <button className="lv-action-btn" onClick={() => set((v) => ({ ...v, signed: Math.min(v.signed + 1, 9999) }))} title="无名单的现场到场人数">＋补录</button>
               </div>
-              {notice && <p className="lv-inline-notice" role="status">{notice}</p>}
+              {notice && <p className="lv-inline-notice" role="status" style={{ animation: 'lv-fade-in 0.3s ease', color: notice.includes('欢迎') || notice.includes('恭喜') ? 'var(--lv-lime)' : '' }}>{notice}</p>}
               <ul className="lv-names">
-                {names.slice(-8).reverse().map((n, i) => (<li key={`${n}-${i}`}>{n}</li>))}
+                {names.slice(-8).reverse().map((n, i) => (<li key={`${n}-${i}`} style={{ animation: 'lv-rise 0.4s ease forwards' }}>{n}</li>))}
                 {names.length === 0 && <li className="is-empty">还没有人签到，来做第一个吧。</li>}
               </ul>
             </div>
             <div className="lv-draw">
               <h3>幸运抽奖</h3>
-              <div className="lv-winner" aria-live="polite">
+              <div className={`lv-winner ${rolling ? 'is-rolling' : winner ? 'has-winner' : ''}`} aria-live="polite">
                 {rolling ? flash : winner ? `🎉 ${winner}` : "虚位以待"}
               </div>
-              <button onClick={draw} disabled={rolling || names.length === 0}>
+              <button 
+                className="lv-action-btn primary"
+                onClick={draw} 
+                disabled={rolling || names.length === 0}
+                style={{ opacity: rolling ? 0.7 : 1, width: '100%' }}
+              >
                 {rolling ? "抽取中…" : "抽取全场大奖"}
               </button>
-              <small>从已签到名单中随机抽取 1 位</small>
+              <small style={{ marginTop: '12px', display: 'block', textAlign: 'center' }}>从已签到名单中随机抽取 1 位</small>
             </div>
           </div>
         </section>

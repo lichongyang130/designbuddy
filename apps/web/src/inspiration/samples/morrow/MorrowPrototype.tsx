@@ -263,7 +263,7 @@ export default function MorrowPrototype({ draftId }: { draftId?: string }) {
       break;
     case 2:
       body = (
-        <>
+        <div style={{ animation: 'mr-fade-in 0.4s ease' }}>
           <div className="mr-origin">
             {photo("cherries", "咖啡樱桃")}
             <div>
@@ -278,13 +278,14 @@ export default function MorrowPrototype({ draftId }: { draftId?: string }) {
           </div>
           <div className="mr-three">
             {beans.map((b, i) => (
-              <article className="mr-bean" key={b.name}>
+              <article className="mr-bean" key={b.name} style={{ animation: `mr-slide-up 0.4s ease ${i * 0.1}s both` }}>
                 <small>NO. 0{i + 1} / COFFEE STUDY</small>
                 <h3>{b.name}</h3>
                 <p>{b.notes}</p>
                 {flavor(b.profile)}
                 <b>{money(b.price)} / 250g</b>
                 <button
+                  className="mr-action-btn primary"
                   onClick={() => patch({ bean: i, blend: false, page: 3 })}
                 >
                   研究{b.name}
@@ -292,12 +293,12 @@ export default function MorrowPrototype({ draftId }: { draftId?: string }) {
               </article>
             ))}
           </div>
-        </>
+        </div>
       );
       break;
     case 3:
       body = (
-        <div className="mr-two">
+        <div className="mr-two" style={{ animation: 'mr-fade-in 0.4s ease' }}>
           {photo("beans", "烘焙咖啡豆")}
           <div>
             {select(
@@ -315,7 +316,7 @@ export default function MorrowPrototype({ draftId }: { draftId?: string }) {
               {money(unit({ ...s, blend: false }))} / {s.grams}g
             </h3>
             <p>500g 袋按两份 250g 价格的 95% 演算，非实际优惠承诺。</p>
-            <button onClick={() => patch({ blend: false, page: 6 })}>
+            <button className="mr-primary" onClick={() => patch({ blend: false, page: 6 })}>
               选用这款单豆并配置 →
             </button>
           </div>
@@ -324,7 +325,7 @@ export default function MorrowPrototype({ draftId }: { draftId?: string }) {
       break;
     case 4:
       body = (
-        <div className="mr-two">
+        <div className="mr-two" style={{ animation: 'mr-fade-in 0.4s ease' }}>
           <div>
             {photo("beans", "拼配咖啡豆")}
             <p>比例改变的是数值与描述，不会重新生成或修改照片。</p>
@@ -362,9 +363,9 @@ export default function MorrowPrototype({ draftId }: { draftId?: string }) {
               合计 {round(s.ratios.reduce((a, b) => a + b, 0))}% ·{" "}
               {blendValid(s)
                 ? s.blend
-                  ? "比例可用于本地方案"
+                  ? "✅ 比例可用于本地方案"
                   : "当前仍使用单豆"
-                : "比例必须合计 100%，暂不能加入清单或生成计划"}
+                : "⚠️ 比例必须合计 100%，暂不能加入清单或生成计划"}
             </p>
             {flavor(
               [0, 1, 2].map((i) =>
@@ -380,7 +381,7 @@ export default function MorrowPrototype({ draftId }: { draftId?: string }) {
       break;
     case 5:
       body = (
-        <div className="mr-two">
+        <div className="mr-two" style={{ animation: 'mr-fade-in 0.4s ease' }}>
           <div>
             {select("冲煮器具", s.method, ["手冲", "意式", "浸泡"], (method) =>
               change({ method }),
@@ -407,14 +408,14 @@ export default function MorrowPrototype({ draftId }: { draftId?: string }) {
             <p>
               不提供跨设备通用刻度，不控制磨豆机。若需代磨，请向实际商家说明器具与个人冲煮方式。
             </p>
-            <button onClick={() => go(8)}>打开配方实验室 →</button>
+            <button className="mr-action-btn primary" onClick={() => go(8)}>打开配方实验室 →</button>
           </aside>
         </div>
       );
       break;
     case 6:
       body = (
-        <>
+        <div style={{ animation: 'mr-fade-in 0.4s ease' }}>
           <div className="mr-three">
             {select(
               "每袋规格",
@@ -447,8 +448,8 @@ export default function MorrowPrototype({ draftId }: { draftId?: string }) {
           >
             加入单次清单
           </button>
-          <button onClick={() => go(12)}>规划四期日期 →</button>
-        </>
+          <button className="mr-action-btn primary" onClick={() => go(12)}>规划四期日期 →</button>
+        </div>
       );
       break;
     case 7:
@@ -549,6 +550,7 @@ export default function MorrowPrototype({ draftId }: { draftId?: string }) {
                 时间节点必须严格递增；不是实时计时、电子秤曲线或萃取自动控制。
               </p>
               <button
+                className={`mr-action-btn ${timesValid(s) ? 'primary' : ''}`}
                 disabled={!timesValid(s) || busy}
                 onClick={() => void execute(() => svgExport(s))}
               >
@@ -561,10 +563,10 @@ export default function MorrowPrototype({ draftId }: { draftId?: string }) {
       break;
     case 10:
       body = (
-        <>
+        <div style={{ animation: 'mr-fade-in 0.4s ease' }}>
           <div className="mr-basket">
-            {s.cart.map((x) => (
-              <article key={x.id}>
+            {s.cart.map((x, i) => (
+              <article key={x.id} style={{ animation: `mr-slide-up 0.3s ease ${i * 0.05}s both` }}>
                 <div>
                   <small>LOCAL LIST / FROZEN CONFIGURATION</small>
                   <h3>{x.label}</h3>
@@ -575,6 +577,7 @@ export default function MorrowPrototype({ draftId }: { draftId?: string }) {
                 <div>
                   <b>{money(x.qty * x.unit)}</b>
                   <button
+                    className="mr-action-btn"
                     aria-label={"移除清单 " + x.label}
                     onClick={() =>
                       change({ cart: s.cart.filter((v) => v.id !== x.id) })
@@ -591,23 +594,28 @@ export default function MorrowPrototype({ draftId }: { draftId?: string }) {
                 <p>
                   清单没有预装假订单。配置豆款、规格和袋数后，保存独立条目。
                 </p>
-                <button onClick={() => go(6)}>配置并加入清单</button>
+                <button className="mr-action-btn primary" onClick={() => go(6)}>配置并加入清单</button>
               </div>
             )}
           </div>
           <button
+            className="mr-action-btn"
             onClick={() => {
-              patch({ mode: 0, page: 20 });
+              change({ cart: [] });
+              msg("本地清单已清空。");
             }}
           >
+            清空本地清单
+          </button>
+          <button className="mr-action-btn primary" onClick={() => patch({ mode: 0, page: 20 })}>
             按单次清单核算 →
           </button>
-        </>
+        </div>
       );
       break;
     case 11:
       body = (
-        <div className="mr-two">
+        <div className="mr-two" style={{ animation: 'mr-fade-in 0.4s ease' }}>
           <div>
             {text("收件称呼", "name")}
             {text("沟通方式（不发送）", "contact")}
@@ -619,13 +627,14 @@ export default function MorrowPrototype({ draftId }: { draftId?: string }) {
       break;
     case 12:
       body = (
-        <>
+        <div style={{ animation: 'mr-fade-in 0.4s ease' }}>
           {date("第一期计划日期", "start")}
           <p>
             当前配置：{label(s)} / {s.grams}g × {s.qty}，间隔 {s.weeks}{" "}
             周。生成后保留独立价格和配置；不是发货承诺。
           </p>
           <button
+            className={`mr-action-btn ${(!blendValid(s) || !validDate(addDays(s.start, s.weeks * 21))) ? '' : 'primary'}`}
             disabled={
               !blendValid(s) || !validDate(addDays(s.start, s.weeks * 21))
             }
@@ -636,17 +645,17 @@ export default function MorrowPrototype({ draftId }: { draftId?: string }) {
               )
                 return;
               change({ queue: makeQueue(s) });
-              msg("四期本地计划已生成，未订阅、未付款、未发货。");
+              msg("✅ 四期本地计划已生成，未订阅、未付款、未发货。");
             }}
           >
             生成四期计划
           </button>
           {!validDate(addDays(s.start, s.weeks * 21)) && (
-            <p>最后一期超出支持日期范围，请调整开始日期。</p>
+            <p className="mr-warning">⚠️ 最后一期超出支持日期范围，请调整开始日期。</p>
           )}
           <div className="mr-cycles">
             {s.queue.map((x, i) => (
-              <article key={x.id}>
+              <article key={x.id} style={{ animation: `mr-slide-up 0.3s ease ${i * 0.1}s both` }}>
                 <small>DELIVERY PLAN / 0{i + 1}</small>
                 <h3>{x.label}</h3>
                 <label className="mr-field">
@@ -685,30 +694,31 @@ export default function MorrowPrototype({ draftId }: { draftId?: string }) {
               </article>
             ))}
           </div>
-          <button onClick={() => patch({ mode: 1, page: 20 })}>
+          <button className="mr-action-btn primary" onClick={() => patch({ mode: 1, page: 20 })}>
             按四期计划核算 →
           </button>
-        </>
+        </div>
       );
       break;
     case 13:
       body = (
-        <div className="mr-two">
-          <article className={"mr-pause " + (s.paused ? "paused" : "")}>
+        <div className="mr-two" style={{ animation: 'mr-fade-in 0.4s ease' }}>
+          <article className={"mr-pause " + (s.paused ? "paused" : "")} style={{ transition: 'all 0.3s' }}>
             <small>YOUR RHYTHM, YOUR CHOICE</small>
-            <h3>{s.paused ? "本地计划已暂停。" : "本地计划正在演算。"}</h3>
+            <h3>{s.paused ? "⏸ 本地计划已暂停。" : "▶️ 本地计划正在演算。"}</h3>
             <p>
               已有 {s.queue.length} 期记录，
               {s.queue.filter((x) => !x.skip).length}{" "}
               期未跳过。暂停时不计四期计划费用，单次清单保持独立。
             </p>
             <button
+              className={`mr-action-btn ${s.paused ? 'primary' : ''}`}
               onClick={() => {
                 change({ paused: !s.paused });
                 msg(
                   s.paused
-                    ? "已恢复本地演算，未恢复任何真实扣款。"
-                    : "已暂停本地演算，没有向商家发出取消指令。",
+                    ? "▶️ 已恢复本地演算，未恢复任何真实扣款。"
+                    : "⏸ 已暂停本地演算，没有向商家发出取消指令。",
                 );
               }}
             >
@@ -725,14 +735,14 @@ export default function MorrowPrototype({ draftId }: { draftId?: string }) {
             <p>
               恢复不会推移日期。若计划已经过时，请回到四期页面复核或重新生成。真实订阅必须联系实际服务商。
             </p>
-            <button onClick={() => go(12)}>复核计划日期 →</button>
+            <button className="mr-action-btn" onClick={() => go(12)}>复核计划日期 →</button>
           </aside>
         </div>
       );
       break;
     case 14:
       body = (
-        <div className="mr-two">
+        <div className="mr-two" style={{ animation: 'mr-fade-in 0.4s ease' }}>
           <div>
             {text("本次冲煮观察", "brewNote", true)}
             <p>
@@ -760,7 +770,7 @@ export default function MorrowPrototype({ draftId }: { draftId?: string }) {
                   ],
                   brewNote: "",
                 });
-                msg("独立冲煮笔记已保存，没有扣除库存。");
+                msg("📝 独立冲煮笔记已保存，没有扣除库存。");
               }}
             >
               保存这杯笔记
@@ -768,7 +778,7 @@ export default function MorrowPrototype({ draftId }: { draftId?: string }) {
           </div>
           <aside>
             {s.brews.map((b, i) => (
-              <article className="mr-note" key={i}>
+              <article className="mr-note" key={i} style={{ animation: `mr-slide-up 0.3s ease ${i * 0.1}s both` }}>
                 <small>{b.at.slice(0, 10)} / PERSONAL BREW</small>
                 <h3>{b.label}</h3>
                 <b>
@@ -778,7 +788,7 @@ export default function MorrowPrototype({ draftId }: { draftId?: string }) {
               </article>
             ))}
             {!s.brews.length && (
-              <div className="mr-empty">
+              <div className="mr-empty" style={{ opacity: 0.7 }}>
                 <h3>第一杯，从真实观察开始。</h3>
                 <p>记录香气、流速和口感，不预装虚假的冲煮经历。</p>
               </div>
@@ -789,7 +799,7 @@ export default function MorrowPrototype({ draftId }: { draftId?: string }) {
       break;
     case 15:
       body = (
-        <div className="mr-two">
+        <div className="mr-two" style={{ animation: 'mr-fade-in 0.4s ease' }}>
           <div>
             {select(
               "个人品鉴分数",
@@ -799,6 +809,7 @@ export default function MorrowPrototype({ draftId }: { draftId?: string }) {
             )}
             {text("品鉴说明", "tasting", true)}
             <button
+              className="mr-action-btn primary"
               disabled={s.tastings.length >= 10}
               onClick={() => {
                 if (s.tasting.trim().length < 8) {
@@ -812,7 +823,7 @@ export default function MorrowPrototype({ draftId }: { draftId?: string }) {
                   ],
                   tasting: "",
                 });
-                msg("个人品鉴已记录，没有发布商家评价。");
+                msg("⭐ 个人品鉴已记录，没有发布商家评价。");
               }}
             >
               保存个人品鉴
@@ -832,7 +843,7 @@ export default function MorrowPrototype({ draftId }: { draftId?: string }) {
               条主观记录，不是公共口碑或杯测认证。
             </p>
             {s.tastings.map((t, i) => (
-              <article className="mr-note" key={i}>
+              <article className="mr-note" key={i} style={{ animation: `mr-slide-up 0.3s ease ${i * 0.1}s both` }}>
                 <small>{t.rating} / 5</small>
                 <p>{t.note}</p>
               </article>
@@ -905,7 +916,7 @@ export default function MorrowPrototype({ draftId }: { draftId?: string }) {
       break;
     case 17:
       body = (
-        <div className="mr-two">
+        <div className="mr-two" style={{ animation: 'mr-fade-in 0.4s ease' }}>
           <div>
             {select(
               "库存记录类型",
@@ -916,6 +927,7 @@ export default function MorrowPrototype({ draftId }: { draftId?: string }) {
             {num("库存记录数量（g）", "stockAmount", 1, 2000)}
             {text("库存记录说明", "stockNote", true)}
             <button
+              className="mr-action-btn primary"
               disabled={s.stock.length >= 20}
               onClick={() => {
                 if (!s.stockNote.trim()) {
@@ -934,7 +946,7 @@ export default function MorrowPrototype({ draftId }: { draftId?: string }) {
                   ],
                   stockNote: "",
                 });
-                msg("手动库存已更新，没有商家库存或自动补货动作。");
+                msg("📦 手动库存已更新，没有商家库存或自动补货动作。");
               }}
             >
               保存库存记录
@@ -947,7 +959,7 @@ export default function MorrowPrototype({ draftId }: { draftId?: string }) {
               <p>500g 示例起始库存 + 已保存台账</p>
             </div>
             {s.stock.map((x, i) => (
-              <article className="mr-note" key={i}>
+              <article className="mr-note" key={i} style={{ animation: `mr-slide-up 0.3s ease ${i * 0.1}s both` }}>
                 <b>
                   {x.delta > 0 ? "+" : ""}
                   {x.delta} g
@@ -962,7 +974,7 @@ export default function MorrowPrototype({ draftId }: { draftId?: string }) {
       break;
     case 18:
       body = (
-        <div className="mr-two">
+        <div className="mr-two" style={{ animation: 'mr-fade-in 0.4s ease' }}>
           {photo("roaster", "烘焙工作室")}
           <div>
             {date("烘焙日期", "roasted")}
@@ -1003,7 +1015,7 @@ export default function MorrowPrototype({ draftId }: { draftId?: string }) {
       break;
     case 20:
       body = (
-        <>
+        <div style={{ animation: 'mr-fade-in 0.4s ease' }}>
           <div className="mr-three">
             {select("费用口径", s.mode, ["单次清单", "四期计划"], (mode) =>
               change({ mode }),
@@ -1022,20 +1034,21 @@ export default function MorrowPrototype({ draftId }: { draftId?: string }) {
                 : "四期计划逐期核算运费，跳过期不计费。"
               : "单次清单合并核算运费，不叠加四期计划。"}
           </p>
-          <button onClick={() => csvExport(s)}>导出费用 CSV</button>
-        </>
+          <button className="mr-action-btn primary" onClick={() => csvExport(s)}>导出费用 CSV</button>
+        </div>
       );
       break;
     case 21:
       body = (
-        <div className="mr-two">
+        <div className="mr-two" style={{ animation: 'mr-fade-in 0.4s ease' }}>
           <div>
             {text("售后问题与期望", "issue", true)}
             <button
+              className="mr-action-btn primary"
               disabled={s.issue.trim().length < 8}
               onClick={() => {
                 requestExport(s);
-                msg("售后草稿已生成，未发送、未受理或退款。");
+                msg("已导出售后 TXT，未发送、未受理或退款。");
               }}
             >
               导出售后 TXT
@@ -1057,13 +1070,14 @@ export default function MorrowPrototype({ draftId }: { draftId?: string }) {
       break;
     case 22:
       body = (
-        <div className="mr-two">
+        <div className="mr-two" style={{ animation: 'mr-fade-in 0.4s ease' }}>
           <div>
             <h3>当前讨论金额 {money(c.total)}</h3>
             <p>
               {s.mode ? "四期计划" : "单次清单"} / {s.name || "尚未填写称呼"}
             </p>
             <button
+              className={`mr-action-btn ${(!s.name.trim() || c.total <= 0) ? '' : 'primary'}`}
               disabled={!s.name.trim() || c.total <= 0}
               onClick={() => {
                 if (s.review && !confirm("替换现有冻结讨论稿？")) return;
@@ -1080,7 +1094,7 @@ export default function MorrowPrototype({ draftId }: { draftId?: string }) {
                     withdrawn: false,
                   },
                 });
-                msg("讨论稿已冻结，不是订单、付款或配送承诺。");
+                msg("📌 讨论稿已冻结，不是订单、付款或配送承诺。");
               }}
             >
               冻结讨论确认稿
@@ -1106,13 +1120,14 @@ export default function MorrowPrototype({ draftId }: { draftId?: string }) {
                 <strong>{money(s.review.total)}</strong>
                 <p>{s.review.withdrawn ? "本地已撤回" : "本地讨论确认"}</p>
                 <button
+                  className="mr-action-btn"
                   disabled={s.review.withdrawn}
                   onClick={() => {
                     if (confirm("撤回本地讨论稿？"))
                       change({ review: { ...s.review!, withdrawn: true } });
                   }}
                 >
-                  撤回讨论稿
+                  {s.review.withdrawn ? "已撤回" : "撤回讨论稿"}
                 </button>
               </>
             ) : (

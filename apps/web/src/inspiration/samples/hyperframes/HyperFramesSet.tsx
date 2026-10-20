@@ -236,7 +236,11 @@ export function HFTour({ draftId }: { draftId?: string }) {
       draftId={draftId}
       state={state}
       error={error}
-      actions={<button onClick={exportHtml}>下载话术 HTML</button>}
+      actions={
+        <>
+          <button className="hf-action-btn primary" onClick={exportHtml}>下载话术 HTML</button>
+        </>
+      }
     >
       <div className="hf-layout">
         <section

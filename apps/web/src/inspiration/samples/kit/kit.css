@@ -50,6 +50,16 @@
   font: inherit;
   font-size: 13px;
   cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.kit-bar-actions button:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--kit-ink) 10%, transparent);
+  transform: translateY(-1px);
+}
+
+.kit-bar-actions button:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 .kit-bar-actions button:disabled {

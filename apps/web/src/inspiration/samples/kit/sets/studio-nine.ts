@@ -26,7 +26,7 @@ export const studioNine: KitTemplate = {
       title: "STUDIO NINE",
       subtitle: "把一间影棚的档期、灯光与交付流程，摊开给每一个来敲门的人看。",
       meta: ["影棚排期", "24 页", "苏州工业园区"],
-      art: "art-01.svg",
+      art: "expansion/studioNine-1.jpg",
       note: "九号影棚 · 三组实景棚区 · 自有灯光车与道具库",
     },
     {
@@ -42,16 +42,16 @@ export const studioNine: KitTemplate = {
         { title: "器材随单", body: "布光方案与器材清单在报价单里写死，换灯不另加钱。" },
         { title: "交付写明", body: "初修 5 个工作日、精修 10 个工作日，逾期按日补偿。" },
       ],
-      art: "art-02.svg",
+      art: "expansion/studioNine-2.webp",
     },
     {
       kind: "gallery",
       title: "三组棚区，三种光线",
       lead: "层高、窗光与色温差别很大，拍摄前建议先来看样片。",
       items: [
-        { title: "A 区 · 白墙顶棚", body: "6.4 米层高纯白无缝背景，顶部桁架可承重 300 公斤，适合需要完整地平线的商品与空间拍摄。", art: "art-03.svg", meta: ["120㎡", "6.4m 层高", "3200K–5600K"] },
-        { title: "B 区 · 侧窗自然光", body: "朝北两米落地窗，阴天光线稳定，适合需要柔和方向的静物与食品题材，也可以全遮光做纯人工布光。", art: "art-04.svg", meta: ["95㎡", "双侧窗", "自然光为主"] },
-        { title: "C 区 · 实景搭建", body: "可移动隔断与实装家具，保留厨房、客厅两种搭建状态，适合需要一次拍完多个场景的项目。", art: "art-05.svg", meta: ["160㎡", "两套实景", "自带道具"] },
+        { title: "A 区 · 白墙顶棚", body: "6.4 米层高纯白无缝背景，顶部桁架可承重 300 公斤，适合需要完整地平线的商品与空间拍摄。", art: "expansion/studioNine-3.jpg", meta: ["120㎡", "6.4m 层高", "3200K–5600K"] },
+        { title: "B 区 · 侧窗自然光", body: "朝北两米落地窗，阴天光线稳定，适合需要柔和方向的静物与食品题材，也可以全遮光做纯人工布光。", art: "expansion/studioNine-4.png", meta: ["95㎡", "双侧窗", "自然光为主"] },
+        { title: "C 区 · 实景搭建", body: "可移动隔断与实装家具，保留厨房、客厅两种搭建状态，适合需要一次拍完多个场景的项目。", art: "expansion/studioNine-5.jpg", meta: ["160㎡", "两套实景", "自带道具"] },
       ],
     },
     {
@@ -69,7 +69,7 @@ export const studioNine: KitTemplate = {
         { label: "停车", value: "场地内 6 个车位，需提前登记车牌" },
       ],
       note: "参数随场地检修更新，更新时间会同步到档期页右上角的版本号。",
-      art: "art-06.svg",
+      art: "expansion/studioNine-1.jpg",
     },
     {
       kind: "table",
@@ -138,7 +138,7 @@ export const studioNine: KitTemplate = {
       ],
       quote: "你把需求说清楚，我就把灯光摆明白，剩下的时间用来拍。",
       quoteBy: "九号影棚 · 主理人 周叙",
-      art: "art-07.svg",
+      art: "expansion/studioNine-2.webp",
     },
     {
       kind: "faq",
@@ -159,10 +159,10 @@ export const studioNine: KitTemplate = {
       title: "灯光场景库",
       lead: "常见题材的布光起点，点开每个场景可以看布光图与实拍样片。",
       items: [
-        { title: "硬光金属反射", body: "裸灯加蜂巢，靠反射板补暗部，金属高光保留棱线，适合手表与工具类。", art: "art-08.svg", meta: ["1 主光", "2 反光板", "5600K"] },
-        { title: "柔光静物", body: "柔光箱加底部反光，背景压暗两档，食品与陶瓷的釉面层次最稳。", art: "art-02.svg", meta: ["2 柔光箱", "1 背景灯", "4200K"] },
-        { title: "侧窗人像", body: "只开一盏 300D 做窗光补，人物背对窗口，保留自然的眼神光。", art: "art-04.svg", meta: ["1 补光", "无反光板", "阴天 6500K"] },
-        { title: "暗调质感", body: "背景压到 −2 档，只留轮廓光，主体靠纹理和边缘光分层。", art: "art-06.svg", meta: ["1 管灯", "黑旗 × 2", "3200K"] },
+        { title: "硬光金属反射", body: "裸灯加蜂巢，靠反射板补暗部，金属高光保留棱线，适合手表与工具类。", art: "expansion/studioNine-3.jpg", meta: ["1 主光", "2 反光板", "5600K"] },
+        { title: "柔光静物", body: "柔光箱加底部反光，背景压暗两档，食品与陶瓷的釉面层次最稳。", art: "expansion/studioNine-2.webp", meta: ["2 柔光箱", "1 背景灯", "4200K"] },
+        { title: "侧窗人像", body: "只开一盏 300D 做窗光补，人物背对窗口，保留自然的眼神光。", art: "expansion/studioNine-4.png", meta: ["1 补光", "无反光板", "阴天 6500K"] },
+        { title: "暗调质感", body: "背景压到 −2 档，只留轮廓光，主体靠纹理和边缘光分层。", art: "expansion/studioNine-1.jpg", meta: ["1 管灯", "黑旗 × 2", "3200K"] },
       ],
     },
     {
@@ -207,16 +207,16 @@ export const studioNine: KitTemplate = {
         { label: "修改轮次", value: "含两轮微调，超出按 180 元/张计" },
       ],
       note: "精修交付逾期按每日 200 元补偿，补偿以服务费抵扣或现金支付，二选一。",
-      art: "art-07.svg",
+      art: "expansion/studioNine-2.webp",
     },
     {
       kind: "gallery",
       title: "成片案例",
       lead: "同类题材的完整项目，含拍摄条件与最终交付数量。",
       items: [
-        { title: "灯具品牌 · 秋冬系列", body: "A 区拍摄，两天完成 6 套场景，交付 48 张精修与 120 张预览。", art: "art-03.svg", meta: ["2 天", "48 张精修", "硬光"] },
-        { title: "咖啡器具 · 产品图", body: "B 区侧窗柔光，一天完成 5 个品类，交付 30 张精修与横竖版裁切。", art: "art-05.svg", meta: ["1 天", "30 张精修", "柔光"] },
-        { title: "家居 · 空间搭建", body: "C 区实景，两套搭建分别拍摄客厅与厨房，交付 62 张。", art: "art-06.svg", meta: ["2 天", "62 张精修", "实景"] },
+        { title: "灯具品牌 · 秋冬系列", body: "A 区拍摄，两天完成 6 套场景，交付 48 张精修与 120 张预览。", art: "expansion/studioNine-3.jpg", meta: ["2 天", "48 张精修", "硬光"] },
+        { title: "咖啡器具 · 产品图", body: "B 区侧窗柔光，一天完成 5 个品类，交付 30 张精修与横竖版裁切。", art: "expansion/studioNine-5.jpg", meta: ["1 天", "30 张精修", "柔光"] },
+        { title: "家居 · 空间搭建", body: "C 区实景，两套搭建分别拍摄客厅与厨房，交付 62 张。", art: "expansion/studioNine-1.jpg", meta: ["2 天", "62 张精修", "实景"] },
       ],
     },
     {
@@ -233,7 +233,7 @@ export const studioNine: KitTemplate = {
         { title: "灯光", body: "光比与色温设计，负责布光与走位预演。" },
         { title: "美术", body: "道具、搭建与陈设，负责还原参考图。" },
       ],
-      art: "art-08.svg",
+      art: "expansion/studioNine-3.jpg",
     },
     {
       kind: "table",
@@ -307,10 +307,10 @@ export const studioNine: KitTemplate = {
       title: "道具库",
       lead: "常用道具在库中可直接调用，特殊道具需提前采买。",
       items: [
-        { title: "桌面静物组", body: "陶器、玻璃器皿与木质托盘共 120 件，按风格分区存放，拍摄日提前按清单取出。", art: "art-04.svg", meta: ["120 件", "在库", "免租金"] },
-        { title: "服装与配饰", body: "基础款外套、针织与配饰共 60 件，合作客户可优先租用，折旧按次计算。", art: "art-05.svg", meta: ["60 件", "在库", "¥120/件/天"] },
-        { title: "绿植与背景", body: "仿真绿植 25 盆与背景纸 40 卷，背景纸按用量结算，剩余可留库存放。", art: "art-08.svg", meta: ["25 盆 / 40 卷", "在库", "按量结算"] },
-        { title: "特殊道具采买", body: "整车、定制家具等需下单采买，报价单单列费用与时间，拍摄前 5 个工作日到位。", art: "art-02.svg", meta: ["按需", "采买", "¥800 起"] },
+        { title: "桌面静物组", body: "陶器、玻璃器皿与木质托盘共 120 件，按风格分区存放，拍摄日提前按清单取出。", art: "expansion/studioNine-4.png", meta: ["120 件", "在库", "免租金"] },
+        { title: "服装与配饰", body: "基础款外套、针织与配饰共 60 件，合作客户可优先租用，折旧按次计算。", art: "expansion/studioNine-5.jpg", meta: ["60 件", "在库", "¥120/件/天"] },
+        { title: "绿植与背景", body: "仿真绿植 25 盆与背景纸 40 卷，背景纸按用量结算，剩余可留库存放。", art: "expansion/studioNine-3.jpg", meta: ["25 盆 / 40 卷", "在库", "按量结算"] },
+        { title: "特殊道具采买", body: "整车、定制家具等需下单采买，报价单单列费用与时间，拍摄前 5 个工作日到位。", art: "expansion/studioNine-2.webp", meta: ["按需", "采买", "¥800 起"] },
       ],
     },
     {
@@ -328,7 +328,7 @@ export const studioNine: KitTemplate = {
         { label: "应急", value: "场地配备急停、灭火器与急救箱，值班统筹持有急救证" },
       ],
       note: "拍摄日建议团队自备常用药品与替换衣物，场地冰箱可暂存冷藏食材。",
-      art: "art-01.svg",
+      art: "expansion/studioNine-1.jpg",
     },
     {
       kind: "cta",

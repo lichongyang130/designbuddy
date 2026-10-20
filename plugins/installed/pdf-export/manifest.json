@@ -1,0 +1,15 @@
+{
+  "id": "pdf-export",
+  "name": "Native PDF Export",
+  "description": "Native export of current UI workspace to high-resolution PDF.",
+  "version": "1.0.0",
+  "entrypoint": "node main.mjs",
+  "permissions": ["workspace:read", "workspace:write"],
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "outputFilename": { "type": "string", "description": "Name of the exported PDF file" }
+    },
+    "required": ["outputFilename"]
+  }
+}

@@ -12,6 +12,9 @@
 .rt-shell * {
   box-sizing: border-box;
 }
+@keyframes rt-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes rt-rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
 .rt-shell button {
   font: inherit;
   padding: 10px 16px;
@@ -20,9 +23,21 @@
   color: inherit;
   border-radius: 4px;
   cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 .rt-shell button:hover:not(:disabled) {
   background: #e0e7d9;
+  transform: translateY(-1px);
+}
+.rt-shell button.primary {
+  background: #497d56;
+  color: #fff;
+  border: none;
+}
+.rt-shell button.primary:hover:not(:disabled) {
+  background: #366041;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(73,125,86,0.2);
 }
 .rt-shell button:disabled {
   opacity: 0.45;

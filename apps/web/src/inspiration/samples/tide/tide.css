@@ -12,6 +12,9 @@
 .td-shell * {
   box-sizing: border-box;
 }
+@keyframes td-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes td-slide-up { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
 .td-shell button {
   font: inherit;
   color: inherit;
@@ -19,10 +22,22 @@
   background: transparent;
   padding: 10px 17px;
   cursor: pointer;
-  border-radius: 2px;
+  border-radius: 4px;
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 .td-shell button:hover:not(:disabled) {
   background: #e6e8df;
+  transform: translateY(-1px);
+}
+.td-shell button.td-primary {
+  background: #1a323a;
+  color: #fff;
+  border: none;
+}
+.td-shell button.td-primary:hover:not(:disabled) {
+  background: #25444e;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(26,50,58,0.25);
 }
 .td-shell button:disabled {
   opacity: 0.4;

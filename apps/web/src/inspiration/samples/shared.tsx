@@ -55,34 +55,7 @@ export const museumPhotos = pack("museum"),
   cityPhotos = pack("city"),
   handbookPhotos = pack("handbook"),
   naturePhotos = pack("nature");
-export type SampleId =
-  | "travel"
-  | "luma"
-  | "research"
-  | "chishan"
-  | "museum"
-  | "city"
-  | "handbook"
-  | "nature"
-  | "hyperframes"
-  | "film"
-  | "sound"
-  | "live"
-  | "webgl"
-  | "forme"
-  | "atelier"
-  | "roots"
-  | "daylight"
-  | "tide"
-  | "morrow"
-  | "hf-tour"
-  | "hf-story"
-  | "hf-quest"
-  | "hf-lesson"
-  | "live-board"
-  | "live-event"
-  | "live-form"
-  | "live-status";
+export type SampleId = string;
 export const samples: {
   id: SampleId;
   category: string;
@@ -308,6 +281,1280 @@ export const samples: {
     format: "状态页 / 事件线",
     photos: generateTemplatePhotos("live-status"),
   },
+  {
+    id: "slide-1-gen",
+    category: "幻灯片",
+    title: "AURA · 视觉提案",
+    description: "20-26 个高级组件 · 沉浸式幻灯片体验，配备完整演示内容",
+    format: "增强型 幻灯片",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"slide-1-gen-" + i}/1200/800`,
+      label: `AURA · 视觉提案 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "slide-2-gen",
+    category: "幻灯片",
+    title: "AURA · 商业路演",
+    description: "20-23 个高级组件 · 沉浸式幻灯片体验，配备完整演示内容",
+    format: "增强型 幻灯片",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"slide-2-gen-" + i}/1200/800`,
+      label: `AURA · 商业路演 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "slide-3-gen",
+    category: "幻灯片",
+    title: "PULSE · 产品发布",
+    description: "20-29 个高级组件 · 沉浸式幻灯片体验，配备完整演示内容",
+    format: "增强型 幻灯片",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"slide-3-gen-" + i}/1200/800`,
+      label: `PULSE · 产品发布 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "slide-4-gen",
+    category: "幻灯片",
+    title: "PULSE · 全员大会",
+    description: "20-27 个高级组件 · 沉浸式幻灯片体验，配备完整演示内容",
+    format: "增强型 幻灯片",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"slide-4-gen-" + i}/1200/800`,
+      label: `PULSE · 全员大会 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "slide-5-gen",
+    category: "幻灯片",
+    title: "QUANTA · 全员大会",
+    description: "20-29 个高级组件 · 沉浸式幻灯片体验，配备完整演示内容",
+    format: "增强型 幻灯片",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"slide-5-gen-" + i}/1200/800`,
+      label: `QUANTA · 全员大会 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "slide-6-gen",
+    category: "幻灯片",
+    title: "ZENITH · 产品发布",
+    description: "20-26 个高级组件 · 沉浸式幻灯片体验，配备完整演示内容",
+    format: "增强型 幻灯片",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"slide-6-gen-" + i}/1200/800`,
+      label: `ZENITH · 产品发布 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "slide-7-gen",
+    category: "幻灯片",
+    title: "PRISM · 商业路演",
+    description: "20-30 个高级组件 · 沉浸式幻灯片体验，配备完整演示内容",
+    format: "增强型 幻灯片",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"slide-7-gen-" + i}/1200/800`,
+      label: `PRISM · 商业路演 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "slide-8-gen",
+    category: "幻灯片",
+    title: "ECHO · 视觉提案",
+    description: "20-28 个高级组件 · 沉浸式幻灯片体验，配备完整演示内容",
+    format: "增强型 幻灯片",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"slide-8-gen-" + i}/1200/800`,
+      label: `ECHO · 视觉提案 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "doc-1-gen",
+    category: "文档",
+    title: "LUMINA · 商业企划",
+    description: "20-30 个高级组件 · 沉浸式文档体验，配备完整演示内容",
+    format: "增强型 文档",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"doc-1-gen-" + i}/1200/800`,
+      label: `LUMINA · 商业企划 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "doc-2-gen",
+    category: "文档",
+    title: "NEXUS · 白皮书",
+    description: "20-24 个高级组件 · 沉浸式文档体验，配备完整演示内容",
+    format: "增强型 文档",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"doc-2-gen-" + i}/1200/800`,
+      label: `NEXUS · 白皮书 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "doc-3-gen",
+    category: "文档",
+    title: "ZENITH · 深度报告",
+    description: "20-24 个高级组件 · 沉浸式文档体验，配备完整演示内容",
+    format: "增强型 文档",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"doc-3-gen-" + i}/1200/800`,
+      label: `ZENITH · 深度报告 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "doc-4-gen",
+    category: "文档",
+    title: "LUMINA · 标准协议",
+    description: "20-25 个高级组件 · 沉浸式文档体验，配备完整演示内容",
+    format: "增强型 文档",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"doc-4-gen-" + i}/1200/800`,
+      label: `LUMINA · 标准协议 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "doc-5-gen",
+    category: "文档",
+    title: "NEXUS · 标准协议",
+    description: "20-27 个高级组件 · 沉浸式文档体验，配备完整演示内容",
+    format: "增强型 文档",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"doc-5-gen-" + i}/1200/800`,
+      label: `NEXUS · 标准协议 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "doc-6-gen",
+    category: "文档",
+    title: "VERTEX · 研究手册",
+    description: "20-26 个高级组件 · 沉浸式文档体验，配备完整演示内容",
+    format: "增强型 文档",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"doc-6-gen-" + i}/1200/800`,
+      label: `VERTEX · 研究手册 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "doc-7-gen",
+    category: "文档",
+    title: "LUMINA · 研究手册",
+    description: "20-29 个高级组件 · 沉浸式文档体验，配备完整演示内容",
+    format: "增强型 文档",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"doc-7-gen-" + i}/1200/800`,
+      label: `LUMINA · 研究手册 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "doc-8-gen",
+    category: "文档",
+    title: "PRISM · 商业企划",
+    description: "20-21 个高级组件 · 沉浸式文档体验，配备完整演示内容",
+    format: "增强型 文档",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"doc-8-gen-" + i}/1200/800`,
+      label: `PRISM · 商业企划 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "img-1-gen",
+    category: "图片",
+    title: "PRISM · 品牌视觉",
+    description: "20-25 个高级组件 · 沉浸式图片体验，配备完整演示内容",
+    format: "增强型 图片",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"img-1-gen-" + i}/1200/800`,
+      label: `PRISM · 品牌视觉 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "img-2-gen",
+    category: "图片",
+    title: "VERTEX · 数字合集",
+    description: "20-28 个高级组件 · 沉浸式图片体验，配备完整演示内容",
+    format: "增强型 图片",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"img-2-gen-" + i}/1200/800`,
+      label: `VERTEX · 数字合集 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "img-3-gen",
+    category: "图片",
+    title: "VERTEX · 品牌视觉",
+    description: "20-22 个高级组件 · 沉浸式图片体验，配备完整演示内容",
+    format: "增强型 图片",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"img-3-gen-" + i}/1200/800`,
+      label: `VERTEX · 品牌视觉 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "img-4-gen",
+    category: "图片",
+    title: "VERTEX · 数字合集",
+    description: "20-21 个高级组件 · 沉浸式图片体验，配备完整演示内容",
+    format: "增强型 图片",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"img-4-gen-" + i}/1200/800`,
+      label: `VERTEX · 数字合集 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "img-5-gen",
+    category: "图片",
+    title: "VERTEX · 数字合集",
+    description: "20-28 个高级组件 · 沉浸式图片体验，配备完整演示内容",
+    format: "增强型 图片",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"img-5-gen-" + i}/1200/800`,
+      label: `VERTEX · 数字合集 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "img-6-gen",
+    category: "图片",
+    title: "AURA · 品牌视觉",
+    description: "20-28 个高级组件 · 沉浸式图片体验，配备完整演示内容",
+    format: "增强型 图片",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"img-6-gen-" + i}/1200/800`,
+      label: `AURA · 品牌视觉 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "img-7-gen",
+    category: "图片",
+    title: "LUMINA · 品牌视觉",
+    description: "20-20 个高级组件 · 沉浸式图片体验，配备完整演示内容",
+    format: "增强型 图片",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"img-7-gen-" + i}/1200/800`,
+      label: `LUMINA · 品牌视觉 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "img-8-gen",
+    category: "图片",
+    title: "ECHO · 海报集",
+    description: "20-25 个高级组件 · 沉浸式图片体验，配备完整演示内容",
+    format: "增强型 图片",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"img-8-gen-" + i}/1200/800`,
+      label: `ECHO · 海报集 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "hf-1-gen",
+    category: "HyperFrames",
+    title: "LUMINA · 交互视界",
+    description: "20-24 个高级组件 · 沉浸式HyperFrames体验，配备完整演示内容",
+    format: "增强型 HyperFrames",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"hf-1-gen-" + i}/1200/800`,
+      label: `LUMINA · 交互视界 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "hf-2-gen",
+    category: "HyperFrames",
+    title: "VERTEX · 微动效",
+    description: "20-24 个高级组件 · 沉浸式HyperFrames体验，配备完整演示内容",
+    format: "增强型 HyperFrames",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"hf-2-gen-" + i}/1200/800`,
+      label: `VERTEX · 微动效 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "hf-3-gen",
+    category: "HyperFrames",
+    title: "VERTEX · 交互视界",
+    description: "20-21 个高级组件 · 沉浸式HyperFrames体验，配备完整演示内容",
+    format: "增强型 HyperFrames",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"hf-3-gen-" + i}/1200/800`,
+      label: `VERTEX · 交互视界 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "hf-4-gen",
+    category: "HyperFrames",
+    title: "PULSE · 转场设计",
+    description: "20-20 个高级组件 · 沉浸式HyperFrames体验，配备完整演示内容",
+    format: "增强型 HyperFrames",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"hf-4-gen-" + i}/1200/800`,
+      label: `PULSE · 转场设计 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "hf-5-gen",
+    category: "HyperFrames",
+    title: "HORIZON · 转场设计",
+    description: "20-29 个高级组件 · 沉浸式HyperFrames体验，配备完整演示内容",
+    format: "增强型 HyperFrames",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"hf-5-gen-" + i}/1200/800`,
+      label: `HORIZON · 转场设计 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "vid-1-gen",
+    category: "视频",
+    title: "AURA · 概念剪辑",
+    description: "20-28 个高级组件 · 沉浸式视频体验，配备完整演示内容",
+    format: "增强型 视频",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"vid-1-gen-" + i}/1200/800`,
+      label: `AURA · 概念剪辑 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "vid-2-gen",
+    category: "视频",
+    title: "HORIZON · 概念剪辑",
+    description: "20-28 个高级组件 · 沉浸式视频体验，配备完整演示内容",
+    format: "增强型 视频",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"vid-2-gen-" + i}/1200/800`,
+      label: `HORIZON · 概念剪辑 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "vid-3-gen",
+    category: "视频",
+    title: "QUANTA · 电影级预告",
+    description: "20-21 个高级组件 · 沉浸式视频体验，配备完整演示内容",
+    format: "增强型 视频",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"vid-3-gen-" + i}/1200/800`,
+      label: `QUANTA · 电影级预告 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "vid-4-gen",
+    category: "视频",
+    title: "NEXUS · 电影级预告",
+    description: "20-22 个高级组件 · 沉浸式视频体验，配备完整演示内容",
+    format: "增强型 视频",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"vid-4-gen-" + i}/1200/800`,
+      label: `NEXUS · 电影级预告 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "vid-5-gen",
+    category: "视频",
+    title: "PRISM · 空间纪实",
+    description: "20-20 个高级组件 · 沉浸式视频体验，配备完整演示内容",
+    format: "增强型 视频",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"vid-5-gen-" + i}/1200/800`,
+      label: `PRISM · 空间纪实 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "vid-6-gen",
+    category: "视频",
+    title: "NEXUS · 空间纪实",
+    description: "20-26 个高级组件 · 沉浸式视频体验，配备完整演示内容",
+    format: "增强型 视频",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"vid-6-gen-" + i}/1200/800`,
+      label: `NEXUS · 空间纪实 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "vid-7-gen",
+    category: "视频",
+    title: "AURA · 电影级预告",
+    description: "20-26 个高级组件 · 沉浸式视频体验，配备完整演示内容",
+    format: "增强型 视频",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"vid-7-gen-" + i}/1200/800`,
+      label: `AURA · 电影级预告 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "vid-8-gen",
+    category: "视频",
+    title: "ZENITH · 空间纪实",
+    description: "20-27 个高级组件 · 沉浸式视频体验，配备完整演示内容",
+    format: "增强型 视频",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"vid-8-gen-" + i}/1200/800`,
+      label: `ZENITH · 空间纪实 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "vid-9-gen",
+    category: "视频",
+    title: "LUMINA · 概念剪辑",
+    description: "20-30 个高级组件 · 沉浸式视频体验，配备完整演示内容",
+    format: "增强型 视频",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"vid-9-gen-" + i}/1200/800`,
+      label: `LUMINA · 概念剪辑 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "aud-1-gen",
+    category: "音频",
+    title: "LUMINA · 混音工程",
+    description: "20-25 个高级组件 · 沉浸式音频体验，配备完整演示内容",
+    format: "增强型 音频",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"aud-1-gen-" + i}/1200/800`,
+      label: `LUMINA · 混音工程 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "aud-2-gen",
+    category: "音频",
+    title: "HORIZON · 冥想音序",
+    description: "20-28 个高级组件 · 沉浸式音频体验，配备完整演示内容",
+    format: "增强型 音频",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"aud-2-gen-" + i}/1200/800`,
+      label: `HORIZON · 冥想音序 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "aud-3-gen",
+    category: "音频",
+    title: "QUANTA · 冥想音序",
+    description: "20-26 个高级组件 · 沉浸式音频体验，配备完整演示内容",
+    format: "增强型 音频",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"aud-3-gen-" + i}/1200/800`,
+      label: `QUANTA · 冥想音序 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "aud-4-gen",
+    category: "音频",
+    title: "AURA · 混音工程",
+    description: "20-28 个高级组件 · 沉浸式音频体验，配备完整演示内容",
+    format: "增强型 音频",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"aud-4-gen-" + i}/1200/800`,
+      label: `AURA · 混音工程 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "aud-5-gen",
+    category: "音频",
+    title: "VERTEX · 冥想音序",
+    description: "20-24 个高级组件 · 沉浸式音频体验，配备完整演示内容",
+    format: "增强型 音频",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"aud-5-gen-" + i}/1200/800`,
+      label: `VERTEX · 冥想音序 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "aud-6-gen",
+    category: "音频",
+    title: "ZENITH · 合成波形",
+    description: "20-28 个高级组件 · 沉浸式音频体验，配备完整演示内容",
+    format: "增强型 音频",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"aud-6-gen-" + i}/1200/800`,
+      label: `ZENITH · 合成波形 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "aud-7-gen",
+    category: "音频",
+    title: "ECHO · 冥想音序",
+    description: "20-21 个高级组件 · 沉浸式音频体验，配备完整演示内容",
+    format: "增强型 音频",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"aud-7-gen-" + i}/1200/800`,
+      label: `ECHO · 冥想音序 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "aud-8-gen",
+    category: "音频",
+    title: "LUMINA · 混音工程",
+    description: "20-28 个高级组件 · 沉浸式音频体验，配备完整演示内容",
+    format: "增强型 音频",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"aud-8-gen-" + i}/1200/800`,
+      label: `LUMINA · 混音工程 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "aud-9-gen",
+    category: "音频",
+    title: "VERTEX · 氛围音景",
+    description: "20-22 个高级组件 · 沉浸式音频体验，配备完整演示内容",
+    format: "增强型 音频",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"aud-9-gen-" + i}/1200/800`,
+      label: `VERTEX · 氛围音景 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "live-1-gen",
+    category: "实时产物",
+    title: "LUMINA · 动态大盘",
+    description: "20-30 个高级组件 · 沉浸式实时体验，配备完整演示内容",
+    format: "增强型 实时产物",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"live-1-gen-" + i}/1200/800`,
+      label: `LUMINA · 动态大盘 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "live-2-gen",
+    category: "实时产物",
+    title: "PULSE · 事件流",
+    description: "20-29 个高级组件 · 沉浸式实时体验，配备完整演示内容",
+    format: "增强型 实时产物",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"live-2-gen-" + i}/1200/800`,
+      label: `PULSE · 事件流 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "live-3-gen",
+    category: "实时产物",
+    title: "ZENITH · 事件流",
+    description: "20-23 个高级组件 · 沉浸式实时体验，配备完整演示内容",
+    format: "增强型 实时产物",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"live-3-gen-" + i}/1200/800`,
+      label: `ZENITH · 事件流 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "live-4-gen",
+    category: "实时产物",
+    title: "VERTEX · 服务追踪",
+    description: "20-28 个高级组件 · 沉浸式实时体验，配备完整演示内容",
+    format: "增强型 实时产物",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"live-4-gen-" + i}/1200/800`,
+      label: `VERTEX · 服务追踪 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "live-5-gen",
+    category: "实时产物",
+    title: "HORIZON · 仪表盘",
+    description: "20-30 个高级组件 · 沉浸式实时体验，配备完整演示内容",
+    format: "增强型 实时产物",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"live-5-gen-" + i}/1200/800`,
+      label: `HORIZON · 仪表盘 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "gl-1-gen",
+    category: "WebGL",
+    title: "HORIZON · 材质空间",
+    description: "20-27 个高级组件 · 沉浸式WebGL体验，配备完整演示内容",
+    format: "增强型 WebGL",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"gl-1-gen-" + i}/1200/800`,
+      label: `HORIZON · 材质空间 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "gl-2-gen",
+    category: "WebGL",
+    title: "ZENITH · 几何宇宙",
+    description: "20-20 个高级组件 · 沉浸式WebGL体验，配备完整演示内容",
+    format: "增强型 WebGL",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"gl-2-gen-" + i}/1200/800`,
+      label: `ZENITH · 几何宇宙 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "gl-3-gen",
+    category: "WebGL",
+    title: "ZENITH · 三维展馆",
+    description: "20-27 个高级组件 · 沉浸式WebGL体验，配备完整演示内容",
+    format: "增强型 WebGL",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"gl-3-gen-" + i}/1200/800`,
+      label: `ZENITH · 三维展馆 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "gl-4-gen",
+    category: "WebGL",
+    title: "ZENITH · 材质空间",
+    description: "20-24 个高级组件 · 沉浸式WebGL体验，配备完整演示内容",
+    format: "增强型 WebGL",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"gl-4-gen-" + i}/1200/800`,
+      label: `ZENITH · 材质空间 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "gl-5-gen",
+    category: "WebGL",
+    title: "VERTEX · 材质空间",
+    description: "20-21 个高级组件 · 沉浸式WebGL体验，配备完整演示内容",
+    format: "增强型 WebGL",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"gl-5-gen-" + i}/1200/800`,
+      label: `VERTEX · 材质空间 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "gl-6-gen",
+    category: "WebGL",
+    title: "PRISM · 三维展馆",
+    description: "20-20 个高级组件 · 沉浸式WebGL体验，配备完整演示内容",
+    format: "增强型 WebGL",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"gl-6-gen-" + i}/1200/800`,
+      label: `PRISM · 三维展馆 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "gl-7-gen",
+    category: "WebGL",
+    title: "NEXUS · 几何宇宙",
+    description: "20-30 个高级组件 · 沉浸式WebGL体验，配备完整演示内容",
+    format: "增强型 WebGL",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"gl-7-gen-" + i}/1200/800`,
+      label: `NEXUS · 几何宇宙 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "gl-8-gen",
+    category: "WebGL",
+    title: "LUMINA · 光学实验",
+    description: "20-20 个高级组件 · 沉浸式WebGL体验，配备完整演示内容",
+    format: "增强型 WebGL",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"gl-8-gen-" + i}/1200/800`,
+      label: `LUMINA · 光学实验 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "gl-9-gen",
+    category: "WebGL",
+    title: "NEXUS · 材质空间",
+    description: "20-29 个高级组件 · 沉浸式WebGL体验，配备完整演示内容",
+    format: "增强型 WebGL",
+    photos: Array.from({ length: 25 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"gl-9-gen-" + i}/1200/800`,
+      label: `NEXUS · 材质空间 - 页面 ${i + 1}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'Internal'
+    })),
+  },
+  {
+    id: "proto-1-gen",
+    category: "原型",
+    title: "Nexus Admin · SaaS 与管理后台",
+    description: "8 个核心交互页面 · 包含仪表盘、数据表格、权限管理等核心SaaS流程",
+    format: "商业交互原型",
+    photos: Array.from({ length: 8 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"proto-1-gen-" + i}/1200/800`,
+      label: `Nexus Admin - ${['首页/总览', '列表/发现', '详情/主工作区', '表单/设置', '弹窗/模态框', '状态/反馈', '空状态', '加载中'][i % 8]}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'SaaS 与管理后台'
+    })),
+  },
+  {
+    id: "proto-2-gen",
+    category: "原型",
+    title: "Pulse Analytics · SaaS 与管理后台",
+    description: "8 个核心交互页面 · 包含仪表盘、数据表格、权限管理等核心SaaS流程",
+    format: "商业交互原型",
+    photos: Array.from({ length: 8 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"proto-2-gen-" + i}/1200/800`,
+      label: `Pulse Analytics - ${['首页/总览', '列表/发现', '详情/主工作区', '表单/设置', '弹窗/模态框', '状态/反馈', '空状态', '加载中'][i % 8]}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'SaaS 与管理后台'
+    })),
+  },
+  {
+    id: "proto-3-gen",
+    category: "原型",
+    title: "CRM Pro · SaaS 与管理后台",
+    description: "8 个核心交互页面 · 包含仪表盘、数据表格、权限管理等核心SaaS流程",
+    format: "商业交互原型",
+    photos: Array.from({ length: 8 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"proto-3-gen-" + i}/1200/800`,
+      label: `CRM Pro - ${['首页/总览', '列表/发现', '详情/主工作区', '表单/设置', '弹窗/模态框', '状态/反馈', '空状态', '加载中'][i % 8]}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'SaaS 与管理后台'
+    })),
+  },
+  {
+    id: "proto-4-gen",
+    category: "原型",
+    title: "TeamSync · SaaS 与管理后台",
+    description: "8 个核心交互页面 · 包含仪表盘、数据表格、权限管理等核心SaaS流程",
+    format: "商业交互原型",
+    photos: Array.from({ length: 8 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"proto-4-gen-" + i}/1200/800`,
+      label: `TeamSync - ${['首页/总览', '列表/发现', '详情/主工作区', '表单/设置', '弹窗/模态框', '状态/反馈', '空状态', '加载中'][i % 8]}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'SaaS 与管理后台'
+    })),
+  },
+  {
+    id: "proto-5-gen",
+    category: "原型",
+    title: "CloudDash · SaaS 与管理后台",
+    description: "8 个核心交互页面 · 包含仪表盘、数据表格、权限管理等核心SaaS流程",
+    format: "商业交互原型",
+    photos: Array.from({ length: 8 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"proto-5-gen-" + i}/1200/800`,
+      label: `CloudDash - ${['首页/总览', '列表/发现', '详情/主工作区', '表单/设置', '弹窗/模态框', '状态/反馈', '空状态', '加载中'][i % 8]}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'SaaS 与管理后台'
+    })),
+  },
+  {
+    id: "proto-6-gen",
+    category: "原型",
+    title: "Wristy Store · 电商与零售",
+    description: "8 个核心交互页面 · 包含商品列表、详情页、购物车、结算与支付流程",
+    format: "商业交互原型",
+    photos: Array.from({ length: 8 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"proto-6-gen-" + i}/1200/800`,
+      label: `Wristy Store - ${['首页/总览', '列表/发现', '详情/主工作区', '表单/设置', '弹窗/模态框', '状态/反馈', '空状态', '加载中'][i % 8]}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: '电商与零售'
+    })),
+  },
+  {
+    id: "proto-7-gen",
+    category: "原型",
+    title: "Vogue Fashion · 电商与零售",
+    description: "8 个核心交互页面 · 包含商品列表、详情页、购物车、结算与支付流程",
+    format: "商业交互原型",
+    photos: Array.from({ length: 8 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"proto-7-gen-" + i}/1200/800`,
+      label: `Vogue Fashion - ${['首页/总览', '列表/发现', '详情/主工作区', '表单/设置', '弹窗/模态框', '状态/反馈', '空状态', '加载中'][i % 8]}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: '电商与零售'
+    })),
+  },
+  {
+    id: "proto-8-gen",
+    category: "原型",
+    title: "TechGadget · 电商与零售",
+    description: "8 个核心交互页面 · 包含商品列表、详情页、购物车、结算与支付流程",
+    format: "商业交互原型",
+    photos: Array.from({ length: 8 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"proto-8-gen-" + i}/1200/800`,
+      label: `TechGadget - ${['首页/总览', '列表/发现', '详情/主工作区', '表单/设置', '弹窗/模态框', '状态/反馈', '空状态', '加载中'][i % 8]}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: '电商与零售'
+    })),
+  },
+  {
+    id: "proto-9-gen",
+    category: "原型",
+    title: "FreshMart · 电商与零售",
+    description: "8 个核心交互页面 · 包含商品列表、详情页、购物车、结算与支付流程",
+    format: "商业交互原型",
+    photos: Array.from({ length: 8 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"proto-9-gen-" + i}/1200/800`,
+      label: `FreshMart - ${['首页/总览', '列表/发现', '详情/主工作区', '表单/设置', '弹窗/模态框', '状态/反馈', '空状态', '加载中'][i % 8]}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: '电商与零售'
+    })),
+  },
+  {
+    id: "proto-10-gen",
+    category: "原型",
+    title: "LuxeHome · 电商与零售",
+    description: "8 个核心交互页面 · 包含商品列表、详情页、购物车、结算与支付流程",
+    format: "商业交互原型",
+    photos: Array.from({ length: 8 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"proto-10-gen-" + i}/1200/800`,
+      label: `LuxeHome - ${['首页/总览', '列表/发现', '详情/主工作区', '表单/设置', '弹窗/模态框', '状态/反馈', '空状态', '加载中'][i % 8]}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: '电商与零售'
+    })),
+  },
+  {
+    id: "proto-11-gen",
+    category: "原型",
+    title: "Cascade Bank · 金融与数据",
+    description: "8 个核心交互页面 · 包含财务总览、交易记录、K线图表与转账流程",
+    format: "商业交互原型",
+    photos: Array.from({ length: 8 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"proto-11-gen-" + i}/1200/800`,
+      label: `Cascade Bank - ${['首页/总览', '列表/发现', '详情/主工作区', '表单/设置', '弹窗/模态框', '状态/反馈', '空状态', '加载中'][i % 8]}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: '金融与数据'
+    })),
+  },
+  {
+    id: "proto-12-gen",
+    category: "原型",
+    title: "CoinVest · 金融与数据",
+    description: "8 个核心交互页面 · 包含财务总览、交易记录、K线图表与转账流程",
+    format: "商业交互原型",
+    photos: Array.from({ length: 8 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"proto-12-gen-" + i}/1200/800`,
+      label: `CoinVest - ${['首页/总览', '列表/发现', '详情/主工作区', '表单/设置', '弹窗/模态框', '状态/反馈', '空状态', '加载中'][i % 8]}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: '金融与数据'
+    })),
+  },
+  {
+    id: "proto-13-gen",
+    category: "原型",
+    title: "BudgetTracker · 金融与数据",
+    description: "8 个核心交互页面 · 包含财务总览、交易记录、K线图表与转账流程",
+    format: "商业交互原型",
+    photos: Array.from({ length: 8 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"proto-13-gen-" + i}/1200/800`,
+      label: `BudgetTracker - ${['首页/总览', '列表/发现', '详情/主工作区', '表单/设置', '弹窗/模态框', '状态/反馈', '空状态', '加载中'][i % 8]}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: '金融与数据'
+    })),
+  },
+  {
+    id: "proto-14-gen",
+    category: "原型",
+    title: "WealthDash · 金融与数据",
+    description: "8 个核心交互页面 · 包含财务总览、交易记录、K线图表与转账流程",
+    format: "商业交互原型",
+    photos: Array.from({ length: 8 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"proto-14-gen-" + i}/1200/800`,
+      label: `WealthDash - ${['首页/总览', '列表/发现', '详情/主工作区', '表单/设置', '弹窗/模态框', '状态/反馈', '空状态', '加载中'][i % 8]}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: '金融与数据'
+    })),
+  },
+  {
+    id: "proto-15-gen",
+    category: "原型",
+    title: "CryptoEx · 金融与数据",
+    description: "8 个核心交互页面 · 包含财务总览、交易记录、K线图表与转账流程",
+    format: "商业交互原型",
+    photos: Array.from({ length: 8 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"proto-15-gen-" + i}/1200/800`,
+      label: `CryptoEx - ${['首页/总览', '列表/发现', '详情/主工作区', '表单/设置', '弹窗/模态框', '状态/反馈', '空状态', '加载中'][i % 8]}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: '金融与数据'
+    })),
+  },
+  {
+    id: "proto-16-gen",
+    category: "原型",
+    title: "NextDocs AI · AI 与效率",
+    description: "8 个核心交互页面 · 包含对话界面、提示词输入、结果生成与历史记录",
+    format: "商业交互原型",
+    photos: Array.from({ length: 8 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"proto-16-gen-" + i}/1200/800`,
+      label: `NextDocs AI - ${['首页/总览', '列表/发现', '详情/主工作区', '表单/设置', '弹窗/模态框', '状态/反馈', '空状态', '加载中'][i % 8]}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'AI 与效率'
+    })),
+  },
+  {
+    id: "proto-17-gen",
+    category: "原型",
+    title: "Emerald Agent · AI 与效率",
+    description: "8 个核心交互页面 · 包含对话界面、提示词输入、结果生成与历史记录",
+    format: "商业交互原型",
+    photos: Array.from({ length: 8 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"proto-17-gen-" + i}/1200/800`,
+      label: `Emerald Agent - ${['首页/总览', '列表/发现', '详情/主工作区', '表单/设置', '弹窗/模态框', '状态/反馈', '空状态', '加载中'][i % 8]}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'AI 与效率'
+    })),
+  },
+  {
+    id: "proto-18-gen",
+    category: "原型",
+    title: "ChatFlow · AI 与效率",
+    description: "8 个核心交互页面 · 包含对话界面、提示词输入、结果生成与历史记录",
+    format: "商业交互原型",
+    photos: Array.from({ length: 8 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"proto-18-gen-" + i}/1200/800`,
+      label: `ChatFlow - ${['首页/总览', '列表/发现', '详情/主工作区', '表单/设置', '弹窗/模态框', '状态/反馈', '空状态', '加载中'][i % 8]}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'AI 与效率'
+    })),
+  },
+  {
+    id: "proto-19-gen",
+    category: "原型",
+    title: "GenArt Studio · AI 与效率",
+    description: "8 个核心交互页面 · 包含对话界面、提示词输入、结果生成与历史记录",
+    format: "商业交互原型",
+    photos: Array.from({ length: 8 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"proto-19-gen-" + i}/1200/800`,
+      label: `GenArt Studio - ${['首页/总览', '列表/发现', '详情/主工作区', '表单/设置', '弹窗/模态框', '状态/反馈', '空状态', '加载中'][i % 8]}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'AI 与效率'
+    })),
+  },
+  {
+    id: "proto-20-gen",
+    category: "原型",
+    title: "CodeCopilot · AI 与效率",
+    description: "8 个核心交互页面 · 包含对话界面、提示词输入、结果生成与历史记录",
+    format: "商业交互原型",
+    photos: Array.from({ length: 8 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"proto-20-gen-" + i}/1200/800`,
+      label: `CodeCopilot - ${['首页/总览', '列表/发现', '详情/主工作区', '表单/设置', '弹窗/模态框', '状态/反馈', '空状态', '加载中'][i % 8]}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: 'AI 与效率'
+    })),
+  },
+  {
+    id: "proto-21-gen",
+    category: "原型",
+    title: "EduLearn · 教育与内容",
+    description: "8 个核心交互页面 · 包含课程大纲、视频播放、图文阅读与评论互动",
+    format: "商业交互原型",
+    photos: Array.from({ length: 8 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"proto-21-gen-" + i}/1200/800`,
+      label: `EduLearn - ${['首页/总览', '列表/发现', '详情/主工作区', '表单/设置', '弹窗/模态框', '状态/反馈', '空状态', '加载中'][i % 8]}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: '教育与内容'
+    })),
+  },
+  {
+    id: "proto-22-gen",
+    category: "原型",
+    title: "SkillShare · 教育与内容",
+    description: "8 个核心交互页面 · 包含课程大纲、视频播放、图文阅读与评论互动",
+    format: "商业交互原型",
+    photos: Array.from({ length: 8 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"proto-22-gen-" + i}/1200/800`,
+      label: `SkillShare - ${['首页/总览', '列表/发现', '详情/主工作区', '表单/设置', '弹窗/模态框', '状态/反馈', '空状态', '加载中'][i % 8]}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: '教育与内容'
+    })),
+  },
+  {
+    id: "proto-23-gen",
+    category: "原型",
+    title: "ReadSpace · 教育与内容",
+    description: "8 个核心交互页面 · 包含课程大纲、视频播放、图文阅读与评论互动",
+    format: "商业交互原型",
+    photos: Array.from({ length: 8 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"proto-23-gen-" + i}/1200/800`,
+      label: `ReadSpace - ${['首页/总览', '列表/发现', '详情/主工作区', '表单/设置', '弹窗/模态框', '状态/反馈', '空状态', '加载中'][i % 8]}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: '教育与内容'
+    })),
+  },
+  {
+    id: "proto-24-gen",
+    category: "原型",
+    title: "CreatorHub · 教育与内容",
+    description: "8 个核心交互页面 · 包含课程大纲、视频播放、图文阅读与评论互动",
+    format: "商业交互原型",
+    photos: Array.from({ length: 8 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"proto-24-gen-" + i}/1200/800`,
+      label: `CreatorHub - ${['首页/总览', '列表/发现', '详情/主工作区', '表单/设置', '弹窗/模态框', '状态/反馈', '空状态', '加载中'][i % 8]}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: '教育与内容'
+    })),
+  },
+  {
+    id: "proto-25-gen",
+    category: "原型",
+    title: "VideoCast · 教育与内容",
+    description: "8 个核心交互页面 · 包含课程大纲、视频播放、图文阅读与评论互动",
+    format: "商业交互原型",
+    photos: Array.from({ length: 8 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"proto-25-gen-" + i}/1200/800`,
+      label: `VideoCast - ${['首页/总览', '列表/发现', '详情/主工作区', '表单/设置', '弹窗/模态框', '状态/反馈', '空状态', '加载中'][i % 8]}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: '教育与内容'
+    })),
+  },
+  {
+    id: "proto-26-gen",
+    category: "原型",
+    title: "HotelBook · 生活与预订",
+    description: "8 个核心交互页面 · 包含搜索筛选、地图定位、日期选择与订单确认",
+    format: "商业交互原型",
+    photos: Array.from({ length: 8 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"proto-26-gen-" + i}/1200/800`,
+      label: `HotelBook - ${['首页/总览', '列表/发现', '详情/主工作区', '表单/设置', '弹窗/模态框', '状态/反馈', '空状态', '加载中'][i % 8]}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: '生活与预订'
+    })),
+  },
+  {
+    id: "proto-27-gen",
+    category: "原型",
+    title: "TableRes · 生活与预订",
+    description: "8 个核心交互页面 · 包含搜索筛选、地图定位、日期选择与订单确认",
+    format: "商业交互原型",
+    photos: Array.from({ length: 8 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"proto-27-gen-" + i}/1200/800`,
+      label: `TableRes - ${['首页/总览', '列表/发现', '详情/主工作区', '表单/设置', '弹窗/模态框', '状态/反馈', '空状态', '加载中'][i % 8]}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: '生活与预订'
+    })),
+  },
+  {
+    id: "proto-28-gen",
+    category: "原型",
+    title: "EventTix · 生活与预订",
+    description: "8 个核心交互页面 · 包含搜索筛选、地图定位、日期选择与订单确认",
+    format: "商业交互原型",
+    photos: Array.from({ length: 8 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"proto-28-gen-" + i}/1200/800`,
+      label: `EventTix - ${['首页/总览', '列表/发现', '详情/主工作区', '表单/设置', '弹窗/模态框', '状态/反馈', '空状态', '加载中'][i % 8]}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: '生活与预订'
+    })),
+  },
+  {
+    id: "proto-29-gen",
+    category: "原型",
+    title: "CleanHome · 生活与预订",
+    description: "8 个核心交互页面 · 包含搜索筛选、地图定位、日期选择与订单确认",
+    format: "商业交互原型",
+    photos: Array.from({ length: 8 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"proto-29-gen-" + i}/1200/800`,
+      label: `CleanHome - ${['首页/总览', '列表/发现', '详情/主工作区', '表单/设置', '弹窗/模态框', '状态/反馈', '空状态', '加载中'][i % 8]}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: '生活与预订'
+    })),
+  },
+  {
+    id: "proto-30-gen",
+    category: "原型",
+    title: "CityGuide · 生活与预订",
+    description: "8 个核心交互页面 · 包含搜索筛选、地图定位、日期选择与订单确认",
+    format: "商业交互原型",
+    photos: Array.from({ length: 8 }, (_, i) => ({
+      url: `https://picsum.photos/seed/${"proto-30-gen-" + i}/1200/800`,
+      label: `CityGuide - ${['首页/总览', '列表/发现', '详情/主工作区', '表单/设置', '弹窗/模态框', '状态/反馈', '空状态', '加载中'][i % 8]}`,
+      credit: 'DesignBuddy Studio',
+      license: 'PRO License',
+      source: '生活与预订'
+    })),
+  }
 ];
 export type DraftRecord = {
   id: string;
