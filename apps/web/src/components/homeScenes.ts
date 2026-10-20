@@ -199,10 +199,12 @@ export const scenesByMode: Record<HomeMode, HomeScene[]> = {
         "请为我的汇报编排清晰的故事线、逐页标题、重点内容与视觉建议。主题是：",
       ),
       id: "slides",
-      description: "逐页编辑、摄影裁切与真正的 PPTX 演示文稿",
+      workflowId: "slides-deck",
+      workflowName: "演示文稿直出",
+      description: "首页直出可编辑 PPTX · 逐页编辑、摄影裁切与可编辑图表",
       testHint:
-        "直接编辑页面，增删排序、换图、调整焦点、写备注并播放；导出可编辑 PPTX。",
-      tag: "逐页编辑 · 播放 · PPTX",
+        "在首页输入主题后直接生成 7 页演示文稿，可逐页编辑、换图、调焦点、写备注并播放；一键导出可编辑 PPTX。",
+      tag: "首页直出 · 逐页编辑 · PPTX",
     },
     {
       ...shortcut(

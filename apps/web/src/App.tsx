@@ -8,6 +8,8 @@ import { PromptInput } from "../../../frontend/workspace";
 import { navigateTo, normalizeAppPath } from "../../../frontend/workspace/workspaceRoutes";
 import { HomeIcon, type HomeIconName } from "./components/HomeIcon";
 import { modeLabels, quickActionCatalog } from "./components/homeScenes";
+import PptPage from "../../../frontend/workspace/pages/PptPage";
+import { isPptPrompt, buildDefaultSlides, createPptProject } from "../../../frontend/workspace/pptStore";
 import { HomeModeIcon } from "./components/HomeModeIcon";
 import { HomeAttachMenu } from "./components/HomeAttachMenu";
 import { HomeModelMenu, ModelGlyph } from "./components/HomeModelMenu";
@@ -459,10 +461,39 @@ export default function App() {
     return true;
   }
 
+  function startPptProject(rawPrompt: string) {
+    const promptText = rawPrompt.trim();
+    if (!promptText) {
+      setNotice("请输入演示主题，例如：Q4 季度复盘 · 运营策略");
+      return;
+    }
+    try {
+      setBusy(true);
+      const slides = buildDefaultSlides(promptText);
+      const project = createPptProject(promptText, undefined, slides);
+      setProjects(listProjects());
+      setNotice("");
+      setPrompt("");
+      expertMatch.reset();
+      setSelectedExpert("");
+      setSelectedSkill("");
+      setAttachments([]);
+      go(`/ppt/${encodeURIComponent(project.id)}`);
+    } catch (cause) {
+      setNotice(cause instanceof Error ? cause.message : "演示文稿创建失败");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   function startProject(initialPrompt = prompt.trim(), projectName?: string, workflow: "chat" | "skills" = "chat") {
     if (!initialPrompt.trim() && !projectName) {
       setNotice("先描述你的想法，或选择一个快捷场景开始。");
       return;
+    }
+    // 首页直出 PPT：只要输入包含 PPT/演示文稿/幻灯片/汇报等关键词，就直接生成可编辑 PPTX
+    if (isPptPrompt(initialPrompt)) {
+      return startPptProject(initialPrompt);
     }
     try {
       setBusy(true);
@@ -563,6 +594,13 @@ export default function App() {
     return <ProjectEditorPage projectId={projectId} />;
   }
   if (currentPath === "/projects") return <ProjectsPage />;
+  if (currentPath === "/ppt" || currentPath === "/ppt/") return <PptPage />;
+  const pptMatch = currentPath.match(/^\/ppt\/([^/]+)$/);
+  if (pptMatch) {
+    let pptId = pptMatch[1];
+    try { pptId = decodeURIComponent(pptId); } catch { /* pass raw */ }
+    return <PptPage pptId={pptId} />;
+  }
 
   return (
     <div className="workbuddy-app">
@@ -711,8 +749,13 @@ export default function App() {
                     />}
                   </div>
                   <button className="microphone-button" title="语音输入" aria-label="语音输入" onClick={() => setNotice("语音输入暂未接入，请直接在输入框中描述任务。")}><HomeIcon name="microphone" size={15} /></button>
-                  <button className="send-button" disabled={busy || !prompt.trim()} title={t("home.send")} aria-label={t("home.send")} onClick={() => startProject()}>
-                    {busy ? "…" : <HomeIcon name="send" size={19} />}
+                  {isPptPrompt(prompt) && (
+                    <span className="ppt-intent-badge" title="检测到演示文稿需求，将直接生成可编辑 PPTX">
+                      <HomeIcon name="slides" size={12} /> 将生成 PPT
+                    </span>
+                  )}
+                  <button className={isPptPrompt(prompt) ? "send-button is-ppt" : "send-button"} disabled={busy || !prompt.trim()} title={isPptPrompt(prompt) ? "一键生成 PPTX" : t("home.send")} aria-label={isPptPrompt(prompt) ? "生成演示文稿" : t("home.send")} onClick={() => startProject()}>
+                    {busy ? "…" : isPptPrompt(prompt) ? <>生成 PPT</> : <HomeIcon name="send" size={19} />}
                   </button>
                 </div>
               </div>
