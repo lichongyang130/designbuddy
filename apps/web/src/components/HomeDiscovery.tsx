@@ -15,6 +15,7 @@ import "./scene-demos/workspace.css";
 export type { HomeScene } from "./homeScenes";
 export { HomeShortcuts } from "./HomePromptBrowser";
 import { PromptRecommendations } from "./HomePromptBrowser";
+import { HomePluginPicks } from "./HomePluginPicks";
 import { categoriesForMode } from "./promptLibrary";
 
 /** A scaled rendering of the actual demo, not an unrelated decorative icon/image. */
@@ -46,12 +47,17 @@ export function HomeDiscovery({
   groupId,
   selectionVersion,
   prompt,
+  onUseSkill,
+  onNavigatePlugins,
 }: {
   mode: HomeMode;
   onSelect(scene: HomeShortcut): boolean;
   groupId: string;
   selectionVersion: number;
   prompt: string;
+  /** Fill the composer with a ready skill; omitted callers simply get no picks. */
+  onUseSkill?: (skillName: string) => void;
+  onNavigatePlugins?: () => void;
 }) {
   const categories = categoriesForMode(mode);
   const category = categories.find(c => c.groups.some(g => g.id === groupId)) || categories[0];
@@ -61,6 +67,9 @@ export function HomeDiscovery({
   return (
     <>
       <PromptRecommendations key={`${mode}:${group.id}:${selectionVersion}`} group={group} categoryTitle={category.title} prompt={prompt} onSelect={onSelect} />
+      {onUseSkill && onNavigatePlugins && (
+        <HomePluginPicks key={`picks:${mode}`} mode={mode} onUseSkill={onUseSkill} onNavigatePlugins={onNavigatePlugins} />
+      )}
       <details className="home-example-library">
         <summary>交互样例（可编辑）</summary>
         <section className="home27-scenes-gallery" aria-label="交互样例">

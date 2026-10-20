@@ -1,6 +1,6 @@
 import type { RuntimeSkill } from "../../../../shared/skillRuntime";
 import { HomeIcon } from "./HomeIcon";
-import { skillGate, useRuntimeSkill } from "./useRuntimeSkill";
+import { skillGate, useSkillSelection } from "./useRuntimeSkill";
 
 type Props = {
   /** The skill the composer is currently holding, as a skill id or a skill name. */
@@ -17,8 +17,25 @@ type Props = {
  * the same check blocks the send button before a task is created.
  */
 export function HomeSkillHint({ selected, attachmentCount, onUpload, onClear }: Props) {
-  const skill = useRuntimeSkill(selected);
-  if (!selected || !skill) return null;
+  const selection = useSkillSelection(selected);
+  if (!selected) return null;
+
+  // A catalogue plugin has no executor; say so instead of showing empty hints.
+  if (selection.unknown) {
+    return (
+      <div className="home-skill-hint is-blocked" role="note">
+        <div className="hsh-line">
+          <span className="hsh-tag">目录插件</span>
+          <strong>{selected}</strong>
+          <button type="button" className="hsh-clear" onClick={onClear} aria-label="清除已选技能">×</button>
+        </div>
+        <p className="hsh-note">这是能力规格，没有可执行执行器；发送会被拦下。请到插件页选择具体技能，或清除后按普通对话发送。</p>
+      </div>
+    );
+  }
+
+  const skill = selection.skill;
+  if (!skill) return null;
 
   const gate = skillGate(skill, attachmentCount);
   const blocked = skill.status !== "ready";

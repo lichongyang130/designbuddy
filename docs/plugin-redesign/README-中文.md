@@ -80,5 +80,11 @@
 | `/plugins`、`/library`、技能目录按需加载 | `apps/web/src/App.tsx`、`frontend/workspace/WorkspaceHub.tsx` |
 | ⌘K 联合搜索（场景/技能/插件/页面） | `apps/web/src/components/HomeCommandPalette.tsx` + `apps/web/src/command-palette.css` |
 | 发送前校验（缺文件/技能不可用直接拦住） | `apps/web/src/components/useRuntimeSkill.ts` |
+| 按模式的插件推荐位（只推有执行器的技能） | `apps/web/src/components/HomePluginPicks.tsx` |
+| 待配置 → 配置向导（密钥/连接器/输入框/服务端环境） | `apps/web/src/components/pluginRequirements.ts` |
+| 首页插件数据统一缓存与失效事件 | `apps/web/src/components/useHomePlugins.ts` |
+| 推荐位候选与排序（可单测） | `apps/web/src/components/pluginPicks.ts` |
 
-实测：首页新增请求 1.0 KB（无包时 90 B）；主包 3 426 → 2 398 kB（gzip 780 → 700 kB），480 项目录与技能声明都不再随首页加载。
+实测：首页新增请求 1.0 KB（无包时 90 B，且轨道与推荐位共用一次请求）；主包 3 426 → 2 410 kB（gzip 780 → 703 kB），480 项目录与技能声明都不再随首页加载。
+
+测试：`node --test server/api/plugin-registry.test.cjs`（10/10）、`pnpm test:home-plugins`（14/14：发送前校验、配置向导去向、推荐位技能真实性，无需浏览器）。

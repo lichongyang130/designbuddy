@@ -478,3 +478,236 @@
   font-size: 10.5px;
   line-height: 1.6;
 }
+
+/* Per-mode plugin picks, under the prompt recommendations. Two cards at most:
+   a recommendation that needs scrolling is not a recommendation. */
+.home27 .home27-content .home-plugin-picks {
+  margin: 18px 0 0;
+}
+
+.home-plugin-picks .hpp-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.home-plugin-picks .hpp-head h2 {
+  margin: 0;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #454b58;
+}
+
+.home-plugin-picks .hpp-head h2 span {
+  color: #a9aeb9;
+  font-weight: 400;
+}
+
+.home-plugin-picks .hpp-head button {
+  border: 0;
+  background: transparent;
+  color: #8b91a0;
+  font-size: 11px;
+}
+
+.home-plugin-picks .hpp-head button:hover {
+  color: #6753c6;
+}
+
+.home-plugin-picks .hpp-sub {
+  margin: 5px 0 9px;
+  color: #a9aeb9;
+  font-size: 10.5px;
+}
+
+.home-plugin-picks .hpp-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.home-plugin-picks .hpp-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 11px;
+  border: 1px solid #ececf2;
+  border-radius: 11px;
+  background: #fff;
+  text-align: left;
+  transition: border-color 0.16s ease, background 0.16s ease;
+}
+
+.home-plugin-picks .hpp-card:hover {
+  border-color: #d5d5e2;
+  background: #fbfbfd;
+}
+
+.home-plugin-picks .hpp-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: #f5f4fd;
+  color: #5b4bc4;
+}
+
+.home-plugin-picks .hpp-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.home-plugin-picks .hpp-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.home-plugin-picks .hpp-title strong {
+  font-size: 12.5px;
+  font-weight: 550;
+  color: #2b3038;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.home-plugin-picks .hpp-badge {
+  flex: none;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: #f2f2f7;
+  color: #9aa0ad;
+  font-size: 9.5px;
+  line-height: 1.7;
+}
+
+.home-plugin-picks .hpp-badge.is-on {
+  background: #f1effc;
+  color: #5b4bc4;
+}
+
+.home-plugin-picks .hpp-body small {
+  font-size: 10.5px;
+  color: #a4a9b4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.home-plugin-picks .hpp-arrow {
+  flex: none;
+  color: #cfd2db;
+  font-size: 11px;
+  opacity: 0;
+  transition: opacity 0.16s ease;
+}
+
+.home-plugin-picks .hpp-card:hover .hpp-arrow {
+  opacity: 1;
+  color: #6753c6;
+}
+
+/* Requirement rows inside the "待配置" dialog: one concrete next step each. */
+.hpr-need-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.hpr-need-go,
+.hpr-need-copy {
+  padding: 3px 9px;
+  border: 1px solid #e2e0f2;
+  border-radius: 999px;
+  background: #fff;
+  color: #5b4bc4;
+  font-size: 10.5px;
+}
+
+.hpr-need-go:hover,
+.hpr-need-copy:hover {
+  border-color: #cfcaee;
+  background: #f8f7fe;
+}
+
+.hpr-need-copy {
+  border-color: #e6e6ef;
+  color: #8b91a0;
+}
+
+.hpr-need-hint {
+  flex-basis: 100%;
+  color: #b3b7c2;
+  font-size: 10px;
+  line-height: 1.55;
+}
+
+@media (max-width: 860px) {
+  .home-plugin-picks .hpp-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.hpr-blocked-dialog .hpr-blocked-foot {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 18px;
+  border-top: 1px solid #f2f2f7;
+  background: #fcfcfd;
+}
+
+.hpr-blocked-foot > span {
+  color: #a9aeb9;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.hpr-blocked-foot > div {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 10px;
+}
+
+.hpr-blocked-foot button {
+  padding: 4px 10px;
+  border: 1px solid #e6e6ef;
+  border-radius: 999px;
+  background: #fff;
+  color: #5b4bc4;
+  font-size: 10.5px;
+  white-space: nowrap;
+}
+
+.hpr-blocked-foot button:hover {
+  border-color: #cfcaee;
+  background: #f8f7fe;
+}
+
+.hpr-blocked-foot .hpr-foot-recheck {
+  color: #8b91a0;
+}
+
+@media (max-width: 520px) {
+  .hpr-blocked-dialog .hpr-blocked-foot {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

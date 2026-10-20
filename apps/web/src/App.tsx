@@ -30,7 +30,8 @@ import InspirationPage from "./inspiration/InspirationPage";
 import { HomePluginsRail } from "./components/HomePluginsRail";
 import { HomeSkillHint } from "./components/HomeSkillHint";
 import { HomeCommandPalette } from "./components/HomeCommandPalette";
-import { skillGate, useRuntimeSkill } from "./components/useRuntimeSkill";
+import { requirementAction } from "./components/pluginRequirements";
+import { selectionGate, useSkillSelection } from "./components/useRuntimeSkill";
 import TaskConversationPage from "../../../frontend/workspace/pages/TaskConversationPage";
 import { saveTaskConversation, pendingTaskKey, type TaskConversation } from "../../../frontend/workspace/taskConversation";
 import { matchBinding, openSettings, setWakeLock, syncPreferencesFromAccount, useModelOptions, usePreferences, useSettingsWindow } from "../../../frontend/workspace/settingsStore";
@@ -119,7 +120,7 @@ export default function App() {
   const composerRef = useRef<HTMLElement>(null);
   const startProjectRef = useRef<() => void>(() => {});
   const expertMatch = useExpertMatch({ prompt, mode, model, permission, attachments, selectedExpert, enabled: currentPath === "/" });
-  const activeSkill = useRuntimeSkill(selectedSkill);
+  const skillSelection = useSkillSelection(selectedSkill);
 
   useEffect(() => {
     void syncPreferencesFromAccount();
@@ -521,7 +522,7 @@ export default function App() {
     }
     // A selected skill is a promise about what will run. Refuse to send when the
     // declaration already says it cannot run, instead of failing inside the task.
-    const gate = skillGate(activeSkill, attachments.length, { requireFile: workflow !== "skills" });
+    const gate = selectionGate(skillSelection, attachments.length, { requireFile: workflow !== "skills" });
     if (gate) {
       setNotice(`${gate.blocked}${gate.action?.kind === "clear" ? " 清除技能后可退回普通对话。" : ""}`);
       return;
@@ -849,11 +850,22 @@ export default function App() {
               setNotice(
                 pick.kind === "bundle"
                   ? `已载入插件包「${pick.name}」的首个技能「${skill}」，补充需求后发送即可执行。`
-                  : `已选择「${pick.name}」，补充需求后发送；执行前的权限会再次确认。`,
+                  : `「${pick.name}」是目录里的能力规格，已把名称填进输入框；它没有可执行执行器，要真正执行请到插件页选择具体技能。`,
               );
               requestAnimationFrame(() => composerRef.current?.querySelector("textarea")?.focus({ preventScroll: true }));
             }}
             onNavigatePlugins={() => go("/plugins")}
+            onConfigureRequirement={(requirement, _skillId, skillName) => {
+              const action = requirementAction(requirement.kind);
+              setNotice(`配置「${skillName}」：${requirement.label}。${action.hint}`);
+              if (action.kind === "settings-models") {
+                openSettings("models");
+              } else if (action.kind === "settings-apps") {
+                openSettings("apps");
+              } else if (action.kind === "composer") {
+                requestAnimationFrame(() => composerRef.current?.querySelector("textarea")?.focus({ preventScroll: true }));
+              }
+            }}
           />
 
           {notice && (
@@ -863,7 +875,19 @@ export default function App() {
               <button aria-label={t("home.notice.close")} onClick={() => setNotice("")}>×</button>
             </div>
           )}
-          <HomeDiscovery mode={mode} groupId={promptGroups[mode]} selectionVersion={promptGroupRevision} prompt={prompt} onSelect={selectHomeScene} />
+          <HomeDiscovery
+            mode={mode}
+            groupId={promptGroups[mode]}
+            selectionVersion={promptGroupRevision}
+            prompt={prompt}
+            onSelect={selectHomeScene}
+            onUseSkill={(skillName) => {
+              setSelectedSkill(skillName);
+              setNotice(`已选择技能「${skillName}」，补充需求或上传文件后发送；执行前的权限会再次确认。`);
+              requestAnimationFrame(() => composerRef.current?.querySelector("textarea")?.focus({ preventScroll: true }));
+            }}
+            onNavigatePlugins={() => go("/plugins")}
+          />
           <details className="home27-more-scenes">
             <summary>{t("home.moreScenes")} <span aria-hidden="true">＋</span></summary>
             <div>{quickActions.filter(action => action.mode === mode).map(action => <button key={action.title} onClick={() => selectHomeScene(action)}><HomeIcon name={action.icon} />{action.title}</button>)}</div>

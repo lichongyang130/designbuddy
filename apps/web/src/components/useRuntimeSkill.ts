@@ -36,6 +36,20 @@ export function matchRuntimeSkill(skills: RuntimeSkill[], selected: string): Run
   );
 }
 
+/** Every runtime skill, loaded once. Pass to children that rank or filter them. */
+export function useCatalogSkills(enabled = true): RuntimeSkill[] | null {
+  const [skills, setSkills] = useState<RuntimeSkill[] | null>(cache);
+  useEffect(() => {
+    if (!enabled || skills) return;
+    let cancelled = false;
+    void loadRuntimeSkills()
+      .then((list) => { if (!cancelled) setSkills(list); })
+      .catch(() => { /* stays null: callers render nothing rather than guess */ });
+    return () => { cancelled = true; };
+  }, [enabled, skills]);
+  return skills;
+}
+
 /** The declaration behind the selected skill, or undefined while it loads / when it is catalog-only. */
 export function useRuntimeSkill(selected: string): RuntimeSkill | undefined {
   const [skills, setSkills] = useState<RuntimeSkill[] | null>(cache);
@@ -52,6 +66,24 @@ export function useRuntimeSkill(selected: string): RuntimeSkill | undefined {
   return selected && skills ? matchRuntimeSkill(skills, selected) : undefined;
 }
 
+export type SkillSelection = {
+  /** The declaration, when the name resolves to a runtime skill. */
+  skill?: RuntimeSkill;
+  /**
+   * The catalogue is loaded, the person selected something, and nothing matches:
+   * this is a catalogue entry (a specification) with no executor behind it.
+   */
+  unknown: boolean;
+};
+
+/** Resolve what the composer holds, and say when it cannot run at all. */
+export function useSkillSelection(selected: string): SkillSelection {
+  const skills = useCatalogSkills(Boolean(selected.trim()));
+  if (!selected.trim() || !skills) return { unknown: false };
+  const skill = matchRuntimeSkill(skills, selected);
+  return { skill, unknown: !skill };
+}
+
 export type SkillGate = {
   /** Why the composer must not send yet, in the person's words. */
   blocked: string;
@@ -66,6 +98,25 @@ export type SkillGate = {
  * file-based skill cannot run without a file. Nothing here guesses about content
  * quality — the executor still validates the file itself.
  */
+/**
+ * The same gate, but for a selection that may not resolve to anything. A
+ * catalogue entry has no executor, so sending it as "使用技能：…" would be a
+ * claim the task page cannot honour.
+ */
+export function selectionGate(
+  selection: SkillSelection,
+  attachmentCount: number,
+  options: { requireFile?: boolean } = {},
+): SkillGate | null {
+  if (selection.unknown) {
+    return {
+      blocked: "这个插件只是目录里的能力规格，没有可执行的执行器；请到插件页选择具体技能，或清除后按普通对话发送。",
+      action: { label: "清除这个技能", kind: "clear" },
+    };
+  }
+  return skillGate(selection.skill, attachmentCount, options);
+}
+
 export function skillGate(
   skill: RuntimeSkill | undefined,
   attachmentCount: number,

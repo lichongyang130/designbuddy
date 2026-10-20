@@ -41,13 +41,18 @@ export type PluginEvent = {
   createdAt: number;
 };
 
+/** Key + event shared with the homepage plugin views (rail, per-mode picks, ⌘K). */
+export const HOME_PLUGINS_CACHE_KEY = "designbuddy.home.plugins.v1";
+export const HOME_PLUGINS_CHANGED = "designbuddy:plugins-changed";
+
 /**
- * The homepage rail caches the enabled bundles for a minute so re-entering home
- * is free. Any lifecycle change has to drop that cache, otherwise the rail
+ * The homepage caches the enabled bundles for a minute so re-entering home is
+ * free. Any lifecycle change has to drop that cache, otherwise the homepage
  * shows a bundle the person just disabled.
  */
 function invalidateHomeRailCache() {
-  try { sessionStorage.removeItem("designbuddy.home.plugins.v1"); } catch { /* storage disabled */ }
+  try { sessionStorage.removeItem(HOME_PLUGINS_CACHE_KEY); } catch { /* storage disabled */ }
+  if (typeof window !== "undefined") window.dispatchEvent(new Event(HOME_PLUGINS_CHANGED));
 }
 
 export async function fetchPluginBundles(): Promise<{ bundles: PluginBundle[]; installed: InstalledPlugin[]; apiVersion: string }> {

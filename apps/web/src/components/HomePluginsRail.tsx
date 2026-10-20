@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import { fetchHomePlugins, type HomePluginBundle } from "../../../../frontend/workspace/api/plugins";
 import { useWorkspaceStore } from "../../../../frontend/workspace/store";
 import { HomeIcon } from "./HomeIcon";
+import { invalidateHomePlugins, useHomePlugins } from "./useHomePlugins";
+import { requirementAction } from "./pluginRequirements";
 
 type CatalogItem = { id: string; name: string; category: string; description: string };
 
@@ -15,65 +16,68 @@ export type HomePluginPick = {
   hint: string;
 };
 
+export type PluginRequirement = { kind: string; label: string; detail: string };
+
 type Props = {
   onPick: (pick: HomePluginPick) => void;
   onNavigatePlugins: () => void;
+  /**
+   * Take the person to where a blocked skill's requirement is actually fixed.
+   * The rail closes its dialog first; the homepage decides the destination.
+   */
+  onConfigureRequirement?: (requirement: PluginRequirement, skillId: string, skillName: string) => void;
 };
 
 /** Curated catalog picks shown when the user has nothing installed or saved yet. */
 const FEATURED_PLUGIN_IDS = ["plugin-01", "plugin-02", "plugin-03", "plugin-05", "plugin-15", "plugin-18"];
 const MAX_RAIL = 10;
-const CACHE_KEY = "designbuddy.home.plugins.v1";
-const CACHE_TTL = 60_000;
 
-type CacheBody = { at: number; bundles: HomePluginBundle[]; totals: { enabled: number; readySkills: number; blockedSkills: number } };
-
-function readCache(): CacheBody | null {
+/**
+ * Copy without assuming `navigator.clipboard` exists: the preview and any plain
+ * http origin do not expose it, and a config hint is exactly what people paste
+ * into a deployment ticket.
+ */
+async function copyText(text: string): Promise<boolean> {
   try {
-    const raw = sessionStorage.getItem(CACHE_KEY);
-    if (!raw) return null;
-    const parsed = JSON.parse(raw) as CacheBody;
-    if (!parsed || typeof parsed.at !== "number" || Date.now() - parsed.at > CACHE_TTL) return null;
-    if (!Array.isArray(parsed.bundles)) return null;
-    if (!parsed.totals) return null;
-    return parsed;
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+  } catch { /* fall through to the textarea path */ }
+  try {
+    const area = document.createElement("textarea");
+    area.value = text;
+    area.setAttribute("readonly", "");
+    area.style.position = "fixed";
+    area.style.opacity = "0";
+    document.body.appendChild(area);
+    area.select();
+    const ok = document.execCommand("copy");
+    document.body.removeChild(area);
+    return ok;
   } catch {
-    return null;
+    return false;
   }
 }
 
-function writeCache(body: CacheBody) {
-  try { sessionStorage.setItem(CACHE_KEY, JSON.stringify(body)); } catch { /* private mode */ }
-}
-
-export function HomePluginsRail({ onPick, onNavigatePlugins }: Props) {
+export function HomePluginsRail({ onPick, onNavigatePlugins, onConfigureRequirement }: Props) {
   const assets = useWorkspaceStore((state) => state.assets);
-  const [bundles, setBundles] = useState<HomePluginBundle[]>([]);
-  const [totals, setTotals] = useState<{ enabled: number; readySkills: number; blockedSkills: number }>({ enabled: 0, readySkills: 0, blockedSkills: 0 });
+  const { bundles, totals, loading } = useHomePlugins();
   const [catalog, setCatalog] = useState<CatalogItem[]>([]);
-  const [loading, setLoading] = useState(true);
   const [blockedOpen, setBlockedOpen] = useState(false);
+  const [copied, setCopied] = useState("");
 
-  // Bundles: render from cache instantly, then revalidate once in the background.
   useEffect(() => {
-    let cancelled = false;
-    const cached = readCache();
-    if (cached) {
-      setBundles(cached.bundles);
-      setTotals(cached.totals);
-      setLoading(false);
-    }
-    fetchHomePlugins()
-      .then((payload) => {
-        if (cancelled) return;
-        setBundles(payload.bundles);
-        setTotals(payload.totals);
-        writeCache({ at: Date.now(), bundles: payload.bundles, totals: payload.totals });
-      })
-      .catch(() => { /* offline: keep the cache, or fall back to curated picks */ })
-      .finally(() => { if (!cancelled) setLoading(false); });
-    return () => { cancelled = true; };
-  }, []);
+    if (!blockedOpen) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setBlockedOpen(false);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [blockedOpen]);
 
   const savedIds = useMemo(() => {
     const ids: string[] = [];
@@ -241,17 +245,57 @@ export function HomePluginsRail({ onPick, onNavigatePlugins }: Props) {
                   {skill.unavailableReason && <p className="hpr-blocked-reason">{skill.unavailableReason}</p>}
                   {skill.requires.length > 0 && (
                     <ul className="hpr-blocked-needs">
-                      {skill.requires.map((requirement) => (
-                        <li key={requirement.label}>
-                          <span>{requirement.label}</span>
-                          <small>{requirement.detail}</small>
-                        </li>
-                      ))}
+                      {skill.requires.map((requirement) => {
+                        const action = requirementAction(requirement.kind);
+                        return (
+                          <li key={requirement.label}>
+                            <span>{requirement.label}</span>
+                            <small>{requirement.detail}</small>
+                            <div className="hpr-need-actions">
+                              {action.kind !== "none" && (
+                                <button
+                                  type="button"
+                                  className="hpr-need-go"
+                                  title={action.hint}
+                                  onClick={() => {
+                                    setBlockedOpen(false);
+                                    onConfigureRequirement?.(requirement, skill.id, skill.name);
+                                  }}
+                                >
+                                  {action.label} <span aria-hidden="true">→</span>
+                                </button>
+                              )}
+                              <button
+                                type="button"
+                                className="hpr-need-copy"
+                                onClick={() => {
+                                  const text = `${skill.name} · ${requirement.label}：${requirement.detail}`;
+                                  void copyText(text).then((ok) => setCopied(ok ? requirement.label : `${requirement.label}:失败`));
+                                }}
+                              >
+                                {copied === `${requirement.label}:失败` ? "复制失败，请手动选中" : copied === requirement.label ? "已复制" : "复制说明"}
+                              </button>
+                              <small className="hpr-need-hint">{action.hint}</small>
+                            </div>
+                          </li>
+                        );
+                      })}
                     </ul>
                   )}
                 </li>
               ))}
             </ul>
+            <footer className="hpr-blocked-foot">
+              <span>改完配置不用重启服务；重新检测会再问一次服务端哪些技能已就绪。</span>
+              <div>
+                <button type="button" className="hpr-foot-recheck" onClick={() => { setBlockedOpen(false); invalidateHomePlugins(); }}>
+                  重新检测
+                </button>
+                <button type="button" onClick={() => { setBlockedOpen(false); onNavigatePlugins(); }}>
+                  在插件页查看 <span aria-hidden="true">→</span>
+                </button>
+              </div>
+            </footer>
           </div>
         </div>
       )}
