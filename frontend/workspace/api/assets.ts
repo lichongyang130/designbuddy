@@ -106,6 +106,18 @@ export async function fetchAssetText(id: string): Promise<string> {
   return typeof body.text === "string" ? body.text : "";
 }
 
+/** The raw bytes of a file (images etc) as base64 data URL helper. */
+export async function fetchAssetRaw(id: string): Promise<{ mime: string; dataBase64: string; name: string }> {
+  const body = await readJSON<{ mime: string; dataBase64: string; name: string }>(
+    await apiFetch(`/assets/${encodeURIComponent(id)}/raw`, { headers: { Accept: "application/json" } }),
+  );
+  return { mime: body.mime || "application/octet-stream", dataBase64: body.dataBase64 || "", name: body.name || id };
+}
+
+export function assetToDataUrl(mime: string, base64: string): string {
+  return `data:${mime};base64,${base64}`;
+}
+
 /** The change history of one file. */
 export async function listAssetEvents(id: string): Promise<AssetEvent[]> {
   const body = await readJSON<{ events?: AssetEvent[] }>(

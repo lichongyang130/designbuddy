@@ -26,9 +26,17 @@ export default function PptOutlinePicker({ outlineId }: Props) {
   const [error, setError] = useState<string>("");
   const [projectCount, setProjectCount] = useState(() => listProjects().length);
   const [workspaceCount, setWorkspaceCount] = useState(0);
+  const [workspaces, setWorkspaces] = useState<Array<{ id: string; name: string }>>([]);
+  const [selectedWorkspace, setSelectedWorkspace] = useState<string>("");
 
   useEffect(() => {
-    void listWorkspaces().then((ws) => setWorkspaceCount(ws.length)).catch(() => 0);
+    void listWorkspaces()
+      .then((ws) => {
+        setWorkspaceCount(ws.length);
+        setWorkspaces(ws.map((w) => ({ id: w.id, name: w.name })));
+        if (ws[0]) setSelectedWorkspace(ws[0].id);
+      })
+      .catch(() => 0);
   }, []);
 
   useEffect(() => {
@@ -133,20 +141,14 @@ export default function PptOutlinePicker({ outlineId }: Props) {
     const chosen = candidates.find((c) => c.id === selectedId);
     if (!chosen || !prompt) return;
     const slides = buildSlidesFromCandidate(chosen);
-    const project = createPptProject(prompt, `${extractTitle(prompt)} · ${chosen.frameworkName}`, slides);
-    // attach framework meta via extra field in localStorage project (we extend with write)
-    try {
-      const raw = localStorage.getItem("designbuddy.ppt.v1");
-      if (raw) {
-        const list = JSON.parse(raw) as Array<Record<string, unknown>>;
-        const idx = list.findIndex((p) => p.id === project.id);
-        if (idx >= 0) {
-          (list[idx] as Record<string, unknown>).frameworkId = chosen.frameworkId;
-          (list[idx] as Record<string, unknown>).frameworkName = chosen.frameworkName;
-          localStorage.setItem("designbuddy.ppt.v1", JSON.stringify(list));
-        }
-      }
-    } catch { /* ignore */ }
+    const ws = workspaces.find((w) => w.id === selectedWorkspace);
+    const project = createPptProject(
+      prompt,
+      `${extractTitle(prompt)} · ${chosen.frameworkName}`,
+      slides,
+      ws ? { id: ws.id, name: ws.name } : undefined,
+      { id: chosen.frameworkId, name: chosen.frameworkName },
+    );
     sessionStorage.removeItem(`designbuddy.ppt.outline.${outlineId}`);
     navigateTo(`/ppt/${encodeURIComponent(project.id)}`);
   }
@@ -230,6 +232,18 @@ export default function PptOutlinePicker({ outlineId }: Props) {
             </div>
           </div>
           <div className="ppt-outline-header-actions">
+            {workspaces.length > 0 && (
+              <label className="ppt-ws-select">
+                <HomeIcon name="folder" size={12} />
+                <select value={selectedWorkspace} onChange={(e) => setSelectedWorkspace(e.target.value)} aria-label="选择工作空间">
+                  {workspaces.map((ws) => (
+                    <option key={ws.id} value={ws.id}>
+                      {ws.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
             <button className="ppt-ghost" onClick={() => generateCandidates(prompt)}>换一批 🔀</button>
             <button className="ppt-primary" disabled={!selectedId} onClick={handleConfirm}>
               确认并生成演示文稿 →

@@ -1,17 +1,43 @@
 import type { Slide } from "../../apps/web/src/components/scene-demos/Slides";
 
+export type PptSlideSource = { label: string; url: string };
+export type PptSlide = Slide & {
+  sources?: PptSlideSource[];
+  dataAssetId?: string;
+  metric?: string;
+  hint?: string;
+};
+
 export interface PptProject {
   id: string;
   title: string;
   prompt: string;
-  slides: Slide[];
+  slides: PptSlide[];
   frameworkId?: string;
   frameworkName?: string;
+  workspaceId?: string;
+  workspaceName?: string;
   createdAt: string;
   updatedAt: string;
 }
 
 const PPT_KEY = "designbuddy.ppt.v1";
+const PPT_VERSIONS_KEY = "designbuddy.ppt.versions.v1";
+
+function normalizeProject(p: PptProject): PptProject {
+  // migrate legacy string[] sources to {label,url} objects
+  if (Array.isArray(p.slides)) {
+    for (const s of p.slides as unknown as Record<string, unknown>[]) {
+      if (Array.isArray(s.sources)) {
+        const first = (s.sources as unknown[])[0];
+        if (typeof first === "string") {
+          s.sources = (s.sources as unknown as string[]).map((u) => ({ label: u.slice(0, 40) || "引用", url: u }));
+        }
+      }
+    }
+  }
+  return p;
+}
 
 function readAll(): PptProject[] {
   try {
@@ -19,12 +45,12 @@ function readAll(): PptProject[] {
     if (!raw) return [];
     const parsed = JSON.parse(raw);
     if (!Array.isArray(parsed)) return [];
-    return parsed.filter(
+    return (parsed.filter(
       (p: unknown) =>
         p &&
         typeof (p as PptProject).id === "string" &&
         Array.isArray((p as PptProject).slides),
-    ) as PptProject[];
+    ) as PptProject[]).map(normalizeProject);
   } catch {
     return [];
   }
@@ -42,13 +68,23 @@ export function getPptProject(id: string): PptProject | undefined {
 export function savePptProject(project: PptProject) {
   const all = readAll();
   const idx = all.findIndex((p) => p.id === project.id);
-  const next = { ...project, updatedAt: new Date().toISOString() };
+  const next = { ...project, updatedAt: new Date().toISOString() } as PptProject;
   if (idx >= 0) all[idx] = next;
   else all.unshift(next);
   writeAll(all);
+  // auto snapshot version on save (debounced via caller, but also keep last 20)
+  try {
+    savePptVersionSnapshot(project.id, project.slides, project.title, "自动保存");
+  } catch { /* ignore */ }
   return next;
 }
-export function createPptProject(prompt: string, title?: string, slides?: Slide[]): PptProject {
+export function createPptProject(
+  prompt: string,
+  title?: string,
+  slides?: PptSlide[],
+  workspace?: { id: string; name: string },
+  framework?: { id: string; name: string },
+): PptProject {
   const now = new Date().toISOString();
   const cleanPrompt = prompt.trim();
   const derivedTitle = (title || cleanPrompt.slice(0, 36) || "未命名演示文稿").replace(/[\r\n\t]+/g, " ");
@@ -56,21 +92,111 @@ export function createPptProject(prompt: string, title?: string, slides?: Slide[
     id: crypto.randomUUID(),
     title: derivedTitle.length > 48 ? derivedTitle.slice(0, 48) + "…" : derivedTitle,
     prompt: cleanPrompt,
-    slides: slides || [],
+    slides: (slides || []) as PptSlide[],
+    frameworkId: framework?.id,
+    frameworkName: framework?.name,
+    workspaceId: workspace?.id,
+    workspaceName: workspace?.name,
     createdAt: now,
     updatedAt: now,
   };
   writeAll([project, ...readAll()]);
+  if (slides && slides.length) {
+    savePptVersionSnapshot(project.id, project.slides, project.title, "创建");
+  }
   return project;
 }
 export function deletePptProject(id: string) {
   writeAll(readAll().filter((p) => p.id !== id));
+  // clean versions
+  try {
+    const map = readVersionsMap();
+    delete map[id];
+    localStorage.setItem(PPT_VERSIONS_KEY, JSON.stringify(map));
+  } catch { /* ignore */ }
 }
 
+export function updatePptProjectWorkspace(id: string, workspace: { id: string; name: string } | null): PptProject | undefined {
+  const p = getPptProject(id);
+  if (!p) return;
+  const next = savePptProject({
+    ...p,
+    workspaceId: workspace?.id,
+    workspaceName: workspace?.name,
+  });
+  return next;
+}
+
+// --- versions (local, like ProjectEditor but for PPT) ---
+export type PptVersion = {
+  id: string;
+  pptId: string;
+  title: string;
+  slides: PptSlide[];
+  label: string;
+  createdAt: number;
+};
+
+function readVersionsMap(): Record<string, PptVersion[]> {
+  try {
+    const raw = localStorage.getItem(PPT_VERSIONS_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed !== "object") return {};
+    const out: Record<string, PptVersion[]> = {};
+    for (const [k, v] of Object.entries(parsed as Record<string, unknown>)) {
+      if (Array.isArray(v)) out[k] = v as PptVersion[];
+    }
+    return out;
+  } catch {
+    return {};
+  }
+}
+function writeVersionsMap(map: Record<string, PptVersion[]>) {
+  localStorage.setItem(PPT_VERSIONS_KEY, JSON.stringify(map));
+}
+export function savePptVersionSnapshot(pptId: string, slides: PptSlide[], title: string, label = "手动保存") {
+  const map = readVersionsMap();
+  const list = map[pptId] || [];
+  // avoid duplicate if slides identical to last
+  const last = list[0];
+  const hash = JSON.stringify(slides).slice(0, 2000);
+  const lastHash = last ? JSON.stringify(last.slides).slice(0, 2000) : "";
+  if (last && hash === lastHash && label === "自动保存") return;
+  const version: PptVersion = {
+    id: crypto.randomUUID(),
+    pptId,
+    title,
+    slides: JSON.parse(JSON.stringify(slides)) as PptSlide[],
+    label,
+    createdAt: Date.now(),
+  };
+  const next = [version, ...list].slice(0, 20);
+  map[pptId] = next;
+  writeVersionsMap(map);
+  return version;
+}
+export function listPptVersions(pptId: string): PptVersion[] {
+  return readVersionsMap()[pptId] || [];
+}
+export function restorePptVersion(pptId: string, versionId: string): PptProject | undefined {
+  const map = readVersionsMap();
+  const list = map[pptId] || [];
+  const v = list.find((x) => x.id === versionId);
+  if (!v) return;
+  const p = getPptProject(pptId);
+  if (!p) return;
+  const restored: PptProject = { ...p, slides: JSON.parse(JSON.stringify(v.slides)) as PptSlide[], title: v.title, updatedAt: new Date().toISOString() };
+  // save as new version
+  savePptProject(restored);
+  savePptVersionSnapshot(pptId, restored.slides, restored.title, `恢复 ${v.label}`);
+  return restored;
+}
+
+// --- prompt helpers ---
 export function isPptPrompt(text: string): boolean {
   const t = text.trim();
   if (!t) return false;
-  // 快捷提示本身就含这些
   const pptKeywords = /(ppt|pptx|幻灯片|演示文稿|汇报|路演|提案|介绍页|总结页|演示|presentation|slides|keynote)/i;
   if (pptKeywords.test(t)) return true;
   if (t.startsWith("请为我的汇报") || t.startsWith("请为我的汇报主题") || t.includes("编排演示文稿") || t.includes("逐页内容和排版")) return true;
@@ -78,7 +204,6 @@ export function isPptPrompt(text: string): boolean {
 }
 
 export function extractTopic(prompt: string): string {
-  // 去掉快捷语前缀，提取主题
   let topic = prompt
     .replace(/^.*?主题是[：:]\s*/s, "")
     .replace(/^.*?编排演示文稿.*?主题是[：:]\s*/s, "")
@@ -92,21 +217,20 @@ export function extractTopic(prompt: string): string {
   return topic || "精彩汇报";
 }
 
-export function buildDefaultSlides(prompt: string, artImage?: string): Slide[] {
+export function buildDefaultSlides(prompt: string, artImage?: string): PptSlide[] {
   const topic = extractTopic(prompt);
   const clean = prompt.replace(/[\r\n]+/g, " ").slice(0, 180);
   const today = new Date().toLocaleDateString("zh-CN", { year: "numeric", month: "long", day: "numeric" });
   const topicShort = topic.slice(0, 22);
-  // 使用与 seedSlides 一致的 Slide 结构，默认给一张可直接导出的小图（浅色占位），避免 exportPptx 加载失败
   const placeholderImage =
     artImage ||
     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==";
-  const mk = (overrides: Partial<Slide> & { id: string; title: string; eyebrow: string; body: string; layout: string }): Slide => ({
+  const mk = (overrides: Partial<PptSlide> & { id: string; title: string; eyebrow: string; body: string; layout: string }): PptSlide => ({
     image: placeholderImage,
     focus: 50,
     notes: "",
     ...overrides,
-  } as Slide);
+  } as PptSlide);
 
   return [
     mk({
@@ -166,4 +290,15 @@ export function buildDefaultSlides(prompt: string, artImage?: string): Slide[] {
       notes: `致谢页：留下日期 ${today} 与联系方式，方便会后跟进。`,
     }),
   ];
+}
+
+// Share helper: encode PPT as URL fragment (like DesignProject share)
+export function encodePptShare(project: PptProject): string {
+  try {
+    const payload = JSON.stringify({ title: project.title, prompt: project.prompt, slides: project.slides, framework: project.frameworkId, workspace: project.workspaceId });
+    const b64 = btoa(unescape(encodeURIComponent(payload)));
+    return `${window.location.origin}${window.location.pathname}#ppt-share=${encodeURIComponent(b64)}`;
+  } catch {
+    return window.location.href;
+  }
 }

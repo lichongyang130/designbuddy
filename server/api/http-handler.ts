@@ -802,7 +802,7 @@ export function createApiHandler(options: ApiHandlerOptions): (request: Request)
         return json({ error: "Method not allowed." }, 405, options.corsOrigin);
       }
 
-      const assetPath = url.pathname.match(/^\/api\/assets\/([A-Za-z0-9_-]{4,64})(?:\/(content|events))?$/);
+      const assetPath = url.pathname.match(/^\/api\/assets\/([A-Za-z0-9_-]{4,64})(?:\/(content|events|raw))?$/);
       if (assetPath && options.assets) {
         const asset = options.assets.get(assetPath[1]);
         if (assetPath[2] === "events" && request.method === "GET") {
@@ -817,6 +817,13 @@ export function createApiHandler(options: ApiHandlerOptions): (request: Request)
         if (assetPath[2] === "content" && request.method === "GET") {
           if (!asset.extracted) return json({ error: "这个文件不是文本，服务端没有解析它。" }, 415, options.corsOrigin);
           return json({ assetId: asset.id, name: asset.name, text: asset.excerpt }, 200, options.corsOrigin);
+        }
+        if (assetPath[2] === "raw" && request.method === "GET") {
+          const bytes = options.assets.read(asset);
+          if (!bytes) return json({ error: "素材文件已丢失。" }, 404, options.corsOrigin);
+          // Return as base64 for browser; images and other binaries need raw bytes
+          const base64 = Buffer.from(bytes).toString("base64");
+          return json({ assetId: asset.id, name: asset.name, mime: asset.mime, dataBase64: base64, size: bytes.byteLength }, 200, options.corsOrigin);
         }
         if (!assetPath[2] && request.method === "PATCH") {
           if (asset.ownerId !== principal.id) return json({ error: "只有素材的所有者可以修改可见范围。" }, 403, options.corsOrigin);
