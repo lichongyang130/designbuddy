@@ -57,6 +57,24 @@ test("a card opens a detail drawer and closing returns to the grid", async ({ pa
   await expect(drawer).toHaveCount(0);
 });
 
+test("a brand can be imported from the design-system catalog", async ({ page }) => {
+  await page.goto("/themes");
+  await page.getByRole("button", { name: "导入品牌" }).click();
+
+  const dialog = page.getByRole("dialog", { name: "导入品牌" });
+  await expect(dialog).toBeVisible();
+  await dialog.getByRole("textbox", { name: "搜索品牌" }).fill("Linear");
+  const firstBrand = dialog.getByRole("button", { name: /Linear/ }).first();
+  await expect(firstBrand).toBeVisible();
+
+  // Importing opens the editor with that brand's colours already applied.
+  await firstBrand.click();
+  const editor = page.getByRole("dialog", { name: "编辑主题" });
+  await expect(editor).toBeVisible();
+  await expect(editor.getByRole("textbox").first()).toHaveValue(/Linear/);
+  await editor.getByRole("button", { name: "取消", exact: true }).click();
+});
+
 test("the editor refuses an unreadable theme instead of saving it quietly", async ({ page }) => {
   await page.goto("/themes");
   await page.getByRole("button", { name: /新建主题/ }).click();

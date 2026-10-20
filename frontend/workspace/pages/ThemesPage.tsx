@@ -9,10 +9,13 @@ import { allThemes, blankTheme, duplicateTheme, findTheme, useThemeStore } from 
 import {
   THEME_FONTS,
   contrastRatio,
+  newThemeId,
+  themeFromDesignSystem,
   validateDeckTheme,
   type DeckPalette,
   type DeckTheme,
 } from "../../../shared/deckTheme";
+import { designSystems } from "../utils/designSystem";
 import "./themes.css";
 
 const PALETTE_FIELDS: { key: keyof DeckPalette; label: string }[] = [
@@ -42,6 +45,8 @@ export default function ThemesPage() {
   const [tab, setTab] = useState<ThemePreviewVariant>("cover");
   const [editing, setEditing] = useState<DeckTheme | null>(null);
   const [saveErrors, setSaveErrors] = useState<string[]>([]);
+  const [brandOpen, setBrandOpen] = useState(false);
+  const [brandQuery, setBrandQuery] = useState("");
   const [decks, setDecks] = useState<PptProject[]>([]);
 
   useEffect(() => {
@@ -94,6 +99,37 @@ export default function ThemesPage() {
     }
   }
 
+  // One row per design system: the palette a brand import would become.
+  const brandSystems = useMemo(() => {
+    const needle = brandQuery.trim().toLowerCase();
+    return designSystems
+      .map((system) => ({
+        id: system.id,
+        name: system.name,
+        category: system.category,
+        primary: system.primary,
+        color: system.tokens.color as Record<string, string | undefined>,
+      }))
+      .filter((system) =>
+        !needle || `${system.name} ${system.category}`.toLowerCase().includes(needle),
+      )
+      .slice(0, 60);
+  }, [brandQuery]);
+
+  const importBrand = (system: (typeof brandSystems)[number]) => {
+    const derived = themeFromDesignSystem({
+      id: system.id,
+      name: system.name,
+      primary: system.primary,
+      tokens: { color: system.color },
+    });
+    const theme = { ...derived, id: newThemeId(), kind: "custom" as const, tags: ["导入", system.category].slice(0, 2) };
+    setBrandOpen(false);
+    setEditing(theme);
+    setSaveErrors([]);
+    setNotice(`已从「${system.name}」取色，确认后可保存为主题。`);
+  };
+
   const warnings = editing ? validateDeckTheme(editing) : null;
   const editorWarnings = warnings?.ok ? warnings.warnings : [];
   // Blocking problems come from live validation, so the reason is visible while
@@ -119,6 +155,9 @@ export default function ThemesPage() {
             </div>
           </div>
           <div className="th-header-actions">
+            <button className="th-ghost" onClick={() => { setBrandOpen(true); setBrandQuery(""); }}>
+              导入品牌
+            </button>
             <button className="th-ghost" onClick={() => navigateTo("/ppt")}>
               打开演示稿 <span aria-hidden="true">→</span>
             </button>
@@ -224,6 +263,46 @@ export default function ThemesPage() {
 
         <p className="th-footnote">主题只管外观，不改变你的文字与结构。</p>
       </main>
+
+      {brandOpen && (
+        <div className="th-drawer-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setBrandOpen(false); }}>
+          <div className="th-brand" role="dialog" aria-modal="true" aria-label="导入品牌">
+            <header>
+              <div>
+                <h2>导入品牌</h2>
+                <p>从 {designSystems.length} 套设计系统取色，导入后就是你自己的可编辑主题。</p>
+              </div>
+              <button type="button" className="th-drawer-close" onClick={() => setBrandOpen(false)} aria-label="关闭">×</button>
+            </header>
+            <label className="th-search" style={{ margin: "12px 16px 0" }}>
+              <HomeIcon name="search" size={14} />
+              <input
+                autoFocus
+                value={brandQuery}
+                onChange={(event) => setBrandQuery(event.target.value)}
+                placeholder="搜索品牌名或品类，如 Linear、金融"
+                aria-label="搜索品牌"
+              />
+            </label>
+            <ul className="th-brand-list">
+              {brandSystems.map((system) => (
+                <li key={system.id}>
+                  <button type="button" onClick={() => importBrand(system)}>
+                    <i style={{ background: system.color.primary || system.color.text }} aria-hidden="true" />
+                    <span>
+                      <strong>{system.name}</strong>
+                      <small>{system.category} · 主色 {system.color.primary || system.primary}</small>
+                    </span>
+                    <em>{system.color.background}</em>
+                  </button>
+                </li>
+              ))}
+              {brandSystems.length === 0 && <li className="th-brand-empty">没有匹配的品牌，换个关键词试试。</li>}
+            </ul>
+            <p className="th-drawer-foot">导入只取颜色与字体倾向，生成的是可编辑主题，不会改变已有演示稿。</p>
+          </div>
+        </div>
+      )}
 
       {selected && (
         <div

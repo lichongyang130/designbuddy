@@ -75,6 +75,8 @@
   align-items: center;
   gap: 10px;
   flex: none;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .th-ghost,
@@ -654,4 +656,101 @@
   .th-card-apply {
     transition: none;
   }
+}
+
+/* Brand import ------------------------------------------------------------ */
+.th-brand {
+  display: flex;
+  flex-direction: column;
+  width: min(520px, calc(100% - 32px));
+  max-height: calc(100% - 48px);
+  margin: 24px auto;
+  border-radius: 14px;
+  background: #fff;
+  overflow: hidden;
+  box-shadow: 0 24px 70px rgba(18, 28, 20, 0.22);
+}
+.th-drawer-backdrop:has(.th-brand) {
+  align-items: flex-start;
+  justify-content: center;
+}
+.th-brand header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 18px 12px;
+  border-bottom: 1px solid #f0f2ed;
+}
+.th-brand h2 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 650;
+}
+.th-brand header p {
+  margin: 4px 0 0;
+  font-size: 11px;
+  color: #94a091;
+}
+.th-brand-list {
+  flex: 1;
+  min-height: 0;
+  margin: 10px 0 0;
+  padding: 0 10px;
+  list-style: none;
+  overflow-y: auto;
+}
+.th-brand-list button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: none;
+  text-align: left;
+}
+.th-brand-list button:hover {
+  border-color: #dfe8d8;
+  background: #f7f9f5;
+}
+.th-brand-list i {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+.th-brand-list span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+.th-brand-list strong {
+  font-size: 12px;
+  font-weight: 600;
+  color: #26312a;
+}
+.th-brand-list small {
+  font-size: 10.5px;
+  color: #98a096;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.th-brand-list em {
+  flex: none;
+  font: 10px ui-monospace, Menlo, monospace;
+  font-style: normal;
+  color: #a3aca1;
+  text-transform: uppercase;
+}
+.th-brand-empty {
+  padding: 24px 8px;
+  text-align: center;
+  font-size: 11.5px;
+  color: #98a096;
 }
