@@ -31,6 +31,7 @@ import {
   DevicesSettings,
   PersonalSettings,
   PlanSettings,
+  PlanUpgradeDialog,
   ShortcutsSettings,
 } from "./SettingsSections";
 
@@ -657,12 +658,14 @@ const descriptionKeys: Partial<Record<SettingsSection, string>> = {
   apps: "settings.desc.apps",
   security: "settings.desc.security",
 };
-function OtherSettings({
+function SectionInfoCard({
   section,
   name,
+  cardTitle,
 }: {
   section: SettingsSection;
   name: string;
+  cardTitle?: string;
 }) {
   const locale = usePreferences((state) => state.locale);
   const t = (key: string) => translate(locale, key);
@@ -678,7 +681,7 @@ function OtherSettings({
   const link = routes[section];
   return (
     <section className="settings-card settings-info">
-      <h2>{name}</h2>
+      <h2>{cardTitle ?? name}</h2>
       <p>{descriptionKeys[section] ? t(descriptionKeys[section]!) : ""}</p>
       {section === "profile" && (
         <button
@@ -704,6 +707,107 @@ function OtherSettings({
           {t(link.labelKey)}
         </button>
       )}
+    </section>
+  );
+}
+
+function OtherSettings({
+  section,
+  name,
+}: {
+  section: SettingsSection;
+  name: string;
+}) {
+  return (
+    <section aria-labelledby={`settings-${section}-title`}>
+      <h2 className="settings-section-label" id={`settings-${section}-title`}>
+        {name}
+      </h2>
+      <SectionInfoCard section={section} name={name} />
+    </section>
+  );
+}
+
+/**
+ * 设置 → 个人主页：把套餐与额度面板直接放进设置窗口。
+ *
+ * 版式来自 2026-10-18 提供的参考截图（顶部渐变横幅、钱包余额卡、使用限额重置卡），
+ * 但所有数字都是真实状态：没有接入支付、钱包、自动充值或云端额度服务，
+ * 所以余额固定为 $0.00、开关禁用，并把「未接入」写在卡片脚注里，不伪造账单。
+ */
+function ProfilePlanSettings({ name }: { name: string }) {
+  const [upgradeOpen, setUpgradeOpen] = useState(false);
+  return (
+    <section aria-labelledby="settings-profile-title">
+      <h2 className="settings-section-label" id="settings-profile-title">
+        {name}
+      </h2>
+
+      <div className="settings-plan-banner" role="region" aria-label="当前套餐">
+        <div className="settings-plan-banner-art" aria-hidden="true" />
+        <div className="settings-plan-banner-copy">
+          <span className="settings-plan-free">Free</span>
+          <p>订阅状态：免费</p>
+        </div>
+        <button
+          type="button"
+          className="settings-plan-upgrade"
+          onClick={() => setUpgradeOpen(true)}
+        >
+          升级
+        </button>
+      </div>
+
+      <div className="settings-plan-heading">
+        <h3>钱包余额</h3>
+        <p>Design Plan 额度用尽后，自动使用此余额按量付费。</p>
+      </div>
+      <div className="settings-plan-card" role="region" aria-label="钱包余额">
+        <div className="settings-plan-balance">
+          <strong aria-label="当前可用余额 0.00，支付与钱包服务未接入">$0.00</strong>
+          <span>当前可用余额</span>
+        </div>
+        <div className="settings-plan-divider" />
+        <div className="settings-plan-row">
+          <div>
+            <strong>自动充值</strong>
+            <p>升级会员后即可使用自动充值。</p>
+          </div>
+          <button
+            type="button"
+            className="settings-plan-switch"
+            role="switch"
+            aria-checked={false}
+            aria-label="自动充值"
+            disabled
+            title="自动充值服务尚未接入"
+          >
+            <span />
+          </button>
+        </div>
+        <p className="settings-plan-foot">
+          支付、钱包与自动充值服务尚未接入：$0.00 表示现在没有可用余额，也不会产生扣费。
+        </p>
+      </div>
+
+      <div className="settings-plan-heading">
+        <h3>使用限额重置</h3>
+      </div>
+      <div className="settings-plan-card is-soft" role="region" aria-label="使用限额重置">
+        <div className="settings-plan-quota">
+          <span>可用</span>
+          <strong>0</strong>
+        </div>
+        <div className="settings-plan-divider" />
+        <p className="settings-plan-empty">暂无可用重置额度</p>
+        <p className="settings-plan-foot">
+          没有已连接的云端额度服务；这个数字不会限制本机项目或本地数据。
+        </p>
+      </div>
+
+      <SectionInfoCard section="profile" name={name} cardTitle="账号与后台连接" />
+
+      <PlanUpgradeDialog open={upgradeOpen} onClose={() => setUpgradeOpen(false)} />
     </section>
   );
 }
@@ -877,6 +981,8 @@ export function SettingsWindow() {
               <DataSettings onError={setError} />
             ) : section === "plan" ? (
               <PlanSettings />
+            ) : section === "profile" ? (
+              <ProfilePlanSettings name={t(active.nameKey)} />
             ) : (
               <OtherSettings section={section} name={t(active.nameKey)} />
             )}

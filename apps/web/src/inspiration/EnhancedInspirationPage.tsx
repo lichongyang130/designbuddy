@@ -1,121 +1,40 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { HomeIcon, type HomeIconName } from "../components/HomeIcon";
 import { navigateTo } from "../../../../frontend/workspace/workspaceRoutes";
 import { WorkBuddySidebar } from "../components/WorkBuddySidebar";
 import { listProjects } from "../../../../frontend/workspace/projectStore";
+import { samples } from "./samples/shared";
 import "./inspiration-enhanced.css";
 
-interface Template {
-  id: string;
-  title: string;
-  description: string;
-  category: string;
-  tags: string[];
-  author: string;
-  authorAvatar: string;
-  uses: number;
-  favorites: number;
-  rating: number;
-  isFeatured?: boolean;
-  isHot?: boolean;
-  isNew?: boolean;
-  preview: string;
-  format: string;
-}
+import TemplateCard, { type Template } from "./TemplateCard";
 
-const mockTemplates: Template[] = [
-  {
-    id: "business-presentation",
-    title: "商务演示模版",
-    description: "专业的商务演示PPT模版，适用于公司介绍、产品发布、商业计划等场景",
-    category: "幻灯片",
-    tags: ["商务", "演示", "PPT"],
-    author: "DesignBuddy",
-    authorAvatar: "D",
-    uses: 12580,
-    favorites: 3420,
-    rating: 4.9,
-    isFeatured: true,
-    isHot: true,
-    preview: "gradient-1",
-    format: "PPTX",
-  },
-  {
-    id: "data-analysis-report",
-    title: "数据分析报告",
-    description: "清晰的数据可视化报告模版，包含图表、表格和分析结论展示",
-    category: "文档",
-    tags: ["数据", "报告", "分析"],
-    author: "DesignBuddy",
-    authorAvatar: "D",
-    uses: 8920,
-    favorites: 2150,
-    rating: 4.8,
-    isFeatured: true,
-    preview: "gradient-2",
-    format: "DOCX",
-  },
-  {
-    id: "marketing-landing",
-    title: "营销落地页",
-    description: "高转化率的营销落地页模版，适用于产品推广和活动营销",
-    category: "网页",
-    tags: ["营销", "落地页", "网页"],
-    author: "DesignBuddy",
-    authorAvatar: "D",
-    uses: 15670,
-    favorites: 4230,
-    rating: 4.9,
-    isFeatured: true,
-    isHot: true,
-    isNew: true,
-    preview: "gradient-3",
-    format: "HTML",
-  },
-  {
-    id: "portfolio-website",
-    title: "个人作品集",
-    description: "现代化的个人作品集网站模版，展示你的项目和能力",
-    category: "网页",
-    tags: ["作品集", "个人", "网页"],
-    author: "DesignBuddy",
-    authorAvatar: "D",
-    uses: 6780,
-    favorites: 1890,
-    rating: 4.7,
-    preview: "gradient-4",
-    format: "HTML",
-  },
-  {
-    id: "project-proposal",
-    title: "项目提案书",
-    description: "专业的项目提案书模版，结构清晰，易于编辑",
-    category: "文档",
-    tags: ["提案", "项目", "文档"],
-    author: "DesignBuddy",
-    authorAvatar: "D",
-    uses: 4520,
-    favorites: 1230,
-    rating: 4.6,
-    preview: "gradient-5",
-    format: "DOCX",
-  },
-  {
-    id: "social-media-kit",
-    title: "社交媒体素材包",
-    description: "一套完整的社交媒体图片素材，包含多种尺寸和风格",
-    category: "图片",
-    tags: ["社交媒体", "图片", "素材"],
-    author: "DesignBuddy",
-    authorAvatar: "D",
-    uses: 9870,
-    favorites: 2670,
-    rating: 4.8,
-    isNew: true,
-    preview: "gradient-6",
-    format: "PNG/SVG",
-  },
-];
+// --- Mock API Layer ---
+async function fetchTemplatesApi(): Promise<Template[]> {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(
+        samples.map((s, i) => ({
+          id: s.id,
+          title: s.title,
+          description: s.description,
+          category: s.category,
+          tags: [s.category, "DesignBuddy", "推荐"], // default tags
+          author: "DesignBuddy",
+          authorAvatar: "D",
+          uses: Math.floor(Math.random() * 10000) + 500,
+          favorites: Math.floor(Math.random() * 2000) + 100,
+          rating: parseFloat((Math.random() * 1 + 4).toFixed(1)), // 4.0 to 5.0
+          isFeatured: i % 7 === 0,
+          isHot: i % 5 === 0,
+          isNew: i % 8 === 0,
+          preview: s.photos && s.photos.length > 0 ? s.photos[0].url : "gradient-1",
+          format: s.format,
+        }))
+      );
+    }, 600); // simulated network delay
+  });
+}
+// ----------------------
 
 const categories: { label: string; icon?: HomeIconName }[] = [
   { label: "全部", icon: "grid" },
@@ -137,11 +56,47 @@ export default function EnhancedInspirationPage({ projectCount, workspaceCount, 
   const [selectedCategory, setSelectedCategory] = useState("全部");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [favorites, setFavorites] = useState<Set<string>>(new Set());
+  const [templates, setTemplates] = useState<Template[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    let mounted = true;
+    setIsLoading(true);
+    fetchTemplatesApi().then((data) => {
+      if (mounted) {
+        setTemplates(data);
+        setIsLoading(false);
+      }
+    });
+    return () => { mounted = false; };
+  }, []);
+
+  const [favorites, setFavorites] = useState<Set<string>>(() => {
+    try {
+      const stored = localStorage.getItem("designbuddy.favorites");
+      if (stored) {
+        return new Set(JSON.parse(stored));
+      }
+    } catch (e) {
+      console.warn("Failed to read favorites from localStorage");
+    }
+    return new Set();
+  });
+
+  const [showUploadModal, setShowUploadModal] = useState(false);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("designbuddy.favorites", JSON.stringify([...favorites]));
+    } catch (e) {
+      console.warn("Failed to save favorites to localStorage");
+    }
+  }, [favorites]);
+
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
 
   const filteredTemplates = useMemo(() => {
-    return mockTemplates.filter((template) => {
+    return templates.filter((template) => {
       // Category filter
       if (selectedCategory !== "全部" && template.category !== selectedCategory) {
         return false;
@@ -169,10 +124,10 @@ export default function EnhancedInspirationPage({ projectCount, workspaceCount, 
 
       return true;
     });
-  }, [selectedCategory, selectedTags, searchQuery, showFavoritesOnly, favorites]);
+  }, [selectedCategory, selectedTags, searchQuery, showFavoritesOnly, favorites, templates]);
 
-  const featuredTemplates = mockTemplates.filter((t) => t.isFeatured);
-  const hotTemplates = mockTemplates.filter((t) => t.isHot);
+  const featuredTemplates = templates.filter((t) => t.isFeatured);
+  const hotTemplates = templates.filter((t) => t.isHot);
 
   const toggleFavorite = (id: string) => {
     setFavorites((prev) => {
@@ -220,12 +175,12 @@ export default function EnhancedInspirationPage({ projectCount, workspaceCount, 
           <p>从商务演示到数据分析，从网页设计到社交媒体，找到适合你的完美模版</p>
           <div className="inspiration-stats">
             <div className="inspiration-stat">
-              <span className="inspiration-stat-value">{mockTemplates.length}+</span>
+              <span className="inspiration-stat-value">{templates.length}+</span>
               <span className="inspiration-stat-label">精品模版</span>
             </div>
             <div className="inspiration-stat">
               <span className="inspiration-stat-value">
-                {formatNumber(mockTemplates.reduce((sum, t) => sum + t.uses, 0))}
+                {formatNumber(templates.reduce((sum, t) => sum + t.uses, 0))}
               </span>
               <span className="inspiration-stat-label">使用次数</span>
             </div>
@@ -234,10 +189,37 @@ export default function EnhancedInspirationPage({ projectCount, workspaceCount, 
               <span className="inspiration-stat-label">平均评分</span>
             </div>
           </div>
+          <button 
+            className="inspiration-upload-btn" 
+            onClick={() => setShowUploadModal(true)}
+            style={{
+              position: 'absolute',
+              top: '60px',
+              right: '40px',
+              background: 'rgba(255,255,255,0.2)',
+              border: '1px solid rgba(255,255,255,0.4)',
+              color: '#fff',
+              padding: '10px 20px',
+              borderRadius: '8px',
+              fontWeight: 600,
+              cursor: 'pointer',
+              display: 'flex',
+              gap: '8px',
+              alignItems: 'center'
+            }}
+          >
+            <HomeIcon name="installed" size={16} /> 上传模版
+          </button>
         </section>
 
         <div className="inspiration-content">
-          {/* Featured Templates */}
+          {isLoading ? (
+            <div style={{ textAlign: "center", padding: "40px", color: "#6b7280" }}>
+              加载模版中...
+            </div>
+          ) : (
+            <>
+              {/* Featured Templates */}
           {featuredTemplates.length > 0 && (
             <section className="inspiration-featured">
               <div className="inspiration-section-header">
@@ -254,7 +236,7 @@ export default function EnhancedInspirationPage({ projectCount, workspaceCount, 
                     template={template}
                     isFavorite={favorites.has(template.id)}
                     onToggleFavorite={toggleFavorite}
-                    onUse={() => navigateTo("/")}
+                    onUse={() => navigateTo(`/inspiration/${template.id}/detail`)}
                     formatNumber={formatNumber}
                   />
                 ))}
@@ -307,18 +289,20 @@ export default function EnhancedInspirationPage({ projectCount, workspaceCount, 
           </div>
 
           {/* Template Grid */}
-          <div className="inspiration-grid">
-            {filteredTemplates.map((template) => (
-              <TemplateCard
-                key={template.id}
-                template={template}
-                isFavorite={favorites.has(template.id)}
-                onToggleFavorite={toggleFavorite}
-                onUse={() => navigateTo("/")}
-                formatNumber={formatNumber}
-              />
-            ))}
-          </div>
+          {filteredTemplates.length > 0 && (
+            <div className="inspiration-grid">
+              {filteredTemplates.map((template) => (
+                <TemplateCard
+                  key={template.id}
+                  template={template}
+                  isFavorite={favorites.has(template.id)}
+                  onToggleFavorite={toggleFavorite}
+                  onUse={() => navigateTo(`/inspiration/${template.id.split('-')[0]}/detail`)}
+                  formatNumber={formatNumber}
+                />
+              ))}
+            </div>
+          )}
 
           {filteredTemplates.length === 0 && (
             <div style={{ textAlign: "center", padding: "60px 20px" }}>
@@ -331,77 +315,63 @@ export default function EnhancedInspirationPage({ projectCount, workspaceCount, 
               </p>
             </div>
           )}
+            </>
+          )}
         </div>
       </main>
-    </div>
-  );
-}
 
-function TemplateCard({
-  template,
-  isFavorite,
-  onToggleFavorite,
-  onUse,
-  formatNumber,
-}: {
-  template: Template;
-  isFavorite: boolean;
-  onToggleFavorite: (id: string) => void;
-  onUse: () => void;
-  formatNumber: (num: number) => string;
-}) {
-  const gradients: Record<string, string> = {
-    "gradient-1": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-    "gradient-2": "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
-    "gradient-3": "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
-    "gradient-4": "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)",
-    "gradient-5": "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
-    "gradient-6": "linear-gradient(135deg, #30cfd0 0%, #330867 100%)",
-  };
-
-  return (
-    <article className="inspiration-card">
-      <div
-        className="inspiration-card-preview"
-        style={{ background: gradients[template.preview] }}
-        onClick={onUse}
-      >
-        <button
-          className={`inspiration-card-favorite ${isFavorite ? "is-favorite" : ""}`}
-          onClick={(e) => {
-            e.stopPropagation();
-            onToggleFavorite(template.id);
-          }}
-        >
-          {isFavorite ? "❤️" : "🤍"}
-        </button>
-        {template.isHot && <div className="inspiration-card-badge">🔥 热门</div>}
-        {template.isNew && !template.isHot && (
-          <div className="inspiration-card-badge">✨ 新品</div>
-        )}
-      </div>
-      <div className="inspiration-card-body">
-        <h3 className="inspiration-card-title">{template.title}</h3>
-        <p className="inspiration-card-description">{template.description}</p>
-        <div className="inspiration-card-meta">
-          <div className="inspiration-card-author">
-            <div className="inspiration-card-avatar">{template.authorAvatar}</div>
-            <span className="inspiration-card-author-name">{template.author}</span>
-          </div>
-          <div className="inspiration-card-stats">
-            <span className="inspiration-card-stat">
-              👁️ {formatNumber(template.uses)}
-            </span>
-            <span className="inspiration-card-stat">
-              ❤️ {formatNumber(template.favorites)}
-            </span>
-            <span className="inspiration-card-stat">⭐ {template.rating}</span>
+      {showUploadModal && (
+        <div className="upload-modal-overlay" style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          background: 'rgba(0,0,0,0.5)', zIndex: 1000,
+          display: 'flex', alignItems: 'center', justifyContent: 'center'
+        }}>
+          <div className="upload-modal-content" style={{
+            background: 'white', padding: '32px', borderRadius: '16px',
+            width: '100%', maxWidth: '500px', boxShadow: '0 20px 40px rgba(0,0,0,0.2)'
+          }}>
+            <h2 style={{marginTop: 0, marginBottom: '24px'}}>上传新模版</h2>
+            <div style={{display: 'flex', flexDirection: 'column', gap: '16px'}}>
+              <label>
+                <span style={{display: 'block', marginBottom: '8px', fontWeight: 600}}>模版名称</span>
+                <input type="text" placeholder="输入模版名称" style={{width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #ccc'}} />
+              </label>
+              <label>
+                <span style={{display: 'block', marginBottom: '8px', fontWeight: 600}}>模版分类</span>
+                <select style={{width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #ccc'}}>
+                  <option>原型</option>
+                  <option>幻灯片</option>
+                  <option>文档</option>
+                  <option>网页</option>
+                  <option>图片</option>
+                </select>
+              </label>
+              <label>
+                <span style={{display: 'block', marginBottom: '8px', fontWeight: 600}}>模版文件 (.zip)</span>
+                <input type="file" accept=".zip" style={{width: '100%', padding: '10px', borderRadius: '6px', border: '1px dashed #ccc'}} />
+              </label>
+            </div>
+            <div style={{display: 'flex', gap: '16px', marginTop: '32px', justifyContent: 'flex-end'}}>
+              <button 
+                onClick={() => setShowUploadModal(false)}
+                style={{padding: '10px 20px', background: 'transparent', border: 'none', cursor: 'pointer', fontWeight: 600, color: '#6b7280'}}
+              >
+                取消
+              </button>
+              <button 
+                onClick={() => {
+                  alert("上传功能已准备就绪，待后端 API 接入即可生效！");
+                  setShowUploadModal(false);
+                }}
+                style={{padding: '10px 20px', background: '#667eea', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 600}}
+              >
+                提交上传
+              </button>
+            </div>
           </div>
         </div>
-        <button className="inspiration-use-btn" onClick={onUse}>
-          使用此模版
-        </button>
-      </div>
-    </article>
+      )}
+
+    </div>
   );
 }

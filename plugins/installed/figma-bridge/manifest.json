@@ -1,0 +1,16 @@
+{
+  "id": "figma-bridge",
+  "name": "Figma Bridge",
+  "description": "Read Figma file metadata and extract design tokens to DESIGN.md",
+  "version": "1.0.0",
+  "entrypoint": "node main.mjs",
+  "permissions": ["network:allowlisted", "workspace:write"],
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "fileUrl": { "type": "string", "description": "Figma File URL" },
+      "personalAccessToken": { "type": "string", "description": "Figma PAT" }
+    },
+    "required": ["fileUrl"]
+  }
+}

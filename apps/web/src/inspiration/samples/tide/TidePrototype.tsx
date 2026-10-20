@@ -254,7 +254,7 @@ export default function TidePrototype({ draftId }: { draftId?: string }) {
       break;
     case 2:
       body = (
-        <>
+        <div style={{ animation: 'td-fade-in 0.4s ease' }}>
           <div className="td-three">
             {plans.map((p, i) => (
               <article
@@ -272,29 +272,30 @@ export default function TidePrototype({ draftId }: { draftId?: string }) {
                   小时时间意向。船只与教练示例费用另计，不是免费船时。
                 </p>
                 <button
+                  className={s.plan === i ? 'td-primary' : ''}
                   aria-pressed={s.plan === i}
                   onClick={() => change({ plan: i })}
                 >
-                  选择{p.name}
+                  {s.plan === i ? "✓ 已选择" : `选择${p.name}`}
                 </button>
               </article>
             ))}
           </div>
-          <p className="td-warning">
+          <p className="td-warning" style={{ animation: 'td-fade-in 0.3s ease' }}>
             未开通会员或订阅。方案降低不会删除已有意向；若超额，新的意向将被阻止。
           </p>
-        </>
+        </div>
       );
       break;
     case 3:
       body = (
-        <div className="td-two">
+        <div className="td-two" style={{ animation: 'td-fade-in 0.4s ease' }}>
           <div>
             {text("会员称呼", "name")}
             {text("联系意向（不发送）", "contact")}
             {text("个人学习目标", "goal", true)}
           </div>
-          <aside className="td-member">
+          <aside className="td-member" style={{ animation: 'td-slide-up 0.5s ease 0.1s both' }}>
             <small>PERSONAL PLANNING CARD</small>
             <b>TIDE</b>
             <h3>{s.name || "尚未填写称呼"}</h3>
@@ -308,7 +309,7 @@ export default function TidePrototype({ draftId }: { draftId?: string }) {
       body = (
         <div className="td-fleet">
           {boats.map((b, i) => (
-            <article key={b.name}>
+            <article key={b.name} style={{ animation: `td-slide-up 0.4s ease ${i * 0.1}s both` }}>
               {image(b.photo, b.type)}
               <div>
                 <small>FLEET STUDY / 0{i + 1}</small>
@@ -318,6 +319,7 @@ export default function TidePrototype({ draftId }: { draftId?: string }) {
                 </p>
                 <b>{money(b.rate)} / 小时</b>
                 <button
+                  className="td-primary"
                   onClick={() =>
                     patch({
                       boat: i,
@@ -362,7 +364,7 @@ export default function TidePrototype({ draftId }: { draftId?: string }) {
               <dd>{money(boat.rate)}/h</dd>
             </dl>
             {text("待确认的额外需求", "request", true)}
-            <button onClick={() => go(6)}>安排时间意向 →</button>
+            <button className="td-primary" onClick={() => go(6)}>安排时间意向 →</button>
           </div>
         </div>
       );
@@ -385,7 +387,7 @@ export default function TidePrototype({ draftId }: { draftId?: string }) {
             ? "请确认这只是本地意向，不是出航批准。"
             : intentError(s, b);
       body = (
-        <div className="td-two">
+        <div className="td-two" style={{ animation: 'td-fade-in 0.4s ease' }}>
           <div>
             {select(
               "意向船只",
@@ -449,21 +451,22 @@ export default function TidePrototype({ draftId }: { draftId?: string }) {
                 "本地排期与时数检查无冲突；不代表实际可预约或可出航。"}
             </p>
             <button
+              className={`td-action-btn ${!!invalid ? '' : 'td-primary'}`}
               disabled={!!invalid}
               onClick={() => {
                 if (intentError(s, b) || !s.ack || !s.name.trim()) return;
                 change({
                   intents: [...s.intents, { ...b, id: crypto.randomUUID() }],
                 });
-                msg("本地时间意向已保存，没有预约、付款或出航放行。");
+                msg("📌 本地时间意向已保存，没有预约、付款或出航放行。");
               }}
             >
               保存时间意向
             </button>
             {!s.name.trim() && (
-              <button onClick={() => go(3)}>完善会员称呼</button>
+              <button className="td-action-btn" onClick={() => go(3)}>完善会员称呼</button>
             )}
-            <button onClick={() => go(13)}>查看意向台账 →</button>
+            <button className="td-action-btn" onClick={() => go(13)}>查看意向台账 →</button>
           </aside>
         </div>
       );
@@ -471,7 +474,7 @@ export default function TidePrototype({ draftId }: { draftId?: string }) {
     }
     case 7:
       body = (
-        <div className="td-two">
+        <div className="td-two" style={{ animation: 'td-fade-in 0.4s ease' }}>
           <div>
             {text("同行者称呼", "crewName")}
             {select(
@@ -481,6 +484,7 @@ export default function TidePrototype({ draftId }: { draftId?: string }) {
               (role) => change({ role }),
             )}
             <button
+              className="td-primary"
               disabled={s.crew.length >= 6}
               onClick={() => {
                 if (!s.crewName.trim()) {
@@ -495,7 +499,7 @@ export default function TidePrototype({ draftId }: { draftId?: string }) {
                   crew: [...s.crew, { name: s.crewName.trim(), role: s.role }],
                   crewName: "",
                 });
-                msg("已添加到本地讨论名单，不是实际登船名单或资格核验。");
+                msg("👥 已添加到本地讨论名单，不是实际登船名单或资格核验。");
               }}
             >
               添加同行者
@@ -849,13 +853,13 @@ export default function TidePrototype({ draftId }: { draftId?: string }) {
                   ],
                   logNote: "",
                 });
-                msg("手动日志已保存，没有读取 GPS 或核销会员时数。");
+                msg("✅ 手动日志已保存，没有读取 GPS 或核销会员时数。");
               }}
             >
               保存手动航行日志
             </button>
           </div>
-          <aside>
+          <aside style={{ animation: 'td-fade-in 0.4s ease' }}>
             <div className="td-note">
               <small>PERSONAL LOG TOTALS</small>
               <h3>
@@ -864,7 +868,7 @@ export default function TidePrototype({ draftId }: { draftId?: string }) {
               <p>整体平均 {c.logSpeed} kn，按总距离 / 总时间计算。</p>
             </div>
             {s.logs.map((l, i) => (
-              <article className="td-log" key={i}>
+              <article className="td-log" key={i} style={{ animation: `td-slide-up 0.3s ease ${i * 0.1}s both` }}>
                 <small>
                   {l.date} · {l.miles} NM · {l.minutes} min
                 </small>
@@ -877,7 +881,7 @@ export default function TidePrototype({ draftId }: { draftId?: string }) {
       break;
     case 15:
       body = (
-        <>
+        <div style={{ animation: 'td-fade-in 0.4s ease' }}>
           {month}
           <div className="td-three">
             {stat(
@@ -913,9 +917,11 @@ export default function TidePrototype({ draftId }: { draftId?: string }) {
             全部手动航行日志另计 {c.logMinutes}{" "}
             分钟，不自动核销。其他月份不占本月额度。
           </p>
-          <button onClick={() => go(2)}>调整方案</button>
-          <button onClick={() => go(13)}>查看意向台账</button>
-        </>
+          <div style={{ display: 'flex', gap: '8px', marginTop: '16px' }}>
+            <button className="td-action-btn" onClick={() => go(2)}>调整方案</button>
+            <button className="td-action-btn td-primary" onClick={() => go(13)}>查看意向台账</button>
+          </div>
+        </div>
       );
       break;
     case 16:
@@ -971,7 +977,7 @@ export default function TidePrototype({ draftId }: { draftId?: string }) {
       break;
     case 17:
       body = (
-        <>
+        <div style={{ animation: 'td-fade-in 0.4s ease' }}>
           <div className="td-event-hero">
             {image("clubhouse", "岸上会所")}
             <div>
@@ -1005,6 +1011,7 @@ export default function TidePrototype({ draftId }: { draftId?: string }) {
             <div>
               {num("活动意向人数", "eventPeople", 1, 16)}
               <button
+                className={`td-action-btn ${s.eventPeople > events[s.event].cap ? '' : 'td-primary'}`}
                 disabled={s.eventPeople > events[s.event].cap}
                 onClick={() => {
                   change({
@@ -1012,12 +1019,13 @@ export default function TidePrototype({ draftId }: { draftId?: string }) {
                       i === s.event ? s.eventPeople : n,
                     ),
                   });
-                  msg("已保存本地意向，未报名或通知。");
+                  msg("✅ 已保存本地活动意向，未报名或通知。");
                 }}
               >
                 保存岸上活动意向
               </button>
               <button
+                className="td-action-btn"
                 disabled={!s.joins[s.event]}
                 onClick={() =>
                   change({
@@ -1028,18 +1036,18 @@ export default function TidePrototype({ draftId }: { draftId?: string }) {
                 取消当前活动意向
               </button>
             </div>
-            <p>
+            <p style={{ animation: 'td-fade-in 0.3s ease' }}>
               {s.eventPeople > events[s.event].cap
-                ? "人数超过当前示例活动上限。"
+                ? "⚠️ 人数超过当前示例活动上限。"
                 : "容量只用于这份本地方案，不是场地实时余位。"}
             </p>
           </div>
-        </>
+        </div>
       );
       break;
     case 18:
       body = (
-        <div className="td-two">
+        <div className="td-two" style={{ animation: 'td-fade-in 0.4s ease' }}>
           <div>
             {select(
               "观察分类",
@@ -1049,6 +1057,7 @@ export default function TidePrototype({ draftId }: { draftId?: string }) {
             )}
             {text("维护观察说明", "issue", true)}
             <button
+              className="td-action-btn td-primary"
               disabled={s.issues.length >= 8}
               onClick={() => {
                 if (s.issue.trim().length < 8) {
@@ -1067,7 +1076,7 @@ export default function TidePrototype({ draftId }: { draftId?: string }) {
                   ],
                   issue: "",
                 });
-                msg("本地观察已保存，未报修、未检测、未恢复适航状态。");
+                msg("🛠️ 本地观察已保存，未报修、未检测、未恢复适航状态。");
               }}
             >
               保存维护观察
@@ -1076,13 +1085,14 @@ export default function TidePrototype({ draftId }: { draftId?: string }) {
           <aside>
             {image("deck", "甲板细节")}
             {s.issues.map((x, i) => (
-              <article className="td-note" key={i}>
-                <small>
+              <article className="td-note" key={i} style={{ animation: `td-slide-up 0.3s ease ${i * 0.1}s both` }}>
+                <small style={{ color: x.closed ? 'var(--td-mute)' : 'var(--td-warn)' }}>
                   {["船体外观", "绳索与连接", "设备现象"][x.type]} /{" "}
                   {x.closed ? "个人跟踪关闭" : "未发送观察"}
                 </small>
-                <p>{x.text}</p>
+                <p style={{ opacity: x.closed ? 0.6 : 1 }}>{x.text}</p>
                 <button
+                  className="td-action-btn"
                   onClick={() =>
                     change({
                       issues: s.issues.map((v, n) =>
@@ -1190,6 +1200,7 @@ export default function TidePrototype({ draftId }: { draftId?: string }) {
               {s.month} / {s.name || "未填写称呼"} / {c.hours} h 本地意向
             </p>
             <button
+              className={`td-action-btn ${(!s.name.trim() || !s.intents.some((b) => !b.cancelled && b.date.startsWith(s.month))) ? '' : 'td-primary'}`}
               disabled={
                 !s.name.trim() ||
                 !s.intents.some(
@@ -1226,7 +1237,7 @@ export default function TidePrototype({ draftId }: { draftId?: string }) {
                     status: "confirmed",
                   },
                 });
-                msg("已冻结本地讨论稿，不是出航批准、合同或付款。");
+                msg("📌 已冻结本地讨论稿，不是出航批准、合同或付款。");
               }}
             >
               冻结本地讨论稿
@@ -1251,13 +1262,14 @@ export default function TidePrototype({ draftId }: { draftId?: string }) {
                     : "本地已撤回"}
                 </b>
                 <button
+                  className="td-action-btn"
                   disabled={s.review.status === "withdrawn"}
                   onClick={() => {
                     if (confirm("撤回本地讨论稿状态？"))
                       change({ review: { ...s.review!, status: "withdrawn" } });
                   }}
                 >
-                  撤回讨论稿
+                  {s.review.status === "withdrawn" ? "已撤回" : "撤回讨论稿"}
                 </button>
               </>
             ) : (

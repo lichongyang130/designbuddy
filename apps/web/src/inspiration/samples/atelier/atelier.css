@@ -3,6 +3,14 @@
   min-width: 0;
   background: #e9e6df;
 }
+@keyframes at-fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+.at-action-btn { transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1); border: 1px solid currentColor !important; padding: 10px 16px !important; border-radius: 4px !important; }
+.at-action-btn:hover:not(:disabled) { background: rgba(255,255,255,0.05) !important; transform: translateY(-1px); }
+.at-action-btn.primary { background: #9d2337 !important; color: #fff !important; border: none !important; }
+.at-action-btn.primary:hover:not(:disabled) { background: #7c1a29 !important; }
+.at-action-btn.is-saved { background: #38423b !important; color: #a4bea8 !important; border-color: #a4bea8 !important; }
+
 .at-history {
   display: flex;
   gap: 7px;

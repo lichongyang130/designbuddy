@@ -28,6 +28,14 @@
   outline: 2px solid #916c49;
   outline-offset: 3px;
 }
+@keyframes fm-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fm-rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+.fm-action-btn { transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1); border: 1px solid currentColor; }
+.fm-action-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+.fm-action-btn.primary { background: #342e28; color: #f5f2ec; border: none; }
+.fm-action-btn.primary:hover { background: #1a1612; }
+
 .fm-worktools {
   display: flex;
   align-items: center;

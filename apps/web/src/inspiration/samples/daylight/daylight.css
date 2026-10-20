@@ -12,6 +12,9 @@
 .dl-shell * {
   box-sizing: border-box;
 }
+@keyframes dl-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes dl-slide-up { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
 .dl-shell button {
   font: inherit;
   color: inherit;
@@ -20,9 +23,11 @@
   padding: 10px 17px;
   border-radius: 25px;
   cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 .dl-shell button:hover:not(:disabled) {
   background: #dfe7fa;
+  transform: translateY(-1px);
 }
 .dl-shell button:disabled {
   opacity: 0.4;
@@ -36,6 +41,11 @@
   background: #284fa3;
   color: #fff;
   border-color: #284fa3;
+}
+.dl-shell button.dl-primary:hover:not(:disabled) {
+  background: #1a397a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(40,79,163,0.25);
 }
 .dl-shell p {
   white-space: pre-wrap;

@@ -23,6 +23,10 @@ import { expertCatalog } from "../expertCatalog";
 type Attachment = { name: string; text: string; assetId?: string };
 const statusLabels = { waiting: "正在思考", streaming: "正在回复", complete: "已完成", error: "回复失败", stopped: "已停止", local: "仅本地 · 未发送", clarifying: "等待你的回答" };
 const newId = () => crypto.randomUUID();
+/** Below 681px the preview panel is a full-height drawer over the conversation, so it stays closed. */
+function previewFitsByDefault() {
+  return typeof window === "undefined" ? true : window.innerWidth > 680;
+}
 
 export default function TaskConversationPage({ projectId }: { projectId: string }) {
   const modelOptions = useModelOptions();
@@ -36,7 +40,10 @@ export default function TaskConversationPage({ projectId }: { projectId: string 
   const [tick, setTick] = useState(0);
   const [attachments, setAttachments] = useState<Attachment[]>([]);
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [previewOpen, setPreviewOpen] = useState(() => (loadTaskConversation(projectId)?.messages.some((message) => message.artifact) ?? false));
+  // The right-hand preview is open by default, so a task opens with the work visible
+  // next to the conversation. On phone-width viewports the panel covers the page, so it
+  // starts closed there and is still one tap away in the title bar.
+  const [previewOpen, setPreviewOpen] = useState(() => previewFitsByDefault());
   const [historyOpen, setHistoryOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -108,7 +115,8 @@ export default function TaskConversationPage({ projectId }: { projectId: string 
         taskRef.current = restored;
         setTask(restored);
         setSkillsOpen(restored.workflow === "skills");
-        setPreviewOpen(restored.messages.some((message) => message.artifact) ?? false);
+        // Restoring the server history must not close a panel the reader left open.
+        setPreviewOpen((open) => open || restored.messages.some((message) => message.artifact));
       })
       .catch(() => undefined);
     return () => { cancelled = true; };

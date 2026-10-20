@@ -17,7 +17,7 @@
     "test:right-preview": "node scripts/run-playwright.mjs test tests/right-preview.spec.ts",
     "test:account": "playwright test account.spec.ts",
     "test:scenes": "playwright test scenes.spec.ts workspace.spec.ts",
-    "test:settings": "playwright test account.spec.ts settings.spec.ts",
+    "test:settings": "playwright test account.spec.ts settings.spec.ts settings-profile-plan.spec.ts settings-plan-credits.spec.ts settings-appearance.spec.ts",
     "test:sidebar": "playwright test sidebar.spec.ts",
     "test:inspiration": "playwright test inspiration",
     "test:backend": "playwright test backend.spec.ts"
@@ -28,6 +28,8 @@
     "react": "latest",
     "react-dom": "latest",
     "react-markdown": "^10.1.0",
+    "react-virtualized-auto-sizer": "^2.0.4",
+    "react-window": "^1.8.10",
     "zustand": "latest"
   },
   "devDependencies": {
@@ -36,6 +38,8 @@
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
+    "@types/react-virtualized-auto-sizer": "^1.0.8",
+    "@types/react-window": "^1.8.8",
     "@vitejs/plugin-react": "latest",
     "typescript": "latest",
     "vite": "latest"

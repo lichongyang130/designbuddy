@@ -96,7 +96,10 @@
 .lv-board-head { display: flex; justify-content: space-between; gap: 14px; align-items: flex-end; flex-wrap: wrap; margin-bottom: 16px; }
 .lv-board-head small { color: var(--lv-teal); font-size: 12px; font-weight: 700; letter-spacing: 0.04em; }
 .lv-board-head h2 { margin: 4px 0 0; font-size: 22px; }
-.lv-board-controls { display: flex; gap: 8px; flex-wrap: wrap; }
+.lv-board-controls { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.lv-status-live { color: var(--lv-lime); font-weight: 600; }
+.lv-status-paused { color: var(--lv-mute); }
+.lv-select { background: var(--lv-bg); border: 1px solid var(--lv-line); border-radius: 8px; padding: 9px 12px; cursor: pointer; color: var(--lv-ink); font-size: 13px; }
 .lv-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 .lv-metric {
   text-align: left;
@@ -109,14 +112,24 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
-.lv-metric small { color: var(--lv-mute); font-size: 12px; }
-.lv-metric strong { color: var(--lv-ink); font-size: 26px; letter-spacing: -0.01em; }
-.lv-delta { font-size: 12px; font-weight: 700; }
+.lv-metric:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+.lv-metric small { color: var(--lv-mute); font-size: 12px; transition: color 0.2s; }
+.lv-metric strong { color: var(--lv-ink); font-size: 26px; letter-spacing: -0.01em; transition: color 0.2s; }
+.lv-delta { font-size: 12px; font-weight: 700; transition: color 0.2s; }
 .lv-delta.is-good { color: var(--lv-teal); }
 .lv-delta.is-bad { color: var(--lv-red); }
-.lv-metric svg { width: 100%; height: 36px; margin-top: 6px; }
+.lv-metric svg { width: 100%; height: 36px; margin-top: 6px; transition: all 0.2s; }
 .lv-metric.is-focus { border-color: var(--lv-blue); box-shadow: 0 0 0 3px rgba(26, 86, 255, 0.15); }
+
+/* 投屏模式下的样式覆盖 */
+.lv-layout.is-present { position: fixed; inset: 0; z-index: 1000; background: #000; padding: 40px; }
+.lv-layout.is-present .lv-side { display: none; }
+.lv-layout.is-present .lv-board-head h2 { color: #fff; font-size: 32px; }
+.lv-layout.is-present .lv-metric { background: #111; border-color: #333; }
+.lv-layout.is-present .lv-metric strong { color: #fff; font-size: 40px; }
+.lv-layout.is-present .lv-metric small { color: #888; font-size: 16px; }
 .lv-focus { margin-top: 12px; background: #eef3ff; border: 1px solid #c9d8ff; border-radius: 12px; padding: 12px 16px; }
 .lv-focus strong { font-size: 14px; }
 .lv-focus p { margin: 4px 0 0; font-size: 13px; color: #33415c; }
@@ -143,7 +156,19 @@
 .lv-names li { background: var(--lv-bg); border: 1px solid var(--lv-line); border-radius: 999px; padding: 5px 12px; font-size: 13px; }
 .lv-names li.is-empty { border-style: dashed; color: var(--lv-mute); }
 .lv-draw { text-align: center; background: var(--lv-bg); border-radius: 12px; padding: 16px; }
-.lv-winner { font-size: 26px; font-weight: 800; min-height: 60px; display: flex; align-items: center; justify-content: center; }
+@keyframes lv-rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes lv-fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+.lv-action-btn { background: var(--lv-bg); border: 1px solid var(--lv-line); border-radius: 8px; padding: 10px 18px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.lv-action-btn:hover { background: #f0f0f0; }
+.lv-action-btn.primary { background: var(--lv-blue); color: #fff; border: none; }
+.lv-action-btn.primary:hover { background: #1640d6; transform: translateY(-1px); }
+.lv-action-btn.is-success { background: var(--lv-lime); color: #000; border: none; animation: lv-fade-in 0.3s ease; }
+
+.lv-winner { font-size: 26px; font-weight: 800; min-height: 60px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+.lv-winner.is-rolling { color: var(--lv-blue); filter: blur(1px); transform: scale(1.05); }
+.lv-winner.has-winner { color: var(--lv-lime); animation: lv-rise 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+
 .lv-draw small { display: block; margin-top: 8px; color: var(--lv-mute); }
 .lv-agenda { list-style: none; margin: 0 0 12px; padding: 0; display: flex; flex-direction: column; gap: 8px; }
 .lv-agenda li { display: flex; gap: 10px; font-size: 13px; background: var(--lv-bg); border-radius: 8px; padding: 9px 12px; }

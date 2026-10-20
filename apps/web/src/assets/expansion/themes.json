@@ -1,0 +1,86 @@
+{
+  "themes": {
+    "hyperframes": [
+      "expansion/hyperframes-1.webp",
+      "expansion/hyperframes-2.webp",
+      "expansion/hyperframes-3.jpg",
+      "expansion/hyperframes-4.gif",
+      "expansion/hyperframes-5.jpg",
+      "expansion/hyperframes-6.jpg",
+      "expansion/hyperframes-7.jpg",
+      "expansion/hyperframes-8.jpg",
+      "expansion/hyperframes-9.jpg",
+      "expansion/hyperframes-10.jpg"
+    ],
+    "live": [
+      "expansion/live-1.jpg",
+      "expansion/live-2.png",
+      "expansion/live-3.jpg",
+      "expansion/live-4.png",
+      "expansion/live-5.jpg"
+    ],
+    "forme": [
+      "expansion/forme-1.jpg",
+      "expansion/forme-2.jpg",
+      "expansion/forme-3.jpg",
+      "expansion/forme-4.jpg",
+      "expansion/forme-5.jpg"
+    ],
+    "atelier": [
+      "expansion/atelier-1.webp",
+      "expansion/atelier-2.webp",
+      "expansion/atelier-3.webp",
+      "expansion/atelier-4.webp",
+      "expansion/atelier-5.webp"
+    ],
+    "roots": [
+      "expansion/roots-1.jpg",
+      "expansion/roots-2.jpg",
+      "expansion/roots-3.jpg",
+      "expansion/roots-4.jpg",
+      "expansion/roots-5.jpg"
+    ],
+    "daylight": [
+      "expansion/daylight-1.jpg",
+      "expansion/daylight-2.jpg",
+      "expansion/daylight-3.jpg",
+      "expansion/daylight-4.jpg",
+      "expansion/daylight-5.jpg"
+    ],
+    "tide": [
+      "expansion/tide-1.jpg",
+      "expansion/tide-2.webp",
+      "expansion/tide-3.webp",
+      "expansion/tide-4.jpg",
+      "expansion/tide-5.jpg"
+    ],
+    "morrow": [
+      "expansion/morrow-1.jpg",
+      "expansion/morrow-2.webp",
+      "expansion/morrow-3.jpg",
+      "expansion/morrow-4.jpg",
+      "expansion/morrow-5.jpg"
+    ],
+    "studioNine": [
+      "expansion/studioNine-1.jpg",
+      "expansion/studioNine-2.webp",
+      "expansion/studioNine-3.jpg",
+      "expansion/studioNine-4.png",
+      "expansion/studioNine-5.jpg"
+    ],
+    "wellspring": [
+      "expansion/wellspring-1.jpg",
+      "expansion/wellspring-2.jpg",
+      "expansion/wellspring-3.jpg",
+      "expansion/wellspring-4.jpg",
+      "expansion/wellspring-5.jpg"
+    ],
+    "circuit": [
+      "expansion/circuit-1.jpg",
+      "expansion/circuit-2.jpg",
+      "expansion/circuit-3.jpg",
+      "expansion/circuit-4.jpg",
+      "expansion/circuit-5.jpg"
+    ]
+  }
+}

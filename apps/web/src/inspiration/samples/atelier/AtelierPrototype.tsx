@@ -345,12 +345,13 @@ export default function AtelierPrototype({ draftId }: { draftId?: string }) {
       break;
     case 2:
       content = (
-        <>
+        <div style={{ animation: 'at-fade-in 0.4s ease' }}>
           <div className="at-three">
             {silhouettes.map((shape, i) => (
               <article
                 className={s.silhouette === i ? "at-card selected" : "at-card"}
                 key={shape.name}
+                style={{ transition: 'all 0.3s', transform: s.silhouette === i ? 'scale(1.02)' : 'scale(1)' }}
               >
                 <svg
                   viewBox="0 0 160 200"
@@ -367,10 +368,11 @@ export default function AtelierPrototype({ draftId }: { draftId?: string }) {
                 <p>{shape.note}</p>
                 <b>{money(shape.base)} 起 / 示例</b>
                 <button
+                  className={`at-action-btn ${s.silhouette === i ? 'primary' : ''}`}
                   aria-pressed={s.silhouette === i}
                   onClick={() => change({ silhouette: i })}
                 >
-                  选择{shape.name.split(" / ")[0]}廓形
+                  {s.silhouette === i ? "✓ 已选定" : `选择${shape.name.split(" / ")[0]}廓形`}
                 </button>
               </article>
             ))}
@@ -378,12 +380,12 @@ export default function AtelierPrototype({ draftId }: { draftId?: string }) {
           <p className="at-disclosure">
             三种方向共用你的量体记录；选择不代表该版型已经完成专业打版。
           </p>
-        </>
+        </div>
       );
       break;
     case 3:
       content = (
-        <>
+        <div style={{ animation: 'at-fade-in 0.4s ease' }}>
           <div className="at-material-hero">
             {image("textile", "酒红人字纹毛料")}
             <div>
@@ -420,15 +422,16 @@ export default function AtelierPrototype({ draftId }: { draftId?: string }) {
                   <p>{f.care}</p>
                   <b>增项 {money(f.cost)}</b>
                   <button
+                    className={`at-action-btn ${s.fabric === i ? 'primary' : ''}`}
                     aria-pressed={s.fabric === i}
                     onClick={() => change({ fabric: i })}
                   >
-                    选用{f.name}
+                    {s.fabric === i ? "✓ 已选用" : `选用${f.name}`}
                   </button>
                 </article>
               ))}
           </div>
-        </>
+        </div>
       );
       break;
     case 4:
@@ -877,12 +880,13 @@ export default function AtelierPrototype({ draftId }: { draftId?: string }) {
               (meeting) => change({ meeting, appointmentSaved: false }),
             )}
             <button
+              className={`at-action-btn ${s.appointmentSaved ? 'is-saved' : 'primary'}`}
               onClick={() => {
                 change({ appointmentSaved: true });
                 msg("试衣意向已保存到方案，未预约或发送通知。");
               }}
             >
-              保存试衣意向
+              {s.appointmentSaved ? "✓ 意向已保存在本地" : "保存试衣意向"}
             </button>
             <p>
               {s.appointmentSaved ? "已保存：" : "当前草稿："}
@@ -957,7 +961,7 @@ export default function AtelierPrototype({ draftId }: { draftId?: string }) {
             {range("示例税率百分比", s.tax, 0, 15, (tax) => change({ tax }))}
           </div>
           {quoteTable}
-          <button onClick={() => exportCSV(s)}>下载费用 CSV</button>
+          <button className="at-action-btn primary" onClick={() => exportCSV(s)}>下载费用 CSV</button>
           <p>
             全部金额为示例；税费基于折后金额演算，不提供税务意见。CSV
             不是正式账单。
@@ -968,12 +972,13 @@ export default function AtelierPrototype({ draftId }: { draftId?: string }) {
     case 18:
       content = (
         <div className="at-two">
-          <div>
+          <div style={{ animation: 'at-fade-in 0.4s ease' }}>
             {checks(fitLabels, s.fitChecks, (fitChecks) =>
               change({ fitChecks }),
             )}
             {text("本次试衣观察", "fitNotes", true)}
             <button
+              className="at-action-btn primary"
               onClick={() => {
                 if (s.fitNotes.trim().length < 6) {
                   msg("请至少写 6 个字符描述试衣观察。");
@@ -1037,7 +1042,7 @@ export default function AtelierPrototype({ draftId }: { draftId?: string }) {
                 </p>
               )}
               <button
-                className="at-primary"
+                className={`at-action-btn ${issues.length > 0 ? '' : 'primary'}`}
                 disabled={issues.length > 0}
                 onClick={() => {
                   if (problems(s).length) return;
@@ -1070,7 +1075,7 @@ export default function AtelierPrototype({ draftId }: { draftId?: string }) {
                   msg("本地演示单已生成；未付款、未锁库存、未发送。");
                 }}
               >
-                生成本地演示单
+                {issues.length > 0 ? "请先修复上述问题" : "生成本地演示单"}
               </button>
             </div>
             <aside className="at-receipt">
@@ -1142,6 +1147,7 @@ export default function AtelierPrototype({ draftId }: { draftId?: string }) {
                 <h3>{stage}</h3>
                 <p>{stageNotes[i]}</p>
                 <button
+                  className="at-action-btn primary"
                   disabled={
                     !s.order ||
                     s.order.status === "cancelled" ||
@@ -1150,15 +1156,17 @@ export default function AtelierPrototype({ draftId }: { draftId?: string }) {
                   onClick={() =>
                     change({ order: { ...s.order!, progress: i + 1 } })
                   }
+                  style={{ opacity: s.order && s.order.progress > i ? 0.6 : 1 }}
                 >
                   {s.order && s.order.progress > i
-                    ? "手动标记已完成"
+                    ? "✓ 已完成该阶段"
                     : "标记完成：" + stage}
                 </button>
               </article>
             ))}
           </div>
           <button
+            className="at-action-btn"
             disabled={
               !s.order ||
               s.order.status === "cancelled" ||

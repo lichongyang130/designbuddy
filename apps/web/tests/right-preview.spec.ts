@@ -82,17 +82,37 @@ test("右侧预览可以切换设备尺寸、刷新并手动收起与重新打�
 test("还没有生成网页的任务打开预览时给出明确说明，不伪造页面", async ({ page }) => {
   await seed(page, { artifact: false });
   await page.goto(`/tasks/${projectId}`);
-  await expect(panel(page)).toHaveCount(0);
-  await page.getByRole("button", { name: "右侧预览" }).click();
+  // The panel is open by default, so the task opens with the preview already visible.
   await expect(panel(page)).toBeVisible();
   await expect(panel(page)).toContainText("本机项目草稿");
   // The local draft is a real page, so the sandbox still renders it.
   await expect(page.frameLocator(".preview-side-panel iframe").locator("h1")).toHaveText("右侧预览标题");
+  await page.getByRole("button", { name: "右侧预览" }).click();
+  await expect(panel(page)).toHaveCount(0);
 });
 
-test("编辑器右侧预览分屏同时显示源码和实时预览", async ({ page }) => {
+test("任务页默认展开右侧预览，手机宽度下默认收起且仍可手动打开", async ({ page }) => {
+  await seed(page, { artifact: false });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto(`/tasks/${projectId}`);
+  await expect(panel(page)).toBeVisible();
+
+  // Phone-width viewports would be covered by the drawer, so it starts closed there.
+  await page.setViewportSize({ width: 390, height: 780 });
+  await page.reload();
+  await expect(panel(page)).toHaveCount(0);
+  await page.getByRole("button", { name: "右侧预览" }).click();
+  await expect(panel(page)).toBeVisible();
+});
+
+test("编辑器默认进入右侧预览分屏，同时显示源码和实时预览", async ({ page }) => {
   await seed(page, { artifact: true });
   await page.goto(`/editor/${projectId}`);
+  // “右侧预览” is the default canvas view, not something the reader has to find.
+  await expect(page.locator(".db-editor-split")).toBeVisible();
+  await expect(page.locator(".db-editor-split .db-code-editor textarea")).toHaveValue(/右侧预览标题/);
+  await expect(page.frameLocator(".db-editor-split iframe").locator("h1")).toHaveText("右侧预览标题");
+  // An explicit click keeps the split, and the other tabs keep their old behaviour.
   await page.getByRole("button", { name: "右侧预览", exact: true }).click();
   await expect(page.locator(".db-editor-split")).toBeVisible();
   await expect(page.locator(".db-editor-split .db-code-editor textarea")).toHaveValue(/右侧预览标题/);

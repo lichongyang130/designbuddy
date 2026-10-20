@@ -378,10 +378,10 @@ export default function FormePrototype({ draftId }: { draftId?: string }) {
   switch (state.page) {
     case 0:
       content = (
-        <>
+        <div style={{ animation: 'fm-fade-in 0.6s ease' }}>
           <section className="fm-hero">
             {img(images.room, "自然光下的概念客厅")}
-            <div>
+            <div className="fm-hero-text" style={{ animation: 'fm-rise 0.8s ease 0.2s both', opacity: 0 }}>
               <small>FORME / THE QUIET COLLECTION</small>
               <h1>
                 把日常，
@@ -393,7 +393,7 @@ export default function FormePrototype({ draftId }: { draftId?: string }) {
                 <br />
                 先找到，值得相处的物件。
               </p>
-              <button onClick={() => go(1)}>探索日常物件 ↗</button>
+              <button className="fm-action-btn primary" onClick={() => go(1)}>探索日常物件 ↗</button>
             </div>
             <span>01 / LIVING WITH INTENTION</span>
           </section>
@@ -409,10 +409,10 @@ export default function FormePrototype({ draftId }: { draftId?: string }) {
             </p>
           </div>
           <div className="fm-product-grid">{[0, 1].map(card)}</div>
-          <button className="fm-wide-link" onClick={() => go(6)}>
+          <button className="fm-wide-link fm-action-btn" onClick={() => go(6)}>
             先量好空间，再决定添置什么 <span>进入空间布局 ↗</span>
           </button>
-        </>
+        </div>
       );
       break;
     case 1: {
@@ -597,16 +597,17 @@ export default function FormePrototype({ draftId }: { draftId?: string }) {
                   }
                 />
               </label>
-              <button onClick={addCurrent}>
+              <button className="fm-action-btn primary" onClick={addCurrent}>
                 加入采购清单 · {money(price(selectedLine) * state.quantity)}
               </button>
               <button
-                className="fm-text-button"
+                className={`fm-text-button ${state.favorites.includes(state.selected) ? 'is-favorited' : ''}`}
                 onClick={() => toggleFavorite(state.selected)}
+                style={{ transition: 'color 0.3s' }}
               >
                 {state.favorites.includes(state.selected)
-                  ? "取消收藏"
-                  : "收藏这件物件"}
+                  ? "♥ 取消收藏"
+                  : "♡ 收藏这件物件"}
               </button>
             </div>
           </section>
@@ -619,9 +620,10 @@ export default function FormePrototype({ draftId }: { draftId?: string }) {
           <h2>构造与日常</h2>
           <p>{p.detail}</p>
           <div className="fm-actions">
-            <button onClick={() => go(5)}>查看尺寸与入户</button>
-            <button onClick={() => go(4)}>了解材质</button>
+            <button className="fm-action-btn" onClick={() => go(5)}>查看尺寸与入户</button>
+            <button className="fm-action-btn" onClick={() => go(4)}>了解材质</button>
             <button
+              className="fm-action-btn primary"
               onClick={() => {
                 update({
                   compare: [

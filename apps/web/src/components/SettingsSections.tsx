@@ -1,19 +1,31 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import {
   DEFAULT_KEYBINDINGS,
   KEYBINDING_ACTIONS,
   bindingFromEvent,
+  closeSettings,
   formatBinding,
   resetHomeScenes,
   resetKeybindings,
   setComposerDefaults,
+  setConsoleTheme,
+  setContentWidth,
   setDensity,
+  setFileIcons,
+  setFontStyle,
+  setGlassEffects,
   setHomeScenes,
   setKeybinding,
+  setLinkMode,
+  setLocale,
   setTheme,
   useModelOptions,
   usePreferences,
+  type ConsoleTheme,
+  type ContentWidth,
   type DensityMode,
+  type FileIconStyle,
+  type FontStyle,
   type KeybindingAction,
   type ThemeMode,
 } from "../../../../frontend/workspace/settingsStore";
@@ -28,8 +40,14 @@ import {
   usageStats,
 } from "../../../../frontend/workspace/settingsTransfer";
 import { translate, type I18nParams } from "../../../../frontend/workspace/i18n";
+import { LOCALE_OPTIONS } from "../../../../frontend/workspace/locales";
+import type { Locale } from "../../../../frontend/workspace/locales";
+import { navigateTo } from "../../../../frontend/workspace/workspaceRoutes";
 import { apiJSON, resetAPISession } from "../api/client";
 import { modeLabels, quickActionCatalog } from "./homeScenes";
+
+/** 与 settingsStore 的 linkMode 取值保持一致（该类型未导出）。 */
+type LinkMode = "smart" | "new-tab" | "same-tab";
 
 type T = (key: string, params?: I18nParams) => string;
 function useT(): T {
@@ -60,9 +78,76 @@ function useNotice() {
 
 /* ------------------------------- appearance ------------------------------- */
 
+/** 主题预览卡：三张卡对应真实可用的三种主题，点击即切换 html[data-theme]。 */
+const THEME_CARDS: { id: ThemeMode; labelKey: string }[] = [
+  { id: "system", labelKey: "settings.appearance.theme.system" },
+  { id: "light", labelKey: "settings.appearance.theme.light" },
+  { id: "dark", labelKey: "settings.appearance.theme.dark" },
+];
+
+const THEME_OPTIONS: { value: ThemeMode; labelKey: string }[] = [
+  { value: "system", labelKey: "settings.appearance.theme.system" },
+  { value: "light", labelKey: "settings.appearance.theme.light" },
+  { value: "dark", labelKey: "settings.appearance.theme.dark" },
+];
+
+const FONT_STYLES: { value: FontStyle; labelKey: string }[] = [
+  { value: "sans", labelKey: "settings.appearance.fontStyle.sans" },
+  { value: "serif", labelKey: "settings.appearance.fontStyle.serif" },
+];
+
+const CONTENT_WIDTHS: { value: ContentWidth; labelKey: string }[] = [
+  { value: "narrow", labelKey: "settings.appearance.contentWidth.narrow" },
+  { value: "standard", labelKey: "settings.appearance.contentWidth.standard" },
+  { value: "wide", labelKey: "settings.appearance.contentWidth.wide" },
+];
+
+const FILE_ICON_STYLES: { value: FileIconStyle; labelKey: string }[] = [
+  { value: "color", labelKey: "settings.appearance.fileIcons.color" },
+  { value: "mono", labelKey: "settings.appearance.fileIcons.mono" },
+];
+
+const LINK_MODES: { value: LinkMode; labelKey: string }[] = [
+  { value: "smart", labelKey: "settings.general.links.smart" },
+  { value: "new-tab", labelKey: "settings.general.links.newtab" },
+  { value: "same-tab", labelKey: "settings.general.links.sametab" },
+];
+
+/** 一行：左标题 + 说明，右控件。结构与参考界面一致。 */
+function AppearanceRow({
+  id,
+  title,
+  help,
+  children,
+}: {
+  id: string;
+  title: string;
+  help: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className="settings-appearance-row">
+      <div>
+        <span className="settings-appearance-name" id={id}>
+          {title}
+        </span>
+        <p>{help}</p>
+      </div>
+      <div className="settings-appearance-control">{children}</div>
+    </div>
+  );
+}
+
 export function AppearanceSettings({ onError }: { onError(message: string): void }) {
   const theme = usePreferences((state) => state.theme);
   const density = usePreferences((state) => state.density);
+  const locale = usePreferences((state) => state.locale);
+  const consoleTheme = usePreferences((state) => state.consoleTheme);
+  const fontStyle = usePreferences((state) => state.fontStyle);
+  const contentWidth = usePreferences((state) => state.contentWidth);
+  const fileIcons = usePreferences((state) => state.fileIcons);
+  const glassEffects = usePreferences((state) => state.glassEffects);
+  const linkMode = usePreferences((state) => state.linkMode);
   const t = useT();
   const change = (callback: () => void) => {
     try {
@@ -72,11 +157,6 @@ export function AppearanceSettings({ onError }: { onError(message: string): void
       onError(t("settings.storageError"));
     }
   };
-  const themes: { id: ThemeMode; labelKey: string; hintKey: string }[] = [
-    { id: "system", labelKey: "settings.appearance.theme.system", hintKey: "settings.appearance.theme.system.hint" },
-    { id: "light", labelKey: "settings.appearance.theme.light", hintKey: "settings.appearance.theme.light.hint" },
-    { id: "dark", labelKey: "settings.appearance.theme.dark", hintKey: "settings.appearance.theme.dark.hint" },
-  ];
   const densities: { id: DensityMode; labelKey: string; hintKey: string }[] = [
     { id: "comfortable", labelKey: "settings.appearance.density.comfort", hintKey: "settings.appearance.density.comfort.hint" },
     { id: "compact", labelKey: "settings.appearance.density.compact", hintKey: "settings.appearance.density.compact.hint" },
@@ -86,54 +166,254 @@ export function AppearanceSettings({ onError }: { onError(message: string): void
       <h2 className="settings-section-label" id="settings-appearance-title">
         {t("settings.appearance.title")} <SourceBadge sourceKey="settings.source.local" />
       </h2>
-      <div className="settings-card">
-        <div className="settings-row">
+      <div className="settings-appearance">
+        <h3 className="settings-appearance-heading">{t("settings.appearance.styleTitle")}</h3>
+        <div className="settings-appearance-rule" />
+
+        <div className="settings-appearance-row">
           <div>
-            <span id="settings-theme-label">{t("settings.appearance.theme")}</span>
-            <p>{t("settings.appearance.theme.help")}</p>
+            <span className="settings-appearance-name" id="settings-appearance-mode">
+              {t("settings.appearance.mode")}
+            </span>
+            <p>{t("settings.appearance.mode.help")}</p>
           </div>
-          <div className="settings-radio-group" role="radiogroup" aria-labelledby="settings-theme-label">
-            {themes.map((item) => (
-              <button
-                key={item.id}
-                role="radio"
-                aria-checked={theme === item.id}
-                className={theme === item.id ? "is-active" : ""}
-                title={t(item.hintKey)}
-                onClick={() => change(() => setTheme(item.id))}
+          <div className="settings-appearance-control">
+            <span className="settings-appearance-select">
+              <span className="settings-appearance-swatch" data-mode={theme} aria-hidden="true" />
+              <select
+                aria-labelledby="settings-appearance-mode"
+                value={theme}
+                onChange={(event) => change(() => setTheme(event.target.value as ThemeMode))}
               >
-                <span>{t(item.labelKey)}</span>
-                <small>{t(item.hintKey)}</small>
-              </button>
-            ))}
+                {THEME_OPTIONS.map((item) => (
+                  <option key={item.value} value={item.value}>
+                    {t(item.labelKey)}
+                  </option>
+                ))}
+              </select>
+              <span className="settings-appearance-caret" aria-hidden="true" />
+            </span>
+            <button
+              type="button"
+              className="settings-appearance-icon-button"
+              aria-label={t("settings.appearance.mode.toggle")}
+              title={t("settings.appearance.mode.toggle")}
+              onClick={() => change(() => setTheme(theme === "dark" ? "light" : "dark"))}
+            >
+              <span aria-hidden="true">◐</span>
+            </button>
           </div>
         </div>
-        <div className="settings-row">
+
+        <div
+          className="settings-appearance-previews"
+          role="radiogroup"
+          aria-label={t("settings.appearance.preview.group")}
+        >
+          {THEME_CARDS.map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              role="radio"
+              aria-checked={theme === item.id}
+              data-theme-preview={item.id}
+              className={theme === item.id ? "settings-appearance-card is-active" : "settings-appearance-card"}
+              onClick={() => change(() => setTheme(item.id))}
+            >
+              <span className="settings-appearance-preview" aria-hidden="true">
+                <span className="settings-appearance-preview-bar" />
+                <span className="settings-appearance-preview-dot" />
+                <span className="settings-appearance-preview-panel" />
+                <span className="settings-appearance-preview-line is-wide" />
+                <span className="settings-appearance-preview-line" />
+              </span>
+              <span className="settings-appearance-card-label">{t(item.labelKey)}</span>
+            </button>
+          ))}
+        </div>
+
+        <div className="settings-appearance-rule" />
+        <AppearanceRow
+          id="settings-appearance-console-theme"
+          title={t("settings.appearance.consoleTheme")}
+          help={t("settings.appearance.consoleTheme.help")}
+        >
+          <span className="settings-appearance-select">
+            <select
+              aria-labelledby="settings-appearance-console-theme"
+              value={consoleTheme}
+              onChange={(event) =>
+                change(() => setConsoleTheme(event.target.value as ConsoleTheme))
+              }
+            >
+              {THEME_OPTIONS.map((item) => (
+                <option key={item.value} value={item.value}>
+                  {t(item.labelKey)}
+                </option>
+              ))}
+            </select>
+            <span className="settings-appearance-caret" aria-hidden="true" />
+          </span>
+        </AppearanceRow>
+
+        <div className="settings-appearance-rule" />
+        <AppearanceRow
+          id="settings-appearance-links"
+          title={t("settings.general.links")}
+          help={t("settings.general.links.help")}
+        >
+          <span className="settings-appearance-select">
+            <select
+              aria-label={t("settings.appearance.links.label")}
+              value={linkMode}
+              onChange={(event) => change(() => setLinkMode(event.target.value as LinkMode))}
+            >
+              {LINK_MODES.map((item) => (
+                <option key={item.value} value={item.value}>
+                  {t(item.labelKey)}
+                </option>
+              ))}
+            </select>
+            <span className="settings-appearance-caret" aria-hidden="true" />
+          </span>
+        </AppearanceRow>
+
+        <div className="settings-appearance-rule" />
+        <AppearanceRow
+          id="settings-appearance-language"
+          title={t("settings.appearance.language")}
+          help={t("settings.appearance.language.help")}
+        >
+          <span className="settings-appearance-select is-wide">
+            <select
+              aria-label={t("settings.appearance.language.label")}
+              value={locale}
+              onChange={(event) => change(() => setLocale(event.target.value as Locale))}
+            >
+              {LOCALE_OPTIONS.map(({ value, label }) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
+            <span className="settings-appearance-caret" aria-hidden="true" />
+          </span>
+        </AppearanceRow>
+
+        <div className="settings-appearance-rule" />
+        <AppearanceRow
+          id="settings-appearance-font-style"
+          title={t("settings.appearance.fontStyle")}
+          help={t("settings.appearance.fontStyle.help")}
+        >
+          <span className="settings-appearance-select">
+            <select
+              aria-labelledby="settings-appearance-font-style"
+              value={fontStyle}
+              onChange={(event) => change(() => setFontStyle(event.target.value as FontStyle))}
+            >
+              {FONT_STYLES.map((item) => (
+                <option key={item.value} value={item.value}>
+                  {t(item.labelKey)}
+                </option>
+              ))}
+            </select>
+            <span className="settings-appearance-caret" aria-hidden="true" />
+          </span>
+        </AppearanceRow>
+
+        <div className="settings-appearance-rule" />
+        <AppearanceRow
+          id="settings-appearance-content-width"
+          title={t("settings.appearance.contentWidth")}
+          help={t("settings.appearance.contentWidth.help")}
+        >
+          <span className="settings-appearance-select">
+            <select
+              aria-labelledby="settings-appearance-content-width"
+              value={contentWidth}
+              onChange={(event) =>
+                change(() => setContentWidth(event.target.value as ContentWidth))
+              }
+            >
+              {CONTENT_WIDTHS.map((item) => (
+                <option key={item.value} value={item.value}>
+                  {t(item.labelKey)}
+                </option>
+              ))}
+            </select>
+            <span className="settings-appearance-caret" aria-hidden="true" />
+          </span>
+        </AppearanceRow>
+
+        <div className="settings-appearance-rule" />
+        <AppearanceRow
+          id="settings-appearance-file-icons"
+          title={t("settings.appearance.fileIcons")}
+          help={t("settings.appearance.fileIcons.help")}
+        >
+          <span className="settings-appearance-select">
+            <select
+              aria-labelledby="settings-appearance-file-icons"
+              value={fileIcons}
+              onChange={(event) =>
+                change(() => setFileIcons(event.target.value as FileIconStyle))
+              }
+            >
+              {FILE_ICON_STYLES.map((item) => (
+                <option key={item.value} value={item.value}>
+                  {t(item.labelKey)}
+                </option>
+              ))}
+            </select>
+            <span className="settings-appearance-caret" aria-hidden="true" />
+          </span>
+        </AppearanceRow>
+
+        <div className="settings-appearance-rule" />
+        <AppearanceRow
+          id="settings-appearance-glass"
+          title={t("settings.appearance.glass")}
+          help={t("settings.appearance.glass.help")}
+        >
+          <button
+            type="button"
+            role="switch"
+            aria-checked={glassEffects}
+            aria-labelledby="settings-appearance-glass"
+            className="settings-appearance-switch"
+            onClick={() => change(() => setGlassEffects(!glassEffects))}
+          />
+        </AppearanceRow>
+
+        <div className="settings-appearance-rule" />
+        <div className="settings-appearance-row">
           <div>
             <span id="settings-density-label">{t("settings.appearance.density")}</span>
             <p>{t("settings.appearance.density.help")}</p>
           </div>
-          <div className="settings-radio-group" role="radiogroup" aria-labelledby="settings-density-label">
-            {densities.map((item) => (
-              <button
-                key={item.id}
-                role="radio"
-                aria-checked={density === item.id}
-                className={density === item.id ? "is-active" : ""}
-                title={t(item.hintKey)}
-                onClick={() => change(() => setDensity(item.id))}
-              >
-                <span>{t(item.labelKey)}</span>
-                <small>{t(item.hintKey)}</small>
-              </button>
-            ))}
+          <div className="settings-appearance-control">
+            <div className="settings-radio-group" role="radiogroup" aria-labelledby="settings-density-label">
+              {densities.map((item) => (
+                <button
+                  key={item.id}
+                  role="radio"
+                  aria-checked={density === item.id}
+                  className={density === item.id ? "is-active" : ""}
+                  title={t(item.hintKey)}
+                  onClick={() => change(() => setDensity(item.id))}
+                >
+                  <span>{t(item.labelKey)}</span>
+                  <small>{t(item.hintKey)}</small>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
     </section>
   );
 }
-
 /* -------------------------------- shortcuts ------------------------------- */
 
 const FIXED_SHORTCUTS: [string, string][] = [
@@ -657,14 +937,174 @@ export function DataSettings({ onError }: { onError(message: string): void }) {
 
 /* ---------------------------------- plan ---------------------------------- */
 
+/**
+ * 套餐与积分面板（版式来自 2026-10-18 的参考截图）。
+ *
+ * 面板里的版本、积分余额、用量与日期都是截图里的静态展示内容，不是本机或服务端读到的
+ * 真实数据：仓库没有接入积分、订阅或支付服务，所以这些数字不会被写入、扣除或同步。
+ * “升级套餐”打开的仍是真实说明（不能下单），“查看明细”跳到个人主页的账号与数据。
+ */
+const CREDIT_TOTALS = [
+  { label: "套餐基础积分", value: "0" },
+  { label: "平台奖励积分", value: "193.4" },
+  { label: "购买积分", value: "0" },
+];
+
+const CREDIT_ROWS = [
+  {
+    name: "套餐基础积分",
+    meta: "下次刷新时间 2026/11/01 00:00:00",
+    used: "100/100",
+    remain: "0%",
+    percent: 100,
+  },
+  {
+    name: "平台奖励积分",
+    meta: "最近到期时间 2026/10/28 02:20:24",
+    used: "346.6/540",
+    remain: "35%",
+    percent: 64.2,
+  },
+];
+
+export function PlanUpgradeDialog({
+  open,
+  onClose,
+}: {
+  open: boolean;
+  onClose(): void;
+}) {
+  const element = useRef<HTMLDialogElement>(null);
+  useEffect(() => {
+    const dialog = element.current;
+    if (!dialog) return;
+    if (open && !dialog.open) dialog.showModal();
+    else if (!open && dialog.open) dialog.close();
+  }, [open]);
+  return (
+    <dialog
+      ref={element}
+      className="settings-plan-dialog"
+      aria-labelledby="settings-plan-dialog-title"
+      onCancel={(event) => {
+        event.preventDefault();
+        onClose();
+      }}
+      onClick={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}
+    >
+      <header className="settings-plan-dialog__header">
+        <h2 id="settings-plan-dialog-title">付费套餐暂未接入</h2>
+        <button
+          type="button"
+          className="settings-plan-dialog__close"
+          aria-label="关闭升级说明"
+          onClick={onClose}
+        >
+          ×
+        </button>
+      </header>
+      <p>
+        这里展示的是本机免费版本信息。订阅购买、钱包余额、自动充值和云端额度服务还没有接入，
+        因此不会创建订单或产生扣费。
+      </p>
+      <div className="settings-plan-dialog__actions">
+        <button type="button" className="settings-button is-primary" onClick={onClose}>
+          知道了
+        </button>
+      </div>
+    </dialog>
+  );
+}
+
+function PlanCreditsPanel() {
+  const [upgradeOpen, setUpgradeOpen] = useState(false);
+  return (
+    <>
+      <div className="settings-credits-card" role="region" aria-label="积分余额">
+        <div className="settings-credits-top">
+          <span className="settings-credits-edition">免费版</span>
+          <button
+            type="button"
+            className="settings-credits-upgrade"
+            onClick={() => setUpgradeOpen(true)}
+          >
+            升级套餐
+          </button>
+        </div>
+        <div className="settings-credits-divider" />
+        <div className="settings-credits-total">
+          <strong aria-label="总剩余积分 193.4">193.4</strong>
+          <span>总剩余积分</span>
+        </div>
+        <dl className="settings-credits-grid">
+          {CREDIT_TOTALS.map((item) => (
+            <div key={item.label}>
+              <dt>{item.label}</dt>
+              <dd>{item.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+
+      <h3 className="settings-credits-heading">积分明细</h3>
+      <div className="settings-credits-card" role="region" aria-label="积分明细">
+        {CREDIT_ROWS.map((row) => (
+          <div className="settings-credits-row" key={row.name}>
+            <strong>{row.name}</strong>
+            <div className="settings-credits-meta">
+              <span>{row.meta}</span>
+              <span className="settings-credits-usage">
+                已使用 {row.used}
+                <i>剩余 {row.remain}</i>
+              </span>
+            </div>
+            <div
+              className="settings-credits-bar"
+              role="progressbar"
+              aria-label={`${row.name}已使用 ${row.used}`}
+              aria-valuenow={Math.round(row.percent)}
+              aria-valuemin={0}
+              aria-valuemax={100}
+            >
+              <span style={{ width: `${row.percent}%` }} />
+            </div>
+          </div>
+        ))}
+        <button
+          type="button"
+          className="settings-credits-details"
+          onClick={() => {
+            closeSettings();
+            navigateTo("/profile");
+          }}
+        >
+          查看明细
+          <span aria-hidden="true">›</span>
+        </button>
+      </div>
+
+      <PlanUpgradeDialog open={upgradeOpen} onClose={() => setUpgradeOpen(false)} />
+    </>
+  );
+}
+
 export function PlanSettings() {
   const [stats, setStats] = useState(usageStats);
   const t = useT();
   return (
-    <section aria-labelledby="settings-plan-title">
-      <h2 className="settings-section-label" id="settings-plan-title">
-        {t("settings.plan.title")} <SourceBadge sourceKey="settings.source.local" />
-      </h2>
+    <>
+      <section aria-labelledby="settings-plan-credits-title">
+        <h2 className="settings-section-label" id="settings-plan-credits-title">
+          套餐与积分
+        </h2>
+        <PlanCreditsPanel />
+      </section>
+      <section aria-labelledby="settings-plan-title">
+        <h2 className="settings-section-label" id="settings-plan-title">
+          {t("settings.plan.title")} <SourceBadge sourceKey="settings.source.local" />
+        </h2>
       <div className="settings-card">
         <div className="settings-row">
           <div>
@@ -701,6 +1141,7 @@ export function PlanSettings() {
         </dl>
         <p className="settings-card-foot">{t("settings.plan.footnote")}</p>
       </div>
-    </section>
+      </section>
+    </>
   );
 }

@@ -109,6 +109,11 @@ export default function App() {
 
   const theme = usePreferences((state) => state.theme);
   const density = usePreferences((state) => state.density);
+  const consoleTheme = usePreferences((state) => state.consoleTheme);
+  const fontStyle = usePreferences((state) => state.fontStyle);
+  const contentWidth = usePreferences((state) => state.contentWidth);
+  const fileIcons = usePreferences((state) => state.fileIcons);
+  const glassEffects = usePreferences((state) => state.glassEffects);
   const locale = usePreferences((state) => state.locale);
   const t = (key: string, params?: Record<string, string | number>) =>
     translate(locale, key, params);
@@ -139,6 +144,33 @@ export default function App() {
   useEffect(() => {
     document.documentElement.dataset.density = density;
   }, [density]);
+  useEffect(() => {
+    const root = document.documentElement;
+    const apply = () => {
+      const osDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const interfaceDark = theme === "dark" || (theme === "system" && osDark);
+      root.dataset.consoleTheme =
+        consoleTheme === "dark" || (consoleTheme === "system" && interfaceDark)
+          ? "dark"
+          : "light";
+    };
+    apply();
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    media.addEventListener("change", apply);
+    return () => media.removeEventListener("change", apply);
+  }, [consoleTheme, theme]);
+  useEffect(() => {
+    document.documentElement.dataset.fontStyle = fontStyle;
+  }, [fontStyle]);
+  useEffect(() => {
+    document.documentElement.dataset.contentWidth = contentWidth;
+  }, [contentWidth]);
+  useEffect(() => {
+    document.documentElement.dataset.fileIcons = fileIcons;
+  }, [fileIcons]);
+  useEffect(() => {
+    document.documentElement.dataset.glass = glassEffects ? "on" : "off";
+  }, [glassEffects]);
   useRuntimeActivity(busy);
   const runtimeActivityCount = useRuntimeActivityState((state) => state.activeCount);
   const wakeLockWanted = usePreferences((state) => state.wakeLock);

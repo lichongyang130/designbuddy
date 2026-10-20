@@ -71,7 +71,8 @@ export default function ProjectEditorPage({ projectId }: { projectId: string }) 
   const [project, setProject] = useState<DesignProject | null>(() => getProject(projectId) ?? null);
   const [activePath, setActivePath] = useState("index.html");
   const [interactivePreview, setInteractivePreview] = useState(false);
-  const [view, setView] = useState<"preview" | "code" | "split">("preview");
+  // “右侧预览”分屏是默认视图：左边源码、右边实时预览，两个标签仍可切回单栏。
+  const [view, setView] = useState<"preview" | "code" | "split">("split");
   const [device, setDevice] = useState<"desktop" | "tablet" | "mobile">("desktop");
   const [notice, setNotice] = useState("");
   const [saveFailed, setSaveFailed] = useState(false);
@@ -398,7 +399,7 @@ export default function ProjectEditorPage({ projectId }: { projectId: string }) 
       setGenerationStatus("complete");
       setChatMessages((messages) => [...messages, { id: crypto.randomUUID(), role: "assistant", content: "源码已生成并保存到本机项目。请检查预览，确认后再同步云端。" }]);
       setNotice("AI 已返回源码并更新本机项目。请检查预览，确认后再同步云端。");
-      setView("preview");
+      setView("split");
     } catch (cause) {
       const message = (cause instanceof Error ? cause.message : "AI 生成失败；") + " 本机草稿已保留，可稍后重试。";
       setGenerationStatus("error");

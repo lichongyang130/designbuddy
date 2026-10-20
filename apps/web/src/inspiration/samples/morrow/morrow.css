@@ -12,17 +12,32 @@
 .mr-shell * {
   box-sizing: border-box;
 }
+@keyframes mr-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes mr-slide-up { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
 .mr-shell button {
   font: inherit;
   color: inherit;
   border: 1px solid #bd9ca4;
   background: transparent;
   padding: 10px 17px;
-  border-radius: 3px;
+  border-radius: 4px;
   cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 .mr-shell button:hover:not(:disabled) {
   background: #f0dcd7;
+  transform: translateY(-1px);
+}
+.mr-shell button.mr-primary {
+  background: #9e6276;
+  color: #fff;
+  border: none;
+}
+.mr-shell button.mr-primary:hover:not(:disabled) {
+  background: #804d5e;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(158,98,118,0.25);
 }
 .mr-shell button:disabled {
   opacity: 0.4;

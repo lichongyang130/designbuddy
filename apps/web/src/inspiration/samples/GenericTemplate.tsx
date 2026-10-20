@@ -4,6 +4,8 @@
  */
 
 import { useSampleState, SampleTop, copySample, Notice, Credits, type Photo } from './shared';
+import filmUrl from "../../assets/media/lakeside-film.mp4";
+import audioUrl from "../../assets/media/soft-signals.wav";
 
 interface GenericTemplateState {
   page: number;
@@ -19,6 +21,7 @@ const defaultState: GenericTemplateState = {
 
 interface GenericTemplateProps {
   templateId: string;
+  category?: string;
   templateTitle: string;
   templateDescription: string;
   photos: Photo[];
@@ -27,6 +30,7 @@ interface GenericTemplateProps {
 
 export default function GenericTemplate({
   templateId,
+  category,
   templateTitle,
   templateDescription,
   photos,
@@ -70,6 +74,17 @@ export default function GenericTemplate({
       </div>
 
       <div className="generic-template-content">
+        {category === "视频" && (
+          <div className="generic-template-media">
+            <video src={filmUrl} controls playsInline style={{ width: '100%', borderRadius: '12px', background: '#000' }} />
+          </div>
+        )}
+        {category === "音频" && (
+          <div className="generic-template-media" style={{ padding: '20px', background: '#f3f4f6', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <audio src={audioUrl} controls style={{ width: '80%' }} />
+          </div>
+        )}
+
         <div className="generic-template-preview">
           {photos[state.page] && (
             <img
@@ -143,18 +158,22 @@ export default function GenericTemplate({
         .generic-template-hero {
           text-align: center;
           padding: 40px 20px;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          background: linear-gradient(135deg, #0f111a 0%, #1e1b4b 100%);
+          box-shadow: 0 20px 40px -10px rgba(0,0,0,0.3);
           color: white;
           border-radius: 16px;
           margin-bottom: 32px;
         }
 
         .generic-template-hero h2 {
+          font-weight: 800;
+          letter-spacing: -0.02em;
           font-size: 32px;
           margin: 0 0 12px 0;
         }
 
         .generic-template-hero p {
+          color: #9ca3af;
           font-size: 16px;
           opacity: 0.9;
           margin: 0;
@@ -196,12 +215,18 @@ export default function GenericTemplate({
           border-radius: 8px;
           cursor: pointer;
           font-size: 14px;
-          transition: all 0.2s;
+          transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
         .generic-template-controls button:hover:not(:disabled) {
           background: #f9fafb;
           border-color: #667eea;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(102,126,234,0.15);
+        }
+
+        .generic-template-controls button:active:not(:disabled) {
+          transform: translateY(0);
         }
 
         .generic-template-controls button:disabled {
@@ -210,6 +235,7 @@ export default function GenericTemplate({
         }
 
         .generic-template-info {
+          border-left: 4px solid #4f46e5;
           padding: 20px;
           background: white;
           border-radius: 12px;
@@ -259,27 +285,32 @@ export default function GenericTemplate({
         }
 
         .thumbnail {
+          aspect-ratio: 4/3;
           position: relative;
           border: 2px solid transparent;
           border-radius: 8px;
           overflow: hidden;
           cursor: pointer;
-          transition: all 0.2s;
+          transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
           background: white;
           padding: 0;
         }
 
         .thumbnail:hover {
           border-color: #667eea;
-          transform: translateY(-2px);
+          transform: translateY(-4px);
+          box-shadow: 0 6px 16px rgba(102, 126, 234, 0.2);
         }
 
         .thumbnail.active {
           border-color: #667eea;
           box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+          transform: translateY(-2px);
         }
 
         .thumbnail img {
+          height: 100%;
+          object-fit: cover;
           width: 100%;
           height: 80px;
           object-fit: cover;

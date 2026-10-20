@@ -292,14 +292,14 @@ export default function RootsPrototype({ draftId }: { draftId?: string }) {
             <p>
               建议分别在上午、中午和下午观察；跨季节阴影会变化。没有测光设备时不要把这个数值当作精确的植物光合数据。
             </p>
-            <button onClick={() => go(8)}>查看已选植物的光照初筛 →</button>
+            <button className="primary" onClick={() => go(8)}>查看已选植物的光照初筛 →</button>
           </div>
         </div>
       );
       break;
     case 4:
       body = (
-        <div className="rt-two">
+        <div className="rt-two" style={{ animation: 'rt-fade-in 0.4s ease' }}>
           {image("soil", "根团与土壤观察")}
           <div>
             {select("观察到的土质", s.soil, ["偏砂", "均衡", "偏黏"], (soil) =>
@@ -309,9 +309,9 @@ export default function RootsPrototype({ draftId }: { draftId?: string }) {
               change({ drain }),
             )}
             {num("参考 pH 读数", "ph", 3, 10, 0.1)}
-            <p className="rt-warning">
+            <p className="rt-warning" style={{ animation: 'rt-rise 0.4s ease' }}>
               {s.drain === 2
-                ? "排水偏慢：采购植物前先查积水原因，不要只靠增加浇水频率管理。"
+                ? "⚠️ 排水偏慢：采购植物前先查积水原因，不要只靠增加浇水频率管理。"
                 : "先记录，后验证：本页不会生成改土用药处方。"}
             </p>
           </div>
@@ -320,7 +320,7 @@ export default function RootsPrototype({ draftId }: { draftId?: string }) {
       break;
     case 5:
       body = (
-        <>
+        <div style={{ animation: 'rt-fade-in 0.4s ease' }}>
           {select(
             "植物光照筛选",
             s.filter,
@@ -336,7 +336,7 @@ export default function RootsPrototype({ draftId }: { draftId?: string }) {
                   (s.filter === 1 ? p.light[0] >= 5 : p.light[0] < 5),
               )
               .map(({ p, i }) => (
-                <article className="rt-card" key={p.name}>
+                <article className="rt-card" key={p.name} style={{ transition: 'all 0.3s', transform: 'translateY(0)' }} onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
                   <small>PLANT / 0{i + 1}</small>
                   <h3>{p.name}</h3>
                   <i>{p.latin}</i>
@@ -345,6 +345,7 @@ export default function RootsPrototype({ draftId }: { draftId?: string }) {
                     {p.light.join("–")} h 日照 · {p.spread} cm 冠幅
                   </div>
                   <button
+                    className="primary"
                     onClick={() => {
                       patch({ selected: i, page: 6 });
                     }}
@@ -354,12 +355,12 @@ export default function RootsPrototype({ draftId }: { draftId?: string }) {
                 </article>
               ))}
           </div>
-        </>
+        </div>
       );
       break;
     case 6:
       body = (
-        <div className="rt-two">
+        <div className="rt-two" style={{ animation: 'rt-fade-in 0.4s ease' }}>
           {image(s.selected < 2 ? "sun" : "shade", "香草或阴生植物环境示意")}
           <div>
             {select(
@@ -384,16 +385,17 @@ export default function RootsPrototype({ draftId }: { draftId?: string }) {
               <dd>{money(plant.price)}</dd>
             </dl>
             <button
+              className="primary"
               onClick={() => {
                 change({
                   qty: s.qty.map((v, i) =>
                     i === s.selected ? Math.min(30, v + 1) : v,
                   ),
                 });
-                msg("已加入种植清单；没有采购。");
+                msg("🌱 已加入一株到种植清单；未触发实际采购。");
               }}
             >
-              加入一株
+              + 加入一株
             </button>
             <p>图片仅示意生长环境，不是当前物种的鉴定照片或实际库存。</p>
           </div>
@@ -402,7 +404,7 @@ export default function RootsPrototype({ draftId }: { draftId?: string }) {
       break;
     case 7:
       body = (
-        <>
+        <div style={{ animation: 'rt-fade-in 0.4s ease' }}>
           {qtyTable}
           <div className="rt-three">
             {stat(
@@ -421,12 +423,12 @@ export default function RootsPrototype({ draftId }: { draftId?: string }) {
               "价格为示例。",
             )}
           </div>
-        </>
+        </div>
       );
       break;
     case 8:
       body = (
-        <>
+        <div style={{ animation: 'rt-fade-in 0.4s ease' }}>
           <div className="rt-cards">
             {plants.map(
               (p, i) =>
@@ -436,20 +438,23 @@ export default function RootsPrototype({ draftId }: { draftId?: string }) {
                       "rt-card " + (c.compatible[i] ? "is-good" : "is-warning")
                     }
                     key={p.name}
+                    style={{ transition: 'all 0.3s', transform: 'scale(1)' }}
                   >
-                    <small>{c.compatible[i] ? "初筛匹配" : "需要复核"}</small>
+                    <small style={{ color: c.compatible[i] ? 'var(--rt-lime)' : 'var(--rt-warn)' }}>
+                      {c.compatible[i] ? "✓ 初筛匹配" : "⚠️ 需要复核"}
+                    </small>
                     <h3>{p.name}</h3>
                     <p>
                       参考 {p.light.join("–")} h / 当前观察 {s.sun} h
                     </p>
                     <p>{p.note}</p>
-                    <button onClick={() => go(3)}>重新记录光照</button>
+                    <button className={c.compatible[i] ? '' : 'primary'} onClick={() => go(3)}>重新记录光照</button>
                   </article>
                 ),
             )}
           </div>
-          {!s.qty.some(Boolean) && <p>清单为空，请先添加植物。</p>}
-        </>
+          {!s.qty.some(Boolean) && <p style={{ opacity: 0.7 }}>清单为空，请先在「植物」图鉴中添加。</p>}
+        </div>
       );
       break;
     case 9:
@@ -510,17 +515,17 @@ export default function RootsPrototype({ draftId }: { draftId?: string }) {
               </button>
             </div>
           </div>
-          <p className="rt-warning">
+          <p className="rt-warning" style={{ animation: 'rt-fade-in 0.3s' }}>
             {overlaps(s).length
-              ? "示意冠幅重叠：" + overlaps(s).join("；")
-              : "当前代表点未检出冠幅重叠；不代表真实种植间距已通过复核。"}
+              ? "⚠️ 示意冠幅重叠：" + overlaps(s).join("；")
+              : "✅ 当前代表点未检出冠幅重叠；不代表真实种植间距已通过复核。"}
           </p>
         </>
       );
       break;
     case 10:
       body = (
-        <>
+        <div style={{ animation: 'rt-fade-in 0.4s ease' }}>
           <div className="rt-two">
             {plan}
             <div>
@@ -534,7 +539,7 @@ export default function RootsPrototype({ draftId }: { draftId?: string }) {
             c.bed + " L",
             "长 × 宽 × 深，未包含结构板材与排水层。",
           )}
-        </>
+        </div>
       );
       break;
     case 11:
@@ -791,6 +796,7 @@ export default function RootsPrototype({ draftId }: { draftId?: string }) {
             )}
             {text("本次养护观察", "notes", true)}
             <button
+              className="primary"
               onClick={() => {
                 if (s.notes.trim().length < 6) {
                   msg("请至少写 6 个字符记录观察。");
@@ -806,7 +812,7 @@ export default function RootsPrototype({ draftId }: { draftId?: string }) {
                     ...s.logs,
                   ].slice(0, 8),
                 });
-                msg("已保存独立养护记录，没有诊断或用药动作。");
+                msg("✅ 已保存独立养护记录，没有诊断或用药动作。");
               }}
             >
               保存养护记录
@@ -835,7 +841,7 @@ export default function RootsPrototype({ draftId }: { draftId?: string }) {
       break;
     case 20:
       body = (
-        <>
+        <div style={{ animation: 'rt-fade-in 0.4s ease' }}>
           <div className="rt-three">
             {num("项目预算（元）", "budget", 0, 100000, 100)}
             {num("示例税率（%）", "tax", 0, 20)}
@@ -873,15 +879,15 @@ export default function RootsPrototype({ draftId }: { draftId?: string }) {
             税费 {money(c.tax)}
             <strong data-testid="roots-total">{money(c.total)}</strong>
           </div>
-          <button onClick={() => csvExport(s)}>导出预算 CSV</button>
-        </>
+          <button className="primary" onClick={() => csvExport(s)}>导出预算 CSV</button>
+        </div>
       );
       break;
     case 21:
       body = (
         <ol className="rt-phases">
           {phases.map((v, i) => (
-            <li key={v}>
+            <li key={v} style={{ transition: 'all 0.3s', opacity: s.phase < i ? 0.6 : 1 }}>
               <span>{i + 1}</span>
               <div>
                 <h3>{v}</h3>
@@ -899,10 +905,11 @@ export default function RootsPrototype({ draftId }: { draftId?: string }) {
                 </p>
               </div>
               <button
+                className={s.phase > i ? '' : 'primary'}
                 disabled={s.phase !== i}
                 onClick={() => change({ phase: i + 1 })}
               >
-                {s.phase > i ? "已手动复核" : "完成复核"}
+                {s.phase > i ? "✓ 已手动复核" : "标记完成复核"}
               </button>
             </li>
           ))}
@@ -919,6 +926,7 @@ export default function RootsPrototype({ draftId }: { draftId?: string }) {
               {money(c.total)}
             </p>
             <button
+              className={`rt-action-btn ${(!s.reviewer.trim() || !s.qty.some(Boolean)) ? '' : 'primary'}`}
               disabled={!s.reviewer.trim() || !s.qty.some(Boolean)}
               onClick={() => {
                 if (s.review && !confirm("替换本地评审快照？请先导出旧方案。"))
@@ -937,7 +945,7 @@ export default function RootsPrototype({ draftId }: { draftId?: string }) {
                     status: "confirmed",
                   },
                 });
-                msg("本地评审快照已创建；不是采购或施工确认。");
+                msg("📌 本地评审快照已创建；不是采购或施工确认。");
               }}
             >
               确认本地方案快照
@@ -1088,6 +1096,7 @@ export default function RootsPrototype({ draftId }: { draftId?: string }) {
             className={"rt-page rt-page-" + s.page}
             aria-label={pages[s.page][0]}
             data-page={s.page}
+            style={{ animation: 'rt-fade-in 0.3s ease-out' }}
           >
             {s.page > 0 && (
               <header className="rt-heading">
