@@ -41,7 +41,7 @@ export default function ThemesPage() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [tab, setTab] = useState<ThemePreviewVariant>("cover");
   const [editing, setEditing] = useState<DeckTheme | null>(null);
-  const [editorErrors, setEditorErrors] = useState<string[]>([]);
+  const [saveErrors, setSaveErrors] = useState<string[]>([]);
   const [decks, setDecks] = useState<PptProject[]>([]);
 
   useEffect(() => {
@@ -75,7 +75,7 @@ export default function ThemesPage() {
 
   function editTheme(theme: DeckTheme) {
     setEditing(theme.kind === "preset" ? duplicateTheme(theme) : { ...theme });
-    setEditorErrors([]);
+    setSaveErrors([]);
   }
 
   function saveEditing() {
@@ -83,19 +83,22 @@ export default function ThemesPage() {
     const result = saveCustom(editing);
     if (result.ok) {
       setEditing(null);
-      setEditorErrors([]);
+      setSaveErrors([]);
       setNotice(
         result.warnings.length
           ? `已保存「${result.theme.name}」；有 ${result.warnings.length} 条对比度提醒，可按需调整。`
           : `已保存「${result.theme.name}」。`,
       );
     } else {
-      setEditorErrors(result.errors);
+      setSaveErrors(result.errors);
     }
   }
 
   const warnings = editing ? validateDeckTheme(editing) : null;
   const editorWarnings = warnings?.ok ? warnings.warnings : [];
+  // Blocking problems come from live validation, so the reason is visible while
+  // typing instead of only after a failed save.
+  const editorErrors = warnings && !warnings.ok ? warnings.errors : saveErrors;
   const editorValid = warnings?.ok ?? false;
 
   return (
@@ -123,7 +126,7 @@ export default function ThemesPage() {
               className="th-primary"
               onClick={() => {
                 setEditing(blankTheme());
-                setEditorErrors([]);
+                setSaveErrors([]);
               }}
             >
               ＋ 新建主题
@@ -290,7 +293,7 @@ export default function ThemesPage() {
                   const copy = duplicateTheme(selected);
                   setDefault(copy.id);
                   setEditing(copy);
-                  setEditorErrors([]);
+                  setSaveErrors([]);
                   setSelectedId(null);
                   setNotice(`已复制为「${copy.name}」，保存后即可使用。`);
                 }}

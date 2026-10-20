@@ -10,7 +10,7 @@ test("sidebar uses DesignBuddy and the requested entries in order", async ({
     page.locator(
       ".app-sidebar > .sidebar-nav-item, .sidebar-navigation > .sidebar-nav-item",
     ),
-  ).toHaveText(["首页", "插件", "模版", "定时任务", "工作流", "更多"]);
+  ).toHaveText(["首页", "插件", "主题", "模版", "定时任务", "工作流", "更多"]);
   await expect(
     page.getByRole("button", { name: "首页", exact: true }),
   ).toHaveAttribute("aria-current", "page");
