@@ -5,6 +5,8 @@ export interface PptProject {
   title: string;
   prompt: string;
   slides: Slide[];
+  frameworkId?: string;
+  frameworkName?: string;
   createdAt: string;
   updatedAt: string;
 }

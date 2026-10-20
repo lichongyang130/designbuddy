@@ -4,7 +4,6 @@ import { WorkBuddySidebar } from "../../../apps/web/src/components/WorkBuddySide
 import { HomeIcon } from "../../../apps/web/src/components/HomeIcon";
 import { listProjects } from "../projectStore";
 import {
-  buildDefaultSlides,
   createPptProject,
   deletePptProject,
   getPptProject,
@@ -12,6 +11,8 @@ import {
   savePptProject,
   type PptProject,
 } from "../pptStore";
+import { buildSlidesWithFramework, getFramework, pickSingleFramework } from "../pptFrameworks";
+import { buildDefaultSlides } from "../pptStore";
 import type { Slide } from "../../../apps/web/src/components/scene-demos/Slides";
 import { exportPptx } from "../../../apps/web/src/components/scene-demos/Slides";
 import "./ppt-page.css";
@@ -219,9 +220,21 @@ export default function PptPage({ pptId }: Props) {
   const handleCreateFromPrompt = () => {
     const prompt = window.prompt("输入 PPT 主题，例如：Q4 季度汇报 · 运营总结", "");
     if (!prompt?.trim()) return;
-    const slides = buildDefaultSlides(prompt);
-    const created = createPptProject(prompt, undefined, slides);
-    navigateTo(`/ppt/${encodeURIComponent(created.id)}`);
+    const outlineId = crypto.randomUUID();
+    sessionStorage.setItem(`designbuddy.ppt.outline.${outlineId}`, JSON.stringify({ prompt: prompt.trim(), createdAt: Date.now() }));
+    navigateTo(`/ppt/outline/${encodeURIComponent(outlineId)}`);
+  };
+
+  const handleShuffleFramework = () => {
+    if (!project) return;
+    const exclude = project.frameworkId ? [project.frameworkId] : [];
+    const fw = pickSingleFramework(project.prompt, exclude);
+    if (!fw) return;
+    if (!confirm(`当前为「${project.frameworkName || "经典"}」框架，是否切换到「${fw.name}」？内容将按新框架重排，当前文字会被替换。`)) return;
+    const newSlides = buildSlidesWithFramework(project.prompt, fw.id);
+    setProject({ ...project, slides: newSlides, frameworkId: fw.id, frameworkName: fw.name });
+    setPage(0);
+    setMessage(`已切换到「${fw.name}」框架 · ${fw.narrative}`);
   };
 
   // 列表页：/ppt 无 id
@@ -313,6 +326,12 @@ export default function PptPage({ pptId }: Props) {
             <span className="ppt-meta">{index + 1} / {project.slides.length} 页</span>
           </div>
           <div className="ppt-toolbar-right">
+            {project.frameworkName && (
+              <span className="ppt-framework-badge" title={getFramework(project.frameworkId || "")?.narrative || ""}>
+                {project.frameworkName} · {project.slides.length}页
+              </span>
+            )}
+            <button className="ppt-ghost" onClick={handleShuffleFramework} title="从10套框架池里随机换一套，骨架不同">换个框架 🔀</button>
             <button className="ppt-ghost" onClick={handleAiFill} disabled={aiBusy}>{aiBusy ? "AI 思考中…" : "AI 智能填充 ✨"}</button>
             <button className="ppt-ghost" onClick={() => setPlaying(!playing)}>{playing ? "退出播放" : "全屏播放"}</button>
             <button className="ppt-primary" disabled={busy} onClick={handleExport}>{busy ? "正在生成…" : "导出 PPTX ↓"}</button>

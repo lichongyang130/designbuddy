@@ -9,7 +9,8 @@ import { navigateTo, normalizeAppPath } from "../../../frontend/workspace/worksp
 import { HomeIcon, type HomeIconName } from "./components/HomeIcon";
 import { modeLabels, quickActionCatalog } from "./components/homeScenes";
 import PptPage from "../../../frontend/workspace/pages/PptPage";
-import { isPptPrompt, buildDefaultSlides, createPptProject } from "../../../frontend/workspace/pptStore";
+import PptOutlinePicker from "../../../frontend/workspace/pages/PptOutlinePicker";
+import { isPptPrompt } from "../../../frontend/workspace/pptStore";
 import { HomeModeIcon } from "./components/HomeModeIcon";
 import { HomeAttachMenu } from "./components/HomeAttachMenu";
 import { HomeModelMenu, ModelGlyph } from "./components/HomeModelMenu";
@@ -469,16 +470,16 @@ export default function App() {
     }
     try {
       setBusy(true);
-      const slides = buildDefaultSlides(promptText);
-      const project = createPptProject(promptText, undefined, slides);
-      setProjects(listProjects());
+      // Gamma式：先到大纲页，让用户在 3 套不同框架里选
+      const outlineId = crypto.randomUUID();
+      sessionStorage.setItem(`designbuddy.ppt.outline.${outlineId}`, JSON.stringify({ prompt: promptText, createdAt: Date.now() }));
       setNotice("");
       setPrompt("");
       expertMatch.reset();
       setSelectedExpert("");
       setSelectedSkill("");
       setAttachments([]);
-      go(`/ppt/${encodeURIComponent(project.id)}`);
+      go(`/ppt/outline/${encodeURIComponent(outlineId)}`);
     } catch (cause) {
       setNotice(cause instanceof Error ? cause.message : "演示文稿创建失败");
     } finally {
@@ -595,6 +596,12 @@ export default function App() {
   }
   if (currentPath === "/projects") return <ProjectsPage />;
   if (currentPath === "/ppt" || currentPath === "/ppt/") return <PptPage />;
+  const pptOutlineMatch = currentPath.match(/^\/ppt\/outline\/([^/]+)$/);
+  if (pptOutlineMatch) {
+    let outlineId = pptOutlineMatch[1];
+    try { outlineId = decodeURIComponent(outlineId); } catch { /* raw */ }
+    return <PptOutlinePicker outlineId={outlineId} />;
+  }
   const pptMatch = currentPath.match(/^\/ppt\/([^/]+)$/);
   if (pptMatch) {
     let pptId = pptMatch[1];
