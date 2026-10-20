@@ -590,3 +590,11 @@
     gap: 8px;
   }
 }
+
+/* Explicit guest entry stays in the left auth form; artwork is unchanged. */
+.welcome-page--auth .auth-direct-entry { margin-top:12px; }
+.welcome-page--auth .auth-direct-entry button { display:flex; align-items:center; justify-content:center; gap:12px; width:100%; min-height:48px; padding:12px 16px; border:1px solid #a9bba0; border-radius:10px; background:#f0f5eb; color:#355130; font:inherit; font-size:14px; cursor:pointer; }
+.welcome-page--auth .auth-direct-entry button:hover { background:#e6eedf; border-color:#748e67; }
+.welcome-page--auth .auth-direct-entry button:focus-visible { outline:2px solid #466d3b; outline-offset:3px; }
+.welcome-page--auth .auth-direct-entry button:disabled { opacity:.55; cursor:wait; }
+.welcome-page--auth .auth-direct-entry p { margin:8px 0 0; color:#64715d; font-size:11px; line-height:1.7; text-align:center; }

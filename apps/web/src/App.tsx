@@ -83,15 +83,16 @@ export default function App() {
   const [promptGroupRevision, setPromptGroupRevision] = useState(0);
   const [notice, setNotice] = useState("");
   const [projects, setProjects] = useState<DesignProject[]>(() => listProjects());
+  const focusPromptOnEntry = useRef(false);
   const [guestEntry, setGuestEntry] = useState(() => {
     try { return localStorage.getItem("designbuddy.welcome-entered.v1") === "true"; }
     catch { return false; }
   });
-  function enterWorkspace(settings = false) {
+  function enterWorkspace(settings = false, home = false) {
     setGuestEntry(true);
     try { localStorage.setItem("designbuddy.welcome-entered.v1", "true"); }
     catch { /* In-memory entry still works when storage is blocked. */ }
-    const destination = settings || ["/welcome", "/login", "/register", "/auth"].includes(currentPath)
+    const destination = settings || home || ["/welcome", "/login", "/register", "/auth"].includes(currentPath)
       ? "/" : currentPath + window.location.search;
     go(destination);
     if (settings) openSettings("models");
@@ -113,6 +114,18 @@ export default function App() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const modelMenuRef = useRef<HTMLDivElement>(null);
   const composerRef = useRef<HTMLElement>(null);
+  function enterPrompt() {
+    focusPromptOnEntry.current = true;
+    enterWorkspace(false, true);
+  }
+  useLayoutEffect(() => {
+    if (!focusPromptOnEntry.current || currentPath !== "/" || !guestEntry) return;
+    const input = composerRef.current?.querySelector("textarea");
+    if (!input) return;
+    focusPromptOnEntry.current = false;
+    input.focus({ preventScroll: true });
+    input.scrollIntoView({ block: "center", behavior: "instant" });
+  }, [currentPath, guestEntry]);
   const startProjectRef = useRef<() => void>(() => {});
   const expertMatch = useExpertMatch({ prompt, mode, model, permission, attachments, selectedExpert, enabled: currentPath === "/" });
   useEffect(() => { if (expertMatch.blockedManual) setSelectedExpert(""); }, [expertMatch.blockedManual]);
@@ -526,8 +539,8 @@ export default function App() {
   startProjectRef.current = () => startProject();
 
   if (currentPath === "/welcome") return <WelcomePage onEnter={enterWorkspace} />;
-  if (AUTH_GATE_ENABLED && (currentPath === "/login" || currentPath === "/auth")) return <LoginPage />;
-  if (AUTH_GATE_ENABLED && currentPath === "/register") return <RegisterPage />;
+  if (AUTH_GATE_ENABLED && (currentPath === "/login" || currentPath === "/auth")) return <LoginPage onEnterGuest={enterPrompt} />;
+  if (AUTH_GATE_ENABLED && currentPath === "/register") return <RegisterPage onEnterGuest={enterPrompt} />;
   // Returning accounts go straight to their work. Visitors explicitly choose
   // the local/guest path; this preference never grants server account access.
   if (AUTH_GATE_ENABLED && !publicRoute && !guestEntry) {
@@ -541,7 +554,7 @@ export default function App() {
     // All implicit signed-out entries use the current form-first login UI.
     // The older welcome remains available only through explicit /welcome navigation.
     if (identityFailed || !identity || identity.kind !== "account")
-      return <LoginPage next={currentPath + window.location.search} />;
+      return <LoginPage next={currentPath + window.location.search} onEnterGuest={enterPrompt} />;
   }
   if (currentPath === "/plugins") return <PluginsPage />;
   if (currentPath === "/schedules") return <SchedulesPage />;

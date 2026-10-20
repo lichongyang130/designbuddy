@@ -208,9 +208,11 @@ function AuthInput({
 export function AuthFormPage({
   mode = "login",
   next: nextProp,
+  onEnterGuest,
 }: {
   mode?: "login" | "register";
   next?: string;
+  onEnterGuest?: () => void;
 }) {
   const c = useWelcomeCopy(),
     isRegister = mode === "register";
@@ -322,6 +324,14 @@ export function AuthFormPage({
           <span aria-hidden="true">→</span>
         </button>
       </form>
+      {onEnterGuest && (
+        <div className="auth-direct-entry">
+          <button type="button" onClick={onEnterGuest} disabled={busy}>
+            {c.directEntry}<span aria-hidden="true">→</span>
+          </button>
+          <p>{c.directEntryHint}</p>
+        </div>
+      )}
       <p className="welcome-switch">
         {isRegister ? c.hasAccount : c.newAccount}{" "}
         <a
@@ -335,6 +345,6 @@ export function AuthFormPage({
     </ImmersiveShell>
   );
 }
-export default function LoginPage({ next }: { next?: string } = {}) {
-  return <AuthFormPage next={next} />;
+export default function LoginPage({ next, onEnterGuest }: { next?: string; onEnterGuest?: () => void } = {}) {
+  return <AuthFormPage next={next} onEnterGuest={onEnterGuest} />;
 }
