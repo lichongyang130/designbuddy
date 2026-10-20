@@ -13,7 +13,7 @@ test("a workflow runs the real skills and lists the artifacts", async ({ browser
     await page.goto("/workflows");
     await expect(page.getByRole("heading", { name: "工作流", exact: true })).toBeVisible();
     const cards = page.locator(".wf-recipe");
-    await expect(cards).toHaveCount(7);
+    await expect(cards).toHaveCount(11);
     await expect(cards.filter({ hasText: "业务对比信息图" })).toBeVisible();
 
     // Step 1: the answers.

@@ -7,7 +7,7 @@
 .skill-library-workspace .sidebar-bottom { display:none; }
 .skill-library-workspace .sidebar-windowbar { padding-left:10px; padding-right:6px; }
 .skill-library-workspace .skills-main { flex:1; min-width:0; background:#fff; }
-.skill-library-workspace .skills-topbar { display:flex; align-items:center; justify-content:space-between; gap:16px; min-height:72px; padding:16px 36px; border-bottom:1px solid #eee; }
+.skill-library-workspace .skills-topbar { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px; min-height:72px; padding:16px 36px; border-bottom:1px solid #eee; }
 .skill-library-workspace .skills-main-nav { display:flex; align-items:center; gap:24px; }
 .skill-library-workspace .skills-main-nav button { display:flex; align-items:center; gap:7px; padding:0; border:0; background:transparent; color:#929292; font-size:15px; white-space:nowrap; }
 .skill-library-workspace .skills-main-nav button.is-active { color:#262626; font-weight:600; }

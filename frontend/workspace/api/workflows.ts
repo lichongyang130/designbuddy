@@ -65,6 +65,8 @@ export type WorkflowRun = {
   workflowId: string;
   workflowVersion: string;
   workflowName: string;
+  /** Execution/automated checks are never commercial approval. Older records may lack this field. */
+  delivery?: { classification:"draft"|"diagnostic"; automatedChecks:"running"|"passed"|"blocked"|"not-requested"; commercialAcceptance:"pending-human-review" };
   status: "running" | "succeeded" | "failed" | "partial";
   steps: WorkflowStepRun[];
   taskId: string;
@@ -95,9 +97,9 @@ export const STEP_STATUS_LABELS: Record<WorkflowStepRun["status"], string> = {
 };
 
 /** The recipes this server offers. */
-export async function listWorkflows(): Promise<Workflow[]> {
+export async function listWorkflows(signal?: AbortSignal): Promise<Workflow[]> {
   const body = await readJSON<{ workflows?: Workflow[] }>(
-    await apiFetch("/workflows", { headers: { Accept: "application/json" } }),
+    await apiFetch("/workflows", { signal, headers: { Accept: "application/json" } }),
   );
   return Array.isArray(body.workflows) ? body.workflows : [];
 }
@@ -118,17 +120,17 @@ export async function startWorkflow(
 }
 
 /** One run, with the state of every step. */
-export async function fetchWorkflowRun(id: string): Promise<WorkflowRun> {
+export async function fetchWorkflowRun(id: string, signal?: AbortSignal): Promise<WorkflowRun> {
   const body = await readJSON<{ run: WorkflowRun }>(
-    await apiFetch(`/workflow-runs/${encodeURIComponent(id)}`, { headers: { Accept: "application/json" } }),
+    await apiFetch(`/workflow-runs/${encodeURIComponent(id)}`, { signal, headers: { Accept: "application/json" } }),
   );
   return body.run;
 }
 
 /** The runs of this account. */
-export async function listWorkflowRuns(): Promise<WorkflowRun[]> {
+export async function listWorkflowRuns(signal?: AbortSignal): Promise<WorkflowRun[]> {
   const body = await readJSON<{ runs?: WorkflowRun[] }>(
-    await apiFetch("/workflow-runs", { headers: { Accept: "application/json" } }),
+    await apiFetch("/workflow-runs", { signal, headers: { Accept: "application/json" } }),
   );
   return Array.isArray(body.runs) ? body.runs : [];
 }

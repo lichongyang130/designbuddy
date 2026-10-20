@@ -58,20 +58,21 @@ test('registry rejects unbound/unavailable skills, wrong formats and missing upl
  const s=new SkillService(':memory:');t.after(()=>s.close());
  assert.equal((await s.handle(upload('table.analyze','qa'),'alice')).status,409);
  assert.equal((await s.handle(upload('collaboration.sync','communication','{"action":"email.send"}','request.json',true,{externalConsent:'yes',confirmation:'yes',idempotencyKey:'key-abc-123'}),'alice')).status,409);
- assert.equal((await s.handle(upload('code.build','developer','a,b\n1,2','a.csv'),'alice')).status,400);
+ assert.equal((await s.handle(upload('code.build','developer','a,b\n1,2','a.csv'),'alice')).status,409);
  assert.equal((await s.handle(upload('table.analyze','data','bad','fake.pdf'),'alice')).status,400);
  assert.equal((await s.handle(upload('table.analyze','data','a,b\n1,2','a.csv',false),'alice')).status,403);
  assert.equal((await s.handle(upload('table.analyze','data','a'.repeat(2100001)),'alice')).status,413);
  const registry=await (await s.handle(req('skill-runtime'),'alice')).json();
  const {runtimeSkills}=require('../../dist/local/shared/skillRuntime.js');
  const {asrConfiguration}=require('../../dist/local/server/skills/asr-config.js');
- // Five skills that used to be placeholders now have real executors. Three of them
+ // Five skills that used to be placeholders now have real executors. Two of them
  // are self-contained and ready; the two that need an external service stay
  // unavailable until the server has that credential, and say why.
  const credentialBound=['collaboration.sync','image.generate'];
- const connected=['web.verify','test.browser','code.build'];
+ const connected=['web.verify','test.browser'];
  assert.equal(registry.skills.length,runtimeSkills.length,'catalogue must expose every declared skill');
  for(const skill of registry.skills){
+  if(skill.id==='code.build'){assert.equal(skill.status,'unavailable');assert.match(skill.availabilityReason,/安全验收/);continue;}
   if(credentialBound.includes(skill.id)){assert.equal(skill.status,'unavailable',skill.id);assert.equal(skill.executorState,'connected',skill.id);assert.ok(skill.requires&&skill.requires.length>0,skill.id+' must declare what it needs');continue;}
   if(connected.includes(skill.id)){assert.equal(skill.status,'ready',skill.id);assert.equal(skill.executorState,'connected',skill.id);continue;}
   if(skill.id==='audio.transcribe-en'){assert.equal(skill.status,asrConfiguration().ready?'ready':'unavailable',skill.id);continue;}
@@ -138,4 +139,14 @@ test('running cancellation stops the worker and successful runs survive reopenin
  await service.handle(req('skill-runs/'+q.id+'/cancel','POST'),'alice');assert.equal((await done(service,q.id)).status,'cancelled');
  const second=await (await service.handle(upload(),'alice')).json();const succeeded=await done(service,second.id);assert.equal(succeeded.status,'succeeded');
  await service.close();service=new SkillService(db);const saved=await done(service,second.id);assert.equal(saved.status,'succeeded');assert.equal(saved.inputHash,succeeded.inputHash);await output(service,saved,'analysis.json');
+});
+
+test('non-isolated build remains registered but HTTP execution and historical queued dispatch are blocked',async t=>{
+ const service=new SkillService(':memory:');t.after(()=>service.close());
+ const zip=zipSync({'package.json':strToU8('{"scripts":{"build":"node build.js"}}'),'build.js':strToU8('throw Error("must not execute")')});
+ const response=await service.handle(upload('code.build','developer',zip,'build.zip'),'alice');assert.equal(response.status,409);assert.match((await response.json()).error,/安全验收/);
+ const id=require('node:crypto').randomUUID();const record={id,skillId:'code.build',expertId:'developer',status:'queued',filename:'build.zip',createdAt:new Date().toISOString(),updatedAt:new Date().toISOString(),options:{deduplicate:false},events:[],artifacts:[]};
+ service.db.prepare('INSERT INTO skill_runs(id,owner,record,input) VALUES(?,?,?,?)').run(id,'alice',JSON.stringify(record),zip);
+ service.pump();
+ const stopped=await(await service.handle(req('skill-runs/'+id),'alice')).json();assert.equal(stopped.status,'failed');assert.match(stopped.error,/没有执行用户代码/);assert.equal(service.active.size,0);
 });

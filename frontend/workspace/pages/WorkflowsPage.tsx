@@ -45,11 +45,41 @@ function languageFor(name: string): DesignProject["files"][number]["language"] {
 }
 
 /** The recipes, the wizard and the result of one run. */
-export default function WorkflowsPage() {
+type WorkflowsPageProps = { embedded?: boolean; initialWorkflowId?: string };
+export default function WorkflowsPage(props: WorkflowsPageProps) {
+  const [identity, setIdentity] = useState(0);
+  useEffect(() => {
+    const changed = () => setIdentity((value) => value + 1);
+    window.addEventListener("designbuddy:server-identity", changed);
+    return () =>
+      window.removeEventListener("designbuddy:server-identity", changed);
+  }, []);
+  return <WorkflowWorkspace key={identity} {...props} />;
+}
+function WorkflowWorkspace({
+  embedded = false,
+  initialWorkflowId,
+}: WorkflowsPageProps) {
+  const Container = embedded ? "div" : "main";
+  const mounted = useRef(true);
+  const requests = useRef(new AbortController());
+  const following = useRef<AbortController | null>(null);
+  const initialized = useRef(false);
+  useEffect(() => {
+    mounted.current = true;
+    requests.current = new AbortController();
+    return () => {
+      mounted.current = false;
+      requests.current.abort();
+      following.current?.abort();
+    };
+  }, []);
   const [workflows, setWorkflows] = useState<Workflow[]>([]);
   const [runs, setRuns] = useState<WorkflowRun[]>([]);
   const [selected, setSelected] = useState<Workflow | null>(null);
-  const [stage, setStage] = useState<"cards" | "form" | "confirm" | "result">("cards");
+  const [stage, setStage] = useState<"cards" | "form" | "confirm" | "result">(
+    "cards",
+  );
   const [answers, setAnswers] = useState<Answers>(EMPTY);
   const [run, setRun] = useState<WorkflowRun | null>(null);
   const [notice, setNotice] = useState("");
@@ -71,12 +101,19 @@ export default function WorkflowsPage() {
 
   const load = useCallback(async () => {
     try {
-      const [list, history] = await Promise.all([listWorkflows(), listWorkflowRuns()]);
+      const [list, history] = await Promise.all([
+        listWorkflows(requests.current.signal),
+        listWorkflowRuns(requests.current.signal),
+      ]);
+      if (!mounted.current || requests.current.signal.aborted) return;
       setWorkflows(list);
       setRuns(history);
       if (!actionError.current) setError("");
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "工作流服务暂不可用。");
+      if (mounted.current && !requests.current.signal.aborted)
+        setError(
+          cause instanceof Error ? cause.message : "工作流服务暂不可用。",
+        );
     }
   }, []);
 
@@ -84,30 +121,54 @@ export default function WorkflowsPage() {
     void load();
   }, [load]);
 
-  // A scene on the home page can send the person straight to one recipe.
   useEffect(() => {
-    const wanted = new URLSearchParams(window.location.search).get("workflow");
-    if (!wanted) return;
-    void listWorkflows().then((list) => {
-      const recipe = list.find((workflow) => workflow.id === wanted);
-      if (recipe) start(recipe);
-    });
-    // Only once, when the page opens.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    const wanted =
+      initialWorkflowId ||
+      new URLSearchParams(window.location.search).get("workflow");
+    if (!wanted || !workflows.length || initialized.current) return;
+    initialized.current = true;
+    const recipe = workflows.find((workflow) => workflow.id === wanted);
+    if (recipe) start(recipe);
+    else fail("未找到指定流程，未自动选择其他执行器。");
+  }, [workflows, initialWorkflowId]);
 
-  /** Follow a run until the server says it is finished. */
+  /** Stopping this observer does not cancel the persisted server run. */
   const follow = useCallback(async (runId: string) => {
-    for (let attempt = 0; attempt < 180; attempt += 1) {
-      const current = await fetchWorkflowRun(runId);
-      setRun(current);
-      if (current.status !== "running") return current;
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+    if (!mounted.current) return null;
+    following.current?.abort();
+    const controller = new AbortController();
+    following.current = controller;
+    try {
+      for (
+        let attempt = 0;
+        attempt < 360 && !controller.signal.aborted;
+        attempt++
+      ) {
+        const current = await fetchWorkflowRun(runId, controller.signal);
+        if (!mounted.current || controller.signal.aborted) return null;
+        setRun(current);
+        if (current.status !== "running") return current;
+        await new Promise<void>((resolve) => {
+          const done = () => {
+            clearTimeout(timer);
+            controller.signal.removeEventListener("abort", done);
+            resolve();
+          };
+          const timer = setTimeout(done, 1000);
+          controller.signal.addEventListener("abort", done, { once: true });
+        });
+      }
+      if (mounted.current && !controller.signal.aborted)
+        setNotice("后台仍在处理，可从运行历史继续查看；没有取消任务。");
+      return null;
+    } catch (cause) {
+      if (controller.signal.aborted || !mounted.current) return null;
+      throw cause;
     }
-    return null;
   }, []);
 
   function start(workflow: Workflow) {
+    following.current?.abort();
     setSelected(workflow);
     setStage("form");
     setRun(null);
@@ -123,14 +184,24 @@ export default function WorkflowsPage() {
 
   /** Show the result of a run from the history. */
   async function openRun(item: WorkflowRun) {
-    setSelected(workflows.find((workflow) => workflow.id === item.workflowId) ?? null);
+    setSelected(
+      workflows.find((workflow) => workflow.id === item.workflowId) ?? null,
+    );
     setStage("result");
     setRun(item);
     clearError();
-    if (item.status === "running") await follow(item.id);
+    if (item.status === "running") {
+      try {
+        await follow(item.id);
+      } catch (cause) {
+        if (mounted.current)
+          fail(cause instanceof Error ? cause.message : "无法读取运行状态。");
+      }
+    }
   }
 
   function backToCards() {
+    following.current?.abort();
     setSelected(null);
     setStage("cards");
     setRun(null);
@@ -143,15 +214,26 @@ export default function WorkflowsPage() {
     if (!selected) return [];
     return selected.fields.filter((field) => {
       if (!field.visibleWhen) return true;
-      return (answers.fields[field.visibleWhen.field] ?? "") === field.visibleWhen.equals;
+      return (
+        (answers.fields[field.visibleWhen.field] ?? "") ===
+        field.visibleWhen.equals
+      );
     });
   }, [selected, answers.fields]);
 
   function setField(key: string, value: string) {
-    setAnswers((current) => ({ ...current, fields: { ...current.fields, [key]: value } }));
+    setAnswers((current) => ({
+      ...current,
+      fields: { ...current.fields, [key]: value },
+    }));
   }
 
-  function setRowValue(rowKey: string, index: number, column: string, value: string) {
+  function setRowValue(
+    rowKey: string,
+    index: number,
+    column: string,
+    value: string,
+  ) {
     setAnswers((current) => {
       const list = [...(current.rows[rowKey] ?? [])];
       list[index] = { ...(list[index] ?? {}), [column]: value };
@@ -184,7 +266,10 @@ export default function WorkflowsPage() {
       const asset = await uploadAsset(file);
       setAnswers((current) => ({
         ...current,
-        files: { ...current.files, [field.key]: { assetId: asset.id, name: asset.name } },
+        files: {
+          ...current.files,
+          [field.key]: { assetId: asset.id, name: asset.name },
+        },
       }));
       clearError();
     } catch (cause) {
@@ -203,7 +288,9 @@ export default function WorkflowsPage() {
       if (field.type === "rows") {
         const list = answers.rows[field.key] ?? [];
         const min = field.minRows ?? 1;
-        const filled = list.filter((row) => Object.values(row).some((value) => value.trim().length > 0));
+        const filled = list.filter((row) =>
+          Object.values(row).some((value) => value.trim().length > 0),
+        );
         if (filled.length < min) missing.push(field.label);
         continue;
       }
@@ -224,6 +311,7 @@ export default function WorkflowsPage() {
         fields: { ...answers.fields, ...answers.rows },
         files: answers.files,
       });
+      if (!mounted.current) return;
       setRun(started);
       setStage("result");
       setNotice("已提交，正在按步骤执行。");
@@ -238,18 +326,28 @@ export default function WorkflowsPage() {
   }
 
   /** Open a text artifact in the editor as a new project. */
-  async function keepEditing(step: WorkflowStepRun, artifact: { id: string; name: string; mime: string }) {
+  async function keepEditing(
+    step: WorkflowStepRun,
+    artifact: { id: string; name: string; mime: string },
+  ) {
     if (!step.skillRunId || !run || busy) return;
     setBusy(true);
     try {
       const blob = await fetchWorkflowArtifact(step.skillRunId, artifact.id);
       const content = await blob.text();
+      if (!mounted.current) return;
       const now = new Date().toISOString();
       const project: DesignProject = {
         id: crypto.randomUUID(),
         name: `${run.workflowName} · ${artifact.name}`.slice(0, 48),
         prompt: `工作流「${run.workflowName}」的产物：${artifact.name}`,
-        files: [{ path: artifact.name, language: languageFor(artifact.name), content }],
+        files: [
+          {
+            path: artifact.name,
+            language: languageFor(artifact.name),
+            content,
+          },
+        ],
         createdAt: now,
         updatedAt: now,
         status: "draft",
@@ -258,6 +356,7 @@ export default function WorkflowsPage() {
       // The server keeps a copy with the version history, so the edit can be
       // continued on another device as well.
       await saveProjectToCloud(project).catch(() => undefined);
+      if (!mounted.current) return;
       setNotice(`已把「${artifact.name}」送进编辑器，可以继续改。`);
       clearError();
       navigateTo(`/editor/${project.id}`);
@@ -269,12 +368,18 @@ export default function WorkflowsPage() {
   }
 
   /** Keep an artifact in the server asset library. */
-  async function keepAsAsset(step: WorkflowStepRun, artifact: { id: string; name: string; mime: string }) {
+  async function keepAsAsset(
+    step: WorkflowStepRun,
+    artifact: { id: string; name: string; mime: string },
+  ) {
     if (!step.skillRunId || busy) return;
     setBusy(true);
     try {
       const blob = await fetchWorkflowArtifact(step.skillRunId, artifact.id);
-      const file = new File([blob], artifact.name, { type: artifact.mime || "application/octet-stream" });
+      if (!mounted.current) return;
+      const file = new File([blob], artifact.name, {
+        type: artifact.mime || "application/octet-stream",
+      });
       const asset = await uploadAsset(file);
       setNotice(`已把「${artifact.name}」存进素材库，可在素材页找到。`);
       clearError();
@@ -303,74 +408,115 @@ export default function WorkflowsPage() {
   }
 
   return (
-    <div className="workbuddy-app community-workspace">
-      <WorkBuddySidebar
-        active="plugins"
-        go={navigateTo}
-        setNotice={setNotice}
-        projectCount={0}
-        workspaceCount={0}
-      />
-      <main className="wf-main" aria-label="工作流">
+    <div
+      className={embedded ? "wf-embedded" : "workbuddy-app community-workspace"}
+    >
+      {!embedded && (
+        <WorkBuddySidebar
+          active="plugins"
+          go={navigateTo}
+          setNotice={setNotice}
+          projectCount={0}
+          workspaceCount={0}
+        />
+      )}
+      <Container className="wf-main" aria-label="工作流">
         <div className="wf-content">
-          <section className="wf-hero">
-            <div>
-              <span className="wf-eyebrow">点几下完成一件事</span>
-              <h1>工作流</h1>
-              <p>
-                每条工作流是一串已经登记的技能：填几个答案，服务器按顺序真的跑一遍，
-                跑完给你产物。缺凭据或没授权的步骤会写明缺什么，不会用假结果糊弄过去。
-              </p>
-            </div>
-          </section>
+          {!embedded && (
+            <section className="wf-hero">
+              <div>
+                <span className="wf-eyebrow">点几下完成一件事</span>
+                <h1>工作流</h1>
+                <p>
+                  每条工作流是一串已经登记的技能：填几个答案，服务器按顺序真的跑一遍，
+                  跑完给你产物。缺凭据或没授权的步骤会写明缺什么，不会用假结果糊弄过去。
+                </p>
+              </div>
+            </section>
+          )}
 
           {(error || notice) && (
-            <p className={error ? "wf-message is-error" : "wf-message"} role="status">{error || notice}</p>
+            <p
+              className={error ? "wf-message is-error" : "wf-message"}
+              role="status"
+            >
+              {error || notice}
+            </p>
           )}
 
           {stage === "cards" && (
             <>
               <section className="wf-card-wall" aria-label="工作流列表">
-                {workflows.map((workflow) => {
-                  const blocked = workflow.steps.filter((step) => !step.availability.ready);
-                  return (
-                    <article key={workflow.id} className="wf-recipe" data-workflow={workflow.id}>
-                      <h2>{workflow.name}</h2>
-                      <p className="wf-goal">{workflow.goal}</p>
-                      <p className="wf-meta">
-                        约 {workflow.minutes} 分钟 · {workflow.steps.length} 个步骤 · {workflow.outputs.join("、")}
-                      </p>
-                      {blocked.length > 0 && (
-                        <p className="wf-blocked">
-                          其中 {blocked.length} 个步骤在当前环境不能执行（其余步骤照常跑）：{blocked[0].availability.reason}
+                {workflows
+                  .filter(
+                    (workflow) =>
+                      !embedded || workflow.id === initialWorkflowId,
+                  )
+                  .map((workflow) => {
+                    const blocked = workflow.steps.filter(
+                      (step) => !step.availability.ready,
+                    );
+                    return (
+                      <article
+                        key={workflow.id}
+                        className="wf-recipe"
+                        data-workflow={workflow.id}
+                      >
+                        <h2>{workflow.name}</h2>
+                        <p className="wf-goal">{workflow.goal}</p>
+                        <p className="wf-meta">
+                          约 {workflow.minutes} 分钟 · {workflow.steps.length}{" "}
+                          个步骤 · {workflow.outputs.join("、")}
                         </p>
-                      )}
-                      <button className="wf-button is-primary" type="button" onClick={() => start(workflow)}>
-                        开始
-                      </button>
-                    </article>
-                  );
-                })}
-                {!workflows.length && <p className="wf-empty">还没有可用的工作流。</p>}
+                        {blocked.length > 0 && (
+                          <p className="wf-blocked">
+                            其中 {blocked.length}{" "}
+                            个步骤在当前环境不能执行（其余步骤照常跑）：
+                            {blocked[0].availability.reason}
+                          </p>
+                        )}
+                        <button
+                          className="wf-button is-primary"
+                          type="button"
+                          onClick={() => start(workflow)}
+                        >
+                          开始
+                        </button>
+                      </article>
+                    );
+                  })}
+                {!workflows.length && (
+                  <p className="wf-empty">还没有可用的工作流。</p>
+                )}
               </section>
 
               <section className="wf-card" aria-label="最近运行">
                 <h2>最近运行（{runs.length}）</h2>
-                {runs.length === 0 && <p className="wf-note">还没有运行记录。选一条工作流就能开始。</p>}
+                {runs.length === 0 && (
+                  <p className="wf-note">
+                    还没有运行记录。选一条工作流就能开始。
+                  </p>
+                )}
                 <ul className="wf-run-list">
-                  {runs.map((item) => (
-                    <li key={item.id}>
-                      <button
-                        className="wf-run-open"
-                        type="button"
-                        onClick={() => void openRun(item)}
-                      >
-                        {item.workflowName} · {WORKFLOW_STATUS_LABELS[item.status]} ·{" "}
-                        {new Date(item.createdAt).toLocaleString("zh-CN")}
-                      </button>
-                      {item.error && <em>{item.error}</em>}
-                    </li>
-                  ))}
+                  {runs
+                    .filter(
+                      (item) =>
+                        !embedded || item.workflowId === initialWorkflowId,
+                    )
+                    .map((item) => (
+                      <li key={item.id}>
+                        <button
+                          className="wf-run-open"
+                          type="button"
+                          onClick={() => void openRun(item)}
+                        >
+                          {item.workflowName} ·{" "}
+                          {WORKFLOW_STATUS_LABELS[item.status]} ·{" "}
+                          {new Date(item.createdAt).toLocaleString("zh-CN")}
+                        </button>
+                        {item.error && <em>{item.error}</em>}
+                      </li>
+                    ))}
                 </ul>
               </section>
             </>
@@ -399,7 +545,11 @@ export default function WorkflowsPage() {
                 }}
               >
                 {visibleFields.map((field) => (
-                  <div key={field.key} className="wf-field" data-field={field.key}>
+                  <div
+                    key={field.key}
+                    className="wf-field"
+                    data-field={field.key}
+                  >
                     <label htmlFor={`wf-${field.key}`}>
                       {field.label}
                       {field.required && <span aria-hidden="true"> *</span>}
@@ -411,7 +561,9 @@ export default function WorkflowsPage() {
                         type="text"
                         value={answers.fields[field.key] ?? field.default ?? ""}
                         placeholder={field.placeholder}
-                        onChange={(event) => setField(field.key, event.target.value)}
+                        onChange={(event) =>
+                          setField(field.key, event.target.value)
+                        }
                       />
                     )}
                     {field.type === "textarea" && (
@@ -420,17 +572,23 @@ export default function WorkflowsPage() {
                         rows={3}
                         value={answers.fields[field.key] ?? field.default ?? ""}
                         placeholder={field.placeholder}
-                        onChange={(event) => setField(field.key, event.target.value)}
+                        onChange={(event) =>
+                          setField(field.key, event.target.value)
+                        }
                       />
                     )}
                     {field.type === "choice" && (
                       <select
                         id={`wf-${field.key}`}
                         value={answers.fields[field.key] ?? field.default ?? ""}
-                        onChange={(event) => setField(field.key, event.target.value)}
+                        onChange={(event) =>
+                          setField(field.key, event.target.value)
+                        }
                       >
                         {(field.choices ?? []).map((choice) => (
-                          <option key={choice.value} value={choice.value}>{choice.label}</option>
+                          <option key={choice.value} value={choice.value}>
+                            {choice.label}
+                          </option>
                         ))}
                       </select>
                     )}
@@ -440,11 +598,20 @@ export default function WorkflowsPage() {
                           id={`wf-${field.key}`}
                           type="file"
                           accept={(field.accept ?? []).join(",")}
-                          onChange={(event) => void pickFile(field, event.target.files?.[0] ?? null)}
+                          onChange={(event) =>
+                            void pickFile(
+                              field,
+                              event.target.files?.[0] ?? null,
+                            )
+                          }
                         />
-                        {uploading === field.key && <span>正在上传到服务器素材库…</span>}
+                        {uploading === field.key && (
+                          <span>正在上传到服务器素材库…</span>
+                        )}
                         {answers.files[field.key] && (
-                          <span className="wf-file-name">已上传：{answers.files[field.key].name}</span>
+                          <span className="wf-file-name">
+                            已上传：{answers.files[field.key].name}
+                          </span>
                         )}
                       </div>
                     )}
@@ -458,7 +625,14 @@ export default function WorkflowsPage() {
                                 <input
                                   type="text"
                                   value={row[column.key] ?? ""}
-                                  onChange={(event) => setRowValue(field.key, index, column.key, event.target.value)}
+                                  onChange={(event) =>
+                                    setRowValue(
+                                      field.key,
+                                      index,
+                                      column.key,
+                                      event.target.value,
+                                    )
+                                  }
                                 />
                               </label>
                             ))}
@@ -476,7 +650,10 @@ export default function WorkflowsPage() {
                           className="wf-button"
                           type="button"
                           onClick={() => addRow(field)}
-                          disabled={(answers.rows[field.key] ?? []).length >= (field.maxRows ?? 24)}
+                          disabled={
+                            (answers.rows[field.key] ?? []).length >=
+                            (field.maxRows ?? 24)
+                          }
                         >
                           添加一行
                         </button>
@@ -485,8 +662,16 @@ export default function WorkflowsPage() {
                   </div>
                 ))}
                 <div className="wf-actions">
-                  <button className="wf-button" type="button" onClick={backToCards}>返回</button>
-                  <button className="wf-button is-primary" type="submit">下一步：确认</button>
+                  <button
+                    className="wf-button"
+                    type="button"
+                    onClick={backToCards}
+                  >
+                    返回
+                  </button>
+                  <button className="wf-button is-primary" type="submit">
+                    下一步：确认
+                  </button>
                 </div>
               </form>
             </section>
@@ -504,8 +689,12 @@ export default function WorkflowsPage() {
                 {selected.steps.map((step) => (
                   <li key={step.id}>
                     <strong>{step.title}</strong>
-                    <span>技能 {step.skill} · 产出 {step.outputs.join("、")}</span>
-                    {!step.availability.ready && <em className="wf-blocked">{step.availability.reason}</em>}
+                    <span>
+                      技能 {step.skill} · 产出 {step.outputs.join("、")}
+                    </span>
+                    {!step.availability.ready && (
+                      <em className="wf-blocked">{step.availability.reason}</em>
+                    )}
                   </li>
                 ))}
               </ol>
@@ -525,13 +714,21 @@ export default function WorkflowsPage() {
                 ))}
               </ul>
               {selected.requires.length > 0 && (
-                <p className="wf-blocked">这条工作流还需要：{selected.requires.join("；")}</p>
+                <p className="wf-blocked">
+                  这条工作流还需要：{selected.requires.join("；")}
+                </p>
               )}
               <p className="wf-note">
                 提交后文件会保存到服务器后台并按上面的技能执行；不会把内容发给未授权的第三方服务。
               </p>
               <div className="wf-actions">
-                <button className="wf-button" type="button" onClick={() => setStage("form")}>返回修改</button>
+                <button
+                  className="wf-button"
+                  type="button"
+                  onClick={() => setStage("form")}
+                >
+                  返回修改
+                </button>
                 <button
                   className="wf-button is-primary"
                   type="button"
@@ -554,29 +751,49 @@ export default function WorkflowsPage() {
               <h2>
                 {run.workflowName} · {WORKFLOW_STATUS_LABELS[run.status]}
               </h2>
+              <p className="wf-delivery-note" role="status">{run.delivery?.classification==="diagnostic"?"诊断草稿 · 未通过全部工序":"草稿 · 待人工商业验收"}。{run.delivery?.automatedChecks==="passed"?"已实现的自动检查门槛未发现阻断，不代表浏览器、业务正确性或商业认证。":run.delivery?.automatedChecks==="blocked"?"自动检查存在阻断，保留原始产物与报告供修复，不作为正式交付批准。":"执行状态只记录工序结果；未完成的检查与外部验收不能视为通过。"}</p>
               {run?.error && <p className="wf-message is-error">{run.error}</p>}
               <ul className="wf-steps-list">
                 {(run?.steps ?? []).map((step) => (
-                  <li key={step.id} data-step={step.id} data-status={step.status}>
+                  <li
+                    key={step.id}
+                    data-step={step.id}
+                    data-status={step.status}
+                  >
                     <div className="wf-step-head">
                       <strong>{step.title}</strong>
-                      <span className="wf-status" data-status={step.status}>{STEP_STATUS_LABELS[step.status]}</span>
+                      <span className="wf-status" data-status={step.status}>
+                        {STEP_STATUS_LABELS[step.status]}
+                      </span>
                     </div>
                     <span className="wf-step-skill">技能 {step.skill}</span>
-                    {step.summary && <p className="wf-step-summary">{step.summary}</p>}
-                    {step.error && <p className="wf-step-error">{step.error}</p>}
+                    {step.summary && (
+                      <p className="wf-step-summary">{step.summary}</p>
+                    )}
+                    {step.error && (
+                      <p className="wf-step-error">{step.error}</p>
+                    )}
                     {step.note && <p className="wf-step-note">{step.note}</p>}
                     {step.outputs.length > 0 && (
                       <ul className="wf-artifacts">
                         {step.outputs.map((artifact) => (
                           <li key={artifact.id}>
                             <a
-                              href={step.skillRunId ? workflowArtifactUrl(step.skillRunId, artifact.id) : "#"}
+                              href={
+                                step.skillRunId
+                                  ? workflowArtifactUrl(
+                                      step.skillRunId,
+                                      artifact.id,
+                                    )
+                                  : "#"
+                              }
                               download={artifact.name}
                             >
                               {artifact.name}
                             </a>
-                            <span>{Math.max(1, Math.round(artifact.size / 1024))} KB</span>
+                            <span>
+                              {Math.max(1, Math.round(artifact.size / 1024))} KB
+                            </span>
                             {TEXT_ARTIFACTS.test(artifact.name) && (
                               <button
                                 className="wf-button is-quiet"
@@ -599,7 +816,9 @@ export default function WorkflowsPage() {
                         ))}
                       </ul>
                     )}
-                    {(step.status === "failed" || step.status === "unavailable" || step.status === "skipped") && (
+                    {(step.status === "failed" ||
+                      step.status === "unavailable" ||
+                      step.status === "skipped") && (
                       <button
                         className="wf-button"
                         type="button"
@@ -613,13 +832,25 @@ export default function WorkflowsPage() {
                 ))}
               </ul>
               <div className="wf-actions">
-                <button className="wf-button" type="button" onClick={backToCards}>返回工作流列表</button>
-                <button className="wf-button" type="button" onClick={() => void load()}>刷新结果</button>
+                <button
+                  className="wf-button"
+                  type="button"
+                  onClick={backToCards}
+                >
+                  返回工作流列表
+                </button>
+                <button
+                  className="wf-button"
+                  type="button"
+                  onClick={() => void load()}
+                >
+                  刷新结果
+                </button>
               </div>
             </section>
           )}
         </div>
-      </main>
+      </Container>
     </div>
   );
 }

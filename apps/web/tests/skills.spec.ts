@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-test.beforeEach(async ({ page }) => { await page.goto("/skills"); });
+test.beforeEach(async ({ page }) => { await page.goto("/skills?advanced=1"); });
 
 test("skills use the expert-directory layout and list real registered capabilities by area", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "让每项技能，都对应真实交付" })).toBeVisible();
@@ -12,7 +12,7 @@ test("skills use the expert-directory layout and list real registered capabiliti
   await expect(page.getByRole("searchbox", { name: "搜索技能" })).toBeVisible();
   await expect(page.getByRole("button", { name: /全部（/ })).toBeVisible();
   await expect(page.getByRole("button", { name: /可执行（/ })).toBeVisible();
-  await expect(page.getByRole("button", { name: /未接入（/ })).toBeVisible();
+  await expect(page.getByRole("button", { name: /暂不可用（/ })).toBeVisible();
   await expect(page.getByRole("region", { name: "办公提效技能" })).toBeVisible();
   await expect(page.getByRole("region", { name: "设计制作技能" })).toBeVisible();
   await expect(page.getByRole("region", { name: "网页应用技能" })).toBeVisible();
@@ -75,7 +75,7 @@ test("every skill states the tool permissions it really uses", async ({ page }) 
 });
 
 test("capabilities that still miss a server credential never gain a run button", async ({ page }) => {
-  await page.getByRole("button", { name: /未接入（/ }).click();
+  await page.getByRole("button", { name: /暂不可用（/ }).click();
   const card = page.getByRole("article", { name: "生成式图片与商品抠图" });
   await expect(card).toBeVisible();
   await expect(card).toContainText("执行器已接入，缺服务端凭据");
@@ -133,12 +133,13 @@ test("skill card titles never collide with their favorite controls on compact la
 });
 
 test("the five former placeholders now show their real executor state and what they still need", async ({ page }) => {
-  // The browser and build skills are really executable now.
+  // Browser checks remain real; local subprocess builds are gated pending actual isolation.
   const verify = page.getByRole("article", { name: "网页生成与浏览器验证" });
   await expect(verify).toContainText("可执行技能");
   await expect(verify).toContainText("服务端已接入");
-  const build = page.getByRole("article", { name: "隔离构建与全栈运行" });
-  await expect(build).toContainText("可执行技能");
+  const build = page.getByRole("article", { name: "本机项目构建（隔离未验收）" });
+  await expect(build).toContainText("安全验收未完成");
+  await expect(build.getByRole("button",{name:/使用技能/})).toHaveCount(0);
   await expect(build).toContainText("需提供");
   // The two that need an external service say so instead of pretending the capability is missing.
   const image = page.getByRole("article", { name: "生成式图片与商品抠图" });

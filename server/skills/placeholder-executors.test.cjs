@@ -49,15 +49,18 @@ test("the catalogue reports the five former placeholders as real executors with 
   }
   assert.equal(byId.get("web.verify").status, "ready");
   assert.equal(byId.get("test.browser").status, "ready");
-  assert.equal(byId.get("code.build").status, "ready");
+  assert.equal(byId.get("code.build").status, "unavailable");
+  assert.match(byId.get("code.build").availabilityReason,/安全验收/);
 });
 
-test("code.build really runs the project build and refuses anything that is not a clean build", async t => {
+const trustedBuild=input=>require("../../dist/local/server/skills/code-build.js").runBuild(input,()=>{});
+
+test("internal trusted-fixture build function remains testable while the public runtime is blocked", async t => {
   const okProject = zipSync({
     "package.json": strToU8(JSON.stringify({ name: "demo", version: "1.0.0", scripts: { build: "node build.js" } })),
     "build.js": strToU8("require('fs').mkdirSync('dist',{recursive:true});require('fs').writeFileSync('dist/out.txt','built');"),
   });
-  const result = await executeSkill({
+  const result = await trustedBuild({
     skillId: "code.build",
     filename: "project.zip",
     bytes: okProject,
@@ -78,13 +81,13 @@ test("code.build really runs the project build and refuses anything that is not 
     "build.js": strToU8("console.error('build broke');process.exit(3);"),
   });
   await assert.rejects(
-    () => executeSkill({ skillId: "code.build", filename: "broken.zip", bytes: failing, deduplicate: false, parameters: {} }),
+    () => trustedBuild({ skillId: "code.build", filename: "broken.zip", bytes: failing, deduplicate: false, parameters: {} }),
     /构建失败/,
   );
 
   await assert.rejects(
     () =>
-      executeSkill({
+      trustedBuild({
         skillId: "code.build",
         filename: "ok.zip",
         bytes: okProject,

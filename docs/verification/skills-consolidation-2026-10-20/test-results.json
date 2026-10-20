@@ -1,0 +1,963 @@
+{
+  "date": "2026-10-20",
+  "environment": "Arena sandbox / bundled Chromium; local LibreOffice Kit; synthetic fixtures; no production deployment",
+  "build": {
+    "serverTypeScript": "passed",
+    "frontendTypeScriptAndVite": "passed",
+    "warnings": [
+      "existing fflate static/dynamic import overlap",
+      "existing large chunks"
+    ]
+  },
+  "node": {
+    "tests": 95,
+    "passed": 95,
+    "failed": 0,
+    "duration_ms": 108277.308141,
+    "cases": [
+      {
+        "number": 1,
+        "name": "8 outcomes own all 49 executor IDs exactly once, without creating executors",
+        "status": "passed"
+      },
+      {
+        "number": 2,
+        "name": "old favorites map without duplicates; malformed input cannot grant a product",
+        "status": "passed"
+      },
+      {
+        "number": 3,
+        "name": "new chains retain old recipe versions and wire declared artifacts to registered scopes",
+        "status": "passed"
+      },
+      {
+        "number": 4,
+        "name": "static gates fail closed; execution success, missing reports or syntax errors cannot pass",
+        "status": "passed"
+      },
+      {
+        "number": 5,
+        "name": "project gate requires actual complete coverage, not a generic execution success",
+        "status": "passed"
+      },
+      {
+        "number": 6,
+        "name": "all 244 method references have exactly one outcome owner but grant no executor or commercial approval",
+        "status": "passed"
+      },
+      {
+        "number": 7,
+        "name": "HTML audit handles actual embedded binary separately without silently truncating document structure",
+        "status": "passed"
+      },
+      {
+        "number": 8,
+        "name": "the catalogue lists real recipes and says which steps cannot run here",
+        "status": "passed"
+      },
+      {
+        "number": 9,
+        "name": "a missing answer is refused before any step runs",
+        "status": "passed"
+      },
+      {
+        "number": 10,
+        "name": "a form driven run really executes the skill and returns its artifacts",
+        "status": "passed"
+      },
+      {
+        "number": 11,
+        "name": "the FAQ run produces a searchable page and an offline package",
+        "status": "passed"
+      },
+      {
+        "number": 12,
+        "name": "a table run reads the file from the asset library and produces the workbook",
+        "status": "passed"
+      },
+      {
+        "number": 13,
+        "name": "a file that belongs to somebody else is refused with a clear reason",
+        "status": "passed"
+      },
+      {
+        "number": 14,
+        "name": "a step that needs credentials says what is missing instead of faking a result",
+        "status": "passed"
+      },
+      {
+        "number": 15,
+        "name": "a step that needs a single authorisation is skipped and says so",
+        "status": "passed"
+      },
+      {
+        "number": 16,
+        "name": "a failed step can be retried and the reason comes from the real run",
+        "status": "passed"
+      },
+      {
+        "number": 17,
+        "name": "one person cannot read or retry another person's run",
+        "status": "passed"
+      },
+      {
+        "number": 18,
+        "name": "the http api starts, reads and retries workflow runs",
+        "status": "passed"
+      },
+      {
+        "number": 19,
+        "name": "the landing page and the social card really build their files",
+        "status": "passed"
+      },
+      {
+        "number": 20,
+        "name": "merged web delivery really passes generated HTML CSS and JS to independent static gates",
+        "status": "passed"
+      },
+      {
+        "number": 21,
+        "name": "brand delivery uses real form data and real generated CSS and HTML, not incompatible token JSON",
+        "status": "passed"
+      },
+      {
+        "number": 22,
+        "name": "marketing delivery uses actual uploaded pixels and text and hands its portrait PNG to the WebP executor",
+        "status": "passed"
+      },
+      {
+        "number": 23,
+        "name": "delivery rejects oversized fields or rows before running, without silently dropping customer material",
+        "status": "passed"
+      },
+      {
+        "number": 24,
+        "name": "project delivery builds traceable requirement and acceptance IDs from actual rows without inventing people",
+        "status": "passed"
+      },
+      {
+        "number": 25,
+        "name": "a real static finding fails the merged gate but preserves diagnostic downloads (controlled fault injection)",
+        "status": "passed"
+      },
+      {
+        "number": 26,
+        "name": "validated brand brief emits real outlined SVG, two decoded PNGs, CSS, provenance-rich system and responsive guideline",
+        "status": "passed"
+      },
+      {
+        "number": 27,
+        "name": "all three finite geometric mark recipes produce valid self-contained SVG and raster assets",
+        "status": "passed"
+      },
+      {
+        "number": 28,
+        "name": "escapes untrusted text in report and emits safe outlined logo without active markup",
+        "status": "passed"
+      },
+      {
+        "number": 29,
+        "name": "rejects malformed UTF-8 JSON shape, missing/unknown keys, and invalid geometry choices",
+        "status": "passed"
+      },
+      {
+        "number": 30,
+        "name": "rejects duplicate/invalid palette hexes, roles, count, and non-object color entries",
+        "status": "passed"
+      },
+      {
+        "number": 31,
+        "name": "rejects oversized fields, controls, and unpaired/bidi manipulation characters",
+        "status": "passed"
+      },
+      {
+        "number": 32,
+        "name": "generated raster bytes are actual alpha-preserving PNGs and outputs are safely bounded",
+        "status": "passed"
+      },
+      {
+        "number": 33,
+        "name": "changed brand language affects actual vectors, tokens and generated usage system deterministically",
+        "status": "passed"
+      },
+      {
+        "number": 34,
+        "name": "brand expert registry binds the new real skill and unknown client/file types remain rejected",
+        "status": "passed"
+      },
+      {
+        "number": 35,
+        "name": "in-memory real queue delivers eight assets plus receipt and denies another owner every download",
+        "status": "passed"
+      },
+      {
+        "number": 36,
+        "name": "document summary requires a separate third-party processing consent and a server identity",
+        "status": "passed"
+      },
+      {
+        "number": 37,
+        "name": "document summary sends text only after consent, records source references and explicit third-party processing",
+        "status": "passed"
+      },
+      {
+        "number": 38,
+        "name": "document summary rejects invented paragraph references and does not return partial artifacts",
+        "status": "passed"
+      },
+      {
+        "number": 39,
+        "name": "document summary does not create a deterministic fake result when the server AI provider is missing",
+        "status": "passed"
+      },
+      {
+        "number": 40,
+        "name": "CSS audit parses a real stylesheet and reports concrete responsive and token risks",
+        "status": "passed"
+      },
+      {
+        "number": 41,
+        "name": "design tokens are validated, exported as actual CSS, and contrast ratios are computed",
+        "status": "passed"
+      },
+      {
+        "number": 42,
+        "name": "static site scaffold produces a real ZIP with semantic responsive HTML, CSS, and working menu JS",
+        "status": "passed"
+      },
+      {
+        "number": 43,
+        "name": "responsive web image pack transforms a real raster into bounded WebP variants",
+        "status": "passed"
+      },
+      {
+        "number": 44,
+        "name": "social carousel renders a real set of sized PNG slides and a bounded manifest",
+        "status": "passed"
+      },
+      {
+        "number": 45,
+        "name": "new front-end and design tools are registered as ready and execute through the real owner-scoped worker",
+        "status": "passed"
+      },
+      {
+        "number": 46,
+        "name": "the catalogue reports the five former placeholders as real executors with honest dependency state",
+        "status": "passed"
+      },
+      {
+        "number": 47,
+        "name": "internal trusted-fixture build function remains testable while the public runtime is blocked",
+        "status": "passed"
+      },
+      {
+        "number": 48,
+        "name": "image.generate talks to a real image endpoint and refuses to fabricate output without one",
+        "status": "passed"
+      },
+      {
+        "number": 49,
+        "name": "collaboration.sync sends only with per-run confirmation and never twice for one idempotency key",
+        "status": "passed"
+      },
+      {
+        "number": 50,
+        "name": "web.verify and test.browser run a real browser and publish evidence only when every check passes",
+        "status": "passed"
+      },
+      {
+        "number": 51,
+        "name": "real layered poster exports Chinese glyph paths, actual PNG and a round-trippable editable project",
+        "status": "passed"
+      },
+      {
+        "number": 52,
+        "name": "actual pixels obey layer order, opacity, visibility and transparent background rather than only recording geometry",
+        "status": "passed"
+      },
+      {
+        "number": 53,
+        "name": "actual image contain/cover pixels match reported source crop and reused assets are embedded once",
+        "status": "passed"
+      },
+      {
+        "number": 54,
+        "name": "real JPEG EXIF orientation and WebP assets normalize with actual source and normalized dimensions",
+        "status": "passed"
+      },
+      {
+        "number": 55,
+        "name": "closed schema rejects unknown fields, CSS/URLs, missing assets, duplicate IDs and off-canvas coordinates",
+        "status": "passed"
+      },
+      {
+        "number": 56,
+        "name": "cardinality, input/pixel and hidden-asset budgets reject rather than silently truncate",
+        "status": "passed"
+      },
+      {
+        "number": 57,
+        "name": "SVG disguised as PNG, MIME mismatches, animation markers and malformed base64 cannot reach an external renderer",
+        "status": "passed"
+      },
+      {
+        "number": 58,
+        "name": "visible text overflow and unsupported glyphs fail; hidden content remains explicit only in editable source",
+        "status": "passed"
+      },
+      {
+        "number": 59,
+        "name": "boundary canvas and layer count really render at 2000 by 2000 with all 24 declared layers",
+        "status": "passed"
+      },
+      {
+        "number": 60,
+        "name": "actual worker persists six owner-only artifacts and a text overflow yields zero partial files",
+        "status": "passed"
+      },
+      {
+        "number": 61,
+        "name": "planning only admits existing JSON rendering for the authorized marketing expert, not raw image generation",
+        "status": "passed"
+      },
+      {
+        "number": 62,
+        "name": "header-valid corrupt PNG fails native decode, and aggregate byte/pixel budgets include unused assets",
+        "status": "passed"
+      },
+      {
+        "number": 63,
+        "name": "markup in title remains escaped metadata and text is rendered as glyph outlines, not executable SVG",
+        "status": "passed"
+      },
+      {
+        "number": 64,
+        "name": "structured JSON builds editable PowerPoint objects, native charts, rendering evidence and extracted design tokens",
+        "status": "passed"
+      },
+      {
+        "number": 65,
+        "name": "structured deck validation rejects unsupported content, unsafe theme fields and mismatched native chart data",
+        "status": "passed"
+      },
+      {
+        "number": 66,
+        "name": "product spec validates dependency graph and acceptance mapping and exports editable documents",
+        "status": "passed"
+      },
+      {
+        "number": 67,
+        "name": "product spec reports coverage gaps and rejects dangling references and cycles",
+        "status": "passed"
+      },
+      {
+        "number": 68,
+        "name": "product spec prevents malformed IDs and safely escapes untrusted text",
+        "status": "passed"
+      },
+      {
+        "number": 69,
+        "name": "real worker CSV -> checked XLSX, JSON, SVG and receipt; owner-only list/download/delete",
+        "status": "passed"
+      },
+      {
+        "number": 70,
+        "name": "DOCX retains actual paragraphs, can be read again, and does not claim an AI summary",
+        "status": "passed"
+      },
+      {
+        "number": 71,
+        "name": "PPTX contains actual editable slides and escaped content preview with provenance",
+        "status": "passed"
+      },
+      {
+        "number": 72,
+        "name": "registry rejects unbound/unavailable skills, wrong formats and missing upload consent",
+        "status": "passed"
+      },
+      {
+        "number": 73,
+        "name": "malformed files, duplicate headers and formulas fail honestly without artifacts",
+        "status": "passed"
+      },
+      {
+        "number": 74,
+        "name": "XLSX reads real first sheet, preserves string identifiers and does not interpret formula-looking CSV",
+        "status": "passed"
+      },
+      {
+        "number": 75,
+        "name": "cancel queued work, deadline failure and restart persistence never report fake success",
+        "status": "passed"
+      },
+      {
+        "number": 76,
+        "name": "unsafe XML entities, archive paths, malformed UTF8 and binary disguises are rejected",
+        "status": "passed"
+      },
+      {
+        "number": 77,
+        "name": "public API exposes only a read-only catalogue and never runs skills or serves files without an authenticated principal",
+        "status": "passed"
+      },
+      {
+        "number": 78,
+        "name": "decimal arithmetic is computed rather than inferred and unsafe numeric formats remain text",
+        "status": "passed"
+      },
+      {
+        "number": 79,
+        "name": "running cancellation stops the worker and successful runs survive reopening the database",
+        "status": "passed"
+      },
+      {
+        "number": 80,
+        "name": "non-isolated build remains registered but HTTP execution and historical queued dispatch are blocked",
+        "status": "passed"
+      },
+      {
+        "number": 81,
+        "name": "the catalogue declares the tool permissions every skill really uses",
+        "status": "passed"
+      },
+      {
+        "number": 82,
+        "name": "the runtime endpoint publishes the permission set with the catalogue",
+        "status": "passed"
+      },
+      {
+        "number": 83,
+        "name": "a run keeps the skill version and the granted permissions in its governance record",
+        "status": "passed"
+      },
+      {
+        "number": 84,
+        "name": "a skill that hands content to a third party is refused without a single-run consent",
+        "status": "passed"
+      },
+      {
+        "number": 85,
+        "name": "word strict schema rejects unknown/code/remote fields, broken hierarchy, role omissions, unbound refs, duplicate IDs and oversized input",
+        "status": "passed"
+      },
+      {
+        "number": 86,
+        "name": "two document types enforce different ordered required roles, real body after headings, and safe table/image contracts",
+        "status": "passed"
+      },
+      {
+        "number": 87,
+        "name": "native DOCX has real styles, headers, PAGE fields, internal links, native tables and inventory-checked escaped text",
+        "status": "passed"
+      },
+      {
+        "number": 88,
+        "name": "repair only changes white-listed layout fields and keeps all content, strings, sources and image permissions hash-locked",
+        "status": "passed"
+      },
+      {
+        "number": 89,
+        "name": "PDF coverage does not count source appendix as body; unknown geometry/blank signals and scores never become visual or commercial approval",
+        "status": "passed"
+      },
+      {
+        "number": 90,
+        "name": "authorized images are normalized and embedded independently; oversized frames scale proportionally without cropping or content edits",
+        "status": "passed"
+      },
+      {
+        "number": 91,
+        "name": "missing glyphs and corrupt image formats fail before delivery, never substituted with fake content",
+        "status": "passed"
+      },
+      {
+        "number": 92,
+        "name": "actual local two-render repair produces hash-bound DOCX/PDF/all pages and pre/post evidence with no external AI calls",
+        "status": "passed"
+      },
+      {
+        "number": 93,
+        "name": "registered real Worker persists artifacts, requires upload consent, enforces owner isolation and rejects arbitrary parameters/resume",
+        "status": "passed"
+      },
+      {
+        "number": 94,
+        "name": "bounded orchestration unit mock stops at three renders/two repairs, never rewrites facts or grants a score",
+        "status": "passed"
+      },
+      {
+        "number": 95,
+        "name": "orchestration unit mock rolls back a repair that introduces a new critical issue, retaining prior version and full evidence",
+        "status": "passed"
+      }
+    ]
+  },
+  "browser": {
+    "tests": 71,
+    "passed": 71,
+    "failed": 0,
+    "reportedDuration": "6.3m",
+    "cases": [
+      {
+        "number": 1,
+        "name": "tests/skill-phase-two.spec.ts:15:1 › PDF generation and extraction use actual files and page evidence in the browser",
+        "seconds": 10.4,
+        "status": "passed"
+      },
+      {
+        "number": 2,
+        "name": "tests/skill-phase-two.spec.ts:22:1 › browser OCR uploads actual raster pixels and downloads recognized text/evidence",
+        "seconds": 9.5,
+        "status": "passed"
+      },
+      {
+        "number": 3,
+        "name": "tests/skill-phase-two.spec.ts:27:1 › brand extraction and product processing return real downloadable and viewable images",
+        "seconds": 12.7,
+        "status": "passed"
+      },
+      {
+        "number": 4,
+        "name": "tests/skill-phase-two.spec.ts:35:1 › marketing expert uses entered copy, outputs two real posters, and retains parameters on reload",
+        "seconds": 12.5,
+        "status": "passed"
+      },
+      {
+        "number": 5,
+        "name": "tests/skill-phase-two.spec.ts:44:1 › schedule and requirements downloadable format examples run without automatic execution",
+        "seconds": 12.9,
+        "status": "passed"
+      },
+      {
+        "number": 6,
+        "name": "tests/skill-phase-two.spec.ts:50:1 › web, developer and QA experts have real static checks without claiming runtime testing",
+        "seconds": 17.4,
+        "status": "passed"
+      },
+      {
+        "number": 7,
+        "name": "tests/skill-phase-two.spec.ts:59:34 › new skill parameters and results fit 320px",
+        "seconds": 6.4,
+        "status": "passed"
+      },
+      {
+        "number": 8,
+        "name": "tests/skill-phase-two.spec.ts:59:34 › new skill parameters and results fit 375px",
+        "seconds": 8.1,
+        "status": "passed"
+      },
+      {
+        "number": 9,
+        "name": "tests/skill-phase-two.spec.ts:59:34 › new skill parameters and results fit 768px",
+        "seconds": 5.9,
+        "status": "passed"
+      },
+      {
+        "number": 10,
+        "name": "tests/skill-planning.spec.ts:26:1 › two-stage consent: metadata-only mocked proposal, then REAL backend worker and verified artifact",
+        "seconds": 5.4,
+        "status": "passed"
+      },
+      {
+        "number": 11,
+        "name": "tests/skill-planning.spec.ts:37:1 › refresh restores proposal, not file or approval; changed file blocks execution, cancel remains final",
+        "seconds": 6.4,
+        "status": "passed"
+      },
+      {
+        "number": 12,
+        "name": "tests/skill-planning.spec.ts:44:1 › clarification only edits draft; unsupported does not substitute or execute a weaker tool",
+        "seconds": 3.6,
+        "status": "passed"
+      },
+      {
+        "number": 13,
+        "name": "tests/skill-planning.spec.ts:49:1 › model failure leaves functional manual fallback with idempotent actual execution",
+        "seconds": 5.3,
+        "status": "passed"
+      },
+      {
+        "number": 14,
+        "name": "tests/skill-planning.spec.ts:54:1 › lost approval response restores the already-created run, never starts a second run",
+        "seconds": 5.5,
+        "status": "passed"
+      },
+      {
+        "number": 15,
+        "name": "tests/skill-planning.spec.ts:58:1 › cancel a planning request before model finishes: late completion cannot show an approvable plan",
+        "seconds": 3.2,
+        "status": "passed"
+      },
+      {
+        "number": 16,
+        "name": "tests/skill-planning.spec.ts:62:1 › 401 identity change does not replay metadata POST under a newly authenticated identity",
+        "seconds": 3.3,
+        "status": "passed"
+      },
+      {
+        "number": 17,
+        "name": "tests/skill-planning.spec.ts:66:1 › mobile plan review fits without overflow and displays tool limits and frozen parameters",
+        "seconds": 3.3,
+        "status": "passed"
+      },
+      {
+        "number": 18,
+        "name": "tests/skill-planning.spec.ts:70:1 › manual upload also refuses a 401 replay under a new identity",
+        "seconds": 3.1,
+        "status": "passed"
+      },
+      {
+        "number": 19,
+        "name": "tests/skill-planning.spec.ts:74:1 › late restored-run read cannot resurrect a run deleted in the same view",
+        "seconds": 5.4,
+        "status": "passed"
+      },
+      {
+        "number": 20,
+        "name": "tests/skill-planning.spec.ts:79:1 › live HTTP planner without model configuration reports failure and persists no fake run (no API interception)",
+        "seconds": 3.0,
+        "status": "passed"
+      },
+      {
+        "number": 21,
+        "name": "tests/skill-products.spec.ts:10:1 › default directory shows 8 outcomes, not 49 tool cards; filters find former tools",
+        "seconds": 2.6,
+        "status": "passed"
+      },
+      {
+        "number": 22,
+        "name": "tests/skill-products.spec.ts:37:1 › old favorites migrate by outcome without overwriting old tool favorites",
+        "seconds": 2.5,
+        "status": "passed"
+      },
+      {
+        "number": 23,
+        "name": "tests/skill-products.spec.ts:57:1 › choosing a scene scopes the existing workbench to that executor only, and preserves deep links",
+        "seconds": 4.9,
+        "status": "passed"
+      },
+      {
+        "number": 24,
+        "name": "tests/skill-products.spec.ts:76:1 › configuration failures are explicit; no automatic fallback or third-party submission",
+        "seconds": 3.2,
+        "status": "passed"
+      },
+      {
+        "number": 25,
+        "name": "tests/skill-products.spec.ts:117:1 › a catalog race cannot initialize an out-of-scope fallback executor",
+        "seconds": 2.6,
+        "status": "passed"
+      },
+      {
+        "number": 26,
+        "name": "tests/skill-products.spec.ts:140:1 › catalog failure is fail-closed, retry recovers without a fake ready badge",
+        "seconds": 2.9,
+        "status": "passed"
+      },
+      {
+        "number": 27,
+        "name": "tests/skill-products.spec.ts:162:1 › merged brand scene runs real steps in the same workspace and reopens persisted history",
+        "seconds": 9.9,
+        "status": "passed"
+      },
+      {
+        "number": 28,
+        "name": "tests/skill-products.spec.ts:215:3 › outcome directory and embedded form fit 1440px without horizontal overflow",
+        "seconds": 2.7,
+        "status": "passed"
+      },
+      {
+        "number": 29,
+        "name": "tests/skill-products.spec.ts:215:3 › outcome directory and embedded form fit 390px without horizontal overflow",
+        "seconds": 2.7,
+        "status": "passed"
+      },
+      {
+        "number": 30,
+        "name": "tests/skill-products.spec.ts:215:3 › outcome directory and embedded form fit 320px without horizontal overflow",
+        "seconds": 2.6,
+        "status": "passed"
+      },
+      {
+        "number": 31,
+        "name": "tests/skill-products.spec.ts:247:1 › advanced tools and the original history remain reachable",
+        "seconds": 7.2,
+        "status": "passed"
+      },
+      {
+        "number": 32,
+        "name": "tests/skill-products.spec.ts:261:3 › core content has no axe violations directory",
+        "seconds": 3.3,
+        "status": "passed"
+      },
+      {
+        "number": 33,
+        "name": "tests/skill-products.spec.ts:261:3 › core content has no axe violations ?product=brand&scene=workflow%3Abrand-delivery",
+        "seconds": 3.2,
+        "status": "passed"
+      },
+      {
+        "number": 34,
+        "name": "tests/skill-products.spec.ts:281:1 › project default is a real human-readable form, not a JSON upload",
+        "seconds": 2.6,
+        "status": "passed"
+      },
+      {
+        "number": 35,
+        "name": "tests/skill-products.spec.ts:292:1 › collapsing the merged UI stops observation but does not cancel a real persisted run",
+        "seconds": 5.7,
+        "status": "passed"
+      },
+      {
+        "number": 36,
+        "name": "tests/skill-products.spec.ts:330:1 › invalid deep links do not silently open another executor, and identity changes clear the work area",
+        "seconds": 2.6,
+        "status": "passed"
+      },
+      {
+        "number": 37,
+        "name": "tests/skill-runtime.spec.ts:16:1 › actual CSV upload produces correct downloads, graph preview and persisted run history",
+        "seconds": 7.0,
+        "status": "passed"
+      },
+      {
+        "number": 38,
+        "name": "tests/skill-runtime.spec.ts:41:1 › actual document and PPTX pipelines expose honest scope and downloadable Office files",
+        "seconds": 11.5,
+        "status": "passed"
+      },
+      {
+        "number": 39,
+        "name": "tests/skill-runtime.spec.ts:56:1 › invalid input fails visibly instead of fabricating completed results",
+        "seconds": 4.5,
+        "status": "passed"
+      },
+      {
+        "number": 40,
+        "name": "tests/skill-runtime.spec.ts:63:1 › every listed QA skill has a real backend executor and presets are not presented as installation",
+        "seconds": 4.7,
+        "status": "passed"
+      },
+      {
+        "number": 41,
+        "name": "tests/skill-runtime.spec.ts:79:3 › real execution UI fits 320px without altering homepage drafts",
+        "seconds": 4.5,
+        "status": "passed"
+      },
+      {
+        "number": 42,
+        "name": "tests/skill-runtime.spec.ts:79:3 › real execution UI fits 375px without altering homepage drafts",
+        "seconds": 4.6,
+        "status": "passed"
+      },
+      {
+        "number": 43,
+        "name": "tests/skill-runtime.spec.ts:79:3 › real execution UI fits 768px without altering homepage drafts",
+        "seconds": 4.4,
+        "status": "passed"
+      },
+      {
+        "number": 44,
+        "name": "tests/skills.spec.ts:5:1 › skills use the expert-directory layout and list real registered capabilities by area",
+        "seconds": 2.8,
+        "status": "passed"
+      },
+      {
+        "number": 45,
+        "name": "tests/skills.spec.ts:25:1 › search, area filters and favorites operate on the real skills list",
+        "seconds": 3.1,
+        "status": "passed"
+      },
+      {
+        "number": 46,
+        "name": "tests/skills.spec.ts:43:1 › skill details expose real file limits and launch the matching executor",
+        "seconds": 3.0,
+        "status": "passed"
+      },
+      {
+        "number": 47,
+        "name": "tests/skills.spec.ts:57:1 › every skill states the tool permissions it really uses",
+        "seconds": 2.9,
+        "status": "passed"
+      },
+      {
+        "number": 48,
+        "name": "tests/skills.spec.ts:77:1 › capabilities that still miss a server credential never gain a run button",
+        "seconds": 2.8,
+        "status": "passed"
+      },
+      {
+        "number": 49,
+        "name": "tests/skills.spec.ts:88:1 › skill registration explanation does not claim client-side installation",
+        "seconds": 2.9,
+        "status": "passed"
+      },
+      {
+        "number": 50,
+        "name": "tests/skills.spec.ts:98:3 › expert-style skill directory stays usable at 320px without page overflow",
+        "seconds": 2.2,
+        "status": "passed"
+      },
+      {
+        "number": 51,
+        "name": "tests/skills.spec.ts:98:3 › expert-style skill directory stays usable at 375px without page overflow",
+        "seconds": 2.3,
+        "status": "passed"
+      },
+      {
+        "number": 52,
+        "name": "tests/skills.spec.ts:98:3 › expert-style skill directory stays usable at 681px without page overflow",
+        "seconds": 2.2,
+        "status": "passed"
+      },
+      {
+        "number": 53,
+        "name": "tests/skills.spec.ts:98:3 › expert-style skill directory stays usable at 768px without page overflow",
+        "seconds": 2.3,
+        "status": "passed"
+      },
+      {
+        "number": 54,
+        "name": "tests/skills.spec.ts:98:3 › expert-style skill directory stays usable at 1440px without page overflow",
+        "seconds": 2.3,
+        "status": "passed"
+      },
+      {
+        "number": 55,
+        "name": "tests/skills.spec.ts:105:1 › generated photo thumbnails load as actual images in their skill cards",
+        "seconds": 2.7,
+        "status": "passed"
+      },
+      {
+        "number": 56,
+        "name": "tests/skills.spec.ts:112:1 › every registered skill card has one matching task icon or generated photo",
+        "seconds": 2.9,
+        "status": "passed"
+      },
+      {
+        "number": 57,
+        "name": "tests/skills.spec.ts:122:1 › skill card titles never collide with their favorite controls on compact layouts",
+        "seconds": 3.0,
+        "status": "passed"
+      },
+      {
+        "number": 58,
+        "name": "tests/skills.spec.ts:135:1 › the five former placeholders now show their real executor state and what they still need",
+        "seconds": 2.7,
+        "status": "passed"
+      },
+      {
+        "number": 59,
+        "name": "tests/task-skills.spec.ts:31:1 › home file task does not call chat/model automatically; actual HTTP execution belongs only to that task and restores after reload",
+        "seconds": 10.1,
+        "status": "passed"
+      },
+      {
+        "number": 60,
+        "name": "tests/task-skills.spec.ts:38:1 › task model proposal preserves explicit expert/model, omits chat attachment text, then actual worker executes after separate approval",
+        "seconds": 9.7,
+        "status": "passed"
+      },
+      {
+        "number": 61,
+        "name": "tests/task-skills.spec.ts:55:1 › local-only task opens no private skill execution/planning API or chat; public read-only catalogue is not a material upload",
+        "seconds": 3.1,
+        "status": "passed"
+      },
+      {
+        "number": 62,
+        "name": "tests/task-skills.spec.ts:62:1 › existing ordinary conversation can open file tools without replacing its messages or sending a second chat",
+        "seconds": 3.5,
+        "status": "passed"
+      },
+      {
+        "number": 63,
+        "name": "tests/task-skills.spec.ts:66:1 › identity event closes task executor until explicit acknowledgement and never reuses file consent",
+        "seconds": 4.6,
+        "status": "passed"
+      },
+      {
+        "number": 64,
+        "name": "tests/task-skills.spec.ts:69:1 › unsupported custom expert is not silently replaced with a built-in executor",
+        "seconds": 5.0,
+        "status": "passed"
+      },
+      {
+        "number": 65,
+        "name": "tests/task-skills.spec.ts:72:30 › task file tools fit 320px and keep real consent controls usable",
+        "seconds": 3.2,
+        "status": "passed"
+      },
+      {
+        "number": 66,
+        "name": "tests/task-skills.spec.ts:72:30 › task file tools fit 390px and keep real consent controls usable",
+        "seconds": 3.0,
+        "status": "passed"
+      },
+      {
+        "number": 67,
+        "name": "tests/workflows.spec.ts:8:1 › a workflow runs the real skills and lists the artifacts",
+        "seconds": 9.3,
+        "status": "passed"
+      },
+      {
+        "number": 68,
+        "name": "tests/workflows.spec.ts:60:1 › a workflow that needs a file reads the uploaded file",
+        "seconds": 8.5,
+        "status": "passed"
+      },
+      {
+        "number": 69,
+        "name": "tests/workflows.spec.ts:87:1 › a missing answer is reported before anything runs",
+        "seconds": 5.7,
+        "status": "passed"
+      },
+      {
+        "number": 70,
+        "name": "tests/workflows.spec.ts:105:1 › a finished artifact can be opened in the editor or kept in the asset library",
+        "seconds": 13.0,
+        "status": "passed"
+      },
+      {
+        "number": 71,
+        "name": "tests/workflows.spec.ts:141:1 › a home scene with a recipe opens that workflow",
+        "seconds": 4.7,
+        "status": "passed"
+      }
+    ]
+  },
+  "lastWordingRegression": {
+    "tests": 1,
+    "passed": 1,
+    "note": "After the 71-test batch, advanced unavailable wording was clarified; directory assertion was rerun and frontend rebuilt."
+  },
+  "axe": {
+    "scope": ".product-content only",
+    "scenes": [
+      "default outcome directory",
+      "embedded brand workflow form"
+    ],
+    "violations": 0,
+    "notClaimed": "full-product accessibility certification"
+  },
+  "limitations": [
+    "Mock model plans/options, injected catalog/configuration failures and damaged HTML are controlled test fixtures, not external service verification.",
+    "Real processing, persistence, permissions and output checks are described separately by each test name.",
+    "No real third-party PPT planning, AI image generation, live calendar/email service or commercial visual approval was performed.",
+    "Word real renderer/repair tests do not establish target Word/WPS acceptance."
+  ],
+  "sourceSHA256": {
+    "shared/skillProducts.ts": "ed33873450ba7807cabb045ae56a95bcfb955da336e87a1d1dd89c49484f789c",
+    "shared/skillRuntime.ts": "2d3dc467b325c6032581a492e73a3eb7893fc0fb95e79928e9e94437bb965c84",
+    "frontend/workspace/pages/SkillProductsPage.tsx": "b6aff9b1caae3ffd8f3f04a6db8936441f0c1fa839130e49bc6f104a1363c776",
+    "frontend/workspace/pages/SkillsPage.tsx": "e207c8011702176baba1f4e1069fb058a2f6e2637d7f18f818ddbee17a0aebb6",
+    "frontend/workspace/pages/skill-products.css": "34bb248239d6b7ef2758ea1dbc66be72a3abf071a6f26a5355ece412f46e0a35",
+    "frontend/workspace/pages/WorkflowsPage.tsx": "f86ce7be9e5a9bb265a303ee47acb5baeba04b63f3a489e053d01003d2ff4e62",
+    "frontend/workspace/SkillWorkbench.tsx": "04307f44413a04b512813d36556836b8a3bbe64e659be550d1024876e19b2e0e",
+    "server/api/workflows.ts": "493785047db2579b21f200d260ff76293eeec1e3955047b7d8832ba03ec4ea69",
+    "server/skills/service.ts": "18faf3129505a82b84d515e32089283a37b16954eebd410830d0ab8125599aee",
+    "server/skills/web-checks.ts": "cef4e98609632304874430c148949ca14bff97d55c8e6733da0f7bb5e241cd9b",
+    "server/skills/frontend-design.ts": "00779cb136ea9c0b76fe4025852cb2f468c61211a5e2b481f5880ee86b811935",
+    "docs/plans/skill-method-consolidation-2026-10-20.json": "4700bee7b59e7eca16c8e978ad6a1f2db03ce7dab2e26c3e7bafca3f1e52addf"
+  }
+}

@@ -77,3 +77,5 @@
   .wf-content { padding: 18px 14px 40px; }
   .wf-card-wall { grid-template-columns: 1fr; }
 }
+
+.wf-delivery-note { padding:12px 14px; border:1px solid #dfdfc8; border-radius:7px; background:#f8f7eb; color:#6b663d; font-size:12px; line-height:1.85; }

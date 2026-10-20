@@ -370,3 +370,88 @@ test("the landing page and the social card really build their files", async () =
     assert.equal(png.mime, "image/png");
   });
 });
+
+const deliveryFields={title:'交付测试样例',description:'仅供测试，不代表真实企业',language:'zh-CN',primary:'#335C4A',surface:'#F5F4EF',text:'#202720',accent:'#D8774A',heroTitle:'明确交付，保留证据',heroEyebrow:'TEST',heroBody:'依据本次提供的材料生成页面。',heroButton:'了解服务',featuresTitle:'实际服务',navFeatures:'服务',contactTitle:'联系我们',contactBody:'使用测试邮箱，不代表真实联系人。',contactEmail:'studio@example.com',navContact:'联系',rows:[{title:'网页制作',body:'响应式静态页面，未部署。'}]};
+
+test('merged web delivery really passes generated HTML CSS and JS to independent static gates',async()=>{
+  await withEngine(async({engine,skills})=>{
+    const started=await engine.start('alice','web-delivery',{fields:deliveryFields});
+    await assert.rejects(()=>engine.retryStep('alice',started.id,'scaffold'),/正在执行/);
+    const run=await engine.waitFor('alice',started.id);
+    assert.equal(run.status,'succeeded',JSON.stringify(run.steps));assert.equal(run.steps.length,4);assert.equal(run.delivery.commercialAcceptance,'pending-human-review');assert.equal(run.delivery.automatedChecks,'passed');
+    for(const step of run.steps)assert.ok(step.skillRunId);
+    const html=run.steps[1].outputs.find(a=>a.name==='html-audit.json');assert.ok(html);
+    const response=await skills.handle(new Request(`http://local/api/skill-runs/${run.steps[1].skillRunId}/artifacts/${html.id}`),'alice');
+    const report=await response.json();assert.ok(report.elements>20);assert.equal(report.findings.length,0);
+    const before=run.steps.map(s=>s.skillRunId);
+    await engine.retryStep('alice',run.id,'scaffold');
+    const retried=await engine.waitFor('alice',run.id);
+    assert.equal(retried.status,'succeeded',retried.error);
+    for(let i=0;i<4;i++)assert.notEqual(retried.steps[i].skillRunId,before[i],'dependent checks must not retain stale results');
+    assert.equal(engine.get('bob',run.id),null);
+  });
+});
+
+test('brand delivery uses real form data and real generated CSS and HTML, not incompatible token JSON',async()=>{
+  await withEngine(async({engine})=>{
+    const started=await engine.start('alice','brand-delivery',{fields:{brandName:'林间样例',description:'这是用于执行验证的合成品牌，不是客户项目。',concept:'清晰而自然',tagline:'让信息更容易理解',voice:'温和、明确',logoShape:'seed',primary:'#294C3B',secondary:'#F4F1E9',accent:'#D2744C'}});
+    const run=await engine.waitFor('alice',started.id);
+    assert.equal(run.status,'succeeded',JSON.stringify(run.steps));
+    assert.equal(run.steps[0].outputs.filter(a=>a.name!=='execution-receipt.json').length,8);assert.ok(run.steps[1].outputs.some(a=>a.name==='css-audit.json'));assert.ok(run.steps[2].outputs.some(a=>a.name==='html-audit.json'));
+  });
+});
+
+test('marketing delivery uses actual uploaded pixels and text and hands its portrait PNG to the WebP executor',async()=>{
+  const sharp=require('sharp');
+  await withEngine(async({engine,assets,skills})=>{
+    const bytes=await sharp({create:{width:120,height:80,channels:3,background:'#649563'}}).png().toBuffer();
+    const asset=assets.create('alice',{name:'synthetic-test.png',mime:'image/png',bytes});
+    const started=await engine.start('alice','marketing-delivery',{fields:{title:'测试活动',subtitle:'合成图片，不是真实商品',action:'查看详情'},files:{file:{assetId:asset.id,name:asset.name}}});
+    const run=await engine.waitFor('alice',started.id);assert.equal(run.status,'succeeded',JSON.stringify(run.steps));
+    assert.ok(run.steps[0].outputs.some(a=>a.name==='poster-portrait.png'));assert.ok(run.steps[1].outputs.some(a=>a.name==='image-480w.webp'));
+    const layout=run.steps[0].outputs.find(a=>a.name==='poster-layout.json');const response=await skills.handle(new Request(`http://local/api/skill-runs/${run.steps[0].skillRunId}/artifacts/${layout.id}`),'alice');
+    assert.equal((await response.json()).title,'测试活动');
+    const forbidden=await skills.handle(new Request(`http://local/api/skill-runs/${run.steps[0].skillRunId}/artifacts/${layout.id}`),'bob');assert.equal(forbidden.status,404);
+  });
+});
+
+test('delivery rejects oversized fields or rows before running, without silently dropping customer material',async()=>{
+  await withEngine(async({engine,store})=>{
+    await assert.rejects(()=>engine.start('alice','web-delivery',{fields:{...deliveryFields,heroBody:'字'.repeat(401)}}),/未截断/);
+    await assert.rejects(()=>engine.start('alice','web-delivery',{fields:{...deliveryFields,rows:Array.from({length:13},()=>({title:'内容',body:'说明'}))}}),/未截断/);
+    assert.equal(store.list('alice').length,0);
+  });
+});
+
+test('project delivery builds traceable requirement and acceptance IDs from actual rows without inventing people',async()=>{
+  await withEngine(async({engine,skills})=>{
+    const fields={project:'合成项目验收样例',owner:'',problem:'测试需求散落在多个文件中。',goals:'集中展示实际需求',nonGoals:'不发送通知或安排工期',priority:'should',rows:[{title:'展示项目范围',check:'页面包含目标和范围外事项'}]};
+    const started=await engine.start('alice','project-delivery',{fields});const run=await engine.waitFor('alice',started.id);
+    assert.equal(run.status,'succeeded',JSON.stringify(run.steps));
+    const artifact=run.steps[0].outputs.find(a=>a.name==='product-spec.md');const response=await skills.handle(new Request(`http://local/api/skill-runs/${run.steps[0].skillRunId}/artifacts/${artifact.id}`),'alice');
+    const text=await response.text();assert.match(text,/待指定/);assert.match(text,/R1/);assert.match(text,/页面包含目标和范围外事项/);assert.match(text,/未提供待确认问题/);
+    const invalid=await engine.start('alice','project-delivery',{fields:{...fields,rows:[{title:'无验收要求',check:''}]}});const failed=await engine.waitFor('alice',invalid.id);
+    assert.equal(failed.status,'failed');assert.match(failed.steps[0].error,/验收条件/);assert.equal(failed.steps[1].status,'failed');
+  });
+});
+
+test('a real static finding fails the merged gate but preserves diagnostic downloads (controlled fault injection)',async()=>{
+  await withEngine(async({engine,skills})=>{
+    const original=skills.handle.bind(skills);
+    skills.handle=async(request,owner)=>{
+      if(request.method==='POST'&&new URL(request.url).pathname==='/api/skill-runs'){
+        const form=await request.clone().formData();
+        if(form.get('skillId')==='web.audit'){
+          const file=form.get('file');form.set('file',new File([await file.text(),'<img src="unverified.png">'],'index.html',{type:'text/html'}));
+          const headers=new Headers(request.headers);headers.delete('content-type');request=new Request(request.url,{method:'POST',headers,body:form});
+        }
+      }
+      return original(request,owner);
+    };
+    const started=await engine.start('alice','web-delivery',{fields:deliveryFields});const run=await engine.waitFor('alice',started.id);
+    assert.equal(run.status,'partial');assert.equal(run.delivery.classification,'diagnostic');assert.equal(run.delivery.automatedChecks,'blocked');assert.equal(run.steps[1].status,'failed');assert.match(run.steps[1].error,/静态质量门槛未通过/);
+    const artifact=run.steps[1].outputs.find(a=>a.name==='html-audit.json');assert.ok(artifact,'diagnostic output must survive a failed gate');
+    const response=await skills.handle(new Request(`http://local/api/skill-runs/${run.steps[1].skillRunId}/artifacts/${artifact.id}`),'alice');
+    assert.equal(response.status,200);assert.ok((await response.json()).findings.some(f=>f.code==='MISSING_ALT'));
+  });
+});

@@ -141,7 +141,9 @@ export class SkillService {
     for (const row of queued) {
       if (this.active.size >= 2) return;
       const fresh = this.row(row.id); if (!fresh || JSON.parse(fresh.record).status !== "queued") continue;
-      const record = JSON.parse(fresh.record) as SkillRun; record.status = "running"; this.event(record, ["document.summarize", "slides.create"].includes(record.skillId) ? "后台开始处理用户已授权上传的材料；此技能会将正文发送至已配置的第三方AI服务。" : "后台执行器开始处理已上传材料（不访问外网、不执行用户代码）。"); this.save(record);
+      const record = JSON.parse(fresh.record) as SkillRun;
+      if(record.skillId==="code.build") { record.status="failed";record.error="构建隔离安全验收未完成，已阻止历史排队任务启动；没有执行用户代码。";this.event(record,record.error);this.save(record);continue; }
+      record.status = "running"; this.event(record, ["document.summarize", "slides.create"].includes(record.skillId) ? "后台开始处理用户已授权上传的材料；此技能会将正文发送至已配置的第三方AI服务。" : "后台执行器开始处理已上传材料（不访问外网、不执行用户代码）。"); this.save(record);
       let workDirectory: string | undefined;
       try {
         if (record.skillId.startsWith("slides.")) workDirectory = mkdtempSync(join(tmpdir(), "designbuddy-skill-slides-"));
@@ -248,7 +250,7 @@ export class SkillService {
       return response(JSON.parse(previous.record));
     }
     if (plan) this.plans.checkCurrent(plan);
-    if (skill.status !== "ready") throw new RequestError("该技能尚未接通。", 409);
+    if (skill.status !== "ready") throw new RequestError(skill.availabilityReason || "该技能尚未接通。", 409);
     const extension = /\.[a-z0-9]+$/i.exec(filename)?.[0].toLowerCase();
     if (!extension || !skill.accepts.includes(extension)) throw new RequestError("文件格式不受该技能支持。");
     const ownerUsage = Number(this.db.prepare("SELECT coalesce(sum(length(input)),0) AS n FROM skill_runs WHERE owner=?").get(owner)?.n || 0)

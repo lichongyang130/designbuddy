@@ -36,6 +36,11 @@ test('home file task does not call chat/model automatically; actual HTTP executi
  await page.goto(first);await expect(desk(page).getByRole('button',{name:'下载 analysis.json'})).toBeVisible();await expect(desk(page).getByRole('checkbox',{name:/我同意上传材料/})).not.toBeChecked();expect(chat).toBe(0);expect(plans).toBe(0);
 });
 test('task model proposal preserves explicit expert/model, omits chat attachment text, then actual worker executes after separate approval',async({page})=>{
+ // Explicit UI-only model fixture: no second production model/provider is assumed.
+ // The planner below is already injected; its result still executes the real worker.
+ await page.addInitScript(()=>{const key='designbuddy.preferences.v1';const p=JSON.parse(localStorage.getItem(key)||'{}');p.models=[{id:'test-model-option',name:'测试自定义模型',modelId:'test-custom-model',provider:'custom'}];localStorage.setItem(key,JSON.stringify(p));});
+ await page.route('**/api/profile/preferences',route=>route.request().method()==='GET'?route.fulfill({json:{preferences:[]}}):route.fallback());
+
  let seen:any;await bridge(page,async input=>{seen=input;return {kind:'plan',expertId:'data',skillId:'table.analyze',reason:'根据描述进行固定统计；未读正文',options:{deduplicate:true}};});
  await page.route('**/api/expert-match',route=>route.fulfill({json:{kind:'match',expertId:'data',collaboratorIds:[],reason:'表格数值计算',responsibilities:['核对字段'],missing:[]}}));
  const url=await openFromHome(page,goal,async()=>{
@@ -47,8 +52,8 @@ test('task model proposal preserves explicit expert/model, omits chat attachment
  expect(seen.taskId).toBe(url.split('/').at(-1));expect(seen.expertScope).toBe('data');expect(seen.model).toBe(model);expect(seen.goal).toBe(goal);expect(JSON.stringify(seen)).not.toContain('CHAT_PRIVATE_BODY');expect(JSON.stringify(seen)).not.toContain('甲,10');
  await page.reload();await expect(planner(page).getByRole('button',{name:'确认方案并执行一次'})).toBeDisabled();await choose(page);await planner(page).getByRole('checkbox',{name:/我已核对/}).check();await planner(page).getByRole('button',{name:'确认方案并执行一次'}).click();await expect(desk(page).getByRole('status').filter({hasText:'执行成功'})).toBeVisible({timeout:15000});await expect(desk(page).getByRole('button',{name:'下载 analysis.json'})).toBeVisible();
 });
-test('local-only file task opens no skill API and no chat; switching permission still does not auto upload or plan',async({page})=>{
- const calls:string[]=[];page.on('request',r=>{if(/^\/api\/(skill-|chat|generation)/.test(new URL(r.url()).pathname))calls.push(r.method()+':'+r.url());});
+test('local-only task opens no private skill execution/planning API or chat; public read-only catalogue is not a material upload',async({page})=>{
+ const calls:string[]=[];page.on('request',r=>{if(/^\/api\/(skill-(?:plans|runs)|chat|generation)/.test(new URL(r.url()).pathname))calls.push(r.method()+':'+r.url());});
  await openFromHome(page,goal,async()=>{await page.getByLabel('任务权限',{exact:true}).selectOption('仅本地');});
  await expect(page.getByText(/当前为仅本地模式：不会打开后台执行台/)).toBeVisible();expect(calls).toHaveLength(0);await expect(desk(page)).toHaveCount(0);
  await page.getByLabel('任务权限',{exact:true}).selectOption('默认权限');await expect(desk(page).getByLabel('上传实际材料')).toBeVisible();expect(calls.some(x=>x.startsWith('POST:'))).toBe(false);await expect(planner(page).getByRole('button',{name:'生成技能方案（不执行）'})).toBeDisabled();

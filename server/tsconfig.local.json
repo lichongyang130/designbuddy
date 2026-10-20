@@ -20,6 +20,7 @@
     "local-daemon.ts",
     "skills/**/*.ts",
     "../shared/commercialExports.ts",
-    "../shared/commercialOffice.ts"
+    "../shared/commercialOffice.ts",
+    "../shared/skillProducts.ts"
   ]
 }

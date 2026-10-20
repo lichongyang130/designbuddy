@@ -14,6 +14,7 @@ const PdfPreview = lazy(() => import("./PdfPreview"));
 const labels = { queued: "等待执行", running: "正在执行", succeeded: "执行成功", failed: "执行失败", cancelled: "已取消" };
 const terminal = (run: SkillRun) => !["running", "queued"].includes(run.status);
 export default function SkillWorkbench({ expertId, taskId, initialGoal = "", model, permission, allowedSkillIds, initialSkillId, onSkillExecute, autoContent, presentationBrief }: { expertId?: string; taskId?: string; initialGoal?: string; model?: string; permission?: string; allowedSkillIds?: string[]; initialSkillId?: string; onSkillExecute?: (skillId: string, skillName: string) => void; autoContent?: string; presentationBrief?: Partial<PresentationBrief> }) {
+  const allowedScopeKey = allowedSkillIds ? JSON.stringify([...allowedSkillIds].sort()) : "";
   const scopeQuery = taskId ? `?taskId=${encodeURIComponent(taskId)}` : "";
   const mutations = useRef(0);
   const epoch = useRef(0);
@@ -44,12 +45,12 @@ export default function SkillWorkbench({ expertId, taskId, initialGoal = "", mod
     Promise.all([apiJSON<{ skills: RuntimeSkill[] }>("/skill-runtime", { signal: controller.signal }), apiJSON<{ runs: SkillRun[] }>(`/skill-runs${scopeQuery}`, { signal: controller.signal })]).then(([c, r]) => {
       if (controller.signal.aborted) return;
       setCatalog(c.skills); setRuns(r.runs); setLoaded(true);
-      const first = c.skills.find(s => s.id === initialSkillId && s.status === "ready" && (!expertId || s.expertIds.includes(expertId))) || c.skills.find(s => s.status === "ready" && (!expertId || s.expertIds.includes(expertId)));
+      const first = c.skills.find(s => s.id === initialSkillId && s.status === "ready" && (!allowedSkillIds || allowedSkillIds.includes(s.id)) && (!expertId || s.expertIds.includes(expertId))) || c.skills.find(s => s.status === "ready" && (!allowedSkillIds || allowedSkillIds.includes(s.id)) && (!expertId || s.expertIds.includes(expertId)));
       setSelected(first?.id || "");
       setParameters(Object.fromEntries((first?.parameterFields || []).map(f => [f.name, f.defaultValue || ""])));
     }).catch(e => { if (!controller.signal.aborted) setError(e instanceof Error ? e.message : "技能后台不可用。"); });
     return () => { controller.abort(); submissionController.current?.abort(); };
-  }, [expertId, taskId, refresh, initialSkillId]);
+  }, [expertId, taskId, refresh, initialSkillId, allowedScopeKey]);
   const pending = runs.some(r => !terminal(r));
   useRuntimeActivity(busy || pending);
   useEffect(() => {

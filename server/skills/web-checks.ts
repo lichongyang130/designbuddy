@@ -3,7 +3,14 @@ import { text, json, out } from "./io";
 import type { SkillInput } from "./executors";
 type Finding={code:string;message:string;line:number|null};
 export async function htmlAudit(input:SkillInput,event:(m:string)=>void){
-  const source=text(input.bytes);if(source.length>150000)throw Error("HTML静态检查最多150000字。");
+  const original=text(input.bytes);
+  if(input.bytes.length>2_000_000)throw Error("HTML输入最多2MB。");
+  let payloads=0,encodedCharacters=0;
+  // Binary payloads cannot change HTML structure. Keep their attributes and line
+  // numbers, but do not parse hundreds of KB of licensed inline font/image data.
+  // Other data URIs (including script/html) are not exempted from the text limit.
+  const source=original.replace(/(data:(?:font\/woff2|image\/(?:svg\+xml|png|jpeg|webp));base64,)([A-Za-z0-9+/=]+)/gi,(_all,prefix:string,payload:string)=>{payloads++;encodedCharacters+=payload.length;return prefix+"omitted";});
+  if(source.length>150000)throw Error("HTML结构和文本最多150000字（内嵌图片/WOFF2字体base64不计入）；未截断检查。");
   const {parse}=await import("parse5");const findings:Finding[]=[];
   const doc=parse(source,{sourceCodeLocationInfo:true,onParseError:e=>{if(findings.length<200)findings.push({code:`HTML_${e.code}`,message:"HTML解析器报告格式问题。",line:e.startLine});}});
   const elements:any[]=[];function walk(node:any,depth:number){if(depth>200||elements.length>10000)throw Error("HTML嵌套过深或节点过多。");if(node.tagName)elements.push(node);for(const child of node.childNodes||[])walk(child,depth+1);if(node.content)walk(node.content,depth+1);}walk(doc,0);
@@ -26,7 +33,7 @@ export async function htmlAudit(input:SkillInput,event:(m:string)=>void){
     if(Object.values(a).some(v=>/^https?:\/\/(localhost|127\.0\.0\.1)([:/]|$)/i.test(v)))find(n,"LOCALHOST_URL","浏览器资源使用localhost，远端预览可能不可访问。");
   }
   event(`实际解析 ${elements.length} 个HTML元素，静态规则发现 ${findings.length} 个问题；没有运行页面脚本或浏览器。`);
-  return {summary:`HTML静态检查完成：${findings.length} 个规则问题。未执行浏览器、交互、CSS布局或接口验收，不能据此称网站测试通过。`,outputs:[json("html-audit.json",{elements:elements.length,findings,truncated:findings.length>=500,executed:"HTML解析与静态规则",notExecuted:["浏览器运行","脚本","网络请求","交互","布局","全量无障碍审计"]}),out("html-audit.txt","text/plain; charset=utf-8",findings.map(f=>`${f.line||"-"}: ${f.code} ${f.message}`).join("\n")||"已实现静态规则未发现问题。未执行浏览器验收。") ]};
+  return {summary:`HTML静态检查完成：${findings.length} 个规则问题。未执行浏览器、交互、CSS布局或接口验收，不能据此称网站测试通过。`,outputs:[json("html-audit.json",{elements:elements.length,embeddedBinary:{payloads,encodedCharacters,inspected:false,note:"只检查HTML结构，不解码或验证内嵌图片和WOFF2字体。"},findings,truncated:findings.length>=500,executed:"HTML解析与静态规则",notExecuted:["浏览器运行","脚本","网络请求","交互","布局","全量无障碍审计"]}),out("html-audit.txt","text/plain; charset=utf-8",findings.map(f=>`${f.line||"-"}: ${f.code} ${f.message}`).join("\n")||"已实现静态规则未发现问题。未执行浏览器验收。") ]};
 }
 export async function codeInspect(input:SkillInput,event:(m:string)=>void){
   const source=text(input.bytes);if(source.length>150000)throw Error("JavaScript静态检查最多150000字。");

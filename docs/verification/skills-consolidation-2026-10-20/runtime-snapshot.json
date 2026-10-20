@@ -1,0 +1,584 @@
+{
+  "date": "2026-10-20",
+  "environment": "Arena local preview; not the production domain",
+  "commercialAcceptance": "pending-human-review for every product",
+  "registeredTools": 49,
+  "workflows": [
+    {
+      "id": "business-infographic",
+      "version": "1.0.0",
+      "steps": [
+        {
+          "id": "compose",
+          "skill": "infographic.compose",
+          "ready": true,
+          "reason": "",
+          "qualityGate": null
+        }
+      ]
+    },
+    {
+      "id": "faq-page",
+      "version": "1.0.0",
+      "steps": [
+        {
+          "id": "page",
+          "skill": "faq.page",
+          "ready": true,
+          "reason": "",
+          "qualityGate": null
+        }
+      ]
+    },
+    {
+      "id": "table-insights",
+      "version": "1.0.0",
+      "steps": [
+        {
+          "id": "analyze",
+          "skill": "table.analyze",
+          "ready": true,
+          "reason": "",
+          "qualityGate": null
+        }
+      ]
+    },
+    {
+      "id": "landing-page",
+      "version": "1.0.0",
+      "steps": [
+        {
+          "id": "scaffold",
+          "skill": "web.scaffold",
+          "ready": true,
+          "reason": "",
+          "qualityGate": null
+        }
+      ]
+    },
+    {
+      "id": "social-card",
+      "version": "1.0.0",
+      "steps": [
+        {
+          "id": "card",
+          "skill": "social.card",
+          "ready": true,
+          "reason": "",
+          "qualityGate": null
+        }
+      ]
+    },
+    {
+      "id": "doc-brief",
+      "version": "1.0.0",
+      "steps": [
+        {
+          "id": "format",
+          "skill": "document.format",
+          "ready": true,
+          "reason": "",
+          "qualityGate": null
+        },
+        {
+          "id": "brief",
+          "skill": "document.summarize",
+          "ready": false,
+          "reason": "服务端AI_API_KEY/OPENAI_API_KEY未配置；不会生成伪摘要；这一步没有执行，也没有生成结果。",
+          "qualityGate": null
+        }
+      ]
+    },
+    {
+      "id": "doc-structure",
+      "version": "1.0.0",
+      "steps": [
+        {
+          "id": "structure",
+          "skill": "document.structure",
+          "ready": true,
+          "reason": "",
+          "qualityGate": null
+        }
+      ]
+    },
+    {
+      "id": "project-delivery",
+      "version": "1.0.0",
+      "steps": [
+        {
+          "id": "spec",
+          "skill": "product.spec",
+          "ready": true,
+          "reason": "",
+          "qualityGate": "project"
+        },
+        {
+          "id": "html",
+          "skill": "web.audit",
+          "ready": true,
+          "reason": "",
+          "qualityGate": "html"
+        }
+      ]
+    },
+    {
+      "id": "web-delivery",
+      "version": "1.0.0",
+      "steps": [
+        {
+          "id": "scaffold",
+          "skill": "web.scaffold",
+          "ready": true,
+          "reason": "",
+          "qualityGate": null
+        },
+        {
+          "id": "html",
+          "skill": "web.audit",
+          "ready": true,
+          "reason": "",
+          "qualityGate": "html"
+        },
+        {
+          "id": "css",
+          "skill": "web.css-audit",
+          "ready": true,
+          "reason": "",
+          "qualityGate": "css"
+        },
+        {
+          "id": "javascript",
+          "skill": "code.inspect",
+          "ready": true,
+          "reason": "",
+          "qualityGate": "javascript"
+        }
+      ]
+    },
+    {
+      "id": "marketing-delivery",
+      "version": "1.0.0",
+      "steps": [
+        {
+          "id": "poster",
+          "skill": "image.marketing",
+          "ready": true,
+          "reason": "",
+          "qualityGate": null
+        },
+        {
+          "id": "web-images",
+          "skill": "image.web-pack",
+          "ready": true,
+          "reason": "",
+          "qualityGate": null
+        }
+      ]
+    },
+    {
+      "id": "brand-delivery",
+      "version": "1.0.0",
+      "steps": [
+        {
+          "id": "brand",
+          "skill": "brand.system",
+          "ready": true,
+          "reason": "",
+          "qualityGate": null
+        },
+        {
+          "id": "css",
+          "skill": "web.css-audit",
+          "ready": true,
+          "reason": "",
+          "qualityGate": "css"
+        },
+        {
+          "id": "html",
+          "skill": "web.audit",
+          "ready": true,
+          "reason": "",
+          "qualityGate": "html"
+        }
+      ]
+    }
+  ],
+  "products": [
+    {
+      "id": "presentations",
+      "name": "专业演示与汇报",
+      "primary": "slides.create",
+      "skillIds": [
+        "slides.create",
+        "slides.compose",
+        "slides.inspect"
+      ],
+      "skills": [
+        {
+          "id": "slides.create",
+          "status": "unavailable",
+          "executorState": "connected"
+        },
+        {
+          "id": "slides.compose",
+          "status": "ready",
+          "executorState": null
+        },
+        {
+          "id": "slides.inspect",
+          "status": "ready",
+          "executorState": null
+        }
+      ]
+    },
+    {
+      "id": "documents",
+      "name": "专业文档与资料处理",
+      "primary": "document.create",
+      "skillIds": [
+        "document.create",
+        "document.format",
+        "document.structure",
+        "document.summarize",
+        "pdf.extract",
+        "pdf.ocr-batch",
+        "pdf.ocr",
+        "image.ocr",
+        "audio.transcribe-en",
+        "article.magazine"
+      ],
+      "skills": [
+        {
+          "id": "document.create",
+          "status": "ready",
+          "executorState": "connected"
+        },
+        {
+          "id": "document.format",
+          "status": "ready",
+          "executorState": null
+        },
+        {
+          "id": "document.structure",
+          "status": "ready",
+          "executorState": null
+        },
+        {
+          "id": "document.summarize",
+          "status": "unavailable",
+          "executorState": null
+        },
+        {
+          "id": "pdf.extract",
+          "status": "ready",
+          "executorState": null
+        },
+        {
+          "id": "pdf.ocr-batch",
+          "status": "ready",
+          "executorState": null
+        },
+        {
+          "id": "pdf.ocr",
+          "status": "ready",
+          "executorState": null
+        },
+        {
+          "id": "image.ocr",
+          "status": "ready",
+          "executorState": null
+        },
+        {
+          "id": "audio.transcribe-en",
+          "status": "ready",
+          "executorState": null
+        },
+        {
+          "id": "article.magazine",
+          "status": "ready",
+          "executorState": null
+        }
+      ]
+    },
+    {
+      "id": "data",
+      "name": "表格分析与业务报告",
+      "primary": "table.analyze",
+      "skillIds": [
+        "table.analyze",
+        "table.calculate",
+        "table.join",
+        "table.join-multi",
+        "data.connect",
+        "data.report",
+        "finance.report",
+        "infographic.compose"
+      ],
+      "skills": [
+        {
+          "id": "table.analyze",
+          "status": "ready",
+          "executorState": null
+        },
+        {
+          "id": "table.calculate",
+          "status": "ready",
+          "executorState": null
+        },
+        {
+          "id": "table.join",
+          "status": "ready",
+          "executorState": null
+        },
+        {
+          "id": "table.join-multi",
+          "status": "ready",
+          "executorState": null
+        },
+        {
+          "id": "data.connect",
+          "status": "ready",
+          "executorState": null
+        },
+        {
+          "id": "data.report",
+          "status": "ready",
+          "executorState": null
+        },
+        {
+          "id": "finance.report",
+          "status": "ready",
+          "executorState": null
+        },
+        {
+          "id": "infographic.compose",
+          "status": "ready",
+          "executorState": null
+        }
+      ]
+    },
+    {
+      "id": "brand",
+      "name": "品牌与视觉系统",
+      "primary": "workflow:brand-delivery",
+      "skillIds": [
+        "brand.assets",
+        "brand.system",
+        "design.tokens",
+        "design.brief"
+      ],
+      "skills": [
+        {
+          "id": "brand.assets",
+          "status": "ready",
+          "executorState": null
+        },
+        {
+          "id": "brand.system",
+          "status": "ready",
+          "executorState": null
+        },
+        {
+          "id": "design.tokens",
+          "status": "ready",
+          "executorState": null
+        },
+        {
+          "id": "design.brief",
+          "status": "ready",
+          "executorState": null
+        }
+      ]
+    },
+    {
+      "id": "visual",
+      "name": "营销与商品视觉",
+      "primary": "workflow:marketing-delivery",
+      "skillIds": [
+        "image.marketing",
+        "image.layout",
+        "image.product",
+        "image.generate",
+        "social.card",
+        "social.carousel",
+        "image.web-pack"
+      ],
+      "skills": [
+        {
+          "id": "image.marketing",
+          "status": "ready",
+          "executorState": null
+        },
+        {
+          "id": "image.layout",
+          "status": "ready",
+          "executorState": null
+        },
+        {
+          "id": "image.product",
+          "status": "ready",
+          "executorState": null
+        },
+        {
+          "id": "image.generate",
+          "status": "unavailable",
+          "executorState": "connected"
+        },
+        {
+          "id": "social.card",
+          "status": "ready",
+          "executorState": null
+        },
+        {
+          "id": "social.carousel",
+          "status": "ready",
+          "executorState": null
+        },
+        {
+          "id": "image.web-pack",
+          "status": "ready",
+          "executorState": null
+        }
+      ]
+    },
+    {
+      "id": "web",
+      "name": "网页与交互原型",
+      "primary": "workflow:web-delivery",
+      "skillIds": [
+        "web.scaffold",
+        "faq.page",
+        "code.build"
+      ],
+      "skills": [
+        {
+          "id": "web.scaffold",
+          "status": "ready",
+          "executorState": null
+        },
+        {
+          "id": "faq.page",
+          "status": "ready",
+          "executorState": null
+        },
+        {
+          "id": "code.build",
+          "status": "unavailable",
+          "executorState": "connected",
+          "reason": "本机子进程不等于容器或虚拟机隔离；安全验收未完成，工作区禁止启动构建。保留原ID、历史、执行器源码及受控内部测试。"
+        }
+      ]
+    },
+    {
+      "id": "projects",
+      "name": "项目方案与执行计划",
+      "primary": "workflow:project-delivery",
+      "skillIds": [
+        "requirements.check",
+        "product.spec",
+        "collaboration.schedule",
+        "collaboration.sync",
+        "team.okrs",
+        "hr.onboarding",
+        "engineering.runbook",
+        "email.marketing"
+      ],
+      "skills": [
+        {
+          "id": "requirements.check",
+          "status": "ready",
+          "executorState": null
+        },
+        {
+          "id": "product.spec",
+          "status": "ready",
+          "executorState": null
+        },
+        {
+          "id": "collaboration.schedule",
+          "status": "ready",
+          "executorState": null
+        },
+        {
+          "id": "collaboration.sync",
+          "status": "unavailable",
+          "executorState": "connected"
+        },
+        {
+          "id": "team.okrs",
+          "status": "ready",
+          "executorState": null
+        },
+        {
+          "id": "hr.onboarding",
+          "status": "ready",
+          "executorState": null
+        },
+        {
+          "id": "engineering.runbook",
+          "status": "ready",
+          "executorState": null
+        },
+        {
+          "id": "email.marketing",
+          "status": "ready",
+          "executorState": null
+        }
+      ]
+    },
+    {
+      "id": "quality",
+      "name": "设计与交付质量检查",
+      "primary": "web.audit",
+      "skillIds": [
+        "design.review",
+        "web.audit",
+        "web.css-audit",
+        "code.inspect",
+        "web.verify",
+        "test.browser"
+      ],
+      "skills": [
+        {
+          "id": "design.review",
+          "status": "ready",
+          "executorState": null
+        },
+        {
+          "id": "web.audit",
+          "status": "ready",
+          "executorState": null
+        },
+        {
+          "id": "web.css-audit",
+          "status": "ready",
+          "executorState": null
+        },
+        {
+          "id": "code.inspect",
+          "status": "ready",
+          "executorState": null
+        },
+        {
+          "id": "web.verify",
+          "status": "ready",
+          "executorState": "connected"
+        },
+        {
+          "id": "test.browser",
+          "status": "ready",
+          "executorState": "connected"
+        }
+      ]
+    }
+  ],
+  "readyTools": 44,
+  "unavailableTools": [
+    "document.summarize",
+    "slides.create",
+    "collaboration.sync",
+    "image.generate",
+    "code.build"
+  ]
+}
