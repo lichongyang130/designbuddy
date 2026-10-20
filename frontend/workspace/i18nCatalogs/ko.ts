@@ -244,6 +244,7 @@ const ko: Record<string, string> = {
   "sidebar.nav": "기본 탐색",
   "sidebar.home": "홈",
   "sidebar.plugins": "플러그인",
+  "sidebar.themes": "테마",
   "sidebar.templates": "템플릿",
   "sidebar.schedules": "예약됨",
   "sidebar.workflows": "워크플로",

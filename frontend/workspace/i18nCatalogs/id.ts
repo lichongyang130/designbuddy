@@ -244,6 +244,7 @@ const id: Record<string, string> = {
   "sidebar.nav": "Navigasi utama",
   "sidebar.home": "Beranda",
   "sidebar.plugins": "Plugin",
+  "sidebar.themes": "Tema",
   "sidebar.templates": "Templat",
   "sidebar.schedules": "Terjadwal",
   "sidebar.workflows": "Alur kerja",

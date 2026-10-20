@@ -244,6 +244,7 @@ const esES: Record<string, string> = {
   "sidebar.nav": "Navegación principal",
   "sidebar.home": "Inicio",
   "sidebar.plugins": "Plugins",
+  "sidebar.themes": "Temas",
   "sidebar.templates": "Plantillas",
   "sidebar.schedules": "Programado",
   "sidebar.workflows": "Flujos de trabajo",

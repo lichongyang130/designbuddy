@@ -16,6 +16,7 @@ type Props = {
     | "connectors"
     | "task"
     | "plugins"
+    | "themes"
     | "schedules"
     | "workflows"
     | "models"
@@ -108,6 +109,14 @@ export function WorkBuddySidebar({
         >
           <HomeIcon name="tools" />
           <span className="sidebar-nav-label">{t("sidebar.plugins")}</span>
+        </button>
+        <button
+          className={`sidebar-nav-item ${active === "themes" ? "is-active" : ""}`}
+          aria-current={active === "themes" ? "page" : undefined}
+          onClick={() => go("/themes")}
+        >
+          <HomeIcon name="palette" />
+          <span className="sidebar-nav-label">{t("sidebar.themes")}</span>
         </button>
         <button
           className={`sidebar-nav-item ${active === "templates" ? "is-active" : ""}`}

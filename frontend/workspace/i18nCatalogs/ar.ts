@@ -244,6 +244,7 @@ const ar: Record<string, string> = {
   "sidebar.nav": "التنقل الرئيسي",
   "sidebar.home": "الرئيسية",
   "sidebar.plugins": "الإضافات",
+  "sidebar.themes": "السمات",
   "sidebar.templates": "القوالب",
   "sidebar.schedules": "المجدولة",
   "sidebar.workflows": "مسارات العمل",

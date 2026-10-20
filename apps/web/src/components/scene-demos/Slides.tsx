@@ -2,6 +2,12 @@ import { useState } from "react";
 import { useSceneState, useSceneSession } from "./workspace";
 import { art, Toolbar, type DemoProps } from "./shared";
 import { imageData, uploadImage } from "./files";
+import {
+  DEFAULT_DECK_THEME,
+  buildPptxThemeXml,
+  pptxPalette,
+  type DeckTheme,
+} from "../../../../../shared/deckTheme";
 export type Slide = {
   id: string;
   title: string;
@@ -74,7 +80,19 @@ export const seedSlides: Slide[] = [
       ? "产品、指标和摄影均为概念示例；演示前请替换为真实资料。"
       : "补充本页的讲述要点与依据。",
 }));
-export async function exportPptx(slides: Slide[], name = "aura-one.pptx") {
+/**
+ * Export a deck to PPTX.
+ *
+ * Every colour comes from the deck's `DeckTheme`, the same object the editor
+ * renders with, so the download looks like the preview. The embedded
+ * `ppt/theme/theme1.xml` is rewritten afterwards so PowerPoint's own theme
+ * colours (Design → Variants) match the slides too.
+ */
+export async function exportPptx(
+  slides: Slide[],
+  name = "aura-one.pptx",
+  theme: DeckTheme = DEFAULT_DECK_THEME,
+) {
   const { default: PptxGenJS } = await import("pptxgenjs");
   const pptx = new PptxGenJS();
   pptx.layout = "LAYOUT_WIDE";
@@ -82,21 +100,24 @@ export async function exportPptx(slides: Slide[], name = "aura-one.pptx") {
   pptx.subject = "可编辑产品提案";
   pptx.title = slides[0]?.title || "演示文稿";
   pptx.theme = {
-    headFontFace: "Microsoft YaHei",
-    bodyFontFace: "Microsoft YaHei",
+    headFontFace: theme.typography.headingFont,
+    bodyFontFace: theme.typography.bodyFont,
   };
+  const page = pptxPalette(theme);
   for (const [i, s] of slides.entries()) {
-    const page = pptx.addSlide();
-    const cover = s.layout === "cover",
+    const slide = pptx.addSlide();
+    const isCover = s.layout === "cover",
       split = s.layout === "split";
-    const ink = cover ? "FFFFFF" : "273E40";
-    page.background = { color: cover ? "17292C" : "F2F1EB" };
-    if (cover || split) {
+    const ink = isCover ? page.coverInk : page.ink;
+    const muted = isCover ? page.coverMuted : page.muted;
+    const faint = isCover ? page.coverFaint : page.faint;
+    slide.background = { color: isCover ? page.coverBg : page.background };
+    if (isCover || split) {
       const img = new Image();
       img.src = await imageData(s.image);
       await img.decode();
       const cv = document.createElement("canvas");
-      cv.width = cover ? 952 : 676;
+      cv.width = isCover ? 952 : 676;
       cv.height = 900;
       const ratio = Math.max(cv.width / img.width, cv.height / img.height);
       const sw = cv.width / ratio,
@@ -112,30 +133,30 @@ export async function exportPptx(slides: Slide[], name = "aura-one.pptx") {
         cv.width,
         cv.height,
       );
-      page.addImage({
+      slide.addImage({
         data: cv.toDataURL("image/jpeg", 0.9),
-        x: cover ? 5.4 : 7.7,
+        x: isCover ? 5.4 : 7.7,
         y: 0,
-        w: cover ? 7.94 : 5.64,
+        w: isCover ? 7.94 : 5.64,
         h: 7.5,
       });
     }
-    page.addText(s.eyebrow, {
+    slide.addText(s.eyebrow, {
       x: 0.65,
       y: 0.5,
-      w: cover ? 5 : 11,
+      w: isCover ? 5 : 11,
       h: 0.35,
       fontSize: 11,
-      color: cover ? "B0C8BC" : "63816F",
+      color: isCover ? page.coverFaint : page.muted,
       charSpacing: 2,
       breakLine: false,
     });
-    page.addText(s.title, {
+    slide.addText(s.title, {
       x: 0.65,
-      y: cover ? 2.15 : 1.25,
-      w: cover ? 5.2 : split ? 6.7 : 12,
-      h: cover ? 2 : 1.3,
-      fontSize: cover ? 34 : 29,
+      y: isCover ? 2.15 : 1.25,
+      w: isCover ? 5.2 : split ? 6.7 : 12,
+      h: isCover ? 2 : 1.3,
+      fontSize: isCover ? 34 : 29,
       bold: true,
       color: ink,
       breakLine: false,
@@ -143,22 +164,22 @@ export async function exportPptx(slides: Slide[], name = "aura-one.pptx") {
     });
     const lines = s.body.split("\n");
     if (s.layout === "table")
-      page.addTable(
+      slide.addTable(
         lines.map((l) => l.split("｜").map((text) => ({ text }))),
         {
           x: 0.65,
           y: 3,
           w: 12,
           h: 3,
-          border: { type: "solid", pt: 1, color: "BCC8BC" },
+          border: { type: "solid", pt: theme.shape.stroke, color: page.border },
           color: ink,
           fontSize: 16,
-          fill: { color: "F2F1EB" },
+          fill: { color: page.background },
           margin: 0.16,
         },
       );
     else if (s.layout === "chart")
-      page.addChart(
+      slide.addChart(
         pptx.ChartType.bar,
         [
           {
@@ -177,21 +198,21 @@ export async function exportPptx(slides: Slide[], name = "aura-one.pptx") {
           catAxisLabelFontSize: 12,
           valAxisLabelFontSize: 11,
           showValue: true,
-          chartColors: ["769980"],
+          chartColors: page.chart,
         },
       );
     else if (s.layout === "cards" || s.layout === "timeline") {
       const w = 12 / Math.max(lines.length, 1);
       lines.forEach((l, j) => {
-        page.addText(String(j + 1).padStart(2, "0"), {
+        slide.addText(String(j + 1).padStart(2, "0"), {
           x: 0.65 + j * w,
           y: 3.1,
           w: w - 0.2,
           h: 0.6,
           fontSize: 28,
-          color: "769980",
+          color: page.chart[2 % page.chart.length],
         });
-        page.addText(l.replaceAll("｜", "\n"), {
+        slide.addText(l.replaceAll("｜", "\n"), {
           x: 0.65 + j * w,
           y: 4,
           w: w - 0.3,
@@ -202,17 +223,17 @@ export async function exportPptx(slides: Slide[], name = "aura-one.pptx") {
         });
       });
     } else
-      page.addText(s.body, {
+      slide.addText(s.body, {
         x: 0.65,
-        y: cover ? 4.7 : 3.4,
-        w: cover ? 4.6 : 6.3,
+        y: isCover ? 4.7 : 3.4,
+        w: isCover ? 4.6 : 6.3,
         h: 1.9,
         fontSize: 17,
         color: ink,
         breakLine: false,
         fit: "shrink",
       });
-    page.addText(
+    slide.addText(
       `AURA ONE / ${String(i + 1).padStart(2, "0")}  ·  CONCEPT PROPOSAL`,
       {
         x: 0.65,
@@ -220,14 +241,39 @@ export async function exportPptx(slides: Slide[], name = "aura-one.pptx") {
         w: 8,
         h: 0.2,
         fontSize: 8,
-        color: cover ? "B7C4BC" : "75877E",
+        color: faint,
       },
     );
-    page.addNotes(
+    slide.addNotes(
       `${s.notes}\n素材说明：内置产品图为 AI 生成概念图片；用户上传素材请自行确认授权。`,
     );
   }
-  await pptx.writeFile({ fileName: name });
+  await writePptxWithTheme(pptx, name, theme);
+}
+
+/**
+ * Write the file, then swap in our own `ppt/theme/theme1.xml`.
+ *
+ * PptxGenJS always ships the Office default theme. Rewriting one part keeps the
+ * rest of the package byte-identical, so this cannot disturb slide content.
+ */
+async function writePptxWithTheme(pptx: import("pptxgenjs").default, name: string, theme: DeckTheme) {
+  const buffer = (await pptx.write({ outputType: "arraybuffer" })) as ArrayBuffer;
+  const { unzipSync, zipSync, strToU8 } = await import("fflate");
+  const files = unzipSync(new Uint8Array(buffer));
+  const themePath = "ppt/theme/theme1.xml";
+  files[themePath] = strToU8(buildPptxThemeXml(theme, `DesignBuddy ${theme.name}`));
+  const blob = new Blob([zipSync(files, { level: 6 }) as unknown as BlobPart], {
+    type: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = name;
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
 }
 export function Slides({ interactive }: DemoProps) {
   const [slides, setSlides] = useSceneState<Slide[]>("slides", seedSlides),

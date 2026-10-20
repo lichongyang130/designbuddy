@@ -244,6 +244,7 @@ const tr: Record<string, string> = {
   "sidebar.nav": "Ana gezinme",
   "sidebar.home": "Ana sayfa",
   "sidebar.plugins": "Eklentiler",
+  "sidebar.themes": "Temalar",
   "sidebar.templates": "Şablonlar",
   "sidebar.schedules": "Zamanlananlar",
   "sidebar.workflows": "İş akışları",

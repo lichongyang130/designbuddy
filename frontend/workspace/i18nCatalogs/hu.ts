@@ -244,6 +244,7 @@ const hu: Record<string, string> = {
   "sidebar.nav": "Fő navigáció",
   "sidebar.home": "Kezdőlap",
   "sidebar.plugins": "Bővítmények",
+  "sidebar.themes": "Témák",
   "sidebar.templates": "Sablonok",
   "sidebar.schedules": "Ütemezett",
   "sidebar.workflows": "Munkafolyamatok",

@@ -54,6 +54,7 @@ import { AUTH_GATE_ENABLED } from "../../../frontend/workspace/authGate";
 // The plugin directory ships the whole 480-item catalogue plus its filters, so
 // it is loaded on demand: the homepage only renders the small "我的插件" rail.
 const PluginsPage = lazy(() => import("../../../frontend/workspace/pages/PluginsPage"));
+const ThemesPage = lazy(() => import("../../../frontend/workspace/pages/ThemesPage"));
 // The library carries three catalogues (design systems, templates, 480 plugins,
 // skills) worth ~400 KB of JSON; nobody needs them to see the homepage.
 const DesignLibrary = lazy(() => import("../../../frontend/workspace/pages/DesignLibrary"));
@@ -601,6 +602,12 @@ export default function App() {
     return (
       <Suspense fallback={<div className="auth-loading" role="status" aria-label="正在加载插件页"><span className="auth-loading-spinner" aria-hidden="true" />正在加载插件目录…</div>}>
         <PluginsPage />
+      </Suspense>
+    );
+  if (currentPath === "/themes")
+    return (
+      <Suspense fallback={<div className="auth-loading" role="status" aria-label="正在加载主题库"><span className="auth-loading-spinner" aria-hidden="true" />正在加载主题库…</div>}>
+        <ThemesPage />
       </Suspense>
     );
   if (currentPath === "/schedules") return <SchedulesPage />;

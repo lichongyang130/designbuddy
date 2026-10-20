@@ -244,6 +244,7 @@ const ru: Record<string, string> = {
   "sidebar.nav": "Основная навигация",
   "sidebar.home": "Главная",
   "sidebar.plugins": "Плагины",
+  "sidebar.themes": "Темы",
   "sidebar.templates": "Шаблоны",
   "sidebar.schedules": "Запланировано",
   "sidebar.workflows": "Рабочие процессы",

@@ -244,6 +244,7 @@ const ja: Record<string, string> = {
   "sidebar.nav": "メインナビゲーション",
   "sidebar.home": "ホーム",
   "sidebar.plugins": "プラグイン",
+  "sidebar.themes": "テーマ",
   "sidebar.templates": "テンプレート",
   "sidebar.schedules": "スケジュール",
   "sidebar.workflows": "ワークフロー",

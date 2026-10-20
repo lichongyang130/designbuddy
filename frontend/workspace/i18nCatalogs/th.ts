@@ -244,6 +244,7 @@ const th: Record<string, string> = {
   "sidebar.nav": "การนำทางหลัก",
   "sidebar.home": "หน้าแรก",
   "sidebar.plugins": "ปลั๊กอิน",
+  "sidebar.themes": "ธีม",
   "sidebar.templates": "เทมเพลต",
   "sidebar.schedules": "กำหนดเวลา",
   "sidebar.workflows": "เวิร์กโฟลว์",

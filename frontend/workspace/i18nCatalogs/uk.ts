@@ -244,6 +244,7 @@ const uk: Record<string, string> = {
   "sidebar.nav": "Основна навігація",
   "sidebar.home": "Головна",
   "sidebar.plugins": "Плагіни",
+  "sidebar.themes": "Теми",
   "sidebar.templates": "Шаблони",
   "sidebar.schedules": "Заплановане",
   "sidebar.workflows": "Робочі процеси",

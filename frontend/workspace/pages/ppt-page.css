@@ -246,3 +246,207 @@
   .ppt-thumbs button { min-width: 140px; }
   .ppt-two-cols { grid-template-columns: 1fr; }
 }
+
+/* ---- Theme picker ------------------------------------------------------- */
+/* The drawer floats over the stage instead of widening the grid, so opening it
+   never reflows the slide being edited. */
+.ppt-workspace {
+  position: relative;
+}
+.ppt-theme-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.ppt-theme-btn.is-open {
+  border-color: #9fbfa6;
+  background: #f1f5ee;
+}
+.ppt-theme-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  flex: none;
+}
+.ppt-theme-drawer {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  bottom: 12px;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  width: 330px;
+  max-width: calc(100% - 24px);
+  border: 1px solid #dde3dc;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 18px 44px rgba(24, 38, 28, 0.16);
+  overflow: hidden;
+}
+.ppt-theme-drawer > header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 14px 14px 10px;
+  border-bottom: 1px solid #eef1ea;
+}
+.ppt-theme-drawer h2 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 650;
+}
+.ppt-theme-drawer header p {
+  margin: 4px 0 0;
+  font-size: 10.5px;
+  color: #94a091;
+}
+.ppt-theme-close {
+  border: 0;
+  background: none;
+  color: #a2aca0;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+.ppt-theme-current {
+  padding: 12px 14px 10px;
+  border-bottom: 1px solid #eef1ea;
+}
+.ppt-theme-current > .theme-preview {
+  border: 1px solid #e6eae2;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.ppt-theme-tabs {
+  display: flex;
+  gap: 4px;
+  margin-top: 8px;
+}
+.ppt-theme-tabs button {
+  padding: 4px 9px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: #8b968b;
+  font-size: 10.5px;
+  cursor: pointer;
+}
+.ppt-theme-tabs button.is-active {
+  border-color: #dde5d8;
+  background: #f1f5ee;
+  color: #2f5d3f;
+  font-weight: 600;
+}
+.ppt-theme-current dl {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 10px;
+  margin: 10px 0 0;
+}
+.ppt-theme-current dl > div {
+  display: flex;
+  gap: 6px;
+  min-width: 0;
+  font-size: 10px;
+}
+.ppt-theme-current dt {
+  color: #9aa49a;
+  flex: none;
+}
+.ppt-theme-current dd {
+  margin: 0;
+  color: #3d4a40;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.ppt-theme-list {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  padding: 10px 12px;
+  list-style: none;
+  overflow-y: auto;
+  display: grid;
+  gap: 8px;
+}
+.ppt-theme-list button {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 6px;
+  border: 1px solid #e9ece5;
+  border-radius: 9px;
+  background: #fff;
+  text-align: left;
+  cursor: pointer;
+}
+.ppt-theme-list button:hover {
+  border-color: #c3d2c0;
+}
+.ppt-theme-list button.is-active {
+  border-color: #7ea988;
+  box-shadow: 0 0 0 2px #eaf1e6;
+}
+.ppt-theme-list .theme-preview {
+  flex: none;
+  width: 82px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.ppt-theme-list span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+.ppt-theme-list strong {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #26312a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ppt-theme-list small {
+  font-size: 10px;
+  color: #98a096;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ppt-theme-list i {
+  display: flex;
+  gap: 2px;
+  flex: none;
+}
+.ppt-theme-list b {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+.ppt-theme-drawer > footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-top: 1px solid #eef1ea;
+  background: #fcfdfb;
+}
+.ppt-theme-drawer > footer span {
+  margin-left: auto;
+  font-size: 10px;
+  color: #9aa49a;
+}
+@media (max-width: 720px) {
+  .ppt-theme-drawer {
+    width: auto;
+    left: 12px;
+  }
+}

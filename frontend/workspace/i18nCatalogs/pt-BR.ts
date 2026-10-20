@@ -244,6 +244,7 @@ const ptBR: Record<string, string> = {
   "sidebar.nav": "Navegação principal",
   "sidebar.home": "Início",
   "sidebar.plugins": "Plugins",
+  "sidebar.themes": "Temas",
   "sidebar.templates": "Modelos",
   "sidebar.schedules": "Agendados",
   "sidebar.workflows": "Fluxos de trabalho",

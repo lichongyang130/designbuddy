@@ -244,6 +244,7 @@ const it: Record<string, string> = {
   "sidebar.nav": "Navigazione principale",
   "sidebar.home": "Home",
   "sidebar.plugins": "Plugin",
+  "sidebar.themes": "Temi",
   "sidebar.templates": "Modelli",
   "sidebar.schedules": "Pianificati",
   "sidebar.workflows": "Flussi di lavoro",

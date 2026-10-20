@@ -17,6 +17,9 @@ import {
   type PptSlide,
 } from "../pptStore";
 import { buildSlidesWithFramework, getFramework, pickSingleFramework } from "../pptFrameworks";
+import { ThemePreview, type ThemePreviewVariant } from "../../../apps/web/src/components/ThemePreview";
+import { allThemes, findTheme, resolveDeckTheme, useThemeStore } from "../themeStore";
+import { contrastRatio, themeStyle } from "../../../shared/deckTheme";
 import { buildDefaultSlides } from "../pptStore";
 import type { Slide } from "../../../apps/web/src/components/scene-demos/Slides";
 import { exportPptx } from "../../../apps/web/src/components/scene-demos/Slides";
@@ -225,6 +228,25 @@ export default function PptPage({ pptId }: Props) {
 
   const go = (path: string) => navigateTo(path);
 
+  // ---- Theme ----
+  // The deck carries its own `themeId`; decks from before themes existed have
+  // none and fall back to the default, which is exactly how they already looked.
+  const customThemes = useThemeStore((state) => state.custom);
+  const [themeOpen, setThemeOpen] = useState(false);
+  const [themeTab, setThemeTab] = useState<ThemePreviewVariant>("cover");
+  const theme = useMemo(
+    () => resolveDeckTheme(project?.themeId),
+    // `customThemes` participates so editing a theme re-renders open decks.
+    [project?.themeId, customThemes],
+  );
+  const themeList = useMemo(() => allThemes(), [customThemes]);
+
+  const applyTheme = (id: string, name: string) => {
+    if (!project) return;
+    setProject({ ...project, themeId: id, themeName: name });
+    setMessage(`已切换主题「${name}」；文字和结构没有改动，导出 PPTX 会用同一套配色。`);
+  };
+
   const currentSlide = project?.slides[Math.min(page, (project?.slides.length || 1) - 1)] as PptSlide | undefined;
   const index = Math.min(page, (project?.slides.length || 1) - 1);
 
@@ -287,7 +309,7 @@ export default function PptPage({ pptId }: Props) {
         const notesWithCite = [ps.notes?.trim(), `引用来源：\n${cites}`].filter(Boolean).join("\n\n").slice(0, 3000);
         return { ...s, notes: notesWithCite } as Slide;
       });
-      await exportPptx(exportSlides as Slide[], `${project.title || "presentation"}.pptx`);
+      await exportPptx(exportSlides as Slide[], `${project.title || "presentation"}.pptx`, theme);
       setMessage("PPTX 已导出，文字、表格和备注都可继续编辑（来源已写入备注）。");
     } catch (e) {
       setMessage(`导出失败：${(e as Error).message}`);
@@ -375,7 +397,16 @@ export default function PptPage({ pptId }: Props) {
     if (!fw) return;
     if (!confirm(`当前为「${project.frameworkName || "经典"}」框架，是否切换到「${fw.name}」？内容将按新框架重排，当前文字会被替换。`)) return;
     const newSlides = buildSlidesWithFramework(project.prompt, fw.id);
-    setProject({ ...project, slides: newSlides, frameworkId: fw.id, frameworkName: fw.name });
+    // A framework swaps the narrative skeleton only; the theme is a separate layer
+    // and stays exactly as the deck had it.
+    setProject({
+      ...project,
+      slides: newSlides,
+      frameworkId: fw.id,
+      frameworkName: fw.name,
+      themeId: project.themeId ?? theme.id,
+      themeName: project.themeName ?? theme.name,
+    });
     setPage(0);
     setMessage(`已切换到「${fw.name}」框架 · ${fw.narrative}`);
   };
@@ -550,7 +581,10 @@ export default function PptPage({ pptId }: Props) {
                 <article key={p.id} onClick={() => navigateTo(`/ppt/${encodeURIComponent(p.id)}`)}>
                   <h3>{p.title}</h3>
                   <p>{p.prompt.slice(0, 80)}</p>
-                  <small>{p.slides.length} 页 · {new Date(p.updatedAt).toLocaleString()} {p.workspaceName ? `· ${p.workspaceName}` : ""}</small>
+                  <small>
+                    {p.slides.length} 页 · {new Date(p.updatedAt).toLocaleString()} {p.workspaceName ? `· ${p.workspaceName}` : ""}
+                    {findTheme(p.themeId) ? ` · ${findTheme(p.themeId)!.name}` : ""}
+                  </small>
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
@@ -630,6 +664,16 @@ export default function PptPage({ pptId }: Props) {
                 <option key={w.id} value={w.id}>{w.name}</option>
               ))}
             </select>
+            <button
+              className={`ppt-ghost ppt-theme-btn ${themeOpen ? "is-open" : ""}`}
+              onClick={() => setThemeOpen((open) => !open)}
+              aria-expanded={themeOpen}
+              title="更换配色、字体与图形风格，不改动文字"
+            >
+              <span className="ppt-theme-dot" style={{ background: theme.palette.primary }} aria-hidden="true" />
+              <span className="ppt-theme-dot" style={{ background: theme.palette.accent }} aria-hidden="true" />
+              主题 · {theme.name}
+            </button>
             <button className="ppt-ghost" onClick={handleShuffleFramework} title="从10套框架池里随机换一套，骨架不同">换个框架 🔀</button>
             <button className="ppt-ghost" onClick={handleShare} title="复制只读分享链接">分享 🔗</button>
             <button className="ppt-ghost" onClick={handleAiFill} disabled={aiBusy}>{aiBusy ? "AI 思考中…" : "AI 智能填充 ✨"}</button>
@@ -640,7 +684,7 @@ export default function PptPage({ pptId }: Props) {
 
         {message && <p className="ppt-notice" role="status">{message}</p>}
 
-        <div className="ppt-workspace ws-deck">
+        <div className="ppt-workspace ws-deck" style={themeStyle(theme)}>
           <aside className="ppt-thumbs">
             {project.slides.map((slide, i) => (
               <button
@@ -968,6 +1012,77 @@ export default function PptPage({ pptId }: Props) {
               </div>
             )}
           </section>
+
+          {themeOpen && (
+            <aside className="ppt-theme-drawer" role="dialog" aria-label="更换主题">
+              <header>
+                <div>
+                  <h2>主题</h2>
+                  <p>只改外观，不改变文字和结构</p>
+                </div>
+                <button className="ppt-theme-close" onClick={() => setThemeOpen(false)} aria-label="关闭主题面板">×</button>
+              </header>
+
+              <div className="ppt-theme-current">
+                <ThemePreview theme={theme} variant={themeTab} />
+                <div className="ppt-theme-tabs" role="tablist" aria-label="预览版式">
+                  {(["cover", "cards", "chart"] as ThemePreviewVariant[]).map((variant) => (
+                    <button
+                      key={variant}
+                      role="tab"
+                      aria-selected={themeTab === variant}
+                      className={themeTab === variant ? "is-active" : ""}
+                      onClick={() => setThemeTab(variant)}
+                    >
+                      {variant === "cover" ? "封面" : variant === "cards" ? "要点" : "图表"}
+                    </button>
+                  ))}
+                </div>
+                <dl>
+                  <div><dt>当前</dt><dd>{theme.name}</dd></div>
+                  <div><dt>字体</dt><dd>{theme.typography.headingFont} / {theme.typography.bodyFont}</dd></div>
+                  <div><dt>正文对比度</dt><dd>{contrastRatio(theme.palette.text, theme.palette.background).toFixed(1)}:1</dd></div>
+                </dl>
+              </div>
+
+              <ul className="ppt-theme-list">
+                {themeList.map((item) => (
+                  <li key={item.id}>
+                    <button
+                      className={item.id === theme.id ? "is-active" : ""}
+                      onClick={() => applyTheme(item.id, item.name)}
+                      aria-pressed={item.id === theme.id}
+                    >
+                      <ThemePreview theme={item} variant="cards" />
+                      <span>
+                        <strong>{item.name}</strong>
+                        <small>{item.tags.slice(0, 2).join(" · ") || (item.kind === "custom" ? "自定义" : "预设")}</small>
+                      </span>
+                      <i aria-hidden="true">
+                        {[item.palette.primary, item.palette.accent, item.palette.background].map((color, colorIndex) => (
+                          <b key={colorIndex} style={{ background: color }} />
+                        ))}
+                      </i>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+
+              <footer>
+                <button className="ppt-ghost small" onClick={() => navigateTo("/themes")}>打开主题库 →</button>
+                <button
+                  className="ppt-ghost small"
+                  onClick={() => {
+                    setProject({ ...project, themeId: undefined, themeName: undefined });
+                    setMessage("已恢复为默认外观。");
+                  }}
+                >
+                  恢复默认
+                </button>
+                {findTheme(theme.id)?.kind === "custom" && <span>自定义主题</span>}
+              </footer>
+            </aside>
+          )}
         </div>
       </main>
     </div>

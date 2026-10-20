@@ -244,6 +244,7 @@ const fa: Record<string, string> = {
   "sidebar.nav": "پیمایش اصلی",
   "sidebar.home": "خانه",
   "sidebar.plugins": "افزونه‌ها",
+  "sidebar.themes": "تم‌ها",
   "sidebar.templates": "الگوها",
   "sidebar.schedules": "زمان‌بندی‌شده",
   "sidebar.workflows": "گردش‌کارها",

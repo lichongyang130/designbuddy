@@ -244,6 +244,7 @@ const zhTW: Record<string, string> = {
   "sidebar.nav": "主導航",
   "sidebar.home": "首頁",
   "sidebar.plugins": "外掛",
+  "sidebar.themes": "主題",
   "sidebar.templates": "模版",
   "sidebar.schedules": "定時任務",
   "sidebar.workflows": "工作流",
