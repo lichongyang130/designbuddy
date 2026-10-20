@@ -55,6 +55,34 @@ export type InstalledPlugin = {
   updatedAt: number;
 };
 
+/** The tiny payload the homepage needs: enabled bundles, their first runnable skill, and what each skill still requires. */
+export type HomePluginSkill = {
+  id: string;
+  name: string;
+  status: "ready" | "unavailable";
+  accepts: string[];
+  requires: { kind: string; label: string }[];
+  permissions: SkillPermission[];
+};
+
+export type HomePluginBundle = {
+  id: string;
+  name: string;
+  description: string;
+  skills: HomePluginSkill[];
+  requires: string[];
+  enabled: boolean;
+  /** Skills that can run right now, versus the ones the server would refuse. */
+  readySkills: number;
+  blockedSkills: number;
+};
+
+export type HomePlugins = {
+  apiVersion: string;
+  bundles: HomePluginBundle[];
+  totals: { enabled: number; readySkills: number; blockedSkills: number };
+};
+
 export type PluginEvent = {
   id: string;
   ownerId: string;
@@ -267,6 +295,52 @@ export class PluginRegistry {
     return { ok: true };
   }
 
+  /**
+   * Homepage projection.
+   *
+   * The homepage must never download the full catalogue of 480 plugins just to
+   * paint four chips, so this returns only what is installed *and* enabled plus
+   * the readiness of each bundled skill. The full list stays on /plugins.
+   */
+  home(ownerId: string): HomePlugins {
+    const installed = this.listInstalled(ownerId).filter((plugin) => plugin.status === "enabled");
+    const catalogue = runtimeCatalog();
+    const known = new Map(catalogue.map((skill) => [skill.id, skill]));
+    const bundles: HomePluginBundle[] = installed.map((plugin) => {
+      const skills: HomePluginSkill[] = plugin.skills.map((id) => {
+        const skill = known.get(id);
+        return {
+          id,
+          name: skill?.name ?? id,
+          status: skill?.status === "ready" ? "ready" : "unavailable",
+          accepts: skill?.accepts ?? [],
+          requires: (skill?.requires ?? []).map((requirement) => ({ kind: requirement.kind, label: requirement.label })),
+          permissions: skill?.permissions ?? [],
+        };
+      });
+      const readySkills = skills.filter((skill) => skill.status === "ready").length;
+      return {
+        id: plugin.id,
+        name: plugin.name,
+        description: plugin.description,
+        skills,
+        requires: plugin.requires,
+        enabled: true,
+        readySkills,
+        blockedSkills: skills.length - readySkills,
+      };
+    });
+    return {
+      apiVersion: PLUGIN_API_VERSION,
+      bundles,
+      totals: {
+        enabled: bundles.length,
+        readySkills: bundles.reduce((total, bundle) => total + bundle.readySkills, 0),
+        blockedSkills: bundles.reduce((total, bundle) => total + bundle.blockedSkills, 0),
+      },
+    };
+  }
+
   async handle(request: Request, ownerId: string): Promise<Response | null> {
     const url = new URL(request.url);
     const path = url.pathname;
@@ -274,8 +348,11 @@ export class PluginRegistry {
     if (!["GET", "HEAD"].includes(request.method) && !sameOrigin(request))
       return responseJSON({ error: "跨站修改请求已拒绝。" }, 403);
     try {
-      if (path === "/api/plugins" && request.method === "GET")
+      if (path === "/api/plugins" && request.method === "GET") {
+        // ?scope=home keeps the homepage payload small: enabled bundles only.
+        if (url.searchParams.get("scope") === "home") return responseJSON(this.home(ownerId));
         return responseJSON(this.list(ownerId));
+      }
       if (path === "/api/plugins/events" && request.method === "GET")
         return responseJSON({ events: this.listEvents(ownerId) });
       if (path === "/api/plugins/install" && request.method === "POST") {

@@ -210,3 +210,53 @@ test("the shipped bundles declare exactly what their skills need and install wit
     assert.ok(listed.bundles.every(item => item.compatible));
   });
 });
+
+test("the homepage projection only carries enabled bundles, with per-skill readiness", async () => {
+  await withRegistry(async registry => {
+    const empty = registry.home("alice");
+    assert.equal(empty.bundles.length, 0);
+    assert.deepEqual(empty.totals, { enabled: 0, readySkills: 0, blockedSkills: 0 });
+
+    const [first, second] = realBundles();
+    registry.install("alice", first.id);
+    registry.install("alice", second.id);
+    registry.setStatus("alice", second.id, "disabled");
+
+    const home = registry.home("alice");
+    assert.equal(home.bundles.length, 1, "a disabled bundle must not reach the homepage rail");
+    assert.equal(home.bundles[0].id, first.id);
+    assert.equal(home.totals.enabled, 1);
+    const skills = home.bundles[0].skills;
+    assert.equal(skills.length, first.skills.length);
+    for (const skill of skills) {
+      assert.ok(skill.name && skill.name !== skill.id, "the rail shows human skill names");
+      assert.ok(["ready", "unavailable"].includes(skill.status));
+      assert.ok(Array.isArray(skill.accepts) && Array.isArray(skill.permissions));
+    }
+    assert.equal(home.totals.readySkills, skills.filter(skill => skill.status === "ready").length);
+    assert.equal(home.totals.blockedSkills, skills.filter(skill => skill.status !== "ready").length);
+
+    // The homepage payload must stay a fraction of the full bundle list.
+    const homeBytes = JSON.stringify(registry.home("alice")).length;
+    const fullBytes = JSON.stringify(registry.list("alice")).length;
+    assert.ok(homeBytes < fullBytes, `home payload ${homeBytes} should be smaller than ${fullBytes}`);
+  });
+});
+
+test("?scope=home is served by the plugin route and is still same-origin guarded for writes", async () => {
+  await withRegistry(async registry => {
+    registry.install("alice", realBundles()[0].id);
+    const response = await registry.handle(request("/api/plugins?scope=home"), "alice");
+    assert.equal(response.status, 200);
+    const body = await response.json();
+    assert.equal(body.bundles.length, 1);
+    assert.equal(body.bundles[0].enabled, true);
+    assert.ok(body.apiVersion);
+
+    const crossSite = await registry.handle(
+      request("/api/plugins/install", "POST", { id: "bundle-docs-data" }, { origin: "http://evil" }),
+      "alice",
+    );
+    assert.equal(crossSite.status, 403);
+  });
+});

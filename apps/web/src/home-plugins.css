@@ -1,0 +1,324 @@
+/* Homepage plugin rail — minimal command style (see docs/plugin-redesign/cn-01).
+   Sits directly under the composer: one quiet line, horizontal scroll, no
+   third-party requests, and it never grows the first paint. */
+
+.home27 .home27-content > .home-plugins-rail {
+  margin: 14px 0 0;
+  border: 1px solid #ececf2;
+  border-radius: 14px;
+  background: #fff;
+  padding: 12px 14px 10px;
+}
+
+.home-plugins-rail .hpr-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 20px;
+}
+
+.home-plugins-rail .hpr-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  color: #777d8b;
+}
+
+.home-plugins-rail .hpr-title h3 {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #454b58;
+}
+
+.home-plugins-rail .hpr-count {
+  padding-left: 8px;
+  border-left: 1px solid #ececf2;
+  font-size: 11px;
+  color: #9aa0ad;
+  white-space: nowrap;
+}
+
+.home-plugins-rail .hpr-manage {
+  flex: none;
+  padding: 4px 2px;
+  border: 0;
+  background: transparent;
+  color: #8b91a0;
+  font-size: 11.5px;
+  letter-spacing: 0.02em;
+}
+
+.home-plugins-rail .hpr-manage:hover {
+  color: #6753c6;
+}
+
+.home-plugins-rail .hpr-scroll {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  padding-bottom: 2px;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+}
+
+.home-plugins-rail .hpr-scroll::-webkit-scrollbar {
+  height: 4px;
+}
+
+.home-plugins-rail .hpr-scroll::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: #e6e6ee;
+}
+
+.home-plugins-rail .hpr-chip {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 9px;
+  max-width: 232px;
+  padding: 8px 10px 8px 11px;
+  scroll-snap-align: start;
+  border: 1px solid #ececf2;
+  border-radius: 11px;
+  background: #fff;
+  text-align: left;
+  transition: border-color 0.16s ease, background 0.16s ease, transform 0.16s ease;
+}
+
+.home-plugins-rail .hpr-chip:hover {
+  border-color: #d5d5e2;
+  background: #fbfbfd;
+  transform: translateY(-1px);
+}
+
+.home-plugins-rail .hpr-chip:active {
+  transform: translateY(0);
+}
+
+.home-plugins-rail .hpr-dot {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #d9dae3;
+}
+
+.home-plugins-rail .hpr-chip.is-bundle .hpr-dot {
+  background: #5b4bc4;
+  box-shadow: 0 0 0 3px rgba(91, 75, 196, 0.1);
+}
+
+.home-plugins-rail .hpr-chip-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.home-plugins-rail .hpr-chip-text strong {
+  font-size: 12.5px;
+  font-weight: 550;
+  color: #2b3038;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.home-plugins-rail .hpr-chip-text small {
+  font-size: 11px;
+  line-height: 1.35;
+  color: #9aa0ad;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.home-plugins-rail .hpr-arrow {
+  flex: none;
+  color: #cfd2db;
+  font-size: 11px;
+  opacity: 0;
+  transition: opacity 0.16s ease;
+}
+
+.home-plugins-rail .hpr-chip:hover .hpr-arrow {
+  opacity: 1;
+  color: #6753c6;
+}
+
+.home-plugins-rail .hpr-chip.is-more {
+  gap: 7px;
+  border-style: dashed;
+  color: #8b91a0;
+}
+
+.home-plugins-rail .hpr-chip.is-more .hpr-chip-text strong {
+  color: #8b91a0;
+  font-weight: 500;
+}
+
+.home-plugins-rail .hpr-empty {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 10px;
+  padding: 10px 12px;
+  border: 1px dashed #e7e7ef;
+  border-radius: 11px;
+  background: #fcfcfd;
+}
+
+.home-plugins-rail .hpr-empty p {
+  margin: 0;
+  font-size: 12px;
+  color: #8b91a0;
+}
+
+.home-plugins-rail .hpr-empty button {
+  flex: none;
+  border: 0;
+  background: transparent;
+  color: #5b4bc4;
+  font-size: 12px;
+}
+
+.home-plugins-rail .hpr-foot {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 9px 0 0;
+  color: #a9aeb9;
+  font-size: 10.5px;
+  line-height: 1.5;
+}
+
+.home-plugins-rail .hpr-foot svg {
+  flex: none;
+}
+
+@media (max-width: 680px) {
+  .home27 .home27-content > .home-plugins-rail {
+    padding: 10px 11px 8px;
+  }
+  .home-plugins-rail .hpr-chip {
+    max-width: 200px;
+  }
+  .home-plugins-rail .hpr-foot {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-plugins-rail .hpr-chip,
+  .home-plugins-rail .hpr-arrow {
+    transition: none;
+  }
+  .home-plugins-rail .hpr-chip:hover {
+    transform: none;
+  }
+}
+
+/* Skill hint under the composer: what the chosen skill accepts, and what it
+   still needs before it can actually run. */
+.home27 .home27-content .home-skill-hint {
+  margin: 8px 0 0;
+  padding: 8px 11px;
+  border: 1px solid #ececf2;
+  border-left: 2px solid #5b4bc4;
+  border-radius: 4px 10px 10px 4px;
+  background: #fcfcfd;
+}
+
+.home27 .home27-content .home-skill-hint.is-blocked {
+  border-left-color: #c2762a;
+  background: #fffdf8;
+}
+
+.home-skill-hint .hsh-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.home-skill-hint .hsh-tag {
+  flex: none;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: #f1effc;
+  color: #5b4bc4;
+  font-size: 10.5px;
+}
+
+.home-skill-hint.is-blocked .hsh-tag {
+  background: #fbf1e4;
+  color: #9c5c19;
+}
+
+.home-skill-hint .hsh-line strong {
+  font-size: 12.5px;
+  font-weight: 550;
+  color: #2b3038;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.home-skill-hint .hsh-meta {
+  font-size: 11px;
+  color: #9aa0ad;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.home-skill-hint .hsh-clear {
+  margin-left: auto;
+  border: 0;
+  background: transparent;
+  color: #b3b7c2;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.home-skill-hint .hsh-clear:hover {
+  color: #6753c6;
+}
+
+.home-skill-hint .hsh-note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 5px 0 0;
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: #6b7280;
+}
+
+.home-skill-hint .hsh-note.is-quiet {
+  color: #9aa0ad;
+  font-size: 11px;
+}
+
+.home-skill-hint .hsh-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border: 1px solid #e2e0f2;
+  border-radius: 999px;
+  background: #fff;
+  color: #5b4bc4;
+  font-size: 11px;
+}
+
+.home-skill-hint .hsh-action:hover {
+  border-color: #cfcaee;
+  background: #f8f7fe;
+}

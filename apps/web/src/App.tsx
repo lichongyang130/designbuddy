@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { Suspense, lazy, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { DesignLibrary, ProjectEditorPage, ProjectsPage, ShareProjectPage, StudioPage, WorkspaceHub } from "../../../frontend/workspace";
 import type { DesignProject } from "../../../frontend/workspace/models/project";
 import { createProject, listProjects, updateProject } from "../../../frontend/workspace/projectStore";
@@ -16,7 +16,6 @@ import { HomeModeIcon } from "./components/HomeModeIcon";
 import { HomeAttachMenu } from "./components/HomeAttachMenu";
 import { HomeModelMenu, ModelGlyph } from "./components/HomeModelMenu";
 import { WorkBuddySidebar } from "./components/WorkBuddySidebar";
-import PluginsPage from "../../../frontend/workspace/pages/PluginsPage";
 import SchedulesPage from "../../../frontend/workspace/pages/SchedulesPage";
 import ModelsPage from "../../../frontend/workspace/pages/ModelsPage";
 import ProfilePage from "../../../frontend/workspace/pages/ProfilePage";
@@ -28,6 +27,8 @@ import AdminPage from "../../../frontend/workspace/pages/AdminPage";
 import { listAssets, uploadAsset } from "../../../frontend/workspace/api/assets";
 import { fetchAccount } from "../../../frontend/workspace/api/account";
 import InspirationPage from "./inspiration/InspirationPage";
+import { HomePluginsRail } from "./components/HomePluginsRail";
+import { HomeSkillHint } from "./components/HomeSkillHint";
 import TaskConversationPage from "../../../frontend/workspace/pages/TaskConversationPage";
 import { saveTaskConversation, pendingTaskKey, type TaskConversation } from "../../../frontend/workspace/taskConversation";
 import { matchBinding, openSettings, setWakeLock, syncPreferencesFromAccount, useModelOptions, usePreferences, useSettingsWindow } from "../../../frontend/workspace/settingsStore";
@@ -38,12 +39,17 @@ import "./styles.css";
 import "./home-workspace.css";
 import "./home-reference.css";
 import "./home-layout.css";
+import "./home-plugins.css";
 import { HomeDiscovery, HomeShortcuts, type HomeScene } from "./components/HomeDiscovery";
 import "./components/auth.css";
 import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterPage";
 import type { AccountIdentity } from "../../../frontend/workspace/api/account";
 import { AUTH_GATE_ENABLED } from "../../../frontend/workspace/authGate";
+
+// The plugin directory ships the whole 480-item catalogue plus its filters, so
+// it is loaded on demand: the homepage only renders the small "我的插件" rail.
+const PluginsPage = lazy(() => import("../../../frontend/workspace/pages/PluginsPage"));
 
 
 type WorkMode = "office" | "code" | "design";
@@ -567,7 +573,12 @@ export default function App() {
     if (identity.kind !== "account")
       return <LoginPage next={currentPath + window.location.search} />;
   }
-  if (currentPath === "/plugins") return <PluginsPage />;
+  if (currentPath === "/plugins")
+    return (
+      <Suspense fallback={<div className="auth-loading" role="status" aria-label="正在加载插件页"><span className="auth-loading-spinner" aria-hidden="true" />正在加载插件目录…</div>}>
+        <PluginsPage />
+      </Suspense>
+    );
   if (currentPath === "/schedules") return <SchedulesPage />;
   if (currentPath === "/models") return <ModelsPage />;
   if (currentPath === "/profile") return <ProfilePage />;
@@ -672,7 +683,12 @@ export default function App() {
                 ariaLabel={t("home.composer.aria")}
                 autoResize
               />
-              {selectedSkill && <div className="home-selected-capabilities"><span>{t("home.composer.preset")}{selectedSkill}</span><button type="button" onClick={() => setSelectedSkill("")}>{t("home.composer.preset.clear")}</button></div>}
+              <HomeSkillHint
+                selected={selectedSkill}
+                attachmentCount={attachments.length}
+                onUpload={() => fileInputRef.current?.click()}
+                onClear={() => setSelectedSkill("")}
+              />
               <div className="composer-controls">
                 <HomeAttachMenu
                   mode={mode}
@@ -797,6 +813,20 @@ export default function App() {
             </div>
           </section>
 
+          <HomePluginsRail
+            onPick={(pick) => {
+              const skill = pick.skill || pick.name;
+              setSelectedSkill(skill);
+              if (!prompt.trim()) setPrompt(`使用「${pick.name}」帮我完成任务：${pick.hint}`);
+              setNotice(
+                pick.kind === "bundle"
+                  ? `已载入插件包「${pick.name}」的首个技能「${skill}」，补充需求后发送即可执行。`
+                  : `已选择「${pick.name}」，补充需求后发送；执行前的权限会再次确认。`,
+              );
+              requestAnimationFrame(() => composerRef.current?.querySelector("textarea")?.focus({ preventScroll: true }));
+            }}
+            onNavigatePlugins={() => go("/plugins")}
+          />
 
           {notice && (
             <div className="home-notice" role="status">
