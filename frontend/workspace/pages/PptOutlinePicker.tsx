@@ -28,6 +28,7 @@ export default function PptOutlinePicker({ outlineId }: Props) {
   const [workspaceCount, setWorkspaceCount] = useState(0);
   const [workspaces, setWorkspaces] = useState<Array<{ id: string; name: string }>>([]);
   const [selectedWorkspace, setSelectedWorkspace] = useState<string>("");
+  const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     void listWorkspaces()
@@ -59,6 +60,15 @@ export default function PptOutlinePicker({ outlineId }: Props) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [outlineId]);
+
+  useEffect(() => {
+    if (!candidates.length) return;
+    if (typeof window !== "undefined" && window.innerWidth <= 720) {
+      const init: Record<string, boolean> = {};
+      for (const c of candidates) init[c.id] = c.id !== selectedId;
+      setCollapsed((prev) => (Object.keys(prev).length ? prev : init));
+    }
+  }, [candidates, selectedId]);
 
   async function generateCandidates(p: string) {
     setLoading(true);
@@ -252,7 +262,9 @@ export default function PptOutlinePicker({ outlineId }: Props) {
         </header>
 
         <section className="outline-grid">
-          {candidates.map((candidate) => (
+          {candidates.map((candidate) => {
+            const isCollapsed = collapsed[candidate.id] ?? false;
+            return (
             <article
               key={candidate.id}
               className={`outline-card ${selectedId === candidate.id ? "is-selected" : ""}`}
@@ -281,7 +293,18 @@ export default function PptOutlinePicker({ outlineId }: Props) {
                   {selectedId === candidate.id ? "●" : "○"}
                 </span>
               </div>
-
+              <button
+                type="button"
+                className="outline-collapse-btn"
+                aria-expanded={!isCollapsed}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setCollapsed((prev) => ({ ...prev, [candidate.id]: !isCollapsed }));
+                }}
+              >
+                {isCollapsed ? `展开 ${candidate.slides.length} 页 ▾` : "收起大纲 ▴"}
+              </button>
+              {!isCollapsed && (
               <ol className="outline-pages">
                 {candidate.slides.map((slide, idx) => (
                   <li key={idx}>
@@ -294,6 +317,7 @@ export default function PptOutlinePicker({ outlineId }: Props) {
                   </li>
                 ))}
               </ol>
+              )}
 
               <div className="outline-theme-preview">
                 <span style={{ background: candidate.theme.primary }} />
@@ -305,7 +329,8 @@ export default function PptOutlinePicker({ outlineId }: Props) {
                 </small>
               </div>
             </article>
-          ))}
+            );
+            })}
         </section>
 
         <footer className="ppt-outline-footer">

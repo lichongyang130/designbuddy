@@ -117,6 +117,8 @@
 .skeleton-page { height:48px; background:#f3f5f3; border-radius:8px; border:1px solid #eef2ed; }
 .ppt-ws-select { display:inline-flex; align-items:center; gap:6px; border:1px solid #d9dfda; background:white; border-radius:8px; padding:6px 10px; font-size:12px; color:#3f4d44; }
 .ppt-ws-select select { border:none; background:transparent; font-size:12px; color:#3f4d44; outline:none; }
+.outline-collapse-btn { margin: 8px 14px 0; padding: 6px 10px; border: 1px dashed #cbd6c7; background: #fbfcfa; border-radius: 6px; font-size: 11px; color: #4a5a4e; cursor: pointer; width: calc(100% - 28px); }
+.outline-collapse-btn:hover { background: #eef2ed; }
 .ppt-outline-actions { padding: 24px; display:flex; gap:12px; }
 @media (max-width: 1100px) { .outline-grid { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 720px) {

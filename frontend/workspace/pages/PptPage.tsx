@@ -279,8 +279,16 @@ export default function PptPage({ pptId }: Props) {
     if (!project) return;
     setBusy(true);
     try {
-      await exportPptx(project.slides as Slide[], `${project.title || "presentation"}.pptx`);
-      setMessage("PPTX 已导出，文字、表格和备注都可继续编辑。");
+      // 导出时把“来源”写入备注，PPTX 备注区可溯源
+      const exportSlides = project.slides.map((s) => {
+        const ps = s as PptSlide;
+        if (!ps.sources?.length) return s as Slide;
+        const cites = ps.sources.map((src) => `${src.label}: ${src.url}`).join("\n");
+        const notesWithCite = [ps.notes?.trim(), `引用来源：\n${cites}`].filter(Boolean).join("\n\n").slice(0, 3000);
+        return { ...s, notes: notesWithCite } as Slide;
+      });
+      await exportPptx(exportSlides as Slide[], `${project.title || "presentation"}.pptx`);
+      setMessage("PPTX 已导出，文字、表格和备注都可继续编辑（来源已写入备注）。");
     } catch (e) {
       setMessage(`导出失败：${(e as Error).message}`);
     } finally {
