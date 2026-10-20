@@ -10,6 +10,7 @@ import { HomeIcon, type HomeIconName } from "./components/HomeIcon";
 import { modeLabels, quickActionCatalog } from "./components/homeScenes";
 import PptPage from "../../../frontend/workspace/pages/PptPage";
 import PptOutlinePicker from "../../../frontend/workspace/pages/PptOutlinePicker";
+import PptSharePage from "../../../frontend/workspace/pages/PptSharePage";
 import { isPptPrompt } from "../../../frontend/workspace/pptStore";
 import { HomeModeIcon } from "./components/HomeModeIcon";
 import { HomeAttachMenu } from "./components/HomeAttachMenu";
@@ -595,6 +596,7 @@ export default function App() {
     return <ProjectEditorPage projectId={projectId} />;
   }
   if (currentPath === "/projects") return <ProjectsPage />;
+  if (typeof window !== "undefined" && /ppt-share/.test(window.location.hash)) return <PptSharePage />;
   if (currentPath === "/ppt" || currentPath === "/ppt/") return <PptPage />;
   const pptOutlineMatch = currentPath.match(/^\/ppt\/outline\/([^/]+)$/);
   if (pptOutlineMatch) {

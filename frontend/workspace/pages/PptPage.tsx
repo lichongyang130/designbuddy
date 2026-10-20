@@ -326,6 +326,32 @@ export default function PptPage({ pptId }: Props) {
     }
   };
 
+  const handleAiRewriteSingle = async () => {
+    if (!project || !currentSlide) return;
+    setAiBusy(true);
+    setMessage(`正在用 AI 重写第 ${index + 1} 页…`);
+    try {
+      const { apiFetch } = await import("../../../apps/web/src/api/client");
+      const prompt = `你是 PPT 单页改写助手。主题「${project.prompt}」，当前页标题「${currentSlide.title}」眉题「${currentSlide.eyebrow}」版式「${currentSlide.layout}」正文「${currentSlide.body.slice(0, 400)}」。请只优化本页，给 title(≤20字) 和 body(3行内，用“｜”分隔表格/图表)。只返回 JSON 如 {"title":"…","body":"…"}。`;
+      const response = await apiFetch("/ai/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ prompt, userId: "ppt-single" }) });
+      const data = (await response.json()) as { content?: string; error?: string };
+      if (!response.ok) throw new Error(data.error || "AI 服务未就绪");
+      const text = data.content || "";
+      const match = text.match(/\{[\s\S]*\}/);
+      if (!match) throw new Error("AI 未返回 JSON，已保留原稿。");
+      const parsed = JSON.parse(match[0]) as { title?: string; body?: string };
+      updateSlide({
+        title: typeof parsed.title === "string" && parsed.title.trim() ? parsed.title.trim().slice(0, 36) : currentSlide.title,
+        body: typeof parsed.body === "string" && parsed.body.trim() ? parsed.body.trim().slice(0, 800) : currentSlide.body,
+      });
+      setMessage("已用 AI 重写当前页，可继续微调。");
+    } catch (e) {
+      setMessage((e as Error).message || "AI 单页重写失败。");
+    } finally {
+      setAiBusy(false);
+    }
+  };
+
   const handleCreateFromPrompt = () => {
     const prompt = window.prompt("输入 PPT 主题，例如：Q4 季度汇报 · 运营总结", "");
     if (!prompt?.trim()) return;
@@ -752,6 +778,12 @@ export default function PptPage({ pptId }: Props) {
 
                 {activeTab === "content" && (
                   <>
+                    <div style={{ display: "flex", gap: 8, marginBottom: 4, flexWrap: "wrap", alignItems: "center" }}>
+                      <button className="ppt-ghost" onClick={() => void handleAiRewriteSingle()} disabled={aiBusy} title="仅重写当前页标题与正文，保留版式">
+                        {aiBusy ? "AI 思考中…" : `AI 重写本页 ✨（第 ${index + 1} 页）`}
+                      </button>
+                      <small style={{ color: "#64748b" }}>保留当前版式/图片，只优化文字；需配置 AI 服务</small>
+                    </div>
                     <div className="ppt-two-cols">
                       <label>
                         正文 / 每行一个内容块；表格用「｜」分列；柱图用「标签｜数值」
