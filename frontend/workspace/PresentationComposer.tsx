@@ -33,12 +33,16 @@ export default function PresentationComposer({
   disabled,
   initialGoal = "",
   initialBrief,
+  initialFiles,
+  initialRequestFile,
   onInvalidate,
   onPrepare,
 }: {
   disabled: boolean;
   initialGoal?: string;
   initialBrief?: Partial<PresentationBrief>;
+  initialFiles?: File[];
+  initialRequestFile?: File;
   onInvalidate: () => void;
   onPrepare: (file: File) => void;
 }) {
@@ -64,6 +68,24 @@ export default function PresentationComposer({
     },
     [],
   );
+  useEffect(() => {
+    if (!initialFiles?.length) return;
+    invalidate(); setFiles(initialFiles);
+  }, [initialFiles]);
+  useEffect(() => {
+    if (!initialRequestFile) return;
+    invalidate(); const version = generation.current;
+    void initialRequestFile.text().then(raw => {
+      if (version !== generation.current) return;
+      const request = JSON.parse(raw) as PresentationRequest;
+      if (request.schemaVersion !== 1 || !request.brief || !Array.isArray(request.files) || request.files.length > 5) throw Error("原始演示输入格式不受支持。");
+      const decode = (base64: string, name: string) => new File([Uint8Array.from(atob(base64), c => c.charCodeAt(0))], name);
+      setBrief({ ...request.brief, goal: initialGoal || request.brief.goal });
+      setFiles(request.files.map(f => decode(f.base64, f.name)));
+      setAssets((request.assets || []).map(({ base64, ...a }) => ({ ...a, file: decode(base64, a.name), permissionConfirmed: false })));
+      setPrepared(false);
+    }).catch(cause => { if (version === generation.current) setError(cause instanceof Error ? cause.message : "无法读取原始演示输入。"); });
+  }, [initialRequestFile]);
   function invalidate() {
     generation.current++;
     setPrepared(false);

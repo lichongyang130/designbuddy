@@ -1,3 +1,4 @@
+import type { ExpertTaskPlan } from "../../../shared/expertExecution";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { WorkBuddySidebar } from "../../../apps/web/src/components/WorkBuddySidebar";
 import { navigateTo } from "../workspaceRoutes";
@@ -45,7 +46,7 @@ function languageFor(name: string): DesignProject["files"][number]["language"] {
 }
 
 /** The recipes, the wizard and the result of one run. */
-type WorkflowsPageProps = { embedded?: boolean; initialWorkflowId?: string };
+type WorkflowsPageProps = { embedded?: boolean; initialWorkflowId?: string; taskId?: string; executionPlan?: ExpertTaskPlan; onRun?: () => void };
 export default function WorkflowsPage(props: WorkflowsPageProps) {
   const [identity, setIdentity] = useState(0);
   useEffect(() => {
@@ -58,10 +59,12 @@ export default function WorkflowsPage(props: WorkflowsPageProps) {
 }
 function WorkflowWorkspace({
   embedded = false,
-  initialWorkflowId,
+  initialWorkflowId, taskId, executionPlan, onRun,
 }: WorkflowsPageProps) {
   const Container = embedded ? "div" : "main";
   const mounted = useRef(true);
+  const sending = useRef(false);
+  const submission = useRef<{ signature: string; id: string } | null>(null);
   const requests = useRef(new AbortController());
   const following = useRef<AbortController | null>(null);
   const initialized = useRef(false);
@@ -103,7 +106,7 @@ function WorkflowWorkspace({
     try {
       const [list, history] = await Promise.all([
         listWorkflows(requests.current.signal),
-        listWorkflowRuns(requests.current.signal),
+        listWorkflowRuns(requests.current.signal, taskId),
       ]);
       if (!mounted.current || requests.current.signal.aborted) return;
       setWorkflows(list);
@@ -115,7 +118,7 @@ function WorkflowWorkspace({
           cause instanceof Error ? cause.message : "工作流服务暂不可用。",
         );
     }
-  }, []);
+  }, [taskId]);
 
   useEffect(() => {
     void load();
@@ -128,9 +131,13 @@ function WorkflowWorkspace({
     if (!wanted || !workflows.length || initialized.current) return;
     initialized.current = true;
     const recipe = workflows.find((workflow) => workflow.id === wanted);
-    if (recipe) start(recipe);
+    if (recipe) {
+      const previous = executionPlan && taskId ? runs.find(r => r.workflowId === recipe.id && r.parentTaskId === taskId) : undefined;
+      if (previous) void openRun(previous);
+      else start(recipe);
+    }
     else fail("未找到指定流程，未自动选择其他执行器。");
-  }, [workflows, initialWorkflowId]);
+  }, [workflows, initialWorkflowId, runs]);
 
   /** Stopping this observer does not cancel the persisted server run. */
   const follow = useCallback(async (runId: string) => {
@@ -264,6 +271,7 @@ function WorkflowWorkspace({
     setUploading(field.key);
     try {
       const asset = await uploadAsset(file);
+      if (!mounted.current) return;
       setAnswers((current) => ({
         ...current,
         files: {
@@ -304,14 +312,18 @@ function WorkflowWorkspace({
   }
 
   async function confirmAndRun() {
-    if (!selected || busy) return;
+    if (!selected || busy || sending.current || (executionPlan && !executionPlan.ready)) return;
+    sending.current = true;
     setBusy(true);
     try {
+      const signature = JSON.stringify({ planId: executionPlan?.id, answers });
+      if (submission.current?.signature !== signature) submission.current = { signature, id: crypto.randomUUID() };
       const started = await startWorkflow(selected.id, {
         fields: { ...answers.fields, ...answers.rows },
         files: answers.files,
-      });
+      }, executionPlan ? { plan: executionPlan, requestId: submission.current.id } : undefined);
       if (!mounted.current) return;
+      onRun?.();
       setRun(started);
       setStage("result");
       setNotice("已提交，正在按步骤执行。");
@@ -319,9 +331,10 @@ function WorkflowWorkspace({
       await follow(started.id);
       await load();
     } catch (cause) {
-      fail(cause instanceof Error ? cause.message : "工作流没有启动。");
+      if (mounted.current) fail(cause instanceof Error ? cause.message : "工作流没有启动。");
     } finally {
-      setBusy(false);
+      sending.current = false;
+      if (mounted.current) setBusy(false);
     }
   }
 
@@ -558,6 +571,7 @@ function WorkflowWorkspace({
                     {field.type === "text" && (
                       <input
                         id={`wf-${field.key}`}
+                        aria-label={field.label}
                         type="text"
                         value={answers.fields[field.key] ?? field.default ?? ""}
                         placeholder={field.placeholder}
@@ -569,6 +583,7 @@ function WorkflowWorkspace({
                     {field.type === "textarea" && (
                       <textarea
                         id={`wf-${field.key}`}
+                        aria-label={field.label}
                         rows={3}
                         value={answers.fields[field.key] ?? field.default ?? ""}
                         placeholder={field.placeholder}
@@ -580,6 +595,7 @@ function WorkflowWorkspace({
                     {field.type === "choice" && (
                       <select
                         id={`wf-${field.key}`}
+                        aria-label={field.label}
                         value={answers.fields[field.key] ?? field.default ?? ""}
                         onChange={(event) =>
                           setField(field.key, event.target.value)
@@ -596,6 +612,7 @@ function WorkflowWorkspace({
                       <div className="wf-file">
                         <input
                           id={`wf-${field.key}`}
+                        aria-label={field.label}
                           type="file"
                           accept={(field.accept ?? []).join(",")}
                           onChange={(event) =>
@@ -732,7 +749,7 @@ function WorkflowWorkspace({
                 <button
                   className="wf-button is-primary"
                   type="button"
-                  disabled={busy}
+                  disabled={busy || (executionPlan && !executionPlan.ready)}
                   onClick={() => void confirmAndRun()}
                 >
                   {busy ? "正在提交…" : "确认并执行"}
@@ -832,6 +849,12 @@ function WorkflowWorkspace({
                 ))}
               </ul>
               <div className="wf-actions">
+                {executionPlan && selected && <button type="button" className="wf-button" disabled={busy || run.status === "running"} onClick={() => {
+                  const inputs = run.inputs;
+                  start(selected);
+                  setAnswers({ fields: { ...inputs.fields }, rows: structuredClone(inputs.rows), files: structuredClone(inputs.files) });
+                  setNotice("已载入上一版的真实输入。请修改并重新确认，新运行和产物将单独保存，不覆盖原件。");
+                }}>基于此版本继续修改</button>}
                 <button
                   className="wf-button"
                   type="button"

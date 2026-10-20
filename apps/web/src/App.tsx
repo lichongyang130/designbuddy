@@ -1,3 +1,5 @@
+import { productForSkill } from "../../../shared/skillProducts";
+import { deliveryProduct, expertProducts, productLeads, builtinExecutionExpert } from "../../../shared/expertExecution";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { DesignLibrary, ProjectEditorPage, ProjectsPage, ShareProjectPage, StudioPage, WorkspaceHub } from "../../../frontend/workspace";
 import type { DesignProject } from "../../../frontend/workspace/models/project";
@@ -111,6 +113,7 @@ export default function App() {
   const [attachments, setAttachments] = useState<TaskAttachment[]>([]);
   const [selectedExpert, setSelectedExpert] = useState("");
   const [selectedSkill, setSelectedSkill] = useState("");
+  const [selectedSkillId, setSelectedSkillId] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const modelMenuRef = useRef<HTMLDivElement>(null);
   const composerRef = useRef<HTMLElement>(null);
@@ -411,7 +414,7 @@ export default function App() {
         requestAnimationFrame(() => composerRef.current?.querySelector("textarea")?.focus({ preventScroll: true }));
       }
       if (typeof context.expert === "string") setSelectedExpert(context.expert);
-      if (typeof context.skill === "string") setSelectedSkill(context.skill);
+      if (typeof context.skill === "string") { setSelectedSkill(context.skill); setSelectedSkillId(""); }
       setNotice(typeof context.prompt === "string" ? "已填入完整任务示例并锁定专家，尚未发送。" : "已载入所选专家/技能，原有输入与设置已保留。");
     } catch { setNotice("无法读取所选专家或技能，请重新选择。"); }
   }, [currentPath]);
@@ -477,7 +480,7 @@ export default function App() {
     if (prompt.trim() && prompt !== scene.prompt && !window.confirm("输入框已有内容，是否替换为此场景的任务提示？附件、模型、工作空间和权限将保留。")) return false;
     setMode(scene.mode);
     setPrompt(scene.prompt);
-    setSelectedSkill("");
+    setSelectedSkill(""); setSelectedSkillId("");
     setNotice("");
     requestAnimationFrame(() => {
       const input = composerRef.current?.querySelector("textarea");
@@ -510,14 +513,24 @@ export default function App() {
       const fullRequest = request + confirmedContext + attachmentContext;
       const draft = createProject(fullRequest, projectName || initialPrompt.trim().slice(0, 36));
       const project = updateProject({ ...draft, workspaceName: workspace, executionPolicy: permission });
+      const inferredProduct = deliveryProduct(initialPrompt + confirmedContext);
+      const preserveWebGenerator = inferredProduct === "web" && (expertMatch.replyMode === "generation" || mode !== "office");
+      const productId = (selectedSkillId ? productForSkill(selectedSkillId)?.id : undefined) || (preserveWebGenerator ? undefined : inferredProduct);
+      const lockedExpert = !!selectedExpert;
+      const matchedId = (selectedExpert || sameDraft) ? expertMatch.profile?.id : undefined;
+      const leadId = productId && !lockedExpert && !expertProducts[matchedId || ""]?.includes(productId) ? productLeads[productId] : matchedId;
+      const effectiveWorkflow = productId ? "skills" : workflow;
       const conversation: TaskConversation = {
-        projectId: project.id, mode, model, permission, workflow,
-        skillExpertId: (selectedExpert || sameDraft) ? expertMatch.profile?.id : undefined,
+        projectId: project.id, mode, model, permission, workflow: effectiveWorkflow,
+        skillExpertId: leadId,
+        expertLocked: lockedExpert,
+        expertVersion: leadId ? builtinExecutionExpert(leadId)?.configVersion : undefined,
+        ...(productId ? { delivery: { productId, lockedExpert, ...(selectedSkillId ? { sceneId: selectedSkillId } : {}), goal: initialPrompt + confirmedContext }, materials: attachments.map(a => a.assetId ? { name: a.name, assetId: a.assetId } : { ...a }) } : {}),
         suggestedSkillId: expertMatch.skillSuggestion?.skillId,
         messages: [{ id: crypto.randomUUID(), role: "user", content: initialPrompt.trim(), requestContent: fullRequest, replyMode: (selectedExpert || sameDraft) ? expertMatch.replyMode : undefined, requirementsConfirmed: !!confirmedContext, createdAt: new Date().toISOString(), status: "complete" }],
       };
       saveTaskConversation(conversation);
-      try { if (workflow !== "skills") sessionStorage.setItem(pendingTaskKey(project.id), "1"); }
+      try { if (effectiveWorkflow !== "skills") sessionStorage.setItem(pendingTaskKey(project.id), "1"); }
       catch {
         conversation.messages.push({ id: crypto.randomUUID(), role: "assistant", content: "", createdAt: new Date().toISOString(), status: "error", error: "浏览器不允许自动提交，请点击重新生成。" });
         saveTaskConversation(conversation);
@@ -527,7 +540,7 @@ export default function App() {
       setPrompt("");
       expertMatch.reset();
       setSelectedExpert("");
-      setSelectedSkill("");
+      setSelectedSkill(""); setSelectedSkillId("");
       setAttachments([]);
       go(`/tasks/${encodeURIComponent(project.id)}`);
     } catch (cause) {
@@ -647,7 +660,7 @@ export default function App() {
                 ariaLabel={t("home.composer.aria")}
                 autoResize
               />
-              {selectedSkill && <div className="home-selected-capabilities"><span>{t("home.composer.preset")}{selectedSkill}</span><button type="button" onClick={() => setSelectedSkill("")}>{t("home.composer.preset.clear")}</button></div>}
+              {selectedSkill && <div className="home-selected-capabilities"><span>{t("home.composer.preset")}{selectedSkill}</span><button type="button" onClick={() => { setSelectedSkill(""); setSelectedSkillId(""); }}>{t("home.composer.preset.clear")}</button></div>}
               <div className="composer-controls">
                 <HomeAttachMenu
                   mode={mode}
@@ -669,9 +682,9 @@ export default function App() {
                     setNotice(name ? "已手动指定专家，不会随输入自动替换；发送时将带入工作规范。" : "已取消手动指定。");
                     requestAnimationFrame(() => composerRef.current?.querySelector("textarea")?.focus({ preventScroll: true }));
                   }}
-                  onSkillSelect={(name, requirement) => {
-                    setSelectedSkill(name);
-                    setNotice(requirement || "已选择技能任务说明，请描述需求后发送。此操作不会安装或执行外部程序。");
+                  onSkillSelect={(name, requirement, skillId) => {
+                    setSelectedSkill(name); setSelectedSkillId(skillId || "");
+                    setNotice(requirement || "已选择真实技能路线。发送后核对专家制作计划、材料和单次授权，不会立即执行。");
                     requestAnimationFrame(() => composerRef.current?.querySelector("textarea")?.focus({ preventScroll: true }));
                   }}
                   onNavigate={go}

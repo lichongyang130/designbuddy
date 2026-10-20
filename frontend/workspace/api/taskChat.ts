@@ -3,6 +3,8 @@ import { apiFetch } from "../../../apps/web/src/api/client";
 export interface TaskChatInput {
   messages: Array<{ role: "user" | "assistant"; content: string }>;
   model?: string;
+  expertId?: string;
+  expertVersion?: string;
   provider?: string;
   apiKey?: string;
   baseUrl?: string;

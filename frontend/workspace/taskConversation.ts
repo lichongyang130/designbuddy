@@ -1,3 +1,4 @@
+import type { TaskDelivery } from "./TaskDeliveryPanel";
 import { recordTaskNotifications } from "./notifications";
 import { fetchTasks, saveTask } from "./api/tasks";
 import { validClarification, type TaskClarification } from "./taskClarification";
@@ -29,6 +30,10 @@ export interface TaskConversation {
   workflow?: "chat" | "skills";
   skillExpertId?: string;
   suggestedSkillId?: string;
+  delivery?: TaskDelivery;
+  materials?: { name: string; text?: string; assetId?: string }[];
+  expertVersion?: string;
+  expertLocked?: boolean;
   messages: TaskMessage[];
 }
 const key = (id: string) => `designbuddy.conversation.v1.${id}`;

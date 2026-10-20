@@ -1,3 +1,5 @@
+import TaskDeliveryPanel from "../TaskDeliveryPanel";
+import { deliveryProduct, builtinExecutionExpert, productLeads } from "../../../shared/expertExecution";
 import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import { TaskMarkdown } from "../../../apps/web/src/components/TaskMarkdown";
 import { HomeIcon } from "../../../apps/web/src/components/HomeIcon";
@@ -48,7 +50,6 @@ export default function TaskConversationPage({ projectId }: { projectId: string 
   const [searchOpen, setSearchOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [speaking, setSpeaking] = useState("");
-  const [skillExecutions, setSkillExecutions] = useState<Array<{ skillId: string; skillName: string; timestamp: number }>>([]);
   const taskRef = useRef(task);
   const mounted = useRef(true);
   const controller = useRef<AbortController | null>(null);
@@ -163,33 +164,6 @@ export default function TaskConversationPage({ projectId }: { projectId: string 
     const id = retryId || newId();
     const thinkingSteps: ThinkingStep[] = [];
     
-    // Add expert matching step if expert was matched
-    if (current.skillExpertId) {
-      const expert = expertCatalog.find(e => e.id === current.skillExpertId);
-      if (expert) {
-        thinkingSteps.push({
-          id: crypto.randomUUID(),
-          type: "expert",
-          title: `匹配专家: ${expert.name}`,
-          detail: expert.description,
-          status: "complete",
-          timestamp: Date.now()
-        });
-      }
-    }
-    
-    // Add skill suggestion step if skill was suggested
-    if (current.suggestedSkillId) {
-      thinkingSteps.push({
-        id: crypto.randomUUID(),
-        type: "skill",
-        title: `推荐技能: ${current.suggestedSkillId}`,
-        detail: "根据任务自动推荐的技能",
-        status: "complete",
-        timestamp: Date.now()
-      });
-    }
-    
     const addStep = (step: Omit<ThinkingStep, "id" | "timestamp">) => {
       const newStep = { ...step, id: crypto.randomUUID(), timestamp: Date.now() };
       thinkingSteps.push(newStep);
@@ -238,7 +212,7 @@ export default function TaskConversationPage({ projectId }: { projectId: string 
         
         const apiStep = addStep({ type: "api-call", title: "调用 AI 对话服务", detail: `模型: ${current.model || "默认"}`, status: "running" });
         
-        await streamTaskReply({ messages, model: current.model || undefined, ...getAIProviderCredentials(current.model) }, abort.signal, (delta, model) => {
+        await streamTaskReply({ messages, expertId: current.skillExpertId, expertVersion: current.expertVersion, model: current.model || undefined, ...getAIProviderCredentials(current.model) }, abort.signal, (delta, model) => {
           content += delta;
           if (model) actualModel = model;
           // Show intro text but hide the clarification block while streaming
@@ -268,10 +242,6 @@ export default function TaskConversationPage({ projectId }: { projectId: string 
       } else {
         const latest = getProject(projectId);
         if (!latest) throw new Error("项目草稿已不存在，请重新创建任务。");
-        
-        const thinkingStep = addStep({ type: "thinking", title: "分析需求并规划文件", detail: "正在理解你的需求...", status: "running" });
-        await new Promise(resolve => setTimeout(resolve, 500));
-        updateStep(thinkingStep.id, { status: "complete", detail: "需求分析完成" });
         
         const apiStep = addStep({ type: "api-call", title: "调用 AI 生成服务", detail: `模型: ${current.model || "默认"}`, status: "running" });
         
@@ -357,6 +327,18 @@ export default function TaskConversationPage({ projectId }: { projectId: string 
     const user: TaskMessage = { id: newId(), role: "user", content: value, requestContent, replyMode: previousUser?.replyMode, createdAt: new Date().toISOString(), status: "complete" };
     commit({ ...current, messages: [...current.messages, user] });
     setDraft(""); setAttachments([]);
+    const inferredProduct = deliveryProduct(value);
+    const preserveWebGenerator = inferredProduct === "web" && (previousUser?.replyMode === "generation" || current.mode !== "office");
+    const productId = current.delivery?.productId || (preserveWebGenerator ? undefined : inferredProduct);
+    if (productId) {
+      const goal = current.delivery ? `${current.delivery.goal || current.messages.find(m => m.role === "user")?.content || ""}\n\n本轮修改要求：${value}` : value;
+      const leadId = current.delivery || current.expertLocked ? current.skillExpertId : productLeads[productId];
+      commit({ ...taskRef.current!, workflow: "skills", delivery: { ...current.delivery, productId, lockedExpert: current.delivery?.lockedExpert ?? current.expertLocked ?? false, goal }, skillExpertId: leadId,
+        expertVersion: leadId ? builtinExecutionExpert(leadId)?.configVersion : undefined, materials: [...(current.materials || []), ...attachments] });
+      setSkillsOpen(true);
+      setNotice("已更新制作计划，尚未修改文件或调用模型。请核对实际输入并确认制作新版本，原产物保留。");
+      return;
+    }
     void runReply(user.id);
   }
 
@@ -445,20 +427,10 @@ export default function TaskConversationPage({ projectId }: { projectId: string 
           {task.messages.map((message) => message.role === "user" ? <article className="task-user-message" id={`message-${message.id}`} key={message.id} aria-label="你的问题"><p>{message.content}</p></article> : <article className="task-assistant-message" id={`message-${message.id}`} key={message.id} aria-label="WorkBuddy 回复" aria-busy={message.status === "waiting" || message.status === "streaming"}>
             <div className="task-assistant-brand"><span><HomeIcon name="assistant" size={19} /></span><strong>WorkBuddy</strong></div>
             {message.status !== "clarifying" && <details className={`task-progress is-${message.status}`}><summary><span className={message.id === activeId ? "task-pulse" : ""}>{statusLabels[message.status]}{message.status !== "local" && ` ${elapsed(message)}s`}</span><HomeIcon name="chevron" size={10} /></summary><ol><li>已接收你的问题</li><li>{message.status === "local" ? "按本地策略保留草稿，未请求 AI" : message.status === "waiting" ? "已提交 AI 请求，等待服务返回" : message.status === "error" ? "服务返回错误或连接中断" : message.status === "stopped" ? "请求已停止，不会自动重发" : message.status === "streaming" ? "正在接收回复内容" : message.artifact ? "已生成文件并保存到本机项目" : "已接收完整回复"}</li></ol><small>这里显示请求执行状态，不是模型内部思维过程。</small></details>}
-            {(message.thinkingSteps && message.thinkingSteps.length > 0) && <div className="task-thinking-label">{task.mode === "office" ? "深度思考" : "设计生成"}{message.id === activeId && <span aria-hidden="true"> ···</span>}</div>}
+            {(message.thinkingSteps && message.thinkingSteps.length > 0) && <div className="task-thinking-label">{"真实请求与文件记录"}{message.id === activeId && <span aria-hidden="true"> ···</span>}</div>}
             {message.thinkingSteps && message.thinkingSteps.length > 0 && (
               <TaskThinkingProcess 
-                steps={[
-                  ...(message.thinkingSteps || []),
-                  ...skillExecutions.map(exec => ({
-                    id: `skill-${exec.timestamp}`,
-                    type: "skill" as const,
-                    title: `执行技能: ${exec.skillName}`,
-                    detail: `技能ID: ${exec.skillId}`,
-                    status: "complete" as const,
-                    timestamp: exec.timestamp
-                  }))
-                ]} 
+                steps={message.thinkingSteps.filter(s => s.type === "api-call" || s.type === "file")}
                 isStreaming={message.status === "streaming"} 
               />
             )}
@@ -482,7 +454,7 @@ export default function TaskConversationPage({ projectId }: { projectId: string 
           </article>)}
         </div>
         {skillsOpen && <section className="task-skills-panel" aria-label="本任务文件技能">
-          <h2>文件技能与产物</h2>
+          <h2>{task.delivery ? "专家制作与交付" : "文件技能与产物"}</h2>
           <p>任务描述已带入规划表单。这里处理实际文件，普通聊天回复不等于技能完成；请选择材料并单独确认。原对话与聊天附件不会自动发送给规划模型。</p>
           <div className="task-file-settings">
             <label>任务权限<select aria-label="任务权限" value={task.permission} disabled={busy} onChange={e => changeSettings({ permission: e.target.value })}><option>默认权限</option><option>仅本地</option><option>需要确认后执行</option></select></label>
@@ -491,6 +463,7 @@ export default function TaskConversationPage({ projectId }: { projectId: string 
           </div>
           {task.permission === "仅本地" ? <p role="status">当前为仅本地模式：不会打开后台执行台、上传材料或请求规划模型。需要文件处理时请先修改任务权限，再单独确认。</p>
             : skillIdentityChanged ? <div role="status"><p>服务端身份已变化，已关闭此任务的执行入口。请先核对当前账号；方案与产物将按当前账号重新读取，不会自动重新提交。</p><button type="button" onClick={() => setSkillIdentityChanged(false)}>已核对账号，重新打开执行台</button></div>
+            : task.delivery ? <TaskDeliveryPanel taskId={projectId} goal={task.messages.find(m => m.role === "user")?.content || ""} expertId={task.skillExpertId} delivery={task.delivery} materials={task.materials} permission={task.permission} model={task.model} onChange={(delivery, expertId) => commit({ ...taskRef.current!, delivery, expertLocked: delivery.lockedExpert, skillExpertId: expertId, expertVersion: expertId ? builtinExecutionExpert(expertId)?.configVersion : undefined })} />
             : task.skillExpertId && !expertCatalog.some(e => e.id === task.skillExpertId) ? <p role="status">此任务指定的自建专家尚未绑定后台技能，不会自动替换专家。请在首页选择已接通的内置专家后新建任务。</p>
             : <SkillWorkbench 
                 key={`${projectId}-${task.model}-${task.permission}`} 
@@ -510,23 +483,20 @@ export default function TaskConversationPage({ projectId }: { projectId: string 
                   }
                   return undefined;
                 })()}
-                onSkillExecute={(skillId, skillName) => {
-                  setSkillExecutions(prev => [...prev, { skillId, skillName, timestamp: Date.now() }]);
-                }} 
               />}
-          <p>方案与产物按当前服务端身份保存。对话正文目前仍保存在此浏览器；删除本机任务不会自动删除后台运行，请先在执行台删除不需要的文件。</p>
+          <p>方案与产物按当前服务端身份保存。对话有本机副本并同步至服务端；删除本机任务不会自动删除后台运行，请先在执行台删除不需要的文件。</p>
         </section>}
       </div>
-      {!skillsOpen && <div className="task-composer-area" ref={composerRef}>
+      {(!skillsOpen || task.delivery) && <div className="task-composer-area" ref={composerRef}>
         {notice && <div className="task-notice" role="status"><span>{notice}</span><button aria-label="关闭提示" onClick={() => setNotice("")}>×</button></div>}
         {settingsOpen && <div className="task-service-settings"><AIProviderSettings /></div>}
         {pendingConfirmation?.clarification ? <TaskClarificationCard key={pendingConfirmation.id} value={pendingConfirmation.clarification} onChange={(value) => updateClarification(pendingConfirmation.id, value)} onSubmit={() => submitClarification(pendingConfirmation.id)} onClose={() => closeClarification(pendingConfirmation.id)} /> : <section className="task-composer" aria-label="继续对话">
           {attachments.length > 0 && <div className="task-attachments">{attachments.map((file, i) => <span key={`${file.name}-${i}`}>{file.name}<button aria-label={`移除附件 ${file.name}`} onClick={() => setAttachments((items) => items.filter((_, index) => index !== i))}>×</button></span>)}</div>}
-          <PromptInput value={draft} onChange={setDraft} onSubmit={send} ariaLabel="继续描述任务" placeholder="今天要帮你做些什么？ @ 添加上下文，/ 调用技能与指令" rows={3} />
+          <PromptInput value={draft} onChange={setDraft} onSubmit={send} ariaLabel="继续描述任务" placeholder={task.delivery ? "补充制作要求；更新计划后需核对输入并确认，不会只回复‘已修改’" : "今天要帮你做些什么？ @ 添加上下文，/ 调用技能与指令"} rows={3} />
           <div className="task-composer-controls">
             <button className="task-icon-button" aria-label="添加附件" disabled={busy} onClick={() => fileInput.current?.click()}><HomeIcon name="plus" size={20} /></button>
             <input type="file" className="visually-hidden-input" ref={fileInput} multiple onChange={(event) => void readAttachments(event)} />
-            <label className="task-policy"><HomeIcon name="shield" size={15} /><select aria-label="任务权限" value={task.permission} disabled={busy} onChange={(event) => changeSettings({ permission: event.target.value })}><option>默认权限</option><option>仅本地</option><option>需要确认后执行</option></select></label>
+            {!task.delivery && <label className="task-policy"><HomeIcon name="shield" size={15} /><select aria-label="任务权限" value={task.permission} disabled={busy} onChange={(event) => changeSettings({ permission: event.target.value })}><option>默认权限</option><option>仅本地</option><option>需要确认后执行</option></select></label>}
             <div className="task-send-controls"><label className="task-model"><HomeIcon name="step" size={13} /><select aria-label="对话模型" value={task.model} disabled={busy} onChange={(event) => changeSettings({ model: event.target.value })}>{!modelOptions.some(option => option.id === task.model) && <option value={task.model}>{task.model}（原任务模型）</option>}{modelOptions.map((option) => <option key={option.id} value={option.id}>{option.name}</option>)}</select></label>
               <button className="task-icon-button" aria-label="语音输入" onClick={() => setNotice("语音输入尚未接入，请在输入框中描述任务。") }><HomeIcon name="microphone" size={15} /></button>
               {busy ? <button className="task-send is-stop" aria-label="停止生成" onClick={() => controller.current?.abort()}><HomeIcon name="stop" size={15} /></button> : <button className="task-send" aria-label="发送消息" disabled={!draft.trim()} onClick={send}><HomeIcon name="send" size={19} /></button>}

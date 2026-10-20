@@ -1,3 +1,6 @@
+import { apiJSON } from "../../../apps/web/src/api/client";
+import { expertProducts, type ExpertBinding } from "../../../shared/expertExecution";
+import { skillProducts } from "../../../shared/skillProducts";
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { HomeIcon } from "../../../apps/web/src/components/HomeIcon";
 import { WorkBuddySidebar } from "../../../apps/web/src/components/WorkBuddySidebar";
@@ -17,7 +20,7 @@ const areaCopy: Record<string, string> = {
   "办公提效": "整理材料、核对数字、组织汇报，把工作向前推进。",
   "设计制作": "从视觉方向到信息表达，让每份物料都有清楚的制作依据。",
   "网页应用": "从需求到实现与验收，分清页面演示和真正可用的系统。",
-  "我的专家": "你定义的专业角色，仅保存在当前浏览器。",
+  "我的专家": "专业指导可保留在本机；已绑定的执行能力按服务端身份保存。",
 };
 function Badge({ expert }: { expert: CatalogExpert }) {
   return <span className={`expert-role-icon tone-${expert.mode || "custom"}${expert.avatar ? " has-avatar" : ""}`} aria-hidden="true">{expert.avatar ? <img src={expert.avatar} alt="" width={64} height={64} decoding="async" /> : <HomeIcon name={expert.icon} size={24} />}</span>;
@@ -35,14 +38,35 @@ export default function ExpertsPage({ pathname }: { pathname: string }) {
   const [notice, setNotice] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [baseExpertId, setBaseExpertId] = useState("");
+  const [bindings, setBindings] = useState<ExpertBinding[]>([]);
+  const [bindingStatus, setBindingStatus] = useState("正在核对后台绑定");
+  const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const expertSettings = usePreferences(s => s.expertSettings);
   const experts = useWorkspaceStore(state => state.experts);
   const upsertExpert = useWorkspaceStore(state => state.upsertExpert);
   useEffect(() => {
     setNotice(""); setError(""); setSearch("");
-    if (route.page === "create") { setName(""); setDescription(""); }
+    if (route.page === "create") { setName(""); setDescription(""); setBaseExpertId(""); }
   }, [pathname, route.page]);
+  useEffect(() => {
+    let active = true;
+    const controller = new AbortController();
+    const load = () => {
+      setBindings([]); setBindingStatus("正在核对后台绑定");
+      apiJSON<{ bindings: ExpertBinding[] }>("/expert-bindings", { signal: controller.signal }).then(({ bindings: values }) => {
+        if (!active) return;
+        setBindings(values); setBindingStatus("");
+        for (const b of values) {
+          const previous = useWorkspaceStore.getState().experts.find(e => e.id === b.id);
+          upsertExpert({ id: b.id, name: b.name, description: b.description, skills: [], capabilities: [], status: "active", createdAt: previous?.createdAt || new Date().toISOString() });
+        }
+      }).catch(() => { if (active) setBindingStatus("后台绑定暂时无法核对，不把本地能力描述当作执行权限"); });
+    };
+    load(); window.addEventListener("designbuddy:server-identity", load);
+    return () => { active = false; controller.abort(); window.removeEventListener("designbuddy:server-identity", load); };
+  }, [upsertExpert]);
   const customExperts = useMemo(() => experts.map(customExpertCatalog), [experts]);
   const allExperts = useMemo(() => [...expertCatalog, ...customExperts].map(p => configureExpert(p, expertSettings)), [customExperts, expertSettings]);
   const activeCategory = mine ? "我的专家" : category;
@@ -64,15 +88,23 @@ export default function ExpertsPage({ pathname }: { pathname: string }) {
       navigateTo("/");
     } catch { setError("无法带入首页，请检查浏览器会话存储权限；现有任务未修改。"); }
   }
-  function saveExpert(event: FormEvent<HTMLFormElement>) {
+  async function saveExpert(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (saving) return;
     if (!name.trim()) { setError("请先填写专家名称。"); return; }
     if (experts.some(e => e.name === name.trim()) || expertCatalog.some(e => e.name === name.trim())) { setError("该名称已存在，请使用可区分的专家名称。"); return; }
     try {
+      setSaving(true);
       const id = crypto.randomUUID();
+      if (baseExpertId) {
+        const { binding } = await apiJSON<{ binding: ExpertBinding }>("/expert-bindings", { method: "POST", retryOnIdentityChange: false, headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id, name: name.trim(), description: description.trim(), baseExpertId }) });
+        setBindings(values => [...values.filter(b => b.id !== binding.id), binding]);
+        setBindingStatus("");
+      }
       upsertExpert({ id, name: name.trim(), description: description.trim(), skills: [], capabilities: [], status: "draft", createdAt: new Date().toISOString() });
       navigateTo(workspaceRoutes.expertDetail(id));
-    } catch { setError("保存失败，请检查浏览器本地存储权限。"); }
+    } catch (cause) { setError(cause instanceof Error ? cause.message : "保存失败，请检查后台连接和浏览器存储权限。"); }
+    finally { setSaving(false); }
   }
   return <div className="workbuddy-app expert-workspace">
     <WorkBuddySidebar active="experts" projectCount={listProjects().length} go={navigateTo} setNotice={setNotice} />
@@ -105,12 +137,14 @@ export default function ExpertsPage({ pathname }: { pathname: string }) {
             {!visibleExperts.length && <div className="expert-empty"><HomeIcon name="experts" size={32} /><h2>{mine && !search ? "还没有自己的专家" : "没有找到匹配的专家"}</h2><p>{mine && !search ? "已有自建专家会保留在这里，不受内置目录调整影响。" : "试试任务名称，例如报销、海报、表单或汇报。"}</p>{mine && <button className="expert-primary" onClick={() => navigateTo(workspaceRoutes.createExpert)}>创建第一个专家</button>}</div>}
           </section>
         </>}
-        {route.page === "create" && <form className="expert-detail-panel expert-create-form" onSubmit={saveExpert}>
+        {route.page === "create" && <form className="expert-detail-panel expert-create-form" onSubmit={event => void saveExpert(event)}>
           <button type="button" className="expert-back" onClick={() => navigateTo(workspaceRoutes.myExperts)}>← 返回我的专家</button>
-          <h1>创建你的专家</h1><p>定义职责和交付要求，保存到当前浏览器。不会因此安装工具或接通外部服务。</p>
+          <h1>创建你的专家</h1><p>定义专业职责；可只保存为本机指导角色，或绑定平台已登记的执行模板。绑定不会安装新工具、代配密钥或扩大账号权限。</p>
           <label>专家名称<input value={name} onChange={event => setName(event.target.value)} placeholder="例如：供应链分析专家" maxLength={80} required /></label>
-          <label>职责描述<textarea value={description} onChange={event => setDescription(event.target.value)} placeholder="擅长的问题、所需材料、工作方法与交付标准" rows={6} maxLength={4000} /></label>
-          <button className="expert-primary" type="submit">保存专家</button>
+          <label>职责描述<textarea value={description} onChange={event => setDescription(event.target.value)} placeholder="擅长的问题、所需材料、工作方法与交付标准" rows={6} maxLength={baseExpertId ? 1200 : 4000} /></label>
+          <label>后台能力模板<select aria-label="后台能力模板" value={baseExpertId} disabled={saving} onChange={e => setBaseExpertId(e.target.value)}><option value="">仅专业指导（不调用工具）</option>{expertCatalog.filter(e => expertProducts[e.id]?.length).map(e => <option key={e.id} value={e.id}>{e.name} · {expertProducts[e.id].map(id => skillProducts.find(p => p.id === id)?.name).join("、")}</option>)}</select></label>
+          <p>可执行只表示已绑定真实路线；依赖、材料和每次授权仍由服务端核验。已绑定配置保存在当前账号下。</p>
+          <button className="expert-primary" type="submit" disabled={saving}>{saving ? "正在保存并核对…" : "保存专家"}</button>
         </form>}
         {route.page === "detail" && <section className="expert-detail-panel">
           <button className="expert-back" onClick={() => navigateTo(selectedExpert?.custom ? workspaceRoutes.myExperts : workspaceRoutes.experts)}>← 返回专家列表</button>
@@ -123,6 +157,7 @@ export default function ExpertsPage({ pathname }: { pathname: string }) {
               <InfoList title="交付内容" items={selectedExpert.deliverables} />
               <InfoList title="检查与验收标准" items={selectedExpert.checks} />
             </div>
+            {selectedExpert.custom && <aside className="expert-capability-note" aria-label="自建专家执行状态"><div><h2>{bindingStatus || (bindings.some(b => b.id === selectedExpert.id) ? "已绑定后台制作能力" : "仅专业指导 · 未绑定执行器")}</h2><p>{bindings.find(b => b.id === selectedExpert.id)?.productIds.map(id => skillProducts.find(p => p.id === id)?.name).join("、") || "填写能力名称不是安装工具。需要执行时请选择已绑定模板的专家。"}</p></div></aside>}
             {!selectedExpert.custom && <SkillWorkbench key={selectedExpert.id} expertId={selectedExpert.id} />}
             <aside className="expert-capability-note"><HomeIcon name="shield" size={20} /><div><h2>当前能力与限制</h2><p>{selectedExpert.limits}</p><p>回复依赖可用模型。这里只选择一位主专家，不会自动发送消息、部署网站或授权外部操作。</p></div></aside>
             {!!selectedExpert.taskIds.length && <section className="expert-task-examples" aria-label="任务示例"><div className="expert-area-heading"><h2>从一个具体任务开始</h2><p>复用首页任务库，填入完整提示词，不自动发送。</p></div>{selectedExpert.taskIds.map(id => tasks.get(id)).filter((t): t is PromptTask => !!t).map(task => <button key={task.id} onClick={() => launch(selectedExpert, task)} aria-label={`使用任务示例：${task.title}`}><span><b>{task.title}</b><small>{task.category} / {task.group}</small><span>{task.description}</span></span><HomeIcon name="chevron" size={16} /></button>)}</section>}

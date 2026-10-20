@@ -90,9 +90,8 @@ for (const custom of [false, true]) {
     expect(requests.at(-1).answer).toContain(custom ? "给老板看的八页PPT" : "演示PPT");
     await page.keyboard.press("Escape");
     await page.getByRole("button", { name: "开始任务", exact: true }).click();
-    await expect.poll(() => chats.length).toBe(1);
-    expect(chats[0].messages.at(-1).content).toContain("已确认的任务要求");
-    expect(chats[0].messages.at(-1).content).toContain(custom ? "给老板看的八页PPT" : "演示PPT");
+    await expect(page.getByRole("region", { name: "专家制作计划" })).toContainText(custom ? "给老板看的八页PPT" : "演示PPT");
+    expect(chats).toHaveLength(0); // A confirmed PPT deliverable now takes the real execution route, not chat.
   });
 }
 

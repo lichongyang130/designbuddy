@@ -38,7 +38,7 @@ test('model classification receives deliverable context and candidate contracts,
   const context = JSON.parse(captured.body.messages[1].content);
   assert.equal(context.modeHint, 'design'); assert.match(context.task, /报销/);
   assert.equal(context.candidates[0].method.length, 3);
-  assert.deepEqual(context.skills, input().skills);
+  assert.deepEqual(context.skills, [], "unregistered browser-declared skills cannot become tools");
   assert.match(context.readableAttachmentExcerpts, /reimburse/);
 });
 

@@ -1,3 +1,5 @@
+import WordTaskDraft from "./WordTaskDraft";
+import type { ExpertTaskPlan } from "../../shared/expertExecution";
 import { useEffect, useRef, useState, lazy, Suspense } from "react";
 import { apiFetch, apiJSON } from "../../apps/web/src/api/client";
 import type { PresentationBrief } from "../../shared/presentation";
@@ -12,8 +14,9 @@ import SmartSkillPlanner, { identifySkillFile } from "./SmartSkillPlanner";
 
 const PdfPreview = lazy(() => import("./PdfPreview"));
 const labels = { queued: "等待执行", running: "正在执行", succeeded: "执行成功", failed: "执行失败", cancelled: "已取消" };
+const skillTextExtension = (accepts?: string[]) => accepts?.includes(".md") ? ".md" : accepts?.includes(".txt") ? ".txt" : undefined;
 const terminal = (run: SkillRun) => !["running", "queued"].includes(run.status);
-export default function SkillWorkbench({ expertId, taskId, initialGoal = "", model, permission, allowedSkillIds, initialSkillId, onSkillExecute, autoContent, presentationBrief }: { expertId?: string; taskId?: string; initialGoal?: string; model?: string; permission?: string; allowedSkillIds?: string[]; initialSkillId?: string; onSkillExecute?: (skillId: string, skillName: string) => void; autoContent?: string; presentationBrief?: Partial<PresentationBrief> }) {
+export default function SkillWorkbench({ expertId, taskId, initialGoal = "", model, permission, allowedSkillIds, initialSkillId, onSkillExecute, autoContent, presentationBrief, executionPlan, initialMaterials }: { expertId?: string; taskId?: string; initialGoal?: string; model?: string; permission?: string; allowedSkillIds?: string[]; initialSkillId?: string; onSkillExecute?: (skillId: string, skillName: string) => void; autoContent?: string; presentationBrief?: Partial<PresentationBrief>; executionPlan?: ExpertTaskPlan; initialMaterials?: File[] }) {
   const allowedScopeKey = allowedSkillIds ? JSON.stringify([...allowedSkillIds].sort()) : "";
   const scopeQuery = taskId ? `?taskId=${encodeURIComponent(taskId)}` : "";
   const mutations = useRef(0);
@@ -28,6 +31,7 @@ export default function SkillWorkbench({ expertId, taskId, initialGoal = "", mod
   const [loaded, setLoaded] = useState(false);
   const [selected, setSelected] = useState(initialSkillId || "");
   const [file, setFile] = useState<File | null>(null);
+  const [revisionInput, setRevisionInput] = useState<File | undefined>();
   const [consent, setConsent] = useState(false);
   const [parameters, setParameters] = useState<Record<string, string>>({ title: "", subtitle: "", action: "" });
   const [deduplicate, setDeduplicate] = useState(false);
@@ -36,12 +40,12 @@ export default function SkillWorkbench({ expertId, taskId, initialGoal = "", mod
   const [focusId, setFocusId] = useState("");
   const [preview, setPreview] = useState<{ url: string; kind: string } | null>(null);
   useEffect(() => {
-    const changed = () => { epoch.current++; submissionController.current?.abort(); removedRuns.current.clear(); submission.current = null; sending.current = false; mutations.current++; setRuns([]); setCatalog([]); setPreview(null); setFile(null); setConsent(false); setParameters({ title: "", subtitle: "", action: "" }); setBusy(false); setRefresh(value => value + 1); };
+    const changed = () => { epoch.current++; submissionController.current?.abort(); removedRuns.current.clear(); submission.current = null; sending.current = false; mutations.current++; setRuns([]); setCatalog([]); setPreview(null); setFile(null); setRevisionInput(undefined); setConsent(false); setParameters({ title: "", subtitle: "", action: "" }); setBusy(false); setRefresh(value => value + 1); };
     window.addEventListener("designbuddy:server-identity", changed);
     return () => window.removeEventListener("designbuddy:server-identity", changed);
   }, []);
   useEffect(() => {
-    const controller = new AbortController(); epoch.current++; submissionController.current?.abort(); submission.current = null; sending.current = false; setBusy(false); setLoaded(false); setCatalog([]); setRuns([]); setError(""); setFile(null); setConsent(false); setFocusId("");
+    const controller = new AbortController(); epoch.current++; submissionController.current?.abort(); submission.current = null; sending.current = false; setBusy(false); setLoaded(false); setCatalog([]); setRuns([]); setError(""); setFile(null); setRevisionInput(undefined); setConsent(false); setFocusId("");
     Promise.all([apiJSON<{ skills: RuntimeSkill[] }>("/skill-runtime", { signal: controller.signal }), apiJSON<{ runs: SkillRun[] }>(`/skill-runs${scopeQuery}`, { signal: controller.signal })]).then(([c, r]) => {
       if (controller.signal.aborted) return;
       setCatalog(c.skills); setRuns(r.runs); setLoaded(true);
@@ -72,14 +76,19 @@ export default function SkillWorkbench({ expertId, taskId, initialGoal = "", mod
   
   // Auto-populate file from AI-generated content
   useEffect(() => {
-    if (autoContent && !file && !["slides.create", "document.create"].includes(selected)) {
+    if (autoContent && !file && skillTextExtension(catalog.find(s => s.id === selected)?.accepts)) {
       const blob = new Blob([autoContent], { type: 'text/markdown' });
-      const autoFile = new File([blob], 'ai-content.md', { type: 'text/markdown' });
+      const autoFile = new File([blob], `ai-content${skillTextExtension(catalog.find(s => s.id === selected)?.accepts)}`, { type: 'text/plain' });
       setFile(autoFile);
-      setConsent(true); // Auto-consent when content is provided
+      setConsent(false); // Content preparation never grants upload or execution permission.
     }
-  }, [autoContent, file, selected]);
+  }, [autoContent, file, selected, catalog]);
   
+  useEffect(() => {
+    if (!initialMaterials?.length || ["slides.create", "document.create", "image.layout"].includes(selected)) return;
+    const candidate = initialMaterials.find(f => catalog.find(s => s.id === selected)?.accepts.some(ext => f.name.toLowerCase().endsWith(ext)));
+    if (candidate) { setFile(candidate); setConsent(false); submission.current = null; }
+  }, [initialMaterials, selected, catalog]);
   useEffect(() => () => { if (preview) URL.revokeObjectURL(preview.url); }, [preview]);
   useEffect(() => { setPreview(null); }, [focusId, expertId]);
   const scoped = catalog.filter(s => (!expertId || s.expertIds.includes(expertId)) && (!allowedSkillIds || allowedSkillIds.includes(s.id)));
@@ -90,15 +99,11 @@ export default function SkillWorkbench({ expertId, taskId, initialGoal = "", mod
   const visibleRuns = runs.filter(r => (!taskId || r.taskId === taskId) && (!expertId || r.expertId === expertId) && (!allowedSkillIds || allowedSkillIds.includes(r.skillId)));
   const current = visibleRuns.find(r => r.id === focusId) || visibleRuns[0];
   async function execute() {
-    if (!file || !skill || !consent || busy || sending.current) return;
+    if (!file || !skill || !consent || busy || sending.current || (executionPlan && !executionPlan.ready)) return;
     sending.current = true;
     const identity = epoch.current;
     setBusy(true); setError(""); setPreview(null);
     
-    // Notify parent about skill execution
-    if (onSkillExecute) {
-      onSkillExecute(skill.id, skill.name);
-    }
     
     try {
       const maxBytes = skill.id === "slides.create" ? 13_600_000 : 2_000_000;
@@ -112,11 +117,32 @@ export default function SkillWorkbench({ expertId, taskId, initialGoal = "", mod
       if (permission) form.set("permission", permission);
       if (skill.parameterFields) form.set("parameters", JSON.stringify(parameters));
       submissionController.current = new AbortController();
-      const run = await apiJSON<SkillRun>(skill.id === "slides.create" ? "/skill-runs?kind=presentation" : "/skill-runs", { method: "POST", body: form, signal: submissionController.current.signal, retryOnIdentityChange: false });
+      const endpoint = executionPlan ? `/expert-task-plans/${executionPlan.id}/execute` : skill.id === "slides.create" ? "/skill-runs?kind=presentation" : "/skill-runs";
+      const headers = executionPlan ? { "X-Expert-Approval": executionPlan.approvalDigest, "X-Expert-Request": submission.current.id } : undefined;
+      const run = await apiJSON<SkillRun>(endpoint, { method: "POST", headers, body: form, signal: submissionController.current.signal, retryOnIdentityChange: false });
       if (identity !== epoch.current) return;
       mutations.current++; setRuns(old => [run, ...old.filter(r => r.id !== run.id)]); setFocusId(run.id);
+      onSkillExecute?.(skill.id, skill.name);
     } catch (e) { if (identity === epoch.current) setError(e instanceof Error ? e.message : "提交失败。请检查运行记录，勿重复提交。"); }
     finally { if (identity === epoch.current) { sending.current = false; setBusy(false); } }
+  }
+  async function reviseInput(run: SkillRun) {
+    if (busy || !terminal(run) || run.skillId !== selected) return;
+    const identity = epoch.current; setBusy(true); setError("");
+    try {
+      const response = await apiFetch(`/skill-runs/${run.id}/input`);
+      if (!response.ok) throw Error("原始输入读取失败，未伪造来源或覆盖文件。");
+      const bytes = await response.arrayBuffer();
+      const digest = Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", bytes)), b => b.toString(16).padStart(2, "0")).join("");
+      if (digest !== run.inputHash) throw Error("原始输入哈希不一致，未载入。");
+      if (identity !== epoch.current) return;
+      const original = new File([bytes], run.filename);
+      setRevisionInput(original); setFile(["slides.create", "document.create"].includes(run.skillId) ? null : original);
+      setConsent(false); submission.current = null;
+      setParameters({ ...(run.options?.parameters || {}), ...(["slides.create", "document.summarize"].includes(run.skillId) ? { externalConsent: "" } : {}) });
+      setDeduplicate(run.options?.deduplicate || false);
+    } catch (cause) { if (identity === epoch.current) setError(cause instanceof Error ? cause.message : "无法载入旧版输入。"); }
+    finally { if (identity === epoch.current) setBusy(false); }
   }
   async function action(run: SkillRun, deleting: boolean) {
     if (deleting && !window.confirm("删除此运行的原始文件、处理记录和全部成果？此操作不可撤销，其他历史任务不受影响。")) return;
@@ -163,19 +189,22 @@ export default function SkillWorkbench({ expertId, taskId, initialGoal = "", mod
     </p>}
     {loaded && !relevant.length && <p className="skill-workbench-note">当前选择尚无满足执行条件的技能，因此不提供文件执行入口。请先核对上方依赖或实现状态；普通聊天不等于技能执行。</p>}
     {loaded && relevant.length > 0 && !available.length && <p className="skill-workbench-note">该类别相关技能目前均未支持执行。不会展示虚假的执行按钮。</p>}
-    {loaded && relevant.length > 0 && <SmartSkillPlanner key={`${taskId}-${expertId}-${refresh}`} expertId={expertId} taskId={taskId} initialGoal={initialGoal} model={model} permission={permission} catalog={relevant} skillScope={allowedSkillIds} onRun={run => { if (removedRuns.current.has(run.id) || (taskId && run.taskId !== taskId)) return; mutations.current++; setRuns(old => [run, ...old.filter(r => r.id !== run.id)]); setFocusId(run.id); }} />}
+    {!executionPlan && loaded && relevant.length > 0 && <SmartSkillPlanner key={`${taskId}-${expertId}-${refresh}`} expertId={expertId} taskId={taskId} initialGoal={initialGoal} model={model} permission={permission} catalog={relevant} skillScope={allowedSkillIds} onRun={run => { if (removedRuns.current.has(run.id) || (taskId && run.taskId !== taskId)) return; mutations.current++; setRuns(old => [run, ...old.filter(r => r.id !== run.id)]); setFocusId(run.id); }} />}
     {available.length > 0 && <form className="skill-runtime-form" onSubmit={e => { e.preventDefault(); void execute(); }}>
-      {autoContent && file && !["slides.create", "document.create"].includes(selected) && (
+      {autoContent && file && skillTextExtension(skill?.accepts) && (
         <div className="skill-auto-content-notice">
-          <strong>✓ AI 已生成内容</strong>
-          <p>内容已自动填充，技能已预选。点击下方按钮即可生成文件。</p>
+          <strong>已按支持格式准备文字输入</strong>
+          <p>请核对文字、来源和适用范围；只有真实执行成功后才会交付文件。</p>
         </div>
       )}
       <label>执行技能<select value={selected} disabled={busy} onChange={e => { setSelected(e.target.value); setFile(null); setConsent(false); setParameters(Object.fromEntries((available.find(s => s.id === e.target.value)?.parameterFields || []).map(f => [f.name, f.defaultValue || ""]))); }}>{available.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}</select></label>
       {!["image.layout", "slides.create", "document.create"].includes(selected) && <label>上传实际材料<input key={`${selected}-${expertId}-${refresh}`} type="file" disabled={busy} accept={skill?.accepts.join(",")} onChange={e => { setFile(e.target.files?.[0] || null); setConsent(false); if(selected === "audio.transcribe-en") setParameters({englishConfirmed:""}); submission.current = null; }} /></label>}
-      {selected === "document.create" && <WordComposer key={`${taskId}-${expertId}-${refresh}`} disabled={busy} onInvalidate={() => { setFile(null); setConsent(false); setParameters({}); submission.current = null; }} onPrepare={prepared => { setFile(prepared); setConsent(false); setParameters({}); submission.current = null; }} />}
-      {selected === "slides.create" && <PresentationComposer key={`${taskId}-${expertId}-${refresh}`} disabled={busy} initialGoal={initialGoal} initialBrief={presentationBrief} onInvalidate={() => { setFile(null); setConsent(false); setParameters({ externalConsent: "" }); submission.current = null; }} onPrepare={prepared => { setFile(prepared); setConsent(false); setParameters({ externalConsent: "" }); submission.current = null; }} />}
+      {selected === "document.create" && executionPlan && <WordTaskDraft plan={executionPlan} materials={initialMaterials} disabled={busy} onInvalidate={() => { setFile(null); setConsent(false); submission.current = null; }} onPrepare={prepared => { setFile(prepared); setConsent(false); setParameters({}); submission.current = null; }} />}
+      {selected === "document.create" && <p className="skill-workbench-note">{file ? `当前排版输入：${file.name}（${file.size}字节），尚未执行；修改正文后请重新准备并确认。` : "可用上方专家内容准备，或填写下方不调用模型的人工成稿表单。"}</p>}
+      {selected === "document.create" && <WordComposer key={`${taskId}-${expertId}-${refresh}`} disabled={busy} initialFile={revisionInput} onInvalidate={() => { setFile(null); setConsent(false); setParameters({}); submission.current = null; }} onPrepare={prepared => { setFile(prepared); setConsent(false); setParameters({}); submission.current = null; }} />}
+      {selected === "slides.create" && <PresentationComposer key={`${taskId}-${expertId}-${refresh}`} disabled={busy} initialGoal={initialGoal} initialBrief={presentationBrief} initialFiles={initialMaterials} initialRequestFile={revisionInput} onInvalidate={() => { setFile(null); setConsent(false); setParameters({ externalConsent: "" }); submission.current = null; }} onPrepare={prepared => { setFile(prepared); setConsent(false); setParameters({ externalConsent: "" }); submission.current = null; }} />}
       {selected === "image.layout" && <><PosterLayoutEditor key={`${taskId}-${expertId}-${refresh}`} disabled={busy} onInvalidate={() => { setFile(null); setConsent(false); submission.current = null; }} onPrepare={prepared => { setFile(prepared); setConsent(false); submission.current = null; }} /><p className="skill-workbench-note">{file ? `当前已准备 ${file.name}（${file.size}字节），尚未上传；请核对后勾选同意并执行。` : "尚未准备画布输入；编辑后点击“将当前画布准备为输入”。"}</p></>}
+      {revisionInput && <p className="skill-workbench-note">已载入原始输入 {revisionInput.name} 并核验哈希。请实际修改下方内容/需求，重新准备后确认生成新版本；不是已经修改了旧文件。</p>}
       <p className="skill-workbench-note">{skill?.limits}</p>
       <p className="skill-workbench-note">{["document.summarize", "slides.create"].includes(selected) ? "此技能会将提取后的完整正文发送至服务端配置的第三方AI模型，模型服务的数据留存/训练政策由服务商决定；文件也会保存在本应用后台。只有选择下方单次正文处理授权并另行同意后台执行后才会发送。需要人工对照原文复核摘要。" : ["pdf.ocr", "pdf.ocr-batch"].includes(selected) ? "PDF OCR任务本地处理；每完成一页就持久化页图、文字和识别证据。服务重启/限时恢复会复用已校验检查点，仅重新处理未完成页；失败/取消后可由你显式继续或重试。每次运行仍有明确时限与资源上限。" : "多数手动技能不调用模型；识别类技能使用所列本地模型。同一材料与参数重复提交会返回原任务；需要新任务或重试失败任务，请重新选择文件并确认。"}</p>
       {skill?.exampleFile && <><p className="skill-workbench-note">{skill.exampleFile.hint}</p><button type="button" onClick={() => { const a = document.createElement("a"); a.href = skill.exampleFile!.path; a.download = skill.exampleFile!.filename; a.click(); }}>{skill.exampleFile.buttonLabel || (skill.id === "table.join" ? "下载双表示例XLSX（不会执行）" : "下载公式示例XLSX（不会执行）")}</button>{skill.exampleFile.licensePath && <a href={skill.exampleFile.licensePath} download>下载示例来源与许可</a>}</>}
@@ -185,12 +214,12 @@ export default function SkillWorkbench({ expertId, taskId, initialGoal = "", mod
       }}>下载输入格式示例（不会执行）</button>}
       {skill?.parameterFields && <div className="skill-poster-fields">
         {skill.parameterFields.map(field => <label key={field.name}>{field.label}{field.choices
-          ? <select disabled={busy} required={field.required} value={parameters[field.name] || field.defaultValue || ""} onChange={e => setParameters(p => ({ ...p, [field.name]: e.target.value }))}>{field.choices.map(choice => <option key={choice.value} value={choice.value}>{choice.label}</option>)}</select>
-          : <input disabled={busy} required={field.required} maxLength={field.maxLength} value={parameters[field.name] || ""} onChange={e => setParameters(p => ({ ...p, [field.name]: e.target.value }))} />}</label>)}
+          ? <select disabled={busy} required={field.required} value={parameters[field.name] || field.defaultValue || ""} onChange={e => { setConsent(false); submission.current = null; setParameters(p => ({ ...p, [field.name]: e.target.value })); }}>{field.choices.map(choice => <option key={choice.value} value={choice.value}>{choice.label}</option>)}</select>
+          : <input disabled={busy} required={field.required} maxLength={field.maxLength} value={parameters[field.name] || ""} onChange={e => { setConsent(false); submission.current = null; setParameters(p => ({ ...p, [field.name]: e.target.value })); }} />}</label>)}
       </div>}
-      {selected === "table.analyze" && <label className="skill-runtime-check"><input type="checkbox" disabled={busy} checked={deduplicate} onChange={e => setDeduplicate(e.target.checked)} />去除所有字段完全相同的重复行（默认保留，记录来源行号）</label>}
+      {selected === "table.analyze" && <label className="skill-runtime-check"><input type="checkbox" disabled={busy} checked={deduplicate} onChange={e => { setConsent(false); submission.current = null; setDeduplicate(e.target.checked); }} />去除所有字段完全相同的重复行（默认保留，记录来源行号）</label>}
       <label className="skill-runtime-check"><input type="checkbox" disabled={busy} checked={consent} onChange={e => setConsent(e.target.checked)} />我同意上传材料至应用后台并执行。这不是“仅浏览器本地”模式；文件和成果将保存在后台，直到我删除此运行。最多保存 100 次运行。</label>
-      <button className="skill-runtime-primary" type="submit" disabled={!consent || !file || !skill || busy}>{busy ? "正在提交…" : "上传并执行技能"}</button>
+      <button className="skill-runtime-primary" type="submit" disabled={!consent || !file || !skill || busy || (executionPlan && !executionPlan.ready)}>{busy ? "正在提交…" : "上传并执行技能"}</button>
     </form>}
     <div className="skill-runtime-history"><h3>我的运行记录</h3><p className="skill-workbench-note">记录按当前服务端身份隔离；切换账号或清除浏览器会话会影响访问，请及时下载重要成果。</p>{loaded && !visibleRuns.length && <p>暂无运行记录。点击执行后才会创建真实任务。</p>}
       {!!visibleRuns.length && <label>选择运行<select aria-label="选择技能运行记录" value={current?.id || ""} onChange={e => setFocusId(e.target.value)}>{visibleRuns.map(r => <option key={r.id} value={r.id}>{r.filename} · {labels[r.status]} · {new Date(r.createdAt).toLocaleString()}</option>)}</select></label>}
@@ -199,7 +228,7 @@ export default function SkillWorkbench({ expertId, taskId, initialGoal = "", mod
         <details><summary>执行证据与来源</summary>{current.plan && <p>已确认方案：{current.plan.id}<br/>任务：{current.plan.goal}<br/>模型建议理由：{current.plan.reason}<br/>用户确认时间：{new Date(current.plan.confirmedAt).toLocaleString()}<br/>方案摘要：<code>{current.plan.approvalDigest}</code></p>}<p>输入 SHA-256：<code>{current.inputHash}</code></p><ol>{current.events.map((e, i) => <li key={i}><time>{new Date(e.at).toLocaleTimeString()}</time> {e.message}</li>)}</ol></details>
         {!!current.artifacts.length && <ul className="skill-artifact-list">{current.artifacts.map(a => <li key={a.id}><div><b>{a.name}</b><small>{Math.ceil(a.size / 1024)} KB · SHA-256 {a.sha256.slice(0, 12)}…</small></div><button onClick={() => void artifact(current, a.id, false)}>下载 {a.name}</button>{["image/svg+xml", "image/png", "image/jpeg", "text/html; charset=utf-8", "application/pdf"].includes(a.mime) && <button onClick={() => void artifact(current, a.id, true)}>预览 {a.name.endsWith("html") ? "页面内容" : (a.mime === "image/svg+xml" ? "图表" : a.name)}</button>}</li>)}</ul>}
         {preview && <div className="skill-artifact-preview"><button onClick={() => setPreview(null)}>关闭预览</button>{preview.kind === "application/pdf" ? <Suspense fallback={<p>正在加载PDF预览…</p>}><PdfPreview url={preview.url} /></Suspense> : preview.kind.startsWith("image/") ? <img src={preview.url} alt={current.skillId === "image.layout" ? "后台实际生成的图层排版" : current.skillId === "infographic.compose" ? "实际生成的信息图" : preview.kind === "image/svg+xml" ? "程序生成的字段概览图" : "实际处理后的图片预览"} /> : <iframe title={preview.kind === "application/pdf" ? "实际文件PDF预览（需人工复核）" : current.skillId === "audio.transcribe-en" ? "英语音频转写核对（须人工复核）" : current.skillId === "document.structure" ? "DOCX正文结构预览（非Word渲染）" : "演示文稿内容预览（非 PowerPoint 截图）"} src={preview.url} sandbox="" />}</div>}
-        <div className="skill-run-actions">{!terminal(current) && <button disabled={busy} onClick={() => void action(current, false)}>取消执行</button>}{["failed", "cancelled"].includes(current.status) && ["pdf.ocr", "pdf.ocr-batch", "slides.create"].includes(current.skillId) && <button disabled={busy} onClick={() => void resume(current)}>{current.skillId === "slides.create" ? "从已保存规划继续（不再调用模型）" : "继续/重试PDF OCR"}</button>}<button disabled={busy} onClick={() => void action(current, true)}>删除运行与文件</button></div>
+        <div className="skill-run-actions">{executionPlan && terminal(current) && current.skillId === selected && <button disabled={busy} type="button" onClick={() => void reviseInput(current)}>载入此版本输入并继续修改</button>}{!terminal(current) && <button disabled={busy} onClick={() => void action(current, false)}>取消执行</button>}{["failed", "cancelled"].includes(current.status) && ["pdf.ocr", "pdf.ocr-batch", "slides.create"].includes(current.skillId) && <button disabled={busy} onClick={() => void resume(current)}>{current.skillId === "slides.create" ? "从已保存规划继续（不再调用模型）" : "继续/重试PDF OCR"}</button>}<button disabled={busy} onClick={() => void action(current, true)}>删除运行与文件</button></div>
       </article>}
     </div>
   </section>;

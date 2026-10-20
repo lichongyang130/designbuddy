@@ -307,11 +307,12 @@ export class SkillService {
         return response({ runs: rows.map(r => JSON.parse(r.record)) });
       }
       if (path === "/api/skill-runs" && request.method === "POST") return await this.createRun(request, owner);
-      const match = path.match(/^\/api\/skill-runs\/([a-f0-9-]+)(?:\/(cancel|resume|artifacts)(?:\/([a-f0-9-]+))?)?$/);
+      const match = path.match(/^\/api\/skill-runs\/([a-f0-9-]+)(?:\/(cancel|resume|artifacts|input)(?:\/([a-f0-9-]+))?)?$/);
       if (!match) return response({ error: "技能接口不存在。" }, 404);
       const row = this.row(match[1], owner); if (!row) return response({ error: "运行记录不存在。" }, 404);
       const record = JSON.parse(row.record) as SkillRun;
       if (request.method === "GET" && !match[2]) return response(record);
+      if (request.method === "GET" && match[2] === "input" && !match[3]) return new Response(Uint8Array.from(row.input).buffer, { headers: { "Content-Type": "application/octet-stream", "Content-Disposition": `attachment; filename*=UTF-8''${encodeURIComponent(record.filename)}`, "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff" } });
       if (request.method === "GET" && match[2] === "artifacts" && match[3]) {
         const artifact = this.db.prepare("SELECT * FROM skill_artifacts WHERE id=? AND run_id=?").get(match[3], record.id) as { meta: string; bytes: Uint8Array } | undefined;
         if (!artifact || record.status !== "succeeded") return response({ error: "成果不存在。" }, 404);

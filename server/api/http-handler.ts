@@ -1,3 +1,5 @@
+import { builtinExecutionExpert } from "../../shared/expertExecution";
+import { ExpertExecutionError, type ExpertExecutionService } from "./expert-execution";
 import type { SkillService } from "../skills/service";
 import { matchTaskExpert } from "./expert-match";
 import { generateDesignProject, type GenerationFile, type GenerationRequest } from "./generation";
@@ -70,6 +72,7 @@ export interface ProjectRepository {
 
 export interface ApiHandlerOptions {
   skills?: SkillService;
+  expertExecution?: ExpertExecutionService;
   authenticate(request: Request): Promise<ApiPrincipal | null>;
   projects: ProjectRepository;
   /** Server controlled read-only share links. */
@@ -352,6 +355,33 @@ export function createApiHandler(options: ApiHandlerOptions): (request: Request)
     if (!principal?.id) return json({ error: "Authentication required." }, 401, options.corsOrigin);
 
     try {
+      if (url.pathname === "/api/expert-bindings" || url.pathname.startsWith("/api/expert-bindings/") || url.pathname === "/api/expert-task-plans" || url.pathname.startsWith("/api/expert-task-plans/")) {
+        const service = options.expertExecution;
+        if (!service) return json({ error: "专家执行服务尚未启用。" }, 503);
+        if (url.pathname === "/api/expert-bindings") {
+          if (request.method === "GET") return json({ bindings: service.bindings(principal.id) });
+          if (request.method === "POST") return json({ binding: service.bind(principal.id, await readJson(request, 16000)) }, 201);
+        }
+        const bindingPath = url.pathname.match(/^\/api\/expert-bindings\/([A-Za-z0-9_-]{8,80})$/);
+        if (bindingPath && request.method === "DELETE") return service.removeBinding(principal.id, bindingPath[1]) ? json({ deleted: true }) : json({ error: "绑定不存在。" }, 404);
+        if (url.pathname === "/api/expert-task-plans") {
+          if (request.method === "POST") return json({ plan: service.create(principal.id, await readJson(request, 24000)) });
+          if (request.method === "GET") {
+            const taskId = url.searchParams.get("taskId");
+            if (!taskId || !/^[A-Za-z0-9_.:-]{1,100}$/.test(taskId)) throw new ExpertExecutionError("需要有效的任务ID。");
+            return json(service.list(principal.id, taskId));
+          }
+        }
+        const path = url.pathname.match(/^\/api\/expert-task-plans\/([a-f0-9-]{36})(?:\/(execute|word-draft))?$/);
+        if (path && !path[2] && request.method === "GET") return json({ plan: service.get(principal.id, path[1]) });
+        if (path && path[2] === "word-draft" && request.method === "DELETE") return json({ deleted: service.removeWordDrafts(principal.id, path[1]) });
+        if (path && path[2] === "word-draft" && request.method === "POST") return json(await service.wordDraft(principal.id, path[1], await readJson(request, 100000)));
+        if (path && path[2] === "execute" && request.method === "POST") {
+          if (!options.skills) return json({ error: "技能服务尚未启用。" }, 503);
+          return await service.execute(principal.id, path[1], request, options.skills, options.workflows);
+        }
+        return json({ error: "不支持的专家任务操作。" }, 405);
+      }
       if (url.pathname === "/api/skill-plans" || url.pathname.startsWith("/api/skill-plans/") || url.pathname === "/api/skill-runs" || url.pathname.startsWith("/api/skill-runs/")) {
         return options.skills ? options.skills.handle(request, principal.id) : json({ error: "技能执行服务尚未启用。" }, 503);
       }
@@ -360,7 +390,10 @@ export function createApiHandler(options: ApiHandlerOptions): (request: Request)
       }
       if (url.pathname === "/api/chat" && request.method === "POST") {
         const body = await readJson(request);
+        const expert = typeof body.expertId === "string" ? options.expertExecution?.expert(principal.id, body.expertId) || builtinExecutionExpert(body.expertId) : undefined;
+        if (expert && body.expertVersion !== undefined && body.expertVersion !== expert.configVersion) return json({ error: "专家配置版本已变化，请核对当前专家后继续；未发送模型。" }, 409);
         const response = await streamTaskChat({
+          expertProfile: expert,
           messages: body.messages as TaskChatRequest["messages"],
           model: typeof body.model === "string" ? body.model : undefined,
           provider: typeof body.provider === "string" ? body.provider : undefined,
@@ -802,7 +835,7 @@ export function createApiHandler(options: ApiHandlerOptions): (request: Request)
         return json({ error: "Method not allowed." }, 405, options.corsOrigin);
       }
 
-      const assetPath = url.pathname.match(/^\/api\/assets\/([A-Za-z0-9_-]{4,64})(?:\/(content|events))?$/);
+      const assetPath = url.pathname.match(/^\/api\/assets\/([A-Za-z0-9_-]{4,64})(?:\/(content|events|download))?$/);
       if (assetPath && options.assets) {
         const asset = options.assets.get(assetPath[1]);
         if (assetPath[2] === "events" && request.method === "GET") {
@@ -814,6 +847,11 @@ export function createApiHandler(options: ApiHandlerOptions): (request: Request)
         const visible = asset.ownerId === principal.id || asset.visibility === "public" || (asset.visibility === "workspace" && peers.includes(asset.ownerId));
         if (!visible) return json({ error: "没有查看这个素材的权限。" }, 403, options.corsOrigin);
         if (!assetPath[2] && request.method === "GET") return json({ asset }, 200, options.corsOrigin);
+        if (assetPath[2] === "download" && request.method === "GET") {
+          const bytes = options.assets.read(asset);
+          if (!bytes) return json({ error: "素材文件已不可用。" }, 404);
+          return new Response(Uint8Array.from(bytes).buffer, { headers: { "Content-Type": asset.mime, "Content-Disposition": `attachment; filename*=UTF-8''${encodeURIComponent(asset.name)}`, "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff" } });
+        }
         if (assetPath[2] === "content" && request.method === "GET") {
           if (!asset.extracted) return json({ error: "这个文件不是文本，服务端没有解析它。" }, 415, options.corsOrigin);
           return json({ assetId: asset.id, name: asset.name, text: asset.excerpt }, 200, options.corsOrigin);
@@ -902,7 +940,7 @@ export function createApiHandler(options: ApiHandlerOptions): (request: Request)
         }
         const workflowRunsPath = url.pathname.match(/^\/api\/workflow-runs$/);
         if (workflowRunsPath && request.method === "GET") {
-          return json({ runs: options.workflows.list(principal.id) }, 200, options.corsOrigin);
+          return json({ runs: options.workflows.list(principal.id, url.searchParams.get("taskId") || undefined) }, 200, options.corsOrigin);
         }
         const workflowRunIdPath = url.pathname.match(/^\/api\/workflow-runs\/([A-Za-z0-9_-]{6,64})$/);
         if (workflowRunIdPath && request.method === "GET") {
@@ -1079,7 +1117,7 @@ export function createApiHandler(options: ApiHandlerOptions): (request: Request)
       return json({ error: "Not found." }, 404, options.corsOrigin);
     } catch (error) {
       const message = error instanceof Error ? error.message : "Request failed.";
-      const status = error instanceof TaskChatValidationError || /required|must be|invalid|too (long|many|large)|unsafe|exceeds/i.test(message) ? 400 : 502;
+      const status = error instanceof ExpertExecutionError ? error.status : error instanceof TaskChatValidationError || /required|must be|invalid|too (long|many|large)|unsafe|exceeds/i.test(message) ? 400 : 502;
       return json({ error: message }, status, options.corsOrigin);
     }
   };

@@ -1,3 +1,4 @@
+import type { ExpertTaskPlan } from "../../../shared/expertExecution";
 import { apiFetch, readJSON } from "../../../apps/web/src/api/client";
 
 /** The kinds of answer a workflow can ask for. */
@@ -70,6 +71,7 @@ export type WorkflowRun = {
   status: "running" | "succeeded" | "failed" | "partial";
   steps: WorkflowStepRun[];
   taskId: string;
+  parentTaskId?: string;
   createdAt: number;
   updatedAt: number;
   error?: string;
@@ -108,12 +110,14 @@ export async function listWorkflows(signal?: AbortSignal): Promise<Workflow[]> {
 export async function startWorkflow(
   id: string,
   inputs: { fields: Record<string, unknown>; files?: Record<string, { assetId: string; name: string }> },
+  context?: { plan: ExpertTaskPlan; requestId: string },
 ): Promise<WorkflowRun> {
   const body = await readJSON<{ run: WorkflowRun }>(
-    await apiFetch(`/workflows/${encodeURIComponent(id)}/runs`, {
+    await apiFetch(context ? `/expert-task-plans/${context.plan.id}/execute` : `/workflows/${encodeURIComponent(id)}/runs`, {
       method: "POST",
-      headers: { Accept: "application/json", "Content-Type": "application/json" },
-      body: JSON.stringify(inputs),
+      headers: { Accept: "application/json", "Content-Type": "application/json", ...(context ? { "X-Expert-Approval": context.plan.approvalDigest, "X-Expert-Request": context.requestId } : {}) },
+      retryOnIdentityChange: false,
+      body: JSON.stringify(context ? { ...inputs, consent: true } : inputs),
     }),
   );
   return body.run;
@@ -128,9 +132,9 @@ export async function fetchWorkflowRun(id: string, signal?: AbortSignal): Promis
 }
 
 /** The runs of this account. */
-export async function listWorkflowRuns(signal?: AbortSignal): Promise<WorkflowRun[]> {
+export async function listWorkflowRuns(signal?: AbortSignal, taskId?: string): Promise<WorkflowRun[]> {
   const body = await readJSON<{ runs?: WorkflowRun[] }>(
-    await apiFetch("/workflow-runs", { signal, headers: { Accept: "application/json" } }),
+    await apiFetch(taskId ? `/workflow-runs?taskId=${encodeURIComponent(taskId)}` : "/workflow-runs", { signal, headers: { Accept: "application/json" } }),
   );
   return Array.isArray(body.runs) ? body.runs : [];
 }

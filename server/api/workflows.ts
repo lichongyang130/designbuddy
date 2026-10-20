@@ -114,6 +114,8 @@ export type WorkflowRun = {
   status: "running" | "succeeded" | "failed" | "partial";
   steps: WorkflowStepRun[];
   taskId: string;
+  /** Conversation this execution belongs to, without overwriting its own task record. */
+  parentTaskId?: string;
   createdAt: number;
   updatedAt: number;
   error?: string;
@@ -1231,7 +1233,7 @@ function unavailableReason(skill: { description: string }): string {
  * ------------------------------------------------------------------ */
 
 export function workflowCatalog(): Array<
-  Workflow & {
+  Omit<Workflow, "steps"> & {
     steps: Array<WorkflowStep & { availability: WorkflowStepAvailability }>;
   }
 > {
@@ -1299,12 +1301,12 @@ export class WorkflowRunStore {
     return row ? (JSON.parse(row.record) as WorkflowRun) : null;
   }
 
-  list(ownerId: string): WorkflowRun[] {
+  list(ownerId: string, taskId?: string): WorkflowRun[] {
     const rows = this.db
       .prepare(
-        "SELECT record FROM workflow_runs WHERE owner_id=? ORDER BY created_at DESC LIMIT 50",
+        "SELECT record FROM workflow_runs WHERE owner_id=? AND (? IS NULL OR json_extract(record,'$.parentTaskId')=?) ORDER BY created_at DESC LIMIT 50",
       )
-      .all(ownerId) as { record: string }[];
+      .all(ownerId, taskId || null, taskId || null) as { record: string }[];
     return rows.map((row) => JSON.parse(row.record) as WorkflowRun);
   }
 }
@@ -1328,8 +1330,8 @@ export class WorkflowEngine {
     private store: WorkflowRunStore = new WorkflowRunStore(),
   ) {}
 
-  list(ownerId: string): WorkflowRun[] {
-    return this.store.list(ownerId);
+  list(ownerId: string, taskId?: string): WorkflowRun[] {
+    return this.store.list(ownerId, taskId);
   }
 
   get(ownerId: string, runId: string): WorkflowRun | null {
@@ -1344,7 +1346,15 @@ export class WorkflowEngine {
     ownerId: string,
     workflowId: string,
     inputs: WorkflowInputs,
+    context?: { taskId: string; runId: string },
   ): Promise<WorkflowRun> {
+    if (context) {
+      const previous = this.store.get(ownerId, context.runId);
+      if (previous) {
+        if (previous.workflowId !== workflowId || previous.parentTaskId !== context.taskId) throw new WorkflowInputError("幂等流程上下文不一致。");
+        return previous;
+      }
+    }
     const workflow = builtinWorkflows().find((item) => item.id === workflowId);
     if (!workflow) throw new WorkflowInputError("没有这条工作流。");
     const { fields, rows, files } = this.readInputs(workflow, inputs);
@@ -1355,7 +1365,8 @@ export class WorkflowEngine {
     }
     const now = Date.now();
     const run: WorkflowRun = {
-      id: randomUUID(),
+      id: context?.runId || randomUUID(),
+      ...(context ? { parentTaskId: context.taskId } : {}),
       ownerId,
       workflowId: workflow.id,
       workflowVersion: workflow.version,
@@ -1377,7 +1388,7 @@ export class WorkflowEngine {
     this.store.save(run);
     this.tasks.saveTask(ownerId, {
       id: run.taskId,
-      projectId: `workflow:${workflow.id}`,
+      projectId: run.parentTaskId || `workflow:${workflow.id}`,
       kind: "skill",
       title: `工作流 · ${workflow.name}`,
       status: "running",
@@ -1574,7 +1585,7 @@ export class WorkflowEngine {
       this.store.save(run);
       this.tasks.saveTask(ownerId, {
         id: run.taskId,
-        projectId: `workflow:${run.workflowId}`,
+        projectId: run.parentTaskId || `workflow:${run.workflowId}`,
         kind: "skill",
         title: `工作流 · ${run.workflowName}`,
         status: run.status === "succeeded" ? "succeeded" : "failed",
@@ -1694,6 +1705,7 @@ export class WorkflowEngine {
       form.set("skillId", step.skill);
       form.set("expertId", step.expertId);
       form.set("consent", "true");
+      if (run.parentTaskId) form.set("taskId", run.parentTaskId);
       const copy = new Uint8Array(bytes.byteLength);
       copy.set(bytes);
       form.set(

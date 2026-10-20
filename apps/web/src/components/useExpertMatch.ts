@@ -1,3 +1,4 @@
+import type { RuntimeSkill } from "../../../../shared/skillRuntime";
 import { useEffect, useMemo, useState } from "react";
 import { apiJSON } from "../api/client";
 import { getAIProviderCredentials } from "../../../../frontend/workspace/AIProviderSettings";
@@ -11,7 +12,7 @@ const consentKey = "designbuddy.expert-match-consent.v1";
 const defaultMethod = ["先确认交付目标、使用对象、已有材料和约束", "按专业职责拆解工作，区分事实、假设和建议", "交付主体结果、依据及待复核事项"];
 const defaultChecks = ["不编造事实、引用、数字和执行结果", "工具与外部服务必须实际接入才能使用", "资料不足只询问必要问题，外部操作遵守原有权限"];
 type Input = { prompt: string; mode: "office" | "code" | "design"; model: string; permission: string; attachments: { name: string; text?: string }[]; selectedExpert: string; enabled: boolean };
-type SkillInfo = { id: string; name: string; accepts: string[] };
+type SkillInfo = { id: string; name: string; accepts: string[]; expertIds: string[] };
 function profileFor(p: ExpertProfile): ExpertProfile {
   return { id: p.id, name: p.name.slice(0, 100), description: p.description.slice(0, 1200), method: p.method.slice(0, 6).map(s => s.slice(0, 400)), checks: p.checks.slice(0, 6).map(s => s.slice(0, 400)) };
 }
@@ -36,8 +37,8 @@ export function useExpertMatch(input: Input) {
   const allowed = profiles.length > 0 && consent && input.enabled && input.permission !== "仅本地" && !input.selectedExpert && !!input.prompt.trim();
   // Fetch skills catalog
   useEffect(() => {
-    apiJSON<{ skills: SkillInfo[] }>("/skill-runtime").then(data => {
-      setSkills(data.skills.map(s => ({ id: s.id, name: s.name, accepts: s.accepts })));
+    apiJSON<{ skills: RuntimeSkill[] }>("/skill-runtime").then(data => {
+      setSkills(data.skills.filter(s => s.status === "ready").map(s => ({ id: s.id, name: s.name, accepts: s.accepts, expertIds: s.expertIds })));
     }).catch(() => {});
   }, []);
   // Render-time key checks make stale responses unusable even before effect cleanup.
@@ -76,7 +77,7 @@ export function useExpertMatch(input: Input) {
   }
   function reset() { setState({ key: "" }); setAnswerState({ base: "", value: "" }); }
   // Use AI-suggested skill from the result, or fall back to keyword matching
-  const skillSuggestion = (result && result.kind !== "clarify" && result.skillSuggestion) ? { ...result.skillSuggestion, name: skills.find(s => s.id === result.skillSuggestion?.skillId)?.name || result.skillSuggestion.skillId, accepts: skills.find(s => s.id === result.skillSuggestion?.skillId)?.accepts || [], hint: result.skillSuggestion.reason } : undefined;
+  const skillSuggestion = (result && result.kind !== "clarify" && result.skillSuggestion && skills.some(s => s.id === result.skillSuggestion?.skillId && (result.kind !== "match" || s.expertIds.includes(result.expertId)))) ? { ...result.skillSuggestion, name: skills.find(s => s.id === result.skillSuggestion?.skillId)?.name || result.skillSuggestion.skillId, accepts: skills.find(s => s.id === result.skillSuggestion?.skillId)?.accepts || [], hint: result.skillSuggestion.reason } : undefined;
   const label = manual ? manual.name : input.permission === "仅本地" ? "仅本地 · 手动选择" : !consent || !profiles.length || !input.prompt.trim() ? "自动匹配专家" : current?.error ? "暂未完成匹配" : result?.kind === "clarify" ? "需要确认需求" : result?.kind === "general" ? "直接处理即可" : suggested ? `推荐：${suggested.name}` : "正在匹配专家…";
   const profile = manual || suggested;
   // Expert understanding may contradict the selected homepage column. Only explicit

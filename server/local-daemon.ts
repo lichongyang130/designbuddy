@@ -1,3 +1,4 @@
+import { ExpertExecutionService } from "./api/expert-execution";
 import { SkillService } from "./skills/service";
 import { createServer } from "node:http";
 import { Readable } from "node:stream";
@@ -41,6 +42,7 @@ function trustedToken(request: Request) {
   return a.length === b.length && timingSafeEqual(a, b);
 }
 const skills = new SkillService();
+const expertExecution = new ExpertExecutionService();
 // Tasks, schedules and notifications live on the server so a refresh, another
 // browser or another device keeps the history.
 const tasks = new TaskBackend();
@@ -76,6 +78,7 @@ const profilePaths = ["/api/profile"];
 const pluginPaths = ["/api/plugins"];
 const api = createApiHandler({
   skills,
+  expertExecution,
   projects,
   collaborationStore,
   memberships,
@@ -332,6 +335,7 @@ for (const signal of ["SIGTERM", "SIGINT"] as const)
   process.on(signal, () => {
     server.close(() => {
       workspace.close();
+      expertExecution.close();
       process.exit(0);
     });
     setTimeout(() => process.exit(0), 3000).unref();

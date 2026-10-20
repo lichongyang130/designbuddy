@@ -55,7 +55,7 @@ export function TaskThinkingProcess({ steps, isStreaming }: { steps: ThinkingSte
         <span className={expanded ? "thinking-toggle-icon is-open" : "thinking-toggle-icon"}>
           <HomeIcon name="chevron" size={12} />
         </span>
-        <span>思考过程 ({steps.length} 步)</span>
+        <span>执行记录 ({steps.length} 步)</span>
         {isStreaming && <span className="thinking-streaming">进行中...</span>}
       </button>
       

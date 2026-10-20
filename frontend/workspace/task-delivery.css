@@ -1,0 +1,139 @@
+.task-delivery {
+  padding: 20px 0;
+  max-width: 920px;
+  min-width: 0;
+  color: var(--text-primary, #252b31);
+}
+.delivery-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: #52766e;
+}
+.task-delivery h2 {
+  font-size: 25px;
+  margin: 8px 0 10px;
+}
+.task-delivery p {
+  line-height: 1.7;
+  font-size: 13px;
+}
+.delivery-selectors {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 14px;
+  margin: 22px 0;
+}
+.delivery-selectors label {
+  display: grid;
+  gap: 7px;
+  font-size: 12px;
+}
+.delivery-selectors select {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid #d5ddd8;
+  background: var(--surface, #fff);
+  color: inherit;
+  padding: 10px;
+  border-radius: 7px;
+}
+.delivery-plan {
+  border: 1px solid #ccdcd3;
+  border-radius: 12px;
+  padding: 20px;
+  background: var(--surface, #fbfcfa);
+}
+.delivery-plan > div:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
+}
+.delivery-plan > div > span {
+  font-size: 11px;
+  color: #4a655b;
+}
+.delivery-plan ol {
+  padding-left: 22px;
+  display: grid;
+  gap: 14px;
+}
+.delivery-plan li small,
+.delivery-versions small {
+  display: block;
+  overflow-wrap: anywhere;
+  font-size: 11px;
+  color: #61716d;
+  margin: 4px 0;
+}
+.delivery-plan li span {
+  font-size: 11px;
+  color: #6b736f;
+}
+.delivery-plan details {
+  margin-top: 20px;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.delivery-plan summary,
+.delivery-versions summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.delivery-plan h3 {
+  font-size: 13px;
+}
+.delivery-error {
+  background: var(--surface, #fff6ef);
+  border: 1px solid #e8d1b9;
+  border-radius: 8px;
+  padding: 14px;
+  margin: 15px 0;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.delivery-error button {
+  padding: 8px 10px;
+  border: 1px solid #c9ba9f;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  margin: 5px 8px 0 0;
+  color: inherit;
+}
+.delivery-note {
+  color: #65726b;
+}
+.delivery-versions {
+  border-top: 1px solid #dbe2dc;
+  padding-top: 18px;
+  margin: 20px 0;
+  font-size: 12px;
+}
+.delivery-versions li {
+  margin: 12px 0;
+  overflow-wrap: anywhere;
+}
+.task-delivery .wf-embedded {
+  background: transparent;
+}
+.task-delivery .wf-content {
+  padding: 0;
+}
+.task-delivery .wf-cards {
+  display: none;
+}
+@media (max-width: 680px) {
+  .task-delivery {
+    padding: 12px 0;
+  }
+  .delivery-selectors {
+    grid-template-columns: 1fr;
+  }
+  .delivery-plan {
+    padding: 14px;
+  }
+  .task-delivery h2 {
+    font-size: 22px;
+  }
+}

@@ -9,10 +9,12 @@ import {
 import "./word-composer.css";
 export default function WordComposer({
   disabled,
+  initialFile,
   onInvalidate,
   onPrepare,
 }: {
   disabled: boolean;
+  initialFile?: File;
   onInvalidate: () => void;
   onPrepare: (file: File) => void;
 }) {
@@ -30,7 +32,11 @@ export default function WordComposer({
   const [imported, setImported] = useState<File | null>(null),
     [message, setMessage] = useState(""),
     [error, setError] = useState("");
+  const [jsonText, setJsonText] = useState<string | null>(null);
   const generation = useRef(0);
+  useEffect(() => {
+    if (initialFile) change(() => { setMode("json"); setImported(initialFile); setJsonText(null); });
+  }, [initialFile]);
   useEffect(
     () => () => {
       generation.current++;
@@ -47,7 +53,7 @@ export default function WordComposer({
   function example() {
     change(() => {
       const d = wordExample(type);
-      setMode("json");
+      setMode("json"); setJsonText(null);
       setImported(
         new File([JSON.stringify(d, null, 2)], "word-example.json", {
           type: "application/json",
@@ -63,12 +69,12 @@ export default function WordComposer({
     try {
       let file: File;
       if (mode === "json") {
-        if (!imported || !imported.size || imported.size > 2_000_000)
+        if (jsonText === null && (!imported || !imported.size || imported.size > 2_000_000))
           throw Error("请选择≤2MB的Word结构化JSON稿。");
-        const data = JSON.parse(await imported.text());
+        const data = JSON.parse(jsonText !== null ? jsonText : await imported!.text());
         if (data.schemaVersion !== 1 || !Array.isArray(data.blocks))
           throw Error("文件不是Word V1结构化稿；完整校验在后台执行。");
-        file = imported;
+        file = jsonText !== null ? new File([jsonText], "word-revised.json", { type: "application/json" }) : imported!;
       } else {
         if (!title.trim() || !source.trim() || !locator.trim())
           throw Error(
@@ -298,10 +304,16 @@ export default function WordComposer({
               type="file"
               accept=".json"
               onChange={(e) =>
-                change(() => setImported(e.target.files?.[0] || null))
+                change(() => { setImported(e.target.files?.[0] || null); setJsonText(null); })
               }
             />
           </label>
+          {imported && jsonText === null && <button type="button" onClick={async () => {
+            const version = ++generation.current;
+            const raw = await imported.text();
+            if (version === generation.current) change(() => setJsonText(raw));
+          }}>编辑已载入的实际结构化稿</button>}
+          {jsonText !== null && <label>实际Word结构化内容<textarea aria-label="实际Word结构化内容" rows={16} value={jsonText} onChange={e => change(() => setJsonText(e.target.value))} /></label>}
           <p>
             {imported
               ? `已选择 ${imported.name}；不覆盖导入文件内的文档类型和内容。`

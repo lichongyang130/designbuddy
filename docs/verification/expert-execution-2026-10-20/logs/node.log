@@ -1,0 +1,860 @@
+TAP version 13
+# (node:69001) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: an uploaded text file is parsed on the server and stays with its owner
+ok 1 - an uploaded text file is parsed on the server and stays with its owner
+  ---
+  duration_ms: 56.907983
+  type: 'test'
+  ...
+# Subtest: a binary file is stored but never invented into text
+ok 2 - a binary file is stored but never invented into text
+  ---
+  duration_ms: 8.932953
+  type: 'test'
+  ...
+# Subtest: the visibility of an asset decides who may see it
+ok 3 - the visibility of an asset decides who may see it
+  ---
+  duration_ms: 13.96979
+  type: 'test'
+  ...
+# Subtest: the library enforces real limits instead of storing everything
+ok 4 - the library enforces real limits instead of storing everything
+  ---
+  duration_ms: 12.687466
+  type: 'test'
+  ...
+# Subtest: the owner can delete an asset and every change is recorded
+ok 5 - the owner can delete an asset and every change is recorded
+  ---
+  duration_ms: 10.20661
+  type: 'test'
+  ...
+# (node:69013) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: chat route requires authentication before contacting the provider
+ok 6 - chat route requires authentication before contacting the provider
+  ---
+  duration_ms: 29.977911
+  type: 'test'
+  ...
+# Subtest: authenticated chat relays SSE with server settings and the conversation history
+ok 7 - authenticated chat relays SSE with server settings and the conversation history
+  ---
+  duration_ms: 16.781547
+  type: 'test'
+  ...
+# Subtest: BYOK selects a fixed endpoint, never a client-supplied base URL
+ok 8 - BYOK selects a fixed endpoint, never a client-supplied base URL
+  ---
+  duration_ms: 7.187648
+  type: 'test'
+  ...
+# Subtest: invalid roles and oversized histories are rejected without provider calls
+ok 9 - invalid roles and oversized histories are rejected without provider calls
+  ---
+  duration_ms: 7.461299
+  type: 'test'
+  ...
+# Subtest: missing configuration and provider errors do not return fake replies or leak provider bodies
+ok 10 - missing configuration and provider errors do not return fake replies or leak provider bodies
+  ---
+  duration_ms: 2.319617
+  type: 'test'
+  ...
+# Subtest: client cancellation reaches upstream fetch
+ok 11 - client cancellation reaches upstream fetch
+  ---
+  duration_ms: 0.864807
+  type: 'test'
+  ...
+# Subtest: the streamed chat records the usage the provider reported
+ok 12 - the streamed chat records the usage the provider reported
+  ---
+  duration_ms: 2.120613
+  type: 'test'
+  ...
+# Subtest: a stream without usage data is recorded as unreported, never estimated
+ok 13 - a stream without usage data is recorded as unreported, never estimated
+  ---
+  duration_ms: 1.572309
+  type: 'test'
+  ...
+# (node:69025) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: conservative delivery routing covers eight outcomes but never turns a consultation into fake production
+ok 14 - conservative delivery routing covers eight outcomes but never turns a consultation into fake production
+  ---
+  duration_ms: 2.392619
+  type: 'test'
+  ...
+# Subtest: server creates eight versioned routes; reload reuses plans; no tool/AI run is created by planning
+ok 15 - server creates eight versioned routes; reload reuses plans; no tool/AI run is created by planning
+  ---
+  duration_ms: 211.424603
+  type: 'test'
+  ...
+# Subtest: unknown IDs, incompatible locked experts, local-only and invented executors are rejected
+ok 16 - unknown IDs, incompatible locked experts, local-only and invented executors are rejected
+  ---
+  duration_ms: 29.051629
+  type: 'test'
+  ...
+# Subtest: custom experts bind only existing templates, remain owner scoped and invalidate old approvals after configuration changes
+ok 17 - custom experts bind only existing templates, remain owner scoped and invalidate old approvals after configuration changes
+  ---
+  duration_ms: 29.663942
+  type: 'test'
+  ...
+# Subtest: approval, actual consent, exact route/task and ownership are enforced before dispatch
+ok 18 - approval, actual consent, exact route/task and ownership are enforced before dispatch
+  ---
+  duration_ms: 42.571121
+  type: 'test'
+  ...
+# Subtest: real skill execution creates artifacts, duplicate submissions reuse the run, revisions retain actual parent/hash evidence
+ok 19 - real skill execution creates artifacts, duplicate submissions reuse the run, revisions retain actual parent/hash evidence
+  ---
+  duration_ms: 1772.051746
+  type: 'test'
+  ...
+# Subtest: real marketing workflow is delegated, idempotent and scoped to its conversation with actual PNG/WebP outputs
+ok 20 - real marketing workflow is delegated, idempotent and scoped to its conversation with actual PNG/WebP outputs
+  ---
+  duration_ms: 2846.86351
+  type: 'test'
+  ...
+# Subtest: Word route runs the native source-bound renderer and returns real DOCX/PDF, not a Markdown substitute
+ok 21 - Word route runs the native source-bound renderer and returns real DOCX/PDF, not a Markdown substitute
+  ---
+  duration_ms: 9628.538817
+  type: 'test'
+  ...
+# Subtest: missing PPT configuration is a real blocker and never silently falls back to slides.compose
+ok 22 - missing PPT configuration is a real blocker and never silently falls back to slides.compose
+  ---
+  duration_ms: 27.733589
+  type: 'test'
+  ...
+# Subtest: Word drafting is explicitly authorized, source-bound, bounded to one model call, cached and schema validated
+ok 23 - Word drafting is explicitly authorized, source-bound, bounded to one model call, cached and schema validated
+  ---
+  duration_ms: 32.047598
+  type: 'test'
+  ...
+# Subtest: asset byte download preserves exact source bytes and denies another owner
+ok 24 - asset byte download preserves exact source bytes and denies another owner
+  ---
+  duration_ms: 24.491848
+  type: 'test'
+  ...
+# Subtest: original skill input is byte-exact, no-store, owner-protected and disappears with its run
+ok 25 - original skill input is byte-exact, no-store, owner-protected and disappears with its run
+  ---
+  duration_ms: 836.491988
+  type: 'test'
+  ...
+# Subtest: deleting Word drafts cannot reset daily model attempts or reuse a deleted paid request; owner and plan isolation hold
+ok 26 - deleting Word drafts cannot reset daily model attempts or reuse a deleted paid request; owner and plan isolation hold
+  ---
+  duration_ms: 90.249204
+  type: 'test'
+  ...
+# Subtest: Word draft storage ceiling blocks before a model call and deleting a plan's drafts releases storage only
+ok 27 - Word draft storage ceiling blocks before a model call and deleting a plan's drafts releases storage only
+  ---
+  duration_ms: 84.168816
+  type: 'test'
+  ...
+# Subtest: expert-owned brand delivery dispatches actual registered steps and preserves pending human acceptance
+ok 28 - expert-owned brand delivery dispatches actual registered steps and preserves pending human acceptance
+  ---
+  duration_ms: 3649.042238
+  type: 'test'
+  ...
+# Subtest: expert-owned web delivery dispatches actual registered steps and preserves pending human acceptance
+ok 29 - expert-owned web delivery dispatches actual registered steps and preserves pending human acceptance
+  ---
+  duration_ms: 4450.104221
+  type: 'test'
+  ...
+# Subtest: expert-owned projects delivery dispatches actual registered steps and preserves pending human acceptance
+ok 30 - expert-owned projects delivery dispatches actual registered steps and preserves pending human acceptance
+  ---
+  duration_ms: 2043.205481
+  type: 'test'
+  ...
+# Subtest: quality expert audits actual HTML and returns a real report without claiming certification
+ok 31 - quality expert audits actual HTML and returns a real report without claiming certification
+  ---
+  duration_ms: 739.753154
+  type: 'test'
+  ...
+# (node:69167) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: authentication, consent, local-only, input/profile/model limits prevent provider calls
+ok 32 - authentication, consent, local-only, input/profile/model limits prevent provider calls
+  ---
+  duration_ms: 182.96029
+  type: 'test'
+  ...
+# Subtest: model classification receives deliverable context and candidate contracts, returns one validated expert
+ok 33 - model classification receives deliverable context and candidate contracts, returns one validated expert
+  ---
+  duration_ms: 4.231165
+  type: 'test'
+  ...
+# Subtest: general and one-question responses work; malformed or out-of-catalog results fail closed
+ok 34 - general and one-question responses work; malformed or out-of-catalog results fail closed
+  ---
+  duration_ms: 20.898916
+  type: 'test'
+  ...
+# Subtest: confirmed answers are passed and identical repeated questions are rejected
+ok 35 - confirmed answers are passed and identical repeated questions are rejected
+  ---
+  duration_ms: 2.212533
+  type: 'test'
+  ...
+# Subtest: BYOK uses fixed endpoints; missing config and errors do not fabricate matches or leak secrets
+ok 36 - BYOK uses fixed endpoints; missing config and errors do not fabricate matches or leak secrets
+  ---
+  duration_ms: 6.461122
+  type: 'test'
+  ...
+# Subtest: cancellation reaches upstream and oversized responses are rejected
+ok 37 - cancellation reaches upstream and oversized responses are rejected
+  ---
+  duration_ms: 2.811927
+  type: 'test'
+  ...
+# Subtest: execution contracts contain actual method/checks and fallback is only an explicitly labeled suggestion
+ok 38 - execution contracts contain actual method/checks and fallback is only an explicitly labeled suggestion
+  ---
+  duration_ms: 0.661512
+  type: 'test'
+  ...
+# (node:69179) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: 8 outcomes own all 49 executor IDs exactly once, without creating executors
+ok 39 - 8 outcomes own all 49 executor IDs exactly once, without creating executors
+  ---
+  duration_ms: 4.319781
+  type: 'test'
+  ...
+# Subtest: old favorites map without duplicates; malformed input cannot grant a product
+ok 40 - old favorites map without duplicates; malformed input cannot grant a product
+  ---
+  duration_ms: 0.696051
+  type: 'test'
+  ...
+# Subtest: new chains retain old recipe versions and wire declared artifacts to registered scopes
+ok 41 - new chains retain old recipe versions and wire declared artifacts to registered scopes
+  ---
+  duration_ms: 0.581261
+  type: 'test'
+  ...
+# Subtest: static gates fail closed; execution success, missing reports or syntax errors cannot pass
+ok 42 - static gates fail closed; execution success, missing reports or syntax errors cannot pass
+  ---
+  duration_ms: 0.608754
+  type: 'test'
+  ...
+# Subtest: project gate requires actual complete coverage, not a generic execution success
+ok 43 - project gate requires actual complete coverage, not a generic execution success
+  ---
+  duration_ms: 0.274031
+  type: 'test'
+  ...
+# Subtest: all 244 method references have exactly one outcome owner but grant no executor or commercial approval
+ok 44 - all 244 method references have exactly one outcome owner but grant no executor or commercial approval
+  ---
+  duration_ms: 4.033094
+  type: 'test'
+  ...
+# Subtest: HTML audit handles actual embedded binary separately without silently truncating document structure
+ok 45 - HTML audit handles actual embedded binary separately without silently truncating document structure
+  ---
+  duration_ms: 42.172144
+  type: 'test'
+  ...
+# (node:69190) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: the catalogue lists real recipes and says which steps cannot run here
+ok 46 - the catalogue lists real recipes and says which steps cannot run here
+  ---
+  duration_ms: 153.299131
+  type: 'test'
+  ...
+# Subtest: a missing answer is refused before any step runs
+ok 47 - a missing answer is refused before any step runs
+  ---
+  duration_ms: 120.272842
+  type: 'test'
+  ...
+# Subtest: a form driven run really executes the skill and returns its artifacts
+ok 48 - a form driven run really executes the skill and returns its artifacts
+  ---
+  duration_ms: 1747.733426
+  type: 'test'
+  ...
+# Subtest: the FAQ run produces a searchable page and an offline package
+ok 49 - the FAQ run produces a searchable page and an offline package
+  ---
+  duration_ms: 1327.137779
+  type: 'test'
+  ...
+# Subtest: a table run reads the file from the asset library and produces the workbook
+ok 50 - a table run reads the file from the asset library and produces the workbook
+  ---
+  duration_ms: 1327.227222
+  type: 'test'
+  ...
+# Subtest: a file that belongs to somebody else is refused with a clear reason
+ok 51 - a file that belongs to somebody else is refused with a clear reason
+  ---
+  duration_ms: 124.832504
+  type: 'test'
+  ...
+# Subtest: a step that needs credentials says what is missing instead of faking a result
+ok 52 - a step that needs credentials says what is missing instead of faking a result
+  ---
+  duration_ms: 1724.45319
+  type: 'test'
+  ...
+# Subtest: a step that needs a single authorisation is skipped and says so
+ok 53 - a step that needs a single authorisation is skipped and says so
+  ---
+  duration_ms: 1726.847626
+  type: 'test'
+  ...
+# Subtest: a failed step can be retried and the reason comes from the real run
+ok 54 - a failed step can be retried and the reason comes from the real run
+  ---
+  duration_ms: 2529.53786
+  type: 'test'
+  ...
+# Subtest: one person cannot read or retry another person's run
+ok 55 - one person cannot read or retry another person's run
+  ---
+  duration_ms: 1324.195043
+  type: 'test'
+  ...
+# Subtest: the http api starts, reads and retries workflow runs
+ok 56 - the http api starts, reads and retries workflow runs
+  ---
+  duration_ms: 2540.547554
+  type: 'test'
+  ...
+# Subtest: the landing page and the social card really build their files
+ok 57 - the landing page and the social card really build their files
+  ---
+  duration_ms: 2932.503616
+  type: 'test'
+  ...
+# Subtest: merged web delivery really passes generated HTML CSS and JS to independent static gates
+ok 58 - merged web delivery really passes generated HTML CSS and JS to independent static gates
+  ---
+  duration_ms: 7343.3579
+  type: 'test'
+  ...
+# Subtest: brand delivery uses real form data and real generated CSS and HTML, not incompatible token JSON
+ok 59 - brand delivery uses real form data and real generated CSS and HTML, not incompatible token JSON
+  ---
+  duration_ms: 3325.939698
+  type: 'test'
+  ...
+# Subtest: marketing delivery uses actual uploaded pixels and text and hands its portrait PNG to the WebP executor
+ok 60 - marketing delivery uses actual uploaded pixels and text and hands its portrait PNG to the WebP executor
+  ---
+  duration_ms: 2937.204644
+  type: 'test'
+  ...
+# Subtest: delivery rejects oversized fields or rows before running, without silently dropping customer material
+ok 61 - delivery rejects oversized fields or rows before running, without silently dropping customer material
+  ---
+  duration_ms: 120.418208
+  type: 'test'
+  ...
+# Subtest: project delivery builds traceable requirement and acceptance IDs from actual rows without inventing people
+ok 62 - project delivery builds traceable requirement and acceptance IDs from actual rows without inventing people
+  ---
+  duration_ms: 2532.475224
+  type: 'test'
+  ...
+# Subtest: a real static finding fails the merged gate but preserves diagnostic downloads (controlled fault injection)
+ok 63 - a real static finding fails the merged gate but preserves diagnostic downloads (controlled fault injection)
+  ---
+  duration_ms: 3727.334594
+  type: 'test'
+  ...
+# (node:69435) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: real Office pipeline: business-report/consulting -> editable PPTX, Chinese PDF, all pages and honest quality
+ok 64 - real Office pipeline: business-report/consulting -> editable PPTX, Chinese PDF, all pages and honest quality
+  ---
+  duration_ms: 10852.051861
+  type: 'test'
+  ...
+# Subtest: real Office pipeline: pitch-deck/corporate -> editable PPTX, Chinese PDF, all pages and honest quality
+ok 65 - real Office pipeline: pitch-deck/corporate -> editable PPTX, Chinese PDF, all pages and honest quality
+  ---
+  duration_ms: 10277.645056
+  type: 'test'
+  ...
+# Subtest: real Office pipeline: data-analysis/technology -> editable PPTX, Chinese PDF, all pages and honest quality
+ok 66 - real Office pipeline: data-analysis/technology -> editable PPTX, Chinese PDF, all pages and honest quality
+  ---
+  duration_ms: 10253.77658
+  type: 'test'
+  ...
+# Subtest: one schema repair is bounded; two bad responses produce no fake deck; provider failures do not silently retry
+ok 67 - one schema repair is bounded; two bad responses produce no fake deck; provider failures do not silently retry
+  ---
+  duration_ms: 11.333425
+  type: 'test'
+  ...
+# Subtest: real worker checkpoint survives process interruption; no second AI call, atomic owner/task-scoped artifacts, quotas and deletion
+ok 68 - real worker checkpoint survives process interruption; no second AI call, atomic owner/task-scoped artifacts, quotas and deletion
+  ---
+  duration_ms: 12485.207088
+  type: 'test'
+  ...
+# Subtest: cancellation before a saved plan cannot re-send content through resume; missing consent/local-only reject before AI
+ok 69 - cancellation before a saved plan cannot re-send content through resume; missing consent/local-only reject before AI
+  ---
+  duration_ms: 10.907967
+  type: 'test'
+  ...
+# Subtest: 25-page upper-bound stress deck renders all physical pages under the scoped budget without claiming narrative quality
+ok 70 - 25-page upper-bound stress deck renders all physical pages under the scoped budget without claiming narrative quality
+  ---
+  duration_ms: 13828.948561
+  type: 'test'
+  ...
+# Subtest: large presentation upload is scoped: five 2MB materials accepted only by its envelope route; generic skills stay at 2MB
+ok 71 - large presentation upload is scoped: five 2MB materials accepted only by its envelope route; generic skills stay at 2MB
+  ---
+  duration_ms: 376.151481
+  type: 'test'
+  ...
+# Subtest: presentation request whitelists scenario/theme/count, rejects unknown provider config and arbitrary files
+ok 72 - presentation request whitelists scenario/theme/count, rejects unknown provider config and arbitrary files
+  ---
+  duration_ms: 8.680588
+  type: 'test'
+  ...
+# Subtest: the scoped envelope really accepts five 2MB materials without regex recursion, generic body limits unchanged
+ok 73 - the scoped envelope really accepts five 2MB materials without regex recursion, generic body limits unchanged
+  ---
+  duration_ms: 406.781017
+  type: 'test'
+  ...
+# Subtest: source extraction retains exact paragraphs, records, hashes and actual values without silent truncation
+ok 74 - source extraction retains exact paragraphs, records, hashes and actual values without silent truncation
+  ---
+  duration_ms: 7.928052
+  type: 'test'
+  ...
+# Subtest: DOCX source is actually read, external links/revisions are not treated as trustworthy content
+ok 75 - DOCX source is actually read, external links/revisions are not treated as trustworthy content
+  ---
+  duration_ms: 104.739324
+  type: 'test'
+  ...
+# Subtest: all XLSX sheets are read; hidden, merged, formula, hyperlink and oversized data sources fail closed
+ok 76 - all XLSX sheets are read; hidden, merged, formula, hyperlink and oversized data sources fail closed
+  ---
+  duration_ms: 222.001597
+  type: 'test'
+  ...
+# Subtest: CSV reading never hides extra rows, ragged columns, duplicate headers or malformed UTF-8
+ok 77 - CSV reading never hides extra rows, ragged columns, duplicate headers or malformed UTF-8
+  ---
+  duration_ms: 3.979475
+  type: 'test'
+  ...
+# Subtest: plans get stable slide IDs and deterministic chart/table/metric values from original cells
+ok 78 - plans get stable slide IDs and deterministic chart/table/metric values from original cells
+  ---
+  duration_ms: 6.004152
+  type: 'test'
+  ...
+# Subtest: fabricated chart values, unknown refs, injected code, invalid bindings and fake quotations are rejected
+ok 79 - fabricated chart values, unknown refs, injected code, invalid bindings and fake quotations are rejected
+  ---
+  duration_ms: 2.717466
+  type: 'test'
+  ...
+# Subtest: chart numeric parser does not infer percentages, leading zeros or cached formula values
+ok 80 - chart numeric parser does not infer percentages, leading zeros or cached formula values
+  ---
+  duration_ms: 1.859895
+  type: 'test'
+  ...
+# Subtest: checkpoint rejects wrong source hash, version, OCR-shaped data and oversized/mutated metadata
+ok 81 - checkpoint rejects wrong source hash, version, OCR-shaped data and oversized/mutated metadata
+  ---
+  duration_ms: 1.160265
+  type: 'test'
+  ...
+# Subtest: quality gate detects bounds, density, missing glyphs, overlaps and failed/missing-font render evidence
+ok 82 - quality gate detects bounds, density, missing glyphs, overlaps and failed/missing-font render evidence
+  ---
+  duration_ms: 131.348683
+  type: 'test'
+  ...
+# Subtest: new permission and option contracts require both subprocess and per-run external-AI consent
+ok 83 - new permission and option contracts require both subprocess and per-run external-AI consent
+  ---
+  duration_ms: 1.262564
+  type: 'test'
+  ...
+# Subtest: unconfigured model is visibly unavailable and direct execution never falls back to embedded credentials/templates
+ok 84 - unconfigured model is visibly unavailable and direct execution never falls back to embedded credentials/templates
+  ---
+  duration_ms: 162.772732
+  type: 'test'
+  ...
+# Subtest: no owner/no explicit consent never invokes a planner
+ok 85 - no owner/no explicit consent never invokes a planner
+  ---
+  duration_ms: 0.526973
+  type: 'test'
+  ...
+# Subtest: compiler emits native editable tables/charts and captures fixed-font layout instead of shrinking
+ok 86 - compiler emits native editable tables/charts and captures fixed-font layout instead of shrinking
+  ---
+  duration_ms: 157.20263
+  type: 'test'
+  ...
+# Subtest: native chart precision and label formatting preserve decimals instead of silently rounding to integers
+ok 87 - native chart precision and label formatting preserve decimals instead of silently rounding to integers
+  ---
+  duration_ms: 19.937032
+  type: 'test'
+  ...
+# Subtest: failed raster export remains a blocked downloadable draft with an explicit failure receipt, not a visual pass
+ok 88 - failed raster export remains a blocked downloadable draft with an explicit failure receipt, not a visual pass
+  ---
+  duration_ms: 51.71086
+  type: 'test'
+  ...
+# Subtest: server-only provider adapter never leaks an OpenAI key to the legacy fallback and bounds provider response size
+ok 89 - server-only provider adapter never leaks an OpenAI key to the legacy fallback and bounds provider response size
+  ---
+  duration_ms: 33.637697
+  type: 'test'
+  ...
+# (node:71627) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: real worker CSV -> checked XLSX, JSON, SVG and receipt; owner-only list/download/delete
+ok 90 - real worker CSV -> checked XLSX, JSON, SVG and receipt; owner-only list/download/delete
+  ---
+  duration_ms: 1060.116436
+  type: 'test'
+  ...
+# Subtest: DOCX retains actual paragraphs, can be read again, and does not claim an AI summary
+ok 91 - DOCX retains actual paragraphs, can be read again, and does not claim an AI summary
+  ---
+  duration_ms: 2221.789637
+  type: 'test'
+  ...
+# Subtest: PPTX contains actual editable slides and escaped content preview with provenance
+ok 92 - PPTX contains actual editable slides and escaped content preview with provenance
+  ---
+  duration_ms: 4850.246164
+  type: 'test'
+  ...
+# Subtest: registry rejects unbound/unavailable skills, wrong formats and missing upload consent
+ok 93 - registry rejects unbound/unavailable skills, wrong formats and missing upload consent
+  ---
+  duration_ms: 15.918971
+  type: 'test'
+  ...
+# Subtest: malformed files, duplicate headers and formulas fail honestly without artifacts
+ok 94 - malformed files, duplicate headers and formulas fail honestly without artifacts
+  ---
+  duration_ms: 3067.722368
+  type: 'test'
+  ...
+# Subtest: XLSX reads real first sheet, preserves string identifiers and does not interpret formula-looking CSV
+ok 95 - XLSX reads real first sheet, preserves string identifiers and does not interpret formula-looking CSV
+  ---
+  duration_ms: 71.136319
+  type: 'test'
+  ...
+# Subtest: cancel queued work, deadline failure and restart persistence never report fake success
+ok 96 - cancel queued work, deadline failure and restart persistence never report fake success
+  ---
+  duration_ms: 43.78806
+  type: 'test'
+  ...
+# Subtest: unsafe XML entities, archive paths, malformed UTF8 and binary disguises are rejected
+ok 97 - unsafe XML entities, archive paths, malformed UTF8 and binary disguises are rejected
+  ---
+  duration_ms: 5.79481
+  type: 'test'
+  ...
+# Subtest: public API exposes only a read-only catalogue and never runs skills or serves files without an authenticated principal
+ok 98 - public API exposes only a read-only catalogue and never runs skills or serves files without an authenticated principal
+  ---
+  duration_ms: 7.330008
+  type: 'test'
+  ...
+# Subtest: decimal arithmetic is computed rather than inferred and unsafe numeric formats remain text
+ok 99 - decimal arithmetic is computed rather than inferred and unsafe numeric formats remain text
+  ---
+  duration_ms: 17.330907
+  type: 'test'
+  ...
+# Subtest: running cancellation stops the worker and successful runs survive reopening the database
+ok 100 - running cancellation stops the worker and successful runs survive reopening the database
+  ---
+  duration_ms: 901.017026
+  type: 'test'
+  ...
+# Subtest: non-isolated build remains registered but HTTP execution and historical queued dispatch are blocked
+ok 101 - non-isolated build remains registered but HTTP execution and historical queued dispatch are blocked
+  ---
+  duration_ms: 5.183318
+  type: 'test'
+  ...
+# (node:72315) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: the catalogue declares the tool permissions every skill really uses
+ok 102 - the catalogue declares the tool permissions every skill really uses
+  ---
+  duration_ms: 147.465164
+  type: 'test'
+  ...
+# Subtest: the runtime endpoint publishes the permission set with the catalogue
+ok 103 - the runtime endpoint publishes the permission set with the catalogue
+  ---
+  duration_ms: 22.587585
+  type: 'test'
+  ...
+# Subtest: a run keeps the skill version and the granted permissions in its governance record
+ok 104 - a run keeps the skill version and the granted permissions in its governance record
+  ---
+  duration_ms: 13.803149
+  type: 'test'
+  ...
+# Subtest: a skill that hands content to a third party is refused without a single-run consent
+ok 105 - a skill that hands content to a third party is refused without a single-run consent
+  ---
+  duration_ms: 6.125208
+  type: 'test'
+  ...
+# (node:72386) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: stub proposal does not execute; explicit hash-bound approval runs REAL worker once with checked artifacts and receipt
+ok 106 - stub proposal does not execute; explicit hash-bound approval runs REAL worker once with checked artifacts and receipt
+  ---
+  duration_ms: 1039.338062
+  type: 'test'
+  ...
+# Subtest: planning requires consent and valid bounded metadata; no adapter call on invalid requests
+ok 107 - planning requires consent and valid bounded metadata; no adapter call on invalid requests
+  ---
+  duration_ms: 6.502174
+  type: 'test'
+  ...
+# Subtest: category skill scope narrows planner candidates, is frozen into approval, and rejects out-of-scope proposals
+ok 108 - category skill scope narrows planner candidates, is frozen into approval, and rejects out-of-scope proposals
+  ---
+  duration_ms: 6.157362
+  type: 'test'
+  ...
+# Subtest: approval rejects changed bytes, filename, consent, digest and parameter/skill overrides, all without creating a task
+ok 109 - approval rejects changed bytes, filename, consent, digest and parameter/skill overrides, all without creating a task
+  ---
+  duration_ms: 14.188234
+  type: 'test'
+  ...
+# Subtest: owner isolation applies to plans, cancel, deletion and approval; stale expiry and version cannot authorize
+ok 110 - owner isolation applies to plans, cancel, deletion and approval; stale expiry and version cannot authorize
+  ---
+  duration_ms: 8.406614
+  type: 'test'
+  ...
+# Subtest: same planning key reuses record; conflicts fail; deleting a plan keeps tombstone and does not recall model
+ok 111 - same planning key reuses record; conflicts fail; deleting a plan keeps tombstone and does not recall model
+  ---
+  duration_ms: 3.814124
+  type: 'test'
+  ...
+# Subtest: in-flight cancel wins over late model completion and cannot be approved; duplicate request does not recall adapter
+ok 112 - in-flight cancel wins over late model completion and cannot be approved; duplicate request does not recall adapter
+  ---
+  duration_ms: 9.411681
+  type: 'test'
+  ...
+# Subtest: strict model schema rejects invented/unready skills, wrong expert, unknown options and file mismatch
+ok 113 - strict model schema rejects invented/unready skills, wrong expert, unknown options and file mismatch
+  ---
+  duration_ms: 4.650283
+  type: 'test'
+  ...
+# Subtest: clarify, unsupported and model failure remain truthful, with no receipt, approval digest or task
+ok 114 - clarify, unsupported and model failure remain truthful, with no receipt, approval digest or task
+  ---
+  duration_ms: 5.82873
+  type: 'test'
+  ...
+# Subtest: actual model adapter sends metadata only, uses fixed BYOK endpoint and rejects hostile/unbounded upstream responses (mocked transport)
+ok 115 - actual model adapter sends metadata only, uses fixed BYOK endpoint and rejects hostile/unbounded upstream responses (mocked transport)
+  ---
+  duration_ms: 5.58886
+  type: 'test'
+  ...
+# Subtest: unconfigured model fails honestly, unsupported extension does not call a model
+ok 116 - unconfigured model fails honestly, unsupported extension does not call a model
+  ---
+  duration_ms: 3.612198
+  type: 'test'
+  ...
+# Subtest: restart preserves frozen proposals and idempotency; interrupted planning fails without model auto-retry; credentials absent from database
+ok 117 - restart preserves frozen proposals and idempotency; interrupted planning fails without model auto-retry; credentials absent from database
+  ---
+  duration_ms: 33.079909
+  type: 'test'
+  ...
+# Subtest: manual request IDs prevent duplicates, reject mismatched reuse and survive deletion with tombstones
+ok 118 - manual request IDs prevent duplicates, reject mismatched reuse and survive deletion with tombstones
+  ---
+  duration_ms: 8.743365
+  type: 'test'
+  ...
+# Subtest: plan creation daily budget persists across deletion; rejected adapter never authorizes anything
+ok 119 - plan creation daily budget persists across deletion; rejected adapter never authorizes anything
+  ---
+  duration_ms: 33.980161
+  type: 'test'
+  ...
+# Subtest: plan APIs are authenticated and dispatched to the skill service
+ok 120 - plan APIs are authenticated and dispatched to the skill service
+  ---
+  duration_ms: 5.663482
+  type: 'test'
+  ...
+# Subtest: approval transaction rolls back both task and dedup mapping if plan transition fails
+ok 121 - approval transaction rolls back both task and dedup mapping if plan transition fails
+  ---
+  duration_ms: 5.77125
+  type: 'test'
+  ...
+# Subtest: model cancellation aborts actual adapter fetch and global model concurrency is bounded
+ok 122 - model cancellation aborts actual adapter fetch and global model concurrency is bounded
+  ---
+  duration_ms: 10.478623
+  type: 'test'
+  ...
+# Subtest: task grouping is owner-scoped, immutable through approval, and included in real execution receipts
+ok 123 - task grouping is owner-scoped, immutable through approval, and included in real execution receipts
+  ---
+  duration_ms: 868.536537
+  type: 'test'
+  ...
+# Subtest: manual tasks cannot reuse an idempotency key across conversation groups; unscoped calls remain compatible
+ok 124 - manual tasks cannot reuse an idempotency key across conversation groups; unscoped calls remain compatible
+  ---
+  duration_ms: 10.766606
+  type: 'test'
+  ...
+# Subtest: malformed task grouping and local-only execution are rejected before any task is created
+ok 125 - malformed task grouping and local-only execution are rejected before any task is created
+  ---
+  duration_ms: 3.526545
+  type: 'test'
+  ...
+# Subtest: task grouping survives reopening without auto execution and legacy approval digests remain byte-compatible
+ok 126 - task grouping survives reopening without auto execution and legacy approval digests remain byte-compatible
+  ---
+  duration_ms: 19.193262
+  type: 'test'
+  ...
+# Subtest: creating different conversation IDs does not bypass owner planning budgets
+ok 127 - creating different conversation IDs does not bypass owner planning budgets
+  ---
+  duration_ms: 29.96782
+  type: 'test'
+  ...
+# Subtest: word strict schema rejects unknown/code/remote fields, broken hierarchy, role omissions, unbound refs, duplicate IDs and oversized input
+ok 128 - word strict schema rejects unknown/code/remote fields, broken hierarchy, role omissions, unbound refs, duplicate IDs and oversized input
+  ---
+  duration_ms: 7.110382
+  type: 'test'
+  ...
+# Subtest: two document types enforce different ordered required roles, real body after headings, and safe table/image contracts
+ok 129 - two document types enforce different ordered required roles, real body after headings, and safe table/image contracts
+  ---
+  duration_ms: 2.558816
+  type: 'test'
+  ...
+# Subtest: native DOCX has real styles, headers, PAGE fields, internal links, native tables and inventory-checked escaped text
+ok 130 - native DOCX has real styles, headers, PAGE fields, internal links, native tables and inventory-checked escaped text
+  ---
+  duration_ms: 193.05316
+  type: 'test'
+  ...
+# Subtest: repair only changes white-listed layout fields and keeps all content, strings, sources and image permissions hash-locked
+ok 131 - repair only changes white-listed layout fields and keeps all content, strings, sources and image permissions hash-locked
+  ---
+  duration_ms: 2.327566
+  type: 'test'
+  ...
+# Subtest: PDF coverage does not count source appendix as body; unknown geometry/blank signals and scores never become visual or commercial approval
+ok 132 - PDF coverage does not count source appendix as body; unknown geometry/blank signals and scores never become visual or commercial approval
+  ---
+  duration_ms: 0.950758
+  type: 'test'
+  ...
+# Subtest: authorized images are normalized and embedded independently; oversized frames scale proportionally without cropping or content edits
+ok 133 - authorized images are normalized and embedded independently; oversized frames scale proportionally without cropping or content edits
+  ---
+  duration_ms: 58.948729
+  type: 'test'
+  ...
+# Subtest: missing glyphs and corrupt image formats fail before delivery, never substituted with fake content
+ok 134 - missing glyphs and corrupt image formats fail before delivery, never substituted with fake content
+  ---
+  duration_ms: 1.751223
+  type: 'test'
+  ...
+# (node:72522) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: actual local two-render repair produces hash-bound DOCX/PDF/all pages and pre/post evidence with no external AI calls
+ok 135 - actual local two-render repair produces hash-bound DOCX/PDF/all pages and pre/post evidence with no external AI calls
+  ---
+  duration_ms: 17066.420282
+  type: 'test'
+  ...
+# Subtest: registered real Worker persists artifacts, requires upload consent, enforces owner isolation and rejects arbitrary parameters/resume
+ok 136 - registered real Worker persists artifacts, requires upload consent, enforces owner isolation and rejects arbitrary parameters/resume
+  ---
+  duration_ms: 9242.629576
+  type: 'test'
+  ...
+# Subtest: bounded orchestration unit mock stops at three renders/two repairs, never rewrites facts or grants a score
+ok 137 - bounded orchestration unit mock stops at three renders/two repairs, never rewrites facts or grants a score
+  ---
+  duration_ms: 138.7141
+  type: 'test'
+  ...
+# Subtest: orchestration unit mock rolls back a repair that introduces a new critical issue, retaining prior version and full evidence
+ok 138 - orchestration unit mock rolls back a repair that introduces a new critical issue, retaining prior version and full evidence
+  ---
+  duration_ms: 92.996734
+  type: 'test'
+  ...
+1..138
+# tests 138
+# suites 0
+# pass 138
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 172879.359792

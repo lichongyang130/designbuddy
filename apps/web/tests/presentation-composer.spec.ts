@@ -8,7 +8,7 @@ async function openComposer(page: Page) {
     body.skills = body.skills.map((s: { id: string }) => s.id === 'slides.create' ? { ...s, status: 'ready' } : s);
     await route.fulfill({ response, json: body });
   });
-  await page.goto('/skills'); await page.getByRole('searchbox', { name: '搜索技能' }).fill('商业演示');
+  await page.goto('/skills?advanced=1'); await page.getByRole('searchbox', { name: '搜索技能' }).fill('商业演示');
   const card = page.getByRole('article', { name }); await expect(card).toBeVisible();
   await card.getByRole('button', { name: `查看技能：${name}` }).click();
   await page.getByRole('dialog', { name }).getByRole('button', { name: '打开执行工作台' }).click();
@@ -33,7 +33,7 @@ test('multiple sources prepare locally; both consents gate upload; actual brief/
   await expect(composer.getByRole('status')).toContainText('需求与材料已准备'); expect(posted).toBeUndefined();
   await desk.getByRole('checkbox', { name: /我同意上传材料/ }).check();
   await desk.getByRole('button', { name: '上传并执行技能' }).click(); expect(posted).toBeUndefined(); // required external consent still empty
-  await desk.getByLabel('本次演示正文处理授权').selectOption('yes'); await desk.getByRole('button', { name: '上传并执行技能' }).click();
+  await desk.getByLabel('本次演示正文处理授权').selectOption('yes'); await desk.getByRole('checkbox', { name: /我同意上传材料/ }).check(); await desk.getByRole('button', { name: '上传并执行技能' }).click();
   await expect(desk.getByRole('alert')).toContainText('UI fixture intercepted');
   expect(posted).toBeDefined(); const form = posted!.form;
   expect(form.get('skillId')).toBe('slides.create'); expect(form.get('expertId')).toBe('slides'); expect(form.get('consent')).toBe('true'); expect(JSON.parse(String(form.get('parameters')))).toEqual({ externalConsent: 'yes' });
@@ -84,7 +84,7 @@ test('visual assets require per-file rights, carry real bytes and metadata, and 
  await a.getByRole('checkbox').check();await composer.getByRole('button',{name:'准备演示输入（尚不上传）'}).click();await expect(composer.getByRole('status')).toContainText('需求与材料已准备');
  await desk.getByRole('checkbox',{name:/我同意上传材料/}).check();await desk.getByLabel('本次演示正文处理授权').selectOption('yes');await a.getByLabel('图片说明 / 无障碍文字').fill('更新元数据，必须重新授权');
  await expect(desk.getByRole('checkbox',{name:/我同意上传材料/})).not.toBeChecked();await expect(desk.getByLabel('本次演示正文处理授权')).toHaveValue('');await expect(desk.getByRole('button',{name:'上传并执行技能'})).toBeDisabled();
- await composer.getByRole('button',{name:'准备演示输入（尚不上传）'}).click();await desk.getByRole('checkbox',{name:/我同意上传材料/}).check();await desk.getByLabel('本次演示正文处理授权').selectOption('yes');await desk.getByRole('button',{name:'上传并执行技能'}).click();await expect(desk.getByRole('alert')).toContainText('M2 UI fixture');
+ await composer.getByRole('button',{name:'准备演示输入（尚不上传）'}).click();await desk.getByRole('checkbox',{name:/我同意上传材料/}).check();await desk.getByLabel('本次演示正文处理授权').selectOption('yes');await desk.getByRole('checkbox',{name:/我同意上传材料/}).check();await desk.getByRole('button',{name:'上传并执行技能'}).click();await expect(desk.getByRole('alert')).toContainText('M2 UI fixture');
  expect(envelope.brief.visualStyle).toBe('technology-launch');expect(envelope.assets).toHaveLength(1);expect(envelope.assets[0]).toMatchObject({role:'screenshot',usage:'evidence',permissionConfirmed:true,alt:'更新元数据，必须重新授权'});expect(Buffer.from(envelope.assets[0].base64,'base64').length).toBeGreaterThan(1000);
 });
 test('classic removes optional visuals without changing source documents; visual editing fits mobile',async({page})=>{
@@ -100,5 +100,5 @@ test('director selection discloses bounded extra calls, is encoded locally and r
  await page.route('**/api/skill-runs?kind=presentation',async route=>{const r=route.request(),form=await new Request(r.url(),{method:'POST',headers:{'content-type':r.headers()['content-type']},body:r.postDataBuffer()!}).formData();envelope=JSON.parse(await(form.get('file') as File).text());await route.fulfill({status:400,json:{error:'Director UI fixture intercepted; no actual model execution'}});});
  const composer=await openComposer(page),desk=workbench(page);await composer.getByLabel('演示目标').fill('先规划决策、证据与节奏，再写内容');await composer.getByLabel('选择多份来源材料').setInputFiles(sources);await composer.getByLabel('内容导演',{exact:true}).selectOption('directed');await expect(composer.getByRole('region',{name:'内容导演设置'})).toContainText('最多4次调用');
  await composer.getByRole('button',{name:'准备演示输入（尚不上传）'}).click();await desk.getByRole('checkbox',{name:/我同意上传材料/}).check();await desk.getByLabel('本次演示正文处理授权').selectOption('yes');await composer.getByLabel('内容导演',{exact:true}).selectOption('');await expect(desk.getByLabel('本次演示正文处理授权')).toHaveValue('');await expect(desk.getByRole('checkbox',{name:/我同意上传材料/})).not.toBeChecked();await expect(desk.getByRole('button',{name:'上传并执行技能'})).toBeDisabled();
- await composer.getByLabel('内容导演',{exact:true}).selectOption('directed');await composer.getByRole('button',{name:'准备演示输入（尚不上传）'}).click();await desk.getByRole('checkbox',{name:/我同意上传材料/}).check();await desk.getByLabel('本次演示正文处理授权').selectOption('yes');await desk.getByRole('button',{name:'上传并执行技能'}).click();await expect(desk.getByRole('alert')).toContainText('Director UI fixture');expect(envelope.brief.narrativeMode).toBe('directed');await composer.getByLabel('输出排版').selectOption('classic');await expect(composer.getByLabel('内容导演',{exact:true})).toHaveCount(0);await composer.getByLabel('输出排版').selectOption('adaptive');await expect(composer.getByLabel('内容导演',{exact:true})).toHaveValue('');
+ await composer.getByLabel('内容导演',{exact:true}).selectOption('directed');await composer.getByRole('button',{name:'准备演示输入（尚不上传）'}).click();await desk.getByRole('checkbox',{name:/我同意上传材料/}).check();await desk.getByLabel('本次演示正文处理授权').selectOption('yes');await desk.getByRole('checkbox',{name:/我同意上传材料/}).check();await desk.getByRole('button',{name:'上传并执行技能'}).click();await expect(desk.getByRole('alert')).toContainText('Director UI fixture');expect(envelope.brief.narrativeMode).toBe('directed');await composer.getByLabel('输出排版').selectOption('classic');await expect(composer.getByLabel('内容导演',{exact:true})).toHaveCount(0);await composer.getByLabel('输出排版').selectOption('adaptive');await expect(composer.getByLabel('内容导演',{exact:true})).toHaveValue('');
 });

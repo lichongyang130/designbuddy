@@ -67,7 +67,7 @@ type Props = {
   onStartFileTask?(): void;
   onModeChange(mode: Mode): void;
   onExpertSelect(name: string): void;
-  onSkillSelect(name: string, requirement?: string): void;
+  onSkillSelect(name: string, requirement?: string, skillId?: string): void;
   onNavigate(path: string): void;
 };
 
@@ -556,7 +556,7 @@ export function HomeAttachMenu(props: Props) {
                           close();
                           if (active === "expert")
                             props.onExpertSelect(item.name);
-                          else props.onSkillSelect(item.name, item.requirement);
+                          else props.onSkillSelect(item.name, item.requirement, item.id);
                         }}
                       >
                         {item.image ? (
