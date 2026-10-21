@@ -214,7 +214,36 @@ function PluginDetails({
     dialog.showModal();
     const previous = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    /**
+     * Native <dialog> does not reliably wrap Tab backwards: Shift+Tab off the
+     * first control drops focus onto <body>, outside the modal. A modal must
+     * keep focus inside, so cycle it explicitly.
+     */
+    const focusable = () =>
+      [
+        ...dialog.querySelectorAll<HTMLElement>(
+          "button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])",
+        ),
+      ].filter((el) => !el.disabled && el.getClientRects().length > 0);
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Tab") return;
+      const items = focusable();
+      if (!items.length) return;
+      const first = items[0],
+        last = items[items.length - 1];
+      const active = document.activeElement;
+      const outside = !dialog.contains(active);
+      if (event.shiftKey && (outside || active === first)) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && (outside || active === last)) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    dialog.addEventListener("keydown", onKeyDown);
     return () => {
+      dialog.removeEventListener("keydown", onKeyDown);
       dialog.close();
       document.body.style.overflow = previous;
     };
@@ -312,7 +341,14 @@ function PluginDetails({
       <footer>
         <button
           className="pm-detail-secondary"
-          onClick={() => navigateTo("/connectors")}
+          onClick={() => {
+            // Close first, and let that render commit before navigating. The
+            // dialog owns the body scroll lock, and /connectors is a lazy
+            // route: navigating in the same batch keeps the old page — and its
+            // lock — on screen until the next chunk arrives.
+            onClose();
+            requestAnimationFrame(() => navigateTo("/connectors"));
+          }}
         >
           查看连接器 <HomeIcon name="chevron" size={13} />
         </button>
