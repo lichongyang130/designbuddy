@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { setPermission } from './helpers/home';
 import { createRequire } from 'node:module';
 import type { SkillService as Service } from '../../../server/skills/service';
 import type { Planner } from '../../../server/skills/plan-store';
@@ -49,7 +50,7 @@ test('task model proposal preserves explicit expert/model, omits chat attachment
 });
 test('local-only file task opens no skill API and no chat; switching permission still does not auto upload or plan',async({page})=>{
  const calls:string[]=[];page.on('request',r=>{if(/^\/api\/(skill-|chat|generation)/.test(new URL(r.url()).pathname))calls.push(r.method()+':'+r.url());});
- await openFromHome(page,goal,async()=>{await page.getByLabel('任务权限',{exact:true}).selectOption('仅本地');});
+ await openFromHome(page,goal,async()=>{await setPermission(page,'仅本地');});
  await expect(page.getByText(/当前为仅本地模式：不会打开后台执行台/)).toBeVisible();expect(calls).toHaveLength(0);await expect(desk(page)).toHaveCount(0);
  await page.getByLabel('任务权限',{exact:true}).selectOption('默认权限');await expect(desk(page).getByLabel('上传实际材料')).toBeVisible();expect(calls.some(x=>x.startsWith('POST:'))).toBe(false);await expect(planner(page).getByRole('button',{name:'生成技能方案（不执行）'})).toBeDisabled();
  page.once('dialog',d=>d.accept());await page.getByLabel('任务权限',{exact:true}).selectOption('仅本地');await expect(desk(page)).toHaveCount(0);

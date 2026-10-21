@@ -1,4 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
+import { openComposerSettings } from "./helpers/home";
 
 const settings = (page: Page) =>
   page.getByRole("dialog", { name: "设置", exact: true });
@@ -66,17 +67,17 @@ test("personalization scenes and composer defaults take effect", async ({
   await settings(page).getByLabel("默认工作空间").fill("研发 团队");
   await settings(page).getByLabel("默认执行策略").fill("测试 策略");
   await page.keyboard.press("Escape");
-  await page.getByRole("tab", { name: "办公提效" }).click();
-  await expect(page.getByRole("button", { name: "会议纪要" })).toBeVisible();
-  await page.getByRole("tab", { name: "网页应用" }).click();
-  await expect(page.getByRole("tab", { name: "网页应用" })).toHaveAttribute("aria-selected", "true");
+  // The defaults land in the launcher's composer, not in a permanent toolbar:
+  // the mode is the selector under the input, workspace and permission live in
+  // 「更多设置」.
+  const modeSelect = page.getByRole("combobox", { name: "任务模式", exact: true });
+  await expect(modeSelect).toHaveValue("code");
+  await openComposerSettings(page);
   await expect(page.getByLabel("工作空间")).toHaveValue("研发 团队");
   await expect(page.getByLabel("任务权限")).toHaveValue("测试 策略");
   await page.reload();
-  await page.getByRole("tab", { name: "办公提效" }).click();
-  await expect(page.getByRole("button", { name: "会议纪要" })).toBeVisible();
-  await page.getByRole("tab", { name: "网页应用" }).click();
-  await expect(page.getByRole("tab", { name: "网页应用" })).toHaveAttribute("aria-selected", "true");
+  await expect(page.getByRole("combobox", { name: "任务模式", exact: true })).toHaveValue("code");
+  await openComposerSettings(page);
   await expect(page.getByLabel("工作空间")).toHaveValue("研发 团队");
   await expect(page.getByLabel("任务权限")).toHaveValue("测试 策略");
   // Restore the defaults so this test does not leak account preferences into later cases.

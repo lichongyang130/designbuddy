@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
+import { setMode, setPermission } from "./helpers/home";
 const dataMatch = { kind: "match", expertId: "data", collaboratorIds: [], reason: "需要核对报销表的金额与口径，而不是做视觉设计。", responsibilities: ["核对金额与字段口径", "找出重复与缺失记录"], missing: ["报销原始明细"] };
 const slideMatch = { kind: "match", expertId: "slides", collaboratorIds: [], reason: "目标是面向管理层的产品演示。", responsibilities: ["组织逐页汇报内容"], missing: [] };
 const sse = 'data: {"choices":[{"delta":{"content":"已收到任务规范。"},"finish_reason":"stop"}]}\n\ndata: [DONE]\n\n';
@@ -107,7 +108,7 @@ test("manual selection locks across typing/mode changes and can return to auto",
   await expect(page.getByLabel("专家匹配详情")).toContainText("已手动指定");
   await page.keyboard.press("Escape");
   await input(page).fill("帮我设计一张宣传海报");
-  await page.getByRole("tab", { name: "设计制作", exact: true }).click();
+  await setMode(page, "设计制作");
   await page.waitForTimeout(1100);
   await expect(trigger(page)).toContainText("数据分析专家");
   expect(count).toBe(1);
@@ -158,7 +159,7 @@ test("local-only always prevents matching even with saved consent, explicit fall
   await page.addInitScript(() => localStorage.setItem("designbuddy.expert-match-consent.v1", "allowed"));
   await page.route("**/api/expert-match", route => { requests++; return route.fulfill({ json: dataMatch }); });
   const chats = await captureChat(page);
-  await page.goto("/"); await page.getByLabel("任务权限", { exact: true }).selectOption("仅本地");
+  await page.goto("/"); await setPermission(page, "仅本地");
   await input(page).fill("核对报销表"); await trigger(page).click();
   await expect(page.getByLabel("专家匹配详情")).toContainText("仅本地模式不会向模型发送");
   await page.getByRole("button", { name: "使用本地建议并锁定", exact: true }).click();
@@ -217,7 +218,7 @@ test("turning local-only on cancels a pending match and never reuses its late re
   await page.route("**/api/expert-match", async route => { called = true; await pending; await route.fulfill({ json: dataMatch }).catch(() => {}); });
   await page.goto("/"); await input(page).fill("核对报销表"); await enable(page);
   await expect.poll(() => called).toBe(true);
-  await page.getByLabel("任务权限", { exact: true }).selectOption("仅本地");
+  await setPermission(page, "仅本地");
   release();
   await expect(trigger(page)).toHaveText("仅本地 · 手动选择");
   await page.getByRole("button", { name: "开始任务", exact: true }).click();
@@ -231,7 +232,7 @@ test("actual expert task overrides a misleading homepage mode without generating
   await page.route("**/api/expert-match", route => route.fulfill({ json: dataMatch }));
   await page.route("**/api/generation", route => { generated++; return route.abort(); });
   const chats = await captureChat(page);
-  await page.goto("/"); await page.getByRole("tab", { name: "设计制作", exact: true }).click();
+  await page.goto("/"); await setMode(page, "设计制作");
   await input(page).fill("整理设计部门的报销表"); await enable(page);
   await expect(trigger(page)).toContainText("推荐：数据分析专家");
   await page.getByRole("button", { name: "开始任务", exact: true }).click();

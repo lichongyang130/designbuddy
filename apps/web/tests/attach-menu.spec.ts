@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { setPermission } from "./helpers/home";
 
 test.beforeEach(async ({ page }) => {
   await page.goto("/");
@@ -60,16 +61,15 @@ test("file menu opens the native chooser and preserves readable attachment handl
   await expect(page.locator(".attachment-chip")).toHaveCount(0);
 });
 
-test("mode submenu synchronizes the large homepage tabs", async ({ page }) => {
+test("mode submenu synchronizes the composer mode selector", async ({ page }) => {
   await page.getByRole("menuitem", { name: "模式", exact: true }).click();
   await expect(
     page.getByRole("menuitemradio", { name: "办公提效" }),
   ).toHaveAttribute("aria-checked", "true");
   await page.getByRole("menuitemradio", { name: "设计制作" }).click();
-  await expect(page.getByRole("tab", { name: "设计制作" })).toHaveAttribute(
-    "aria-selected",
-    "true",
-  );
+  await expect(
+    page.getByRole("combobox", { name: "任务模式", exact: true }),
+  ).toHaveValue("design");
   await expect(
     page.getByRole("button", { name: "添加附件", exact: true }),
   ).toBeFocused();
@@ -95,7 +95,7 @@ test("search, no-results state and expert/skill selection feed the real task", a
   await expect(page.locator(".home-selected-capabilities")).toContainText(
     "材料转可编辑 PPTX",
   );
-  await page.getByLabel("任务权限").selectOption("仅本地");
+  await setPermission(page, "仅本地");
   await page
     .getByRole("textbox", { name: "任务描述" })
     .fill("根据附件编写产品提案");

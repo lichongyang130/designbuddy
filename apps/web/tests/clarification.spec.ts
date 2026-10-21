@@ -1,11 +1,12 @@
 import { test, expect, type Page } from "@playwright/test";
+import { setMode, setPermission } from "./helpers/home";
 
 const sse = (text: string) => `data: ${JSON.stringify({ model: "clarification-test", choices: [{ delta: { content: text }, finish_reason: "stop" }] })}\n\ndata: [DONE]\n\n`;
 const protocol = (questions: unknown) => '```designbuddy-clarification\n' + JSON.stringify({ questions }) + '\n```';
 async function ask(page: Page, text = "帮我做一个UI", mode?: string, permission?: string) {
   await page.goto("/");
-  if (mode) await page.getByRole("tab", { name: mode, exact: true }).click();
-  if (permission) await page.getByLabel("任务权限", { exact: true }).selectOption(permission);
+  if (mode) await setMode(page, mode);
+  if (permission) await setPermission(page, permission);
   await page.getByRole("textbox", { name: "任务描述", exact: true }).fill(text);
   await page.getByRole("button", { name: "开始任务", exact: true }).click();
   await expect(page).toHaveURL(/\/tasks\//);

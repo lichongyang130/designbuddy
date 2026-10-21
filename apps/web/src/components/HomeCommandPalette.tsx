@@ -13,6 +13,8 @@ type Item = {
   subtitle: string;
   badge?: string;
   run: () => void;
+  /** Scenes keep their interactive sample; it lives behind ⌘K, not on the launcher. */
+  preview?: () => void;
 };
 
 type Props = {
@@ -20,6 +22,7 @@ type Props = {
   mode: HomeMode;
   onClose: () => void;
   onSelectScene: (scene: HomeScene) => void;
+  onPreviewScene: (scene: HomeScene) => void;
   onSelectSkill: (name: string) => void;
   onNavigate: (path: string) => void;
 };
@@ -38,7 +41,7 @@ const PAGES: Array<{ title: string; path: string; hint: string }> = [
  * The 480-item catalogue and the skill declarations are fetched only after the
  * palette is opened, so the homepage pays nothing for a feature it may never use.
  */
-export function HomeCommandPalette({ open, mode, onClose, onSelectScene, onSelectSkill, onNavigate }: Props) {
+export function HomeCommandPalette({ open, mode, onClose, onSelectScene, onPreviewScene, onSelectSkill, onNavigate }: Props) {
   const [query, setQuery] = useState("");
   const [cursor, setCursor] = useState(0);
   const [plugins, setPlugins] = useState<CatalogPlugin[]>([]);
@@ -91,6 +94,7 @@ export function HomeCommandPalette({ open, mode, onClose, onSelectScene, onSelec
         subtitle: scene.description,
         badge: `${modeLabels[sceneMode]} · ${scene.tag}`,
         run: () => onSelectScene(scene),
+        preview: () => onPreviewScene(scene),
       })),
     );
     const pluginItems: Item[] = plugins.map((plugin) => ({
@@ -144,7 +148,7 @@ export function HomeCommandPalette({ open, mode, onClose, onSelectScene, onSelec
       .sort((a, b) => b.score - a.score)
       .slice(0, 24)
       .map((entry) => entry.item);
-  }, [plugins, skills, query, mode, onSelectScene, onSelectSkill, onNavigate]);
+  }, [plugins, skills, query, mode, onSelectScene, onPreviewScene, onSelectSkill, onNavigate]);
 
   useEffect(() => setCursor(0), [query]);
   useEffect(() => {
@@ -195,22 +199,35 @@ export function HomeCommandPalette({ open, mode, onClose, onSelectScene, onSelec
             </p>
           )}
           {items.map((item, index) => (
-            <button
-              key={item.key}
-              type="button"
-              role="option"
-              aria-selected={index === cursor}
-              className={`hcp-item${index === cursor ? " is-active" : ""}`}
-              onMouseEnter={() => setCursor(index)}
-              onClick={() => run(item)}
-            >
-              <span className="hcp-group">{item.group}</span>
-              <span className="hcp-text">
-                <strong>{item.title}</strong>
-                <small>{item.subtitle}</small>
-              </span>
-              {item.badge && <span className="hcp-badge">{item.badge}</span>}
-            </button>
+            <div className="hcp-row" key={item.key}>
+              <button
+                type="button"
+                role="option"
+                aria-selected={index === cursor}
+                className={`hcp-item${index === cursor ? " is-active" : ""}`}
+                onMouseEnter={() => setCursor(index)}
+                onClick={() => run(item)}
+              >
+                <span className="hcp-group">{item.group}</span>
+                <span className="hcp-text">
+                  <strong>{item.title}</strong>
+                  <small>{item.subtitle}</small>
+                </span>
+                {item.badge && <span className="hcp-badge">{item.badge}</span>}
+              </button>
+              {item.preview && (
+                <button
+                  type="button"
+                  className="hcp-preview"
+                  aria-label={`预览${item.title}`}
+                  title="打开可交互的示例"
+                  onClick={() => {
+                    onClose();
+                    item.preview!();
+                  }}
+                >预览</button>
+              )}
+            </div>
           ))}
         </div>
 

@@ -138,19 +138,23 @@ test("a finished artifact can be opened in the editor or kept in the asset libra
   }
 });
 
-test("a home scene with a recipe opens that workflow", async ({ browser }) => {
+test("the table scene is still one search away and its recipe keeps a home on /workflows", async ({ browser }) => {
   const username = "wfscene_" + crypto.randomUUID().slice(0, 8);
   const owned = await freshAccountPage(browser, username);
   try {
     const page = owned.page;
-    await page.getByRole("tab", { name: "办公提效", exact: true }).click();
-    if (!await page.locator(".home-example-library").evaluate((el) => (el as HTMLDetailsElement).open))
-      await page.locator(".home-example-library > summary").click();
-    const scene = page.locator(".home27-scene").filter({ hasText: "表格分析" });
-    await expect(scene.getByRole("button", { name: /用工作流：表格清洗与统计/ })).toBeVisible();
-    await scene.getByRole("button", { name: /用工作流：表格清洗与统计/ }).click();
-    await expect(page.locator(".workflow-modal")).toBeVisible();
-    await expect(page.getByRole("heading", { name: "表格清洗与统计" })).toBeVisible();
+    // The launcher no longer renders scene cards; ⌘K still knows all fifteen.
+    await page.keyboard.press("ControlOrMeta+k");
+    await page.getByRole("textbox", { name: "搜索场景、插件、技能" }).fill("表格分析");
+    await page.getByRole("option", { name: /表格分析/ }).click();
+    await expect(page.getByRole("textbox", { name: "任务描述", exact: true })).toHaveValue(
+      /请分析我提供的 CSV 数据/,
+    );
+    // The recipe that used to hang off the card is a first-class workflow.
+    await page.goto("/workflows");
+    await expect(
+      page.locator(".wf-recipe").filter({ hasText: "表格清洗与统计" }),
+    ).toBeVisible();
   } finally {
     await owned.context.close();
   }

@@ -1,0 +1,307 @@
+/* Single-box homepage.
+   One composer, three examples, recent work. Nothing else competes with the
+   input: no mode tabs, no plugin rail, no example gallery. */
+.main-workspace.home27.home-launcher {
+  --home-top-space: clamp(56px, 9vh, 132px);
+}
+.home27.home-launcher .home-content-v2.home27-content {
+  padding-bottom: 56px;
+}
+.home27.home-launcher .home27-hero {
+  min-height: 0;
+  margin: 0 0 30px;
+}
+.home27.home-launcher .home27-hero h1 {
+  font-size: clamp(26px, 2.7vw, 38px);
+  letter-spacing: -0.035em;
+}
+.home27.home-launcher .composer-shell {
+  margin: 0;
+}
+
+/* Intent row: the mode the draft was read as, and what it will produce. */
+.home27 .composer-intent-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-height: 26px;
+  margin-top: 10px;
+}
+.home27 .composer-mode {
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 6px 0 10px;
+  border: 1px solid #e8e8e6;
+  border-radius: 999px;
+  background: #fafafa;
+  color: #8a8a90;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.home27 .composer-mode select {
+  height: 22px;
+  padding: 0 4px;
+  border: 0;
+  background: transparent;
+  color: #43434a;
+  font: inherit;
+  cursor: pointer;
+}
+.home27 .composer-mode select:focus-visible {
+  outline: 2px solid #b9b9b9;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+.home27 .composer-intent {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 26px;
+  padding: 0 11px;
+  border-radius: 999px;
+  background: #f1f1f2;
+  color: #3a3a40;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.home27 .composer-intent svg {
+  color: #6d6d73;
+}
+
+/* Workspace + permission live behind one quiet toggle; defaults stay invisible. */
+.home27 .composer-footer {
+  position: relative;
+  justify-content: space-between;
+  gap: 10px;
+}
+.home27 .composer-settings-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 24px;
+  padding: 0 9px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: #8a8a90;
+  font-size: 12px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.home27 .composer-settings-toggle:hover,
+.home27 .composer-settings-toggle[aria-expanded="true"] {
+  background: #f2f2f1;
+  color: #4c4c52;
+}
+.home27 .composer-hint {
+  min-width: 0;
+  overflow: hidden;
+  color: #a5a5aa;
+  font-size: 12px;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.home27 .composer-settings {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 10px);
+  z-index: 25;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  max-width: min(420px, calc(100vw - 40px));
+  padding: 12px 14px;
+  border: 1px solid #e6e6e4;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 12px 32px #17171714;
+}
+
+/* Three examples, re-ranked as the draft changes. */
+.home-suggestion-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 18px;
+}
+.home-suggestion {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  height: 34px;
+  padding: 0 15px;
+  border: 1px solid #e6e6e4;
+  border-radius: 999px;
+  background: #fff;
+  color: #3d3d42;
+  font-size: 13px;
+  cursor: pointer;
+}
+.home-suggestion:hover {
+  border-color: #cfcfca;
+  background: #f8f8f7;
+}
+.home-suggestion:focus-visible,
+.home-suggestion-refresh:focus-visible {
+  outline: 2px solid #b9b9b9;
+  outline-offset: 2px;
+}
+.home-suggestion svg {
+  flex: none;
+  color: #9a9a9f;
+}
+.home-suggestion span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.home-suggestion-refresh {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px dashed #e0e0de;
+  border-radius: 50%;
+  background: transparent;
+  color: #9a9a9f;
+  cursor: pointer;
+}
+.home-suggestion-refresh:hover {
+  border-color: #c9c9c4;
+  color: #5c5c62;
+}
+
+.home-launcher-hint {
+  margin: 12px 0 0;
+  color: #a5a5aa;
+  font-size: 12px;
+  text-align: center;
+}
+.home-launcher-hint kbd {
+  padding: 1px 5px;
+  border: 1px solid #e6e6e4;
+  border-radius: 4px;
+  background: #fafaf9;
+  font: 11px ui-sans-serif, sans-serif;
+}
+
+/* Recent work: only when there is something to continue. */
+.home-recent {
+  margin-top: clamp(32px, 6vh, 64px);
+}
+.home-recent header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.home-recent h2 {
+  margin: 0;
+  color: #6a6a70;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.home-recent header button {
+  border: 0;
+  background: none;
+  color: #a0a0a6;
+  font-size: 12px;
+  cursor: pointer;
+}
+.home-recent header button:hover {
+  color: #55555b;
+}
+.home-recent ul {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.home-recent li > button {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #eeeeec;
+  border-radius: 12px;
+  background: #fff;
+  text-align: left;
+  cursor: pointer;
+}
+.home-recent li > button:hover {
+  border-color: #d9d9d4;
+  background: #fbfbfa;
+}
+.home-recent-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: #f4f4f2;
+  color: #77777d;
+}
+.home-recent-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.home-recent-body strong {
+  overflow: hidden;
+  color: #2c2c31;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.home-recent-body small {
+  color: #9a9aa0;
+  font-size: 11px;
+}
+
+@media (max-width: 680px) {
+  .home27.home-launcher .home27-hero {
+    margin-bottom: 22px;
+  }
+  .home27 .composer-hint {
+    display: none;
+  }
+  .home-suggestion {
+    height: 32px;
+    padding: 0 12px;
+    font-size: 12px;
+  }
+  .home-recent ul {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-suggestion,
+  .home-suggestion-refresh,
+  .home-recent li > button {
+    transition: none;
+  }
+}
+
+/* Screen-reader only: the batch counter and other live status text. */
+.home-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

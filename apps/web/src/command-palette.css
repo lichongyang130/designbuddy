@@ -199,3 +199,35 @@
     backdrop-filter: none;
   }
 }
+
+/* Scene rows keep their interactive sample one click away behind ⌘K. */
+.hcp-row {
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+}
+
+.hcp-row .hcp-item {
+  flex: 1;
+  min-width: 0;
+}
+
+.hcp-preview {
+  flex: none;
+  align-self: center;
+  padding: 3px 8px;
+  border: 1px solid #e6e6ef;
+  border-radius: 7px;
+  background: #fff;
+  color: #6b6f7c;
+  font-size: 10.5px;
+  line-height: 1.5;
+  transition: color 0.12s ease, border-color 0.12s ease;
+}
+
+.hcp-row:hover .hcp-preview,
+.hcp-preview:hover,
+.hcp-preview:focus-visible {
+  border-color: #cfc9ef;
+  color: #5b4bc4;
+}

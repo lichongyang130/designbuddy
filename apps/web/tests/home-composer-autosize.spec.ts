@@ -18,8 +18,8 @@ for (const width of [320, 375, 768, 1440]) {
     expect(await shell.evaluate(el => el.getBoundingClientRect().top + window.scrollY)).toBeCloseTo(top, 0);
     const box = (await input.boundingBox())!, controls = (await page.locator(".composer-controls").boundingBox())!;
     expect(controls.y).toBeGreaterThanOrEqual(box.y + box.height - 1);
-    const footer = (await page.locator(".composer-footer").boundingBox())!, recommendations = (await page.locator(".home-prompt-recommendations").boundingBox())!;
-    expect(recommendations.y).toBeGreaterThan(footer.y + footer.height);
+    const footer = (await page.locator(".composer-footer").boundingBox())!, examples = (await page.locator(".home-suggestion-bar").boundingBox())!;
+    expect(examples.y).toBeGreaterThan(footer.y + footer.height);
     await expect(input).toHaveValue(longText);
     await input.fill("短需求"); await fits(input);
     expect((await input.boundingBox())!.height).toBeCloseTo(height, 0);
@@ -33,7 +33,7 @@ test("programmatic prompt insertion and viewport reflow resize without hiding an
   await page.setViewportSize({ width: 1440, height: 1000 }); await page.goto("/");
   const input = page.getByRole("textbox", { name: "任务描述", exact: true });
   const initial = (await input.boundingBox())!.height;
-  await page.locator(".home-prompt-list button").first().click();
+  await page.locator(".home-suggestion").first().click();
   await fits(input); await expect(input).toBeFocused();
   const prompt = await input.inputValue();
   const desktop = (await input.boundingBox())!.height;

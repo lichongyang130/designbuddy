@@ -18,27 +18,21 @@ const groups = [
 ];
 async function open(
   page: Page,
-  mode: string,
+  _mode: string,
   scene: string,
-  interactive = true,
+  _interactive = true,
 ) {
-  await page.getByRole("tab", { name: mode, exact: true }).click();
-  if (!await page.locator(".home-example-library").evaluate(el => (el as HTMLDetailsElement).open)) await page.locator(".home-example-library > summary").click();
-  await page.getByRole("button", { name: `预览${scene}`, exact: true }).click();
-  const modal = page.getByRole("dialog", {
-    name: `${scene}场景预览`,
-    exact: true,
-  });
-  await expect(modal).toBeVisible();
-
-  return modal;
+  // The 15 samples used to be cards on the launcher. They are still interactive
+  // demos, now opened from the search palette; the extra arguments stay so the
+  // call sites below keep reading as before.
+  return openScenePreview(page, scene);
 }
 
 test.beforeEach(async ({ page }) => {
   await page.goto("/");
 });
 
-test("three modes replace both groups, preserve existing input/context, and do not send AI requests", async ({
+test("pinning a mode by hand keeps the draft, attachments, model and settings", async ({
   page,
 }) => {
   const requests: string[] = [];
@@ -47,32 +41,28 @@ test("three modes replace both groups, preserve existing input/context, and do n
   });
   const prompt = page.getByRole("textbox", { name: "任务描述", exact: true });
   await prompt.fill("保留我的原始需求");
+  await setWorkspace(page, "产品设计空间");
+  await setPermission(page, "需要确认后执行");
   await page
-    .getByLabel("工作空间", { exact: true })
-    .selectOption("产品设计空间");
-  await page
-    .getByLabel("任务权限", { exact: true })
-    .selectOption("需要确认后执行");
-  await page.locator('input.visually-hidden-input[type="file"]').setInputFiles({
-    name: "keep.txt",
-    mimeType: "text/plain",
-    buffer: Buffer.from("保留附件"),
-  });
+    .locator('input.visually-hidden-input[type="file"]')
+    .setInputFiles({
+      name: "keep.txt",
+      mimeType: "text/plain",
+      buffer: Buffer.from("保留附件"),
+    });
   await page.getByRole("button", { name: "选择大模型", exact: true }).click();
   await page.getByRole("option", { name: /GLM-5.3-Flash/ }).click();
+  const modeSelect = page.getByRole("combobox", { name: "任务模式", exact: true });
   for (const group of groups) {
-    await page.getByRole("tab", { name: group.mode }).click();
-    await expect(page.locator(".home27-shortcut")).toHaveText(
-      [...group.shortcuts, "全部分类"],
-    );
-    await expect(page.locator(".scene-card-caption h3")).toHaveText(
-      group.scenes,
-    );
+    await setMode(page, group.mode);
+    // A hand-picked mode must survive further typing instead of being re-inferred.
+    await expect(modeSelect).toHaveValue(MODE_VALUES[group.mode]);
     await expect(prompt).toHaveValue("保留我的原始需求");
     await expect(page.locator(".attachment-chip")).toContainText("keep.txt");
     await expect(
       page.getByRole("button", { name: "选择大模型", exact: true }),
     ).toContainText("GLM-5.3-Flash");
+    await openComposerSettings(page);
     await expect(page.getByLabel("工作空间", { exact: true })).toHaveValue(
       "产品设计空间",
     );
@@ -83,37 +73,30 @@ test("three modes replace both groups, preserve existing input/context, and do n
   expect(requests).toEqual([]);
 });
 
-for (const group of groups) {
-  test(`${group.mode}: every shortcut stays in its mode and needs explicit send`, async ({
-    page,
-  }) => {
-    await page.getByRole("tab", { name: group.mode }).click();
-    for (const name of group.shortcuts) {
-      await page.getByRole("textbox", { name: "任务描述" }).fill("");
-      await page.getByRole("button", { name, exact: true }).click();
-      await page.getByRole("menu", { name: `${name}下级栏目` }).getByRole("menuitem").first().click();
-      await page.locator(".home-prompt-list button").first().click();
-      await expect(
-        page.getByRole("textbox", { name: "任务描述" }),
-      ).not.toHaveValue("");
-      await expect(page.getByRole("tab", { name: group.mode })).toHaveAttribute(
-        "aria-selected",
-        "true",
-      );
-      await expect(page).toHaveURL(/\/$/);
-    }
-  });
-}
+test("a hand-pinned mode survives typing, and clearing the draft hands it back to inference", async ({
+  page,
+}) => {
+  const prompt = page.getByRole("textbox", { name: "任务描述", exact: true });
+  const modeSelect = page.getByRole("combobox", { name: "任务模式", exact: true });
+  await prompt.fill("帮我写一份周报");
+  await expect(modeSelect).toHaveValue("office");
+  await setMode(page, "设计制作");
+  await prompt.fill("帮我写一份周报，并配一张封面插图");
+  await expect(modeSelect).toHaveValue("design");
+  await prompt.fill("");
+  await prompt.fill("帮我写一份周报");
+  await expect(modeSelect).toHaveValue("office");
+});
 
 test("replacement asks first; cancel preserves text and preview; confirm transfers only the prompt", async ({
   page,
 }) => {
   const prompt = page.getByRole("textbox", { name: "任务描述" });
   await prompt.fill("不要覆盖这段内容");
+  // A sample chip replaces the draft only after a confirmation.
+  const chip = page.locator(".home-suggestion").first();
   page.once("dialog", (dialog) => dialog.dismiss());
-  await page.getByRole("button", { name: "文档整理", exact: true }).click();
-  await page.getByRole("menu", { name: "文档整理下级栏目" }).getByRole("menuitem").first().click();
-  await page.locator(".home-prompt-list button").first().click();
+  await chip.click();
   await expect(prompt).toHaveValue("不要覆盖这段内容");
   const modal = await open(page, "设计制作", "品牌视觉");
   await modal.getByLabel("品牌名称", { exact: true }).fill("LOCAL ONLY");
@@ -126,10 +109,9 @@ test("replacement asks first; cancel preserves text and preview; confirm transfe
   await expect(prompt).toBeFocused();
   await expect(prompt).toHaveValue(/品牌视觉方案/);
   await expect(prompt).not.toHaveValue(/LOCAL ONLY/);
-  await expect(page.getByRole("tab", { name: "设计制作" })).toHaveAttribute(
-    "aria-selected",
-    "true",
-  );
+  await expect(
+    page.getByRole("combobox", { name: "任务模式", exact: true }),
+  ).toHaveValue("design");
   await expect(page).toHaveURL(/\/$/);
 });
 
