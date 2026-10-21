@@ -5,6 +5,7 @@ import { categoriesForMode } from '../apps/web/src/components/promptLibrary.ts';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { runtimeSkills } = require('../dist/local/shared/skillRuntime.js');
+const { runtimeCatalog } = require('../dist/local/server/skills/runtime-catalog.js');
 import { routingExperts } from '../shared/expertRouting.ts';
 
 test('every homepage task category has a single declared expert skill scope', () => {
@@ -35,6 +36,8 @@ test('unsupported categories do not inherit unrelated executors or claim transcr
   assert.ok(get('office-email').summary.includes('不自动发送'));
   assert.ok(!get('office-meetings').skillIds.includes('audio.transcribe-en'));
   assert.ok(get('office-followup').summary.includes('未接入'));
+  const catalog = runtimeCatalog();
   assert.ok(get('web-tools').skillIds.includes('code.build'));
-  assert.equal(runtimeSkills.find(skill => skill.id === 'code.build').status, 'unavailable');
+  assert.equal(catalog.find(skill => skill.id === 'code.build').status, 'ready');
+  assert.equal(catalog.find(skill => skill.id === 'document.summarize').status, 'unavailable');
 });

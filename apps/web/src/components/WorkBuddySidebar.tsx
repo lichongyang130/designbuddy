@@ -11,11 +11,13 @@ import { translate } from "../../../../frontend/workspace/i18n";
 type Props = {
   active:
     | "home"
+    | "agent"
     | "experts"
     | "skills"
     | "connectors"
     | "task"
     | "plugins"
+    | "themes"
     | "schedules"
     | "workflows"
     | "models"
@@ -110,6 +112,14 @@ export function WorkBuddySidebar({
           <span className="sidebar-nav-label">{t("sidebar.plugins")}</span>
         </button>
         <button
+          className={`sidebar-nav-item ${active === "themes" ? "is-active" : ""}`}
+          aria-current={active === "themes" ? "page" : undefined}
+          onClick={() => go("/themes")}
+        >
+          <HomeIcon name="palette" />
+          <span className="sidebar-nav-label">{t("sidebar.themes")}</span>
+        </button>
+        <button
           className={`sidebar-nav-item ${active === "templates" ? "is-active" : ""}`}
           aria-current={active === "templates" ? "page" : undefined}
           onClick={() => go("/inspiration")}
@@ -140,6 +150,12 @@ export function WorkBuddySidebar({
         <button onClick={() => go("/projects")}>{t("sidebar.projects", { n: projectCount })}</button>
         <button onClick={() => go("/workspaces")}>
           {t("sidebar.spaces", { n: workspaceCount })}
+        </button>
+        <button
+          aria-current={active === "agent" ? "page" : undefined}
+          onClick={() => go("/agent")}
+        >
+          {locale === "en" ? "Agent Workbench" : "Agent 工作台"}
         </button>
       </div>
 

@@ -31,13 +31,7 @@ import BrandGallery, {
   BrandArtwork,
   NatureGallery,
 } from "./samples/BrandGallery";
-import GenericTemplate from './samples/GenericTemplate';
-import { GenericFilm, GenericSound } from './samples/GenericMedia';
-import { GenericDocument } from './samples/GenericDocument';
-import { GenericPrototype } from './samples/GenericPrototype';
-import { GenericSlide } from './samples/GenericSlide';
-import { drafts, samples, type SampleId, type DraftRecord } from './samples/shared';
-import { commercialViewers } from './commercialRegistry';
+import { drafts, samples, type SampleId } from './samples/shared';
 import MuseumPrototype, { MuseumCover } from "./samples/MuseumPrototype";
 import { HandbookPaper } from "./samples/HandbookPaper";
 import { AICover, aiCoverIds } from "./samples/aiCovers";
@@ -66,9 +60,15 @@ const LiveStatus = lazy(() => import("./samples/live/LiveTools").then((m) => ({ 
 const StudioNineCover = kitCover("studio-nine");
 const WellspringCover = kitCover("wellspring");
 const CircuitCover = kitCover("circuit");
+const PaperhouseCover = kitCover("paperhouse");
+const CampusCover = kitCover("campus");
+const PawsCover = kitCover("paws");
 const StudioNinePrototype = kitViewer("studio-nine");
 const WellspringPrototype = kitViewer("wellspring");
 const CircuitPrototype = kitViewer("circuit");
+const PaperhousePrototype = kitViewer("paperhouse");
+const CampusPrototype = kitViewer("campus");
+const PawsPrototype = kitViewer("paws");
 const workCategories: { label: string; icon?: HomeIconName }[] = [
   { label: "全部" },
   { label: "原型", icon: "grid" },
@@ -87,6 +87,18 @@ function Preview({ id }: { id: SampleId }) {
     <div className={`sample-preview preview-${id}`} aria-hidden="true">
       {(mediaIds as readonly string[]).includes(id) ? (
         <MediaCover id={id as (typeof mediaIds)[number]} />
+      ) : id === "studio-nine" ? (
+        <StudioNineCover />
+      ) : id === "wellspring" ? (
+        <WellspringCover />
+      ) : id === "circuit" ? (
+        <CircuitCover />
+      ) : id === "paperhouse" ? (
+        <PaperhouseCover />
+      ) : id === "campus" ? (
+        <CampusCover />
+      ) : id === "paws" ? (
+        <PawsCover />
       ) : id === "morrow" ? (
         <MorrowCover />
       ) : id === "tide" ? (
@@ -116,13 +128,7 @@ function Preview({ id }: { id: SampleId }) {
       ) : (aiCoverIds as readonly string[]).includes(id) ? (
         <AICover id={id} />
       ) : (
-        (() => {
-          const s = samples.find(x => x.id === id);
-          if (s?.photos?.[0]) {
-            return <div style={{ width: '100%', height: '100%', background: `url(${s.photos[0].url}) center/cover no-repeat` }} />;
-          }
-          return <BrandArtwork />;
-        })()
+        <BrandArtwork />
       )}
     </div>
   );
@@ -165,6 +171,12 @@ export default function InspirationPage({ pathname }: { pathname: string }) {
     daylight: DaylightPrototype,
     tide: TidePrototype,
     morrow: MorrowPrototype,
+    "studio-nine": StudioNinePrototype,
+    wellspring: WellspringPrototype,
+    circuit: CircuitPrototype,
+    paperhouse: PaperhousePrototype,
+    campus: CampusPrototype,
+    paws: PawsPrototype,
     "hf-tour": HFTour,
     "hf-story": HFStory,
     "hf-quest": HFQuest,
@@ -174,33 +186,7 @@ export default function InspirationPage({ pathname }: { pathname: string }) {
     "live-form": LiveForm,
     "live-status": LiveStatus,
   } as Record<string, any>;
-  const ViewerComponent = sample ? (
-    viewers[sample.id] || commercialViewers[sample.id] || ((props: any) => {
-      if (sample.category === "视频") {
-        return <GenericFilm draftId={props.draftId} sample={sample} />;
-      }
-      if (sample.category === "原型") {
-        return <GenericPrototype draftId={props.draftId} sample={sample} />;
-      }
-      if (sample.category === "幻灯片") {
-        return <GenericSlide draftId={props.draftId} sample={sample} />;
-      }
-      if (sample.category === "文档") {
-        return <GenericDocument draftId={props.draftId} sample={sample} />;
-      }
-      if (sample.category === "音频") {
-        return <GenericSound draftId={props.draftId} sample={sample} />;
-      }
-      return <GenericTemplate 
-        templateId={sample.id} 
-        category={sample.category}
-        templateTitle={sample.title} 
-        templateDescription={sample.description} 
-        photos={sample.photos} 
-        draftId={props.draftId} 
-      />;
-    })
-  ) : null;
+  const ViewerComponent = sample ? viewers[sample.id] : null;
   const visible = samples.filter(
     (x) =>
       (category === "全部" || category === x.category) &&

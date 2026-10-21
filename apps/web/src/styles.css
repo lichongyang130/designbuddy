@@ -1144,3 +1144,27 @@ button:disabled { cursor: not-allowed; }
 .db-version-panel .db-share-list li > div:last-child { flex-direction: row; align-items: center; gap: 6px; flex: 0 0 auto; }
 .db-version-panel .db-share-list button { border: 1px solid #dcdce4; background: #fff; border-radius: 999px; padding: 2px 9px; font: inherit; font-size: 12px; cursor: pointer; }
 .db-version-panel .db-share-list .db-empty-note { display: block; color: #6b7280; border-style: dashed; }
+
+.ppt-intent-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #fff7e8;
+  border: 1px solid #f0d8a8;
+  color: #8a5d1a;
+  font-size: 11px;
+  white-space: nowrap;
+}
+.send-button.is-ppt {
+  width: auto;
+  min-width: 92px;
+  padding: 0 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  gap: 6px;
+  background: #1a6b4a !important;
+}
+.send-button.is-ppt:hover:not(:disabled) { background: #14553c !important; }
+.send-button.is-ppt svg { width: 14px; height: 14px; }

@@ -1,1 +1,0 @@
-export default function ToolExecutionCard(){return <div>Tool execution</div>}

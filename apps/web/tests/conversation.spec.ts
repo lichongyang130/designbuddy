@@ -1,7 +1,13 @@
 import { test, expect, type Page } from "@playwright/test";
+import { resetComposerDefaults, setMode, setPermission } from "./helpers/home";
 
 const answer = "你好！我是 **WorkBuddy**，你的 AI 搭档。\n\n我可以协助你整理资料、写作、分析问题和设计页面。\n\n1. **我该叫什么？** 你可以给我起一个名字。\n2. **该怎么称呼你？** 告诉我你喜欢的称呼。\n\n请告诉我接下来想完成什么任务。";
 const sse = (text = answer) => `data: ${JSON.stringify({ model: "test-chat-model", choices: [{ delta: { content: text }, finish_reason: null }] })}\n\ndata: ${JSON.stringify({ choices: [{ delta: {}, finish_reason: "stop" }] })}\n\ndata: [DONE]\n\n`;
+test.beforeEach(async ({ page }) => {
+  // The composer defaults are account-wide; another spec may have pinned
+  // 「仅本地」 before this file ran.
+  await resetComposerDefaults(page);
+});
 async function ask(page: Page, text = "自我介绍") {
   await page.goto("/");
   await page.getByRole("textbox", { name: "任务描述", exact: true }).fill(text);
@@ -83,7 +89,7 @@ test("local policy sends no AI request; follow-ups respect Chinese IME and carry
   await page.route("**/api/chat", (route) => { payloads.push(route.request().postDataJSON()); return route.fulfill({ contentType: "text/event-stream", body: sse("收到，请继续。") }); });
   await page.goto("/");
   await page.getByRole("textbox", { name: "任务描述", exact: true }).fill("仅本地测试");
-  await page.getByLabel("任务权限", { exact: true }).selectOption("仅本地");
+  await setPermission(page, "仅本地");
   await page.getByRole("button", { name: "开始任务", exact: true }).click();
   await expect(page.locator(".task-progress summary")).toContainText("仅本地");
   expect(payloads).toHaveLength(0);
@@ -104,7 +110,7 @@ test("local policy sends no AI request; follow-ups respect Chinese IME and carry
 test("design mode still saves generated files and opens the editor explicitly", async ({ page }) => {
   await page.route("**/api/generation", (route) => route.fulfill({ json: { model: "design-test", files: [{ path: "index.html", content: "<!doctype html><html><body><h1>生成的页面</h1></body></html>", language: "html" }] } }));
   await page.goto("/");
-  await page.getByRole("tab", { name: "设计制作", exact: true }).click();
+  await setMode(page, "设计制作");
   await page.getByRole("textbox", { name: "任务描述", exact: true }).fill("设计一个首页");
   await page.getByRole("button", { name: "开始任务", exact: true }).click();
   await expect(page.locator(".task-progress summary")).toContainText("已完成");

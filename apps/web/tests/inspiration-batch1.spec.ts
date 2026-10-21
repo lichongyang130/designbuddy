@@ -75,7 +75,7 @@ test("hf-quest branches to an ending and records the route", async ({
 
 test("hf-lesson plays chapters and grades the quiz", async ({ page }) => {
   await page.goto("/inspiration/hf-lesson");
-  await expect(page.getByText("第 1 节 · 什么是好文案")).toBeVisible();
+  await expect(page.getByText("第 1 节 · 什么是好文案", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "播放", exact: true }).click();
   await page.getByRole("button", { name: "暂停", exact: true }).click();
   await page.getByText("3 天学会做周报，老板追着问").click();

@@ -15,7 +15,6 @@ export type { PreviewSidePanelProps, PreviewSideDevice } from "./PreviewSidePane
 export { buildPreviewDocument, hasPreviewablePage } from "./previewDocument";
 export { default as WorkspaceHub } from "./WorkspaceHub";
 export * from "./workspaceRoutes";
-export { default as DesignLibrary } from "./pages/DesignLibrary";
 export { default as StudioPage } from "./pages/StudioPage";
 export { default as ShareProjectPage } from "./pages/ShareProjectPage";
 export { default as ProjectsPage } from "./pages/ProjectsPage";

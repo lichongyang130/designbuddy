@@ -802,7 +802,7 @@ export function createApiHandler(options: ApiHandlerOptions): (request: Request)
         return json({ error: "Method not allowed." }, 405, options.corsOrigin);
       }
 
-      const assetPath = url.pathname.match(/^\/api\/assets\/([A-Za-z0-9_-]{4,64})(?:\/(content|events))?$/);
+      const assetPath = url.pathname.match(/^\/api\/assets\/([A-Za-z0-9_-]{4,64})(?:\/(content|events|raw))?$/);
       if (assetPath && options.assets) {
         const asset = options.assets.get(assetPath[1]);
         if (assetPath[2] === "events" && request.method === "GET") {
@@ -817,6 +817,13 @@ export function createApiHandler(options: ApiHandlerOptions): (request: Request)
         if (assetPath[2] === "content" && request.method === "GET") {
           if (!asset.extracted) return json({ error: "这个文件不是文本，服务端没有解析它。" }, 415, options.corsOrigin);
           return json({ assetId: asset.id, name: asset.name, text: asset.excerpt }, 200, options.corsOrigin);
+        }
+        if (assetPath[2] === "raw" && request.method === "GET") {
+          const bytes = options.assets.read(asset);
+          if (!bytes) return json({ error: "素材文件已丢失。" }, 404, options.corsOrigin);
+          // Return as base64 for browser; images and other binaries need raw bytes
+          const base64 = Buffer.from(bytes).toString("base64");
+          return json({ assetId: asset.id, name: asset.name, mime: asset.mime, dataBase64: base64, size: bytes.byteLength }, 200, options.corsOrigin);
         }
         if (!assetPath[2] && request.method === "PATCH") {
           if (asset.ownerId !== principal.id) return json({ error: "只有素材的所有者可以修改可见范围。" }, 403, options.corsOrigin);
@@ -883,9 +890,32 @@ export function createApiHandler(options: ApiHandlerOptions): (request: Request)
       if (options.workflows) {
         const workflowListPath = url.pathname.match(/^\/api\/workflows$/);
         if (workflowListPath && request.method === "GET") {
-          return json({ workflows: workflowCatalog() }, 200, options.corsOrigin);
+          return json({ workflows: options.workflows.catalog(principal.id) }, 200, options.corsOrigin);
         }
-        const workflowRunPath = url.pathname.match(/^\/api\/workflows\/([a-z0-9-]{3,60})\/runs$/);
+        const workflowRecipesPath = url.pathname.match(/^\/api\/workflows\/recipes$/);
+        if (workflowRecipesPath && request.method === "POST") {
+          const body = await readJson(request, 200_000);
+          try {
+            const recipe = options.workflows.createRecipe(principal.id, {
+              name: body.name,
+              goal: body.goal,
+              minutes: body.minutes,
+              steps: Array.isArray(body.steps) ? (body.steps as never) : [],
+            });
+            const enriched = options.workflows.catalog(principal.id).find((item) => item.id === recipe.id) ?? recipe;
+            return json({ workflow: enriched }, 201, options.corsOrigin);
+          } catch (error) {
+            if (error instanceof WorkflowInputError) return json({ error: error.message }, 400, options.corsOrigin);
+            throw error;
+          }
+        }
+        const workflowRecipeDeletePath = url.pathname.match(/^\/api\/workflows\/recipes\/([a-z0-9-]{3,80})$/);
+        if (workflowRecipeDeletePath && request.method === "DELETE") {
+          const deleted = options.workflows.deleteRecipe(principal.id, workflowRecipeDeletePath[1]);
+          if (!deleted) return json({ error: "未找到该自定义工作流或无权删除。" }, 404, options.corsOrigin);
+          return json({ ok: true }, 200, options.corsOrigin);
+        }
+        const workflowRunPath = url.pathname.match(/^\/api\/workflows\/([a-z0-9-]{3,80})\/runs$/);
         if (workflowRunPath && request.method === "POST") {
           const body = await readJson(request, 400_000);
           const inputs = {

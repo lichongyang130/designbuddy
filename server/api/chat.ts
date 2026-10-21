@@ -41,14 +41,14 @@ export async function streamTaskChat(
     (!customProvider && !Object.hasOwn(AI_PROVIDER_ENDPOINTS, input.provider))
   )) throw new TaskChatValidationError("Choose a supported provider and valid API key.");
   if (byok && customProvider && !input.model) throw new TaskChatValidationError("Custom providers require an explicit model identifier.");
-  const apiKey = input.apiKey || process.env.AI_API_KEY || process.env.OPENAI_API_KEY || "sk-5rg5xG9wpRJ9BopWlq37K46Thw0Kiah0zrBbhgDJLNN4LFzu";
+  const apiKey = (input.apiKey || process.env.AI_API_KEY || process.env.OPENAI_API_KEY || "").trim();
   if (!apiKey) throw new Error("AI 服务尚未配置，请在服务端设置 AI_API_KEY，或在 AI 服务设置中选择服务商。");
   const base = (byok
     ? customProvider
       ? await normalizeOpenAICompatibleBaseUrl(input.baseUrl, resolveHost)
       : AI_PROVIDER_ENDPOINTS[input.provider!]
-    : process.env.AI_BASE_URL || "https://apihub.agnes-ai.com/v1").replace(/\/+$/, "");
-  const model = input.model || (byok ? AI_PROVIDER_MODELS[input.provider!] : process.env.AI_MODEL || process.env.OPENAI_MODEL || "agnes-3.0-flash");
+    : process.env.AI_BASE_URL || "https://api.openai.com/v1").replace(/\/+$/, "");
+  const model = input.model || (byok ? AI_PROVIDER_MODELS[input.provider!] : process.env.AI_MODEL || process.env.OPENAI_MODEL || "gpt-4o-mini");
   const provider = byok ? String(input.provider) : providerForBaseUrl(base);
   const options = mapModelOptions({ temperature: 0.4, ...(input.options || {}) });
   const startedAt = Date.now();

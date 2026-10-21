@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { validateKitTemplate, type KitPage, type KitTemplate } from "./kitTypes";
-import { rewriteTextBatch } from "../../../utils/ollamaClient";
 import "./kit.css";
 
 const artworkFiles = import.meta.glob<string>(
@@ -63,14 +62,6 @@ export default function KitTemplate({ template: initialTemplate }: { template: K
   }, [initialTemplate]);
 
   useEffect(() => {
-    fetch('http://localhost:4124/state', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(template)
-    }).catch(() => {});
-  }, [template]);
-
-  useEffect(() => {
     const handleAgentData = (e: Event) => {
       const customEvent = e as CustomEvent;
       if (customEvent.detail && customEvent.detail.pages) {
@@ -80,77 +71,6 @@ export default function KitTemplate({ template: initialTemplate }: { template: K
     window.addEventListener("buddy:agent-update-data", handleAgentData);
     return () => window.removeEventListener("buddy:agent-update-data", handleAgentData);
   }, []);
-
-  useEffect(() => {
-    const handleSkill = async (e: Event) => {
-      const customEvent = e as CustomEvent;
-      const { type } = customEvent.detail;
-      
-      if (type === 'magic-copy' || type === 'fill-mock-data') {
-        let clone = JSON.parse(JSON.stringify(template));
-        
-        if (type === 'magic-copy') {
-          // Collect texts
-          const textMap: Record<string, string> = {};
-          let textId = 0;
-          
-          const collect = (obj: any) => {
-            for (const k in obj) {
-              if (typeof obj[k] === 'string') {
-                const val = obj[k];
-                if (val.length > 4 && !val.includes('http') && !val.includes('/') && !val.includes('.svg') && !val.includes('.jpg') && !val.includes('.png') && !val.includes('.webp') && !val.startsWith('#') && !/^[A-Za-z0-9_-]+$/.test(val)) {
-                  const id = `k_${textId++}`;
-                  textMap[id] = val;
-                  obj[k] = `__KIT_TEXT_ID_${id}__`; // temporary marker
-                }
-              } else if (typeof obj[k] === 'object' && obj[k] !== null) {
-                collect(obj[k]);
-              }
-            }
-          };
-          
-          collect(clone);
-          
-          // Send to Ollama
-          if (Object.keys(textMap).length > 0) {
-            console.log("Rewriting kit texts:", Object.keys(textMap).length);
-            const rewritten = await rewriteTextBatch(textMap, "更加专业且吸引人的风格");
-            
-            // Re-apply
-            const apply = (obj: any) => {
-              for (const k in obj) {
-                if (typeof obj[k] === 'string' && obj[k].startsWith('__KIT_TEXT_ID_')) {
-                  const id = obj[k].replace('__KIT_TEXT_ID_', '').replace('__', '');
-                  obj[k] = rewritten[id] || textMap[id]; 
-                } else if (typeof obj[k] === 'object' && obj[k] !== null) {
-                  apply(obj[k]);
-                }
-              }
-            };
-            apply(clone);
-          }
-        }
-        
-        if (type === 'fill-mock-data') {
-          const walk = (obj: any) => {
-            for (const k in obj) {
-              if (typeof obj[k] === 'number' && obj[k] > 0) {
-                const multiplier = 0.8 + Math.random() * 0.4;
-                obj[k] = Math.round(obj[k] * multiplier);
-              } else if (typeof obj[k] === 'object' && obj[k] !== null) {
-                walk(obj[k]);
-              }
-            }
-          };
-          walk(clone);
-        }
-        
-        setTemplate(clone);
-      }
-    };
-    window.addEventListener("buddy:ai-skill", handleSkill);
-    return () => window.removeEventListener("buddy:ai-skill", handleSkill);
-  }, [template]);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {

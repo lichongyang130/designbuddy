@@ -1,10 +1,10 @@
 import { test, expect, type Page, type Download } from "@playwright/test";
 import { unzipSync, strFromU8 } from "fflate";
-async function open(page: Page, mode = "办公提效", name = "会议纪要") {
-  await page.getByRole("tab", { name: mode, exact: true }).click();
-  if (!await page.locator(".home-example-library").evaluate(el => (el as HTMLDetailsElement).open)) await page.locator(".home-example-library > summary").click();
-  await page.getByRole("button", { name: `预览${name}`, exact: true }).click();
-  return page.getByRole("dialog", { name: `${name}场景预览`, exact: true });
+import { openScenePreview } from "./helpers/home";
+async function open(page: Page, _mode = "办公提效", name = "会议纪要") {
+  // Scene previews moved behind ⌘K; the mode argument is kept so the call sites
+  // still read the same, but the sample now opens from search.
+  return openScenePreview(page, name);
 }
 async function bytes(download: Download) {
   const stream = await download.createReadStream();

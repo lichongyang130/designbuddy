@@ -24,6 +24,8 @@ import { CommunityTemplateStore } from "./api/community-templates";
 import { WorkflowEngine } from "./api/workflows";
 import { AdminService } from "./api/admin";
 import { ScheduleRunner } from "./api/scheduler";
+import { AgentOrchestrator } from "./agent/orchestrator";
+import { createAgentHubHandler } from "./api/agent-hub";
 
 const host = process.env.DESIGNBUDDY_HOST || "0.0.0.0";
 const port = Number(process.env.DESIGNBUDDY_PORT || 8787);
@@ -65,15 +67,23 @@ setAiUsageRecorder((ownerId, record) => {
   }
 });
 
-/** Always return a valid principal; fall back to a stable guest identity. */
-function resolvePrincipal(request: Request): { id: string } {
-  return workspace.principal(request) ?? { id: "guest-user" };
+/** Resolve authenticated principal strictly from trusted local token or verified session. */
+function resolvePrincipal(request: Request): { id: string } | null {
+  return trustedToken(request) ? { id: "local-user" } : workspace.principal(request);
 }
 
 const taskPaths = ["/api/tasks", "/api/notifications", "/api/schedules"];
 const aiPaths = ["/api/ai"];
 const profilePaths = ["/api/profile"];
 const pluginPaths = ["/api/plugins"];
+const agentCorePaths = ["/api/agent-core"];
+const agentOrchestrator = new AgentOrchestrator();
+const handleAgentCore = createAgentHubHandler({
+  orchestrator: agentOrchestrator,
+  projects,
+  versions: projectVersions,
+  workspaces,
+});
 const api = createApiHandler({
   skills,
   projects,
@@ -86,8 +96,7 @@ const api = createApiHandler({
   workflows,
   admin,
   workspaces,
-  authenticate: async (request) =>
-    trustedToken(request) ? { id: "local-user" } : (workspace.principal(request) ?? { id: "guest-" + (request.headers.get("cookie") || "anonymous").slice(0, 32).replace(/[^a-zA-Z0-9]/g, "") || "anonymous" }),
+  authenticate: async (request) => resolvePrincipal(request),
   localAgentWorkspaceRoot:
     process.env.DESIGNBUDDY_ENABLE_LOCAL_AGENT === "true"
       ? process.env.DESIGNBUDDY_AGENT_WORKSPACE_DIR || "./data/agent-projects"
@@ -208,21 +217,31 @@ const server = createServer(async (incoming, outgoing) => {
       }
       if (pluginPaths.some(prefix => url.pathname === prefix || url.pathname.startsWith(prefix + "/"))) {
         const owner = resolvePrincipal(request);
+        if (!owner) { send(responseJSON({ error: "Authentication required." }, 401)); return; }
         send((await plugins.handle(request, owner.id)) || responseJSON({ error: "未找到该接口。" }, 404));
         return;
       }
       if (profilePaths.some(prefix => url.pathname === prefix || url.pathname.startsWith(prefix + "/"))) {
         const owner = resolvePrincipal(request);
+        if (!owner) { send(responseJSON({ error: "Authentication required." }, 401)); return; }
         send(await handleProfileRequest(request, owner.id, profiles));
         return;
       }
       if (aiPaths.some(prefix => url.pathname === prefix || url.pathname.startsWith(prefix + "/"))) {
         const owner = resolvePrincipal(request);
+        if (!owner) { send(responseJSON({ error: "Authentication required." }, 401)); return; }
         send(await handleAiRegistry(request, owner.id, tasks));
+        return;
+      }
+      if (agentCorePaths.some(prefix => url.pathname === prefix || url.pathname.startsWith(prefix + "/"))) {
+        const owner = resolvePrincipal(request);
+        if (!owner) { send(responseJSON({ error: "Authentication required." }, 401)); return; }
+        send(await handleAgentCore(request, owner.id));
         return;
       }
       if (taskPaths.some(prefix => url.pathname === prefix || url.pathname.startsWith(prefix + "/"))) {
         const owner = resolvePrincipal(request);
+        if (!owner) { send(responseJSON({ error: "Authentication required." }, 401)); return; }
         send((await tasks.handle(request, owner.id)) || responseJSON({ error: "未找到该接口。" }, 404));
         return;
       }
@@ -315,6 +334,7 @@ server.on("error", (error) => {
 for (const signal of ["SIGTERM", "SIGINT"] as const)
   process.on(signal, () => {
     server.close(() => {
+      agentOrchestrator.close();
       workspace.close();
       process.exit(0);
     });

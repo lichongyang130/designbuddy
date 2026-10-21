@@ -1,0 +1,215 @@
+/* Theme preview: a real 16:9 slide surface driven entirely by the theme's CSS
+   variables. Shared by the gallery, the drawer and the deck's theme panel. */
+
+.theme-preview {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  overflow: hidden;
+  background: var(--ppt-bg);
+  color: var(--ppt-ink);
+  font-family: var(--ppt-body-font);
+  container-type: inline-size;
+  isolation: isolate;
+}
+
+.theme-preview .tp-eyebrow {
+  display: block;
+  font-size: 1.05cqw;
+  letter-spacing: 0.16em;
+  text-transform: var(--ppt-eyebrow-transform);
+  color: var(--ppt-muted);
+}
+
+/* Cover ------------------------------------------------------------------ */
+.theme-preview .tp-cover {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  padding: var(--ppt-padding);
+  background: var(--ppt-primary);
+  color: var(--ppt-on-primary);
+}
+
+.theme-preview .tp-cover-split {
+  background: linear-gradient(100deg, var(--ppt-primary) 0 58%, color-mix(in srgb, var(--ppt-primary) 82%, #000) 58% 100%);
+}
+
+.theme-preview .tp-cover-full-bleed .tp-cover-wash {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 90% at 78% 18%, color-mix(in srgb, var(--ppt-accent) 55%, transparent) 0%, transparent 60%),
+    repeating-linear-gradient(135deg, color-mix(in srgb, var(--ppt-on-primary) 7%, transparent) 0 2px, transparent 2px 22px);
+  opacity: 0.85;
+}
+
+.theme-preview .tp-cover-body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2cqw;
+  max-width: 74%;
+}
+
+.theme-preview .tp-cover-centered .tp-cover-body {
+  max-width: 88%;
+  margin: 0 auto;
+  text-align: center;
+  align-items: center;
+}
+
+.theme-preview .tp-cover-minimal {
+  background: var(--ppt-bg);
+  color: var(--ppt-ink);
+  align-items: flex-end;
+}
+
+.theme-preview .tp-cover-minimal .tp-eyebrow {
+  color: var(--ppt-muted);
+}
+
+.theme-preview .tp-cover .tp-eyebrow {
+  color: color-mix(in srgb, var(--ppt-on-primary) 78%, transparent);
+}
+
+.theme-preview .tp-cover-minimal .tp-eyebrow {
+  color: var(--ppt-muted);
+}
+
+.theme-preview .tp-cover h4 {
+  margin: 0;
+  font-family: var(--ppt-heading-font);
+  font-size: 5.4cqw;
+  line-height: 1.18;
+  font-weight: var(--ppt-heading-weight);
+  letter-spacing: -0.02em;
+  text-transform: var(--ppt-heading-transform);
+}
+
+.theme-preview .tp-accent-bar {
+  display: block;
+  width: 12%;
+  height: 0.55cqw;
+  border-radius: calc(var(--ppt-radius) * 0.5);
+  background: var(--ppt-accent);
+}
+
+.theme-preview .tp-cover-centered .tp-accent-bar {
+  width: 18%;
+}
+
+.theme-preview .tp-cover-sub {
+  margin: 0;
+  font-size: 1.5cqw;
+  color: color-mix(in srgb, var(--ppt-on-primary) 72%, transparent);
+}
+
+.theme-preview .tp-cover-minimal .tp-cover-sub {
+  color: var(--ppt-muted);
+}
+
+/* Inner pages ------------------------------------------------------------ */
+.theme-preview .tp-body {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: calc(1.1cqw * var(--ppt-density));
+  padding: var(--ppt-padding);
+  background: var(--ppt-bg);
+}
+
+.theme-preview .tp-body-title {
+  margin: 0;
+  font-family: var(--ppt-heading-font);
+  font-size: 3.3cqw;
+  line-height: 1.25;
+  font-weight: var(--ppt-heading-weight);
+  letter-spacing: var(--ppt-letter-spacing);
+  text-transform: var(--ppt-heading-transform);
+  color: var(--ppt-ink);
+}
+
+.theme-preview .tp-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.4cqw;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.theme-preview .tp-cards article {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5cqw;
+  padding: 1.4cqw;
+  border: var(--ppt-stroke) solid var(--ppt-border);
+  border-radius: var(--ppt-radius);
+  background: var(--ppt-surface);
+  box-shadow: var(--ppt-shadow);
+}
+
+.theme-preview .tp-cards b {
+  font-size: 1.6cqw;
+  font-weight: 500;
+  color: var(--ppt-accent);
+}
+
+.theme-preview .tp-cards strong {
+  font-family: var(--ppt-heading-font);
+  font-size: 1.6cqw;
+  font-weight: var(--ppt-heading-weight);
+  color: var(--ppt-ink);
+}
+
+.theme-preview .tp-cards span {
+  font-size: 1.15cqw;
+  line-height: var(--ppt-line-height);
+  color: var(--ppt-muted);
+}
+
+.theme-preview .tp-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.6cqw;
+  height: 100%;
+  min-height: 0;
+  margin-top: auto;
+  margin-bottom: 0.8cqw;
+  padding-top: 2cqw;
+  border-bottom: var(--ppt-stroke) solid var(--ppt-border);
+}
+
+.theme-preview .tp-chart > div {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.6cqw;
+  height: 100%;
+}
+
+.theme-preview .tp-chart i {
+  width: 100%;
+  border-radius: calc(var(--ppt-radius) * 0.6) calc(var(--ppt-radius) * 0.6) 0 0;
+  box-shadow: var(--ppt-shadow);
+}
+
+.theme-preview .tp-chart span {
+  font-size: 1.05cqw;
+  color: var(--ppt-muted);
+  white-space: nowrap;
+}
+
+.theme-preview .tp-label {
+  position: absolute;
+  right: 0.9cqw;
+  bottom: 0.7cqw;
+  font-size: 0.95cqw;
+  letter-spacing: 0.06em;
+  color: color-mix(in srgb, var(--ppt-muted) 70%, transparent);
+}

@@ -3,8 +3,10 @@ const BASE_PATH = import.meta.env.BASE_URL.replace(/\/+$/, "");
 export const workspaceRoutes = {
   home: "/",
   plugins: "/plugins",
+  themes: "/themes",
   inspiration: "/inspiration",
   projects: "/projects",
+  agent: "/agent",
   experts: "/experts",
   myExperts: "/experts/mine",
   createExpert: "/experts/create",

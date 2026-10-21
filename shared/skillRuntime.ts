@@ -27,6 +27,22 @@ export const skillPermissionLabels: Record<SkillPermission, string> = {
 };
 /** Permissions that hand content to a third party; they need an explicit per-run consent. */
 export const externalSkillPermissions: SkillPermission[] = ["external.ai", "external.image", "external.calendar", "external.email"];
+/**
+ * Five-state capability classification aligning UI, API and audit status:
+ * - ready: dependencies met, local execution ready
+ * - needs_config: real executor wired, server credential/runtime missing
+ * - needs_auth: dependencies met, requires explicit per-run user consent
+ * - unavailable: executor missing or unsupported on current platform
+ * - failed: latest execution attempt failed (reported with error & retry hint)
+ */
+export type SkillCapabilityState = "ready" | "needs_config" | "needs_auth" | "unavailable" | "failed";
+export const skillCapabilityLabels: Record<SkillCapabilityState, string> = {
+  ready: "可运行",
+  needs_config: "需要配置",
+  needs_auth: "需要授权",
+  unavailable: "不可用",
+  failed: "执行失败",
+};
 export type RuntimeSkill = {
   id: string; version: string; name: string; expertIds: string[];
   manualOnly?: boolean;
@@ -36,6 +52,10 @@ export type RuntimeSkill = {
   exampleFile?: { filename: string; path: string; hint: string; buttonLabel?: string; licensePath?: string };
   example?: { filename: string; content: string };
   status: "ready" | "unavailable"; accepts: string[]; outputs: string[]; description: string; limits: string;
+  /** Fine-grained capability state separating config gaps, per-run consent and hard unavailability. */
+  capabilityState?: SkillCapabilityState;
+  /** Human-readable reason explaining current capabilityState. */
+  statusReason?: string;
   /** The system capabilities this skill really uses. */
   permissions?: SkillPermission[];
   /** Whether a real executor is wired up. "missing" means the platform has no executor for this skill at all. */

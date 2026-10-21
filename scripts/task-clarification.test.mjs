@@ -10,7 +10,7 @@ test('only underspecified UI requests get the conservative local guard', () => {
   for (const text of ['自我介绍', '解释一下UI是什么', '设计一个首页', '做一个React登录界面', '帮我设计微信小程序UI', '帮我做一个UI需求方案', '做个网页界面']) assert.equal(initialUIQuestions(text), null, text);
 });
 test('structured protocol validates bounds and rejects duplicates and arbitrary JSON', () => {
-  assert.deepEqual(parseClarification(wrap(questions)), questions);
+  assert.deepEqual(parseClarification(wrap(questions)), { intro: '', questions });
   assert.equal(parseClarification('普通回答'), null);
   assert.equal(parseClarification('```json\n{}\n```'), null);
   for (const q of [[], [...questions, ...questions], [{ ...questions[0], options: ['one'] }], [{ ...questions[0], options: ['one', 'one'] }], [{ ...questions[0], options: ['one', 'two', 'three', 'four', 'five'] }], [{ ...questions[0], title: 'x'.repeat(201) }], [{ ...questions[0], id: '<script>' }], Array(5).fill(questions[0])]) assert.throws(() => parseClarification(wrap(q)), /格式无效/);

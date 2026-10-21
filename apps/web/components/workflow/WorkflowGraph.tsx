@@ -1,1 +1,0 @@
-export default function WorkflowGraph(){return <div>Workflow Graph Canvas</div>}

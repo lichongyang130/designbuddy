@@ -1,6 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
 import { GUEST_STORAGE, freshAccountPage, loginViaAPI } from "./auth-helpers";
 import { readFile } from "node:fs/promises";
+import { baseURL } from "./helpers/baseUrl";
 const nav = (page: Page, i: number) =>
   page
     .getByRole("navigation", { name: "ATELIER 页面目录" })
@@ -369,7 +370,7 @@ test("ATELIER snapshots survive account login and restore in a separate browser"
     const second = await browser.newContext({ storageState: GUEST_STORAGE });
     try {
       const other = await second.newPage();
-      await other.goto("http://127.0.0.1:5173/inspiration");
+      await other.goto(`${baseURL}/inspiration`);
       await loginViaAPI(other, username, password);
       await other
         .getByRole("button", { name: "服务器作品", exact: true })

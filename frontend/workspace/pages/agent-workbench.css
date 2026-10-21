@@ -1,0 +1,239 @@
+.agent-workbench-main {
+  flex: 1;
+  min-width: 0;
+  padding: clamp(16px, 2.5vw, 28px);
+  overflow-x: clip;
+  overflow-y: auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.aw-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(120, 130, 145, 0.2);
+}
+
+.aw-header h1 {
+  margin: 0;
+  font-size: clamp(1.35rem, 2.2vw, 1.75rem);
+}
+
+.aw-header p {
+  margin: 6px 0 0;
+  color: #5c6672;
+  font-size: 0.92rem;
+  max-width: 72ch;
+}
+
+.aw-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.aw-select,
+.aw-input,
+.aw-textarea {
+  font: inherit;
+  border: 1px solid rgba(110, 120, 135, 0.35);
+  border-radius: 10px;
+  background: var(--surface, #ffffff);
+  color: inherit;
+  padding: 8px 12px;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+.aw-textarea {
+  width: 100%;
+  min-height: 82px;
+  resize: vertical;
+}
+
+.aw-btn {
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: 9px;
+  border: 1px solid rgba(110, 120, 135, 0.32);
+  background: var(--surface, #ffffff);
+  color: inherit;
+  cursor: pointer;
+}
+
+.aw-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.aw-btn-primary {
+  background: #1f5f4a;
+  border-color: #1f5f4a;
+  color: #ffffff;
+}
+
+.aw-btn-danger {
+  border-color: rgba(185, 56, 48, 0.45);
+  color: #b42318;
+}
+
+.aw-notice {
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  background: rgba(31, 95, 74, 0.09);
+  border: 1px solid rgba(31, 95, 74, 0.25);
+}
+
+.aw-notice.is-error {
+  background: rgba(180, 35, 24, 0.08);
+  border-color: rgba(180, 35, 24, 0.3);
+  color: #a61b1b;
+}
+
+.aw-composer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(120, 130, 145, 0.22);
+  background: var(--surface, #ffffff);
+}
+
+.aw-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.aw-tab {
+  font: inherit;
+  font-size: 0.88rem;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(120, 130, 145, 0.28);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.aw-tab[aria-selected="true"] {
+  background: #182026;
+  border-color: #182026;
+  color: #ffffff;
+}
+
+.aw-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: 16px;
+}
+
+.aw-card {
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(120, 130, 145, 0.22);
+  background: var(--surface, #ffffff);
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.aw-card h2,
+.aw-card h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.aw-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.aw-step-item {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(120, 130, 145, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.aw-row-between {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.aw-badge {
+  display: inline-block;
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(120, 130, 145, 0.16);
+}
+
+.aw-badge.is-ok {
+  background: rgba(31, 95, 74, 0.16);
+  color: #15523e;
+}
+
+.aw-badge.is-warn {
+  background: rgba(181, 110, 18, 0.16);
+  color: #8a5200;
+}
+
+.aw-badge.is-fail {
+  background: rgba(180, 35, 24, 0.15);
+  color: #a61b1b;
+}
+
+.aw-diff-pre {
+  margin: 0;
+  padding: 12px;
+  border-radius: 10px;
+  background: #12171e;
+  color: #e6edf3;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  overflow-x: auto;
+  max-height: 340px;
+}
+
+.aw-preview-frame-wrap {
+  width: 100%;
+  overflow-x: auto;
+  display: flex;
+  justify-content: center;
+  background: rgba(120, 130, 145, 0.08);
+  padding: 12px;
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+
+.aw-preview-iframe {
+  border: 1px solid rgba(120, 130, 145, 0.28);
+  border-radius: 10px;
+  background: #ffffff;
+  height: 440px;
+  max-width: 100%;
+}

@@ -370,3 +370,85 @@ test("the landing page and the social card really build their files", async () =
     assert.equal(png.mime, "image/png");
   });
 });
+
+test("users can create, isolate, execute and delete custom multi-step skill workflow recipes via HTTP API", async () => {
+  await withEngine(async ({ engine, assets }) => {
+    const handler = createApiHandler({
+      projects: {
+        async listByOwner() { return []; },
+        async getById() { return null; },
+        async save() { throw Error("not used"); },
+        async delete() { return false; },
+      },
+      workflows: engine,
+      authenticate: async (req) => {
+        const id = req.headers.get("x-test-user");
+        return id ? { id } : null;
+      },
+    });
+
+    // Reject unregistered skills cleanly
+    const badCreate = await handler(
+      request("/api/workflows/recipes", "POST", {
+        name: "非法配方",
+        goal: "引用不存在技能",
+        steps: [{ skill: "nonexistent.skill" }],
+      }),
+    );
+    assert.equal(badCreate.status, 400);
+
+    // Create 2-step chained custom workflow: table.analyze (CSV -> cleaned XLSX) -> table.analyze (re-verify XLSX)
+    const createdRes = await handler(
+      request("/api/workflows/recipes", "POST", {
+        name: "月度渠道清洗核算流",
+        goal: "先清洗脏 CSV 空行与表头空白导出工作簿，再二次复核统计指标",
+        steps: [
+          { title: "清洗原始表格生成工作簿", skill: "table.analyze", inputMode: "file" },
+          {
+            title: "复核生成的工作簿",
+            skill: "table.analyze",
+            inputMode: "previous_artifact",
+            artifactName: "*.xlsx",
+          },
+        ],
+      }),
+    );
+    assert.equal(createdRes.status, 201);
+    const customWorkflow = (await createdRes.json()).workflow;
+    assert.equal(customWorkflow.custom, true);
+    assert.equal(customWorkflow.steps.length, 2);
+
+    // Isolated per account: Alice sees her custom workflow, Bob does not and cannot delete it
+    const aliceCatalog = (await (await handler(request("/api/workflows"))).json()).workflows;
+    const bobCatalog = (await (await handler(request("/api/workflows", "GET", undefined, "bob"))).json()).workflows;
+    assert.ok(aliceCatalog.some((w) => w.id === customWorkflow.id));
+    assert.ok(!bobCatalog.some((w) => w.id === customWorkflow.id));
+    assert.equal((await handler(request(`/api/workflows/recipes/${customWorkflow.id}`, "DELETE", undefined, "bob"))).status, 404);
+
+    // Execute the custom 2-step pipeline end-to-end on real CSV bytes
+    const csvAsset = assets.create("alice", {
+      name: "sales.csv",
+      mime: "text/csv",
+      bytes: Buffer.from(" 渠道 , 收入 \n线上,120\n\n门店,180\n", "utf8"),
+    });
+    const runRes = await handler(
+      request(`/api/workflows/${customWorkflow.id}/runs`, "POST", {
+        fields: {},
+        files: { inputFile: { assetId: csvAsset.id, name: csvAsset.name } },
+      }),
+    );
+    assert.equal(runRes.status, 202);
+    const finished = await engine.waitFor("alice", (await runRes.json()).run.id);
+    assert.equal(finished.status, "succeeded", finished.error);
+    assert.equal(finished.steps[0].status, "succeeded");
+    assert.equal(finished.steps[1].status, "succeeded");
+    assert.ok(finished.steps[1].outputs.length > 0);
+
+    // Owner deletes custom recipe cleanly
+    const delRes = await handler(request(`/api/workflows/recipes/${customWorkflow.id}`, "DELETE"));
+    assert.equal(delRes.status, 200);
+    const afterDelete = (await (await handler(request("/api/workflows"))).json()).workflows;
+    assert.ok(!afterDelete.some((w) => w.id === customWorkflow.id));
+  });
+});
+

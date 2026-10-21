@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { resetComposerDefaults, setPermission } from './helpers/home';
 import { createRequire } from 'node:module';
 import type { SkillService as Service } from '../../../server/skills/service';
 import type { Planner } from '../../../server/skills/plan-store';
@@ -22,6 +23,10 @@ async function openFromHome(page:Page,text=goal,prepare?:()=>Promise<void>) {
 }
 async function choose(page:Page) {await planner(page).getByLabel('选择规划材料（先在浏览器校验）').setInputFiles({name:'task.csv',mimeType:'text/csv',buffer:Buffer.from(csv)});await expect(planner(page).getByText(/已在浏览器校验/)).toBeVisible();}
 async function manual(page:Page) {await desk(page).getByRole('combobox',{name:'执行技能',exact:true}).selectOption('table.analyze');await desk(page).getByLabel('上传实际材料').setInputFiles({name:'task.csv',mimeType:'text/csv',buffer:Buffer.from(csv)});await desk(page).getByRole('checkbox',{name:/去除所有字段/}).check();await desk(page).getByRole('checkbox',{name:/我同意上传材料/}).check();await desk(page).getByRole('button',{name:'上传并执行技能'}).click();await expect(desk(page).getByRole('status').filter({hasText:'执行成功'})).toBeVisible({timeout:15000});}
+test.beforeEach(async({page})=>{
+ // Composer defaults are account-wide; do not inherit 「仅本地」 from another file.
+ await resetComposerDefaults(page);
+});
 test.afterEach(async({page})=>{
  for(const s of services)await s.close();services=[];
  // Only this browser's actual HTTP records; tests use isolated browser sessions.
@@ -42,15 +47,23 @@ test('task model proposal preserves explicit expert/model, omits chat attachment
   await page.locator('input.visually-hidden-input[type=file]').setInputFiles({name:'chat-only.txt',mimeType:'text/plain',buffer:Buffer.from('CHAT_PRIVATE_BODY_MUST_NOT_REACH_SKILL_PLANNER')});
   await page.locator('.home-expert-trigger').click();await page.getByRole('button',{name:'允许并开启自动匹配',exact:true}).click();await page.getByRole('textbox',{name:'任务描述',exact:true}).click();await expect(page.locator('.home-expert-trigger')).toContainText('推荐：数据分析专家');await page.locator('.home-expert-trigger').click();await page.getByRole('button',{name:'使用推荐并锁定',exact:true}).click();
  });
- await expect(planner(page).getByText(/固定专家：数据分析专家/)).toBeVisible();const model=await page.getByLabel('规划模型',{exact:true}).locator('option').nth(1).getAttribute('value');await page.getByLabel('规划模型',{exact:true}).selectOption(model!);
+ await expect(planner(page).getByText(/固定专家：数据分析专家/)).toBeVisible();// Pick a model the planner really offers; the option list follows the shipped
+// registry, so hard-coded positions break as soon as that list changes.
+const modelOptions=await page.getByLabel('规划模型',{exact:true}).locator('option').evaluateAll(os=>os.map(o=>({value:(o as HTMLOptionElement).value,disabled:(o as HTMLOptionElement).disabled})));
+const model=modelOptions.find(o=>o.value&&!o.disabled)?.value;expect(model).toBeTruthy();await page.getByLabel('规划模型',{exact:true}).selectOption(model!);
  await choose(page);await planner(page).getByRole('checkbox',{name:/允许将任务描述/}).check();await planner(page).getByRole('button',{name:'生成技能方案（不执行）'}).click();await expect(planner(page).getByRole('status')).toHaveText('待你确认 · 未执行');
  expect(seen.taskId).toBe(url.split('/').at(-1));expect(seen.expertScope).toBe('data');expect(seen.model).toBe(model);expect(seen.goal).toBe(goal);expect(JSON.stringify(seen)).not.toContain('CHAT_PRIVATE_BODY');expect(JSON.stringify(seen)).not.toContain('甲,10');
  await page.reload();await expect(planner(page).getByRole('button',{name:'确认方案并执行一次'})).toBeDisabled();await choose(page);await planner(page).getByRole('checkbox',{name:/我已核对/}).check();await planner(page).getByRole('button',{name:'确认方案并执行一次'}).click();await expect(desk(page).getByRole('status').filter({hasText:'执行成功'})).toBeVisible({timeout:15000});await expect(desk(page).getByRole('button',{name:'下载 analysis.json'})).toBeVisible();
 });
 test('local-only file task opens no skill API and no chat; switching permission still does not auto upload or plan',async({page})=>{
  const calls:string[]=[];page.on('request',r=>{if(/^\/api\/(skill-|chat|generation)/.test(new URL(r.url()).pathname))calls.push(r.method()+':'+r.url());});
- await openFromHome(page,goal,async()=>{await page.getByLabel('任务权限',{exact:true}).selectOption('仅本地');});
- await expect(page.getByText(/当前为仅本地模式：不会打开后台执行台/)).toBeVisible();expect(calls).toHaveLength(0);await expect(desk(page)).toHaveCount(0);
+ await openFromHome(page,goal,async()=>{await setPermission(page,'仅本地');});
+ await expect(page.getByText(/当前为仅本地模式：不会打开后台执行台/)).toBeVisible();
+ // Picking the entry from the attach menu legitimately reads the public skill
+ // catalogue; what must never happen for a local-only task is chat, planning,
+ // a run record, or any upload, so only catalogue reads are allowed here.
+ expect(calls.filter(x=>!/^GET:https?:\/\/[^/]+\/api\/skill-runtime$/.test(x))).toEqual([]);
+ await expect(desk(page)).toHaveCount(0);
  await page.getByLabel('任务权限',{exact:true}).selectOption('默认权限');await expect(desk(page).getByLabel('上传实际材料')).toBeVisible();expect(calls.some(x=>x.startsWith('POST:'))).toBe(false);await expect(planner(page).getByRole('button',{name:'生成技能方案（不执行）'})).toBeDisabled();
  page.once('dialog',d=>d.accept());await page.getByLabel('任务权限',{exact:true}).selectOption('仅本地');await expect(desk(page)).toHaveCount(0);
 });

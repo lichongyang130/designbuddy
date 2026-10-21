@@ -11,6 +11,56 @@ export default defineConfig({
   resolve: {
     dedupe: ["react", "react-dom", "zustand"],
   },
+  build: {
+    chunkSizeWarningLimit: 750,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes("design-templates/catalog.json")) {
+            return "catalog-templates";
+          }
+          if (id.includes("plugins/_official/catalog.json")) {
+            return "catalog-plugins";
+          }
+          if (id.includes("skills/catalog.json")) {
+            return "catalog-skills";
+          }
+          if (id.includes("node_modules/pptxgenjs") || id.includes("node_modules/jszip") || id.includes("node_modules/fflate")) {
+            return "vendor-export";
+          }
+          if (id.includes("node_modules/react-dom/server")) {
+            return "vendor-react-ssr";
+          }
+          if (id.includes("node_modules/zustand")) {
+            return "vendor-state";
+          }
+          if (id.includes("node_modules/react") || id.includes("node_modules/scheduler")) {
+            return "vendor-react";
+          }
+          if (id.includes("frontend/workspace/i18nCatalogs/")) {
+            return /\/(ja|ko|th|zh-TW|ar)\.ts$/.test(id) ? "i18n-rtl-cjk" : "i18n-latin";
+          }
+          if (id.includes("SettingsWindow") || id.includes("SettingsSections")) {
+            return "settings-ui";
+          }
+          if (id.includes("HomeCommandPalette") || id.includes("promptCatalogSeeds")) {
+            return "command-palette";
+          }
+          if (id.includes("inspiration/samples/kit/sets/")) {
+            return /\/(paperhouse|campus|paws|roots|forme|atelier|tide|morrow|daylight)/.test(id)
+              ? "inspiration-kit-core"
+              : "inspiration-kit-extra";
+          }
+          if (id.includes("inspiration/samples/")) {
+            if (/\/(forme|atelier)\//.test(id)) return "inspiration-samples-craft";
+            if (/\/(tide|morrow|daylight|roots)\//.test(id)) return "inspiration-samples-domain";
+            return "inspiration-samples-core";
+          }
+          return undefined;
+        },
+      },
+    },
+  },
   server: {
     host: "0.0.0.0",
     allowedHosts: [
@@ -18,7 +68,7 @@ export default defineConfig({
       ...(env.DESIGNBUDDY_PUBLIC_ORIGIN
         ? [new URL(env.DESIGNBUDDY_PUBLIC_ORIGIN).hostname]
         : []),
-      ...(env.DESIGNBUDDY_PUBLIC_HOST ? [env.DESIGNBUDDY_PUBLIC_HOST] : []),
+      ...(env.DESIGNBUDDY_PUBLIC_HOST ? env.DESIGNBUDDY_PUBLIC_HOST.split(",") : []),
     ],
     proxy: {
       "/api": {

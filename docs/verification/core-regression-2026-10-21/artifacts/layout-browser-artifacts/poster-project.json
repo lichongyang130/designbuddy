@@ -1,0 +1,118 @@
+{
+  "version": 1,
+  "title": "自由排版示例",
+  "width": 960,
+  "height": 1200,
+  "background": "#f3f0e7",
+  "assets": [
+    {
+      "id": "a-0ef1a61d",
+      "data": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAABkCAYAAADDhn8LAAAACXBIWXMAAAsTAAALEwEAmpwYAAACkUlEQVR4nO3ToREAMACDwOy/dCvbEV4g8FyO7GwnnA0Ahdi3QWtYRQAKsQ7CVgAoxDoIWwGgEOsgbAWAQqyDsBUACrEOwlYAKMQ6CFsBoBDrIGwFgEKsg7AVAAqxDsJWACjEOghbAaAQ6yBsBYBCrIOwFQAKsQ7CVgAoxDoIWwGgEOsgbAWAQqyDsBUACrEOwlYAKMQ6CFsBoBDrIGwFgEKsg7AVAAqxDsJWACjEOghbAaAQ6yBsBYBCrIOwFQAKsQ7CVgAoxDoIWwGgEOsgbAWAQqyDsBUACrEOwlYAKMQ6CFsBoBDrIGwFgEKsg7AVAAqxDsJWACjEOghbAaAQ6yBsBYBCrIOwFQAKsQ7CVgAoxDoIWwGgEOsgbAWAQqyDsBUACrEOwlYAKMQ6CFsBoBDrIGwFgEKsg7AVAAqxDsJWACjEOghbAaAQ6yBsBYBCrIOwFQAKsQ7CVgAoxDoIWwGgEOsgbAWAQqyDsBUACrEOwlYAKMQ6CFsBoBDrIGwFgEKsg7AVAAqxDsJWACjEOghbAaAQ6yBsBYBCrIOwFQAKsQ7CVgAoxDoIWwGgEOsgbAWAQqyDsBUACrEOwlYAKMQ6CFsBoBDrIGwFgEKsg7AVAAqxDsJWACjEOghbAaAQ6yBsBYBCrIOwFQAKsQ7CVgAoxDoIWwGgEOsgbAWAQqyDsBUACrEOwlYAKMQ6CFsBoBDrIGwFgEKsg7AVAAqxDsJWACjEOghbAaAQ6yBsBYBCrIOwFQAKsQ7CVgAoxDoIWwGgEOsgbAWAQqyDsBUACrEOwlYAKMQ6CFsBoBDrIGwFgEKsg7AVAAqxDsJWACjEOghbAaAQ6yBsBYBCrIOwFQAKsQ7CVgAoxDoIWwGgEHsbXFYGrNYN7EV/AAAAAElFTkSuQmCC",
+      "source": "测试自绘红蓝色块，不是摄影或AI图片"
+    }
+  ],
+  "layers": [
+    {
+      "id": "accent",
+      "name": "橙色圆形",
+      "type": "rect",
+      "x": 608,
+      "y": 80,
+      "width": 272,
+      "height": 272,
+      "opacity": 100,
+      "visible": true,
+      "locked": false,
+      "color": "#d47749",
+      "radius": 136
+    },
+    {
+      "id": "panel",
+      "name": "绿色底板",
+      "type": "rect",
+      "x": 64,
+      "y": 520,
+      "width": 832,
+      "height": 520,
+      "opacity": 100,
+      "visible": true,
+      "locked": false,
+      "color": "#294f43",
+      "radius": 24
+    },
+    {
+      "id": "eyebrow",
+      "name": "上方说明",
+      "type": "text",
+      "x": 64,
+      "y": 64,
+      "width": 480,
+      "height": 64,
+      "opacity": 100,
+      "visible": true,
+      "locked": false,
+      "text": "DESIGNBUDDY / LAYOUT STUDIO",
+      "fontSize": 20,
+      "color": "#294f43"
+    },
+    {
+      "id": "title",
+      "name": "主标题",
+      "type": "text",
+      "x": 80,
+      "y": 178,
+      "width": 680,
+      "height": 264,
+      "opacity": 100,
+      "visible": true,
+      "locked": false,
+      "text": "春日计划\n一起出发",
+      "fontSize": 84,
+      "color": "#243d34"
+    },
+    {
+      "id": "body",
+      "name": "说明文字",
+      "type": "text",
+      "x": 112,
+      "y": 616,
+      "width": 720,
+      "height": 300,
+      "opacity": 100,
+      "visible": true,
+      "locked": false,
+      "text": "文字、图片、色块\n自由移动与调整层级\n从你的实际素材开始",
+      "fontSize": 42,
+      "color": "#f3f0e7"
+    },
+    {
+      "id": "footer",
+      "name": "样例声明",
+      "type": "text",
+      "x": 64,
+      "y": 1096,
+      "width": 832,
+      "height": 64,
+      "opacity": 100,
+      "visible": true,
+      "locked": false,
+      "text": "版式示例 · 非真实活动 · 请替换内容后导出",
+      "fontSize": 22,
+      "color": "#647368"
+    },
+    {
+      "id": "l-77d7b83b",
+      "name": "图片素材",
+      "x": 240,
+      "y": 580,
+      "width": 480,
+      "height": 480,
+      "opacity": 100,
+      "visible": true,
+      "locked": false,
+      "type": "image",
+      "assetId": "a-0ef1a61d",
+      "fit": "cover"
+    }
+  ]
+}

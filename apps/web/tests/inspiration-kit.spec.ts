@@ -9,6 +9,9 @@ const sets = [
   { id: "studio-nine", title: "STUDIO NINE" },
   { id: "wellspring", title: "WELLSPRING" },
   { id: "circuit", title: "CIRCUIT" },
+  { id: "paperhouse", title: "PAPERHOUSE" },
+  { id: "campus", title: "CAMPUS" },
+  { id: "paws", title: "PAWS" },
 ];
 
 const banned = /lorem|ipsum|待补充|\bTODO\b|\bTBD\b|示例文字|占位文字/;
@@ -53,7 +56,7 @@ for (const set of sets) {
     expect(count).toBeGreaterThan(0);
     for (let index = 0; index < count; index += 1) {
       const image = images.nth(index);
-      await expect(image).toHaveAttribute("src", /\/src\/assets\/kit\//);
+      await expect(image).toHaveAttribute("src", /\/(src\/)?assets\/(kit|expansion)\//);
       const box = await image.boundingBox();
       expect(box).not.toBeNull();
       expect((box?.width ?? 0)).toBeGreaterThan(40);

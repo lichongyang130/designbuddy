@@ -165,12 +165,17 @@ for (const [width, height] of [
     ).toBeInViewport();
     await dialog.getByRole("button", { name: "模型", exact: true }).click();
     await dialog.getByRole("button", { name: "添加模型", exact: true }).click();
-    await expect(dialog.getByLabel("模型名称", { exact: true })).toBeFocused();
+    // The dialog opens on the model ID: the display name is derived from it.
+    await expect(dialog.getByLabel("模型标识", { exact: true })).toBeFocused();
     expect(
       await dialog
         .locator(".settings-content")
         .evaluate((el) => el.scrollWidth - el.clientWidth),
     ).toBeLessThanOrEqual(1);
+    // The model editor is a native modal dialog: it has to be dismissed before
+    // anything in the settings window behind it can be clicked again.
+    await dialog.getByRole("button", { name: "关闭模型设置" }).click();
+    await expect(dialog.getByRole("dialog", { name: "添加模型" })).toHaveCount(0);
     await dialog.getByRole("button", { name: "关闭设置" }).click();
     await expect(dialog).not.toBeVisible();
   });

@@ -251,6 +251,19 @@ export default function TaskConversationPage({ projectId }: { projectId: string 
         updateStep(apiStep.id, { status: "complete", detail: `模型: ${actualModel || current.model || "默认"}` });
         
         if (abort.signal.aborted) throw new DOMException("Aborted", "AbortError");
+        if (isClarificationStream(content) && !parseClarification(content)) {
+          // The model answered with the structured protocol but the questions
+          // failed validation. Fail closed: never show raw protocol, never run
+          // the task, and say what happened so the user can retry.
+          patch(id, {
+            content: extractClarificationIntro(content),
+            status: "error",
+            error: "AI 返回的确认问题格式无效（每题至少需要两个选项），已停止本次确认，没有执行任务。可以重新生成，或直接在输入框补充需求。",
+            model: actualModel || undefined,
+            elapsedMs: performance.now() - startedAt.current,
+          });
+          return;
+        }
         const clarification = parseClarification(content);
         if (clarification) {
           const displayContent = clarification.intro || "我先确认一下你的意思，避免做偏。";
@@ -512,7 +525,21 @@ export default function TaskConversationPage({ projectId }: { projectId: string 
                 })()}
                 onSkillExecute={(skillId, skillName) => {
                   setSkillExecutions(prev => [...prev, { skillId, skillName, timestamp: Date.now() }]);
-                }} 
+                }}
+                onArtifactHandoff={({ name, content, skillId }) => {
+                  setAttachments((items) => [...items, { name, text: content.slice(0, 80_000) }].slice(-4));
+                  setDraft((curr) =>
+                    curr.trim()
+                      ? `${curr.trim()}\n\n请基于技能 ${skillId} 产出的《${name}》继续分析并给出可执行结论。`
+                      : `请基于技能 ${skillId} 产出的《${name}》继续分析并给出可执行结论。`,
+                  );
+                  setSkillsOpen(false);
+                  commit({ ...task, workflow: "chat" });
+                  setNotice(`已将技能产物「${name}」作为附件带入当前对话输入框。`);
+                  requestAnimationFrame(() =>
+                    composerRef.current?.querySelector<HTMLTextAreaElement>("textarea")?.focus(),
+                  );
+                }}
               />}
           <p>方案与产物按当前服务端身份保存。对话正文目前仍保存在此浏览器；删除本机任务不会自动删除后台运行，请先在执行台删除不需要的文件。</p>
         </section>}

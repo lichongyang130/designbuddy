@@ -1,0 +1,246 @@
+{
+  "schemaVersion": "1.1.0",
+  "verifiedDate": "2026-10-21",
+  "branch": "arena/a684095c-designbuddy",
+  "metrics": {
+    "skillsTotal": 47,
+    "skillsReadyWithProvisionedAssets": 44,
+    "skillsExternalBlocked": 3,
+    "skillsWithoutExecutor": 0,
+    "expertBusinessCasesVerified": 36,
+    "templatesTotal": 33,
+    "templateCategories": 9,
+    "expansionShippedOf180": 20,
+    "expansionRemainingOf180": 160,
+    "pinnedManifests": [
+      "package.json",
+      "apps/web/package.json",
+      "apps/desktop/package.json"
+    ]
+  },
+  "features": [
+    {
+      "id": "F01-AGENT-STATE-MACHINE",
+      "module": "Agent Core 状态机、持久化运行器与人工审批闸门（Human-in-the-loop Gate）",
+      "status": "verified_local",
+      "codeEntries": [
+        "packages/ai-core/runtime/AgentRuntime.ts",
+        "server/agent/cli-runtime.ts",
+        "server/agent/project-runner.ts",
+        "server/agent/orchestrator.ts",
+        "server/api/agent-hub.ts"
+      ],
+      "testEvidence": [
+        "server/agent/agent-core.test.cjs",
+        "apps/web/tests/agent-workbench.spec.ts"
+      ],
+      "externalDependency": "none",
+      "verifiedDate": "2026-10-21",
+      "nextStep": "在多节点生产部署时补充跨实例分布式 worker 锁。"
+    },
+    {
+      "id": "F02-AGENT-ANALYZER-PLANNER-MEMORY-QA",
+      "module": "Project Analyzer / DAG Planner / Memory Engine / QA Gate & Unified Diff",
+      "status": "verified_local",
+      "codeEntries": [
+        "server/agent/analyzer.ts",
+        "server/agent/planner-engine.ts",
+        "server/agent/memory-engine.ts",
+        "server/agent/qa-agent.ts",
+        "frontend/workspace/pages/AgentWorkbenchPage.tsx",
+        "frontend/workspace/api/agentCore.ts"
+      ],
+      "testEvidence": [
+        "server/agent/agent-core.test.cjs",
+        "apps/web/tests/agent-workbench.spec.ts"
+      ],
+      "externalDependency": "optional_model:AI_API_KEY (未配置时显式走 deterministic-fallback，不伪装模型输出)",
+      "verifiedDate": "2026-10-21",
+      "nextStep": "在配置真实 AI_API_KEY 环境补跑 model 模式对比回归，并扩展 TypeScript/JSX 多文件 AST 重构算子。"
+    },
+    {
+      "id": "F03-SKILL-RUNTIME-47",
+      "module": "技能运行时、5 态能力状态机、执行时间线与 36 个专家端到端业务案例（47 总计 = 44 ready + 3 外部凭据受阻）",
+      "status": "verified_local",
+      "codeEntries": [
+        "shared/skillRuntime.ts",
+        "server/skills/executors.ts",
+        "server/skills/runtime-catalog.ts",
+        "server/skills/service.ts",
+        "frontend/workspace/SkillWorkbench.tsx",
+        "frontend/workspace/pages/SkillsPage.tsx"
+      ],
+      "testEvidence": [
+        "server/skills/expert-business-cases.test.cjs",
+        "docs/verification/expert-36-cases-2026-10-21.md",
+        "apps/web/tests/skills.spec.ts",
+        "apps/web/tests/skill-runtime.spec.ts",
+        "apps/web/tests/skill-phase-two.spec.ts",
+        "apps/web/tests/advanced-office.spec.ts",
+        "apps/web/tests/audio-transcribe.spec.ts",
+        "apps/web/tests/task-skills.spec.ts"
+      ],
+      "externalDependency": "none (本地已配置 FFmpeg、离线英语 ASR 模型、LibreOffice 与离线 Chromium)",
+      "verifiedDate": "2026-10-21",
+      "nextStep": "补充技能包语义化版本兼容矩阵与容器级进程沙箱。"
+    },
+    {
+      "id": "F04-EXTERNAL-SKILLS-3",
+      "module": "依赖外部服务商凭据的 3 项技能（document.summarize / image.generate / collaboration.sync）",
+      "status": "external_blocked",
+      "codeEntries": [
+        "server/skills/office.ts",
+        "server/skills/image-generate.ts",
+        "server/skills/collaboration-sync.ts",
+        "server/skills/runtime-catalog.ts"
+      ],
+      "testEvidence": [
+        "apps/web/tests/skill-planning.spec.ts",
+        "apps/web/tests/skills.spec.ts"
+      ],
+      "externalDependency": "credentials:AI_API_KEY,AI_IMAGE_API_KEY,COLLAB_CALENDAR_URL,COLLAB_EMAIL_URL",
+      "verifiedDate": "2026-10-21",
+      "nextStep": "注入真实供应商密钥与测试日历/邮箱沙箱后完成线上联调与人工事实核验。"
+    },
+    {
+      "id": "F05-CHAT-ROUTER-MODEL-HONESTY",
+      "module": "对话流、技能产物继续提问交接、专家路由、模型注册表与严格诚实边界",
+      "status": "partial_subset",
+      "codeEntries": [
+        "server/api/ai.ts",
+        "server/api/ai-models.ts",
+        "server/api/chat.ts",
+        "server/api/expert-match.ts",
+        "frontend/workspace/pages/TaskConversationPage.tsx",
+        "frontend/workspace/taskClarification.ts"
+      ],
+      "testEvidence": [
+        "server/api/chat.test.cjs",
+        "apps/web/tests/agent-workbench.spec.ts",
+        "apps/web/tests/conversation.spec.ts",
+        "apps/web/tests/clarification.spec.ts",
+        "apps/web/tests/expert-match.spec.ts",
+        "apps/web/tests/model-registry.spec.ts"
+      ],
+      "externalDependency": "optional_model:AI_API_KEY (本机离线规则澄清/路由、产物交接与 BYOK 鉴权已验证；真实云模型在线推理受限于未注入生产密钥)",
+      "verifiedDate": "2026-10-21",
+      "nextStep": "在具备外网与真实供应商 API Key 的预发环境执行多模型推理与流式 token 对账验收。"
+    },
+    {
+      "id": "F06-WORKSPACE-AUTH-PROJECTS-SHARES-WORKFLOWS",
+      "module": "统一任务后端、账号会话、工作空间 RBAC、版本历史、受控分享、定时任务、通知与自定义工作流配方",
+      "status": "verified_local",
+      "codeEntries": [
+        "server/api/http-handler.ts",
+        "server/api/workspace-backend.ts",
+        "server/api/task-backend.ts",
+        "server/api/workspaces.ts",
+        "server/api/project-versions.ts",
+        "server/api/project-shares.ts",
+        "server/api/scheduler.ts",
+        "server/api/workflows.ts",
+        "frontend/workspace/pages/WorkflowsPage.tsx"
+      ],
+      "testEvidence": [
+        "server/api/workspace-backend.test.cjs",
+        "server/api/workflows.test.cjs",
+        "apps/web/tests/agent-workbench.spec.ts",
+        "apps/web/tests/backend.spec.ts",
+        "apps/web/tests/auth.spec.ts",
+        "apps/web/tests/account.spec.ts",
+        "apps/web/tests/workspace.spec.ts",
+        "apps/web/tests/workspaces.spec.ts",
+        "apps/web/tests/workflows.spec.ts"
+      ],
+      "externalDependency": "none",
+      "verifiedDate": "2026-10-21",
+      "nextStep": "补充邮箱/手机找回密码、多因素认证与生产支付/订阅账本。"
+    },
+    {
+      "id": "F07-CONNECTORS-ADMIN-PLUGINS",
+      "module": "连接器授权边界、插件生命周期与管理员控制台",
+      "status": "partial_subset",
+      "codeEntries": [
+        "server/api/workspace-backend.ts",
+        "server/api/plugin-registry.ts",
+        "server/api/plugins.ts",
+        "server/api/admin.ts"
+      ],
+      "testEvidence": [
+        "apps/web/tests/connectors.spec.ts",
+        "apps/web/tests/plugin-lifecycle.spec.ts",
+        "apps/web/tests/admin-console.spec.ts"
+      ],
+      "externalDependency": "credentials:OAUTH_CLIENT_SECRETS,DESIGNBUDDY_ADMIN_ACCOUNTS",
+      "verifiedDate": "2026-10-21",
+      "nextStep": "在预发域名接入真实第三方 OAuth 回调与凭据加密轮换，并补齐管理员只读角色与配额限流。"
+    },
+    {
+      "id": "F08-INSPIRATION-TEMPLATES-33",
+      "module": "社区灵感与交互模板库（9 大分类共 33 套离线可运行作品；180 套扩充计划已完成 20 套、剩余 160 套）",
+      "status": "partial_subset",
+      "codeEntries": [
+        "apps/web/src/inspiration/InspirationPage.tsx",
+        "apps/web/src/inspiration/samples/shared.tsx",
+        "apps/web/src/inspiration/samples/kit/kitTypes.ts",
+        "apps/web/src/inspiration/samples/kit/sets/index.ts"
+      ],
+      "testEvidence": [
+        "apps/web/tests/inspiration-categories.spec.ts",
+        "apps/web/tests/inspiration.spec.ts",
+        "apps/web/tests/inspiration-atelier.spec.ts",
+        "apps/web/tests/inspiration-batch1.spec.ts",
+        "apps/web/tests/inspiration-kit.spec.ts",
+        "apps/web/tests/inspiration-media.spec.ts"
+      ],
+      "externalDependency": "none",
+      "verifiedDate": "2026-10-21",
+      "nextStep": "按 kit 数据驱动校验规范分批补齐剩余 160 套实质多页模板，不为冲数量塞入空壳占位页。"
+    },
+    {
+      "id": "F09-BUILD-PINNING-DESKTOP-CI",
+      "module": "依赖精确锁版、Vite 零警告拆包、GitHub Actions CI 门禁与 Electron Stage 构建",
+      "status": "verified_local",
+      "codeEntries": [
+        "package.json",
+        "apps/web/package.json",
+        "apps/web/vite.config.ts",
+        "apps/desktop/package.json",
+        "apps/desktop/src/main.ts",
+        "apps/desktop/scripts/build.mjs",
+        "apps/desktop/scripts/stage.mjs",
+        ".github/workflows/ci.yml",
+        "scripts/verify-status-registry.mjs"
+      ],
+      "testEvidence": [
+        "scripts/verify-status-registry.test.mjs",
+        "apps/web/playwright.config.ts"
+      ],
+      "externalDependency": "none (macOS Notarization / Windows Authenticode 签名安装包仍需对应系统签名密钥，未伪造已签发安装包)",
+      "verifiedDate": "2026-10-21",
+      "nextStep": "在 macOS / Windows GitHub Runner 接入 electron-builder 签名打包流水线。"
+    },
+    {
+      "id": "F10-MODULAR-SHELL-CLEAN-TREE",
+      "module": "Web 入口模块化拆分（App.tsx 815行→190行 + 20 路由懒加载）与零引用历史骨架清理",
+      "status": "verified_local",
+      "codeEntries": [
+        "apps/web/src/App.tsx",
+        "apps/web/src/routes/WorkspaceRouteSwitch.tsx",
+        "apps/web/src/features/home/HomeComposerSection.tsx",
+        "apps/web/src/features/home/useHomeComposerController.ts",
+        "apps/web/src/features/shell/useAppDocumentPreferences.ts",
+        "apps/web/src/components/WorkBuddySidebar.tsx",
+        "docs/plans/source-audit-and-module-map-2026-10-21.md"
+      ],
+      "testEvidence": [
+        "scripts/verify-status-registry.test.mjs",
+        "apps/web/tests/home.spec.ts",
+        "apps/web/tests/sidebar.spec.ts"
+      ],
+      "externalDependency": "none",
+      "verifiedDate": "2026-10-21",
+      "nextStep": "持续保持 App.tsx 轻量路由壳上限（≤250 行）与零孤立子包门禁。"
+    }
+  ]
+}
