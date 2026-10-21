@@ -116,7 +116,7 @@ const zh: Record<string, string> = {
   "settings.models.err.tokens": "请输入有效的正整数，或留空使用服务商默认值。",
   "settings.models.name": "模型名称",
   "settings.models.name.ph": "例如：我的文本模型",
-  "settings.models.id": "模型名称",
+  "settings.models.id": "模型标识",
   "settings.models.id.ph": "输入模型参数值，例如 gpt-4o 或 openai/gpt-4o",
   "settings.models.note":
     "模型配置和接口地址保存在浏览器偏好中；API Key 仅保存在当前会话。测试连接只读取服务商的 /models 列表，不调用模型生成内容。",
@@ -563,7 +563,7 @@ const en: Record<string, string> = {
   "settings.models.err.tokens": "Enter a positive whole number, or leave blank to use the provider default.",
   "settings.models.name": "Model name",
   "settings.models.name.ph": "e.g. My text model",
-  "settings.models.id": "Model name",
+  "settings.models.id": "Model ID",
   "settings.models.id.ph": "Enter a model ID, e.g. gpt-4o or openai/gpt-4o",
   "settings.models.note":
     "Model settings and endpoint URLs are stored in browser preferences; API keys stay in the current session. Connection tests only read the provider's /models list and do not generate content.",

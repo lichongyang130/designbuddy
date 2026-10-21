@@ -43,15 +43,19 @@ test.beforeEach(async ({ page }) => {
   await page.reload();
   await preferencesLoaded;
 });
-async function add(page: Page, name = "我的模型", id = "custom-test-v1") {
+/**
+ * The current dialog only asks for a model ID: the display name is derived from
+ * it unless the entry was renamed earlier through the same dialog.
+ */
+async function add(page: Page, id = "custom-test-v1") {
   await settings(page)
     .getByRole("button", { name: "添加模型", exact: true })
     .click();
-  await settings(page).getByLabel("模型名称", { exact: true }).fill(name);
-  await settings(page).getByLabel("模型标识", { exact: true }).fill(id);
-  await settings(page)
-    .getByRole("button", { name: "保存模型", exact: true })
-    .click();
+  const form = settings(page).getByRole("form");
+  await form.getByRole("combobox", { name: /^供应商/ }).selectOption("deepseek");
+  await form.getByLabel(/^API Key/).fill("test-key");
+  await form.getByLabel("模型标识", { exact: true }).fill(id);
+  await form.getByRole("button", { name: "保存", exact: true }).click();
 }
 
 test("reference 13 empty model page, searchable settings and accurate unsupported sections", async ({
@@ -284,14 +288,13 @@ test("custom models persist, can be edited, and only explicit send requests thei
   await add(page);
   await expect(settings(page).getByRole("status")).toContainText("已保存");
   await settings(page)
-    .getByRole("button", { name: "编辑我的模型", exact: true })
+    .getByRole("button", { name: "编辑custom-test-v1", exact: true })
     .click();
-  await settings(page).getByLabel("模型名称", { exact: true }).fill("工作模型");
   await settings(page)
     .getByLabel("模型标识", { exact: true })
     .fill("custom-test-v2");
   await settings(page)
-    .getByRole("button", { name: "保存模型", exact: true })
+    .getByRole("button", { name: "保存", exact: true })
     .click();
   await settings(page).getByRole("button", { name: "个性化", exact: true }).click();
   const savedDefaultModel = page.waitForResponse((response) => {
@@ -302,7 +305,7 @@ test("custom models persist, can be edited, and only explicit send requests thei
   await settings(page).getByLabel("默认模型", { exact: true }).selectOption("custom-test-v2");
   await savedDefaultModel;
   await page.keyboard.press("Escape");
-  await expect(page.getByRole("button", { name: "选择大模型", exact: true })).toContainText("工作模型");
+  await expect(page.getByRole("button", { name: "选择大模型", exact: true })).toContainText("custom-test-v2");
   await page.reload();
   await page.getByRole("button", { name: "选择大模型", exact: true }).click();
   await expect(
@@ -310,7 +313,7 @@ test("custom models persist, can be edited, and only explicit send requests thei
       .getByRole("dialog", { name: "选择大模型", exact: true })
       .getByRole("option"),
   ).toHaveCount(2);
-  await page.getByRole("option", { name: /工作模型/ }).click();
+  await page.getByRole("option", { name: /custom-test-v2/ }).click();
   expect(calls).toHaveLength(0);
   await page
     .getByRole("textbox", { name: "任务描述", exact: true })
@@ -325,7 +328,7 @@ test("custom models persist, can be edited, and only explicit send requests thei
   await open(page, true);
   page.once("dialog", (dialog) => dialog.accept());
   await settings(page)
-    .getByRole("button", { name: "移除工作模型", exact: true })
+    .getByRole("button", { name: "移除custom-test-v2", exact: true })
     .click();
   await page.keyboard.press("Escape");
   await expect(
@@ -348,18 +351,18 @@ test("removing a selected model asks confirmation and resets only the home selec
   await add(page);
   await page.keyboard.press("Escape");
   await page.getByRole("button", { name: "选择大模型", exact: true }).click();
-  await page.getByRole("option", { name: /我的模型/ }).click();
+  await page.getByRole("option", { name: /custom-test-v1/ }).click();
   await open(page, true);
   page.once("dialog", (dialog) => dialog.dismiss());
   await settings(page)
-    .getByRole("button", { name: "移除我的模型", exact: true })
+    .getByRole("button", { name: "移除custom-test-v1", exact: true })
     .click();
   await expect(
-    settings(page).getByRole("button", { name: "编辑我的模型", exact: true }),
+    settings(page).getByRole("button", { name: "编辑custom-test-v1", exact: true }),
   ).toBeVisible();
   page.once("dialog", (dialog) => dialog.accept());
   await settings(page)
-    .getByRole("button", { name: "移除我的模型", exact: true })
+    .getByRole("button", { name: "移除custom-test-v1", exact: true })
     .click();
   await expect(
     settings(page).getByRole("region", { name: "已添加模型" }),
@@ -380,29 +383,21 @@ test("invalid and duplicate model identifiers are rejected; provider secrets sta
 }) => {
   await page.goto("/");
   await open(page, true);
-  await add(page, "坏模型", "bad model");
+  await add(page, "bad model");
   await expect(settings(page).getByRole("alert")).toContainText("有效模型标识");
-  await settings(page).getByLabel("模型名称", { exact: true }).fill("安全模型");
-  await settings(page)
+  const form = settings(page).getByRole("form");
+  await form
     .getByLabel("模型标识", { exact: true })
     .fill("secure-test");
-  await settings(page).locator("summary").click();
-  await settings(page)
-    .getByRole("combobox", { name: "服务商", exact: true })
-    .selectOption("deepseek");
-  await settings(page)
-    .getByLabel("API Key", { exact: true })
+  await form
+    .getByLabel(/^API Key/)
     .fill("test-key-not-a-real-secret");
-  await expect(
-    settings(page).getByLabel("API Key", { exact: true }),
-  ).toHaveAttribute("type", "password");
-  await settings(page)
-    .getByRole("button", { name: "保存模型", exact: true })
-    .click();
+  await expect(form.getByLabel(/^API Key/)).toHaveAttribute("type", "password");
+  await form.getByRole("button", { name: "保存", exact: true }).click();
   expect(
     await page.evaluate((key) => localStorage.getItem(key), KEY),
   ).not.toContain("test-key-not-a-real-secret");
-  await add(page, "另一个名字", "secure-test");
+  await add(page, "secure-test");
   await expect(settings(page).getByRole("alert")).toContainText("已存在");
   expect(
     await page.evaluate(
@@ -440,13 +435,15 @@ test("storage failure is surfaced without claiming a save", async ({
   await expect(
     settings(page).getByRole("region", { name: "已添加模型" }),
   ).toHaveCount(0);
-  await settings(page).locator(".db-ai-provider-settings summary").click();
-  const provider = settings(page).getByRole("combobox", { name: "服务商", exact: true });
-  await provider.selectOption("deepseek");
+  // The API key lives in sessionStorage, so the failure must not land in
+  // localStorage either; closing the dialog keeps the model list untouched.
+  await settings(page).getByRole("button", { name: "取消", exact: true }).click();
+  await expect(settings(page).getByRole("form")).toHaveCount(0);
   await expect(
-    settings(page).locator(".db-ai-provider-settings [role=alert]"),
-  ).toContainText("会话存储不可用");
-  await expect(provider).toHaveValue("server");
+    settings(page).getByRole("region", { name: "已添加模型" }),
+  ).toHaveCount(0);
+  const stored = await page.evaluate((key) => localStorage.getItem(key), KEY);
+  expect(stored ?? "").not.toContain("test-key");
 });
 
 test("corrupt storage falls back safely and storage events refresh preferences", async ({

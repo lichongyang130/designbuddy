@@ -71,7 +71,9 @@
   min-height: 46px;
   max-height: 190px;
   padding: 2px 4px;
-  font-size: 15px;
+  /* The 字体大小 preference writes --db-user-font-size; the launcher must follow
+     it like the rest of the frame does. */
+  font-size: var(--db-user-font-size, 15px);
   line-height: 1.75;
   color: var(--launcher-ink);
 }
