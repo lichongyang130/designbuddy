@@ -1,5 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
-import { expectWorkspace, setPermission, setWorkspace } from "./helpers/home";
+import { expectWorkspace, resetComposerDefaults, setPermission, setWorkspace } from "./helpers/home";
 import { routingExperts } from "../../../shared/expertRouting";
 const expertCatalog = routingExperts.map(e => ({ ...e, category: { office: "办公提效", design: "设计制作", code: "网页应用" }[e.mode] }));
 // The directory renders one section per task area, so the visible order is grouped by area.
@@ -84,7 +84,10 @@ test("choosing an expert preserves the current draft, attachments, model, worksp
 });
 
 test("task example replacement asks first, cancellation does not change expert or prompt", async ({ page }) => {
-  await page.goto("/"); await page.getByRole("textbox", { name: "任务描述", exact: true }).fill("不要覆盖原文");
+  // Composer defaults live in the account: an earlier spec in this file pins
+  // 「仅本地」, which would otherwise leave auto-matching disabled here.
+  await resetComposerDefaults(page);
+  await page.getByRole("textbox", { name: "任务描述", exact: true }).fill("不要覆盖原文");
   await openExperts(page); await page.getByRole("button", { name: "查看数据分析专家", exact: true }).click();
   page.once("dialog", dialog => dialog.dismiss());
   await page.getByRole("button", { name: /使用任务示例：/ }).first().click();
@@ -134,7 +137,9 @@ test("retired built-in links do not resurrect irrelevant experts, closest legacy
 test("homepage matching candidates exactly match the directory experts, including added roles", async ({ page }) => {
   let body: any;
   await page.route("**/api/expert-match", route => { body = route.request().postDataJSON(); return route.fulfill({ json: { kind: "match", expertId: "brand", collaboratorIds: [], reason: "需要统一品牌识别。", responsibilities: ["建立配色与字体规范"], missing: [] } }); });
-  await page.goto("/");
+  // Same account-level defaults: the consent prompt only appears while the
+  // policy is the default one, so reset before expecting it.
+  await resetComposerDefaults(page);
   await page.getByRole("textbox", { name: "任务描述", exact: true }).fill("帮我制定品牌配色规范");
   await page.locator(".home-expert-trigger").click();
   await page.getByRole("button", { name: "允许并开启自动匹配", exact: true }).click();
