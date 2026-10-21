@@ -502,7 +502,12 @@ test("DAYLIGHT: local check-in, activity capacity, helpdesk and feedback disclos
   await page.getByRole("button", { name: "记录本地签到" }).click();
   await expect(page.getByRole("button", { name: "本地已签到" })).toBeDisabled();
   await nav(page, "daylight", 14);
-  await page.getByRole("button", { name: "选择这个活动" }).nth(1).click();
+  // The first activity starts preselected, so 「选择这个活动」 is not offset by
+  // one: name the activity the capacity check is about instead of counting.
+  await page
+    .locator("article.dl-event", { hasText: "本地人数上限 8" })
+    .getByRole("button", { name: "选择这个活动" })
+    .click();
   await page.getByLabel("活动意向人数").fill("9");
   await expect(
     page.getByRole("button", { name: "保存活动意向" }),

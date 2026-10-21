@@ -1,5 +1,6 @@
 import { Suspense, lazy } from "react";
 import { translate } from "../../../frontend/workspace/i18n";
+import { RouteErrorBoundary } from "./components/RouteErrorBoundary";
 import { WorkBuddySidebar } from "./components/WorkBuddySidebar";
 import { HomeCommandPalette } from "./components/HomeCommandPalette";
 import { useAppDocumentPreferences } from "./features/shell/useAppDocumentPreferences";
@@ -35,7 +36,12 @@ export default function App() {
     identityFailed: controller.identityFailed,
     onRetryIdentity: controller.retryIdentity,
   });
-  if (activeRoute !== null) return <>{activeRoute}</>;
+  if (activeRoute !== null)
+    return (
+      <RouteErrorBoundary>
+        <>{activeRoute}</>
+      </RouteErrorBoundary>
+    );
 
   return (
     <div className="workbuddy-app">

@@ -22,6 +22,7 @@ import { ProjectShareStore } from "./api/project-shares";
 import { AssetStore } from "./api/assets";
 import { CommunityTemplateStore } from "./api/community-templates";
 import { WorkflowEngine } from "./api/workflows";
+import { ConnectorService } from "./api/connectors";
 import { AdminService } from "./api/admin";
 import { ScheduleRunner } from "./api/scheduler";
 import { AgentOrchestrator } from "./agent/orchestrator";
@@ -54,6 +55,9 @@ const plugins = new PluginRegistry();
 const projectShares = new ProjectShareStore();
 const assets = new AssetStore();
 const community = new CommunityTemplateStore();
+// Connectors: OAuth apps, API keys, webhooks and MCP servers, persisted and
+// verified on the server instead of in the browser.
+const connectors = new ConnectorService();
 // Workflows reuse the real skill service, the asset library and the task list.
 const workflows = new WorkflowEngine(skills, assets, tasks);
 // The operator console reads the accounts, the usage and the task history.
@@ -77,6 +81,7 @@ const aiPaths = ["/api/ai"];
 const profilePaths = ["/api/profile"];
 const pluginPaths = ["/api/plugins"];
 const agentCorePaths = ["/api/agent-core"];
+const connectorPaths = ["/api/connectors"];
 const agentOrchestrator = new AgentOrchestrator();
 const handleAgentCore = createAgentHubHandler({
   orchestrator: agentOrchestrator,
@@ -231,6 +236,17 @@ const server = createServer(async (incoming, outgoing) => {
         const owner = resolvePrincipal(request);
         if (!owner) { send(responseJSON({ error: "Authentication required." }, 401)); return; }
         send(await handleAiRegistry(request, owner.id, tasks));
+        return;
+      }
+      if (connectorPaths.some(prefix => url.pathname === prefix || url.pathname.startsWith(prefix + "/"))) {
+        // The OAuth callback arrives as a top-level redirect from the provider
+        // and identifies its owner through the one-time state, so it is the
+        // only connector route that may run without an ambient session.
+        const owner = resolvePrincipal(request);
+        const isCallback = url.pathname === "/api/connectors/oauth/callback";
+        if (!owner && !isCallback) { send(responseJSON({ error: "Authentication required." }, 401)); return; }
+        const handled = await connectors.handle(request, owner?.id ?? "");
+        send(handled || responseJSON({ error: "未找到该接口。" }, 404));
         return;
       }
       if (agentCorePaths.some(prefix => url.pathname === prefix || url.pathname.startsWith(prefix + "/"))) {

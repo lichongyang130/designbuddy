@@ -488,6 +488,10 @@ export function useHomeComposerController() {
         workflow,
         skillExpertId: (selectedExpert || sameDraft) ? expertMatch.profile?.id : undefined,
         suggestedSkillId: expertMatch.skillSuggestion?.skillId,
+        // Carry the skill the composer chip is showing: it resolved against the
+        // runtime catalogue, so the workbench can open on a real executor and
+        // not on "let the model suggest one".
+        selectedSkillId: skillSelection.skill?.id,
         messages: [
           {
             id: crypto.randomUUID(),

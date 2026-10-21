@@ -1,4 +1,5 @@
 import { Suspense, lazy, type ReactNode } from "react";
+import { RouteErrorBoundary } from "../components/RouteErrorBoundary";
 import LoginPage from "../components/LoginPage";
 import RegisterPage from "../components/RegisterPage";
 import InspirationPage from "../inspiration/InspirationPage";
@@ -49,7 +50,13 @@ function RouteFallback({ label, text }: { label: string; text: string }) {
 }
 
 function wrapLazy(node: ReactNode, label = "正在加载页面", text = "正在加载页面…") {
-  return <Suspense fallback={<RouteFallback label={label} text={text} />}>{node}</Suspense>;
+  // The boundary matters: a rejected lazy import otherwise unmounts the whole
+  // tree and leaves a blank document with no way back but a manual reload.
+  return (
+    <RouteErrorBoundary>
+      <Suspense fallback={<RouteFallback label={label} text={text} />}>{node}</Suspense>
+    </RouteErrorBoundary>
+  );
 }
 
 function isWorkspaceHubPath(path: string) {

@@ -560,7 +560,7 @@ export class WorkspaceBackend {
           collaboration: true,
           aiConfigured: Boolean((process.env.AI_API_KEY || process.env.OPENAI_API_KEY || "").trim()),
           videoTranscodeConfigured: ffmpegAvailable(),
-          connectors: false,
+          connectors: true,
           payments: false,
           businessOrders: false,
         },
@@ -1007,14 +1007,8 @@ export class WorkspaceBackend {
       }
       return responseJSON({ error: "接口不存在。" }, 404);
     }
-    if (path === "/api/connectors" || path.startsWith("/api/connectors/"))
-      return responseJSON(
-        {
-          error: "连接器授权服务尚未部署；没有进行外部授权或操作。",
-          code: "NOT_CONFIGURED",
-        },
-        503,
-      );
+    // Connectors are served by ConnectorService (server/api/connectors.ts),
+    // which owns the SQLite store, the OAuth flows and the real probes.
     return null;
   }
   close() {

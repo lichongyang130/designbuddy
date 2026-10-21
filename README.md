@@ -55,6 +55,16 @@ when no existing dev server is running.
 
 - The preview daemon provides salted-scrypt accounts and hashed opaque sessions. Production authentication needs further verification, recovery, auditing and abuse protection; do not use plaintext passwords.
 - GitHub OAuth requires `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET`.
+- Connector OAuth reuses that pair for GitHub and reads `GOOGLE_CLIENT_ID` /
+  `GOOGLE_CLIENT_SECRET` (Gmail), `NOTION_CLIENT_ID` / `NOTION_CLIENT_SECRET`,
+  `MICROSOFT_CLIENT_ID` / `MICROSOFT_CLIENT_SECRET` (Outlook),
+  `LINEAR_CLIENT_ID` / `LINEAR_CLIENT_SECRET`, `FIGMA_CLIENT_ID` /
+  `FIGMA_CLIENT_SECRET` and `CANVA_CLIENT_ID` / `CANVA_CLIENT_SECRET`. When a
+  pair is missing the connector reports `503 OAUTH_APP_NOT_CONFIGURED` instead
+  of pretending to authorize. Connector credentials are encrypted with
+  `DESIGNBUDDY_CONNECTOR_KEY` (or a generated `0600` key file in
+  `data/connectors/`), and `DESIGNBUDDY_CONNECTORS_ALLOW_PRIVATE_NETWORK=true`
+  is required before the server will dial loopback or private-network targets.
 - High-quality semantic search requires a real embedding provider. The deterministic local embedding fallback is for development and lexical retrieval, not a replacement for a trained semantic model.
 - Preview building and deployment require configured runtime/deployer adapters. The app must not report a deployment as ready unless a real runtime has returned a valid URL.
 - The operator console is a real backend now: `GET /api/admin/overview` and the three admin write routes are served by the local daemon and gated by `DESIGNBUDDY_ADMIN_ACCOUNTS` (no list configured means every account is refused). It is still a single-server tool: no cost billing, no quota/limiting, no read-only roles, no cross-instance control, and no audit export or retention policy. The Agent Builder still only exposes callback interfaces.
@@ -155,25 +165,49 @@ connector cards. Cards collapse to two or one columns according to the remaining
 content width. The original GitHub, Notion, Figma, database and cloud entries
 remain available alongside the reference catalog.
 
-- Search filters names and descriptions; card/add controls open the matching
-  configuration and integration-requirements screen. Catalog descriptions and
-  branding are reference examples, not assertions of working integrations.
-- GitHub and Notion retain the existing backend OAuth-start contract. Redirects
-  accept only their expected HTTPS authorization endpoints. Authorization failure
-  never creates a connected state; an OAuth callback triggers server verification
-  rather than trusting URL query parameters.
-- Connection status is verified through `GET /api/connectors`; disconnect uses
-  the existing server endpoint. The response is validated and only public metadata
-  is persisted, excluding arbitrary response fields such as tokens. These APIs
-  still require a deployed/authenticated implementation. OAuth tests mock both
-  the backend and provider; they do not establish real external authorizations.
-- `/connectors/create` saves local custom MCP endpoint metadata (name, description,
-  HTTPS URL and transport). It does not contact the service or install an MCP
-  runtime. URLs containing credentials, query parameters or fragments are rejected;
-  secrets are not collected. Saved custom configurations support confirmed deletion.
-- Run `pnpm --filter designbuddy-web test:connectors` for connector-specific
-  layout, search, custom-config persistence, OAuth/error/status verification and
-  responsive regression checks.
+Every one of the 22 built-in connectors - and every connector a person defines
+themselves - can be configured, tested, connected and disconnected. The
+behaviour is the same on the server for all of them:
+
+- **Four real connection methods.** `OAuth 授权` (server side authorization code
+  flow, with PKCE where the provider documents it), `API Key`, `Webhook` and
+  `MCP 服务`. A connector declares the methods it supports in
+  `shared/connector-catalog.ts`; the browser renders the form from the server's
+  `GET /api/connectors/catalog`, so the two can never drift apart.
+- **Credentials never reach the browser twice.** They are typed into the form,
+  sent once, and stored in `data/connectors.sqlite` encrypted with AES-256-GCM.
+  The key comes from `DESIGNBUDDY_CONNECTOR_KEY` or from a `0600` key file next
+  to the database. The API answers with a masked hint (`…7f3a`) at most.
+- **"Connected" means the server really talked to the service.** `POST
+  /api/connectors/:id/test` and `/connect` perform a live check: an
+  authenticated call to the provider's documented endpoint, a signed webhook
+  delivery that must be accepted by the receiver, or a real MCP `initialize` +
+  `tools/list` handshake over Streamable HTTP or HTTP+SSE. A connector is only
+  marked `connected` after that check succeeds, and a failed check discards the
+  credential and records the remote service's own answer.
+- **OAuth really works end to end.** `POST /api/connectors/oauth/start` returns
+  the provider URL; `GET /api/connectors/oauth/callback` exchanges the code,
+  verifies the token against the provider's API and only then connects. The
+  state is single use, expires in ten minutes and carries the owner, and the
+  browser only ever follows a URL whose host and path it expects for that
+  connector. Without an OAuth app configured the server answers `503
+  OAUTH_APP_NOT_CONFIGURED` and names the missing environment variables.
+- **Disconnect removes the credential** and, where the provider documents a
+  revocation endpoint, asks the provider to revoke the token.
+- **Outbound requests are guarded.** Targets must be HTTPS, may not carry
+  credentials in the URL, and private/link-local/loopback and metadata
+  addresses are refused unless an operator sets
+  `DESIGNBUDDY_CONNECTORS_ALLOW_PRIVATE_NETWORK=true` for local development.
+- **The server keeps an audit trail.** `GET /api/connectors/:id/events` lists
+  every configure / test / connect / disconnect with the remote answer.
+- `/connectors/create` saves a custom MCP connector on the server (name,
+  description, HTTPS URL and transport). Saving does not contact the service;
+  URLs containing credentials, query parameters or fragments are rejected.
+- Run `pnpm --filter designbuddy-web test:connectors` for the browser suite
+  (layout, search, server persistence, connection/disconnection, OAuth
+  destination checks and responsive regressions) and
+  `node --test server/api/connectors.test.cjs` for the server suite, which
+  drives real MCP, webhook and OAuth round trips against local mock services.
 
 ## Task conversation reference
 

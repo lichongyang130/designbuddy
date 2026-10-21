@@ -29,6 +29,13 @@ export interface TaskConversation {
   workflow?: "chat" | "skills";
   skillExpertId?: string;
   suggestedSkillId?: string;
+  /**
+   * The skill the person picked by hand in the home composer. Kept apart from
+   * `suggestedSkillId` (the matcher's guess) so the execution workbench opens
+   * on the skill that was actually chosen, and the transcript does not call a
+   * hand-picked skill "recommended".
+   */
+  selectedSkillId?: string;
   messages: TaskMessage[];
 }
 const key = (id: string) => `designbuddy.conversation.v1.${id}`;
