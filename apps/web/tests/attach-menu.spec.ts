@@ -222,3 +222,37 @@ for (const viewport of [
     ).toBeLessThanOrEqual(viewport.width);
   });
 }
+
+test("a skill chosen by hand reaches the task and is preselected for execution", async ({
+  page,
+}) => {
+  await page.getByRole("menuitem", { name: "技能", exact: true }).click();
+  await page.getByRole("textbox", { name: "搜索技能" }).fill(" ppt ");
+  await page.getByRole("button", { name: "材料转可编辑 PPTX", exact: true }).click();
+  // The skill consumes a file, so the send gate holds until one is attached.
+  await page.getByRole("button", { name: "添加附件", exact: true }).click();
+  await page.getByRole("menuitem", { name: "添加文件", exact: true }).click();
+  await page.locator(".attachment-input").setInputFiles({
+    name: "brief.txt",
+    mimeType: "text/plain",
+    buffer: Buffer.from("附件内容"),
+  });
+  await page
+    .getByRole("textbox", { name: "任务描述" })
+    .fill("根据附件编写产品说明");
+  await page.getByRole("button", { name: "开始任务", exact: true }).click();
+  await expect(page).toHaveURL(/\/tasks\//);
+
+  // Kept under its own field, so a hand-picked skill never reads as a
+  // recommendation the matcher made.
+  const stored = await page.evaluate(() =>
+    Object.values(localStorage).join("\n"),
+  );
+  expect(stored).toContain("selectedSkillId");
+
+  // The workbench opens on the chosen skill instead of asking the model to
+  // suggest one, which is what the composer chip promised.
+  await page.getByRole("tab", { name: "文件技能与产物" }).click();
+  const skill = page.getByRole("combobox", { name: "执行技能" });
+  await expect(skill.locator("option:checked")).toHaveText("材料转可编辑 PPTX");
+});

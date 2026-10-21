@@ -19,6 +19,7 @@ import { TaskThinkingProcess, type ThinkingStep } from "../TaskThinkingProcess";
 import "./task-conversation.css";
 import SkillWorkbench from "../SkillWorkbench";
 import { expertCatalog } from "../expertCatalog";
+import { useCatalogSkills } from "../../../apps/web/src/components/useRuntimeSkill";
 
 type Attachment = { name: string; text: string; assetId?: string };
 const statusLabels = { waiting: "正在思考", streaming: "正在回复", complete: "已完成", error: "回复失败", stopped: "已停止", local: "仅本地 · 未发送", clarifying: "等待你的回答" };
@@ -49,6 +50,21 @@ export default function TaskConversationPage({ projectId }: { projectId: string 
   const [search, setSearch] = useState("");
   const [speaking, setSpeaking] = useState("");
   const [skillExecutions, setSkillExecutions] = useState<Array<{ skillId: string; skillName: string; timestamp: number }>>([]);
+  // Only loaded when a task actually carries a hand-picked skill, and shared
+  // with the home page through the module cache when it is.
+  const skillCatalog = useCatalogSkills(Boolean(task?.selectedSkillId));
+  const selectedSkill = task?.selectedSkillId
+    ? skillCatalog?.find((skill) => skill.id === task.selectedSkillId && skill.status === "ready")
+    : undefined;
+  /**
+   * A hand-picked skill decides its own executor. The workbench only preselects
+   * a skill belonging to the expert it is scoped to, so follow the skill's own
+   * expert rather than the matcher's guess — otherwise the chosen skill is
+   * silently dropped for whatever the guessed expert offers first.
+   */
+  const workbenchExpertId =
+    selectedSkill?.expertIds.find((id) => expertCatalog.some((expert) => expert.id === id)) ??
+    task?.skillExpertId;
   const taskRef = useRef(task);
   const mounted = useRef(true);
   const controller = useRef<AbortController | null>(null);
@@ -178,13 +194,17 @@ export default function TaskConversationPage({ projectId }: { projectId: string 
       }
     }
     
-    // Add skill suggestion step if skill was suggested
-    if (current.suggestedSkillId) {
+    // A skill the person chose themselves is shown as chosen; the matcher's
+    // guess stays labelled as a recommendation. The two never both apply:
+    // the selected one wins, because that is what the composer promised.
+    const chosenSkillId = current.selectedSkillId || current.suggestedSkillId;
+    if (chosenSkillId) {
+      const manual = Boolean(current.selectedSkillId);
       thinkingSteps.push({
         id: crypto.randomUUID(),
         type: "skill",
-        title: `推荐技能: ${current.suggestedSkillId}`,
-        detail: "根据任务自动推荐的技能",
+        title: `${manual ? "已选技能" : "推荐技能"}: ${manual ? selectedSkill?.name || chosenSkillId : chosenSkillId}`,
+        detail: manual ? "你在首页选择的技能，执行台已锁定它" : "根据任务自动推荐的技能",
         status: "complete",
         timestamp: Date.now()
       });
@@ -509,13 +529,13 @@ export default function TaskConversationPage({ projectId }: { projectId: string 
                 key={`${projectId}-${task.model}-${task.permission}`} 
                 taskId={projectId} 
                 initialGoal={task.messages.find(m => m.role === "user")?.content || ""} 
-                expertId={task.skillExpertId} 
+                expertId={workbenchExpertId} 
                 model={task.model} 
                 permission={task.permission} 
-                initialSkillId={task.suggestedSkillId} 
+                initialSkillId={task.selectedSkillId ?? task.suggestedSkillId} 
                 autoContent={(() => {
                   // 如果推荐了技能且有完成的助手消息，自动传递内容
-                  if (task.suggestedSkillId) {
+                  if (task.selectedSkillId || task.suggestedSkillId) {
                     const latestAssistant = task.messages.filter(m => m.role === "assistant" && m.status === "complete").at(-1);
                     if (latestAssistant && latestAssistant.content && !latestAssistant.artifact) {
                       return latestAssistant.content;
