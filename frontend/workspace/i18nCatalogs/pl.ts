@@ -57,6 +57,7 @@ const pl: Record<string, string> = {
   "settings.models.id": "Identyfikator modelu",
   "settings.models.id.ph": "Wpisz identyfikator modelu od dostawcy",
   "settings.models.note": "Zapisywane są tu tylko nazwa i identyfikator. Model nie jest pobierany ani sprawdzany pod kątem dostępności. Klucze API pozostają w sesji przeglądarki.",
+  "settings.models.close": "Zamknij ustawienia modelu",
   "settings.models.cancel": "Anuluj",
   "settings.models.save": "Zapisz model",
   "settings.models.saved": "Zapisano. Model możesz wybrać na liście na stronie głównej lub w rozmowie.",

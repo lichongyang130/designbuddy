@@ -251,6 +251,19 @@ export default function TaskConversationPage({ projectId }: { projectId: string 
         updateStep(apiStep.id, { status: "complete", detail: `模型: ${actualModel || current.model || "默认"}` });
         
         if (abort.signal.aborted) throw new DOMException("Aborted", "AbortError");
+        if (isClarificationStream(content) && !parseClarification(content)) {
+          // The model answered with the structured protocol but the questions
+          // failed validation. Fail closed: never show raw protocol, never run
+          // the task, and say what happened so the user can retry.
+          patch(id, {
+            content: extractClarificationIntro(content),
+            status: "error",
+            error: "AI 返回的确认问题格式无效（每题至少需要两个选项），已停止本次确认，没有执行任务。可以重新生成，或直接在输入框补充需求。",
+            model: actualModel || undefined,
+            elapsedMs: performance.now() - startedAt.current,
+          });
+          return;
+        }
         const clarification = parseClarification(content);
         if (clarification) {
           const displayContent = clarification.intro || "我先确认一下你的意思，避免做偏。";

@@ -57,6 +57,7 @@ const fa: Record<string, string> = {
   "settings.models.id": "شناسهٔ مدل",
   "settings.models.id.ph": "شناسهٔ مدل ارائه‌شده از سوی سرویس را وارد کنید",
   "settings.models.note": "اینجا فقط نام و شناسه ذخیره می‌شود؛ مدل دانلود یا در دسترس‌بودن سرویس بررسی نمی‌شود. کلیدهای API فقط در نشست مرورگر می‌مانند.",
+  "settings.models.close": "بستن تنظیمات مدل",
   "settings.models.cancel": "لغو",
   "settings.models.save": "ذخیرهٔ مدل",
   "settings.models.saved": "ذخیره شد. می‌توانید آن را از فهرست مدل‌ها در صفحهٔ اصلی یا گفتگو انتخاب کنید.",

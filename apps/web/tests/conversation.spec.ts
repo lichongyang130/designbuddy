@@ -1,8 +1,13 @@
 import { test, expect, type Page } from "@playwright/test";
-import { setMode, setPermission } from "./helpers/home";
+import { resetComposerDefaults, setMode, setPermission } from "./helpers/home";
 
 const answer = "你好！我是 **WorkBuddy**，你的 AI 搭档。\n\n我可以协助你整理资料、写作、分析问题和设计页面。\n\n1. **我该叫什么？** 你可以给我起一个名字。\n2. **该怎么称呼你？** 告诉我你喜欢的称呼。\n\n请告诉我接下来想完成什么任务。";
 const sse = (text = answer) => `data: ${JSON.stringify({ model: "test-chat-model", choices: [{ delta: { content: text }, finish_reason: null }] })}\n\ndata: ${JSON.stringify({ choices: [{ delta: {}, finish_reason: "stop" }] })}\n\ndata: [DONE]\n\n`;
+test.beforeEach(async ({ page }) => {
+  // The composer defaults are account-wide; another spec may have pinned
+  // 「仅本地」 before this file ran.
+  await resetComposerDefaults(page);
+});
 async function ask(page: Page, text = "自我介绍") {
   await page.goto("/");
   await page.getByRole("textbox", { name: "任务描述", exact: true }).fill(text);

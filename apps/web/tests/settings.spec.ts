@@ -11,20 +11,33 @@ async function open(page: Page, models = false) {
       .getByRole("button", { name: "模型", exact: true })
       .click();
 }
+/**
+ * Navigates home and returns the account's stored preferences. The body is read
+ * from the intercepted route: reading it after `page.goto()` resolves fails with
+ * "no resource with given identifier" whenever the app navigates again.
+ */
 async function loadHomeWithPreferences(page: Page): Promise<{ wakeLock?: boolean }> {
-  const responsePromise = page.waitForResponse(
-    (response) =>
-      response.url().includes("/profile/preferences") &&
-      response.request().method() === "GET" &&
-      response.ok(),
-  );
-  await page.goto("/");
-  const response = await responsePromise;
-  const body = await response.json() as {
-    preferences?: { key: string; value: unknown }[];
+  let body: { preferences?: { key: string; value: unknown }[] } | null = null;
+  const handler = async (route: import("@playwright/test").Route) => {
+    const response = await route.fetch();
+    try {
+      body = (await response.json()) as typeof body;
+    } catch {
+      body = null;
+    }
+    await route.fulfill({ response });
   };
-  const value = body.preferences?.find((entry) => entry.key === "workspace.preferences")?.value;
-  return value && typeof value === "object" ? value as { wakeLock?: boolean } : {};
+  await page.route("**/api/profile/preferences", handler);
+  try {
+    await page.goto("/");
+    await expect
+      .poll(() => body !== null, { message: "account preferences were requested" })
+      .toBe(true);
+  } finally {
+    await page.unroute("**/api/profile/preferences", handler);
+  }
+  const value = body!.preferences?.find((entry) => entry.key === "workspace.preferences")?.value;
+  return value && typeof value === "object" ? (value as { wakeLock?: boolean }) : {};
 }
 test.beforeEach(async ({ page }) => {
   await page.goto("/");

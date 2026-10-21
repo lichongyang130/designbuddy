@@ -57,6 +57,7 @@ const ko: Record<string, string> = {
   "settings.models.id": "모델 ID",
   "settings.models.id.ph": "제공업체의 모델 ID 입력",
   "settings.models.note": "여기에는 이름과 ID만 저장됩니다. 모델을 다운로드하거나 사용 가능 여부를 검증하지 않습니다. API 키는 브라우저 세션에만 보관됩니다.",
+  "settings.models.close": "모델 설정 닫기",
   "settings.models.cancel": "취소",
   "settings.models.save": "모델 저장",
   "settings.models.saved": "저장했습니다. 홈 또는 대화의 모델 목록에서 선택할 수 있습니다.",

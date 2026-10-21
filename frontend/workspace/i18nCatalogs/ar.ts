@@ -57,6 +57,7 @@ const ar: Record<string, string> = {
   "settings.models.id": "معرّف النموذج",
   "settings.models.id.ph": "أدخل معرّف النموذج الذي يوفّره مزوّد الخدمة",
   "settings.models.note": "يُحفظ الاسم والمعرّف فقط؛ لا يتم تنزيل النموذج أو التحقق من توفر الخدمة. تبقى مفاتيح API في جلسة المتصفح فقط.",
+  "settings.models.close": "إغلاق إعدادات الطراز",
   "settings.models.cancel": "إلغاء",
   "settings.models.save": "حفظ النموذج",
   "settings.models.saved": "تم الحفظ. يمكنك اختياره من قائمة النماذج في الصفحة الرئيسية أو المحادثة.",

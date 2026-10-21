@@ -57,6 +57,7 @@ const it: Record<string, string> = {
   "settings.models.id": "ID modello",
   "settings.models.id.ph": "Inserisci l’ID modello fornito dal servizio",
   "settings.models.note": "Qui vengono salvati solo nome e ID; i modelli non vengono scaricati né verificati. Le chiavi API restano nella sessione del browser.",
+  "settings.models.close": "Chiudi impostazioni modello",
   "settings.models.cancel": "Annulla",
   "settings.models.save": "Salva modello",
   "settings.models.saved": "Salvato. Puoi selezionarlo nell’elenco dei modelli della home o di una conversazione.",

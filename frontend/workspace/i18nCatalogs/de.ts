@@ -57,6 +57,7 @@ const de: Record<string, string> = {
   "settings.models.id": "Modell-ID",
   "settings.models.id.ph": "Modell-ID des Anbieters eingeben",
   "settings.models.note": "Hier werden nur Name und ID gespeichert; Modelle werden weder heruntergeladen noch überprüft. API-Schlüssel bleiben in der Browsersitzung.",
+  "settings.models.close": "Modell-Einstellungen schließen",
   "settings.models.cancel": "Abbrechen",
   "settings.models.save": "Modell speichern",
   "settings.models.saved": "Gespeichert. Wählen Sie es auf der Startseite oder in einer Unterhaltung aus der Modellliste aus.",

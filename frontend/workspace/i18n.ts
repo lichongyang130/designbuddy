@@ -120,6 +120,7 @@ const zh: Record<string, string> = {
   "settings.models.id.ph": "输入模型参数值，例如 gpt-4o 或 openai/gpt-4o",
   "settings.models.note":
     "模型配置和接口地址保存在浏览器偏好中；API Key 仅保存在当前会话。测试连接只读取服务商的 /models 列表，不调用模型生成内容。",
+  "settings.models.close": "关闭模型设置",
   "settings.models.cancel": "取消",
   "settings.models.save": "保存",
   "settings.models.saved": "已保存。可在首页或对话的模型列表中选择。",
@@ -567,6 +568,7 @@ const en: Record<string, string> = {
   "settings.models.id.ph": "Enter a model ID, e.g. gpt-4o or openai/gpt-4o",
   "settings.models.note":
     "Model settings and endpoint URLs are stored in browser preferences; API keys stay in the current session. Connection tests only read the provider's /models list and do not generate content.",
+  "settings.models.close": "Close model settings",
   "settings.models.cancel": "Cancel",
   "settings.models.save": "Save",
   "settings.models.saved":

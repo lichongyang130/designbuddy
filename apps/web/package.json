@@ -21,7 +21,8 @@
     "test:sidebar": "playwright test sidebar.spec.ts",
     "test:inspiration": "playwright test inspiration",
     "test:backend": "playwright test backend.spec.ts",
-    "test:home-plugins": "node --experimental-strip-types --test tests/plugin-requirements.test.mjs tests/skill-gate.test.mjs tests/plugin-picks.test.mjs"
+    "test:home-plugins": "node --experimental-strip-types --test tests/plugin-requirements.test.mjs tests/skill-gate.test.mjs tests/plugin-picks.test.mjs",
+    "test:i18n": "node --experimental-strip-types --test tests/i18n-catalog.test.mjs"
   },
   "dependencies": {
     "fflate": "^0.8.3",

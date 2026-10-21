@@ -7,6 +7,30 @@ import { expect, type Locator, type Page } from "@playwright/test";
  * helpers keep the specs reading in user terms.
  */
 
+/**
+ * Composer defaults live in the account, not in the browser context, so a spec
+ * that pins 「仅本地」 or 「需要确认后执行」 would otherwise change how every later
+ * spec in the run behaves. Call this before a spec that expects the defaults.
+ */
+export async function resetComposerDefaults(page: Page) {
+  await page.goto("/");
+  const reset = await page.evaluate(async () => {
+    const response = await fetch("/api/profile/preferences", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ key: "workspace.preferences", value: {} }),
+    });
+    return response.ok;
+  });
+  expect(reset).toBe(true);
+  const reloaded = page.waitForResponse(
+    (response) =>
+      response.url().includes("/profile/preferences") && response.request().method() === "GET",
+  );
+  await page.reload();
+  await reloaded;
+}
+
 export const draft = (page: Page): Locator =>
   page.getByRole("textbox", { name: "任务描述", exact: true });
 

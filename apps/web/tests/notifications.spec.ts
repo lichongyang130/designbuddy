@@ -1,6 +1,23 @@
-import { test, expect, type Page } from "@playwright/test";
+import { test, expect, type Browser, type Page } from "@playwright/test";
 import { freshAccountPage } from "./auth-helpers";
 const key = "designbuddy.notifications.v1";
+/**
+ * The inbox lives on the server per account, so an exact-count assertion in one
+ * spec would otherwise see everything earlier specs produced. Each of those
+ * tests runs against its own freshly registered user instead.
+ */
+async function withFreshInbox(
+  browser: Browser,
+  name: string,
+  run: (page: Page, context: Awaited<ReturnType<typeof freshAccountPage>>["context"]) => Promise<void>,
+) {
+  const owned = await freshAccountPage(browser, `${name}_${Date.now().toString(36)}`);
+  try {
+    await run(owned.page, owned.context);
+  } finally {
+    await owned.context.close();
+  }
+}
 async function ask(page: Page, text = "整理今天的工作") {
   await page.goto("/");
   await page.getByRole("textbox", { name: "任务描述", exact: true }).fill(text);
@@ -13,7 +30,7 @@ async function completeTask(page: Page) {
   await expect(page.locator(".task-progress summary")).toContainText("已完成");
 }
 
-test("bell opens an honest empty inbox, outside click and Escape close and restore focus", async ({ page }) => {
+test("bell opens an honest empty inbox, outside click and Escape close and restore focus", async ({ browser }) => withFreshInbox(browser, "notifications_empty", async (page) => {
   await page.goto("/");
   const trigger = page.getByRole("button", { name: "通知", exact: true });
   await trigger.click();
@@ -27,9 +44,9 @@ test("bell opens an honest empty inbox, outside click and Escape close and resto
   await trigger.click();
   await page.getByRole("heading", { name: /DesignBuddy 让工作更高效/ }).click();
   await expect(panel).toHaveCount(0);
-});
+}));
 
-test("real task completion creates one persistent notification and opens its task", async ({ page }) => {
+test("real task completion creates one persistent notification and opens its task", async ({ browser }) => withFreshInbox(browser, "notifications_complete", async (page) => {
   await completeTask(page);
   const taskUrl = page.url();
   await page.goto("/");
@@ -51,9 +68,9 @@ test("real task completion creates one persistent notification and opens its tas
   await expect(panel).toContainText("暂时没有通知");
   await page.reload();
   await expect(page.locator(".task-reply-markdown")).toContainText("工作已整理");
-});
+}));
 
-test("failures notify; filtering, marking read and deletion do not remove the task", async ({ page }) => {
+test("failures notify; filtering, marking read and deletion do not remove the task", async ({ browser }) => withFreshInbox(browser, "notifications_fail", async (page) => {
   await page.route("**/api/chat", route => route.fulfill({ status: 503, json: { error: "测试连接失败" } }));
   await ask(page);
   await expect(page.getByRole("alert")).toContainText("测试连接失败");
@@ -70,9 +87,9 @@ test("failures notify; filtering, marking read and deletion do not remove the ta
   await expect(page.getByRole("alert")).toContainText("测试连接失败");
   await page.getByRole("button", { name: "通知", exact: true }).click();
   await expect(panel.locator("li")).toHaveCount(0);
-});
+}));
 
-test("waiting-for-answer notifies only once while editing and resolves when dismissed", async ({ page }) => {
+test("waiting-for-answer notifies only once while editing and resolves when dismissed", async ({ browser }) => withFreshInbox(browser, "notifications_waiting", async (page) => {
   await ask(page, "帮我做一个UI");
   await expect(page.getByRole("region", { name: "确认问题" })).toBeVisible();
   await page.getByRole("textbox", { name: "其他补充" }).fill("需要简约设计");
@@ -85,9 +102,9 @@ test("waiting-for-answer notifies only once while editing and resolves when dism
   await page.getByRole("button", { name: "通知", exact: true }).click();
   await expect(panel).toContainText("0 条未读");
   await expect(panel.locator("li")).toHaveCount(1);
-});
+}));
 
-test("read state is synchronized between browser tabs through the sidebar bell", async ({ page, context }) => {
+test("read state is synchronized between browser tabs through the sidebar bell", async ({ browser }) => withFreshInbox(browser, "notifications_tabs", async (page, context) => {
   await completeTask(page);
   await page.goto("/");
   await page.getByRole("button", { name: "通知", exact: true }).click();
@@ -98,7 +115,7 @@ test("read state is synchronized between browser tabs through the sidebar bell",
   await expect(page.getByRole("dialog", { name: "通知中心" })).toContainText("0 条未读");
   await expect(page.locator(".notification-unread-dot")).toHaveCount(0);
   await other.close();
-});
+}));
 
 test("invalid saved records are ignored; deleted task links show an honest error", async ({ browser }) => {
   // The server inbox is the record of truth, so this exact-count assertion

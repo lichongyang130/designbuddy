@@ -57,6 +57,7 @@ const ja: Record<string, string> = {
   "settings.models.id": "モデルID",
   "settings.models.id.ph": "プロバイダーのモデルIDを入力",
   "settings.models.note": "ここに保存されるのは名前とIDのみです。モデルのダウンロードや利用可否の検証は行いません。APIキーはブラウザーのセッション内に保存されます。",
+  "settings.models.close": "モデル設定を閉じる",
   "settings.models.cancel": "キャンセル",
   "settings.models.save": "モデルを保存",
   "settings.models.saved": "保存しました。ホームまたは会話のモデル一覧から選択できます。",

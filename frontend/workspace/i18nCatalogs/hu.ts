@@ -57,6 +57,7 @@ const hu: Record<string, string> = {
   "settings.models.id": "Modellazonosító",
   "settings.models.id.ph": "Add meg a szolgáltató által megadott modellazonosítót",
   "settings.models.note": "Itt csak a név és az azonosító tárolódik; a modell nem töltődik le, és a szolgáltatás elérhetőségét sem ellenőrzi. Az API-kulcsok csak a böngésző-munkamenetben maradnak.",
+  "settings.models.close": "Modellbeállítások bezárása",
   "settings.models.cancel": "Mégse",
   "settings.models.save": "Modell mentése",
   "settings.models.saved": "Mentve. A főoldal vagy egy beszélgetés modell-listájából választhatod ki.",

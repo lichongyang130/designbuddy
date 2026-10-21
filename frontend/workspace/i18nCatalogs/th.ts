@@ -57,6 +57,7 @@ const th: Record<string, string> = {
   "settings.models.id": "รหัสโมเดล",
   "settings.models.id.ph": "ป้อนรหัสโมเดลที่ผู้ให้บริการระบุ",
   "settings.models.note": "ระบบบันทึกเฉพาะชื่อและรหัสที่นี่ ไม่ได้ดาวน์โหลดโมเดลหรือตรวจสอบว่าบริการใช้งานได้ คีย์ API จะอยู่ในเซสชันเบราว์เซอร์เท่านั้น",
+  "settings.models.close": "ปิดการตั้งค่าโมเดล",
   "settings.models.cancel": "ยกเลิก",
   "settings.models.save": "บันทึกโมเดล",
   "settings.models.saved": "บันทึกแล้ว เลือกโมเดลได้จากรายการบนหน้าแรกหรือในบทสนทนา",

@@ -128,6 +128,8 @@ test("keyboard order reaches the input before anything else", async ({ page }) =
 });
 
 test("⌘K still reaches every destination the old page linked to", async ({ page }) => {
+  // The shortcut is bound by the app shell, so press it once the composer exists.
+  await expect(page.getByRole("textbox", { name: "任务描述", exact: true })).toBeVisible();
   await page.keyboard.press("ControlOrMeta+k");
   const palette = page.getByRole("dialog");
   await expect(palette).toBeVisible();

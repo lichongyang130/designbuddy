@@ -57,6 +57,7 @@ const id: Record<string, string> = {
   "settings.models.id": "ID model",
   "settings.models.id.ph": "Masukkan ID model dari penyedia",
   "settings.models.note": "Hanya nama dan ID yang disimpan di sini; model tidak diunduh atau diverifikasi. Kunci API tetap berada di sesi browser.",
+  "settings.models.close": "Tutup pengaturan model",
   "settings.models.cancel": "Batal",
   "settings.models.save": "Simpan model",
   "settings.models.saved": "Tersimpan. Pilih model ini dari daftar di beranda atau percakapan.",

@@ -88,9 +88,11 @@
   gap: 8px;
 }
 .home27.home-launcher .attach-button {
-  width: 32px;
-  height: 32px;
-  flex: 0 0 32px;
+  /* Same 34px box as the expert trigger beside it, so both share one top edge
+     instead of sitting 1px apart when the row centres them. */
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
   background: #f5f5fa;
   color: #7c8394;
 }

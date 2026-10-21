@@ -1,5 +1,10 @@
 import { expect, test, type Page } from "@playwright/test";
-import { setMode, setPermission } from "./helpers/home";
+import { resetComposerDefaults, setMode, setPermission } from "./helpers/home";
+
+// Composer defaults persist in the account, so inherit nothing from earlier files.
+test.beforeEach(async ({ page }) => {
+  await resetComposerDefaults(page);
+});
 const dataMatch = { kind: "match", expertId: "data", collaboratorIds: [], reason: "需要核对报销表的金额与口径，而不是做视觉设计。", responsibilities: ["核对金额与字段口径", "找出重复与缺失记录"], missing: ["报销原始明细"] };
 const slideMatch = { kind: "match", expertId: "slides", collaboratorIds: [], reason: "目标是面向管理层的产品演示。", responsibilities: ["组织逐页汇报内容"], missing: [] };
 const sse = 'data: {"choices":[{"delta":{"content":"已收到任务规范。"},"finish_reason":"stop"}]}\n\ndata: [DONE]\n\n';

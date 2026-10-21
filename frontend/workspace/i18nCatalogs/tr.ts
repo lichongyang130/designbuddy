@@ -57,6 +57,7 @@ const tr: Record<string, string> = {
   "settings.models.id": "Model kimliği",
   "settings.models.id.ph": "Hizmet sağlayıcının verdiği model kimliğini girin",
   "settings.models.note": "Burada yalnızca ad ve kimlik saklanır; model indirilmez ve hizmetin kullanılabilirliği doğrulanmaz. API anahtarları yalnızca tarayıcı oturumunda tutulur.",
+  "settings.models.close": "Model ayarlarını kapat",
   "settings.models.cancel": "İptal",
   "settings.models.save": "Modeli kaydet",
   "settings.models.saved": "Kaydedildi. Ana sayfadaki veya konuşmadaki model listesinden seçebilirsiniz.",

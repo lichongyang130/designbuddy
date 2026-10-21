@@ -57,6 +57,7 @@ const esES: Record<string, string> = {
   "settings.models.id": "Identificador del modelo",
   "settings.models.id.ph": "Introduce el identificador del modelo del proveedor",
   "settings.models.note": "Aquí solo se guardan el nombre y el identificador; los modelos no se descargan ni se verifican. Las claves API permanecen en la sesión del navegador.",
+  "settings.models.close": "Cerrar ajustes del modelo",
   "settings.models.cancel": "Cancelar",
   "settings.models.save": "Guardar modelo",
   "settings.models.saved": "Guardado. Puedes elegirlo en la lista de modelos de inicio o de una conversación.",

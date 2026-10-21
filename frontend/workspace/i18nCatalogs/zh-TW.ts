@@ -57,6 +57,7 @@ const zhTW: Record<string, string> = {
   "settings.models.id": "模型標識",
   "settings.models.id.ph": "填寫服務商提供的模型 ID",
   "settings.models.note": "這裡只儲存模型名稱和標識，不會自動下載模型或驗證服務可用性。API 金鑰僅儲存在瀏覽器會話中。",
+  "settings.models.close": "關閉模型設定",
   "settings.models.cancel": "取消",
   "settings.models.save": "儲存模型",
   "settings.models.saved": "已儲存。可在首頁或對話的模型列表中選擇。",

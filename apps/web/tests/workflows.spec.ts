@@ -144,6 +144,10 @@ test("the table scene is still one search away and its recipe keeps a home on /w
   try {
     const page = owned.page;
     // The launcher no longer renders scene cards; ⌘K still knows all fifteen.
+    // A freshly registered account can still be hydrating, and the shortcut is
+    // bound by the app shell, so wait for the composer before pressing it.
+    await expect(page.getByRole("textbox", { name: "任务描述", exact: true })).toBeVisible();
+    await page.getByRole("textbox", { name: "任务描述", exact: true }).click();
     await page.keyboard.press("ControlOrMeta+k");
     await page.getByRole("textbox", { name: "搜索场景、插件、技能" }).fill("表格分析");
     await page.getByRole("option", { name: /表格分析/ }).click();

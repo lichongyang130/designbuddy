@@ -57,6 +57,7 @@ const fr: Record<string, string> = {
   "settings.models.id": "Identifiant du modèle",
   "settings.models.id.ph": "Saisissez l’identifiant du modèle fourni par le service",
   "settings.models.note": "Seuls le nom et l’identifiant sont enregistrés ici ; aucun modèle n’est téléchargé ni vérifié. Les clés API restent dans la session du navigateur.",
+  "settings.models.close": "Fermer les réglages du modèle",
   "settings.models.cancel": "Annuler",
   "settings.models.save": "Enregistrer le modèle",
   "settings.models.saved": "Enregistré. Vous pouvez le choisir dans la liste des modèles de l’accueil ou d’une conversation.",

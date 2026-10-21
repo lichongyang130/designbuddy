@@ -49,7 +49,10 @@ export function TaskClarificationCard({ value, onChange, onSubmit, onClose }: {
             }, 150);
           }
         };
-        return <button type="button" key={`${q.id}-${i}`} role="radio" aria-checked={answer.option === i} tabIndex={i === (answer.option ?? 0) ? 0 : -1} className="clarification-option" onClick={() => changeAnswer({ option: i })}>
+        // The arrow is its own control, so name the radio explicitly: otherwise
+        // its accessible name swallows "选择…并继续" and screen readers read the
+        // arrow label as part of the choice.
+        return <button type="button" key={`${q.id}-${i}`} role="radio" aria-label={option} aria-checked={answer.option === i} tabIndex={i === (answer.option ?? 0) ? 0 : -1} className="clarification-option" onClick={() => changeAnswer({ option: i })}>
         <span className="clarification-number" aria-hidden="true">{i + 1}</span><span className="clarification-option-text">{option}</span>
         <span className="clarification-option-arrow" role="button" aria-label={`选择"${option}"并继续`} onClick={(e) => { e.stopPropagation(); selectAndAdvance(); }}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg></span>
       </button>})}

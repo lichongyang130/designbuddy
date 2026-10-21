@@ -57,6 +57,7 @@ const ptBR: Record<string, string> = {
   "settings.models.id": "ID do modelo",
   "settings.models.id.ph": "Digite o ID do modelo fornecido pelo serviço",
   "settings.models.note": "Aqui são salvos apenas o nome e o ID; os modelos não são baixados nem verificados. As chaves de API ficam na sessão do navegador.",
+  "settings.models.close": "Fechar ajustes do modelo",
   "settings.models.cancel": "Cancelar",
   "settings.models.save": "Salvar modelo",
   "settings.models.saved": "Salvo. Escolha-o na lista de modelos da página inicial ou de uma conversa.",

@@ -1,8 +1,11 @@
 import { test, expect, type Page } from "@playwright/test";
-import { setMode, setPermission } from "./helpers/home";
+import { resetComposerDefaults, setMode, setPermission } from "./helpers/home";
 
 const sse = (text: string) => `data: ${JSON.stringify({ model: "clarification-test", choices: [{ delta: { content: text }, finish_reason: "stop" }] })}\n\ndata: [DONE]\n\n`;
 const protocol = (questions: unknown) => '```designbuddy-clarification\n' + JSON.stringify({ questions }) + '\n```';
+test.beforeEach(async ({ page }) => {
+  await resetComposerDefaults(page);
+});
 async function ask(page: Page, text = "帮我做一个UI", mode?: string, permission?: string) {
   await page.goto("/");
   if (mode) await setMode(page, mode);

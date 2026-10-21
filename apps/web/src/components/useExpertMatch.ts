@@ -6,7 +6,9 @@ import { useWorkspaceStore } from "../../../../frontend/workspace/store";
 import { expertExecutionBrief, localExpertSuggestion, validExpertMatch, type ExpertMatch, type ExpertProfile } from "../../../../shared/expertRouting";
 
 const consentKey = "designbuddy.expert-match-consent.v1";
-function initialConsent() { try { const stored = localStorage.getItem(consentKey); return stored === null ? true : stored === "allowed"; } catch { return true; } }
+// Auto-matching sends the draft (and readable attachment excerpts) to a model,
+// so it stays off until the user opts in. A storage failure must never grant it.
+function initialConsent() { try { return localStorage.getItem(consentKey) === "allowed"; } catch { return false; } }
 const defaultMethod = ["先确认交付目标、使用对象、已有材料和约束", "按专业职责拆解工作，区分事实、假设和建议", "交付主体结果、依据及待复核事项"];
 const defaultChecks = ["不编造事实、引用、数字和执行结果", "工具与外部服务必须实际接入才能使用", "资料不足只询问必要问题，外部操作遵守原有权限"];
 type Input = { prompt: string; mode: "office" | "code" | "design"; model: string; permission: string; attachments: { name: string; text?: string }[]; selectedExpert: string; enabled: boolean };

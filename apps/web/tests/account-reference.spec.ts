@@ -1,5 +1,6 @@
 import { test, expect, type Page } from "@playwright/test";
 import { freshAccountPage } from "./auth-helpers";
+import { AUTH_GATE_ENABLED } from "../../../frontend/workspace/authGate";
 const menu = (page: Page) => page.getByRole("dialog", { name: "账号菜单", exact: true });
 const trigger = (page: Page) => page.getByRole("button", { name: /^账号菜单：/ });
 async function open(page: Page) { await trigger(page).click(); await expect(menu(page)).toBeVisible(); }
@@ -10,12 +11,18 @@ test("reference cards and action order match the screenshot without fabricated b
   const popup = menu(page);
   await expect(popup.locator(".account-identity strong")).toHaveText(/^uisetup_[0-9a-z]+$/);
   await expect(popup.locator(".account-identity small")).toContainText("已登录服务器账号");
-  await expect(popup.locator(".account-actions .account-action > span")).toHaveText(["Buddy加油站", "去邀约", "成长计划", "设置", "外观", "记忆与进化", "意见反馈", "检查更新", "退出登录"]);
+  // The logout row only exists while the login gate is enabled; the rest of the
+  // order is fixed by the design and must not drift.
+  const rows = ["Buddy加油站", "去邀约", "成长计划", "设置", "外观", "记忆与进化", "意见反馈", "检查更新"];
+  await expect(popup.locator(".account-actions .account-action > span")).toHaveText(
+    AUTH_GATE_ENABLED ? [...rows, "退出登录"] : rows,
+  );
   await expect(popup.getByLabel("套餐与积分")).toContainText("未接入");
   await expect(popup).not.toContainText("1,679.47");
   await expect(popup).not.toContainText("650");
   await expect(popup.getByRole("button", { name: "购买积分", exact: true })).toBeDisabled();
-  await expect(popup.getByRole("button", { name: "退出登录", exact: true })).toBeEnabled();
+  if (AUTH_GATE_ENABLED)
+    await expect(popup.getByRole("button", { name: "退出登录", exact: true })).toBeEnabled();
   const anchor = (await trigger(page).boundingBox())!, box = (await popup.boundingBox())!;
   expect(box.width).toBe(316);
   expect(box.y + box.height).toBeLessThanOrEqual(anchor.y - 7);
