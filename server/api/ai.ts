@@ -76,15 +76,15 @@ export async function requestAI(input: AIRequest): Promise<AIResponse> {
     (customProvider && !input.baseUrl)
   )) throw new Error("Choose a supported provider and provide a valid API key.");
   if (input.apiKey && customProvider && !input.model) throw new Error("Custom providers require an explicit model identifier.");
-  const apiKey = input.apiKey || process.env.AI_API_KEY || process.env.OPENAI_API_KEY || "sk-5rg5xG9wpRJ9BopWlq37K46Thw0Kiah0zrBbhgDJLNN4LFzu";
+  const apiKey = (input.apiKey || process.env.AI_API_KEY || process.env.OPENAI_API_KEY || "").trim();
   if (!apiKey) throw new Error("AI provider is not configured. Set AI_API_KEY or OPENAI_API_KEY on the server.");
 
   const baseUrl = (input.apiKey
     ? customProvider
       ? await normalizeOpenAICompatibleBaseUrl(input.baseUrl)
       : AI_PROVIDER_ENDPOINTS[input.provider!]
-    : process.env.AI_BASE_URL || "https://apihub.agnes-ai.com/v1").replace(/\/+$/, "");
-  const model = input.model || (input.apiKey ? AI_PROVIDER_MODELS[input.provider!] : process.env.AI_MODEL || process.env.OPENAI_MODEL || "agnes-3.0-flash");
+    : process.env.AI_BASE_URL || "https://api.openai.com/v1").replace(/\/+$/, "");
+  const model = input.model || (input.apiKey ? AI_PROVIDER_MODELS[input.provider!] : process.env.AI_MODEL || process.env.OPENAI_MODEL || "gpt-4o-mini");
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 60_000);
   const startedAt = Date.now();

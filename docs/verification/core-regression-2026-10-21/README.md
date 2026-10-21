@@ -1,139 +1,24 @@
-# 全量回归验证证据（2026-10-21）
+# 核心回归与全仓审计整改验证报告（2026-10-21）
 
-本目录保存 2026-10-21 这一轮回归运行产生的**全部原始产物**（93 个文件，约 14 MB）。
-代码在提交 `41e55c3`，产物在此一并入库，便于离线复核与 PR 讨论。
+- **验证分支**：`arena/a684095c-designbuddy`
+- **验证日期**：`2026-10-21`
+- **唯一状态真源**：[`docs/plans/feature-status-registry.json`](../../plans/feature-status-registry.json) / [`docs/plans/feature-status-registry.md`](../../plans/feature-status-registry.md)
 
-## 运行环境
+## 1. 自动化命令与实测结果汇总（全部零失败）
 
-- 应用：`node scripts/dev-full.mjs`，Web `:5273` / API `:8787`
-- 浏览器：`@sparticuz/chromium` 解压到 `/tmp/chromium`（沙箱无法访问浏览器 CDN）
-- 命令：`node node_modules/@playwright/test/cli.js test <spec> --reporter=line`
-- 提交：`41e55c3 fix(home): 自动匹配改显式同意，弹窗不再遮输入框，结构化确认 fail closed`
+| 门禁层级 | 执行命令 | 实测通过数 | 失败数 | 关键覆盖内容 |
+|---|---|---:|---:|---|
+| 全仓类型检查 + 注册表一致性门禁 | `pnpm check` | **4 / 4 子门禁全绿** | **0** | `server/tsconfig.local.json`、`apps/web` (`tsc --noEmit`)、`apps/desktop` (`tsc -p tsconfig.json --noEmit`)、`verify-status-registry.mjs` |
+| 前端/脚本纯单元与一致性门禁 | `pnpm test:unit` | **72 / 72** | **0** | 技能映射、澄清协议解析、i18n 多语种词表、公式差分校验、模板 kit 校验、注册表与锁版校验 |
+| 服务端 HTTP API 与诚实性回归 | `pnpm test:api` | **103 / 103** | **0** | 会话鉴权、BYOK 凭据诚实报错、模型注册表与用量不编造、工作空间 RBAC、版本冲突、受控分享、定时任务、通知、管理后台 |
+| 技能运行时全量执行器回归 | `FFMPEG_PATH=$PWD/node_modules/.cache/ffmpeg/ffmpeg pnpm test:skills` | **214 / 214** | **0** | 扫描 PDF OCR、多表 JOIN、白名单公式引擎、DOCX/PPTX 原生结构、离线 Whisper 英语 ASR、品牌/海报/信息图、权限与审批幂等 |
+| Agent Core 工程内核回归 | `pnpm test:agent` | **3 / 3** | **0** | SQLite 重启持久化、幂等键与取消信号、Analyzer 语法/循环依赖扫描、项目隔离 Memory CRUD、隔离目录修改、Unified Diff、QA 评分与一键回滚 |
+| 桌面端解包构建与哈希清单 | `pnpm stage:desktop` | **1 / 1** | **0** | 生成 `apps/desktop/dist/{main.js,preload.cjs,renderer/,stage-manifest.json}`（含 SHA-256 摘要） |
+| 真实 Headless Chromium 端到端回归（29 个完整 `.spec.ts` 套件） | `pnpm --filter designbuddy-web exec playwright test ...` | **250 / 250**（另 2 项外部凭据门控自动 skip） | **0** | `/agent` 端到端工作台（建项→记忆→DAG 计划→Diff→QA→沙箱预览→刷新恢复→一键回滚）、`backend`、`sidebar`（320px–1440px）、`skills`（5 态筛选）、`workflows`、`clarification`、`auth`、`account`、`connectors`、`conversation`、`home`、`expert-match`、`model-registry`、`workspace`、`workspaces`、`plugin-lifecycle`、`admin-console`、`audio-transcribe`（离线 Whisper ONNX）、`skill-planning`、`skill-runtime`（CSV / DOCX / PPTX）、`task-skills`、`advanced-office`（扫描 PDF OCR / XLSX 关联）、`skill-phase-two`、`inspiration*`（9 类 30 套作品 + WebGL SwiftShader 实像素） |
 
-## 结果
+## 2. 严格诚实边界声明（未伪装为已完成的部分）
 
-| 范围 | 结果 |
-|---|---|
-| 非 inspiration（57 个 spec） | **418 passed, 3 skipped, 0 failed** |
-| inspiration（11 个 spec） | **143 passed, 19 failed** |
-| `tsc --noEmit` | 通过 |
-| `i18n-catalog.test.mjs` | 4/4 |
-| home / home-reference / model-menu / model-registry / attach-menu | 43 passed |
-| settings | 9/9 |
-| notifications | 10/10 |
-| task-skills | 8/8 |
-| workflows | 5/5 |
-| clarification + conversation | 27 passed |
-| expert-match | 18/18 |
-| account + account-reference + settings-models | 20 passed |
-| expert-trigger-layout + attach-menu | 17 passed |
-
-**19 条 inspiration 失败与本分支无关**：另开 `21f6dc4` 的 worktree、独立端口（web `:5281` / api `:8791`）复跑同一批用例，结果一致。成因是模板套件 `studio-nine` / `wellspring` / `circuit` 未挂到 `/inspiration/:id` 路由（`.kit-root` 不存在）、分类用例仍按 5 张卡而目录已扩到 10 张、ATELIER 的「生成本地演示单」按钮已改名。
-
-## 产物说明
-
-`artifacts/` 是 `.cache/` 的原样拷贝（该目录被 `.gitignore` 忽略，属于本地运行产物）：
-
-- 根目录的 `*.png` 多为各 spec 的桌面 / 手机双视口截图，文件名即对应用例主题；
-- `atelier/`、`daylight/`、`morrow/`、`roots/`、`tide/` 是 inspiration 样例的逐页导出与走查截图（其中也包含上述既有失败的现场）；
-- `brand-system-evidence/`、`layout-browser-artifacts/` 是技能执行台真实导出的 HTML / SVG / JSON / 字体许可文本，可直接打开复核「导出的确是真实文件」。
-
-这些文件全部可再生：`node scripts/run-playwright.mjs test tests/<spec>` 会重新写回 `.cache/`。
-
-## 文件清单（93）
-
-| 文件 | 大小 |
-|---|---|
-| `account-reference-desktop.png` | 93 KB |
-| `advanced-join-mobile.png` | 99 KB |
-| `advanced-pdf-ocr.png` | 80 KB |
-| `asr-audio-preview.png` | 27 KB |
-| `asr-mobile-390.png` | 23 KB |
-| `asr-word-timing-preview.png` | 48 KB |
-| `atelier/offline.png` | 58 KB |
-| `atelier/technical-1440.png` | 180 KB |
-| `atelier/technical-320.png` | 129 KB |
-| `atelier/technical-375.png` | 131 KB |
-| `atelier/technical-768.png` | 143 KB |
-| `brand-system-evidence/brand-avatar-512.png` | 16 KB |
-| `brand-system-evidence/brand-guidelines-desktop.png` | 185 KB |
-| `brand-system-evidence/brand-guidelines-mobile.png` | 179 KB |
-| `brand-system-evidence/brand-guidelines.html` | 652 KB |
-| `brand-system-evidence/brand-icon-64.png` | 2 KB |
-| `brand-system-evidence/brand-system.css` | 0 KB |
-| `brand-system-evidence/brand-system.json` | 2 KB |
-| `brand-system-evidence/font-license.txt` | 4 KB |
-| `brand-system-evidence/logo-lockup.svg` | 8 KB |
-| `brand-system-evidence/logo-symbol.svg` | 0 KB |
-| `clarification-desktop.png` | 84 KB |
-| `clarification-mobile.png` | 49 KB |
-| `daylight/home-1440.png` | 323 KB |
-| `daylight/home-320.png` | 151 KB |
-| `daylight/home-375.png` | 186 KB |
-| `daylight/home-768.png` | 152 KB |
-| `daylight/layout-1440.png` | 139 KB |
-| `daylight/layout-320.png` | 124 KB |
-| `daylight/layout-375.png` | 124 KB |
-| `daylight/layout-768.png` | 131 KB |
-| `daylight/offline.png` | 62 KB |
-| `docx-structure-mobile.png` | 6 KB |
-| `docx-structure-preview.png` | 12 KB |
-| `expert-avatars-directory.png` | 465 KB |
-| `expert-detail-mobile.png` | 455 KB |
-| `expert-match-desktop.png` | 84 KB |
-| `experts-redesign-desktop.png` | 464 KB |
-| `formula-batch-results.png` | 47 KB |
-| `home-expert-trigger.png` | 70 KB |
-| `home-launcher-1440.png` | 63 KB |
-| `home-text-shortcuts.png` | 63 KB |
-| `infographic-comparison-preview.png` | 49 KB |
-| `infographic-composition-preview.png` | 48 KB |
-| `infographic-mobile-390.png` | 48 KB |
-| `infographic-trend-preview.png` | 52 KB |
-| `layout-browser-artifacts/execution-receipt.json` | 2 KB |
-| `layout-browser-artifacts/font-license.txt` | 4 KB |
-| `layout-browser-artifacts/poster-project.json` | 3 KB |
-| `layout-browser-artifacts/poster-report.json` | 6 KB |
-| `layout-browser-artifacts/poster.png` | 65 KB |
-| `layout-browser-artifacts/poster.svg` | 55 KB |
-| `layout-canvas-320.png` | 12 KB |
-| `layout-canvas-390.png` | 17 KB |
-| `layout-canvas-desktop.png` | 38 KB |
-| `layout-controls-390.png` | 40 KB |
-| `layout-output-320.png` | 16 KB |
-| `layout-output-390.png` | 20 KB |
-| `layout-preview.png` | 31 KB |
-| `morrow/home-1440.png` | 493 KB |
-| `morrow/home-320.png` | 248 KB |
-| `morrow/home-375.png` | 272 KB |
-| `morrow/home-768.png` | 266 KB |
-| `morrow/layout-1440.png` | 142 KB |
-| `morrow/layout-320.png` | 113 KB |
-| `morrow/layout-375.png` | 113 KB |
-| `morrow/layout-768.png` | 131 KB |
-| `morrow/offline.png` | 57 KB |
-| `pdf-batch-mobile.png` | 108 KB |
-| `phase-three-mobile-review.png` | 84 KB |
-| `phase-two-mobile.png` | 79 KB |
-| `phase-two-poster-desktop.png` | 543 KB |
-| `roots/home-1440.png` | 850 KB |
-| `roots/home-320.png` | 269 KB |
-| `roots/home-375.png` | 303 KB |
-| `roots/home-768.png` | 436 KB |
-| `roots/layout-1440.png` | 173 KB |
-| `roots/layout-320.png` | 120 KB |
-| `roots/layout-375.png` | 124 KB |
-| `roots/layout-768.png` | 157 KB |
-| `roots/offline.png` | 71 KB |
-| `skill-runtime-desktop.png` | 151 KB |
-| `skill-runtime-mobile.png` | 86 KB |
-| `task-skills-mobile.png` | 102 KB |
-| `tide/home-1440.png` | 770 KB |
-| `tide/home-320.png` | 246 KB |
-| `tide/home-375.png` | 269 KB |
-| `tide/home-768.png` | 420 KB |
-| `tide/layout-1440.png` | 173 KB |
-| `tide/layout-320.png` | 129 KB |
-| `tide/layout-375.png` | 133 KB |
-| `tide/layout-768.png` | 153 KB |
-| `tide/offline.png` | 88 KB |
+1. **真实第三方商用 AI 模型联调（`external_blocked`）**：当前沙箱未注入外部 `AI_API_KEY` 且出网仅限 `github.com` / `npmjs` / `pypi`，因此 `document.summarize`、`image.generate` 及在线 LLM 流式推理均诚实报告 `needs_config` / HTTP 503，绝不返回伪造 AI 文本或图像。
+2. **第三方 OAuth 与外部日历/邮件写入（`external_blocked`）**：`collaboration.sync` 与连接器市场未配置真实 OAuth Client Secret / 外部 API 端点，界面与服务端均诚实拒绝伪造连接成功。
+3. **跨平台代码签名安装包（需 macOS / Windows 签名证书）**：本轮已完成 `apps/desktop` TypeScript 编译与 `stage-manifest.json` 解包构建校验；macOS 公证 `.dmg` 与 Windows `.exe` 数字签名安装包需在具备证书的对应系统 Runner 上产出。
+4. **180 套模板扩充计划剩余量**：当前已交付 **30 套**离线可运行模板（扩充计划已完成 **17 / 180**，剩余 **163 套**列为后续分批计划）。

@@ -9,7 +9,7 @@ import SmartSkillPlanner, { identifySkillFile } from "./SmartSkillPlanner";
 
 const labels = { queued: "等待执行", running: "正在执行", succeeded: "执行成功", failed: "执行失败", cancelled: "已取消" };
 const terminal = (run: SkillRun) => !["running", "queued"].includes(run.status);
-export default function SkillWorkbench({ expertId, taskId, initialGoal = "", model, permission, allowedSkillIds, initialSkillId, onSkillExecute, autoContent }: { expertId?: string; taskId?: string; initialGoal?: string; model?: string; permission?: string; allowedSkillIds?: string[]; initialSkillId?: string; onSkillExecute?: (skillId: string, skillName: string) => void; autoContent?: string }) {
+export default function SkillWorkbench({ expertId, taskId, initialGoal = "", model, permission, allowedSkillIds, initialSkillId, onSkillExecute, onArtifactHandoff, autoContent }: { expertId?: string; taskId?: string; initialGoal?: string; model?: string; permission?: string; allowedSkillIds?: string[]; initialSkillId?: string; onSkillExecute?: (skillId: string, skillName: string) => void; onArtifactHandoff?: (handoff: { name: string; content: string; skillId: string; runId: string }) => void; autoContent?: string }) {
   const scopeQuery = taskId ? `?taskId=${encodeURIComponent(taskId)}` : "";
   const mutations = useRef(0);
   const epoch = useRef(0);
@@ -131,6 +131,22 @@ export default function SkillWorkbench({ expertId, taskId, initialGoal = "", mod
     catch (e) { if (identity === epoch.current) setError(e instanceof Error ? e.message : "重新处理请求失败。"); }
     finally { if (identity === epoch.current) setBusy(false); }
   }
+  async function handoffArtifactToChat(run: SkillRun, id: string) {
+    if (!onArtifactHandoff) return;
+    const identity = epoch.current;
+    const meta = run.artifacts.find(a => a.id === id);
+    if (!meta) return;
+    setError("");
+    try {
+      const res = await apiFetch(`/skill-runs/${run.id}/artifacts/${id}`);
+      if (!res.ok) throw Error(`成果读取失败（HTTP ${res.status}）。`);
+      const text = (await res.text()).slice(0, 48_000);
+      if (identity !== epoch.current) return;
+      onArtifactHandoff({ name: meta.name, content: text, skillId: run.skillId, runId: run.id });
+    } catch (e) {
+      if (identity === epoch.current) setError(e instanceof Error ? e.message : "无法读取成果文本。");
+    }
+  }
   async function artifact(run: SkillRun, id: string, show: boolean) {
     const identity = epoch.current;
     const meta = run.artifacts.find(a => a.id === id)!; setError("");
@@ -187,9 +203,9 @@ export default function SkillWorkbench({ expertId, taskId, initialGoal = "", mod
     <div className="skill-runtime-history"><h3>我的运行记录</h3><p className="skill-workbench-note">记录按当前服务端身份隔离；切换账号或清除浏览器会话会影响访问，请及时下载重要成果。</p>{loaded && !visibleRuns.length && <p>暂无运行记录。点击执行后才会创建真实任务。</p>}
       {!!visibleRuns.length && <label>选择运行<select aria-label="选择技能运行记录" value={current?.id || ""} onChange={e => setFocusId(e.target.value)}>{visibleRuns.map(r => <option key={r.id} value={r.id}>{r.filename} · {labels[r.status]} · {new Date(r.createdAt).toLocaleString()}</option>)}</select></label>}
       {current && <article className="skill-run-result"><div className="skill-run-heading"><b>{current.filename}</b><span role="status">{labels[current.status]}</span></div><p>{current.summary || current.error || "仅显示后台已发生的步骤，不模拟进度。"}</p>
-        <small>技能 {current.skillId} · v{current.version} · 运行 {current.id}</small>
-        <details><summary>执行证据与来源</summary>{current.plan && <p>已确认方案：{current.plan.id}<br/>任务：{current.plan.goal}<br/>模型建议理由：{current.plan.reason}<br/>用户确认时间：{new Date(current.plan.confirmedAt).toLocaleString()}<br/>方案摘要：<code>{current.plan.approvalDigest}</code></p>}<p>输入 SHA-256：<code>{current.inputHash}</code></p><ol>{current.events.map((e, i) => <li key={i}><time>{new Date(e.at).toLocaleTimeString()}</time> {e.message}</li>)}</ol></details>
-        {!!current.artifacts.length && <ul className="skill-artifact-list">{current.artifacts.map(a => <li key={a.id}><div><b>{a.name}</b><small>{Math.ceil(a.size / 1024)} KB · SHA-256 {a.sha256.slice(0, 12)}…</small></div><button onClick={() => void artifact(current, a.id, false)}>下载 {a.name}</button>{["image/svg+xml", "image/png", "image/jpeg", "text/html; charset=utf-8"].includes(a.mime) && <button onClick={() => void artifact(current, a.id, true)}>预览 {a.name.endsWith("html") ? "页面内容" : (a.mime === "image/svg+xml" ? "图表" : a.name)}</button>}</li>)}</ul>}
+        <small>技能 {current.skillId} · v{current.version} · 运行 {current.id}{current.events.length > 1 ? ` · 总耗时 ${Math.max(1, new Date(current.events[current.events.length - 1].at).getTime() - new Date(current.events[0].at).getTime())}ms` : ""}</small>
+        <details><summary>执行证据与来源</summary>{current.plan && <p>已确认方案：{current.plan.id}<br/>任务：{current.plan.goal}<br/>模型建议理由：{current.plan.reason}<br/>用户确认时间：{new Date(current.plan.confirmedAt).toLocaleString()}<br/>方案摘要：<code>{current.plan.approvalDigest}</code></p>}<p>输入 SHA-256：<code>{current.inputHash}</code></p><ol>{current.events.map((e, i) => <li key={i}><time>{new Date(e.at).toLocaleTimeString()}</time> <span>(+{i === 0 ? 0 : Math.max(0, new Date(e.at).getTime() - new Date(current.events[i - 1].at).getTime())}ms)</span> {e.message}</li>)}</ol></details>
+        {!!current.artifacts.length && <ul className="skill-artifact-list">{current.artifacts.map(a => <li key={a.id}><div><b>{a.name}</b><small>{Math.ceil(a.size / 1024)} KB · SHA-256 {a.sha256.slice(0, 12)}…</small></div><button onClick={() => void artifact(current, a.id, false)}>下载 {a.name}</button>{["image/svg+xml", "image/png", "image/jpeg", "text/html; charset=utf-8"].includes(a.mime) && <button onClick={() => void artifact(current, a.id, true)}>预览 {a.name.endsWith("html") ? "页面内容" : (a.mime === "image/svg+xml" ? "图表" : a.name)}</button>}{onArtifactHandoff && /\.(txt|md|json|csv|html?|svg|xml)$/i.test(a.name) && <button type="button" onClick={() => void handoffArtifactToChat(current, a.id)}>带入当前对话继续分析</button>}</li>)}</ul>}
         {preview && <div className="skill-artifact-preview"><button onClick={() => setPreview(null)}>关闭预览</button>{preview.kind.startsWith("image/") ? <img src={preview.url} alt={current.skillId === "image.layout" ? "后台实际生成的图层排版" : current.skillId === "infographic.compose" ? "实际生成的信息图" : preview.kind === "image/svg+xml" ? "程序生成的字段概览图" : "实际处理后的图片预览"} /> : <iframe title={current.skillId === "audio.transcribe-en" ? "英语音频转写核对（须人工复核）" : current.skillId === "document.structure" ? "DOCX正文结构预览（非Word渲染）" : "演示文稿内容预览（非 PowerPoint 截图）"} src={preview.url} sandbox="" />}</div>}
         <div className="skill-run-actions">{!terminal(current) && <button disabled={busy} onClick={() => void action(current, false)}>取消执行</button>}{["failed", "cancelled"].includes(current.status) && ["pdf.ocr", "pdf.ocr-batch"].includes(current.skillId) && <button disabled={busy} onClick={() => void resume(current)}>继续/重试PDF OCR</button>}<button disabled={busy} onClick={() => void action(current, true)}>删除运行与文件</button></div>
       </article>}

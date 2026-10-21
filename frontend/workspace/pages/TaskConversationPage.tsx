@@ -525,7 +525,21 @@ export default function TaskConversationPage({ projectId }: { projectId: string 
                 })()}
                 onSkillExecute={(skillId, skillName) => {
                   setSkillExecutions(prev => [...prev, { skillId, skillName, timestamp: Date.now() }]);
-                }} 
+                }}
+                onArtifactHandoff={({ name, content, skillId }) => {
+                  setAttachments((items) => [...items, { name, text: content.slice(0, 80_000) }].slice(-4));
+                  setDraft((curr) =>
+                    curr.trim()
+                      ? `${curr.trim()}\n\n请基于技能 ${skillId} 产出的《${name}》继续分析并给出可执行结论。`
+                      : `请基于技能 ${skillId} 产出的《${name}》继续分析并给出可执行结论。`,
+                  );
+                  setSkillsOpen(false);
+                  commit({ ...task, workflow: "chat" });
+                  setNotice(`已将技能产物「${name}」作为附件带入当前对话输入框。`);
+                  requestAnimationFrame(() =>
+                    composerRef.current?.querySelector<HTMLTextAreaElement>("textarea")?.focus(),
+                  );
+                }}
               />}
           <p>方案与产物按当前服务端身份保存。对话正文目前仍保存在此浏览器；删除本机任务不会自动删除后台运行，请先在执行台删除不需要的文件。</p>
         </section>}

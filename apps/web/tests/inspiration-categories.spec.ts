@@ -23,8 +23,10 @@ for (const width of [320, 375, 768, 1440]) {
       await expect(button).toBeInViewport();
       await expect(button).toHaveAttribute("aria-pressed", "true");
       await expect(page.locator(".samples-empty")).toHaveCount(0);
-      await expect(page.locator(".sample-card")).toHaveCount(1);
-      await expect(page.locator(".sample-card>button")).toContainText(
+      await expect(page.locator(".sample-card")).toHaveCount(
+        category === "HyperFrames" || category === "实时产物" ? 5 : 1,
+      );
+      await expect(page.locator(".sample-card>button").first()).toContainText(
         category === "HyperFrames"
           ? "NEXT FRAME"
           : category === "视频"
@@ -43,7 +45,7 @@ for (const width of [320, 375, 768, 1440]) {
     await expect(
       types.getByRole("button", { name: "全部", exact: true }),
     ).toHaveAttribute("aria-pressed", "true");
-    await expect(page.locator(".sample-card")).toHaveCount(22);
+    await expect(page.locator(".sample-card")).toHaveCount(33);
   });
 }
 
@@ -75,7 +77,7 @@ test("new categories support keyboard selection and preserve search and draft fi
   ).toHaveAttribute("aria-pressed", "true");
   await page.getByRole("button", { name: "查看全部作品", exact: true }).click();
   await expect(search).toHaveValue("");
-  await expect(page.locator(".sample-card")).toHaveCount(22);
+  await expect(page.locator(".sample-card")).toHaveCount(33);
   await expect(
     page.getByRole("button", { name: "我的副本（0）", exact: true }),
   ).toBeVisible();

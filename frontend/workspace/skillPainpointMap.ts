@@ -34,7 +34,7 @@ export const skillPainpoints: Record<SkillModeId, SkillPainpoint[]> = {
     { id: "design-infographics", title: "信息图表", expertId: "infographics", summary: "按明确数据、口径和图表目的导出图表；不推断业务含义。", skillIds: ["infographic.compose"] },
     { id: "design-commerce", title: "电商物料", expertId: "product-visual", summary: "商品图片有限尺寸适配；不抠图、改商品细节或生成背景。", skillIds: ["image.product", "image.web-pack"] },
     { id: "design-longform", title: "宣传长图", expertId: "visual", summary: "可使用素材做受限排版导出，并将用户提供的长文整理为杂志风格HTML。", skillIds: ["image.marketing", "image.layout", "image.web-pack", "article.magazine"] },
-    { id: "design-slides", title: "演示制作与检查", expertId: "slides", summary: "用设计 token 生成原生文本/形状/柱状图/折线图，或提取PPTX结构并逐页渲染；不等于模板导入、整套视觉自动验收或语义可编辑性认证。", skillIds: ["slides.compose", "slides.inspect"] },
+    { id: "design-slides", title: "演示美化", expertId: "slides", summary: "用设计 token 生成原生文本/形状/柱状图/折线图，或提取PPTX结构并逐页渲染；不等于模板导入、整套视觉自动验收或语义可编辑性认证。", skillIds: ["slides.compose", "slides.inspect"] },
     { id: "design-direction", title: "视觉方案", expertId: "visual", summary: "可校验现有设计令牌并整理需求简报；不会凭空生成视觉创意。", skillIds: ["design.tokens", "design.brief"] },
     { id: "design-image", title: "图片优化", expertId: "visual", summary: "可执行图层排版和多尺寸WebP压缩；生成、抠图、修复未接入。", skillIds: ["image.layout", "image.web-pack"] },
   ],

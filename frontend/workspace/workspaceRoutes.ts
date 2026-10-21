@@ -6,6 +6,7 @@ export const workspaceRoutes = {
   themes: "/themes",
   inspiration: "/inspiration",
   projects: "/projects",
+  agent: "/agent",
   experts: "/experts",
   myExperts: "/experts/mine",
   createExpert: "/experts/create",

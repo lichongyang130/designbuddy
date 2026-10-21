@@ -60,24 +60,24 @@ export function extractClarificationIntro(content: string): string {
 }
 export function parseClarification(content: string): { intro: string; questions: ClarificationQuestion[] } | null {
   const trimmed = content.trim();
-  
-  // Try to find the clarification block anywhere in the content
+  if (!trimmed.includes(marker)) return null;
+
   const blockMatch = trimmed.match(/```designbuddy-clarification\s*\n([\s\S]*?)\n```/);
-  if (!blockMatch || content.length > 12_000) return null;
-  
+  if (!blockMatch || content.length > 12_000) throw new Error("确认问题格式无效");
+
   // Extract the intro text before the block
-  const blockStart = trimmed.indexOf('```designbuddy-clarification');
+  const blockStart = trimmed.indexOf("```designbuddy-clarification");
   const intro = blockStart > 0 ? trimmed.substring(0, blockStart).trim() : "";
-  
+
   let data;
-  try { 
-    data = JSON.parse(blockMatch[1]); 
-  } catch { 
-    return null; 
+  try {
+    data = JSON.parse(blockMatch[1]);
+  } catch {
+    throw new Error("确认问题格式无效");
   }
-  
-  if (!data || !validQuestions(data.questions)) return null;
-  
+
+  if (!data || !validQuestions(data.questions)) throw new Error("确认问题格式无效");
+
   return { intro, questions: data.questions };
 }
 

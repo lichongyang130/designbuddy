@@ -43,6 +43,7 @@ export type Workflow = {
   steps: WorkflowStep[];
   outputs: string[];
   requires: string[];
+  custom?: boolean;
 };
 
 export type WorkflowStepRun = {
@@ -93,6 +94,39 @@ export const STEP_STATUS_LABELS: Record<WorkflowStepRun["status"], string> = {
   skipped: "已跳过",
   unavailable: "不可用",
 };
+
+/** Create and persist an owner-isolated custom skill workflow recipe. */
+export async function createCustomWorkflowRecipe(input: {
+  name: string;
+  goal: string;
+  minutes?: number;
+  steps: Array<{
+    title?: string;
+    skill: string;
+    inputMode?: "file" | "previous_artifact";
+    artifactName?: string;
+    optional?: boolean;
+  }>;
+}): Promise<Workflow> {
+  const body = await readJSON<{ workflow: Workflow }>(
+    await apiFetch("/workflows/recipes", {
+      method: "POST",
+      headers: { Accept: "application/json", "Content-Type": "application/json" },
+      body: JSON.stringify(input),
+    }),
+  );
+  return body.workflow;
+}
+
+/** Delete an owner-isolated custom workflow recipe. */
+export async function deleteCustomWorkflowRecipe(id: string): Promise<void> {
+  await readJSON<{ ok: boolean }>(
+    await apiFetch(`/workflows/recipes/${encodeURIComponent(id)}`, {
+      method: "DELETE",
+      headers: { Accept: "application/json" },
+    }),
+  );
+}
 
 /** The recipes this server offers. */
 export async function listWorkflows(): Promise<Workflow[]> {

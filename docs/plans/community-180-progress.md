@@ -1,6 +1,6 @@
 # 180 套模板制作进度
 
-> 最新优先级：用户要求恢复剩余模板制作，全部内容完成后再提交 GitHub、合并 main。当前实际新增 **6 / 180**：FORME、ATELIER、ROOTS、DAYLIGHT、TIDE、MORROW 各 24 页；剩余 **174** 套尚未制作。社区共 **19** 套，未将清单中的 planned 项视为成品。
+> **最新实时进度（2026-10-21 同步自 `feature-status-registry.json`）**：当前扩充计划实际新增 **20 / 180** 套（6 套 24 页独立原型：`FORME`、`ATELIER`、`ROOTS`、`DAYLIGHT`、`TIDE`、`MORROW`；**6 套 24 页 kit 数据驱动原型：`STUDIO NINE`、`WELLSPRING`、`CIRCUIT`、`PAPERHOUSE`、`CAMPUS`、`PAWS`**；4 套 HyperFrames；4 套实时工具），剩余 **160** 套尚未制作。加上早期 13 套基线作品，社区当前共 **33** 套离线可运行作品，未将清单中的 `planned` 项视为成品。
 
 用户已决定在当前会话开始本地制作。总范围不变：9 类各新增 20 套，每套 20–30 个实质内容页面。当前会话不能进行 GitHub 推送或合并，后续需迁移到可进行远程操作的新会话。
 

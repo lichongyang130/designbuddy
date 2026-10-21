@@ -87,6 +87,24 @@ const templateThemes = {
     accent: '#84fab0',
     bg: '#f9fff9',
   },
+  paperhouse: {
+    primary: '#c97a40',
+    secondary: '#2a241f',
+    accent: '#e8dfd3',
+    bg: '#1d1916',
+  },
+  campus: {
+    primary: '#4f9cf9',
+    secondary: '#182638',
+    accent: '#cbdae9',
+    bg: '#101926',
+  },
+  paws: {
+    primary: '#e08f58',
+    secondary: '#243029',
+    accent: '#d7e5dc',
+    bg: '#1a221d',
+  },
   wellspring: {
     primary: '#84fab0',
     secondary: '#8fd3f4',
@@ -381,6 +399,27 @@ const templatePages = {
     { title: '行情定价', icon: '💰', elements: ['market', 'pricing', 'trends'] },
     { title: '质保和售后', icon: '🛡️', elements: ['warranty', 'returns', 'support'] },
   ],
+  paperhouse: [
+    { title: '选书目录', icon: '📚', elements: ['catalog', 'smallpress', 'notes'] },
+    { title: '盲选书袋', icon: '✉️', elements: ['brief', 'curation', 'dispatch'] },
+    { title: '夜读沙龙', icon: '🕯️', elements: ['calendar', 'seats', 'guide'] },
+    { title: '旧书流转', icon: '🔖', elements: ['grading', 'pricing', 'archive'] },
+    { title: '会员借阅', icon: '🪪', elements: ['plans', 'loans', 'returns'] },
+  ],
+  campus: [
+    { title: '课程体系', icon: '🎓', elements: ['tracks', 'syllabus', 'projects'] },
+    { title: '晚间排期', icon: '🗓️', elements: ['schedule', 'replay', 'cohort'] },
+    { title: '双师批改', icon: '✍️', elements: ['rubric', 'feedback', 'sla'] },
+    { title: '学分认证', icon: '📜', elements: ['credits', 'capstone', 'badge'] },
+    { title: '延期与退费', icon: '⚖️', elements: ['deferral', 'refund', 'support'] },
+  ],
+  paws: [
+    { title: '犬猫分区', icon: '🐾', elements: ['dogzone', 'catcabin', 'hvac'] },
+    { title: '低压力洗护', icon: '🛁', elements: ['grooming', 'coat', 'pricing'] },
+    { title: '健康核验', icon: '🩺', elements: ['vaccine', 'intake', 'records'] },
+    { title: '日托日志', icon: '📹', elements: ['feeding', 'walks', 'video'] },
+    { title: '老年宠照护', icon: '🧡', elements: ['gentle', 'vetlink', 'emergency'] },
+  ],
 };
 
 /**
@@ -475,12 +514,13 @@ function generatePreviewCanvas(
   return canvas.toDataURL('image/png', 0.9);
 }
 
+export type TemplatePhotoId = keyof typeof templateThemes & keyof typeof templatePages;
+
 /**
  * 为模版生成完整的预览图集合
  */
-export function generateTemplatePhotos(templateId: string): Photo[] {
-  const pages = templatePages[templateId as keyof typeof templatePages];
-  const theme = templateThemes[templateId as keyof typeof templateThemes];
+export function generateTemplatePhotos(templateId: TemplatePhotoId): Photo[] {
+  const pages = templatePages[templateId];
   
   return pages.map((page, index) => ({
     url: generatePreviewCanvas(templateId, index),
@@ -497,7 +537,7 @@ export function generateTemplatePhotos(templateId: string): Photo[] {
 export function generateAllTemplatePhotos(): Record<string, Photo[]> {
   const result: Record<string, Photo[]> = {};
   
-  Object.keys(templatePages).forEach((templateId) => {
+  (Object.keys(templatePages) as TemplatePhotoId[]).forEach((templateId) => {
     result[templateId] = generateTemplatePhotos(templateId);
   });
   

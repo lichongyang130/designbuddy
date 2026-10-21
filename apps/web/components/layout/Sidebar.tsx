@@ -1,1 +1,0 @@
-export default function Sidebar(){return <aside className="sidebar">AI Workspace<nav><div>Home</div><div>Agents</div><div>Skills</div><div>Projects</div><div>Memory</div><div>Analytics</div><div>Settings</div></nav></aside>}

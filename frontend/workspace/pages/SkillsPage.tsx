@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
-import { skillPermissionLabels, type RuntimeSkill } from "../../../shared/skillRuntime";
+import { skillCapabilityLabels, skillPermissionLabels, type RuntimeSkill, type SkillCapabilityState } from "../../../shared/skillRuntime";
 import { apiPublicJSON } from "../../../apps/web/src/api/client";
 import { HomeIcon, type HomeIconName } from "../../../apps/web/src/components/HomeIcon";
 import { WorkBuddySidebar } from "../../../apps/web/src/components/WorkBuddySidebar";
@@ -53,11 +53,18 @@ function readFavorites() {
   try { const value = JSON.parse(localStorage.getItem("designbuddy.skill-favorites.v1") || "[]"); return Array.isArray(value) ? value.filter((id): id is string => typeof id === "string") : []; }
   catch { return []; }
 }
+function effectiveCapabilityState(skill: RuntimeSkill): SkillCapabilityState {
+  if (skill.capabilityState) return skill.capabilityState;
+  if (skill.status === "ready") return "ready";
+  if (skill.executorState === "connected") return "needs_config";
+  return "unavailable";
+}
 function SkillCard({ skill, favorite, onFavorite, onOpen, onRun }: { skill: RuntimeSkill; favorite: boolean; onFavorite: () => void; onOpen: () => void; onRun: () => void }) {
   const area = skillArea(skill);
   const expert = expertCatalog.find(item => skill.expertIds.includes(item.id));
   const outputs = skill.outputs.slice(0, 3);
-  return <article className={`skill-directory-card${skill.status === "ready" ? " is-ready" : " is-unavailable"}`} aria-label={skill.name}>
+  const capState = effectiveCapabilityState(skill);
+  return <article className={`skill-directory-card${skill.status === "ready" ? " is-ready" : " is-unavailable"}`} data-capability-state={capState} aria-label={skill.name}>
     <div className="skill-card-heading">
       <span className={`skill-role-icon tone-${area === "办公提效" ? "office" : area === "设计制作" ? "design" : "code"}`} data-skill-id={skill.id} aria-hidden="true">{skillPhotos[skill.id] ? <img className="skill-role-photo" src={`/skill-images/${skillPhotos[skill.id]}`} alt="" loading="lazy" decoding="async" /> : <HomeIcon name={skillIcons[skill.id] || areaIcons[area]} size={23} />}</span>
       <div><h3>{skill.name}</h3><span>{expert?.name || area} · {skill.status === "ready" ? "可执行技能" : skill.executorState === "connected" ? "执行器已接入 · 缺服务端凭据" : "尚未接入"}</span></div>
@@ -90,7 +97,7 @@ export default function SkillsPage(_props: { pathname: string }) {
   const [notice, setNotice] = useState("");
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("全部技能");
-  const [status, setStatus] = useState<"all" | "ready" | "unavailable">("all");
+  const [status, setStatus] = useState<"all" | SkillCapabilityState>("all");
   const [favorites, setFavorites] = useState<string[]>(readFavorites);
   const [favoritesOnly, setFavoritesOnly] = useState(false);
   const [selectedSkill, setSelectedSkill] = useState<RuntimeSkill | null>(null);
@@ -111,10 +118,13 @@ export default function SkillsPage(_props: { pathname: string }) {
   useEffect(() => { if (runSkillId) requestAnimationFrame(() => workbenchRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })); }, [runSkillId]);
   const ready = useMemo(() => catalog.filter(skill => skill.status === "ready"), [catalog]);
   const unavailable = useMemo(() => catalog.filter(skill => skill.status !== "ready"), [catalog]);
+  const needsConfig = useMemo(() => catalog.filter(skill => effectiveCapabilityState(skill) === "needs_config"), [catalog]);
+  const needsAuth = useMemo(() => catalog.filter(skill => effectiveCapabilityState(skill) === "needs_auth"), [catalog]);
   const visibleSkills = useMemo(() => catalog.filter(skill => {
     if (category !== "全部技能" && skillArea(skill) !== category) return false;
     if (status === "ready" && skill.status !== "ready") return false;
     if (status === "unavailable" && skill.status === "ready") return false;
+    if ((status === "needs_config" || status === "needs_auth" || status === "failed") && effectiveCapabilityState(skill) !== status) return false;
     if (favoritesOnly && !favorites.includes(skill.id)) return false;
     const text = `${skill.name} ${skill.description} ${skill.limits} ${skill.accepts.join(" ")} ${skill.outputs.join(" ")} ${skill.expertIds.map(id => expertCatalog.find(expert => expert.id === id)?.name || id).join(" ")}`.toLocaleLowerCase();
     return !query.trim() || text.includes(query.trim().toLocaleLowerCase());
@@ -146,6 +156,8 @@ export default function SkillsPage(_props: { pathname: string }) {
           <div className="skill-filter-row" role="group" aria-label="技能执行状态">
             <button className={status === "all" ? "is-active" : ""} aria-pressed={status === "all"} onClick={() => setStatus("all")}>全部（{catalog.length}）</button>
             <button className={status === "ready" ? "is-active" : ""} aria-pressed={status === "ready"} onClick={() => setStatus("ready")}>可执行（{ready.length}）</button>
+            <button className={status === "needs_config" ? "is-active is-unavailable" : ""} aria-pressed={status === "needs_config"} onClick={() => setStatus("needs_config")}>{skillCapabilityLabels.needs_config}（{needsConfig.length}）</button>
+            <button className={status === "needs_auth" ? "is-active is-unavailable" : ""} aria-pressed={status === "needs_auth"} onClick={() => setStatus("needs_auth")}>{skillCapabilityLabels.needs_auth}（{needsAuth.length}）</button>
             <button className={status === "unavailable" ? "is-active is-unavailable" : ""} aria-pressed={status === "unavailable"} onClick={() => setStatus("unavailable")}>未接入（{unavailable.length}）</button>
           </div>
           <p className="skill-result-count" role="status">{favoritesOnly ? `已收藏 ${visibleSkills.length} 项技能` : searchCountLabel(query, visibleSkills.length)}<span>点击“用于当前任务”进入真实执行台；未接入能力不会提供运行入口</span></p>

@@ -332,13 +332,13 @@ export function HFLesson({ draftId }: { draftId?: string }) {
                 className={`hf-action-btn ${playing ? '' : 'primary'}`}
                 onClick={() => { if (time >= current.duration) setTime(0); setPlaying((p) => !p); }}
               >
-                {playing ? "⏸ 暂停" : "▶ 播放"}
+                {playing ? "暂停" : "播放"}
               </button>
               <input aria-label="播放位置" type="range" min={0} max={current.duration} step={0.5} value={time} onChange={(e) => setTime(+e.target.value)} />
               <select aria-label="播放倍速" value={rate} onChange={(e) => setRate(+e.target.value)}>
                 {[1, 1.5, 2].map((r) => (<option key={r} value={r}>{r}x</option>))}
               </select>
-              {blob.d[chapter] && <span className="hf-done-flag">✅ 已学完</span>}
+              {blob.d[chapter] && <span className="hf-done-flag">已学完</span>}
             </div>
             <ul className="hf-points">
               {current.points.map((p) => (<li key={p}>{p}</li>))}

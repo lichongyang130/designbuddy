@@ -1,12 +1,20 @@
 {
   "name": "designbuddy-desktop",
   "version": "0.1.0",
-  "main": "src/main.ts",
+  "private": true,
+  "main": "dist/main.js",
   "scripts": {
     "dev": "node scripts/dev.mjs",
-    "start:electron": "electron ."
+    "check": "tsc -p tsconfig.json --noEmit",
+    "build": "node scripts/build.mjs",
+    "stage": "node scripts/stage.mjs",
+    "start:electron": "node scripts/build.mjs && electron ."
   },
   "dependencies": {
-    "electron": "latest"
+    "electron": "44.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.5",
+    "typescript": "7.0.2"
   }
 }

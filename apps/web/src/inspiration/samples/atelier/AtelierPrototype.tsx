@@ -1075,7 +1075,7 @@ export default function AtelierPrototype({ draftId }: { draftId?: string }) {
                   msg("本地演示单已生成；未付款、未锁库存、未发送。");
                 }}
               >
-                {issues.length > 0 ? "请先修复上述问题" : "生成本地演示单"}
+                生成本地演示单
               </button>
             </div>
             <aside className="at-receipt">

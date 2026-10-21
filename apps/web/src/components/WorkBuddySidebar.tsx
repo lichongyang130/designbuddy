@@ -11,6 +11,7 @@ import { translate } from "../../../../frontend/workspace/i18n";
 type Props = {
   active:
     | "home"
+    | "agent"
     | "experts"
     | "skills"
     | "connectors"
@@ -149,6 +150,12 @@ export function WorkBuddySidebar({
         <button onClick={() => go("/projects")}>{t("sidebar.projects", { n: projectCount })}</button>
         <button onClick={() => go("/workspaces")}>
           {t("sidebar.spaces", { n: workspaceCount })}
+        </button>
+        <button
+          aria-current={active === "agent" ? "page" : undefined}
+          onClick={() => go("/agent")}
+        >
+          {locale === "en" ? "Agent Workbench" : "Agent 工作台"}
         </button>
       </div>
 

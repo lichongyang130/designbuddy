@@ -5,12 +5,21 @@
   "description": "Open design AI workspace clone",
   "scripts": {
     "dev": "pnpm --filter designbuddy-desktop dev",
-    "build": "pnpm -r build",
+    "dev:full": "node scripts/dev-full.mjs",
+    "build": "pnpm check:server && pnpm -r build",
+    "stage:desktop": "pnpm check:server && pnpm --filter designbuddy-web build && pnpm --filter designbuddy-desktop stage",
+    "check": "pnpm check:server && pnpm --filter designbuddy-web check && pnpm --filter designbuddy-desktop check && pnpm test:registry",
+    "check:server": "pnpm exec tsc -p server/tsconfig.local.json",
+    "test": "pnpm test:unit && pnpm test:api && pnpm test:agent && pnpm test:registry",
+    "test:unit": "node --experimental-strip-types --test apps/web/tests/*.test.mjs scripts/*.test.mjs",
+    "test:api": "pnpm exec tsc -p server/tsconfig.local.json && node --test server/api/*.test.cjs",
+    "test:agent": "pnpm exec tsc -p server/tsconfig.local.json && node --test server/agent/agent-core.test.cjs",
+    "test:registry": "node scripts/verify-status-registry.mjs",
+    "test:e2e:core": "pnpm --filter designbuddy-web test:e2e:core",
     "test:chat": "pnpm exec tsc -p server/tsconfig.local.json && node --test server/api/chat.test.cjs",
     "mcp:stdio": "node scripts/mcp-stdio.mjs",
     "mcp:install": "node scripts/mcp-install.mjs",
     "local:daemon": "pnpm exec tsc -p server/tsconfig.local.json && node dist/local/server/local-daemon.js",
-    "dev:full": "node scripts/dev-full.mjs",
     "test:backend": "pnpm exec tsc -p server/tsconfig.local.json && node --test server/api/chat.test.cjs server/api/workspace-backend.test.cjs",
     "test:home-plugins": "node --experimental-strip-types --test apps/web/tests/plugin-requirements.test.mjs apps/web/tests/skill-gate.test.mjs apps/web/tests/plugin-picks.test.mjs",
     "test:deck-theme": "node --experimental-strip-types --test apps/web/tests/deck-theme.test.mjs",
@@ -33,7 +42,7 @@
   ],
   "devDependencies": {
     "@deepseek-ai/libreoffice-kit": "0.2.0",
-    "typescript": "latest"
+    "typescript": "7.0.2"
   },
   "dependencies": {
     "@napi-rs/canvas": "1.0.11",

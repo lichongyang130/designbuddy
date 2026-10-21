@@ -890,9 +890,32 @@ export function createApiHandler(options: ApiHandlerOptions): (request: Request)
       if (options.workflows) {
         const workflowListPath = url.pathname.match(/^\/api\/workflows$/);
         if (workflowListPath && request.method === "GET") {
-          return json({ workflows: workflowCatalog() }, 200, options.corsOrigin);
+          return json({ workflows: options.workflows.catalog(principal.id) }, 200, options.corsOrigin);
         }
-        const workflowRunPath = url.pathname.match(/^\/api\/workflows\/([a-z0-9-]{3,60})\/runs$/);
+        const workflowRecipesPath = url.pathname.match(/^\/api\/workflows\/recipes$/);
+        if (workflowRecipesPath && request.method === "POST") {
+          const body = await readJson(request, 200_000);
+          try {
+            const recipe = options.workflows.createRecipe(principal.id, {
+              name: body.name,
+              goal: body.goal,
+              minutes: body.minutes,
+              steps: Array.isArray(body.steps) ? (body.steps as never) : [],
+            });
+            const enriched = options.workflows.catalog(principal.id).find((item) => item.id === recipe.id) ?? recipe;
+            return json({ workflow: enriched }, 201, options.corsOrigin);
+          } catch (error) {
+            if (error instanceof WorkflowInputError) return json({ error: error.message }, 400, options.corsOrigin);
+            throw error;
+          }
+        }
+        const workflowRecipeDeletePath = url.pathname.match(/^\/api\/workflows\/recipes\/([a-z0-9-]{3,80})$/);
+        if (workflowRecipeDeletePath && request.method === "DELETE") {
+          const deleted = options.workflows.deleteRecipe(principal.id, workflowRecipeDeletePath[1]);
+          if (!deleted) return json({ error: "未找到该自定义工作流或无权删除。" }, 404, options.corsOrigin);
+          return json({ ok: true }, 200, options.corsOrigin);
+        }
+        const workflowRunPath = url.pathname.match(/^\/api\/workflows\/([a-z0-9-]{3,80})\/runs$/);
         if (workflowRunPath && request.method === "POST") {
           const body = await readJson(request, 400_000);
           const inputs = {

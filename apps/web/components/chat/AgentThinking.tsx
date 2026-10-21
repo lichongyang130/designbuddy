@@ -1,1 +1,0 @@
-export default function AgentThinking(){return <div>Agent is reasoning...</div>}

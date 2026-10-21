@@ -109,24 +109,33 @@
       "category": "原型",
       "title": "PAPERHOUSE · 独立书店选书",
       "targetPages": 24,
-      "status": "planned",
-      "route": null
+      "status": "verified",
+      "route": "/inspiration/paperhouse",
+      "implementedPages": 24,
+      "imageCount": 8,
+      "verification": "24-page data-driven template set; bookstore curation standards, small-press specs, seasonal turnover table, blind-selection workflow, night reading schedule, second-hand grading and lending rules; 8 deterministic original SVGs; page-by-page navigation, 375px layout and zero-placeholder validation verified in Chromium. 13 kit tests passed."
     },
     {
       "id": "prototype-11",
       "category": "原型",
       "title": "CAMPUS · 成人教育学习平台",
       "targetPages": 24,
-      "status": "planned",
-      "route": null
+      "status": "verified",
+      "route": "/inspiration/campus",
+      "implementedPages": 24,
+      "imageCount": 8,
+      "verification": "24-page data-driven template set; evening/weekend curriculum schedule, 48h dual-mentor feedback SLA, credit rubric, deferred makeup policy, accessibility standards and transparent refund rules; 8 deterministic original SVGs; page-by-page navigation, 375px layout and zero-placeholder validation verified in Chromium. 13 kit tests passed."
     },
     {
       "id": "prototype-12",
       "category": "原型",
       "title": "PAWS · 宠物护理服务",
       "targetPages": 24,
-      "status": "planned",
-      "route": null
+      "status": "verified",
+      "route": "/inspiration/paws",
+      "implementedPages": 24,
+      "imageCount": 8,
+      "verification": "24-page data-driven template set; dog/cat isolated HVAC spaces, low-stress bathing pricing, vaccination screening, senior-pet gentle care protocol, daily video health logs and veterinary emergency procedure; 8 deterministic original SVGs; page-by-page navigation, 375px layout and zero-placeholder validation verified in Chromium. 13 kit tests passed."
     },
     {
       "id": "prototype-13",

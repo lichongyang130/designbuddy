@@ -71,6 +71,8 @@ export type Workflow = {
   outputs: string[];
   /** What the platform cannot obtain on its own. */
   requires: string[];
+  /** True when defined by the current account via POST /api/workflows/recipes. */
+  custom?: boolean;
 };
 
 export type WorkflowStepAvailability = { ready: boolean; reason: string };
@@ -519,9 +521,24 @@ function unavailableReason(skill: { description: string }): string {
  * The catalogue: the recipes with the real availability of every step.
  * ------------------------------------------------------------------ */
 
-export function workflowCatalog(): Array<Workflow & { steps: Array<WorkflowStep & { availability: WorkflowStepAvailability }> }> {
+export type CustomWorkflowRecipeInput = {
+  name?: unknown;
+  goal?: unknown;
+  minutes?: unknown;
+  steps?: Array<{
+    title?: unknown;
+    skill?: unknown;
+    inputMode?: "file" | "previous_artifact";
+    artifactName?: unknown;
+    optional?: unknown;
+  }>;
+};
+
+export function workflowCatalog(
+  customRecipes: Workflow[] = [],
+): Array<Workflow & { steps: Array<WorkflowStep & { availability: WorkflowStepAvailability }> }> {
   const catalog = runtimeCatalog();
-  return builtinWorkflows().map((workflow) => ({
+  return [...customRecipes, ...builtinWorkflows()].map((workflow) => ({
     ...workflow,
     steps: workflow.steps.map((step) => {
       const skill = catalog.find((item) => item.id === step.skill);
@@ -534,7 +551,7 @@ export function workflowCatalog(): Array<Workflow & { steps: Array<WorkflowStep 
 }
 
 /* ------------------------------------------------------------------ *
- * The run store.
+ * The run store (plus owner-isolated custom workflow recipes).
  * ------------------------------------------------------------------ */
 
 export class WorkflowRunStore {
@@ -546,7 +563,9 @@ export class WorkflowRunStore {
     this.db = new DatabaseSync(path);
     this.db.exec(`PRAGMA journal_mode=WAL; PRAGMA busy_timeout=5000;
       CREATE TABLE IF NOT EXISTS workflow_runs(id TEXT PRIMARY KEY,owner_id TEXT NOT NULL,workflow_id TEXT NOT NULL,record TEXT NOT NULL,created_at INTEGER NOT NULL);
-      CREATE INDEX IF NOT EXISTS workflow_runs_owner ON workflow_runs(owner_id, created_at DESC);`);
+      CREATE INDEX IF NOT EXISTS workflow_runs_owner ON workflow_runs(owner_id, created_at DESC);
+      CREATE TABLE IF NOT EXISTS custom_workflows(id TEXT PRIMARY KEY,owner_id TEXT NOT NULL,record TEXT NOT NULL,created_at INTEGER NOT NULL);
+      CREATE INDEX IF NOT EXISTS custom_workflows_owner ON custom_workflows(owner_id, created_at DESC);`);
   }
 
   close() {
@@ -570,6 +589,36 @@ export class WorkflowRunStore {
       .all(ownerId) as { record: string }[];
     return rows.map((row) => JSON.parse(row.record) as WorkflowRun);
   }
+
+  saveRecipe(ownerId: string, workflow: Workflow, createdAt = Date.now()): Workflow {
+    const stored: Workflow = { ...workflow, custom: true };
+    this.db
+      .prepare(
+        "INSERT INTO custom_workflows(id,owner_id,record,created_at) VALUES(?,?,?,?) ON CONFLICT(id) DO UPDATE SET record=excluded.record",
+      )
+      .run(stored.id, ownerId, JSON.stringify(stored), createdAt);
+    return stored;
+  }
+
+  listRecipes(ownerId: string): Workflow[] {
+    const rows = this.db
+      .prepare("SELECT record FROM custom_workflows WHERE owner_id=? ORDER BY created_at DESC LIMIT 50")
+      .all(ownerId) as { record: string }[];
+    return rows.map((row) => ({ ...(JSON.parse(row.record) as Workflow), custom: true }));
+  }
+
+  getRecipe(ownerId: string, id: string): Workflow | null {
+    const row = this.db
+      .prepare("SELECT record FROM custom_workflows WHERE id=? AND owner_id=?")
+      .get(id, ownerId) as { record: string } | undefined;
+    return row ? { ...(JSON.parse(row.record) as Workflow), custom: true } : null;
+  }
+
+  deleteRecipe(ownerId: string, id: string): boolean {
+    return (
+      Number(this.db.prepare("DELETE FROM custom_workflows WHERE id=? AND owner_id=?").run(id, ownerId).changes) > 0
+    );
+  }
 }
 
 /* ------------------------------------------------------------------ *
@@ -589,6 +638,119 @@ export class WorkflowEngine {
     private store: WorkflowRunStore = new WorkflowRunStore(),
   ) {}
 
+  catalog(ownerId: string) {
+    return workflowCatalog(this.store.listRecipes(ownerId));
+  }
+
+  createRecipe(ownerId: string, input: CustomWorkflowRecipeInput): Workflow {
+    const name = typeof input.name === "string" ? input.name.trim() : "";
+    const goal = typeof input.goal === "string" ? input.goal.trim() : "";
+    if (!name || name.length > 60) throw new WorkflowInputError("请填写 1–60 字的自定义工作流名称。");
+    if (!goal || goal.length > 200) throw new WorkflowInputError("请填写 1–200 字的工作流目标说明。");
+    if (!Array.isArray(input.steps) || input.steps.length < 1 || input.steps.length > 6) {
+      throw new WorkflowInputError("自定义工作流需包含 1–6 个已登记技能步骤。");
+    }
+    const existingCount = this.store.listRecipes(ownerId).length;
+    if (existingCount >= 30) throw new WorkflowInputError("单个账号最多保存 30 条自定义工作流。");
+
+    const catalog = runtimeCatalog();
+    const fields: WorkflowField[] = [];
+    const steps: WorkflowStep[] = [];
+    const outputs: string[] = [];
+    let needsUploadField = false;
+    let firstAccepts: string[] = [];
+
+    input.steps.forEach((rawStep, idx) => {
+      const skillId = typeof rawStep?.skill === "string" ? rawStep.skill.trim() : "";
+      const skill = catalog.find((item) => item.id === skillId);
+      if (!skill) throw new WorkflowInputError(`第 ${idx + 1} 步引用了未登记的技能「${skillId || "空"}」。`);
+
+      const stepId = `step-${idx + 1}`;
+      const stepTitle =
+        (typeof rawStep?.title === "string" && rawStep.title.trim().slice(0, 60)) || skill.name;
+      const artifactName =
+        typeof rawStep?.artifactName === "string" ? rawStep.artifactName.trim().slice(0, 80) : "";
+
+      let source: WorkflowStep["source"];
+      if (idx > 0 && rawStep?.inputMode === "previous_artifact") {
+        if (!artifactName) {
+          throw new WorkflowInputError(`第 ${idx + 1} 步选择了承接上一步产物，请填写产物文件名（如 cleaned.csv）。`);
+        }
+        source = { kind: "artifact", stepId: `step-${idx}`, artifactName };
+      } else {
+        source = { kind: "file", field: "inputFile" };
+        if (!needsUploadField) {
+          needsUploadField = true;
+          firstAccepts = skill.accepts;
+        }
+      }
+
+      const paramMapping: Record<string, string> = {};
+      for (const paramField of skill.parameterFields ?? []) {
+        const key = `${stepId}_${paramField.name}`;
+        fields.push({
+          key,
+          label: `${stepTitle} · ${paramField.label}`,
+          type: paramField.choices ? "choice" : "text",
+          required: paramField.required,
+          default: paramField.defaultValue ?? paramField.choices?.[0]?.value ?? "",
+          choices: paramField.choices,
+        });
+        paramMapping[paramField.name] = `{{${key}}}`;
+      }
+
+      steps.push({
+        id: stepId,
+        title: stepTitle,
+        skill: skill.id,
+        expertId: skill.expertIds[0] || "data",
+        source,
+        ...(Object.keys(paramMapping).length ? { parameters: paramMapping } : {}),
+        optional: Boolean(rawStep?.optional),
+        outputs: skill.outputs.length ? skill.outputs.slice(0, 3) : [`${skill.name}产物`],
+      });
+      for (const out of skill.outputs.slice(0, 2)) {
+        if (!outputs.includes(out)) outputs.push(out);
+      }
+    });
+
+    if (needsUploadField) {
+      fields.unshift({
+        key: "inputFile",
+        label: "输入材料文件",
+        type: "file",
+        required: true,
+        accept: firstAccepts,
+        help: firstAccepts.length ? `支持格式：${firstAccepts.join("、")}` : undefined,
+      });
+    }
+
+    const minutes = Math.max(1, Math.min(30, Number(input.minutes) || steps.length * 2));
+    const recipe: Workflow = {
+      id: `custom-${randomUUID().slice(0, 12)}`,
+      version: "1.0.0",
+      name,
+      goal,
+      icon: "workflow",
+      minutes,
+      expertId: steps[0].expertId,
+      fields,
+      steps,
+      outputs: outputs.length ? outputs : ["执行结果文件"],
+      requires: [],
+      custom: true,
+    };
+    return this.store.saveRecipe(ownerId, recipe);
+  }
+
+  deleteRecipe(ownerId: string, id: string): boolean {
+    return this.store.deleteRecipe(ownerId, id);
+  }
+
+  private findWorkflow(ownerId: string, workflowId: string): Workflow | undefined {
+    return builtinWorkflows().find((item) => item.id === workflowId) ?? this.store.getRecipe(ownerId, workflowId) ?? undefined;
+  }
+
   list(ownerId: string): WorkflowRun[] {
     return this.store.list(ownerId);
   }
@@ -602,7 +764,7 @@ export class WorkflowEngine {
    * missing field is reported instead of failing halfway through.
    */
   async start(ownerId: string, workflowId: string, inputs: WorkflowInputs): Promise<WorkflowRun> {
-    const workflow = builtinWorkflows().find((item) => item.id === workflowId);
+    const workflow = this.findWorkflow(ownerId, workflowId);
     if (!workflow) throw new WorkflowInputError("没有这条工作流。");
     const { fields, rows, files } = this.readInputs(workflow, inputs);
     for (const field of workflow.fields) {
@@ -729,7 +891,7 @@ export class WorkflowEngine {
     try {
       const run = this.store.get(ownerId, runId);
       if (!run) return;
-      const workflow = builtinWorkflows().find((item) => item.id === run.workflowId);
+      const workflow = this.findWorkflow(ownerId, run.workflowId);
       if (!workflow) return;
       for (const step of workflow.steps) {
         const record = run.steps.find((item) => item.id === step.id);
@@ -811,7 +973,12 @@ export class WorkflowEngine {
         const source = step.source;
         const previous = run.steps.find((item) => item.id === source.stepId);
         if (!previous?.skillRunId) throw new WorkflowInputError("上一步没有产物可用。");
-        const artifact = previous.outputs.find((item) => item.name === source.artifactName);
+        const artifact = previous.outputs.find(
+          (item) =>
+            item.name === source.artifactName ||
+            (source.artifactName.startsWith("*.") &&
+              item.name.toLowerCase().endsWith(source.artifactName.slice(1).toLowerCase())),
+        );
         if (!artifact) throw new WorkflowInputError(`上一步没有产出「${step.source.artifactName}」。`);
         const response = await this.skills.handle(
           new Request(`http://local/api/skill-runs/${previous.skillRunId}/artifacts/${artifact.id}`),

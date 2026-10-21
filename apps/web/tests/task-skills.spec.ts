@@ -62,7 +62,7 @@ test('local-only file task opens no skill API and no chat; switching permission 
  // Picking the entry from the attach menu legitimately reads the public skill
  // catalogue; what must never happen for a local-only task is chat, planning,
  // a run record, or any upload, so only catalogue reads are allowed here.
- expect(calls.filter(x=>!x.startsWith('GET:http://127.0.0.1:5273/api/skill-runtime'))).toEqual([]);
+ expect(calls.filter(x=>!/^GET:https?:\/\/[^/]+\/api\/skill-runtime$/.test(x))).toEqual([]);
  await expect(desk(page)).toHaveCount(0);
  await page.getByLabel('任务权限',{exact:true}).selectOption('默认权限');await expect(desk(page).getByLabel('上传实际材料')).toBeVisible();expect(calls.some(x=>x.startsWith('POST:'))).toBe(false);await expect(planner(page).getByRole('button',{name:'生成技能方案（不执行）'})).toBeDisabled();
  page.once('dialog',d=>d.accept());await page.getByLabel('任务权限',{exact:true}).selectOption('仅本地');await expect(desk(page)).toHaveCount(0);

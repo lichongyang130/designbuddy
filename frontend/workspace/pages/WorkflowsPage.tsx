@@ -7,6 +7,8 @@ import { useRuntimeActivity } from "../runtimeActivity";
 import { saveProjectToCloud } from "../api/projects";
 import type { DesignProject } from "../models/project";
 import {
+  createCustomWorkflowRecipe,
+  deleteCustomWorkflowRecipe,
   fetchWorkflowArtifact,
   fetchWorkflowRun,
   listWorkflowRuns,
@@ -21,6 +23,8 @@ import {
   type WorkflowRun,
   type WorkflowStepRun,
 } from "../api/workflows";
+import { apiJSON } from "../../../apps/web/src/api/client";
+import type { RuntimeSkill } from "../../../shared/skillRuntime";
 import "./workflows.css";
 
 type Row = Record<string, string>;
@@ -47,11 +51,18 @@ function languageFor(name: string): DesignProject["files"][number]["language"] {
 /** The recipes, the wizard and the result of one run. */
 export default function WorkflowsPage() {
   const [workflows, setWorkflows] = useState<Workflow[]>([]);
+  const [skillsCatalog, setSkillsCatalog] = useState<RuntimeSkill[]>([]);
   const [runs, setRuns] = useState<WorkflowRun[]>([]);
   const [selected, setSelected] = useState<Workflow | null>(null);
   const [stage, setStage] = useState<"cards" | "form" | "confirm" | "result">("cards");
   const [answers, setAnswers] = useState<Answers>(EMPTY);
   const [run, setRun] = useState<WorkflowRun | null>(null);
+  const [builderOpen, setBuilderOpen] = useState(false);
+  const [recipeName, setRecipeName] = useState("");
+  const [recipeGoal, setRecipeGoal] = useState("");
+  const [recipeSteps, setRecipeSteps] = useState<
+    Array<{ title: string; skill: string; inputMode: "file" | "previous_artifact"; artifactName: string }>
+  >([{ title: "", skill: "table.analyze", inputMode: "file", artifactName: "" }]);
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
@@ -71,9 +82,14 @@ export default function WorkflowsPage() {
 
   const load = useCallback(async () => {
     try {
-      const [list, history] = await Promise.all([listWorkflows(), listWorkflowRuns()]);
+      const [list, history, runtimeRes] = await Promise.all([
+        listWorkflows(),
+        listWorkflowRuns(),
+        apiJSON<{ skills: RuntimeSkill[] }>("/skill-runtime").catch(() => ({ skills: [] as RuntimeSkill[] })),
+      ]);
       setWorkflows(list);
       setRuns(history);
+      if (runtimeRes.skills.length) setSkillsCatalog(runtimeRes.skills.filter((s) => s.status === "ready"));
       if (!actionError.current) setError("");
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "工作流服务暂不可用。");
@@ -302,6 +318,50 @@ export default function WorkflowsPage() {
     }
   }
 
+  async function handleSaveCustomRecipe(event: React.FormEvent) {
+    event.preventDefault();
+    if (busy) return;
+    setBusy(true);
+    try {
+      const created = await createCustomWorkflowRecipe({
+        name: recipeName,
+        goal: recipeGoal,
+        steps: recipeSteps.map((s) => ({
+          title: s.title,
+          skill: s.skill,
+          inputMode: s.inputMode,
+          artifactName: s.inputMode === "previous_artifact" ? s.artifactName : undefined,
+        })),
+      });
+      setRecipeName("");
+      setRecipeGoal("");
+      setRecipeSteps([{ title: "", skill: "table.analyze", inputMode: "file", artifactName: "" }]);
+      setBuilderOpen(false);
+      await load();
+      setNotice(`已保存自定义工作流「${created.name}」，可立即点击「开始」执行。`);
+      clearError();
+    } catch (cause) {
+      fail(cause instanceof Error ? cause.message : "保存自定义工作流失败。");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function handleDeleteCustomRecipe(id: string, name: string) {
+    if (busy) return;
+    setBusy(true);
+    try {
+      await deleteCustomWorkflowRecipe(id);
+      await load();
+      setNotice(`已删除自定义工作流「${name}」。`);
+      clearError();
+    } catch (cause) {
+      fail(cause instanceof Error ? cause.message : "删除失败。");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   return (
     <div className="workbuddy-app community-workspace">
       <WorkBuddySidebar
@@ -322,10 +382,154 @@ export default function WorkflowsPage() {
                 跑完给你产物。缺凭据或没授权的步骤会写明缺什么，不会用假结果糊弄过去。
               </p>
             </div>
+            {stage === "cards" && (
+              <div>
+                <button
+                  className="wf-button"
+                  type="button"
+                  onClick={() => setBuilderOpen((open) => !open)}
+                >
+                  {builderOpen ? "收起编排表单" : "新建自定义工作流"}
+                </button>
+              </div>
+            )}
           </section>
 
           {(error || notice) && (
             <p className={error ? "wf-message is-error" : "wf-message"} role="status">{error || notice}</p>
+          )}
+
+          {stage === "cards" && builderOpen && (
+            <section className="wf-card" aria-label="新建自定义工作流">
+              <h2>编排自定义技能工作流</h2>
+              <form className="wf-form" onSubmit={(e) => void handleSaveCustomRecipe(e)}>
+                <div className="wf-field">
+                  <label htmlFor="wf-custom-name">工作流名称 *</label>
+                  <input
+                    id="wf-custom-name"
+                    type="text"
+                    placeholder="例如：月度销售清洗与指标核算"
+                    value={recipeName}
+                    onChange={(e) => setRecipeName(e.target.value)}
+                  />
+                </div>
+                <div className="wf-field">
+                  <label htmlFor="wf-custom-goal">目标说明 *</label>
+                  <input
+                    id="wf-custom-goal"
+                    type="text"
+                    placeholder="例如：先标准化 CSV 表头与空值，再自动汇总统计表"
+                    value={recipeGoal}
+                    onChange={(e) => setRecipeGoal(e.target.value)}
+                  />
+                </div>
+                {recipeSteps.map((stepItem, idx) => (
+                  <div key={idx} className="wf-row" style={{ gap: 8, alignItems: "flex-end", flexWrap: "wrap" }}>
+                    <label className="wf-cell">
+                      <span>步骤 {idx + 1} 技能</span>
+                      <select
+                        aria-label={`步骤 ${idx + 1} 技能`}
+                        value={stepItem.skill}
+                        onChange={(e) =>
+                          setRecipeSteps((curr) =>
+                            curr.map((item, i) => (i === idx ? { ...item, skill: e.target.value } : item)),
+                          )
+                        }
+                      >
+                        {(skillsCatalog.length
+                          ? skillsCatalog
+                          : [{ id: "table.analyze", name: "表格清洗与统计" } as RuntimeSkill]
+                        ).map((sk) => (
+                          <option key={sk.id} value={sk.id}>
+                            {sk.name} ({sk.id})
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <label className="wf-cell">
+                      <span>步骤标题</span>
+                      <input
+                        type="text"
+                        placeholder="留空则默认技能名"
+                        value={stepItem.title}
+                        onChange={(e) =>
+                          setRecipeSteps((curr) =>
+                            curr.map((item, i) => (i === idx ? { ...item, title: e.target.value } : item)),
+                          )
+                        }
+                      />
+                    </label>
+                    {idx > 0 && (
+                      <>
+                        <label className="wf-cell">
+                          <span>输入来源</span>
+                          <select
+                            aria-label={`步骤 ${idx + 1} 输入来源`}
+                            value={stepItem.inputMode}
+                            onChange={(e) =>
+                              setRecipeSteps((curr) =>
+                                curr.map((item, i) =>
+                                  i === idx
+                                    ? { ...item, inputMode: e.target.value as "file" | "previous_artifact" }
+                                    : item,
+                                ),
+                              )
+                            }
+                          >
+                            <option value="file">复用上传源文件</option>
+                            <option value="previous_artifact">承接上一步产物</option>
+                          </select>
+                        </label>
+                        {stepItem.inputMode === "previous_artifact" && (
+                          <label className="wf-cell">
+                            <span>上一步产物名</span>
+                            <input
+                              type="text"
+                              placeholder="如 cleaned.csv"
+                              value={stepItem.artifactName}
+                              onChange={(e) =>
+                                setRecipeSteps((curr) =>
+                                  curr.map((item, i) =>
+                                    i === idx ? { ...item, artifactName: e.target.value } : item,
+                                  ),
+                                )
+                              }
+                            />
+                          </label>
+                        )}
+                      </>
+                    )}
+                    {recipeSteps.length > 1 && (
+                      <button
+                        className="wf-button is-quiet"
+                        type="button"
+                        onClick={() => setRecipeSteps((curr) => curr.filter((_, i) => i !== idx))}
+                      >
+                        移除步骤
+                      </button>
+                    )}
+                  </div>
+                ))}
+                <div className="wf-actions">
+                  <button
+                    className="wf-button"
+                    type="button"
+                    disabled={recipeSteps.length >= 6}
+                    onClick={() =>
+                      setRecipeSteps((curr) => [
+                        ...curr,
+                        { title: "", skill: "table.analyze", inputMode: "previous_artifact", artifactName: "*.xlsx" },
+                      ])
+                    }
+                  >
+                    添加下一步骤
+                  </button>
+                  <button className="wf-button is-primary" type="submit" disabled={busy}>
+                    保存自定义工作流
+                  </button>
+                </div>
+              </form>
+            </section>
           )}
 
           {stage === "cards" && (
@@ -345,9 +549,21 @@ export default function WorkflowsPage() {
                           其中 {blocked.length} 个步骤在当前环境不能执行（其余步骤照常跑）：{blocked[0].availability.reason}
                         </p>
                       )}
-                      <button className="wf-button is-primary" type="button" onClick={() => start(workflow)}>
-                        开始
-                      </button>
+                      <div className="wf-actions">
+                        <button className="wf-button is-primary" type="button" onClick={() => start(workflow)}>
+                          开始
+                        </button>
+                        {workflow.custom && (
+                          <button
+                            className="wf-button is-quiet"
+                            type="button"
+                            disabled={busy}
+                            onClick={() => void handleDeleteCustomRecipe(workflow.id, workflow.name)}
+                          >
+                            删除配方
+                          </button>
+                        )}
+                      </div>
                     </article>
                   );
                 })}

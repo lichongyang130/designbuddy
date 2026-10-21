@@ -190,5 +190,197 @@
     "credit": "本仓库脚本生成的原创 SVG 图形",
     "license": "随仓库授权，可用于展示与再编辑",
     "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "paperhouse/art-01.svg",
+    "set": "paperhouse",
+    "title": "PAPERHOUSE · 原创图形 1",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "paperhouse/art-02.svg",
+    "set": "paperhouse",
+    "title": "PAPERHOUSE · 原创图形 2",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "paperhouse/art-03.svg",
+    "set": "paperhouse",
+    "title": "PAPERHOUSE · 原创图形 3",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "paperhouse/art-04.svg",
+    "set": "paperhouse",
+    "title": "PAPERHOUSE · 原创图形 4",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "paperhouse/art-05.svg",
+    "set": "paperhouse",
+    "title": "PAPERHOUSE · 原创图形 5",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "paperhouse/art-06.svg",
+    "set": "paperhouse",
+    "title": "PAPERHOUSE · 原创图形 6",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "paperhouse/art-07.svg",
+    "set": "paperhouse",
+    "title": "PAPERHOUSE · 原创图形 7",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "paperhouse/art-08.svg",
+    "set": "paperhouse",
+    "title": "PAPERHOUSE · 原创图形 8",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "campus/art-01.svg",
+    "set": "campus",
+    "title": "CAMPUS · 原创图形 1",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "campus/art-02.svg",
+    "set": "campus",
+    "title": "CAMPUS · 原创图形 2",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "campus/art-03.svg",
+    "set": "campus",
+    "title": "CAMPUS · 原创图形 3",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "campus/art-04.svg",
+    "set": "campus",
+    "title": "CAMPUS · 原创图形 4",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "campus/art-05.svg",
+    "set": "campus",
+    "title": "CAMPUS · 原创图形 5",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "campus/art-06.svg",
+    "set": "campus",
+    "title": "CAMPUS · 原创图形 6",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "campus/art-07.svg",
+    "set": "campus",
+    "title": "CAMPUS · 原创图形 7",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "campus/art-08.svg",
+    "set": "campus",
+    "title": "CAMPUS · 原创图形 8",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "paws/art-01.svg",
+    "set": "paws",
+    "title": "PAWS · 原创图形 1",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "paws/art-02.svg",
+    "set": "paws",
+    "title": "PAWS · 原创图形 2",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "paws/art-03.svg",
+    "set": "paws",
+    "title": "PAWS · 原创图形 3",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "paws/art-04.svg",
+    "set": "paws",
+    "title": "PAWS · 原创图形 4",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "paws/art-05.svg",
+    "set": "paws",
+    "title": "PAWS · 原创图形 5",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "paws/art-06.svg",
+    "set": "paws",
+    "title": "PAWS · 原创图形 6",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "paws/art-07.svg",
+    "set": "paws",
+    "title": "PAWS · 原创图形 7",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
+  },
+  {
+    "file": "paws/art-08.svg",
+    "set": "paws",
+    "title": "PAWS · 原创图形 8",
+    "credit": "本仓库脚本生成的原创 SVG 图形",
+    "license": "随仓库授权，可用于展示与再编辑",
+    "source": "scripts/generate-kit-art.mjs"
   }
 ]

@@ -1,4 +1,5 @@
 import { app, BrowserWindow, ipcMain, powerSaveBlocker } from 'electron';
+import fs from 'node:fs';
 import path from 'node:path';
 
 const managedWebContents = new Set<number>();
@@ -24,6 +25,12 @@ ipcMain.handle('designbuddy:runtime-sleep-blocker', (event, requested: unknown) 
     releaseRuntimePowerBlocker(contentsId);
   }
 });
+
+function resolveRendererEntry(): string {
+  const stagedRenderer = path.join(__dirname, 'renderer', 'index.html');
+  if (fs.existsSync(stagedRenderer)) return stagedRenderer;
+  return path.resolve(__dirname, '../../web/dist/index.html');
+}
 
 function createWindow(): BrowserWindow {
   const win = new BrowserWindow({
@@ -52,9 +59,7 @@ function createWindow(): BrowserWindow {
   if (!app.isPackaged && devServerUrl) {
     void win.loadURL(devServerUrl);
   } else {
-    // The packaging configuration must copy the built renderer to this location.
-    const rendererIndex = path.resolve(__dirname, '../../web/dist/index.html');
-    void win.loadFile(rendererIndex);
+    void win.loadFile(resolveRendererEntry());
   }
 
   return win;

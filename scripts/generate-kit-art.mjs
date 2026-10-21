@@ -48,6 +48,27 @@ const sets = [
     motifs: ["board", "grid", "chip", "wave", "meter", "scan", "stack", "grid"],
     count: 8,
   },
+  {
+    id: "paperhouse",
+    title: "PAPERHOUSE · 独立书店选书",
+    palette: ["#1d1916", "#2a241f", "#e8dfd3", "#c97a40", "#f8f4ec"],
+    motifs: ["stack", "strip", "grid", "arc", "contact-sheet", "leaf", "beam", "badge"],
+    count: 8,
+  },
+  {
+    id: "campus",
+    title: "CAMPUS · 成人教育学习平台",
+    palette: ["#101926", "#182638", "#cbdae9", "#4f9cf9", "#f2f6fb"],
+    motifs: ["schedule", "grid", "lane", "pulse", "arc", "stack", "meter", "beam"],
+    count: 8,
+  },
+  {
+    id: "paws",
+    title: "PAWS · 宠物护理服务",
+    palette: ["#1a221d", "#243029", "#d7e5dc", "#e08f58", "#f7faf8"],
+    motifs: ["leaf", "wave", "badge", "arc", "silhouette", "schedule", "pulse", "strip"],
+    count: 8,
+  },
 ];
 
 function motifPath(motif, random, width, height) {
