@@ -28,15 +28,16 @@ import { fetchAccount } from "../../../frontend/workspace/api/account";
 import InspirationPage from "./inspiration/InspirationPage";
 import { HomeSkillHint } from "./components/HomeSkillHint";
 import { HomeCommandPalette } from "./components/HomeCommandPalette";
+import { HomeWorkspacePicker, type SpaceOption } from "./components/HomeWorkspacePicker";
 // Scene samples are heavy (15 mini apps); only load them when ⌘K asks for one.
 const ScenePreview = lazy(() => import("./components/ScenePreview").then((module) => ({ default: module.ScenePreview })));
 import { selectionGate, useSkillSelection } from "./components/useRuntimeSkill";
 import TaskConversationPage from "../../../frontend/workspace/pages/TaskConversationPage";
 import { saveTaskConversation, pendingTaskKey, type TaskConversation } from "../../../frontend/workspace/taskConversation";
-import { matchBinding, openSettings, setWakeLock, syncPreferencesFromAccount, useModelOptions, usePreferences, useSettingsWindow } from "../../../frontend/workspace/settingsStore";
+import { matchBinding, openSettings, setComposerDefaults, setWakeLock, syncPreferencesFromAccount, useModelOptions, usePreferences, useSettingsWindow } from "../../../frontend/workspace/settingsStore";
 import { useRuntimeActivity, useRuntimeActivityState } from "../../../frontend/workspace/runtimeActivity";
 import { translate } from "../../../frontend/workspace/i18n";
-import { listWorkspaces } from "../../../frontend/workspace/api/workspaces";
+import { listWorkspaces, workspaceRoleLabel, type Workspace } from "../../../frontend/workspace/api/workspaces";
 import "./styles.css";
 import "./home-workspace.css";
 import "./home-reference.css";
@@ -45,7 +46,6 @@ import "./home-plugins.css";
 import "./home-launcher.css";
 import "./command-palette.css";
 import { HomeRecent, HomeSuggestionBar, type RecentItem } from "./components/HomeSuggestionBar";
-import { DELIVERABLES, MODE_OPTIONS, detectIntent } from "./components/homeIntent";
 import type { HomeScene } from "./components/homeScenes";
 import { projectTaskPath } from "../../../frontend/workspace/taskConversation";
 import "./components/auth.css";
@@ -71,8 +71,8 @@ const textAttachmentExtensions = /\.(txt|md|markdown|json|html|htm|css|js|csv|xm
 // in 个性化 settings (see quickActions inside App). Catalog lives in homeScenes.
 
 // The three working modes still exist — they colour the task prefix and the
-// examples — but the homepage no longer makes people pick one up front.
-// `detectIntent()` reads it from the draft; the chip lets people correct it.
+// examples — but the homepage no longer shows a selector for them. The mode is
+// the saved default, changed on purpose from a sample or the 「＋」menu.
 
 
 
@@ -90,9 +90,6 @@ export default function App() {
   console.log("🔍 Current path:", currentPath, "from URL:", window.location.pathname);
   const [prompt, setPrompt] = useState("");
   const [mode, setMode] = useState<WorkMode>(() => usePreferences.getState().defaultMode || "office");
-  // The mode is inferred from the draft until someone picks one by hand.
-  const [modeLocked, setModeLocked] = useState(false);
-  const [settingsOpen, setSettingsOpen] = useState(false);
   const [notice, setNotice] = useState("");
   const [projects, setProjects] = useState<DesignProject[]>(() => listProjects());
   const [identity, setIdentity] = useState<AccountIdentity | null | undefined>(undefined);
@@ -106,6 +103,9 @@ export default function App() {
   const [maxMode, setMaxMode] = useState(false);
   const [thinkingMode, setThinkingMode] = useState<"balanced" | "extreme">("balanced");
   const [workspace, setWorkspace] = useState(() => usePreferences.getState().defaultWorkspace || "默认工作空间");
+  // The team spaces this account really belongs to, so the select is not a
+  // decorative three-item list.
+  const [teamSpaces, setTeamSpaces] = useState<Workspace[]>([]);
   const [permission, setPermission] = useState(() => usePreferences.getState().defaultPermission || "默认权限");
   const [attachments, setAttachments] = useState<TaskAttachment[]>([]);
   const [selectedExpert, setSelectedExpert] = useState("");
@@ -115,6 +115,7 @@ export default function App() {
   // They now open from ⌘K, so the first screen stays a single input.
   const [previewScene, setPreviewScene] = useState<HomeScene | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const folderInputRef = useRef<HTMLInputElement>(null);
   const modelMenuRef = useRef<HTMLDivElement>(null);
   const composerRef = useRef<HTMLElement>(null);
   const startProjectRef = useRef<() => void>(() => {});
@@ -124,21 +125,6 @@ export default function App() {
   useEffect(() => {
     void syncPreferencesFromAccount();
   }, []);
-
-  // Read the mode from what is being typed. An explicit choice (the chip, a
-  // scene, the attach menu) wins for as long as the draft is non-empty.
-  useEffect(() => {
-    if (!prompt.trim()) {
-      setModeLocked(false);
-      return;
-    }
-    if (modeLocked) return;
-    const next = detectIntent(prompt).mode;
-    setMode((current) => (current === next ? current : next));
-  }, [prompt, modeLocked]);
-
-  const intent = useMemo(() => detectIntent(prompt), [prompt]);
-  const deliverable = prompt.trim() ? intent.deliverableInfo : null;
 
   const recentItems = useMemo<RecentItem[]>(() => {
     const decks = listPptProjects().map((deck) => ({
@@ -316,7 +302,9 @@ export default function App() {
       if ((event.metaKey || event.ctrlKey) && !event.altKey && !event.shiftKey && event.key.toLowerCase() === "k") {
         if (currentPath !== "/") return;
         event.preventDefault();
-        setPaletteOpen((open) => !open);
+        // Opening is idempotent: a second ⌘K while the palette is open should
+        // not silently close it (Escape does that).
+        setPaletteOpen(true);
         return;
       }
       if (matchBinding(event, bindings["open-settings"])) {
@@ -399,8 +387,16 @@ export default function App() {
   useEffect(() => {
     let cancelled = false;
     void listWorkspaces()
-      .then((list) => { if (!cancelled) setWorkspaceCount(list.length); })
-      .catch(() => { if (!cancelled) setWorkspaceCount(0); });
+      .then((list) => {
+        if (cancelled) return;
+        setWorkspaceCount(list.length);
+        setTeamSpaces(list);
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setWorkspaceCount(0);
+        setTeamSpaces([]);
+      });
     return () => { cancelled = true; };
   }, [currentPath]);
 
@@ -505,10 +501,88 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPath]);
 
+  // ── Workspace + task policy ───────────────────────────────────────────────
+  // Both are written onto the task (`workspaceName`, `executionPolicy`) and are
+  // remembered in preferences, so the choice survives a reload instead of being
+  // a decorative label.
+  const PERMISSION_HINTS: Record<string, string> = {
+    默认权限: "按账号设置执行",
+    仅本地: "不发送任何 AI 请求，只存在本机",
+    需要确认后执行: "发送前再问你一次",
+  };
+  const workspaceRoleValue = (name: string) => teamSpaces.find((item) => item.name === name)?.role;
+
+  const workspaceOptions: SpaceOption[] = [
+    { value: "默认工作空间", label: "默认工作空间", meta: "不指定团队" },
+    { value: "个人空间", label: "个人空间", meta: "只有你能看到" },
+    ...teamSpaces.map((item) => ({
+      value: item.name,
+      label: item.name,
+      meta: item.role ? workspaceRoleLabel(item.role) : undefined,
+    })),
+  ];
+  if (!workspaceOptions.some((option) => option.value === workspace)) {
+    workspaceOptions.push({ value: workspace, label: workspace, meta: workspaceRoleValue(workspace) ? workspaceRoleLabel(workspaceRoleValue(workspace)) : undefined });
+  }
+  const workspaceDisplay = workspace === "默认工作空间" ? "选择工作空间" : workspace;
+  const workspaceStorageHint =
+    workspace === "默认工作空间"
+      ? "未指定团队空间：任务保存在本机项目里"
+      : workspace === "个人空间"
+        ? "个人空间：任务保存在本机，不同步给团队"
+        : `团队空间「${workspace}」：任务与项目归入该空间`;
+
+  function pickWorkspace(next: string) {
+    setWorkspace(next);
+    setComposerDefaults({ defaultWorkspace: next === "默认工作空间" ? "" : next });
+    const role = workspaceRoleValue(next);
+    setNotice(
+      next === "默认工作空间"
+        ? "未指定团队空间：任务只保存在你的本机项目里。"
+        : next === "个人空间"
+          ? "已选个人空间：任务只保存在本机，不会同步给团队成员。"
+          : `已选团队空间「${next}」${role ? `（${workspaceRoleLabel(role)}）` : ""}：这条任务与项目会归入该空间。`,
+    );
+  }
+
+  // 「打开本地文件夹」 really reads the folder: up to six text files become
+  // attachments on this task, the same way the ＋ menu adds them.
+  async function openLocalFolder(files: FileList | null) {
+    const list = Array.from(files ?? []);
+    if (!list.length) return;
+    const readable = list
+      .filter((file) => (textAttachmentExtensions.test(file.name) || file.type.startsWith("text/")) && file.size <= 160_000)
+      .slice(0, 6);
+    const parsed: TaskAttachment[] = [];
+    for (const file of readable) {
+      try {
+        parsed.push({ name: file.name, text: (await file.text()).slice(0, 20_000) });
+      } catch { parsed.push({ name: file.name }); }
+    }
+    if (!parsed.length) {
+      setNotice(`文件夹「${list[0].webkitRelativePath?.split("/")[0] ?? "所选文件夹"}」里没有可读取的文本文件（支持 txt / md / csv / json 等，单个 ≤160 KB）。`);
+      return;
+    }
+    setAttachments((current) => [...current, ...parsed].slice(-4));
+    setNotice(`已从本地文件夹读取 ${parsed.length} 个文本文件作为附件；内容只在本机解析，发送时才随任务一起提交。`);
+    requestAnimationFrame(() => composerRef.current?.querySelector<HTMLTextAreaElement>("textarea")?.focus({ preventScroll: true }));
+  }
+
+  function pickPermission(next: string) {
+    setPermission(next);
+    setComposerDefaults({ defaultPermission: next === "默认权限" ? "" : next });
+    setNotice(
+      next === "仅本地"
+        ? "已设为仅本地：这条任务不会发送给任何 AI 服务，只保存问题和你的记录。"
+        : next === "需要确认后执行"
+          ? "已设为需要确认后执行：每次真正发送前都会再问你一次。"
+          : "已恢复默认权限：按账号与服务配置执行。",
+    );
+  }
+
   function selectHomeScene(scene: Pick<HomeScene, "mode" | "prompt">) {
     if (prompt.trim() && prompt !== scene.prompt && !window.confirm("输入框已有内容，是否替换为此场景的任务提示？附件、模型、工作空间和权限将保留。")) return false;
     setMode(scene.mode);
-    setModeLocked(true);
     setPrompt(scene.prompt);
     setSelectedSkill("");
     setNotice("");
@@ -719,33 +793,10 @@ export default function App() {
                 onChange={(value) => { setPrompt(value); setNotice(""); }}
                 onSubmit={startProject}
                 placeholder={t("home.composer.ph")}
-                rows={3}
+                rows={1}
                 ariaLabel={t("home.composer.aria")}
                 autoResize
               />
-              <div className="composer-intent-row">
-                <label className="composer-mode" title={modeLocked ? "已手动指定；清空输入框可恢复自动识别" : "根据你的描述自动判断"}>
-                  {modeLocked ? "任务类型" : "自动识别"}
-                  <select
-                    aria-label="任务模式"
-                    value={mode}
-                    onChange={(event) => {
-                      setMode(event.target.value as WorkMode);
-                      setModeLocked(true);
-                    }}
-                  >
-                    {MODE_OPTIONS.map((option) => (
-                      <option key={option.id} value={option.id} title={option.hint}>{option.label}</option>
-                    ))}
-                  </select>
-                </label>
-                {deliverable && (
-                  <span className="composer-intent" role="status" aria-live="polite">
-                    <HomeIcon name={deliverable.icon} size={13} />
-                    {deliverable.label}
-                  </span>
-                )}
-              </div>
               <HomeSkillHint
                 selected={selectedSkill}
                 attachmentCount={attachments.length}
@@ -767,7 +818,7 @@ export default function App() {
                   onOpen={() => setModelMenuOpen(false)}
                   onUpload={() => fileInputRef.current?.click()}
                   onStartFileTask={() => startProject(prompt.trim(), undefined, "skills")}
-                  onModeChange={(next) => { setMode(next); setModeLocked(true); }}
+                  onModeChange={setMode}
                   onExpertSelect={name => {
                     setSelectedExpert(name);
                     setNotice(name ? "已手动指定专家，不会随输入自动替换；发送时将带入工作规范。" : "已取消手动指定。");
@@ -781,8 +832,20 @@ export default function App() {
                   onNavigate={go}
                 />
                 <input
+                  ref={folderInputRef}
+                  className="visually-hidden-input-folder"
+                  type="file"
+                  multiple
+                  onChange={(event) => {
+                    const files = event.currentTarget.files;
+                    event.currentTarget.value = "";
+                    void openLocalFolder(files);
+                  }}
+                  {...{ webkitdirectory: "", directory: "" }}
+                />
+                <input
                   ref={fileInputRef}
-                  className="visually-hidden-input"
+                  className="visually-hidden-input attachment-input"
                   type="file"
                   multiple
                   onChange={(event) => {
@@ -843,50 +906,39 @@ export default function App() {
                 </div>
               </div>
             </div>
-            <div className="composer-footer">
-              <button
-                type="button"
-                className="composer-settings-toggle"
-                aria-expanded={settingsOpen}
-                aria-label="更多设置"
-                title="工作空间与执行权限"
-                onClick={() => setSettingsOpen((open) => !open)}
-              >
-                <HomeIcon name="settings" size={12} /> 更多设置
-              </button>
-              <span className="composer-hint">
-                <kbd>⌘K</kbd> 找场景、技能与插件
-              </span>
-              {settingsOpen && (
-                <div className="composer-settings" role="group" aria-label="工作空间与执行权限">
-                  <label className="footer-select">
-                    <HomeIcon name="folder" />
-                    <select value={workspace} onChange={(event) => setWorkspace(event.target.value)} aria-label={t("home.workspace.aria")}>
-                      <option value="默认工作空间">{t("home.workspace.default")}</option>
-                      <option value="个人空间">{t("home.workspace.personal")}</option>
-                      <option value="产品设计空间">{t("home.workspace.design")}</option>
-                      {!["默认工作空间", "个人空间", "产品设计空间"].includes(workspace) && (
-                        <option value={workspace}>{workspace}</option>
-                      )}
-                    </select>
-                    <HomeIcon name="chevron" size={10} />
-                  </label>
-                  <label className="footer-select">
-                    <HomeIcon name="shield" />
-                    <select style={{ width: `calc(${Math.max(t("home.permission.default").length, t("home.permission.local").length, t("home.permission.confirm").length, permission.length)}em + 4px)` }} value={permission} onChange={(event) => setPermission(event.target.value)} aria-label={t("home.permission.aria")}>
-                      <option value="默认权限">{t("home.permission.default")}</option>
-                      <option value="仅本地">{t("home.permission.local")}</option>
-                      <option value="需要确认后执行">{t("home.permission.confirm")}</option>
-                      {!["默认权限", "仅本地", "需要确认后执行"].includes(permission) && (
-                        <option value={permission}>{permission}</option>
-                      )}
-                    </select>
-                    <HomeIcon name="chevron" size={10} />
-                  </label>
-                </div>
-              )}
-            </div>
           </section>
+          <div className="composer-footer">
+            <HomeWorkspacePicker
+              value={workspace}
+              display={workspaceDisplay}
+              storageHint={workspaceStorageHint}
+              spaces={workspaceOptions}
+              onSelect={pickWorkspace}
+              onNewSpace={() => go("/workspaces")}
+              onOpenFolder={() => folderInputRef.current?.click()}
+            />
+            <label className="footer-select" title="执行前是否联网、是否需要再次确认">
+              <HomeIcon name="shield" />
+              <select
+                style={{ width: `calc(${Math.max(t("home.permission.default").length, t("home.permission.local").length, t("home.permission.confirm").length, permission.length)}em + 4px)` }}
+                value={permission}
+                onChange={(event) => pickPermission(event.target.value)}
+                aria-label={t("home.permission.aria")}
+              >
+                <option value="默认权限">{t("home.permission.default")}</option>
+                <option value="仅本地">仅本地 · 不联网</option>
+                <option value="需要确认后执行">需要确认后执行 · 发送前问一次</option>
+                {!["默认权限", "仅本地", "需要确认后执行"].includes(permission) && (
+                  <option value={permission}>{permission}</option>
+                )}
+              </select>
+              <HomeIcon name="chevron" size={10} />
+            </label>
+            <span className="composer-policy">{PERMISSION_HINTS[permission] ?? permission}</span>
+            <span className="composer-hint">
+              <kbd>⌘K</kbd> 找场景、技能与插件
+            </span>
+          </div>
 
           {notice && (
             <div className="home-notice" role="status">
@@ -895,8 +947,6 @@ export default function App() {
               <button aria-label={t("home.notice.close")} onClick={() => setNotice("")}>×</button>
             </div>
           )}
-
-          <p className="home-launcher-hint">点一个示例会填入完整提示词，不会直接发送。</p>
 
           <HomeSuggestionBar mode={mode} prompt={prompt} onSelect={selectHomeScene} />
 
@@ -912,6 +962,8 @@ export default function App() {
         mode={mode}
         onClose={() => setPaletteOpen(false)}
         onSelectScene={(scene) => { setPaletteOpen(false); selectHomeScene(scene); }}
+        // The palette stays mounted under the modal so Escape can return focus
+        // to the 「预览」 action that opened it.
         onPreviewScene={(scene) => setPreviewScene(scene)}
         onSelectSkill={(name) => {
           setPaletteOpen(false);
@@ -921,6 +973,19 @@ export default function App() {
         }}
         onNavigate={go}
       />
+      {previewScene && (
+        <Suspense fallback={null}>
+          <ScenePreview
+            scene={previewScene}
+            onClose={() => setPreviewScene(null)}
+            onUse={() => {
+              const used = selectHomeScene(previewScene);
+              if (used) setPaletteOpen(false);
+              return used;
+            }}
+          />
+        </Suspense>
+      )}
     </div>
   );
 }

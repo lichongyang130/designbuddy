@@ -15,14 +15,20 @@ for (const width of [320, 375, 768, 1440]) {
     const top = await shell.evaluate(el => el.getBoundingClientRect().top + window.scrollY);
     await input.fill(longText); await fits(input);
     expect((await input.boundingBox())!.height).toBeGreaterThan(height + 400);
-    expect(await shell.evaluate(el => el.getBoundingClientRect().top + window.scrollY)).toBeCloseTo(top, 0);
+    // A long prompt may pull the card up to the top of the column, but it must
+    // never be pushed above it or off the screen.
+    const grownTop = await shell.evaluate(el => el.getBoundingClientRect().top);
+    expect(grownTop).toBeLessThanOrEqual(top + 1);
+    expect(grownTop).toBeGreaterThan(0);
     const box = (await input.boundingBox())!, controls = (await page.locator(".composer-controls").boundingBox())!;
     expect(controls.y).toBeGreaterThanOrEqual(box.y + box.height - 1);
     const footer = (await page.locator(".composer-footer").boundingBox())!, examples = (await page.locator(".home-suggestion-bar").boundingBox())!;
     expect(examples.y).toBeGreaterThan(footer.y + footer.height);
     await expect(input).toHaveValue(longText);
+    // A short draft is never taller than the empty box (the placeholder can wrap
+    // to two lines on a phone), and clearing returns to exactly that height.
     await input.fill("短需求"); await fits(input);
-    expect((await input.boundingBox())!.height).toBeCloseTo(height, 0);
+    expect((await input.boundingBox())!.height).toBeLessThanOrEqual(height + 0.5);
     await input.fill(""); await fits(input);
     expect((await input.boundingBox())!.height).toBeCloseTo(height, 0);
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);

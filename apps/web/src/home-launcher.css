@@ -1,225 +1,479 @@
 /* Single-box homepage.
    One composer, three examples, recent work. Nothing else competes with the
-   input: no mode tabs, no plugin rail, no example gallery. */
-.main-workspace.home27.home-launcher {
-  --home-top-space: clamp(56px, 9vh, 132px);
-}
-.home27.home-launcher .home-content-v2.home27-content {
-  padding-bottom: 56px;
-}
-.home27.home-launcher .home27-hero {
-  min-height: 0;
-  margin: 0 0 30px;
-}
-.home27.home-launcher .home27-hero h1 {
-  font-size: clamp(26px, 2.7vw, 38px);
-  letter-spacing: -0.035em;
-}
-.home27.home-launcher .composer-shell {
-  margin: 0;
+   input: no mode tabs, no plugin rail, no example gallery.
+
+   The launcher borrows the app's existing cool-neutral + violet language
+   (borders #e9e8f1, ink #171a21, accent #6a56d6) instead of inventing a second
+   palette, and the whole block is centred in the canvas so the empty space is
+   shared above and below instead of pooling at the bottom. */
+
+.home27.home-launcher {
+  --launcher-ink: #171a21;
+  --launcher-sub: #6d7381;
+  --launcher-mute: #9aa0ad;
+  --launcher-line: #e9e8f1;
+  --launcher-line-strong: #d8d4ea;
+  --launcher-accent: #6a56d6;
+  --launcher-accent-soft: #f2effc;
+  --launcher-card-width: 820px;
 }
 
-/* Intent row: the mode the draft was read as, and what it will produce. */
-.home27 .composer-intent-row {
+/* Centre the column: title, card, meta row, examples. */
+.home27.home-launcher .home-content-v2.home27-content {
+  /* Centre while it fits, top-anchor once the input grows past the viewport,
+     so a long prompt never pushes the card upwards. */
+  justify-content: safe center;
+  min-height: 100dvh;
+  padding: clamp(32px, 7vh, 84px) 0 clamp(28px, 6vh, 64px);
+}
+
+.home27.home-launcher .home27-hero {
+  min-height: 0;
+  margin: 0 0 clamp(24px, 3.4vh, 36px);
+}
+.home27.home-launcher .welcome-header h1 {
+  font-size: clamp(26px, 2.45vw, 34px);
+  font-weight: 650;
+  letter-spacing: -0.03em;
+  line-height: 1.35;
+  color: var(--launcher-ink);
+}
+
+/* ── The card ─────────────────────────────────────────────────────────────── */
+.home27.home-launcher .composer-shell {
+  align-self: center;
+  width: 100%;
+  max-width: var(--launcher-card-width);
+  margin: 0;
+  border: 1px solid #e7e5f0;
+  border-radius: 24px;
+  background: #fff;
+  box-shadow:
+    0 1px 2px #171a2108,
+    0 6px 16px -12px #171a2126,
+    0 26px 56px -34px #171a2140;
+  transition: border-color 0.16s ease, box-shadow 0.16s ease;
+}
+.home27.home-launcher .composer-shell:focus-within {
+  border-color: var(--launcher-line-strong);
+  box-shadow:
+    0 0 0 3px #6a56d610,
+    0 18px 44px -26px #171a2133;
+}
+.home27.home-launcher .composer-main {
+  min-height: 0;
+  padding: 16px 18px 12px;
+  border: 0;
+  border-radius: 24px;
+  background: transparent;
+}
+.home27.home-launcher .composer-main textarea {
+  min-height: 46px;
+  max-height: 190px;
+  padding: 2px 4px;
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--launcher-ink);
+}
+.home27.home-launcher .composer-main textarea::placeholder {
+  color: var(--launcher-mute);
+}
+
+/* ── Controls row ─────────────────────────────────────────────────────────── */
+.home27.home-launcher .composer-controls {
+  min-height: 36px;
+  margin-top: 4px;
+  gap: 8px;
+}
+.home27.home-launcher .attach-button {
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  background: #f5f5fa;
+  color: #7c8394;
+}
+.home27.home-launcher .attach-button:hover {
+  background: #eeeef7;
+  color: #4d5361;
+}
+.home27.home-launcher .home-expert-trigger,
+.home27.home-launcher .home-skill-hint {
+  color: var(--launcher-sub);
+  font-size: 12px;
+}
+.home27.home-launcher .composer-actions-right {
+  gap: 6px;
+}
+.home27.home-launcher .model-picker {
+  padding: 5px 8px;
+  border-radius: 8px;
+  color: var(--launcher-sub);
+  font-size: 12px;
+}
+.home27.home-launcher .model-picker:hover {
+  background: #f5f5fa;
+  color: var(--launcher-ink);
+}
+.home27.home-launcher .microphone-button {
+  width: 32px;
+  height: 32px;
+  color: #8a91a1;
+}
+.home27.home-launcher .microphone-button:hover {
+  background: #f5f5fa;
+  color: var(--launcher-ink);
+}
+.home27.home-launcher .send-button {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  box-shadow: 0 4px 10px -2px #6a56d633;
+}
+.home27.home-launcher .send-button:disabled {
+  opacity: 1;
+  background: #f1eefb;
+  color: #b3a9e6;
+  box-shadow: none;
+}
+.home27.home-launcher .send-button > svg {
+  width: 18px;
+  height: 18px;
+}
+/* A PPT prompt used to turn the button Office-green, which fought the violet
+   accent everywhere else. Keep the wider pill, drop the third colour. */
+.home27.home-launcher .send-button.is-ppt,
+.home27.home-launcher .send-button.is-ppt:not(:disabled) {
+  background: linear-gradient(145deg, #087bff, #7847eb 75%) !important;
+  color: #fff;
+  min-width: 88px;
+  height: 34px;
+  font-weight: 550;
+}
+
+/* ── Meta row: the two selects that were there before, plus the ⌘K hint ───── */
+.home27.home-launcher .composer-footer {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
-  min-height: 26px;
-  margin-top: 10px;
+  align-self: center;
+  width: 100%;
+  max-width: var(--launcher-card-width);
+  min-height: 0;
+  margin: 10px 0 0;
+  padding: 0 6px;
+  border-top: 0;
+  gap: 4px 14px;
 }
-.home27 .composer-mode {
-  display: inline-flex;
-  align-items: center;
-  height: 26px;
-  padding: 0 6px 0 10px;
-  border: 1px solid #e8e8e6;
-  border-radius: 999px;
-  background: #fafafa;
-  color: #8a8a90;
-  font-size: 12px;
-  white-space: nowrap;
-}
-.home27 .composer-mode select {
-  height: 22px;
-  padding: 0 4px;
-  border: 0;
-  background: transparent;
-  color: #43434a;
-  font: inherit;
-  cursor: pointer;
-}
-.home27 .composer-mode select:focus-visible {
-  outline: 2px solid #b9b9b9;
-  outline-offset: 2px;
-  border-radius: 6px;
-}
-.home27 .composer-intent {
+.home27.home-launcher .composer-footer .footer-select {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  height: 26px;
-  padding: 0 11px;
-  border-radius: 999px;
-  background: #f1f1f2;
-  color: #3a3a40;
+  height: 24px;
+  color: var(--launcher-sub);
   font-size: 12px;
   white-space: nowrap;
 }
-.home27 .composer-intent svg {
-  color: #6d6d73;
+.home27.home-launcher .composer-footer .footer-select > svg:first-child {
+  color: var(--launcher-mute);
 }
-
-/* Workspace + permission live behind one quiet toggle; defaults stay invisible. */
-.home27 .composer-footer {
+.home27.home-launcher .composer-footer .footer-select select {
+  width: max-content;
+  min-width: 0;
+  height: 22px;
+  padding: 0 16px 0 0;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background-color: transparent;
+  background-image: linear-gradient(45deg, transparent 50%, var(--launcher-mute) 50%),
+    linear-gradient(135deg, var(--launcher-mute) 50%, transparent 50%);
+  background-position: calc(100% - 8px) 9px, calc(100% - 4px) 9px;
+  background-repeat: no-repeat;
+  background-size: 4px 4px, 4px 4px;
+  appearance: none;
+  color: var(--launcher-sub);
+  font: inherit;
+  cursor: pointer;
+}
+.home27.home-launcher .composer-footer .footer-select select:hover {
+  border-color: var(--launcher-line);
+  background-color: #f7f7fc;
+}
+.home27.home-launcher .composer-footer .footer-select select:focus-visible {
+  outline: 2px solid var(--launcher-accent);
+  outline-offset: 2px;
+}
+.home27.home-launcher .composer-footer .footer-select > svg:last-child {
+  display: none;
+}
+/* ── Workspace picker: one trigger, one menu anchored above it ────────────── */
+.workspace-picker {
   position: relative;
-  justify-content: space-between;
-  gap: 10px;
 }
-.home27 .composer-settings-toggle {
+.home27.home-launcher .workspace-trigger {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  height: 24px;
+  gap: 6px;
+  height: 26px;
   padding: 0 9px;
   border: 1px solid transparent;
-  border-radius: 999px;
+  border-radius: 8px;
   background: transparent;
-  color: #8a8a90;
+  color: var(--launcher-sub);
   font-size: 12px;
   white-space: nowrap;
   cursor: pointer;
 }
-.home27 .composer-settings-toggle:hover,
-.home27 .composer-settings-toggle[aria-expanded="true"] {
-  background: #f2f2f1;
-  color: #4c4c52;
+.home27.home-launcher .workspace-trigger > svg:first-child {
+  color: var(--launcher-mute);
 }
-.home27 .composer-hint {
+.home27.home-launcher .workspace-trigger > svg:last-child {
+  color: var(--launcher-mute);
+  transform: rotate(90deg);
+  transition: transform 0.16s ease;
+}
+.home27.home-launcher .workspace-trigger:hover,
+.home27.home-launcher .workspace-trigger[aria-expanded="true"] {
+  border-color: var(--launcher-line);
+  background: #f7f7fc;
+  color: var(--launcher-ink);
+}
+.home27.home-launcher .workspace-trigger[aria-expanded="true"] > svg:last-child {
+  transform: rotate(-90deg);
+}
+.home27.home-launcher .workspace-trigger:focus-visible {
+  outline: 2px solid var(--launcher-accent);
+  outline-offset: 2px;
+}
+
+.workspace-menu {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 8px);
+  z-index: 40;
+  width: 268px;
+  max-width: calc(100vw - 32px);
+  padding: 6px;
+  border: 1px solid var(--launcher-line, #e9e8f1);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow:
+    0 1px 2px #171a210a,
+    0 18px 44px -22px #171a2140;
+}
+.workspace-menu-title {
+  margin: 4px 8px 6px;
+  color: var(--launcher-mute, #9aa0ad);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+}
+.workspace-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 8px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--launcher-ink, #171a21);
+  text-align: left;
+  cursor: pointer;
+}
+.workspace-menu-item:hover,
+.workspace-menu-item:focus-visible {
+  background: #f4f3fa;
+  outline: none;
+}
+.workspace-menu-item[aria-checked="true"] {
+  background: #f7f6fd;
+}
+/* Menu icons stay monochrome here: a coloured file icon would compete with the
+   accent and with the check mark. */
+.workspace-menu .workspace-menu-icon .home-icon[data-icon] {
+  color: #6f7684;
+}
+.workspace-menu-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: #f4f4f8;
+  color: #6f7684;
+}
+.workspace-menu-item.is-checked .workspace-menu-icon {
+  background: var(--launcher-accent-soft, #f2effc);
+  color: var(--launcher-accent, #6a56d6);
+}
+.workspace-menu-text {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+  gap: 1px;
+}
+.workspace-menu-text strong {
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.workspace-menu-text small {
+  color: var(--launcher-mute, #9aa0ad);
+  font-size: 11px;
+}
+.workspace-menu-check {
+  flex: none;
+  color: var(--launcher-accent, #6a56d6);
+}
+.workspace-menu-sep {
+  height: 1px;
+  margin: 6px 4px;
+  background: var(--launcher-line, #e9e8f1);
+}
+.workspace-menu-item.is-action strong {
+  font-size: 13px;
+  font-weight: 500;
+}
+.workspace-menu-note {
+  margin: 6px 8px 4px;
+  color: var(--launcher-mute, #9aa0ad);
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+/* What the chosen policy actually means, in one line. */
+.home27.home-launcher .composer-policy {
+  order: 3;
+  flex: 1 0 100%;
+  color: var(--launcher-mute);
+  font-size: 11.5px;
+  line-height: 1.6;
+}
+.home27.home-launcher .composer-policy:empty {
+  display: none;
+}
+.home27.home-launcher .composer-hint {
+  margin-left: auto;
   min-width: 0;
   overflow: hidden;
-  color: #a5a5aa;
+  color: var(--launcher-mute);
   font-size: 12px;
   text-align: right;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.home27 .composer-settings {
-  position: absolute;
-  left: 0;
-  bottom: calc(100% + 10px);
-  z-index: 25;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 16px;
-  max-width: min(420px, calc(100vw - 40px));
-  padding: 12px 14px;
-  border: 1px solid #e6e6e4;
-  border-radius: 14px;
-  background: #fff;
-  box-shadow: 0 12px 32px #17171714;
+.home27.home-launcher .composer-hint kbd {
+  padding: 1px 5px;
+  border: 1px solid var(--launcher-line);
+  border-radius: 5px;
+  background: #fbfbfe;
+  color: var(--launcher-sub);
+  font: 11px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
-/* Three examples, re-ranked as the draft changes. */
-.home-suggestion-bar {
+/* ── Examples ─────────────────────────────────────────────────────────────── */
+.home-launcher .home-suggestion-bar {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
+  align-self: center;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: var(--launcher-card-width);
   gap: 8px;
   margin-top: 18px;
 }
-.home-suggestion {
+.home-launcher .home-suggestion-label {
+  margin-right: 2px;
+  align-self: center;
+  color: var(--launcher-mute);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+}
+.home-launcher .home-suggestion {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  max-width: 100%;
-  height: 34px;
-  padding: 0 15px;
-  border: 1px solid #e6e6e4;
+  height: 32px;
+  padding: 0 14px;
+  border: 1px solid var(--launcher-line);
   border-radius: 999px;
   background: #fff;
-  color: #3d3d42;
-  font-size: 13px;
-  cursor: pointer;
+  color: var(--launcher-sub);
+  font-size: 12.5px;
+  white-space: nowrap;
+  transition: border-color 0.14s ease, background 0.14s ease, color 0.14s ease;
 }
-.home-suggestion:hover {
-  border-color: #cfcfca;
-  background: #f8f8f7;
+.home-launcher .home-suggestion:hover {
+  border-color: var(--launcher-line-strong);
+  background: #fbfaff;
+  color: var(--launcher-ink);
 }
-.home-suggestion:focus-visible,
-.home-suggestion-refresh:focus-visible {
-  outline: 2px solid #b9b9b9;
+.home-launcher .home-suggestion svg {
+  color: var(--launcher-accent);
+  opacity: 0.75;
+}
+.home-launcher .home-suggestion:focus-visible,
+.home-launcher .home-suggestion-refresh:focus-visible {
+  outline: 2px solid var(--launcher-accent);
   outline-offset: 2px;
 }
-.home-suggestion svg {
-  flex: none;
-  color: #9a9a9f;
-}
-.home-suggestion span {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.home-suggestion-refresh {
+.home-launcher .home-suggestion-refresh {
   display: inline-grid;
   place-items: center;
-  width: 34px;
-  height: 34px;
-  border: 1px dashed #e0e0de;
+  width: 32px;
+  height: 32px;
+  border: 1px solid transparent;
   border-radius: 50%;
   background: transparent;
-  color: #9a9a9f;
-  cursor: pointer;
+  color: var(--launcher-mute);
+  transition: color 0.14s ease, background 0.14s ease, transform 0.3s ease;
 }
-.home-suggestion-refresh:hover {
-  border-color: #c9c9c4;
-  color: #5c5c62;
-}
-
-.home-launcher-hint {
-  margin: 12px 0 0;
-  color: #a5a5aa;
-  font-size: 12px;
-  text-align: center;
-}
-.home-launcher-hint kbd {
-  padding: 1px 5px;
-  border: 1px solid #e6e6e4;
-  border-radius: 4px;
-  background: #fafaf9;
-  font: 11px ui-sans-serif, sans-serif;
+.home-launcher .home-suggestion-refresh:hover {
+  background: #f5f5fa;
+  color: var(--launcher-ink);
+  transform: rotate(180deg);
 }
 
-/* Recent work: only when there is something to continue. */
-.home-recent {
-  margin-top: clamp(32px, 6vh, 64px);
+/* ── Recent work: only when there is something to continue ────────────────── */
+.home-launcher .home-recent {
+  align-self: center;
+  width: 100%;
+  max-width: var(--launcher-card-width);
+  margin-top: clamp(28px, 5vh, 52px);
+  padding-top: 18px;
+  border-top: 1px solid var(--launcher-line);
 }
-.home-recent header {
+.home-launcher .home-recent header {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 12px;
   margin-bottom: 10px;
+  padding: 0 2px;
 }
-.home-recent h2 {
+.home-launcher .home-recent h2 {
   margin: 0;
-  color: #6a6a70;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  color: var(--launcher-mute);
+  font-size: 12px;
+  font-weight: 550;
+  letter-spacing: 0.04em;
 }
-.home-recent header button {
+.home-launcher .home-recent header button {
   border: 0;
   background: none;
-  color: #a0a0a6;
+  color: var(--launcher-mute);
   font-size: 12px;
   cursor: pointer;
 }
-.home-recent header button:hover {
-  color: #55555b;
+.home-launcher .home-recent header button:hover {
+  color: var(--launcher-sub);
 }
-.home-recent ul {
+.home-launcher .home-recent ul {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
@@ -227,72 +481,92 @@
   padding: 0;
   list-style: none;
 }
-.home-recent li > button {
+.home-launcher .home-recent li > button {
   display: flex;
   gap: 10px;
   align-items: center;
   width: 100%;
-  padding: 12px;
-  border: 1px solid #eeeeec;
-  border-radius: 12px;
+  padding: 11px 12px;
+  border: 1px solid var(--launcher-line);
+  border-radius: 13px;
   background: #fff;
   text-align: left;
   cursor: pointer;
+  transition: border-color 0.14s ease, background 0.14s ease;
 }
-.home-recent li > button:hover {
-  border-color: #d9d9d4;
-  background: #fbfbfa;
+.home-launcher .home-recent li > button:hover {
+  border-color: var(--launcher-line-strong);
+  background: #fbfaff;
 }
-.home-recent-icon {
+.home-launcher .home-recent-icon {
   display: grid;
   flex: none;
   place-items: center;
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   border-radius: 9px;
-  background: #f4f4f2;
-  color: #77777d;
+  background: var(--launcher-accent-soft);
+  color: var(--launcher-accent);
 }
-.home-recent-body {
+.home-launcher .home-recent-body {
   display: flex;
   flex-direction: column;
   gap: 2px;
   min-width: 0;
 }
-.home-recent-body strong {
+.home-launcher .home-recent-body strong {
   overflow: hidden;
-  color: #2c2c31;
+  color: var(--launcher-ink);
   font-size: 12.5px;
-  font-weight: 600;
+  font-weight: 550;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.home-recent-body small {
-  color: #9a9aa0;
+.home-launcher .home-recent-body small {
+  color: var(--launcher-mute);
   font-size: 11px;
 }
 
+/* ── Small screens ────────────────────────────────────────────────────────── */
 @media (max-width: 680px) {
+  .home27.home-launcher .home-content-v2.home27-content {
+    justify-content: flex-start;
+    min-height: 0;
+    padding: 40px 0 32px;
+  }
   .home27.home-launcher .home27-hero {
     margin-bottom: 22px;
   }
-  .home27 .composer-hint {
+  .home27.home-launcher .composer-main {
+    padding: 14px 14px 10px;
+  }
+  .home27.home-launcher .composer-hint {
     display: none;
   }
-  .home-suggestion {
-    height: 32px;
+  .home27.home-launcher .composer-footer {
+    gap: 4px 8px;
+  }
+  .home27.home-launcher .composer-policy {
+    font-size: 11px;
+  }
+  .home-launcher .home-suggestion {
+    height: 30px;
     padding: 0 12px;
     font-size: 12px;
   }
-  .home-recent ul {
+  .home-launcher .home-recent ul {
     grid-template-columns: minmax(0, 1fr);
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .home-suggestion,
-  .home-suggestion-refresh,
-  .home-recent li > button {
+  .home-launcher .home-suggestion,
+  .home-launcher .home-suggestion-refresh,
+  .home-launcher .home-recent li > button,
+  .home27.home-launcher .composer-shell {
     transition: none;
+  }
+  .home-launcher .home-suggestion-refresh:hover {
+    transform: none;
   }
 }
 
@@ -304,4 +578,17 @@
   overflow: hidden;
   clip-path: inset(50%);
   white-space: nowrap;
+}
+
+/* The folder picker is triggered from the workspace menu, never tabbed to. */
+.visually-hidden-input-folder {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }

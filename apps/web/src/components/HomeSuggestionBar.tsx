@@ -32,6 +32,7 @@ export function HomeSuggestionBar({ mode, prompt, onSelect }: SuggestionProps) {
 
   return (
     <section className="home-suggestion-bar" aria-label="示例任务">
+      <span className="home-suggestion-label" aria-hidden="true">试试</span>
       {batch.map((task) => (
         <button
           key={task.id}

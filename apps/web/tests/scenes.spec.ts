@@ -1,4 +1,12 @@
 import { test, expect, type Page, type Locator } from "@playwright/test";
+import {
+  expectMode,
+  expectWorkspace,
+  openScenePreview,
+  setMode,
+  setPermission,
+  setWorkspace,
+} from "./helpers/home";
 const groups = [
   {
     mode: "办公提效",
@@ -41,7 +49,7 @@ test("pinning a mode by hand keeps the draft, attachments, model and settings", 
   });
   const prompt = page.getByRole("textbox", { name: "任务描述", exact: true });
   await prompt.fill("保留我的原始需求");
-  await setWorkspace(page, "产品设计空间");
+  await setWorkspace(page, "个人空间");
   await setPermission(page, "需要确认后执行");
   await page
     .locator('input.visually-hidden-input[type="file"]')
@@ -50,22 +58,23 @@ test("pinning a mode by hand keeps the draft, attachments, model and settings", 
       mimeType: "text/plain",
       buffer: Buffer.from("保留附件"),
     });
-  await page.getByRole("button", { name: "选择大模型", exact: true }).click();
-  await page.getByRole("option", { name: /GLM-5.3-Flash/ }).click();
-  const modeSelect = page.getByRole("combobox", { name: "任务模式", exact: true });
+  const modelTrigger = page.getByRole("button", { name: "选择大模型", exact: true });
+  await modelTrigger.click();
+  const modelOption = page
+    .getByRole("dialog", { name: "选择大模型", exact: true })
+    .getByRole("option")
+    .last();
+  const modelName = ((await modelOption.textContent()) ?? "").trim().split(/\s+/)[0];
+  await modelOption.click();
+  await expect(modelTrigger).toContainText(modelName);
   for (const group of groups) {
     await setMode(page, group.mode);
-    // A hand-picked mode must survive further typing instead of being re-inferred.
-    await expect(modeSelect).toHaveValue(MODE_VALUES[group.mode]);
+    // A hand-picked mode must survive the rest of the draft being left alone.
+    await expectMode(page, group.mode);
     await expect(prompt).toHaveValue("保留我的原始需求");
     await expect(page.locator(".attachment-chip")).toContainText("keep.txt");
-    await expect(
-      page.getByRole("button", { name: "选择大模型", exact: true }),
-    ).toContainText("GLM-5.3-Flash");
-    await openComposerSettings(page);
-    await expect(page.getByLabel("工作空间", { exact: true })).toHaveValue(
-      "产品设计空间",
-    );
+    await expect(modelTrigger).toContainText(modelName);
+    await expectWorkspace(page, "个人空间");
     await expect(page.getByLabel("任务权限", { exact: true })).toHaveValue(
       "需要确认后执行",
     );
@@ -73,19 +82,18 @@ test("pinning a mode by hand keeps the draft, attachments, model and settings", 
   expect(requests).toEqual([]);
 });
 
-test("a hand-pinned mode survives typing, and clearing the draft hands it back to inference", async ({
-  page,
-}) => {
+test("the mode changes only when someone changes it", async ({ page }) => {
   const prompt = page.getByRole("textbox", { name: "任务描述", exact: true });
-  const modeSelect = page.getByRole("combobox", { name: "任务模式", exact: true });
   await prompt.fill("帮我写一份周报");
-  await expect(modeSelect).toHaveValue("office");
   await setMode(page, "设计制作");
-  await prompt.fill("帮我写一份周报，并配一张封面插图");
-  await expect(modeSelect).toHaveValue("design");
+  // Typing a very different sentence must not silently re-route the task.
+  await prompt.fill("帮我修一个 React 组件的 bug，顺便写一份周报");
+  await expectMode(page, "设计制作");
+  // Clearing the draft leaves the choice alone; the next explicit pick wins.
   await prompt.fill("");
-  await prompt.fill("帮我写一份周报");
-  await expect(modeSelect).toHaveValue("office");
+  await expectMode(page, "设计制作");
+  await setMode(page, "网页应用");
+  await expectMode(page, "网页应用");
 });
 
 test("replacement asks first; cancel preserves text and preview; confirm transfers only the prompt", async ({
@@ -109,9 +117,7 @@ test("replacement asks first; cancel preserves text and preview; confirm transfe
   await expect(prompt).toBeFocused();
   await expect(prompt).toHaveValue(/品牌视觉方案/);
   await expect(prompt).not.toHaveValue(/LOCAL ONLY/);
-  await expect(
-    page.getByRole("combobox", { name: "任务模式", exact: true }),
-  ).toHaveValue("design");
+  await expectMode(page, "设计制作");
   await expect(page).toHaveURL(/\/$/);
 });
 

@@ -38,16 +38,22 @@ test("hero, composer, examples and recent stack in one centered column", async (
 
     const hero = await box(".home27-hero");
     const composer = await box(".composer-shell");
-    const hint = await box(".home-launcher-hint");
+    const footer = await box(".composer-footer");
     const suggestions = await box(".home-suggestion-bar");
 
     expect(composer.y).toBeGreaterThan(hero.y + hero.height);
-    expect(hint.y).toBeGreaterThan(composer.y + composer.height);
-    expect(suggestions.y).toBeGreaterThan(hint.y);
+    expect(footer.y).toBeGreaterThan(composer.y + composer.height - 1);
+    expect(suggestions.y).toBeGreaterThan(footer.y + footer.height - 1);
     expect(composer.width).toBeLessThanOrEqual(960);
     expect(composer.x + composer.width).toBeLessThanOrEqual(width);
-    // The example row is centered under the input, not left-aligned to it.
-    expect(Math.abs(suggestions.x + suggestions.width / 2 - (composer.x + composer.width / 2))).toBeLessThan(2);
+    // The example row starts where the card starts, like the meta row above it.
+    expect(Math.abs(suggestions.x - composer.x)).toBeLessThan(2);
+    expect(suggestions.width).toBeLessThanOrEqual(composer.width + 1);
+    // Centred while it fits: the space above the title and below the examples
+    // should feel shared rather than pooling at the bottom.
+    const below = 900 - (suggestions.y + suggestions.height);
+    if (width >= 768) expect(hero.y).toBeGreaterThan(48);
+    expect(below).toBeGreaterThan(0);
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
     if (width === 1440) await page.screenshot({ path: "../../.cache/home-launcher-1440.png" });
   }
@@ -95,25 +101,19 @@ test("recent work only appears once something exists", async ({ page }) => {
   await expect(page.locator(".home-recent")).toContainText("Q3 复盘");
 });
 
-test("更多设置 opens upward, stays inside the viewport and closes again", async ({ page }) => {
+test("the two selects under the input stay inside the viewport", async ({ page }) => {
   for (const width of [320, 375, 768, 1440]) {
     await page.setViewportSize({ width, height: 900 });
-    const toggle = page.getByRole("button", { name: "更多设置", exact: true });
-    await expect(toggle).toHaveAttribute("aria-expanded", "false");
-    await expect(page.locator(".composer-settings")).toHaveCount(0);
-
-    await toggle.click();
-    await expect(toggle).toHaveAttribute("aria-expanded", "true");
-    const panel = (await page.locator(".composer-settings").boundingBox())!;
-    expect(panel.x).toBeGreaterThanOrEqual(-1);
-    expect(panel.x + panel.width).toBeLessThanOrEqual(width + 1);
-    expect(panel.y).toBeGreaterThanOrEqual(0);
-    // The two selects are what the panel exists for.
-    await expect(page.getByLabel("工作空间", { exact: true })).toBeVisible();
+    await expect(page.getByRole("button", { name: "工作空间", exact: true })).toBeVisible();
     await expect(page.getByLabel("任务权限")).toBeVisible();
-
-    await toggle.click();
-    await expect(page.locator(".composer-settings")).toHaveCount(0);
+    const trigger = (await page.getByRole("button", { name: "工作空间", exact: true }).boundingBox())!;
+    expect(trigger.x).toBeGreaterThanOrEqual(-1);
+    expect(trigger.x + trigger.width).toBeLessThanOrEqual(width + 1);
+    for (const select of await page.locator(".footer-select").all()) {
+      const box = (await select.boundingBox())!;
+      expect(box.x).toBeGreaterThanOrEqual(-1);
+      expect(box.x + box.width).toBeLessThanOrEqual(width + 1);
+    }
   }
 });
 

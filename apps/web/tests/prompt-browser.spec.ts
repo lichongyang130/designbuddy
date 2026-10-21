@@ -42,23 +42,17 @@ test("three examples re-rank as the draft changes and never overwrite it", async
   expect(requests).toEqual([]);
 });
 
-test("examples follow the mode the draft implies", async ({ page }) => {
+test("examples follow the saved mode and hand over a complete brief", async ({ page }) => {
   const input = page.getByRole("textbox", { name: "任务描述", exact: true });
+  await expect(page.locator(".home-suggestion")).toHaveCount(3);
 
-  const mode = page.getByRole("combobox", { name: "任务模式", exact: true });
-  await input.fill("做一张品牌海报，需要主视觉和配色");
-  await expect(mode).toHaveValue("design");
+  // Typing is just typing: it never rewrites the draft or the mode.
+  await input.fill("帮我写一份周报");
+  await expect(input).toHaveValue("帮我写一份周报");
+
   page.once("dialog", (dialog) => dialog.accept());
   await page.locator(".home-suggestion").first().click();
-  // Whatever the batch, a chip hands over a complete brief, not a stub.
   await expect(input).toHaveValue(/质量与交付要求：/);
-  await expect(mode).toHaveValue("design");
-
-  // Clearing the box hands the mode back to inference.
-  await input.fill("");
-  await input.fill("帮我整理一份会议纪要");
-  await expect(mode).toHaveValue("office");
-  await expect(page.locator(".home-suggestion")).toHaveCount(3);
 });
 
 test("换一批 never repeats within a session", async ({ page }) => {

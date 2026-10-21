@@ -77,6 +77,9 @@ export function HomeCommandPalette({ open, mode, onClose, onSelectScene, onPrevi
     if (!open) return;
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
+        // A modal on top of the palette (the scene preview opened from it) owns
+        // Escape; closing the palette too would strand the focus restore.
+        if (document.querySelector("dialog[open]")) return;
         event.preventDefault();
         onClose();
       }
@@ -221,10 +224,7 @@ export function HomeCommandPalette({ open, mode, onClose, onSelectScene, onPrevi
                   className="hcp-preview"
                   aria-label={`预览${item.title}`}
                   title="打开可交互的示例"
-                  onClick={() => {
-                    onClose();
-                    item.preview!();
-                  }}
+                  onClick={() => item.preview!()}
                 >预览</button>
               )}
             </div>

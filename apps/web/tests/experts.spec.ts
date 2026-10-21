@@ -1,5 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
-import { setPermission, setWorkspace, openComposerSettings } from "./helpers/home";
+import { expectWorkspace, setPermission, setWorkspace } from "./helpers/home";
 import { routingExperts } from "../../../shared/expertRouting";
 const expertCatalog = routingExperts.map(e => ({ ...e, category: { office: "办公提效", design: "设计制作", code: "网页应用" }[e.mode] }));
 // The directory renders one section per task area, so the visible order is grouped by area.
@@ -63,7 +63,7 @@ test("choosing an expert preserves the current draft, attachments, model, worksp
   page.on("request", r => { if (/\/api\/(chat|generation|expert-match)$/.test(r.url())) executions++; });
   await page.goto("/");
   await page.getByRole("textbox", { name: "任务描述", exact: true }).fill("请保留我的原始任务");
-  await setWorkspace(page, "产品设计空间");
+  await setWorkspace(page, "个人空间");
   await setPermission(page, "仅本地");
   await page.locator('input.visually-hidden-input[type="file"]').setInputFiles({ name: "keep.csv", mimeType: "text/csv", buffer: Buffer.from("项目,金额\n设计,200") });
   const model = await page.getByRole("button", { name: "选择大模型", exact: true }).textContent();
@@ -71,8 +71,7 @@ test("choosing an expert preserves the current draft, attachments, model, worksp
   await page.getByRole("button", { name: "使用数据分析专家", exact: true }).click();
   await expect(page.getByRole("textbox", { name: "任务描述", exact: true })).toHaveValue("请保留我的原始任务");
   await expect(page.locator(".attachment-chip")).toContainText("keep.csv");
-  await openComposerSettings(page);
-  await expect(page.getByLabel("工作空间", { exact: true })).toHaveValue("产品设计空间");
+  await expectWorkspace(page, "个人空间");
   await expect(page.getByLabel("任务权限", { exact: true })).toHaveValue("仅本地");
   await expect(page.getByRole("button", { name: "选择大模型", exact: true })).toHaveText(model!);
   await expect(page.locator(".home-expert-trigger")).toContainText("数据分析专家");

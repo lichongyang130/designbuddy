@@ -64,35 +64,36 @@ test("an example fills a complete prompt and never sends it", async ({ page }) =
   expect(requests).toEqual([]);
 });
 
-test("the draft decides the mode, and the chip says what will be produced", async ({ page }) => {
+test("typing decides nothing by surprise: the mode is the saved default until a sample changes it", async ({
+  page,
+}) => {
   const input = page.getByRole("textbox", { name: "任务描述", exact: true });
-  const mode = page.getByRole("combobox", { name: "任务模式" });
+
+  // No mode selector on the launcher any more, and no silent re-inference.
+  await expect(page.getByRole("combobox", { name: "任务模式" })).toHaveCount(0);
+  await expect(page.locator(".composer-intent-row")).toHaveCount(0);
 
   await input.fill("帮我修一个 React 组件的 bug");
-  await expect(mode).toHaveValue("code");
+  await expect(page.getByRole("button", { name: "开始任务" })).toBeEnabled();
 
-  await input.fill("这个季度的销售整理成汇报PPT");
-  await expect(mode).toHaveValue("office");
-  await expect(page.locator(".composer-intent")).toHaveText(/将生成 PPT/);
-  await expect(page.getByRole("button", { name: "生成演示文稿" })).toBeEnabled();
-
-  // A hand-picked mode wins over the guess for the rest of the draft.
-  await mode.selectOption("design");
-  await input.fill("帮我把这个季度的销售整理成汇报PPT");
-  await expect(mode).toHaveValue("design");
-
-  // Clearing the draft gives inference back.
+  // A sample carries its own mode; that is the one explicit way to switch.
   await input.fill("");
-  await input.fill("写一段产品介绍");
-  await expect(mode).toHaveValue("office");
-  await expect(page.locator(".composer-intent")).toHaveCount(0);
+  await page.locator(".home-suggestion").first().click();
+  await expect(input).not.toHaveValue("");
+  await expect(page.getByRole("button", { name: "开始任务" })).toBeEnabled();
 });
 
 test("model selection, Escape and outside click", async ({ page }) => {
   const trigger = page.getByRole("button", { name: "选择大模型", exact: true });
   await trigger.click();
-  await page.getByRole("option", { name: /GLM-5.3-Flash/ }).click();
-  await expect(trigger).toContainText("GLM-5.3-Flash");
+  // Whatever the configured catalog holds: the point is the choice sticks.
+  const option = page
+    .getByRole("dialog", { name: "选择大模型", exact: true })
+    .getByRole("option")
+    .last();
+  const name = ((await option.textContent()) ?? "").trim().split(/\s+/)[0];
+  await option.click();
+  await expect(trigger).toContainText(name);
   await expect(trigger).toHaveAttribute("aria-expanded", "false");
   await trigger.click();
   await page.keyboard.press("Escape");
@@ -103,7 +104,7 @@ test("model selection, Escape and outside click", async ({ page }) => {
 });
 
 test("text attachment can be read and removed", async ({ page }) => {
-  await page.locator('input.visually-hidden-input[type="file"]').setInputFiles({
+  await page.locator(".attachment-input").setInputFiles({
     name: "brief.txt",
     mimeType: "text/plain",
     buffer: Buffer.from("首页设计说明"),
@@ -113,16 +114,23 @@ test("text attachment can be read and removed", async ({ page }) => {
   await expect(page.locator(".attachment-chip")).toHaveCount(0);
 });
 
-test("workspace and policy live behind 更多设置 and still reach the task", async ({ page }) => {
-  const prompt = page.getByRole("textbox", { name: "任务描述" });
-  await prompt.fill("测试首页需求");
+test("workspace and policy explain themselves, survive a reload and still reach the task", async ({
+  page,
+}) => {
+  // Each choice explains itself, and both are remembered.
+  await page.getByRole("button", { name: "工作空间", exact: true }).click();
+  await page.getByRole("menuitemradio", { name: /^个人空间/ }).click();
+  await expect(page.locator(".home-notice")).toContainText("不会同步给团队成员");
+  await expect(page.getByRole("button", { name: "工作空间", exact: true })).toContainText("个人空间");
 
-  // Hidden by default: the two selects are noise for the 90% who keep defaults.
-  await expect(page.getByLabel("工作空间", { exact: true })).toHaveCount(0);
-  await page.getByRole("button", { name: "更多设置", exact: true }).click();
-  await page.getByLabel("工作空间", { exact: true }).selectOption("个人空间");
   await page.getByLabel("任务权限").selectOption("仅本地");
+  await expect(page.locator(".composer-policy")).toHaveText("不发送任何 AI 请求，只存在本机");
 
+  await page.reload();
+  await expect(page.getByRole("button", { name: "工作空间", exact: true })).toContainText("个人空间");
+  await expect(page.getByLabel("任务权限")).toHaveValue("仅本地");
+
+  await page.getByRole("textbox", { name: "任务描述" }).fill("测试首页需求");
   await page.getByRole("button", { name: "开始任务" }).click();
   await expect(page).toHaveURL(/\/tasks\//);
   const saved = await page.evaluate(() =>
@@ -131,6 +139,29 @@ test("workspace and policy live behind 更多设置 and still reach the task", a
   expect(saved).toContain("个人空间");
   expect(saved).toContain("仅本地");
   expect(saved).toContain("办公提效需求");
+});
+
+test("the workspace menu offers the two actions from the design and keeps the task honest", async ({
+  page,
+}) => {
+  const trigger = page.getByRole("button", { name: "工作空间", exact: true });
+  await trigger.click();
+  const menu = page.getByRole("menu", { name: "工作空间", exact: true });
+  await expect(menu).toBeVisible();
+  await expect(menu.getByRole("menuitem")).toHaveText(["新建工作空间", "打开本地文件夹"]);
+  // It says where the task will really be saved.
+  await expect(menu).toContainText("任务保存在本机项目里");
+  await expect(menu.getByRole("menuitemradio", { name: /^默认工作空间/ })).toHaveAttribute("aria-checked", "true");
+
+  // Escape closes it and hands focus back to the trigger.
+  await page.keyboard.press("Escape");
+  await expect(menu).toHaveCount(0);
+  await expect(trigger).toBeFocused();
+
+  // 新建工作空间 goes to the real page instead of pretending here.
+  await trigger.click();
+  await menu.getByRole("menuitem", { name: "新建工作空间" }).click();
+  await expect(page).toHaveURL(/\/workspaces$/);
 });
 
 test("Chinese IME never submits the draft", async ({ page }) => {
@@ -148,13 +179,12 @@ for (const width of [320, 375, 768, 1440]) {
     await expect(page.getByRole("textbox", { name: "任务描述" })).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
 
-    await page.getByRole("button", { name: "更多设置", exact: true }).click();
+    await expect(page.getByRole("button", { name: "工作空间", exact: true })).toBeVisible();
     for (const select of await page.locator(".footer-select").all()) {
       const box = (await select.boundingBox())!;
       expect(box.x).toBeGreaterThanOrEqual(0);
       expect(box.x + box.width).toBeLessThanOrEqual(width);
     }
-    await page.getByRole("button", { name: "更多设置", exact: true }).click();
 
     await page.getByRole("button", { name: "选择大模型", exact: true }).click();
     const box = await page.getByRole("dialog").boundingBox();
