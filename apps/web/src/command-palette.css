@@ -1,0 +1,233 @@
+/* ⌘K palette: one box over the homepage. It reuses the homepage's quiet
+   white/grey language so it never looks like a second product. */
+
+.hcp-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: min(14vh, 120px) 16px 24px;
+  background: rgba(20, 22, 30, 0.28);
+  backdrop-filter: blur(2px);
+}
+
+.hcp {
+  display: flex;
+  flex-direction: column;
+  width: min(640px, 100%);
+  max-height: min(70vh, 560px);
+  border: 1px solid #e6e6ef;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 24px 80px rgba(20, 22, 30, 0.22);
+  overflow: hidden;
+  font-size: 13px;
+  color: #2b3038;
+}
+
+.hcp button {
+  font: inherit;
+  cursor: pointer;
+}
+
+.hcp-search {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 16px;
+  border-bottom: 1px solid #f0f0f5;
+  color: #9aa0ad;
+}
+
+.hcp-search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  font-size: 14px;
+  color: #2b3038;
+}
+
+.hcp-search input::placeholder {
+  color: #b3b7c2;
+}
+
+.hcp kbd {
+  padding: 1px 5px;
+  border: 1px solid #e6e6ef;
+  border-radius: 4px;
+  background: #fafafc;
+  color: #9aa0ad;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.hcp-list {
+  flex: 1;
+  min-height: 0;
+  padding: 6px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.hcp-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  text-align: left;
+  color: inherit;
+}
+
+.hcp-item.is-active {
+  background: #f5f4fd;
+}
+
+.hcp-group {
+  flex: none;
+  width: 34px;
+  color: #a9aeb9;
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+}
+
+.hcp-item.is-active .hcp-group {
+  color: #6753c6;
+}
+
+.hcp-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.hcp-text strong {
+  font-size: 13px;
+  font-weight: 550;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hcp-text small {
+  font-size: 11px;
+  line-height: 1.4;
+  color: #9aa0ad;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hcp-badge {
+  flex: none;
+  max-width: 132px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: #f2f2f7;
+  color: #8b91a0;
+  font-size: 10.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hcp-item.is-active .hcp-badge {
+  background: #ece9fb;
+  color: #5b4bc4;
+}
+
+.hcp-empty {
+  margin: 26px 12px;
+  color: #9aa0ad;
+  font-size: 12.5px;
+  text-align: center;
+  line-height: 1.7;
+}
+
+.hcp-foot {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 16px;
+  border-top: 1px solid #f0f0f5;
+  background: #fcfcfd;
+  color: #a9aeb9;
+  font-size: 10.5px;
+}
+
+.hcp-foot span {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.hcp-foot span:last-child {
+  margin-left: auto;
+}
+
+@media (max-width: 680px) {
+  .hcp-backdrop {
+    padding: 0;
+    align-items: stretch;
+  }
+  .hcp {
+    width: 100%;
+    max-height: 100%;
+    border: 0;
+    border-radius: 0;
+  }
+  .hcp-foot span:last-child {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hcp-backdrop {
+    backdrop-filter: none;
+  }
+}
+
+/* Scene rows keep their interactive sample one click away behind ⌘K. */
+.hcp-row {
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+}
+
+.hcp-row .hcp-item {
+  flex: 1;
+  min-width: 0;
+}
+
+.hcp-preview {
+  flex: none;
+  align-self: center;
+  padding: 3px 8px;
+  border: 1px solid #e6e6ef;
+  border-radius: 7px;
+  background: #fff;
+  color: #6b6f7c;
+  font-size: 10.5px;
+  line-height: 1.5;
+  transition: color 0.12s ease, border-color 0.12s ease;
+}
+
+.hcp-row:hover .hcp-preview,
+.hcp-preview:hover,
+.hcp-preview:focus-visible {
+  border-color: #cfc9ef;
+  color: #5b4bc4;
+}

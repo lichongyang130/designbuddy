@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { AUTH_STORAGE } from "./auth-helpers";
+import { baseURL } from "./helpers/baseUrl";
 
 test("sidebar uses DesignBuddy and the requested entries in order", async ({
   page,
@@ -10,7 +11,7 @@ test("sidebar uses DesignBuddy and the requested entries in order", async ({
     page.locator(
       ".app-sidebar > .sidebar-nav-item, .sidebar-navigation > .sidebar-nav-item",
     ),
-  ).toHaveText(["首页", "插件", "模版", "定时任务", "工作流", "更多"]);
+  ).toHaveText(["首页", "插件", "主题", "模版", "定时任务", "工作流", "更多"]);
   await expect(
     page.getByRole("button", { name: "首页", exact: true }),
   ).toHaveAttribute("aria-current", "page");
@@ -177,7 +178,7 @@ test("touch users can open more without hover", async ({ browser }) => {
     viewport: { width: 375, height: 812 },
   });
   const page = await context.newPage();
-  await page.goto("http://127.0.0.1:5173/");
+  await page.goto(`${baseURL}/`);
   await page.getByRole("button", { name: "更多", exact: true }).tap();
   await page.getByRole("menuitem", { name: "技能", exact: true }).tap();
   await expect(page).toHaveURL(/\/skills$/);

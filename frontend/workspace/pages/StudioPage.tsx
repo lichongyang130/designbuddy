@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { createZipBlob } from "../utils/zip";
 import { apiFetch } from "../../../apps/web/src/api/client";
 import { createDesignContract, designSystems } from "../utils/designSystem";
+import { buildPptxThemeXml, themeFromDesignSystem, type DeckTheme, type DesignSystemLike } from "../../../shared/deckTheme";
 import { AIProviderSettings, getAIProviderCredentials } from "../AIProviderSettings";
 
 type StudioKind = "prototype" | "slides" | "image" | "video";
@@ -93,10 +94,27 @@ function slideHtml(artifact: StudioArtifact): string {
   return `<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>${esc(artifact.title)}</title><style>*{box-sizing:border-box}body{margin:0;background:#eceef4;color:${ink};font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.slide{position:relative;display:flex;flex-direction:column;justify-content:center;width:1280px;height:720px;padding:100px 130px;margin:24px auto;background:${bg};page-break-after:always;overflow:hidden}.slide:before{content:"";position:absolute;width:460px;height:460px;border:1px solid ${primary}33;border-radius:50%;right:-160px;top:-180px}.kicker{color:${primary};font-size:16px;letter-spacing:.18em;text-transform:uppercase}.slide h1{max-width:900px;margin:40px 0 16px;font-size:64px;line-height:1.12;letter-spacing:-.04em}.slide p{max-width:850px;color:${ink}aa;font-size:24px;line-height:1.6}.slide ul{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:42px 0 0;padding:0;list-style:none}.slide li{padding:20px 22px;border-top:3px solid ${primary};background:${primary}0d;font-size:19px}.slide footer{position:absolute;bottom:42px;left:130px;right:130px;display:flex;justify-content:space-between;color:${ink}88;font-size:12px;letter-spacing:.14em}@media print{body{background:white}.slide{margin:0;break-after:page;print-color-adjust:exact;-webkit-print-color-adjust:exact}}</style><body>${slides}</body></html>`;
 }
 
+/**
+ * The deck theme behind a Studio artifact.
+ *
+ * Studio draws with the selected design system, so its PPTX theme part is built
+ * from the same palette — one theme generator for the whole product.
+ */
+function studioTheme(artifact: StudioArtifact): DeckTheme {
+  const system = systemOptions.find((item) => item.id === artifact.systemId) ?? systemOptions[0];
+  return themeFromDesignSystem(system as DesignSystemLike);
+}
+
 function pptxBlob(artifact: StudioArtifact): Blob {
+  const theme = studioTheme(artifact);
+  const runColour = (hex: string) => hex.replace("#", "").toUpperCase();
   const slideXml = (slide: Slide, index: number) => {
     const runs = (text: string, size: number, color: string, bold = false) => `<a:p><a:r><a:rPr lang="zh-CN" sz="${size}" b="${bold ? 1 : 0}" dirty="0"><a:solidFill><a:srgbClr val="${color.replace("#", "").toUpperCase()}"/></a:solidFill><a:latin typeface="Arial"/><a:ea typeface="Microsoft YaHei"/></a:rPr><a:t>${esc(text)}</a:t></a:r><a:endParaRPr lang="zh-CN"/></a:p>`;
-    const body = [runs(slide.title, 3000, "171923", true), runs(slide.body, 1800, "50566A"), ...slide.bullets.map((bullet) => runs(`•  ${bullet}`, 1500, "33384A"))].join("");
+    const body = [
+      runs(slide.title, 3000, runColour(theme.palette.text), true),
+      runs(slide.body, 1800, runColour(theme.palette.muted)),
+      ...slide.bullets.map((bullet) => runs(`•  ${bullet}`, 1500, runColour(theme.palette.text))),
+    ].join("");
     const shape = (id: number, name: string, x: number, y: number, cx: number, cy: number, text: string) => `<p:sp><p:nvSpPr><p:cNvPr id="${id}" name="${name}"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr><p:spPr><a:xfrm><a:off x="${x}" y="${y}"/><a:ext cx="${cx}" cy="${cy}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/><a:ln><a:noFill/></a:ln></p:spPr><p:txBody><a:bodyPr wrap="square"/><a:lstStyle/>${text}</p:txBody></p:sp>`;
     return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><p:sld xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main"><p:cSld name="Slide ${index + 1}"><p:spTree><p:nvGrpSpPr><p:cNvPr id="1" name=""/><p:cNvGrpSpPr/><p:nvPr/></p:nvGrpSpPr><p:grpSpPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="0" cy="0"/><a:chOff x="0" y="0"/><a:chExt cx="0" cy="0"/></a:xfrm></p:grpSpPr>${shape(2, "Slide content", 900000, 900000, 10400000, 5400000, body)}</p:spTree></p:cSld><p:clrMapOvr><a:masterClrMapping/></p:clrMapOvr></p:sld>`;
   };
@@ -111,7 +129,7 @@ function pptxBlob(artifact: StudioArtifact): Blob {
     { path: "ppt/slideMasters/_rels/slideMaster1.xml.rels", content: `<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout" Target="../slideLayouts/slideLayout1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme" Target="../theme/theme1.xml"/></Relationships>` },
     { path: "ppt/slideLayouts/slideLayout1.xml", content: `<?xml version="1.0" encoding="UTF-8"?><p:sldLayout xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" type="blank" preserve="1"><p:cSld name="Blank"><p:spTree><p:nvGrpSpPr><p:cNvPr id="1" name=""/><p:cNvGrpSpPr/><p:nvPr/></p:nvGrpSpPr><p:grpSpPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="0" cy="0"/><a:chOff x="0" y="0"/><a:chExt cx="0" cy="0"/></a:xfrm></p:grpSpPr></p:spTree></p:cSld><p:clrMapOvr><a:masterClrMapping/></p:clrMapOvr></p:sldLayout>` },
     { path: "ppt/slideLayouts/_rels/slideLayout1.xml.rels", content: `<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster" Target="../slideMasters/slideMaster1.xml"/></Relationships>` },
-    { path: "ppt/theme/theme1.xml", content: `<?xml version="1.0" encoding="UTF-8"?><a:theme xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" name="DesignBuddy"><a:themeElements><a:clrScheme name="DesignBuddy"><a:dk1><a:srgbClr val="171923"/></a:dk1><a:lt1><a:srgbClr val="FFFFFF"/></a:lt1><a:dk2><a:srgbClr val="33384A"/></a:dk2><a:lt2><a:srgbClr val="F8F9FC"/></a:lt2><a:accent1><a:srgbClr val="5E6AD2"/></a:accent1><a:accent2><a:srgbClr val="14866D"/></a:accent2><a:accent3><a:srgbClr val="B7791F"/></a:accent3><a:accent4><a:srgbClr val="C23D4B"/></a:accent4><a:accent5><a:srgbClr val="707584"/></a:accent5><a:accent6><a:srgbClr val="E6E8EF"/></a:accent6><a:hlink><a:srgbClr val="0563C1"/></a:hlink><a:folHlink><a:srgbClr val="954F72"/></a:folHlink></a:clrScheme><a:fontScheme name="DesignBuddy"><a:majorFont><a:latin typeface="Arial"/><a:ea typeface="Microsoft YaHei"/></a:majorFont><a:minorFont><a:latin typeface="Arial"/><a:ea typeface="Microsoft YaHei"/></a:minorFont></a:fontScheme><a:fmtScheme name="DesignBuddy"><a:fillStyleLst><a:solidFill><a:schemeClr val="phClr"/></a:solidFill></a:fillStyleLst><a:lnStyleLst><a:ln w="6350"><a:solidFill><a:schemeClr val="phClr"/></a:solidFill></a:ln></a:lnStyleLst><a:effectStyleLst><a:effectStyle><a:effectLst/></a:effectStyle></a:effectStyleLst><a:bgFillStyleLst><a:solidFill><a:schemeClr val="lt1"/></a:solidFill></a:bgFillStyleLst></a:fmtScheme></a:themeElements></a:theme>` },
+    { path: "ppt/theme/theme1.xml", content: buildPptxThemeXml(theme, "DesignBuddy Studio") },
     ...artifact.slides.map((slide, index) => ({ path: `ppt/slides/slide${index + 1}.xml`, content: slideXml(slide, index) })),
     ...artifact.slides.map((_, index) => ({ path: `ppt/slides/_rels/slide${index + 1}.xml.rels`, content: `<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout" Target="../slideLayouts/slideLayout1.xml"/></Relationships>` })),
   ];

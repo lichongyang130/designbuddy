@@ -1,5 +1,5 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { DesignLibrary, ProjectEditorPage, ProjectsPage, ShareProjectPage, StudioPage, WorkspaceHub } from "../../../frontend/workspace";
+import { Suspense, lazy, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { ProjectEditorPage, ProjectsPage, ShareProjectPage, StudioPage, WorkspaceHub } from "../../../frontend/workspace";
 import type { DesignProject } from "../../../frontend/workspace/models/project";
 import { createProject, listProjects, updateProject } from "../../../frontend/workspace/projectStore";
 import { useExpertMatch } from "./components/useExpertMatch";
@@ -7,16 +7,14 @@ import { ExpertMatchPanel } from "./components/ExpertMatchPanel";
 import { PromptInput } from "../../../frontend/workspace";
 import { navigateTo, normalizeAppPath } from "../../../frontend/workspace/workspaceRoutes";
 import { HomeIcon, type HomeIconName } from "./components/HomeIcon";
-import { modeLabels, quickActionCatalog } from "./components/homeScenes";
+import { modeLabels } from "./components/homeScenes";
 import PptPage from "../../../frontend/workspace/pages/PptPage";
 import PptOutlinePicker from "../../../frontend/workspace/pages/PptOutlinePicker";
 import PptSharePage from "../../../frontend/workspace/pages/PptSharePage";
-import { isPptPrompt } from "../../../frontend/workspace/pptStore";
-import { HomeModeIcon } from "./components/HomeModeIcon";
+import { isPptPrompt, listPptProjects } from "../../../frontend/workspace/pptStore";
 import { HomeAttachMenu } from "./components/HomeAttachMenu";
 import { HomeModelMenu, ModelGlyph } from "./components/HomeModelMenu";
 import { WorkBuddySidebar } from "./components/WorkBuddySidebar";
-import PluginsPage from "../../../frontend/workspace/pages/PluginsPage";
 import SchedulesPage from "../../../frontend/workspace/pages/SchedulesPage";
 import ModelsPage from "../../../frontend/workspace/pages/ModelsPage";
 import ProfilePage from "../../../frontend/workspace/pages/ProfilePage";
@@ -28,22 +26,41 @@ import AdminPage from "../../../frontend/workspace/pages/AdminPage";
 import { listAssets, uploadAsset } from "../../../frontend/workspace/api/assets";
 import { fetchAccount } from "../../../frontend/workspace/api/account";
 import InspirationPage from "./inspiration/InspirationPage";
+import { HomeSkillHint } from "./components/HomeSkillHint";
+import { HomeCommandPalette } from "./components/HomeCommandPalette";
+import { HomeWorkspacePicker, type SpaceOption } from "./components/HomeWorkspacePicker";
+// Scene samples are heavy (15 mini apps); only load them when ⌘K asks for one.
+const ScenePreview = lazy(() => import("./components/ScenePreview").then((module) => ({ default: module.ScenePreview })));
+import { selectionGate, useSkillSelection } from "./components/useRuntimeSkill";
 import TaskConversationPage from "../../../frontend/workspace/pages/TaskConversationPage";
 import { saveTaskConversation, pendingTaskKey, type TaskConversation } from "../../../frontend/workspace/taskConversation";
-import { matchBinding, openSettings, setWakeLock, syncPreferencesFromAccount, useModelOptions, usePreferences, useSettingsWindow } from "../../../frontend/workspace/settingsStore";
+import { matchBinding, openSettings, setComposerDefaults, setWakeLock, syncPreferencesFromAccount, useModelOptions, usePreferences, useSettingsWindow } from "../../../frontend/workspace/settingsStore";
 import { useRuntimeActivity, useRuntimeActivityState } from "../../../frontend/workspace/runtimeActivity";
 import { translate } from "../../../frontend/workspace/i18n";
-import { listWorkspaces } from "../../../frontend/workspace/api/workspaces";
+import { listWorkspaces, workspaceRoleLabel, type Workspace } from "../../../frontend/workspace/api/workspaces";
 import "./styles.css";
 import "./home-workspace.css";
 import "./home-reference.css";
 import "./home-layout.css";
-import { HomeDiscovery, HomeShortcuts, type HomeScene } from "./components/HomeDiscovery";
+import "./home-plugins.css";
+import "./home-launcher.css";
+import "./command-palette.css";
+import { HomeRecent, HomeSuggestionBar, type RecentItem } from "./components/HomeSuggestionBar";
+import type { HomeScene } from "./components/homeScenes";
+import { projectTaskPath } from "../../../frontend/workspace/taskConversation";
 import "./components/auth.css";
 import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterPage";
 import type { AccountIdentity } from "../../../frontend/workspace/api/account";
 import { AUTH_GATE_ENABLED } from "../../../frontend/workspace/authGate";
+
+// The plugin directory ships the whole 480-item catalogue plus its filters, so
+// it is loaded on demand: the homepage only renders the small "我的插件" rail.
+const PluginsPage = lazy(() => import("../../../frontend/workspace/pages/PluginsPage"));
+const ThemesPage = lazy(() => import("../../../frontend/workspace/pages/ThemesPage"));
+// The library carries three catalogues (design systems, templates, 480 plugins,
+// skills) worth ~400 KB of JSON; nobody needs them to see the homepage.
+const DesignLibrary = lazy(() => import("../../../frontend/workspace/pages/DesignLibrary"));
 
 
 type WorkMode = "office" | "code" | "design";
@@ -53,11 +70,9 @@ const textAttachmentExtensions = /\.(txt|md|markdown|json|html|htm|css|js|csv|xm
 // Home quick actions come from the catalog, filtered by the user's 6 picks
 // in 个性化 settings (see quickActions inside App). Catalog lives in homeScenes.
 
-const modes: { id: WorkMode; labelKey: string; icon: HomeIconName }[] = [
-  { id: "office", labelKey: "home.mode.office", icon: "coffee" },
-  { id: "design", labelKey: "home.mode.design", icon: "palette" },
-  { id: "code", labelKey: "home.mode.code", icon: "code" },
-];
+// The three working modes still exist — they colour the task prefix and the
+// examples — but the homepage no longer shows a selector for them. The mode is
+// the saved default, changed on purpose from a sample or the 「＋」menu.
 
 
 
@@ -67,23 +82,14 @@ function isWorkspaceHubPath(path: string) {
 
 export default function App() {
   const modelOptions = useModelOptions();
-  const homeSceneIds = usePreferences((state) => state.homeScenes);
   const defaultModel = usePreferences((state) => state.defaultModel);
   const defaultMode = usePreferences((state) => state.defaultMode);
   const defaultWorkspace = usePreferences((state) => state.defaultWorkspace);
   const defaultPermission = usePreferences((state) => state.defaultPermission);
-  const quickActions = useMemo(() => {
-    const picked = homeSceneIds
-      .map((id) => quickActionCatalog.find((item) => item.id === id))
-      .filter((item): item is (typeof quickActionCatalog)[number] => !!item);
-    return picked.length ? picked : quickActionCatalog.slice(0, 6);
-  }, [homeSceneIds]);
   const [currentPath, setCurrentPath] = useState(normalizeAppPath(window.location.pathname));
   console.log("🔍 Current path:", currentPath, "from URL:", window.location.pathname);
   const [prompt, setPrompt] = useState("");
   const [mode, setMode] = useState<WorkMode>(() => usePreferences.getState().defaultMode || "office");
-  const [promptGroups, setPromptGroups] = useState<Record<WorkMode, string>>({ office: "office-documents-1", code: "web-corporate-1", design: "design-posters-1" });
-  const [promptGroupRevision, setPromptGroupRevision] = useState(0);
   const [notice, setNotice] = useState("");
   const [projects, setProjects] = useState<DesignProject[]>(() => listProjects());
   const [identity, setIdentity] = useState<AccountIdentity | null | undefined>(undefined);
@@ -97,19 +103,46 @@ export default function App() {
   const [maxMode, setMaxMode] = useState(false);
   const [thinkingMode, setThinkingMode] = useState<"balanced" | "extreme">("balanced");
   const [workspace, setWorkspace] = useState(() => usePreferences.getState().defaultWorkspace || "默认工作空间");
+  // The team spaces this account really belongs to, so the select is not a
+  // decorative three-item list.
+  const [teamSpaces, setTeamSpaces] = useState<Workspace[]>([]);
   const [permission, setPermission] = useState(() => usePreferences.getState().defaultPermission || "默认权限");
   const [attachments, setAttachments] = useState<TaskAttachment[]>([]);
   const [selectedExpert, setSelectedExpert] = useState("");
   const [selectedSkill, setSelectedSkill] = useState("");
+  const [paletteOpen, setPaletteOpen] = useState(false);
+  // Interactive scene samples used to sit in a 15-card gallery on the launcher.
+  // They now open from ⌘K, so the first screen stays a single input.
+  const [previewScene, setPreviewScene] = useState<HomeScene | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const folderInputRef = useRef<HTMLInputElement>(null);
   const modelMenuRef = useRef<HTMLDivElement>(null);
   const composerRef = useRef<HTMLElement>(null);
   const startProjectRef = useRef<() => void>(() => {});
   const expertMatch = useExpertMatch({ prompt, mode, model, permission, attachments, selectedExpert, enabled: currentPath === "/" });
+  const skillSelection = useSkillSelection(selectedSkill);
 
   useEffect(() => {
     void syncPreferencesFromAccount();
   }, []);
+
+  const recentItems = useMemo<RecentItem[]>(() => {
+    const decks = listPptProjects().map((deck) => ({
+      id: deck.id,
+      title: deck.title,
+      kind: "deck" as const,
+      updatedAt: deck.updatedAt,
+    }));
+    const tasks = projects.map((project) => ({
+      id: project.id,
+      title: project.name,
+      kind: "project" as const,
+      updatedAt: project.updatedAt,
+    }));
+    return [...decks, ...tasks]
+      .sort((a, b) => (b.updatedAt || "").localeCompare(a.updatedAt || ""))
+      .slice(0, 3);
+  }, [projects]);
 
   const theme = usePreferences((state) => state.theme);
   const density = usePreferences((state) => state.density);
@@ -121,7 +154,8 @@ export default function App() {
   const locale = usePreferences((state) => state.locale);
   const t = (key: string, params?: Record<string, string | number>) =>
     translate(locale, key, params);
-  useEffect(() => setMode(defaultMode), [defaultMode]);
+  // An unset preference is not a mode; keep the composer on a real one.
+  useEffect(() => setMode(defaultMode || "office"), [defaultMode]);
   useEffect(() => setModel(defaultModel || "agnes-3.0-flash"), [defaultModel]);
   useEffect(() => setWorkspace(defaultWorkspace || "默认工作空间"), [defaultWorkspace]);
   useEffect(() => setPermission(defaultPermission || "默认权限"), [defaultPermission]);
@@ -263,6 +297,16 @@ export default function App() {
   useEffect(() => {
     const dispatch = (event: KeyboardEvent) => {
       const bindings = usePreferences.getState().keybindings;
+      // ⌘K / Ctrl+K: one search for scenes, plugins, skills and pages. The
+      // palette lives on the homepage only, so the shortcut is scoped to it.
+      if ((event.metaKey || event.ctrlKey) && !event.altKey && !event.shiftKey && event.key.toLowerCase() === "k") {
+        if (currentPath !== "/") return;
+        event.preventDefault();
+        // Opening is idempotent: a second ⌘K while the palette is open should
+        // not silently close it (Escape does that).
+        setPaletteOpen(true);
+        return;
+      }
       if (matchBinding(event, bindings["open-settings"])) {
         event.preventDefault();
         if (!useSettingsWindow.getState().open) openSettings();
@@ -343,8 +387,16 @@ export default function App() {
   useEffect(() => {
     let cancelled = false;
     void listWorkspaces()
-      .then((list) => { if (!cancelled) setWorkspaceCount(list.length); })
-      .catch(() => { if (!cancelled) setWorkspaceCount(0); });
+      .then((list) => {
+        if (cancelled) return;
+        setWorkspaceCount(list.length);
+        setTeamSpaces(list);
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setWorkspaceCount(0);
+        setTeamSpaces([]);
+      });
     return () => { cancelled = true; };
   }, [currentPath]);
 
@@ -449,6 +501,85 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPath]);
 
+  // ── Workspace + task policy ───────────────────────────────────────────────
+  // Both are written onto the task (`workspaceName`, `executionPolicy`) and are
+  // remembered in preferences, so the choice survives a reload instead of being
+  // a decorative label.
+  const PERMISSION_HINTS: Record<string, string> = {
+    默认权限: "按账号设置执行",
+    仅本地: "不发送任何 AI 请求，只存在本机",
+    需要确认后执行: "发送前再问你一次",
+  };
+  const workspaceRoleValue = (name: string) => teamSpaces.find((item) => item.name === name)?.role;
+
+  const workspaceOptions: SpaceOption[] = [
+    { value: "默认工作空间", label: "默认工作空间", meta: "不指定团队" },
+    { value: "个人空间", label: "个人空间", meta: "只有你能看到" },
+    ...teamSpaces.map((item) => ({
+      value: item.name,
+      label: item.name,
+      meta: item.role ? workspaceRoleLabel(item.role) : undefined,
+    })),
+  ];
+  if (!workspaceOptions.some((option) => option.value === workspace)) {
+    workspaceOptions.push({ value: workspace, label: workspace, meta: workspaceRoleValue(workspace) ? workspaceRoleLabel(workspaceRoleValue(workspace)) : undefined });
+  }
+  const workspaceDisplay = workspace === "默认工作空间" ? "选择工作空间" : workspace;
+  const workspaceStorageHint =
+    workspace === "默认工作空间"
+      ? "未指定团队空间：任务保存在本机项目里"
+      : workspace === "个人空间"
+        ? "个人空间：任务保存在本机，不同步给团队"
+        : `团队空间「${workspace}」：任务与项目归入该空间`;
+
+  function pickWorkspace(next: string) {
+    setWorkspace(next);
+    setComposerDefaults({ defaultWorkspace: next === "默认工作空间" ? "" : next });
+    const role = workspaceRoleValue(next);
+    setNotice(
+      next === "默认工作空间"
+        ? "未指定团队空间：任务只保存在你的本机项目里。"
+        : next === "个人空间"
+          ? "已选个人空间：任务只保存在本机，不会同步给团队成员。"
+          : `已选团队空间「${next}」${role ? `（${workspaceRoleLabel(role)}）` : ""}：这条任务与项目会归入该空间。`,
+    );
+  }
+
+  // 「打开本地文件夹」 really reads the folder: up to six text files become
+  // attachments on this task, the same way the ＋ menu adds them.
+  async function openLocalFolder(files: FileList | null) {
+    const list = Array.from(files ?? []);
+    if (!list.length) return;
+    const readable = list
+      .filter((file) => (textAttachmentExtensions.test(file.name) || file.type.startsWith("text/")) && file.size <= 160_000)
+      .slice(0, 6);
+    const parsed: TaskAttachment[] = [];
+    for (const file of readable) {
+      try {
+        parsed.push({ name: file.name, text: (await file.text()).slice(0, 20_000) });
+      } catch { parsed.push({ name: file.name }); }
+    }
+    if (!parsed.length) {
+      setNotice(`文件夹「${list[0].webkitRelativePath?.split("/")[0] ?? "所选文件夹"}」里没有可读取的文本文件（支持 txt / md / csv / json 等，单个 ≤160 KB）。`);
+      return;
+    }
+    setAttachments((current) => [...current, ...parsed].slice(-4));
+    setNotice(`已从本地文件夹读取 ${parsed.length} 个文本文件作为附件；内容只在本机解析，发送时才随任务一起提交。`);
+    requestAnimationFrame(() => composerRef.current?.querySelector<HTMLTextAreaElement>("textarea")?.focus({ preventScroll: true }));
+  }
+
+  function pickPermission(next: string) {
+    setPermission(next);
+    setComposerDefaults({ defaultPermission: next === "默认权限" ? "" : next });
+    setNotice(
+      next === "仅本地"
+        ? "已设为仅本地：这条任务不会发送给任何 AI 服务，只保存问题和你的记录。"
+        : next === "需要确认后执行"
+          ? "已设为需要确认后执行：每次真正发送前都会再问你一次。"
+          : "已恢复默认权限：按账号与服务配置执行。",
+    );
+  }
+
   function selectHomeScene(scene: Pick<HomeScene, "mode" | "prompt">) {
     if (prompt.trim() && prompt !== scene.prompt && !window.confirm("输入框已有内容，是否替换为此场景的任务提示？附件、模型、工作空间和权限将保留。")) return false;
     setMode(scene.mode);
@@ -496,6 +627,13 @@ export default function App() {
     // 首页直出 PPT：只要输入包含 PPT/演示文稿/幻灯片/汇报等关键词，就直接生成可编辑 PPTX
     if (isPptPrompt(initialPrompt)) {
       return startPptProject(initialPrompt);
+    }
+    // A selected skill is a promise about what will run. Refuse to send when the
+    // declaration already says it cannot run, instead of failing inside the task.
+    const gate = selectionGate(skillSelection, attachments.length, { requireFile: workflow !== "skills" });
+    if (gate) {
+      setNotice(`${gate.blocked}${gate.action?.kind === "clear" ? " 清除技能后可退回普通对话。" : ""}`);
+      return;
     }
     try {
       setBusy(true);
@@ -567,7 +705,18 @@ export default function App() {
     if (identity.kind !== "account")
       return <LoginPage next={currentPath + window.location.search} />;
   }
-  if (currentPath === "/plugins") return <PluginsPage />;
+  if (currentPath === "/plugins")
+    return (
+      <Suspense fallback={<div className="auth-loading" role="status" aria-label="正在加载插件页"><span className="auth-loading-spinner" aria-hidden="true" />正在加载插件目录…</div>}>
+        <PluginsPage />
+      </Suspense>
+    );
+  if (currentPath === "/themes")
+    return (
+      <Suspense fallback={<div className="auth-loading" role="status" aria-label="正在加载主题库"><span className="auth-loading-spinner" aria-hidden="true" />正在加载主题库…</div>}>
+        <ThemesPage />
+      </Suspense>
+    );
   if (currentPath === "/schedules") return <SchedulesPage />;
   if (currentPath === "/models") return <ModelsPage />;
   if (currentPath === "/profile") return <ProfilePage />;
@@ -577,7 +726,12 @@ export default function App() {
   if (currentPath === "/workflows") return <WorkflowsPage />;
   if (currentPath === "/admin") return <AdminPage />;
   if (currentPath === "/inspiration" || currentPath.startsWith("/inspiration/")) return <InspirationPage pathname={currentPath} />;
-  if (currentPath.startsWith("/library")) return <DesignLibrary />;
+  if (currentPath.startsWith("/library"))
+    return (
+      <Suspense fallback={<div className="auth-loading" role="status" aria-label="正在加载素材库"><span className="auth-loading-spinner" aria-hidden="true" />正在加载素材库…</div>}>
+        <DesignLibrary />
+      </Suspense>
+    );
   if (currentPath === "/studio" || currentPath.startsWith("/studio/")) return <StudioPage />;
   if (currentPath === "/share") return <ShareProjectPage />;
   const shareMatch = currentPath.match(/^\/share\/([^/]+)$/);
@@ -615,42 +769,13 @@ export default function App() {
     <div className="workbuddy-app">
       <WorkBuddySidebar active="home" projectCount={projects.length} workspaceCount={workspaceCount} assetCount={assetCount} go={go} setNotice={setNotice} />
 
-      <main className="main-workspace home-workspace-v2 home27">
+      <main className="main-workspace home-workspace-v2 home27 home-launcher">
         <div className="home-content home-content-v2 home27-content">
           <header className="welcome-header home27-hero">
             <div className="home27-hero-copy">
               <h1>{t("home.title")}</h1>
             </div>
           </header>
-          <div className="home27-mode-row">
-            <div className="mode-switch" role="tablist" aria-label={t("home.modeAria")}>
-              {modes.map((item) => (
-                <button
-                  key={item.id}
-                  role="tab"
-                  aria-selected={mode === item.id}
-                  tabIndex={mode === item.id ? 0 : -1}
-                  onKeyDown={(event) => {
-                    const index = modes.findIndex((entry) => entry.id === item.id);
-                    const next = event.key === "ArrowRight" ? (index + 1) % modes.length
-                      : event.key === "ArrowLeft" ? (index + modes.length - 1) % modes.length
-                      : event.key === "Home" ? 0 : event.key === "End" ? modes.length - 1 : -1;
-                    if (next < 0) return;
-                    event.preventDefault();
-                    setMode(modes[next].id);
-                    event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>("button")[next]?.focus();
-                  }}
-                  className={`mode-tab ${mode === item.id ? "is-selected" : ""}`}
-                  onClick={() => setMode(item.id)}
-                >
-                  <HomeModeIcon mode={item.id} />{t(item.labelKey)}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <HomeShortcuts mode={mode} activeGroupId={promptGroups[mode]} onGroupSelect={id => { setPromptGroups(current => ({ ...current, [mode]: id })); setPromptGroupRevision(n => n + 1); }} />
-
           <section ref={composerRef} className="composer-shell" aria-label={t("home.composer.shell")}>
             <div className="composer-main">
               {attachments.length > 0 && (
@@ -668,11 +793,16 @@ export default function App() {
                 onChange={(value) => { setPrompt(value); setNotice(""); }}
                 onSubmit={startProject}
                 placeholder={t("home.composer.ph")}
-                rows={3}
+                rows={1}
                 ariaLabel={t("home.composer.aria")}
                 autoResize
               />
-              {selectedSkill && <div className="home-selected-capabilities"><span>{t("home.composer.preset")}{selectedSkill}</span><button type="button" onClick={() => setSelectedSkill("")}>{t("home.composer.preset.clear")}</button></div>}
+              <HomeSkillHint
+                selected={selectedSkill}
+                attachmentCount={attachments.length}
+                onUpload={() => fileInputRef.current?.click()}
+                onClear={() => setSelectedSkill("")}
+              />
               <div className="composer-controls">
                 <HomeAttachMenu
                   mode={mode}
@@ -702,8 +832,20 @@ export default function App() {
                   onNavigate={go}
                 />
                 <input
+                  ref={folderInputRef}
+                  className="visually-hidden-input-folder"
+                  type="file"
+                  multiple
+                  onChange={(event) => {
+                    const files = event.currentTarget.files;
+                    event.currentTarget.value = "";
+                    void openLocalFolder(files);
+                  }}
+                  {...{ webkitdirectory: "", directory: "" }}
+                />
+                <input
                   ref={fileInputRef}
-                  className="visually-hidden-input"
+                  className="visually-hidden-input attachment-input"
                   type="file"
                   multiple
                   onChange={(event) => {
@@ -758,45 +900,45 @@ export default function App() {
                     />}
                   </div>
                   <button className="microphone-button" title="语音输入" aria-label="语音输入" onClick={() => setNotice("语音输入暂未接入，请直接在输入框中描述任务。")}><HomeIcon name="microphone" size={15} /></button>
-                  {isPptPrompt(prompt) && (
-                    <span className="ppt-intent-badge" title="检测到演示文稿需求，将直接生成可编辑 PPTX">
-                      <HomeIcon name="slides" size={12} /> 将生成 PPT
-                    </span>
-                  )}
                   <button className={isPptPrompt(prompt) ? "send-button is-ppt" : "send-button"} disabled={busy || !prompt.trim()} title={isPptPrompt(prompt) ? "一键生成 PPTX" : t("home.send")} aria-label={isPptPrompt(prompt) ? "生成演示文稿" : t("home.send")} onClick={() => startProject()}>
                     {busy ? "…" : isPptPrompt(prompt) ? <>生成 PPT</> : <HomeIcon name="send" size={19} />}
                   </button>
                 </div>
               </div>
             </div>
-            <div className="composer-footer">
-              <label className="footer-select">
-                <HomeIcon name="folder" />
-                <select value={workspace} onChange={(event) => setWorkspace(event.target.value)} aria-label={t("home.workspace.aria")}>
-                  <option value="默认工作空间">{t("home.workspace.default")}</option>
-                  <option value="个人空间">{t("home.workspace.personal")}</option>
-                  <option value="产品设计空间">{t("home.workspace.design")}</option>
-                  {!["默认工作空间", "个人空间", "产品设计空间"].includes(workspace) && (
-                    <option value={workspace}>{workspace}</option>
-                  )}
-                </select>
-                <HomeIcon name="chevron" size={10} />
-              </label>
-              <label className="footer-select">
-                <HomeIcon name="shield" />
-                <select style={{ width: `calc(${Math.max(t("home.permission.default").length, t("home.permission.local").length, t("home.permission.confirm").length, permission.length)}em + 4px)` }} value={permission} onChange={(event) => setPermission(event.target.value)} aria-label={t("home.permission.aria")}>
-                  <option value="默认权限">{t("home.permission.default")}</option>
-                  <option value="仅本地">{t("home.permission.local")}</option>
-                  <option value="需要确认后执行">{t("home.permission.confirm")}</option>
-                  {!["默认权限", "仅本地", "需要确认后执行"].includes(permission) && (
-                    <option value={permission}>{permission}</option>
-                  )}
-                </select>
-                <HomeIcon name="chevron" size={10} />
-              </label>
-            </div>
           </section>
-
+          <div className="composer-footer">
+            <HomeWorkspacePicker
+              value={workspace}
+              display={workspaceDisplay}
+              storageHint={workspaceStorageHint}
+              spaces={workspaceOptions}
+              onSelect={pickWorkspace}
+              onNewSpace={() => go("/workspaces")}
+              onOpenFolder={() => folderInputRef.current?.click()}
+            />
+            <label className="footer-select" title="执行前是否联网、是否需要再次确认">
+              <HomeIcon name="shield" />
+              <select
+                style={{ width: `calc(${Math.max(t("home.permission.default").length, t("home.permission.local").length, t("home.permission.confirm").length, permission.length)}em + 4px)` }}
+                value={permission}
+                onChange={(event) => pickPermission(event.target.value)}
+                aria-label={t("home.permission.aria")}
+              >
+                <option value="默认权限">{t("home.permission.default")}</option>
+                <option value="仅本地">仅本地 · 不联网</option>
+                <option value="需要确认后执行">需要确认后执行 · 发送前问一次</option>
+                {!["默认权限", "仅本地", "需要确认后执行"].includes(permission) && (
+                  <option value={permission}>{permission}</option>
+                )}
+              </select>
+              <HomeIcon name="chevron" size={10} />
+            </label>
+            <span className="composer-policy">{PERMISSION_HINTS[permission] ?? permission}</span>
+            <span className="composer-hint">
+              <kbd>⌘K</kbd> 找场景、技能与插件
+            </span>
+          </div>
 
           {notice && (
             <div className="home-notice" role="status">
@@ -805,15 +947,45 @@ export default function App() {
               <button aria-label={t("home.notice.close")} onClick={() => setNotice("")}>×</button>
             </div>
           )}
-          <HomeDiscovery mode={mode} groupId={promptGroups[mode]} selectionVersion={promptGroupRevision} prompt={prompt} onSelect={selectHomeScene} />
-          <details className="home27-more-scenes">
-            <summary>{t("home.moreScenes")} <span aria-hidden="true">＋</span></summary>
-            <div>{quickActions.filter(action => action.mode === mode).map(action => <button key={action.title} onClick={() => selectHomeScene(action)}><HomeIcon name={action.icon} />{action.title}</button>)}</div>
-          </details>
-          <button className="home27-explore" onClick={() => go("/plugins")}><span aria-hidden="true">—</span> {t("home.explore.plugins")} <span aria-hidden="true">→</span></button>
-          <button className="home27-explore" onClick={() => go("/workflows")}><span aria-hidden="true">—</span> {t("home.explore.workflows")} <span aria-hidden="true">→</span></button>
+
+          <HomeSuggestionBar mode={mode} prompt={prompt} onSelect={selectHomeScene} />
+
+          <HomeRecent
+            items={recentItems}
+            onOpen={(item) => go(item.kind === "deck" ? `/ppt/${encodeURIComponent(item.id)}` : projectTaskPath(item.id))}
+            onAll={() => go("/projects")}
+          />
         </div>
       </main>
+      <HomeCommandPalette
+        open={paletteOpen}
+        mode={mode}
+        onClose={() => setPaletteOpen(false)}
+        onSelectScene={(scene) => { setPaletteOpen(false); selectHomeScene(scene); }}
+        // The palette stays mounted under the modal so Escape can return focus
+        // to the 「预览」 action that opened it.
+        onPreviewScene={(scene) => setPreviewScene(scene)}
+        onSelectSkill={(name) => {
+          setPaletteOpen(false);
+          setSelectedSkill(name);
+          setNotice(`已选择技能「${name}」，补充需求后发送；执行前的权限会再次确认。`);
+          requestAnimationFrame(() => composerRef.current?.querySelector("textarea")?.focus({ preventScroll: true }));
+        }}
+        onNavigate={go}
+      />
+      {previewScene && (
+        <Suspense fallback={null}>
+          <ScenePreview
+            scene={previewScene}
+            onClose={() => setPreviewScene(null)}
+            onUse={() => {
+              const used = selectHomeScene(previewScene);
+              if (used) setPaletteOpen(false);
+              return used;
+            }}
+          />
+        </Suspense>
+      )}
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
+import { expectWorkspace } from "./helpers/home";
 
 const settings = (page: Page) =>
   page.getByRole("dialog", { name: "设置", exact: true });
@@ -66,18 +67,20 @@ test("personalization scenes and composer defaults take effect", async ({
   await settings(page).getByLabel("默认工作空间").fill("研发 团队");
   await settings(page).getByLabel("默认执行策略").fill("测试 策略");
   await page.keyboard.press("Escape");
-  await page.getByRole("tab", { name: "办公提效" }).click();
-  await expect(page.getByRole("button", { name: "会议纪要" })).toBeVisible();
-  await page.getByRole("tab", { name: "网页应用" }).click();
-  await expect(page.getByRole("tab", { name: "网页应用" })).toHaveAttribute("aria-selected", "true");
-  await expect(page.getByLabel("工作空间")).toHaveValue("研发 团队");
+  // The defaults land in the launcher's composer: the workspace is the menu
+  // under the input (its trigger reads the saved name), the permission is the
+  // select next to it, and the default mode shows up as the prefix the next
+  // task is created with.
+  await expectWorkspace(page, "研发 团队");
   await expect(page.getByLabel("任务权限")).toHaveValue("测试 策略");
+  await page.getByRole("textbox", { name: "任务描述", exact: true }).fill("默认模式检查");
+  await page.getByRole("button", { name: "开始任务", exact: true }).click();
+  await expect(page).toHaveURL(/\/tasks\//);
+  const task = await page.evaluate(() => Object.values(localStorage).join("\n"));
+  expect(task).toContain("网页应用需求：默认模式检查");
+  await page.goto("/");
   await page.reload();
-  await page.getByRole("tab", { name: "办公提效" }).click();
-  await expect(page.getByRole("button", { name: "会议纪要" })).toBeVisible();
-  await page.getByRole("tab", { name: "网页应用" }).click();
-  await expect(page.getByRole("tab", { name: "网页应用" })).toHaveAttribute("aria-selected", "true");
-  await expect(page.getByLabel("工作空间")).toHaveValue("研发 团队");
+  await expectWorkspace(page, "研发 团队");
   await expect(page.getByLabel("任务权限")).toHaveValue("测试 策略");
   // Restore the defaults so this test does not leak account preferences into later cases.
   await open(page, "个性化");

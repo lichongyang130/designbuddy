@@ -7,3 +7,9 @@ build/
 *.sqlite-shm
 *.sqlite-wal
 test.pdf
+
+# 本地运行产物（截图、Playwright 报告与登录态、上传素材）
+.cache/
+test-results/
+apps/web/playwright/
+data/assets/

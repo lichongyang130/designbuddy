@@ -1,4 +1,5 @@
 import type { Slide } from "../../apps/web/src/components/scene-demos/Slides";
+import { PRESET_THEMES, useThemeStore } from "./themeStore";
 
 export type PptSlideSource = { label: string; url: string };
 export type PptSlide = Slide & {
@@ -15,6 +16,9 @@ export interface PptProject {
   slides: PptSlide[];
   frameworkId?: string;
   frameworkName?: string;
+  /** The deck's visual theme (see shared/deckTheme.ts). Absent on decks created before themes existed. */
+  themeId?: string;
+  themeName?: string;
   workspaceId?: string;
   workspaceName?: string;
   createdAt: string;
@@ -78,14 +82,23 @@ export function savePptProject(project: PptProject) {
   } catch { /* ignore */ }
   return next;
 }
+/** The theme a brand-new deck starts with: the user's default, else the first preset. */
+function defaultDeckTheme(): { id: string; name: string } | undefined {
+  const preferred = useThemeStore.getState().defaultThemeId;
+  const theme = PRESET_THEMES.find((item) => item.id === preferred) ?? PRESET_THEMES[0];
+  return theme ? { id: theme.id, name: theme.name } : undefined;
+}
+
 export function createPptProject(
   prompt: string,
   title?: string,
   slides?: PptSlide[],
   workspace?: { id: string; name: string },
   framework?: { id: string; name: string },
+  theme?: { id: string; name: string },
 ): PptProject {
   const now = new Date().toISOString();
+  const deckTheme = theme ?? defaultDeckTheme();
   const cleanPrompt = prompt.trim();
   const derivedTitle = (title || cleanPrompt.slice(0, 36) || "未命名演示文稿").replace(/[\r\n\t]+/g, " ");
   const project: PptProject = {
@@ -95,6 +108,8 @@ export function createPptProject(
     slides: (slides || []) as PptSlide[],
     frameworkId: framework?.id,
     frameworkName: framework?.name,
+    themeId: deckTheme?.id,
+    themeName: deckTheme?.name,
     workspaceId: workspace?.id,
     workspaceName: workspace?.name,
     createdAt: now,

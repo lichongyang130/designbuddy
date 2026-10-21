@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { setPermission } from "./helpers/home";
 
 test.beforeEach(async ({ page }) => {
   await page.goto("/");
@@ -60,19 +61,22 @@ test("file menu opens the native chooser and preserves readable attachment handl
   await expect(page.locator(".attachment-chip")).toHaveCount(0);
 });
 
-test("mode submenu synchronizes the large homepage tabs", async ({ page }) => {
+test("mode submenu is the one place the mode is chosen, and the task inherits it", async ({ page }) => {
   await page.getByRole("menuitem", { name: "模式", exact: true }).click();
   await expect(
     page.getByRole("menuitemradio", { name: "办公提效" }),
   ).toHaveAttribute("aria-checked", "true");
   await page.getByRole("menuitemradio", { name: "设计制作" }).click();
-  await expect(page.getByRole("tab", { name: "设计制作" })).toHaveAttribute(
-    "aria-selected",
-    "true",
-  );
   await expect(
     page.getByRole("button", { name: "添加附件", exact: true }),
   ).toBeFocused();
+
+  // The launcher has no mode control of its own; the choice surfaces in the task.
+  await page.getByRole("textbox", { name: "任务描述", exact: true }).fill("按设计模式跑一次");
+  await page.getByRole("button", { name: "开始任务", exact: true }).click();
+  await expect(page).toHaveURL(/\/tasks\//);
+  const task = await page.evaluate(() => Object.values(localStorage).join("\n"));
+  expect(task).toContain("设计制作需求：按设计模式跑一次");
 });
 
 test("search, no-results state and expert/skill selection feed the real task", async ({
@@ -92,13 +96,25 @@ test("search, no-results state and expert/skill selection feed the real task", a
   await page.getByRole("menuitem", { name: "技能", exact: true }).click();
   await page.getByRole("textbox", { name: "搜索技能" }).fill(" ppt ");
   await page.getByRole("button", { name: "材料转可编辑 PPTX", exact: true }).click();
-  await expect(page.locator(".home-selected-capabilities")).toContainText(
+  await expect(page.locator(".home-skill-hint")).toContainText(
     "材料转可编辑 PPTX",
   );
-  await page.getByLabel("任务权限").selectOption("仅本地");
+  // The skill accepts files, so the send gate asks for one before it runs.
+  await expect(page.locator(".home-skill-hint")).toContainText("需要先上传");
+  await page.getByRole("button", { name: "添加附件", exact: true }).click();
+  await page.getByRole("menuitem", { name: "添加文件", exact: true }).click();
+  await page.locator(".attachment-input").setInputFiles({
+    name: "brief.txt",
+    mimeType: "text/plain",
+    buffer: Buffer.from("附件内容"),
+  });
+  await expect(page.locator(".attachment-chip")).toContainText("brief.txt");
+  await setPermission(page, "仅本地");
   await page
     .getByRole("textbox", { name: "任务描述" })
-    .fill("根据附件编写产品提案");
+    // No 「提案」/「汇报」 here: that word routes straight into the PPT flow, and
+    // the send button would legitimately become 「生成演示文稿」.
+    .fill("根据附件编写产品说明");
   await page.getByRole("button", { name: "开始任务", exact: true }).click();
   await expect(page).toHaveURL(/\/tasks\//);
   const state = await page.evaluate(() =>

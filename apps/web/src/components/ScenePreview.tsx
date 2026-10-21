@@ -6,6 +6,12 @@ import {
   useSyncExternalStore,
   type ReactNode,
 } from "react";
+// The interactive samples own their styles; the launcher no longer imports them,
+// so the modal (loaded lazily from ⌘K) brings them with it.
+import "./home-scenes.css";
+import "./scene-demos/pro-scenes.css";
+import "../assets/fonts/scene-fonts.css";
+import "./scene-demos/workspace.css";
 import { SceneDemo } from "./SceneDemo";
 import { modeLabels, type HomeScene } from "./homeScenes";
 import { SceneSession, SceneSessionContext } from "./scene-demos/workspace";

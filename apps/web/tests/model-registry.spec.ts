@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { modelOptions } from "../../../frontend/workspace/taskModels";
 
 /**
  * The model registry page must only report what the server knows.
@@ -63,7 +64,13 @@ test("the product model list is labelled as an unverified product claim", async 
   const product = page.getByRole("region", { name: "产品可选模型" });
   await expect(product).toBeVisible();
   await expect(product).toContainText("未经服务商核验");
-  await expect(product.locator("tbody tr")).toHaveCount(7);
+  // One row per model the product really ships — the table must not advertise
+  // models the menu cannot offer.
+  await expect(product.locator("tbody tr")).toHaveCount(modelOptions.length);
+  for (const model of modelOptions) {
+    await expect(product).toContainText(model.name);
+    await expect(product).toContainText(model.id);
+  }
 });
 
 test("the models page opens directly", async ({ page }) => {

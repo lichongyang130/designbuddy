@@ -505,7 +505,7 @@ function ModelsSettings() {
         <div className="settings-model-dialog__shell">
           <header className="settings-model-dialog__header">
             <h2 id="settings-model-dialog-title">{title}</h2>
-            <button type="button" className="settings-model-dialog__close" aria-label={t("settings.close")} onClick={closeEditor}>×</button>
+            <button type="button" className="settings-model-dialog__close" aria-label={t("settings.models.close")} onClick={closeEditor}>×</button>
           </header>
           <form
             className="settings-model-dialog__form"

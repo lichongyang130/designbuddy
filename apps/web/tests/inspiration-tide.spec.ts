@@ -1,6 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
 import { GUEST_STORAGE, freshAccountPage, loginViaAPI } from "./auth-helpers";
 import { readFile } from "node:fs/promises";
+import { baseURL } from "./helpers/baseUrl";
 const configs = [
   {
     id: "tide",
@@ -265,7 +266,7 @@ for (const c of configs) {
       const second = await browser.newContext({ storageState: GUEST_STORAGE });
       try {
         const p = await second.newPage();
-        await p.goto("http://127.0.0.1:5173/inspiration");
+        await p.goto(`${baseURL}/inspiration`);
         await loginViaAPI(p, username, password);
         await p.getByRole("button", { name: "服务器作品", exact: true }).click();
         const d = p.getByRole("dialog", { name: "服务器作品" });

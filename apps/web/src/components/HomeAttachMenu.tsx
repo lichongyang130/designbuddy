@@ -209,6 +209,11 @@ export function HomeAttachMenu(props: Props) {
     const place = () => {
       if (!trigger.current || !primary.current) return;
       const anchor = (directExpert ? expertTrigger.current : trigger.current)!.getBoundingClientRect();
+      // Menus open above the trigger, which sits inside the card. Anchor them to
+      // the card's top edge so the popup never covers the draft the user is
+      // still typing (and so clicking back into the textarea is not blocked).
+      const surface = trigger.current.closest(".composer-shell")?.getBoundingClientRect();
+      const surfaceTop = surface ? surface.top : anchor.top;
       const viewportWidth = window.innerWidth;
       const viewportHeight = window.innerHeight;
       const clampY = (top: number, height: number) =>
@@ -221,7 +226,7 @@ export function HomeAttachMenu(props: Props) {
       );
       const popup = secondary.current;
       if ((directExpert || compact) && active && popup) {
-        const above = Math.max(0, anchor.top - 22);
+        const above = Math.max(0, surfaceTop - 22);
         const below = Math.max(0, viewportHeight - anchor.bottom - 22);
         const assistant = directExpert && props.expertPanel && !manualExperts;
         const placeBelow = assistant && above < 200 && below > above;
@@ -229,10 +234,10 @@ export function HomeAttachMenu(props: Props) {
         popup.style.maxHeight = assistant ? `${Math.min(460, Math.max(120, placeBelow ? below : above), viewportHeight - 24)}px` : "";
         const box = popup.getBoundingClientRect();
         popup.style.left = `${Math.max(12, Math.min(anchor.left, viewportWidth - box.width - 12))}px`;
-        popup.style.top = `${clampY(placeBelow ? anchor.bottom + 10 : anchor.top - box.height - 10, box.height)}px`;
+        popup.style.top = `${clampY(placeBelow ? anchor.bottom + 10 : surfaceTop - box.height - 10, box.height)}px`;
         return;
       }
-      const top = clampY(anchor.top - rootBox.height - 10, rootBox.height);
+      const top = clampY(surfaceTop - rootBox.height - 10, rootBox.height);
       root.style.left = `${left}px`;
       root.style.top = `${top}px`;
       if (popup && active) {
