@@ -221,7 +221,7 @@ function PluginDetails({
      */
     const focusable = () =>
       [
-        ...dialog.querySelectorAll<HTMLElement>(
+        ...dialog.querySelectorAll<HTMLElement & { disabled?: boolean }>(
           "button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])",
         ),
       ].filter((el) => !el.disabled && el.getClientRects().length > 0);
