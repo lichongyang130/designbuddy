@@ -253,9 +253,16 @@ test("real HTTP: sessions, durable accounts/projects/templates, isolation, CAS, 
       ).status,
       403,
     );
-    assert.equal(
-      (await call(server, "/api/connectors", { cookie })).status,
-      503,
+    // Connectors are a real, session scoped API now: the list is served from
+    // SQLite and never exposes a credential.
+    const connectors = await call(server, "/api/connectors", { cookie });
+    assert.equal(connectors.status, 200);
+    assert.ok(Array.isArray(connectors.data), "the connector list is an array");
+    assert.ok(connectors.data.length >= 22, "every built-in connector is listed");
+    assert.equal(connectors.data.some((item) => item.status === "connected"), false);
+    assert.ok(
+      !JSON.stringify(connectors.data).includes("secret"),
+      "the list must never carry credential material",
     );
     assert.equal(
       (

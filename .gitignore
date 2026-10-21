@@ -13,3 +13,5 @@ test.pdf
 test-results/
 apps/web/playwright/
 data/assets/
+# 连接器凭据加密密钥（服务端生成，0600，绝不入库）
+data/connectors/

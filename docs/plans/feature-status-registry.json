@@ -158,20 +158,27 @@
     },
     {
       "id": "F07-CONNECTORS-ADMIN-PLUGINS",
-      "module": "连接器授权边界、插件生命周期与管理员控制台",
-      "status": "partial_subset",
+      "module": "连接器平台（22 个内置连接器 + 自定义 MCP：SQLite 加密持久化、OAuth 授权回调、API Key / Webhook / MCP 真实连通性校验）与插件生命周期、管理员控制台",
+      "status": "verified_local",
       "codeEntries": [
+        "shared/connector-catalog.ts",
+        "server/api/connectors.ts",
+        "server/local-daemon.ts",
+        "frontend/workspace/api/connectors.ts",
+        "frontend/workspace/connectorCatalog.ts",
+        "frontend/workspace/pages/ConnectorsPage.tsx",
         "server/api/workspace-backend.ts",
         "server/api/plugin-registry.ts",
         "server/api/plugins.ts",
         "server/api/admin.ts"
       ],
       "testEvidence": [
+        "server/api/connectors.test.cjs",
         "apps/web/tests/connectors.spec.ts",
         "apps/web/tests/plugin-lifecycle.spec.ts",
         "apps/web/tests/admin-console.spec.ts"
       ],
-      "externalDependency": "credentials:OAUTH_CLIENT_SECRETS,DESIGNBUDDY_ADMIN_ACCOUNTS",
+      "externalDependency": "optional_credentials:OAUTH_CLIENT_SECRETS,DESIGNBUDDY_ADMIN_ACCOUNTS（未配置 OAuth 应用时 oauth/start 返回 503 并明示缺失的环境变量；API Key / Webhook / MCP 三种连接方式不依赖服务端凭据即可完成真实连通性校验）",
       "verifiedDate": "2026-10-21",
       "nextStep": "在预发域名接入真实第三方 OAuth 回调与凭据加密轮换，并补齐管理员只读角色与配额限流。"
     },

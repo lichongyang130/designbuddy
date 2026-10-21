@@ -32,6 +32,26 @@
 .connectors-workspace .connector-configure-button:hover { background:#e7e7e7; }
 .connectors-workspace .connector-status-dot { position:absolute; top:28px; right:52px; width:8px; height:8px; border-radius:50%; background:#ff8b13; }
 .connectors-workspace .connector-status-dot.is-connected { background:#0cba91; }
+.connectors-workspace .connector-status-dot.is-error { background:#d9503f; }
+.connectors-workspace .connector-verified-status { margin:16px 0 0; color:#333; font-size:14px; }
+.connectors-workspace .connector-last-error { margin:8px 0 0; color:#a04436; font-size:13px; line-height:1.7; overflow-wrap:anywhere; }
+.connectors-workspace .connector-auth-tabs { display:flex; flex-wrap:wrap; gap:8px; margin:20px 0 4px; }
+.connectors-workspace .connector-auth-tabs button { padding:7px 14px; border:1px solid #e2e2e2; border-radius:999px; background:#fff; color:#666; font-size:13px; }
+.connectors-workspace .connector-auth-tabs button.is-active { border-color:#202020; background:#202020; color:#fff; }
+.connectors-workspace .connector-form { display:flex; flex-direction:column; }
+.connectors-workspace .connector-form label { gap:6px; }
+.connectors-workspace .connector-form small { margin-top:-2px; }
+.connectors-workspace .connector-form-empty { color:#888; font-size:13px; }
+.connectors-workspace .connector-test-result { display:flex; flex-direction:column; gap:4px; padding:14px 16px; margin:16px 0 0; border:1px solid #d9ece6; border-radius:10px; background:#f4faf8; color:#2c6a5a; font-size:13px; line-height:1.7; overflow-wrap:anywhere; }
+.connectors-workspace .connector-test-result.is-failed { border-color:#f0d9d4; background:#fff6f4; color:#a04436; }
+.connectors-workspace .connector-events { margin-top:28px; border-top:1px solid #eee; padding-top:16px; }
+.connectors-workspace .connector-events h2 { margin:0 0 10px; color:#333; font-size:15px; }
+.connectors-workspace .connector-events ul { display:flex; flex-direction:column; gap:8px; margin:0; padding:0; list-style:none; }
+.connectors-workspace .connector-events li { display:flex; flex-wrap:wrap; gap:8px; align-items:baseline; color:#888; font-size:12px; line-height:1.7; }
+.connectors-workspace .connector-events time { margin-left:auto; color:#bbb; }
+.connectors-workspace .connector-events .is-ok { color:#2c6a5a; font-weight:600; }
+.connectors-workspace .connector-events .is-failed { color:#a04436; font-weight:600; }
+.connectors-workspace .connector-service-note a { color:#2c6a5a; }
 .connectors-workspace .connector-tile:has(.connector-status-dot) .connector-tile-title { padding-right:48px; }
 .connectors-workspace .connectors-empty { display:flex; flex-direction:column; align-items:center; gap:12px; padding:70px 16px; text-align:center; color:#999; }
 .connectors-workspace .connectors-empty h1 { margin:0; color:#333; font-size:18px; }

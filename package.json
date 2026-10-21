@@ -13,6 +13,7 @@
     "test": "pnpm test:unit && pnpm test:api && pnpm test:agent && pnpm test:registry",
     "test:unit": "node --experimental-strip-types --test apps/web/tests/*.test.mjs scripts/*.test.mjs",
     "test:api": "pnpm exec tsc -p server/tsconfig.local.json && node --test server/api/*.test.cjs",
+    "test:connectors": "pnpm exec tsc -p server/tsconfig.local.json && node --test server/api/connectors.test.cjs",
     "test:agent": "pnpm exec tsc -p server/tsconfig.local.json && node --test server/agent/agent-core.test.cjs",
     "test:registry": "node scripts/verify-status-registry.mjs",
     "test:e2e:core": "pnpm --filter designbuddy-web test:e2e:core",
