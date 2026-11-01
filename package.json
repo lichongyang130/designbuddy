@@ -1,0 +1,22 @@
+{
+  "name": "designbuddy-kernel",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A source-level borrowable kernel for DesignBuddy: Cordis-style plugin runtime + Agent loop + Host/Client split, modelled on DeepSeek Harness.",
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "scripts": {
+    "demo": "node demo/run.ts",
+    "demo:host": "node apps/host/main.ts",
+    "web": "node apps/web/server.ts",
+    "test": "node --test \"test/*.test.ts\"",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "typescript": "^7.0.2"
+  }
+}

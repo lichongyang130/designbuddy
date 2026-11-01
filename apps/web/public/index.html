@@ -1,0 +1,3501 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DesignBuddy · 工作台</title>
+<style>
+  :root{
+    --ink:#1b1b1f; --sub:#6a6a72; --faint:#93939b;
+    --line:#e8e8ec; --line-strong:#dcdce2;
+    --side:#f7f7f8; --accent:#2f6fed; --accent-soft:#eaf1fb;
+    --ok:#1f9254; --err:#c0392b;
+  }
+  *{box-sizing:border-box}
+  [hidden]{display:none !important}
+  html,body{height:100%}
+  body{
+    margin:0;background:#fff;color:var(--ink);
+    font:14px/1.5 ui-sans-serif,system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+  svg{display:block}
+  input,textarea{font:inherit;color:inherit}
+
+  .app{height:100%;display:grid;grid-template-columns:52px 236px minmax(0,1fr)}
+
+  /* ── 左侧图标栏 ───────────────────────────── */
+  .rail{
+    border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:center;
+    padding:10px 0 8px;gap:2px;background:#fff;
+  }
+  .rail .logo{
+    width:34px;height:34px;border-radius:10px;display:grid;place-items:center;margin-bottom:10px;
+    color:#fff;font-weight:800;font-size:17px;letter-spacing:-.5px;
+    background:linear-gradient(135deg,#4c8bf5,#845ef7);
+  }
+  .rail .rbtn{width:36px;height:36px;border-radius:9px;display:grid;place-items:center;color:#57575f}
+  .rail .rbtn:hover{background:#f0f0f3;color:#1b1b1f}
+  .rail .rbtn.on{background:#eceef3;color:#1b1b1f}
+  .rail .rlabel{font-size:10px;color:var(--faint);margin-top:2px;letter-spacing:.02em}
+  .rail .grow{flex:1}
+  .rail .me{
+    position:relative;width:30px;height:30px;border-radius:50%;color:#fff;font-size:11px;font-weight:700;
+    display:grid;place-items:center;background:linear-gradient(135deg,#2f6fed,#8b5cf6);
+  }
+  .rail .me i{
+    position:absolute;left:-3px;bottom:-3px;width:15px;height:15px;border-radius:50%;
+    background:#fff;border:1px solid var(--line);display:grid;place-items:center;font-style:normal;color:#57575f;
+  }
+
+  /* ── 工作区侧栏 ───────────────────────────── */
+  .side{
+    background:var(--side);border-right:1px solid var(--line);
+    display:flex;flex-direction:column;min-height:0;padding:14px 12px 12px;
+  }
+  .ws{display:flex;align-items:center;gap:9px;padding:2px 4px 12px}
+  .ws .ava{
+    width:30px;height:30px;border-radius:50%;display:grid;place-items:center;color:#fff;
+    font-size:10px;font-weight:700;background:linear-gradient(135deg,#1f2937,#4b5563);
+  }
+  .ws .meta{flex:1;min-width:0}
+  .ws .name{font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ws .plan{font-size:11.5px;color:var(--faint);margin-top:-1px}
+  .ws .chev{color:var(--faint)}
+
+  .create{
+    display:flex;align-items:center;gap:8px;height:36px;padding:0 12px;border-radius:9px;
+    background:#e7eefb;color:#1f2a44;font-size:13.5px;font-weight:560;width:100%;
+  }
+  .create:hover{background:#dde8fa}
+
+  .nav{margin-top:10px;display:flex;flex-direction:column;gap:1px}
+  .row{
+    display:flex;align-items:center;gap:10px;height:34px;padding:0 10px;border-radius:8px;
+    font-size:13.5px;color:#33333a;width:100%;text-align:left;
+  }
+  .row:hover{background:#eceef1}
+  .row svg{color:#57575f;flex:none}
+  .row .kbd{margin-left:auto;font-size:11px;color:var(--faint);letter-spacing:.02em}
+  .row .count{margin-left:auto;font-size:11.5px;color:var(--faint)}
+  .sep{height:1px;background:var(--line-strong);margin:10px 2px}
+
+  .side-scroll{overflow:auto;min-height:0}
+  .label{font-size:11.5px;color:var(--faint);padding:12px 10px 6px}
+
+  .sesslist{display:flex;flex-direction:column;gap:1px;margin-bottom:2px}
+  .sess{
+    display:block;width:100%;text-align:left;padding:6px 10px;border-radius:8px;
+    font-size:13px;color:#3d3d45;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  .sess:hover{background:#eceef1}
+  .sess.on{background:#e7ebf2;font-weight:560}
+  .empty-hint{font-size:12px;color:var(--faint);padding:4px 10px 2px}
+
+  .folders{
+    border:1px dashed #d7d9df;border-radius:11px;padding:12px;margin:2px 2px 0;background:#fbfbfc;
+  }
+  .skeleton{height:9px;border-radius:5px;background:#e6e7eb;margin-bottom:8px}
+  .skeleton.s1{width:78%}
+  .skeleton.s2{width:52%}
+  .folders p{margin:10px 0 8px;font-size:12px;line-height:1.55;color:var(--sub)}
+  .folders a{color:var(--accent);font-size:12.5px;text-decoration:none}
+  .folders a:hover{text-decoration:underline}
+
+  .side-foot{margin-top:auto;padding-top:10px}
+
+  /* ── 主区 ─────────────────────────────────── */
+  .main{display:flex;flex-direction:column;min-width:0;height:100%}
+  .topbar{
+    height:56px;flex:none;display:flex;align-items:center;justify-content:space-between;
+    padding:0 20px 0 24px;gap:12px;
+  }
+  .pill{
+    display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 14px;border-radius:999px;
+    border:1px solid var(--line-strong);background:#fff;font-size:13px;
+  }
+  .pill:hover{background:#f7f8fa}
+  .pill .spark{color:#7c5cf0}
+  .top-right{display:flex;align-items:center;gap:10px}
+  .ghost{font-size:13px;color:#33333a;padding:0 6px}
+  .ghost:hover{color:#000}
+
+  .home{flex:1;min-height:0;overflow:auto;padding:22px 24px 44px;display:flex;flex-direction:column;align-items:center}
+  .hero{width:100%;max-width:770px;display:flex;flex-direction:column;align-items:center;text-align:center}
+  .hero .art{width:118px;height:82px;margin-top:6px}
+  .hero h1{margin:20px 0 20px;font-size:33px;line-height:1.24;font-weight:650;letter-spacing:-.6px}
+
+  .prompt{
+    width:100%;border-radius:16px;padding:1.5px;
+    background:linear-gradient(118deg,#cbb6f4 0%,#e6c9ef 42%,#c9d8f8 100%);
+    box-shadow:0 2px 14px rgba(124,92,240,.09);
+  }
+  .prompt .inner{border-radius:14.5px;background:#fff;padding:14px 14px 10px;display:flex;flex-direction:column;gap:10px}
+  .prompt textarea{
+    width:100%;border:0;outline:0;resize:none;height:56px;font-size:14.5px;line-height:1.62;color:#2a2a31;
+    background:transparent;
+  }
+  .prompt textarea::placeholder{color:#9a9aa3}
+  .prompt .bar{display:flex;align-items:center;gap:8px}
+  .icobtn{
+    width:29px;height:29px;border-radius:50%;border:1px solid var(--line-strong);display:grid;place-items:center;
+    color:#5f5f67;background:#fff;
+  }
+  .icobtn:hover{background:#f6f7f9}
+  .bar .grow{flex:1}
+  .model{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;color:#4a4a52;padding:4px 6px;border-radius:7px}
+  .model:hover{background:#f4f5f7}
+  .model i{color:#8b5cf6;font-style:normal;font-size:11px}
+  .send{
+    width:32px;height:32px;border-radius:50%;background:#3a3a40;color:#fff;display:grid;place-items:center;
+  }
+  .send:hover{background:#232328}
+  .send:disabled{opacity:.45;cursor:not-allowed}
+
+  .chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:16px}
+  .chip{
+    display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 14px;border-radius:999px;
+    border:1px solid var(--line-strong);background:#fff;font-size:13px;color:#2f2f36;
+  }
+  .chip:hover{background:#f7f8fa;border-color:#cfd1d8}
+  .chip svg{color:#4d4d55}
+
+  .tplwrap{width:100%;max-width:866px;margin-top:34px}
+  .tpl-title{font-size:12.5px;color:var(--sub);text-align:center;margin-bottom:14px}
+  .tpl-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}
+  .tpl{display:flex;flex-direction:column;gap:7px;align-items:center}
+  .cover{
+    width:100%;aspect-ratio:16/9.2;border-radius:5px;overflow:hidden;border:1px solid rgba(0,0,0,.06);
+    position:relative;display:flex;align-items:center;justify-content:center;transition:transform .14s ease;
+  }
+  .tpl:hover .cover{transform:translateY(-2px)}
+  .tpl span{font-size:11.5px;color:#4b4b53;text-align:center;line-height:1.3}
+
+  /* 六张封面：用 CSS 近似原稿风格，避免外链图片 */
+  .c-garden{background:#f3efe4}
+  .c-garden .t{font:600 7px/1.3 Georgia,serif;color:#4a463c;position:absolute;left:8%;bottom:14%;letter-spacing:.02em}
+  .c-garden .bloom{
+    width:52%;aspect-ratio:1;border-radius:50% 50% 46% 54%/54% 46% 54% 46%;
+    background:radial-gradient(circle at 35% 32%,#b23a52 0 32%,#8e2740 33% 58%,#6d1f33 59% 100%);
+    position:absolute;right:8%;top:16%;
+  }
+  .c-mesa{background:linear-gradient(160deg,#2c3138 0%,#3d444d 45%,#20242a 100%)}
+  .c-mesa .t{font:700 9px/1.15 ui-sans-serif,system-ui;color:#fff;text-align:center;letter-spacing:.14em}
+  .c-mesa .ridge{position:absolute;inset:auto 0 0 0;height:44%;background:linear-gradient(180deg,transparent,#151a1f 72%)}
+  .c-wood{background:#33513f}
+  .c-wood .t{font:500 7.5px/1.4 Georgia,serif;color:#eaf2ec;text-align:center;max-width:74%}
+  .c-wood .leaf{
+    position:absolute;left:-8%;bottom:-16%;width:52%;aspect-ratio:1;border-radius:64% 36% 58% 42%;
+    background:rgba(163,196,166,.22);
+  }
+  .c-wood .leaf.b{left:auto;right:-10%;top:-18%;bottom:auto;width:46%}
+  .c-letter{background:#141414}
+  .c-letter .t{color:#fff;text-align:center}
+  .c-letter .t b{display:block;font:600 8.5px/1.2 Georgia,serif;letter-spacing:.06em}
+  .c-letter .t i{display:block;margin-top:4px;font:400 5.5px/1.2 ui-sans-serif;color:#b9b9b9;font-style:normal}
+  .c-editorial{background:#fdfdfb;border-color:#e6e6e1}
+  .c-editorial .t{font:400 6.5px/1.35 Georgia,serif;color:#2f2f2c;text-align:left;max-width:74%}
+  .c-feedback{background:#f6c945}
+  .c-feedback .t{font:800 10px/1 ui-sans-serif,system-ui;color:#1b1b1f;letter-spacing:-.3px;text-align:center}
+  .c-feedback .t u{display:block;text-decoration:none;font-size:5.5px;letter-spacing:.06em;margin-top:3px;font-weight:600}
+  .c-feedback .blob{position:absolute;right:8%;top:12%;width:22%;aspect-ratio:1;border-radius:50% 50% 50% 20%;background:#e0592a}
+
+  .tplwrap.flash{animation:flash 1.4s ease}
+  @keyframes flash{
+    0%{box-shadow:0 0 0 0 rgba(47,111,237,.35)}
+    40%{box-shadow:0 0 0 8px rgba(47,111,237,.16)}
+    100%{box-shadow:0 0 0 0 rgba(47,111,237,0)}
+  }
+
+  .alltpl{
+    margin:16px auto 0;height:34px;padding:0 16px;border-radius:999px;border:1px solid var(--line-strong);
+    font-size:12.5px;color:#3b3b43;background:#fff;display:block;
+  }
+  .alltpl:hover{background:#f7f8fa}
+
+  /* ── 对话视图 ─────────────────────────────── */
+  .chat{flex:1;min-height:0;display:none;flex-direction:column}
+  .chat.on{display:flex}
+  .home.off{display:none}
+  .chatbar{height:52px;display:flex;align-items:center;gap:10px;padding:0 20px;border-bottom:1px solid var(--line)}
+  .back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--sub);height:30px;padding:0 8px;border-radius:7px}
+  .back:hover{background:#f2f3f5;color:#222}
+  .chatbar .title{font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .chatbar .sid{margin-left:auto;font-size:11.5px;color:var(--faint)}
+  .thread{flex:1;overflow:auto;padding:26px 24px 8px;display:flex;flex-direction:column;gap:16px}
+  .thread .empty{color:var(--faint);font-size:13px;text-align:center;margin-top:40px}
+  .msg{max-width:min(720px,92%)}
+  .msg .who{font-size:11px;color:var(--faint);margin-bottom:5px}
+  .msg .body{padding:12px 15px;border-radius:13px;white-space:pre-wrap;word-break:break-word;font-size:14px}
+  .msg.user{align-self:flex-end}
+  .msg.user .body{background:#eef1f6;border-bottom-right-radius:4px}
+  .msg.assistant .body{background:#fff;border:1px solid var(--line);border-bottom-left-radius:4px}
+  .tool{border:1px solid var(--line);border-radius:11px;background:#fbfbfc;font-size:12.5px;max-width:min(720px,92%)}
+  .tool summary{cursor:pointer;padding:9px 13px;color:var(--sub);list-style:none}
+  .tool summary::-webkit-details-marker{display:none}
+  .tool summary::before{content:"▸";display:inline-block;margin-right:7px;transition:transform .12s;color:var(--faint)}
+  .tool[open] summary::before{transform:rotate(90deg)}
+  .tool pre{margin:0;padding:0 13px 11px;white-space:pre-wrap;color:#494951;font-size:12px;line-height:1.6}
+  .activity{height:22px;padding:0 24px;font-size:12px;color:var(--faint);display:flex;align-items:center;gap:7px}
+  .spinner{width:8px;height:8px;border:2px solid #b9c4d8;border-right-color:transparent;border-radius:50%;animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .composer{flex:none;padding:8px 24px 22px}
+  .composer .prompt{box-shadow:none}
+  .composer .inner{padding:10px 12px 8px}
+  .composer textarea{height:38px;font-size:14px}
+
+  .prow{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin-bottom:7px}
+  .prow.off{opacity:.55}
+  .prow .pin{flex:1;min-width:0}
+  .prow .pname{font-size:12.5px;font-weight:600}
+  .prow .pid{font-size:11px;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mini{height:26px;padding:0 9px;border-radius:7px;border:1px solid var(--line-strong);font-size:11.5px;color:#3b3b43}
+  .mini:hover{background:#f5f6f8}
+  .mini.danger{color:var(--err);border-color:#f0d3cf}
+  .mini.danger:hover{background:#fdf3f2}
+  .trow{display:flex;gap:8px;align-items:baseline;padding:5px 4px;font-size:12px}
+  .trow code{font-size:11.5px;color:#2f2f36;background:#f4f5f7;border:1px solid var(--line);border-radius:5px;padding:1px 5px}
+  .trow span{color:var(--faint);font-size:11.5px}
+
+  /* ── 努力档位（点击「标准」向上弹出） ───────── */
+  .effort{
+    position:fixed;z-index:72;width:276px;background:#fff;border:1px solid #ececef;border-radius:14px;
+    box-shadow:0 14px 40px rgba(20,20,30,.16),0 2px 8px rgba(20,20,30,.05);
+    padding:12px 10px 0;display:flex;flex-direction:column;
+  }
+  .effort[hidden]{display:none}
+  .eff-head{font-size:12.5px;font-weight:600;color:#1b1b1f;padding:0 8px 8px}
+  .eff-item{
+    display:flex;align-items:flex-start;gap:11px;padding:9px 10px;border-radius:10px;
+    border:1px solid transparent;width:100%;text-align:left;margin-bottom:2px;
+  }
+  .eff-item:hover{background:#f7f7f9}
+  .eff-item.on{background:#f3effd;border-color:#e3d8fb}
+  .eff-ico{flex:none;margin-top:2px;display:flex}
+  .eff-body{display:flex;flex-direction:column;min-width:0}
+  .eff-name{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:#1b1b1f}
+  .eff-desc{font-size:12px;color:#8b8b93;margin-top:2px;line-height:1.45}
+  .pro{
+    font-size:10px;font-weight:700;letter-spacing:.04em;color:#fff;border-radius:5px;padding:2px 6px;
+    background:linear-gradient(135deg,#2f6fed,#7c5cf0);
+  }
+  .eff-foot{
+    margin:8px -10px 0;padding:10px 18px;border-top:1px solid #f0f0f2;background:#f7f7f8;
+    border-radius:0 0 14px 14px;font-size:11.5px;color:#8b8b93;
+  }
+
+  /* ── 图片选项面板（点击「图片」向上弹出） ───── */
+  .imgmenu{
+    position:fixed;z-index:73;width:432px;background:#fff;border:1px solid #ececef;border-radius:14px;
+    box-shadow:0 16px 46px rgba(20,20,30,.16),0 2px 8px rgba(20,20,30,.05);
+    padding:14px 12px;display:flex;flex-direction:column;gap:2px;
+  }
+  .imgmenu[hidden]{display:none}
+  .im-head{font-size:13px;font-weight:600;color:#1b1b1f;padding:0 8px 10px}
+  .im-item{
+    display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:10px;
+    border:1px solid transparent;width:100%;text-align:left;
+  }
+  .im-item:hover{background:#f7f7f9}
+  .im-item.on{background:#f4f4f6}
+  .im-check{width:16px;display:flex;justify-content:center;color:#1b1b1f;opacity:0;flex:none}
+  .im-item.on .im-check{opacity:1}
+  .im-thumb{flex:none;display:flex}
+  .im-txt{display:flex;flex-direction:column;gap:2px;min-width:0}
+  .im-txt b{font-size:13.5px;font-weight:600;color:#1b1b1f}
+  .im-txt small{font-size:12px;color:#8b8b93;line-height:1.42}
+
+  /* ── 专家页 ───────────────────────────────── */
+  .experts{flex:1;min-height:0;overflow:auto;background:#fff}
+  .main.experts-mode .topbar{display:none}
+  .ex-head{display:flex;align-items:center;gap:18px;padding:12px 20px;border-bottom:1px solid #ececef;position:sticky;top:0;background:#fff;z-index:3}
+  .ex-tabs{display:flex;gap:20px}
+  .ex-tab{display:flex;align-items:center;gap:6px;font-size:13.5px;color:#6a6a72;padding:5px 0;border-bottom:2px solid transparent}
+  .ex-tab.on{color:#1b1b1f;font-weight:600;border-bottom-color:#1b1b1f}
+  .ex-actions{margin-left:auto;display:flex;align-items:center;gap:10px}
+  .ex-search{display:flex;align-items:center;gap:7px;height:32px;padding:0 10px;border:1px solid #e2e2e7;border-radius:8px;color:#8b8b93}
+  .ex-search input{border:0;outline:0;font-size:12.5px;width:150px;color:#2f2f36}
+  .ex-mine{display:flex;align-items:center;gap:6px;height:32px;padding:0 12px;border:1px solid #e2e2e7;border-radius:8px;font-size:12.5px;color:#2f2f36}
+  .ex-mine:hover{background:#f7f8fa}
+  .ex-pane{padding:16px 20px 40px}
+  .ex-cats{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+  .ex-cat{border:1px solid #ececef;border-radius:10px;overflow:hidden;background:#fff;text-align:left}
+  .ex-cat:hover{border-color:#dcdce2;box-shadow:0 2px 8px rgba(20,20,30,.05)}
+  .ex-cat .hd{height:84px;padding:10px 12px;position:relative;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
+  .ex-cat .hd b{font-size:12.5px;font-weight:600;color:#1b1b1f;position:relative;z-index:1}
+  .ex-cat .hd svg{position:absolute;right:6px;top:6px;opacity:.5}
+  .ex-cat .bd{padding:6px 8px 8px}
+  .ex-cat .li{display:flex;align-items:center;gap:3px;width:100%;font-size:11.5px;color:#5b5b63;padding:4px;border-radius:6px;text-align:left}
+  .ex-cat .li:hover{background:#f5f6f8;color:#1b1b1f}
+  .ex-cat .li span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .c-violet{background:linear-gradient(135deg,#efe6ff,#f7f2ff)}
+  .c-green{background:linear-gradient(135deg,#e3f4e4,#f2fbf2)}
+  .c-blue{background:linear-gradient(135deg,#e2eefb,#f1f7fe)}
+  .c-slate{background:linear-gradient(135deg,#e9eaee,#f5f6f8)}
+  .c-mint{background:linear-gradient(135deg,#e8f5ea,#f4fbf5)}
+  .c-sky{background:linear-gradient(135deg,#e6f1fb,#f3f8fd)}
+  .ex-row{display:flex;align-items:center;gap:16px;margin:18px 0 10px}
+  .ex-subtabs{display:flex;gap:16px}
+  .ex-subtabs button{font-size:13px;color:#8b8b93}
+  .ex-subtabs button.on{color:#1b1b1f;font-weight:600}
+  .ex-sort{margin-left:auto;display:flex;background:#f4f5f7;border-radius:8px;padding:2px}
+  .ex-sort button{font-size:12px;color:#5b5b63;padding:4px 10px;border-radius:6px}
+  .ex-sort button.on{background:#fff;color:#1b1b1f;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+  .ex-chips{display:flex;gap:6px;overflow:auto;padding-bottom:8px}
+  .ex-chip{font-size:12px;color:#4a4a52;padding:5px 11px;border-radius:999px;white-space:nowrap}
+  .ex-chip:hover{background:#f2f3f5}
+  .ex-chip.on{background:#eceef2;color:#1b1b1f;font-weight:560}
+  .ex-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:6px}
+  .ex-grid-wide{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .ex-card{border:1px solid #ececef;border-radius:10px;padding:12px;text-align:left;background:#fff}
+  .ex-card:hover{border-color:#dcdce2;box-shadow:0 2px 8px rgba(20,20,30,.05)}
+  .ex-top{display:flex;gap:10px;align-items:flex-start}
+  .ex-ava{width:38px;height:38px;border-radius:9px;display:grid;place-items:center;color:#fff;font-size:13px;font-weight:600;flex:none}
+  .ex-nm{font-size:13px;font-weight:600;color:#1b1b1f;display:flex;align-items:center;gap:6px;line-height:1.3}
+  .ex-badge{font-size:9.5px;padding:1px 5px;border-radius:4px;background:#1b1b1f;color:#fff;flex:none}
+  .ex-badge.real{background:#e7f6ec;color:#1f7a43}
+  .soon{font-size:9.5px;padding:1px 5px;border-radius:4px;background:#f2f2f5;color:#8b8b93;border:1px solid #e7e7ec;margin-left:6px;white-space:nowrap;flex:none;line-height:1.5}
+  .hello{font-size:13px;color:#8b8b93;margin:-6px 0 14px}
+  .flash{box-shadow:0 0 0 2px #2f6fed55;border-radius:12px;transition:box-shadow .2s}
+  .sp-select:disabled,.sp-toggle:disabled{opacity:.5;cursor:default}
+  .ex-desc{font-size:11.5px;color:#8b8b93;margin:8px 0;line-height:1.5;height:34px;overflow:hidden}
+  .ex-tags{display:flex;gap:5px;flex-wrap:wrap;min-height:22px}
+  .ex-tag{font-size:10.5px;color:#6a6a72;background:#f4f5f7;border-radius:4px;padding:2px 6px}
+  .ex-foot{display:flex;align-items:center;gap:4px;font-size:11px;color:#8b8b93;margin-top:10px}
+  .ex-empty{grid-column:1/-1;font-size:12.5px;color:#8b8b93;padding:30px;text-align:center;border:1px dashed #e4e4ea;border-radius:10px}
+
+  /* ── 技能页 ───────────────────────────────── */
+  .sk-sec{margin-bottom:22px}
+  .sk-sechead{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .sk-sechead b{font-size:13.5px;font-weight:600;color:#1b1b1f}
+  .sk-refresh{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:#6a6a72;padding:4px 8px;border-radius:7px}
+  .sk-refresh:hover{background:#f4f5f7}
+  .sk-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+  .sk-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+  .sk-card{border:1px solid #ececef;border-radius:10px;padding:12px;background:#fff;position:relative;text-align:left}
+  .sk-card:hover{border-color:#dcdce2;box-shadow:0 2px 8px rgba(20,20,30,.05)}
+  .sk-top{display:flex;gap:10px;align-items:flex-start;padding-right:24px}
+  .sk-ico{width:36px;height:36px;border-radius:9px;display:grid;place-items:center;color:#fff;font-size:14px;font-weight:600;flex:none}
+  .sk-nm{font-size:12.5px;font-weight:600;color:#1b1b1f;line-height:1.35;padding-top:2px}
+  .sk-addbtn{position:absolute;right:10px;top:10px;width:22px;height:22px;border:1px solid #e2e2e7;border-radius:6px;color:#6a6a72;display:grid;place-items:center}
+  .sk-addbtn:hover{background:#f5f6f8;color:#1b1b1f}
+  .sk-desc{font-size:11.5px;color:#8b8b93;margin:8px 0;line-height:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .sk-foot{display:flex;align-items:center;gap:14px;font-size:11px;color:#8b8b93}
+  .sk-tabs{display:flex;gap:16px}
+  .sk-tabs button{font-size:13px;color:#8b8b93}
+  .sk-tabs button.on{color:#1b1b1f;font-weight:600}
+  .sk-row2{display:flex;align-items:center;gap:16px;margin-bottom:10px}
+  .sk-row2 .ex-sort{margin-left:auto}
+  .sk-add{display:flex;align-items:center;gap:5px;height:32px;padding:0 12px;border-radius:8px;background:#1b1b1f;color:#fff;font-size:12.5px}
+  .sk-add:hover{background:#2c2c33}
+  .sk-sechint{font-size:11.5px;color:#9a9aa3}
+
+  /* ── 办公能力面板 ─────────────────────────── */
+  .op{position:fixed;inset:0;z-index:85;background:rgba(20,20,26,.28);display:flex;align-items:center;justify-content:center;padding:24px}
+  .op[hidden]{display:none}
+  .op-box{width:min(720px,96vw);max-height:86vh;background:#fff;border-radius:14px;border:1px solid #e6e6ea;box-shadow:0 24px 70px rgba(20,20,30,.28);display:flex;flex-direction:column;overflow:hidden}
+  .op-box header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid #ececef}
+  .op-box header b{font-size:14px;font-weight:650}
+  .op-close{width:28px;height:28px;border-radius:8px;color:#6a6a72;font-size:18px;line-height:1}
+  .op-close:hover{background:#f2f3f5}
+  .op-body{padding:14px 16px 18px;overflow:auto;display:flex;flex-direction:column;gap:10px}
+  .op-row{display:flex;align-items:center;gap:10px;font-size:12.5px;color:#5b5b63}
+  .op-row>span{width:52px;flex:none}
+  .op-row select,.op-row input{flex:1;height:30px;border:1px solid #e2e2e7;border-radius:8px;padding:0 9px;font-size:12.5px;background:#fff;outline:0;min-width:0}
+  .op input[type=file]{font-size:12px;color:#5b5b63}
+  .op textarea{width:100%;border:1px solid #e2e2e7;border-radius:9px;padding:9px 10px;font-size:12.5px;font-family:ui-monospace,Menlo,monospace;resize:vertical;outline:0}
+  .op-run{height:34px;border-radius:9px;background:#1b1b1f;color:#fff;font-size:13px}
+  .op-run:hover{background:#2c2c33}
+  .op-result{margin:0;padding:12px;border-radius:10px;background:#f7f7f9;border:1px solid #ececef;font-size:12px;white-space:pre-wrap;max-height:300px;overflow:auto;font-family:ui-monospace,Menlo,monospace}
+  .seg{display:flex;gap:4px;background:#f2f3f5;border-radius:8px;padding:2px}
+  .seg button{font-size:12px;padding:4px 10px;border-radius:6px;color:#6a6a72}
+  .seg button.on{background:#fff;color:#1b1b1f;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+
+  /* ── 连接器页 ─────────────────────────────── */
+  .cn-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;padding-top:2px}
+  .cn-card{border:1px solid #ececef;border-radius:10px;padding:12px;background:#fff;position:relative;text-align:left;display:flex;gap:10px;align-items:flex-start}
+  .cn-card:hover{border-color:#dcdce2;box-shadow:0 2px 8px rgba(20,20,30,.05)}
+  .cn-ico{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;color:#fff;font-size:15px;font-weight:600;flex:none}
+  .cn-main{flex:1;min-width:0;padding-right:20px}
+  .cn-nm{font-size:12.5px;font-weight:600;color:#1b1b1f;line-height:1.35;display:flex;align-items:center;gap:6px}
+  .cn-desc{font-size:11.5px;color:#8b8b93;margin-top:5px;line-height:1.45;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cn-add{position:absolute;right:10px;top:10px;width:22px;height:22px;border:1px solid #e2e2e7;border-radius:6px;color:#6a6a72;display:grid;place-items:center;background:#fff}
+  .cn-grid .ex-empty{grid-column:1/-1}
+  .cn-add:hover{background:#f5f6f8;color:#1b1b1f}
+
+  /* ── 设置窗口 ─────────────────────────────── */
+  .settings{
+    position:fixed;inset:0;z-index:80;background:rgba(20,20,26,.22);
+    display:flex;align-items:center;justify-content:center;padding:24px;
+  }
+  .settings[hidden]{display:none}
+  .sp{
+    position:relative;width:min(980px,96vw);height:min(720px,90vh);background:#fff;border-radius:14px;
+    border:1px solid #e6e6ea;box-shadow:0 24px 70px rgba(20,20,30,.28);display:flex;overflow:hidden;
+  }
+  .sp-close{
+    position:absolute;top:10px;left:11px;width:11px;height:11px;border-radius:50%;
+    background:#ff5f57;border:1px solid #e0443e;z-index:2;
+  }
+  .sp-close:hover{background:#ff7b74}
+  .sp-nav{
+    width:204px;flex:none;background:#f6f6f7;border-right:1px solid #ececef;
+    padding:26px 10px 16px;overflow:auto;
+  }
+  .sp-search{
+    display:flex;align-items:center;gap:7px;height:30px;padding:0 9px;border-radius:8px;
+    background:#ededf0;color:#8b8b93;margin-bottom:8px;
+  }
+  .sp-search input{border:0;background:transparent;outline:0;font-size:12.5px;width:100%;color:#33333a}
+  .sp-search input::placeholder{color:#9a9aa3}
+  .sp-group{font-size:11.5px;color:#9a9aa3;padding:12px 8px 6px}
+  .sp-item{
+    display:flex;align-items:center;gap:9px;width:100%;height:32px;padding:0 8px;border-radius:8px;
+    font-size:13px;color:#33333a;text-align:left;border:1px solid transparent;
+  }
+  .sp-item:hover{background:#ececef}
+  .sp-item.on{background:#fff;border-color:#e6e6ea;font-weight:560;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+  .sp-item svg{flex:none;color:#4d4d55}
+  .sp-body{flex:1;overflow:auto;padding:22px 28px 40px;background:#fff}
+  .sp-sec{font-size:12.5px;color:#8b8b93;margin:0 0 10px}
+  .sp-card{border:1px solid #ececef;border-radius:12px;overflow:hidden;margin-bottom:22px}
+  .sp-row{display:flex;align-items:flex-start;gap:18px;padding:14px 16px}
+  .sp-row + .sp-row{border-top:1px solid #f3f3f5}
+  .sp-main{flex:1;min-width:0}
+  .sp-title{font-size:13px;font-weight:560;color:#1b1b1f}
+  .sp-desc{font-size:12px;color:#8b8b93;margin-top:3px;line-height:1.5}
+  .sp-lead{margin:-4px 0 12px}
+  .sp-ctl{flex:none;display:flex;align-items:center;gap:8px;padding-top:1px}
+  .sp-select{
+    appearance:none;height:30px;padding:0 26px 0 10px;border:1px solid #e2e2e7;border-radius:8px;
+    font:inherit;font-size:12.5px;color:#2f2f36;background:#fff
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b8b93' stroke-width='2.4' stroke-linecap='round'><path d='m6 9 6 6 6-6'/></svg>")
+      no-repeat right 8px center;
+    cursor:pointer;
+  }
+  .sp-select:hover{border-color:#d4d4da}
+  .sp-link{
+    display:inline-flex;align-items:center;gap:4px;font-size:12.5px;color:#8b8b93;padding:4px 6px;border-radius:7px;
+  }
+  .sp-link:hover{background:#f4f5f7;color:#33333a}
+  .sp-toggle{
+    position:relative;width:38px;height:22px;border-radius:999px;background:#e3e3e8;transition:background .16s;
+  }
+  .sp-toggle span{
+    position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;
+    box-shadow:0 1px 3px rgba(0,0,0,.24);transition:transform .16s;
+  }
+  .sp-toggle.on{background:#34c759}
+  .sp-toggle.on span{transform:translateX(16px)}
+  .sp-slider{flex-direction:column;align-items:stretch;width:300px;gap:2px}
+  .sp-slider input[type="range"]{
+    appearance:none;width:100%;height:16px;background:transparent;cursor:pointer;
+  }
+  .sp-slider input[type="range"]::-webkit-slider-runnable-track{height:2px;background:#dcdce1;border-radius:2px}
+  .sp-slider input[type="range"]::-webkit-slider-thumb{
+    appearance:none;width:12px;height:12px;border-radius:50%;background:#fff;border:1px solid #c9c9d0;
+    box-shadow:0 1px 3px rgba(0,0,0,.2);margin-top:-5px;
+  }
+  .sp-scale{display:flex;justify-content:space-between;font-size:11px;color:#8b8b93}
+  .sp-value{font-size:12.5px;color:#6a6a72;white-space:nowrap}
+  .sp-kbd{
+    font-size:12px;color:#4a4a52;background:#f4f5f7;border:1px solid #e6e6ea;border-radius:5px;
+    padding:2px 7px;white-space:nowrap;
+  }
+  .sp-input{
+    height:30px;border:1px solid #e2e2e7;border-radius:8px;padding:0 10px;font-size:12.5px;
+    min-width:168px;outline:0;color:#2f2f36;background:#fff;
+  }
+  .sp-input:focus{border-color:#b9b9c2}
+  .sp-form{display:flex;gap:8px;padding:12px 16px;flex-wrap:wrap}
+  .sp-inline{display:flex;align-items:center;gap:8px}
+  .sp-sliderwrap{display:flex;align-items:center;gap:10px}
+  .sp-range{
+    appearance:none;width:150px;height:16px;background:transparent;cursor:pointer;
+  }
+  .sp-range::-webkit-slider-runnable-track{height:2px;background:#dcdce1;border-radius:2px}
+  .sp-range::-webkit-slider-thumb{
+    appearance:none;width:12px;height:12px;border-radius:50%;background:#fff;border:1px solid #c9c9d0;
+    box-shadow:0 1px 3px rgba(0,0,0,.2);margin-top:-5px;
+  }
+  .mini:disabled{opacity:.45;cursor:default}
+  body.compact .sp-row{padding:10px 16px}
+  body.compact .row{height:30px}
+  body.compact .thread{gap:11px}
+  body.mono .msg .body,body.mono .tool pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+
+  .sp-soon{font-size:12.5px;color:#8b8b93;border:1px dashed #e0e0e6;border-radius:10px;padding:18px;background:#fbfbfc}
+
+  /* ── 更多：右侧悬浮菜单 ───────────────────── */
+  .moremenu{
+    position:fixed;z-index:74;width:220px;background:#fff;border:1px solid #ececef;border-radius:12px;
+    box-shadow:0 12px 36px rgba(20,20,30,.15),0 2px 6px rgba(20,20,30,.05);padding:7px;
+    display:flex;flex-direction:column;gap:2px;
+  }
+  .moremenu[hidden]{display:none}
+  .mm-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:9px;width:100%;text-align:left}
+  .mm-item:hover{background:#f5f6f8}
+  .mm-ico{
+    width:27px;height:27px;border-radius:8px;background:#eef2fb;color:#2f6fed;
+    display:grid;place-items:center;flex:none;
+  }
+  .mm-txt{display:flex;flex-direction:column;min-width:0}
+  .mm-txt b{font-size:13px;font-weight:600;color:#1b1b1f}
+  .mm-txt small{font-size:11px;color:#8b8b93}
+  .mm-count{margin-left:auto;font-size:11.5px;color:#8b8b93;flex:none}
+
+  /* ── 命令面板 ─────────────────────────────── */
+  .palette{
+    position:fixed;left:50%;top:14%;transform:translate(-50%,-8px);width:min(520px,92vw);background:#fff;
+    border:1px solid var(--line-strong);border-radius:14px;box-shadow:0 18px 50px rgba(20,20,30,.18);
+    z-index:50;opacity:0;pointer-events:none;transition:opacity .14s,transform .14s;overflow:hidden;
+  }
+  .palette.on{opacity:1;pointer-events:auto;transform:translate(-50%,0)}
+  .palette input{width:100%;border:0;outline:0;padding:15px 16px;font-size:14px;border-bottom:1px solid var(--line)}
+  .palette .list{max-height:320px;overflow:auto;padding:6px}
+  .palette .opt{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;font-size:13px;width:100%;text-align:left}
+  .palette .opt:hover,.palette .opt.sel{background:#f2f4f8}
+  .palette .opt small{margin-left:auto;color:var(--faint);font-size:11px}
+
+  .toast{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:8px;z-index:60}
+  .toast .t{
+    background:#fff;border:1px solid var(--line-strong);border-left:3px solid var(--accent);border-radius:10px;
+    padding:10px 13px;font-size:12.5px;max-width:430px;box-shadow:0 10px 30px rgba(20,20,30,.14);
+  }
+  .toast .t.err{border-left-color:var(--err)}
+  .toast .t.ok{border-left-color:var(--ok)}
+
+  .help{
+    position:fixed;right:18px;bottom:18px;width:30px;height:30px;border-radius:50%;border:1px solid var(--line-strong);
+    background:#fff;color:#5b5b63;display:grid;place-items:center;z-index:30;
+  }
+  .help:hover{background:#f7f8fa}
+
+  /* ── 输入框 "+" 菜单（向上弹出） ─────────────── */
+  .plusmenu{
+    position:fixed;z-index:70;width:212px;background:#fff;border:1px solid #ececef;border-radius:12px;
+    box-shadow:0 12px 34px rgba(20,20,30,.14),0 2px 6px rgba(20,20,30,.05);padding:7px;
+    display:flex;flex-direction:column;gap:1px;
+  }
+  .plusmenu[hidden],.submenu[hidden]{display:none}
+  .pmi{
+    display:flex;align-items:center;gap:11px;height:40px;padding:0 10px;border-radius:8px;
+    font-size:13.5px;color:#1b1b1f;width:100%;text-align:left;
+  }
+  .pmi:hover{background:#f5f6f8}
+  .pmi svg{color:#4a4a52;flex:none}
+  .pmi .chev{margin-left:auto;color:#c2c2c9;display:flex}
+  .pmsep{height:1px;background:#f0f0f2;margin:6px 8px}
+  .submenu{
+    position:fixed;z-index:71;width:214px;background:#fff;border:1px solid #ececef;border-radius:12px;
+    box-shadow:0 12px 34px rgba(20,20,30,.14);padding:7px;max-height:302px;overflow:auto;
+  }
+  .smi{display:block;width:100%;text-align:left;padding:8px 10px;border-radius:8px;font-size:13px;color:#1b1b1f}
+  .smi:hover{background:#f5f6f8}
+  .smi.on{background:#eef2f9}
+  .smi .d{display:block;font-size:11px;color:#8b8b93;margin-top:1px;line-height:1.35}
+
+  /* ── 类型模式（演示文稿） ─────────────────────── */
+  .top-left{display:flex;align-items:center;gap:10px}
+  .hero.mode h1{font-size:33px}
+  .art.wide{width:132px;height:78px}
+  .modechip{display:flex;align-items:center;gap:5px}
+  .mchip{
+    display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 9px;border-radius:999px;
+    background:#eef4fe;border:1px solid #d5e3fb;color:#22314d;font-size:12.5px;
+  }
+  .mchip svg{color:#2f6fed}
+  .mclear{width:18px;height:18px;border-radius:50%;display:grid;place-items:center;color:#8b8b93}
+  .mclear:hover{background:#eef0f3;color:#333}
+  .send.blue{background:#2f6fed}
+  .send.blue:hover{background:#2560d8}
+
+  .dropzone{
+    display:flex;align-items:center;gap:8px;padding:9px 10px;border:1px dashed #cfd3da;border-radius:10px;
+    background:#fcfcfd;margin-bottom:4px;
+  }
+  .dz-add{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:#4a4a52}
+  .badge{font-size:11px;color:#6a6a72;background:#f1f2f4;border:1px solid #e7e8ec;border-radius:4px;padding:2px 6px;letter-spacing:.02em}
+  .art.photo{width:132px;height:78px}
+
+  .mico{display:flex;align-items:center}
+
+  .ihint{
+    display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:9px;
+    margin-top:18px;font-size:12.5px;color:#8b8b93;
+  }
+  .ibrands{display:flex;align-items:center;gap:9px;color:#8b8b93}
+  .ibrands svg{opacity:.8}
+
+  .g-doc{background:#f4f6f9}
+  .g-doc .gt{position:absolute;inset:0;display:grid;place-items:center;font:600 11px/1.45 ui-sans-serif,system-ui;color:#33415c;text-align:center}
+  .g-doc.warm{background:#fbf3e8}
+  .g-doc.warm .gt{color:#6b4a24}
+  .g-doc.cool{background:#eaf1fb}
+  .g-doc.cool .gt{color:#274a7a}
+  .g-doc.dark{background:#1f2937}
+  .g-doc.dark .gt{color:#e5e7eb}
+  .g-car{background:linear-gradient(135deg,#f7c6d9,#c9d8f7)}
+  .g-car .gt{position:absolute;inset:0;display:grid;place-items:center;font:700 11px/1.35 ui-sans-serif,system-ui;color:#3a2b46;text-align:center}
+  .g-car.mint{background:linear-gradient(135deg,#bfe8d8,#d9f0e4)}
+  .g-car.lavender{background:linear-gradient(135deg,#d8d2f7,#eee6fb)}
+  .g-car.amber{background:linear-gradient(135deg,#ffd9a0,#ffe9c7)}
+  .g-img{background:linear-gradient(135deg,#cfe3f7,#eaf3fb)}
+  .g-img .gt{position:absolute;inset:0;display:grid;place-items:center;font:600 11px/1.4 ui-sans-serif,system-ui;color:#2c3e50;text-align:center}
+  .g-img.mint{background:linear-gradient(135deg,#cfe8d5,#eaf6ec)}
+  .g-img.lavender{background:linear-gradient(135deg,#ded7f8,#f1ecfc)}
+  .g-img.amber{background:linear-gradient(135deg,#f6dfb8,#fdf0da)}
+
+  .beautify{width:100%;margin-top:18px;text-align:left}
+  .bhead{font-size:13px;color:#4a4a52;margin-bottom:10px}
+  .bgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  .bcard{
+    display:flex;align-items:center;gap:11px;padding:11px 12px;border:1px solid #e3e5e9;border-radius:10px;
+    background:#fff;text-align:left;
+  }
+  .bcard:hover{border-color:#cfd3da;background:#fcfcfd}
+  .bcard.on{border-color:#b9d3f7;background:#f7faff}
+  .bico{
+    width:30px;height:30px;border-radius:9px;background:#e9f1fe;color:#2f6fed;
+    display:grid;place-items:center;flex:none;
+  }
+  .btxt{display:flex;flex-direction:column;gap:1px;min-width:0}
+  .btxt b{font-size:13px;font-weight:600;color:#1b1b1f}
+  .btxt small{font-size:11.5px;color:#8b8b93}
+
+  .examples{width:100%;margin-top:18px;text-align:left}
+  .exhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+  .exhead>span{font-size:13px;color:#4a4a52}
+  .exfilter{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:#4a4a52;padding:4px 6px;border-radius:7px}
+  .exfilter:hover{background:#f4f5f7}
+  .exgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+  .excard{
+    position:relative;height:82px;border:1px solid #e3e5e9;border-radius:10px;background:#fff;
+    padding:11px 12px;text-align:left;font-size:13px;color:#1b1b1f;line-height:1.42;
+  }
+  .excard:hover{border-color:#cfd3da;background:#fcfcfd}
+  .excard .go{position:absolute;right:9px;bottom:6px;color:#a8adb5;font-size:12px}
+
+  .tplactions{display:flex;justify-content:center;gap:14px;margin-top:18px}
+  .tplbtn{
+    display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 16px;border-radius:999px;
+    font-size:13px;color:#2f3b52;border:1px solid transparent;
+  }
+  .tplbtn.primary{background:#e9f0fb;border-color:#dbe7fa}
+  .tplbtn.primary:hover{background:#dfe9fa}
+  .tplbtn:not(.primary):hover{background:#f4f5f7}
+
+  .gallery{width:100%;max-width:866px;margin-top:30px;text-align:left}
+  .gtabs{display:flex;gap:18px;align-items:center;margin-bottom:14px}
+  .gtab{font-size:13.5px;color:#8b8b93;padding:2px 0;position:relative}
+  .gtab.on{color:#1b1b1f;font-weight:600}
+  .gtab.on::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;border-radius:2px;background:#1b1b1f}
+  .ggrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+  .gcover{aspect-ratio:4/3;border-radius:6px;overflow:hidden;position:relative;border:1px solid rgba(0,0,0,.05);width:100%}
+  .gcover:hover{filter:brightness(1.02)}
+  .g-fright{background:#f0397e}
+  .g-fright .gt{position:absolute;inset:0;display:grid;place-items:center;font:800 11px/1.06 ui-sans-serif,system-ui;color:#141414;text-align:center;letter-spacing:-.2px}
+  .g-tumble{background:#f6efe0}
+  .g-tumble .gt{position:absolute;inset:0;display:grid;place-items:center;font:600 13px/1 Georgia,serif;color:#2d3a2f;letter-spacing:.2em}
+  .g-tumble .fruit{position:absolute;right:9%;bottom:7%;width:36%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f2a03d,#c1440e)}
+  .g-master{background:#f2f2ef}
+  .g-master .photo{position:absolute;inset:7% 7% 27% 7%;border-radius:4px;background:linear-gradient(135deg,#d9d2c6,#b5a894)}
+  .g-master .gt{position:absolute;left:8%;bottom:7%;right:8%;font:600 6.5px/1.35 ui-sans-serif;color:#3a3a36;text-align:left;letter-spacing:.04em}
+  .g-thirty{background:#e3e8ee}
+  .g-thirty .win{position:absolute;right:8%;top:12%;width:50%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 40% 35%,#f6f8fa,#c3ccd8)}
+  .g-thirty .gt{position:absolute;left:8%;top:12%;font:700 9px/1.16 Georgia,serif;color:#2b3440;text-align:left}
+
+  @media (max-width:1200px){
+    .tpl-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .app{grid-template-columns:52px 216px minmax(0,1fr)}
+  }
+  @media (max-width:860px){
+    .app{grid-template-columns:52px minmax(0,1fr)}
+    .side{display:none}
+    .tpl-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .hero h1{font-size:27px}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- 图标栏 -->
+  <nav class="rail">
+    <div class="logo">G</div>
+    <button class="rbtn on" title="家" data-nav="home">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg>
+    </button>
+    <button class="rbtn" title="媒体">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><circle cx="9" cy="10" r="1.6"/><path d="m4.5 17 4.8-4.4a2 2 0 0 1 2.7 0l3 2.8 2-1.8a2 2 0 0 1 2.5 0l1 1"/></svg>
+    </button>
+    <button class="rbtn" id="navTemplates" title="模版">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 8.5 4.5L12 12 3.5 7.5z"/><path d="m3.5 12.2 8.5 4.5 8.5-4.5"/><path d="m3.5 16.7 8.5 4.5 8.5-4.5"/></svg>
+    </button>
+    <div class="rlabel">模版</div>
+    <button class="rbtn" title="设置 / 插件" id="openDrawer">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h9M17 7h3M4 12h3M11 12h9M4 17h11M19 17h1"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+    </button>
+    <div class="rlabel">设置</div>
+    <button class="rbtn" id="moreMenuBtn" title="更多">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="5.5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18.5" cy="12" r="1.6"/></svg>
+    </button>
+    <div class="rlabel">更多</div>
+    <div class="grow"></div>
+    <button class="rbtn" title="邀请成员">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="3.2"/><path d="M3.5 19c.7-3 3-4.6 5.5-4.6s4.8 1.6 5.5 4.6"/><path d="M17 8.5v5M19.5 11h-5"/></svg>
+    </button>
+    <div class="me">星W<i>
+      <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17V6m0 0-4 4m4-4 4 4"/></svg>
+    </i></div>
+  </nav>
+
+  <!-- 工作区侧栏 -->
+  <aside class="side">
+    <div class="ws">
+      <div class="ava">星W</div>
+      <div class="meta">
+        <div class="name">重阳李's Workspace</div>
+        <div class="plan">Free</div>
+      </div>
+      <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+    </div>
+
+    <button class="create" id="newBlank">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      创建
+    </button>
+
+    <div class="nav">
+      <button class="row" id="recentChats">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5a2.5 2.5 0 0 1-2.5 2.5H9l-4 3v-3H6a2.5 2.5 0 0 1-2.5-2.5v-7A2.5 2.5 0 0 1 6 5h11.5A2.5 2.5 0 0 1 20 7.5z"/></svg>
+        最近的对话记录
+      </button>
+      <div class="sesslist" id="sessList"></div>
+
+      <button class="row" id="recentDocs">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7.5A1.5 1.5 0 0 1 5.5 6H9l1.8 2H19a1.5 1.5 0 0 1 1.5 1.5v8A1.5 1.5 0 0 1 19 19H5.5A1.5 1.5 0 0 1 4 17.5z"/></svg>
+        最近的 gammas
+      </button>
+    </div>
+
+    <div class="sep"></div>
+
+    <div class="side-scroll">
+      <div class="nav">
+        <button class="row" id="openPalette2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.2"/><path d="m16 16 4 4"/></svg>
+          搜索<span class="kbd">⌘K</span>
+        </button>
+        <button class="row">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="4.5" width="15" height="15" rx="3"/><path d="M4.5 10h15"/></svg>
+          全部
+        </button>
+        <button class="row">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="3.2"/><path d="M3.5 19c.7-3 3-4.6 5.5-4.6s4.8 1.6 5.5 4.6"/><circle cx="17" cy="8" r="2.4"/><path d="M16 13.5c2.2.2 3.9 1.9 4.5 4.5"/></svg>
+          与您共享
+        </button>
+        <button class="row">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.2"/><path d="M3.8 12h16.4M12 3.8c4 4.4 4 12 0 16.4M12 3.8c-4 4.4-4 12 0 16.4"/></svg>
+          网站
+        </button>
+        <button class="row">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 8-4 4 4 4M15 8l4 4-4 4"/></svg>
+          API 生成
+        </button>
+      </div>
+
+      <div class="label">文件夹</div>
+      <div class="folders">
+        <div class="skeleton s1"></div>
+        <div class="skeleton s2"></div>
+        <p>将相关的 gammas 分组，并一次性全部分享。</p>
+        <a href="#" id="newFolder">创建文件夹</a>
+      </div>
+    </div>
+
+    <div class="side-foot">
+      <div class="sep"></div>
+      <div class="nav">
+        <button class="row">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7h14M10 7V5.5A1.5 1.5 0 0 1 11.5 4h1A1.5 1.5 0 0 1 14 5.5V7"/><path d="M6.5 7l.8 11.2A1.8 1.8 0 0 0 9.1 20h5.8a1.8 1.8 0 0 0 1.8-1.8L17.5 7"/><path d="M10.5 11v5M13.5 11v5"/></svg>
+          垃圾箱
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- 主区 -->
+  <main class="main">
+    <div class="topbar">
+      <div class="top-left">
+      <button class="pill backpill" id="modeBack" hidden>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+        返回
+      </button>
+      <button class="pill" id="upgrade">
+        <svg class="spark" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l1.8 5.2L19 9.6l-5.2 1.8L12 16.6l-1.8-5.2L5 9.6l5.2-1.8z"/><path d="M18.4 15.2l.8 2.3 2.3.8-2.3.8-.8 2.3-.8-2.3-2.3-.8 2.3-.8z"/></svg>
+        升级获得更多 AI 功能
+      </button>
+      </div>
+      <div class="top-right">
+        <button class="ghost" id="classicMode">使用经典版生成工具</button>
+        <button class="pill" id="blankNew">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          从空白新建
+        </button>
+        <button class="pill" id="credits">
+          <svg class="spark" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l1.8 5.2L19 9.6l-5.2 1.8L12 16.6l-1.8-5.2L5 9.6l5.2-1.8z"/></svg>
+          173
+        </button>
+      </div>
+    </div>
+
+    <!-- 首页 -->
+    <section class="home" id="viewHome">
+      <div class="hero" id="heroHome">
+        <svg class="art" viewBox="0 0 118 82" aria-hidden="true">
+          <defs>
+            <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#8b5cf6"/><stop offset=".55" stop-color="#e879a6"/><stop offset="1" stop-color="#f6a13c"/>
+            </linearGradient>
+            <linearGradient id="fur" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#3f2a1d"/><stop offset="1" stop-color="#7d4a22"/>
+            </linearGradient>
+          </defs>
+          <rect x="2" y="2" width="114" height="78" rx="12" fill="url(#bg)"/>
+          <ellipse cx="59" cy="70" rx="30" ry="16" fill="#2b1a12" opacity=".5"/>
+          <path d="M36 44c-6-3-9-11-6-17 4 1 8 5 10 9z" fill="url(#fur)"/>
+          <path d="M82 44c6-3 9-11 6-17-4 1-8 5-10 9z" fill="url(#fur)"/>
+          <ellipse cx="59" cy="48" rx="23" ry="21" fill="url(#fur)"/>
+          <ellipse cx="59" cy="54" rx="14" ry="11" fill="#e8c9a6"/>
+          <path d="M30 35h20a4 4 0 0 1 4 4v3a4 4 0 0 1-4 4H30a4 4 0 0 1-4-4v-3a4 4 0 0 1 4-4z" fill="#191919"/>
+          <path d="M68 35h20a4 4 0 0 1 4 4v3a4 4 0 0 1-4 4H68a4 4 0 0 1-4-4v-3a4 4 0 0 1 4-4z" fill="#191919"/>
+          <rect x="63" y="38" width="6" height="4" rx="2" fill="#191919"/>
+          <path d="M55 58c2 2 6 2 8 0" stroke="#3f2a1d" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+          <path d="M46 62h26" stroke="#c0392b" stroke-width="3.4" stroke-linecap="round"/>
+        </svg>
+
+        <h1>带上您已有的内容</h1>
+        <div class="hello" id="homeHello" hidden></div>
+
+        <div class="prompt">
+          <div class="inner">
+            <textarea id="homePrompt" rows="2" placeholder="将此电子表格精简为 6 张幻灯片的演示文稿。仅绘制三个最重要的趋势，每张幻灯片展示一个趋势，并在结尾处说明这些数据对下一季度的意义。"></textarea>
+            <div class="bar">
+              <button class="icobtn" id="attach" title="添加文件">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+              </button>
+              <div class="grow"></div>
+              <button class="icobtn" title="文本设置">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7V5h14v2M12 5v14M9 19h6"/></svg>
+              </button>
+              <button class="icobtn" id="imagePickHome" title="图片">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="14" rx="2.4"/><circle cx="9" cy="10" r="1.5"/><path d="m5 17 4.2-3.9a1.8 1.8 0 0 1 2.4 0L15 16l1.8-1.6a1.8 1.8 0 0 1 2.3 0l.9.8"/></svg>
+              </button>
+              <button class="model" id="modelPick"><i>✦</i><span class="mlabel">标准</span>
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+              </button>
+              <button class="icobtn" id="mic" title="语音">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="9.2" y="3.5" width="5.6" height="10" rx="2.8"/><path d="M5.8 11.5a6.2 6.2 0 0 0 12.4 0M12 17.8V21"/></svg>
+              </button>
+              <button class="send" id="homeSend" title="发送">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="chips" id="chips">
+          <button class="chip" data-kind="演示文稿">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="11" rx="1.8"/><path d="M12 15.5V19M8.5 19h7"/></svg>
+            演示文稿
+          </button>
+          <button class="chip" data-kind="文档">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5h7l5 5v12H6z"/><path d="M13 3.5v5h5"/></svg>
+            文档
+          </button>
+          <button class="chip" data-kind="轮播图">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.5" width="13" height="13" rx="2"/><path d="M19.5 8v8"/></svg>
+            轮播图
+          </button>
+          <button class="chip" data-kind="图片">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="14" rx="2.2"/><circle cx="9" cy="10" r="1.5"/><path d="m5 17 4.2-3.9a1.8 1.8 0 0 1 2.4 0L15 16l1.8-1.6a1.8 1.8 0 0 1 2.3 0l.9.8"/></svg>
+            图片
+          </button>
+          <button class="chip" data-kind="美化">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l3.2-.6 9-9a2 2 0 0 0-2.8-2.8l-9 9z"/><path d="M15 6.8 17.2 9"/></svg>
+            美化
+          </button>
+          <button class="chip" data-kind="导入">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v10m0 0 3.6-3.6M12 14l-3.6-3.6"/><path d="M5 16.5v2A1.5 1.5 0 0 0 6.5 20h11a1.5 1.5 0 0 0 1.5-1.5v-2"/></svg>
+            导入
+          </button>
+        </div>
+      </div>
+
+      <div class="hero mode" id="heroMode" hidden>
+        <svg class="art wide" viewBox="0 0 132 78" aria-hidden="true">
+          <defs>
+            <linearGradient id="sunset" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#1e2b6b"/><stop offset=".42" stop-color="#6b3f93"/>
+              <stop offset=".68" stop-color="#c94f8d"/><stop offset="1" stop-color="#f39aa6"/>
+            </linearGradient>
+          </defs>
+          <rect x="1" y="1" width="130" height="76" rx="9" fill="url(#sunset)"/>
+          <g fill="#0d1020" opacity=".92">
+            <rect x="58.5" y="31.6" width="26" height="1.4" rx=".7"/>
+            <rect x="70.4" y="33" width="1.5" height="3.2"/>
+            <ellipse cx="71.2" cy="39.2" rx="6.6" ry="3.5"/>
+            <rect x="66.6" y="41.2" width="12.4" height="1.5" rx=".75"/>
+            <rect x="62.8" y="44.6" width="16.6" height="1.2" rx=".6"/>
+            <rect x="69.6" y="42.7" width="1.4" height="2"/>
+          </g>
+        </svg>
+
+        <svg class="art photo" id="artPhoto" viewBox="0 0 132 78" hidden aria-hidden="true">
+          <defs>
+            <linearGradient id="pSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9fd8f7"/><stop offset="1" stop-color="#dceffc"/></linearGradient>
+            <linearGradient id="pSea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f83b8"/><stop offset="1" stop-color="#17557f"/></linearGradient>
+          </defs>
+          <rect width="132" height="78" rx="8" fill="url(#pSky)"/>
+          <path d="M0 47 L24 27 L42 41 L60 23 L84 45 L102 33 L132 49 V78 H0 Z" fill="#2f6f4f" opacity=".82"/>
+          <rect y="52" width="132" height="16" fill="url(#pSea)"/>
+          <path d="M0 68 h132 v10 H0 Z" fill="#efd2a0"/>
+          <path d="M0 68 q30 -7 62 0 t70 0 v10 H0 Z" fill="#f8e6c8"/>
+        </svg>
+
+        <h1 id="modeTitle">今天我们要做点什么呢？</h1>
+
+        <div class="prompt">
+          <div class="inner">
+            <div class="dropzone" id="dropzone" hidden>
+              <span class="dz-add">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+                添加文件
+              </span>
+              <span class="badge">PPTX</span>
+              <span class="badge">DOCX</span>
+              <span class="badge">PDF</span>
+            </div>
+            <textarea id="modePrompt" rows="2" placeholder="描述您的演示主题"></textarea>
+            <div class="bar">
+              <button class="icobtn" id="attachMode" title="添加或连接">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+              </button>
+              <div class="modechip">
+                <span class="mchip">
+                  <span class="mico" id="modeChipIcon"></span>
+                  <span id="modeChipLabel">演示文稿</span>
+                </span>
+                <button class="mclear" id="modeClear" title="移除类型">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+                </button>
+              </div>
+              <div class="grow"></div>
+              <button class="icobtn" title="文本设置">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7V5h14v2M12 5v14M9 19h6"/></svg>
+              </button>
+              <button class="icobtn" id="imagePickMode" title="图片">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="14" rx="2.4"/><circle cx="9" cy="10" r="1.5"/><path d="m5 17 4.2-3.9a1.8 1.8 0 0 1 2.4 0L15 16l1.8-1.6a1.8 1.8 0 0 1 2.3 0l.9.8"/></svg>
+              </button>
+              <button class="model" id="modeModel"><i>✦</i><span class="mlabel">标准</span>
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+              </button>
+              <button class="icobtn" id="micMode" title="语音">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="9.2" y="3.5" width="5.6" height="10" rx="2.8"/><path d="M5.8 11.5a6.2 6.2 0 0 0 12.4 0M12 17.8V21"/></svg>
+              </button>
+              <button class="send blue" id="modeSend" title="发送">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="examples" id="modeExamples">
+          <div class="exhead">
+            <span>示例指令</span>
+            <button class="exfilter" id="exFilter">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="4.5" width="15" height="15" rx="2.6"/></svg>
+              常规
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+          </div>
+          <div class="exgrid" id="exGrid"></div>
+        </div>
+
+        <div class="tplactions" id="modeTplActions">
+          <button class="tplbtn primary" id="browseTpl">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3.5 8.5 4.5L12 12.5 3.5 8z"/><path d="m3.5 12.6 8.5 4.5 8.5-4.5"/></svg>
+            浏览模板
+          </button>
+          <button class="tplbtn" id="uploadTpl">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4m0 0 3.6 3.6M12 4 8.4 7.6"/><path d="M5 15.5v2A1.5 1.5 0 0 0 6.5 19h11a1.5 1.5 0 0 0 1.5-1.5v-2"/></svg>
+            上传模板
+          </button>
+        </div>
+
+        <div class="gallery" id="modeGallery">
+          <div class="gtabs">
+            <button class="gtab on">工作区</button>
+            <button class="gtab">探索</button>
+          </div>
+          <div class="ggrid" id="gGrid"></div>
+        </div>
+
+        <div class="beautify" id="importBox" hidden>
+          <div class="bhead">更多选择</div>
+          <div class="bgrid">
+            <button class="bcard" id="importTemplate">
+              <span class="bico">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="12" rx="2"/><path d="M9 20h6M12 16.5V20"/></svg>
+              </span>
+              <span class="btxt"><b>导入模板</b><small>创建可复用的工作区模板</small></span>
+            </button>
+          </div>
+          <div class="ihint">
+            提示：使用连接器从您喜爱的工具中导入。
+            <span class="ibrands">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3.4"/><path d="M8.6 15.8V8.2l6.8 7.6V8.2"/></svg>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="3.6" y="9.8" width="6.4" height="4.4" rx="2.2"/><rect x="14" y="9.8" width="6.4" height="4.4" rx="2.2"/><rect x="9.8" y="3.6" width="4.4" height="6.4" rx="2.2"/><rect x="9.8" y="14" width="4.4" height="6.4" rx="2.2"/></svg>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="7.2" r="2.6"/><circle cx="12" cy="12.8" r="2.6"/><circle cx="12" cy="18.4" r="2.6"/></svg>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="6.6"/></svg>
+            </span>
+          </div>
+        </div>
+
+        <div class="beautify" id="beautifyBox" hidden>
+          <div class="bhead">美化方式</div>
+          <div class="bgrid">
+            <button class="bcard" data-act="style">
+              <span class="bico">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.4l1.5 4.3 4.3 1.5-4.3 1.5L12 15l-1.5-4.3L6.2 9.2l4.3-1.5z"/><path d="M18 15.2l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/></svg>
+              </span>
+              <span class="btxt"><b>更换视觉风格</b><small>全新的主题、字体和配色</small></span>
+            </button>
+            <button class="bcard" data-act="layout">
+              <span class="bico">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4.5" width="6.5" height="15" rx="1.6"/><rect x="13.5" y="4.5" width="6.5" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="6.5" height="6" rx="1.6"/></svg>
+              </span>
+              <span class="btxt"><b>重新设计布局</b><small>用更强大的布局重构卡片</small></span>
+            </button>
+            <button class="bcard" data-act="text">
+              <span class="bico">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l3.4-.7 9.2-9.2a2.1 2.1 0 0 0-3-3L4.4 16.3z"/><path d="M14.6 5.9 17 8.3"/></svg>
+              </span>
+              <span class="btxt"><b>精简文字</b><small>标题更清晰，文案更简洁</small></span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="tplwrap" id="tplwrap">
+        <div class="tpl-title">推荐模板</div>
+        <div class="tpl-grid" id="tplGrid"></div>
+        <button class="alltpl" id="allTemplates">查看所有模板</button>
+      </div>
+    </section>
+
+    <!-- 对话视图 -->
+    <section class="chat" id="viewChat">
+      <div class="chatbar">
+        <button class="back" id="backHome">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m14 6-6 6 6 6"/></svg>
+          首页
+        </button>
+        <div class="title" id="chatTitle">新对话</div>
+        <div class="sid" id="chatSid"></div>
+      </div>
+      <div class="thread" id="thread"></div>
+      <div class="activity" id="activity"></div>
+      <div class="composer">
+        <div class="prompt">
+          <div class="inner">
+            <textarea id="chatPrompt" rows="1" placeholder="继续描述你的设计需求…"></textarea>
+            <div class="bar">
+              <button class="icobtn" id="attachChat" title="更多">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+              </button>
+              <div class="grow"></div>
+              <button class="model" id="chatModel"><i>✦</i><span class="mlabel">标准</span></button>
+              <button class="send" id="chatSend" title="发送">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- 专家页 -->
+    <section class="experts" id="viewExperts" hidden>
+      <div class="ex-head">
+        <div class="ex-tabs" id="exTabs">
+          <button class="ex-tab on" data-extab="experts">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l1.8 5.2L19 9.6l-5.2 1.8L12 16.6l-1.8-5.2L5 9.6l5.2-1.8z"/><path d="M18.4 15.2l.8 2.3 2.3.8-2.3.8-.8 2.3-.8-2.3-2.3-.8 2.3-.8z"/></svg>
+            专家
+          </button>
+          <button class="ex-tab" data-extab="skills">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M8 7h12M8 12h12M8 17h12"/><circle cx="4.4" cy="7" r="1"/><circle cx="4.4" cy="12" r="1"/><circle cx="4.4" cy="17" r="1"/></svg>
+            技能
+          </button>
+          <button class="ex-tab" data-extab="connectors">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.4 13.6a3.6 3.6 0 0 0 5.1 0l2.3-2.3a3.6 3.6 0 0 0-5.1-5.1l-1.2 1.2"/><path d="M13.6 10.4a3.6 3.6 0 0 0-5.1 0l-2.3 2.3a3.6 3.6 0 0 0 5.1 5.1l1.2-1.2"/></svg>
+            连接器
+          </button>
+        </div>
+        <div class="ex-actions">
+          <label class="ex-search">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.4"/><path d="m16 16 4 4"/></svg>
+            <input id="exSearch" placeholder="搜索专家" />
+          </label>
+          <button class="ex-mine" id="exMine">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8.5" r="3.4"/><path d="M5 19c.9-3.4 3.6-5 7-5s6.1 1.6 7 5"/></svg>
+            我的专家
+          </button>
+          <button class="ex-mine" id="skInstalled" hidden>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg>
+            已安装(<span id="skInstalledCount">0</span>)
+          </button>
+          <button class="sk-add" id="cnCustom" hidden>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15.5 4.5a2.8 2.8 0 0 1 4 4L9 19l-5 1.2L5.2 15z"/></svg>
+            自定义连接器
+          </button>
+          <button class="sk-add" id="skAdd" hidden>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+            添加技能
+          </button>
+        </div>
+      </div>
+
+      <div class="ex-pane" id="paneExperts">
+        <div class="ex-cats" id="exCats"></div>
+        <div class="ex-row">
+          <div class="ex-subtabs" id="exSubtabs">
+            <button class="on" data-sub="experts">专家</button>
+            <button data-sub="teams">专家团</button>
+          </div>
+          <div class="ex-sort" id="exSort">
+            <button class="on" data-sort="综合">综合</button>
+            <button data-sort="最热">最热</button>
+            <button data-sort="最新">最新</button>
+          </div>
+        </div>
+        <div class="ex-chips" id="exChips"></div>
+        <div class="ex-grid" id="exGrid"></div>
+      </div>
+
+      <div class="ex-pane" id="paneSkills" hidden>
+        <div class="sk-sec">
+          <div class="sk-sechead">
+            <b>办公能力</b>
+            <span class="sk-sechint">PPTX · DOCX · XLSX · PDF · 本地处理</span>
+          </div>
+          <div class="sk-row" id="skOffice"></div>
+        </div>
+        <div class="sk-sec">
+          <div class="sk-sechead">
+            <b>精选技能</b>
+            <button class="sk-refresh" id="skRefresh">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20 4v4.5h-4.5"/></svg>
+              换一批
+            </button>
+          </div>
+          <div class="sk-row" id="skFeatured"></div>
+        </div>
+
+        <div class="sk-sec">
+          <div class="sk-row2">
+            <div class="sk-tabs" id="skTabs">
+              <button class="on" data-sk="推荐">推荐</button>
+              <button data-sk="SkillHub">SkillHub</button>
+              <button data-sk="套件">套件</button>
+            </div>
+            <div class="ex-sort" id="skSort">
+              <button class="on" data-sksort="综合">综合</button>
+              <button data-sksort="使用量">使用量</button>
+              <button data-sksort="安装量">安装量</button>
+              <button data-sksort="最新">最新</button>
+            </div>
+          </div>
+          <div class="ex-chips" id="skChips"></div>
+          <div class="sk-grid" id="skGrid"></div>
+        </div>
+      </div>
+
+      <div class="ex-pane" id="paneConnectors" hidden>
+        <div class="cn-grid" id="cnGrid"></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- 命令面板 -->
+<div class="palette" id="palette">
+  <input id="paletteInput" placeholder="搜索会话、专家、工具…" />
+  <div class="list" id="paletteList"></div>
+</div>
+
+<div class="plusmenu" id="plusMenu" hidden>
+  <button class="pmi" data-act="files">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.4 11.6 12.3 19.7a5 5 0 0 1-7.1-7.1l8.5-8.5a3.4 3.4 0 0 1 4.8 4.8l-8.4 8.4a1.8 1.8 0 0 1-2.5-2.5l7.7-7.7"/></svg>
+    添加文件
+    <span class="chev"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></span>
+  </button>
+  <div class="pmsep"></div>
+  <button class="pmi" data-act="mode">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 19.5l4.4-1.1L19.7 7.6a2.1 2.1 0 0 0-3-3L5.9 15.4z"/><path d="M14.8 5.9 17.2 8.3"/></svg>
+    模式
+    <span class="chev"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></span>
+  </button>
+  <button class="pmi" data-act="expert">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.2"/><circle cx="9.2" cy="10.4" r=".95" fill="currentColor" stroke="none"/><circle cx="14.8" cy="10.4" r=".95" fill="currentColor" stroke="none"/><path d="M8.7 14.1c.9 1.5 2.1 2.2 3.3 2.2s2.4-.7 3.3-2.2"/></svg>
+    专家
+    <span class="chev"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></span>
+  </button>
+  <button class="pmi" data-act="skill">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.6 14.4 4.9 19.1"/><path d="M14.8 4.9a2 2 0 0 1 2.8 0l1.5 1.5a2 2 0 0 1 0 2.9l-7.1 7.1-4.4-4.4z"/></svg>
+    技能
+    <span class="chev"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></span>
+  </button>
+  <button class="pmi" data-act="connector">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10.4 13.6a3.6 3.6 0 0 0 5.1 0l2.3-2.3a3.6 3.6 0 0 0-5.1-5.1l-1.2 1.2"/><path d="M13.6 10.4a3.6 3.6 0 0 0-5.1 0l-2.3 2.3a3.6 3.6 0 0 0 5.1 5.1l1.2-1.2"/></svg>
+    连接器
+    <span class="chev"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></span>
+  </button>
+</div>
+<div class="submenu" id="plusSub" hidden></div>
+<input type="file" id="fileInput" multiple hidden />
+
+<div class="effort" id="effortMenu" hidden>
+  <div class="eff-head">努力</div>
+  <div id="effList"></div>
+  <div class="eff-foot">越多的需求将消耗更多的使用额度</div>
+</div>
+<div class="imgmenu" id="imageMenu" hidden>
+  <div class="im-head">图片</div>
+  <div id="imgList"></div>
+</div>
+<div class="settings" id="settings" hidden>
+  <div class="sp" role="dialog" aria-label="设置">
+    <button class="sp-close" id="settingsClose" title="关闭"></button>
+    <aside class="sp-nav">
+      <div class="sp-search">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.4"/><path d="m16 16 4 4"/></svg>
+        <input id="spSearch" placeholder="搜索设置项" />
+      </div>
+      <div id="spNav"></div>
+    </aside>
+    <section class="sp-body">
+      <div class="sp-page" id="pageGeneral">
+        <div class="sp-sec">常规</div>
+        <div class="sp-card">
+          <div class="sp-row">
+            <div class="sp-main"><div class="sp-title">语言</div></div>
+            <div class="sp-ctl">
+              <select class="sp-select" id="setLanguage">
+                <option>简体中文</option><option>English</option>
+              </select>
+            </div>
+          </div>
+          <div class="sp-row">
+            <div class="sp-main">
+              <div class="sp-title">链接打开方式</div>
+              <div class="sp-desc">设置 WorkBuddy 对话中链接的默认打开策略。</div>
+            </div>
+            <div class="sp-ctl">
+              <select class="sp-select" id="setLinkOpen">
+                <option>内置打开</option><option>系统浏览器</option>
+              </select>
+            </div>
+          </div>
+          <div class="sp-row">
+            <div class="sp-main"><div class="sp-title">字体大小</div></div>
+            <div class="sp-ctl sp-slider">
+              <input type="range" id="setFontSize" min="0" max="2" step="1" value="1" />
+              <div class="sp-scale"><span>小</span><span>默认</span><span>大</span></div>
+            </div>
+          </div>
+          <div class="sp-row">
+            <div class="sp-main">
+              <div class="sp-title">默认打开方式</div>
+              <div class="sp-desc">设置用 WorkBuddy 独立文件浏览器打开本地文件的默认方式。</div>
+            </div>
+            <div class="sp-ctl">
+              <button class="sp-link" id="setDefaultOpen">未设置
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="sp-sec">权限</div>
+        <div class="sp-card">
+          <div class="sp-row">
+            <div class="sp-main">
+              <div class="sp-title">允许锁屏运行</div>
+              <div class="sp-desc">选择锁屏后的运行方式，保障远程控制与后台 Agent 任务持续执行。</div>
+            </div>
+            <div class="sp-ctl">
+              <select class="sp-select" id="setLockRun">
+                <option>关闭</option><option>允许</option><option>仅后台任务</option>
+              </select>
+            </div>
+          </div>
+          <div class="sp-row">
+            <div class="sp-main">
+              <div class="sp-title">运行时防止系统休眠</div>
+              <div class="sp-desc">在 WorkBuddy 运行任务时，让电脑保持唤醒状态。</div>
+            </div>
+            <div class="sp-ctl"><button class="sp-toggle on" data-on="true" data-key="sleep"><span></span></button></div>
+          </div>
+          <div class="sp-row">
+            <div class="sp-main">
+              <div class="sp-title">开机自动启动</div>
+              <div class="sp-desc">开启后 WorkBuddy 会在你登录电脑后自动启动。</div>
+            </div>
+            <div class="sp-ctl"><button class="sp-toggle" data-on="false" data-key="autostart"><span></span></button></div>
+          </div>
+          <div class="sp-row">
+            <div class="sp-main">
+              <div class="sp-title">网络代理</div>
+              <div class="sp-desc">网络异常时可切换连接方式，修改后立即生效</div>
+            </div>
+            <div class="sp-ctl">
+              <select class="sp-select" id="setProxy">
+                <option>直接连接</option><option>系统代理</option><option>自定义代理</option>
+              </select>
+            </div>
+          </div>
+          <div class="sp-row">
+            <div class="sp-main">
+              <div class="sp-title">自动安装可信技能</div>
+              <div class="sp-desc">自动安装来自可信来源的技能，扩展 Agent 能力。</div>
+            </div>
+            <div class="sp-ctl"><button class="sp-toggle" data-on="false" data-key="skills"><span></span></button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sp-page" id="pageApps" hidden>
+        <div class="sp-sec">应用管理</div>
+        <div class="sp-desc sp-lead">运行时装卸插件。卸载会撤销该插件注册的服务、工具与提示词分节。</div>
+        <div id="spRows"></div>
+        <div class="sp-sec" style="margin-top:22px">当前工具</div>
+        <div id="spTools"></div>
+      </div>
+
+      <div class="sp-page" id="pageCustom" hidden></div>
+    </section>
+  </div>
+</div>
+<div class="moremenu" id="moreMenu" hidden>
+  <div id="moreList"></div>
+</div>
+<button class="help" id="help" title="帮助">?</button>
+<div class="op" id="officePanel" hidden>
+  <div class="op-box">
+    <header><b id="opTitle">办公能力</b><button class="op-close" id="opClose" title="关闭">×</button></header>
+    <div class="op-body">
+      <div class="op-row"><span>操作</span><select id="opTool"></select></div>
+      <div class="op-row" id="opSourceRow"><span>来源</span>
+        <div class="seg"><button id="opSrcUpload" class="on">上传</button><button id="opSrcPath">本地路径</button></div>
+      </div>
+      <input type="file" id="opFile" />
+      <input id="opPath" placeholder="/Users/you/file.pptx" hidden />
+      <div class="op-row" id="opActionRow" hidden><span>动作</span>
+        <select id="opAction"><option value="list">提取公式（LaTeX）</option><option value="number">给显示公式编号</option></select>
+      </div>
+      <div class="op-row" id="opOutputRow" hidden><span>保存到</span><input id="opOutput" placeholder="/Users/you/out.docx" /></div>
+      <textarea id="opText" rows="6" hidden></textarea>
+      <button class="op-run" id="opRun">运行</button>
+      <pre class="op-result" id="opResult">选择文件后点「运行」。</pre>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { EX_CATEGORIES, EX_DEMO, EX_CHIPS, SKILL_FEATURED, SKILL_GRID, SK_CHIPS, CN_CONNECTORS } from './demo-data.js'
+import { applyLanguage, currentLanguage, startAutoTranslate, t } from './i18n.js'
+const TEMPLATES = [
+  { name: 'Paper Garden', cls: 'c-garden', html: '<div class="bloom"></div><div class="t">Rootwell</div>' },
+  { name: 'Mesa', cls: 'c-mesa', html: '<div class="ridge"></div><div class="t">FIELD<br>CONDITIONS</div>' },
+  { name: 'Woodcut Primer', cls: 'c-wood', html: '<div class="leaf"></div><div class="leaf b"></div><div class="t">Learning through<br>the world</div>' },
+  { name: 'Letterpress', cls: 'c-letter', html: '<div class="t"><b>ANNUAL LETTER</b><i>2025 Annual LP letter</i></div>' },
+  { name: 'Classic Editorial', cls: 'c-editorial', html: '<div class="t">What four years of four-day workweeks taught us about output, hours, and who stays.</div>' },
+  { name: 'Feedback', cls: 'c-feedback', html: '<div class="blob"></div><div class="t">TURN<br>IT UP<u>WORK · 2025</u></div>' },
+]
+
+/* ── 偏好：本地保存并即时生效 ───────────────────────── */
+const PREFS_KEY = 'dsh-web-prefs'
+const DEFAULT_PREFS = {
+  fontSize: 14, density: 'comfortable', mono: false,
+  tone: 'balanced', nickname: '',
+  autoScroll: true, showTools: true, autoHome: false,
+  controls: {}, toggles: {},
+}
+
+function loadPrefs() {
+  try {
+    return Object.assign({}, DEFAULT_PREFS, JSON.parse(localStorage.getItem(PREFS_KEY) || '{}'))
+  } catch {
+    return Object.assign({}, DEFAULT_PREFS)
+  }
+}
+
+function savePrefs() {
+  try { localStorage.setItem(PREFS_KEY, JSON.stringify(state.prefs)) } catch { /* 隐私模式下忽略 */ }
+}
+
+const FONT_STEPS = [12, 14, 16]
+
+function applyPrefs() {
+  document.documentElement.style.fontSize = state.prefs.fontSize + 'px'
+  document.body.classList.toggle('compact', state.prefs.density === 'compact')
+  document.body.classList.toggle('mono', !!state.prefs.mono)
+}
+
+const state = {
+  view: 'home',
+  sessionId: null,
+  sessionTitle: '',
+  transcript: [],
+  activity: null,
+  busy: false,
+  sessions: [],
+  presets: [],
+  tools: [],
+  rows: [],
+  presetId: 'manager',
+  effort: 'standard',
+  imageOption: 'auto',
+  settingsPanel: 'general',
+  exTab: 'experts',
+  exQuery: '',
+  exChip: '全部',
+  exSort: '综合',
+  skTab: '推荐',
+  skSort: '综合',
+  skChip: '全部',
+  skQuery: '',
+  skOffset: 0,
+  prefs: loadPrefs(),
+}
+const $ = (id) => document.getElementById(id)
+
+/* ── 传输：SSE 下行 / POST 上行 ───────────────────────── */
+const clientId = (crypto.randomUUID && crypto.randomUUID()) || ('c-' + Date.now())
+let seq = 0
+const pending = new Map()
+const stream = new EventSource('/events?id=' + encodeURIComponent(clientId))
+const connected = new Promise((resolve) => stream.addEventListener('open', () => resolve(), { once: true }))
+
+stream.onmessage = (event) => {
+  let frame
+  try { frame = JSON.parse(event.data) } catch { return }
+  onFrame(frame)
+}
+
+function rpc(method, params) {
+  const id = 'web-' + (++seq)
+  return new Promise((resolve, reject) => {
+    pending.set(id, { resolve, reject })
+    fetch('/send?id=' + encodeURIComponent(clientId), {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ id, method, params: params || {} }),
+    }).catch((error) => { pending.delete(id); reject(error) })
+  })
+}
+
+function onFrame(frame) {
+  if (frame.type === 'rpc.result' || frame.type === 'rpc.error') {
+    const waiter = pending.get(frame.id)
+    if (!waiter) return
+    pending.delete(frame.id)
+    if (frame.type === 'rpc.result') waiter.resolve(frame.result)
+    else waiter.reject(new Error(frame.message))
+    return
+  }
+  if (frame.type === 'event') return onSessionEvent(frame.event)
+  if (frame.type === 'agent-event') return onAgentEvent(frame.event)
+}
+
+function onSessionEvent(event) {
+  if (event.type === 'message') {
+    const payload = event.payload
+    if (payload.role === 'system') return
+    state.transcript.push({
+      role: payload.role,
+      name: payload.name,
+      text: (payload.content || []).filter((p) => p.type === 'text').map((p) => p.text).join(''),
+    })
+    paintThread()
+    return
+  }
+  if (event.type === 'agent/start') {
+    state.busy = true
+    state.activity = '已接收任务'
+    paintActivity()
+    return
+  }
+  if (event.type === 'agent/end') {
+    state.busy = false
+    state.activity = null
+    paintActivity()
+    refreshSessions()
+    if (state.prefs.autoHome) setView('home')
+  }
+}
+
+function onAgentEvent(event) {
+  if (event.type === 'agent/step') state.activity = '第 ' + event.step + ' 步 · 思考中'
+  else if (event.type === 'agent/tool-call') state.activity = '调用 ' + event.call.name
+  else if (event.type === 'agent/tool-result') state.activity = event.name + (event.isError ? ' 失败' : ' 完成') + ' · ' + event.durationMs + 'ms'
+  else if (event.type === 'agent/text') state.activity = '正在输出'
+  paintActivity()
+}
+
+/* ── 视图切换 ────────────────────────────────────────── */
+function setView(view) {
+  state.view = view
+  $('viewHome').classList.toggle('off', view !== 'home')
+  $('viewChat').classList.toggle('on', view === 'chat')
+  $('viewExperts').hidden = view !== 'experts'
+  document.querySelector('.main').classList.toggle('experts-mode', view === 'experts')
+  document.querySelectorAll('.rail .rbtn').forEach((btn) => btn.classList.toggle('on', btn.dataset.nav === 'home' && view === 'home'))
+  if (view === 'chat') $('chatPrompt').focus()
+}
+
+/* ── 渲染 ────────────────────────────────────────────── */
+function paintTemplates() {
+  const grid = $('tplGrid')
+  grid.innerHTML = ''
+  for (const tpl of TEMPLATES) {
+    const item = document.createElement('button')
+    item.className = 'tpl'
+    item.innerHTML = '<div class="cover ' + tpl.cls + '">' + tpl.html + '</div><span>' + tpl.name + '</span>'
+    item.onclick = () => {
+      $('homePrompt').value = '用「' + tpl.name + '」模板做一份品牌提案，包含主色、层级和 3 个关键页面。'
+      $('homePrompt').focus()
+    }
+    grid.appendChild(item)
+  }
+}
+
+function paintSessions() {
+  // 截图侧栏没有会话子列表：这里只保持按钮可用，列表交给 ⌘K 面板。
+  const list = $('sessList')
+  if (list) list.innerHTML = ''
+}
+
+function paintThread() {
+  const thread = $('thread')
+  thread.innerHTML = ''
+  if (state.transcript.length === 0) {
+    const empty = document.createElement('div')
+    empty.className = 'empty'
+    empty.textContent = '已创建会话，等待第一条消息…'
+    thread.appendChild(empty)
+    return
+  }
+  for (const entry of state.transcript) {
+    if (entry.role === 'tool') {
+      if (!state.prefs.showTools) continue
+      const details = document.createElement('details')
+      details.className = 'tool'
+      const summary = document.createElement('summary')
+      summary.textContent = (entry.name || 'tool') + ' · ' + String(entry.text || '').split('\n')[0].slice(0, 80)
+      const pre = document.createElement('pre')
+      pre.textContent = entry.text
+      details.append(summary, pre)
+      thread.appendChild(details)
+      continue
+    }
+    const wrap = document.createElement('div')
+    wrap.className = 'msg ' + entry.role
+    const who = document.createElement('div')
+    who.className = 'who'
+    who.textContent = entry.role === 'user' ? '你' : 'DesignBuddy'
+    const body = document.createElement('div')
+    body.className = 'body'
+    body.textContent = entry.text
+    wrap.append(who, body)
+    thread.appendChild(wrap)
+  }
+  if (state.prefs.autoScroll !== false) thread.scrollTop = thread.scrollHeight
+}
+
+function paintActivity() {
+  const bar = $('activity')
+  bar.innerHTML = ''
+  if (state.activity) {
+    const dot = document.createElement('span')
+    dot.className = 'spinner'
+    bar.append(dot, document.createTextNode(state.activity))
+  }
+  $('chatSend').disabled = state.busy
+  $('homeSend').disabled = state.busy
+}
+
+/* ── 数据加载 ────────────────────────────────────────── */
+async function refreshSessions() {
+  try {
+    state.sessions = await rpc('session.list')
+    paintSessions()
+  } catch (error) { toast(error.message, 'err') }
+}
+
+async function loadPlugins() {
+  const [rows, tools] = await Promise.all([rpc('plugins.rows'), rpc('tools.list')])
+  state.rows = rows
+  state.tools = tools
+}
+
+async function openSession(id, title) {
+  state.sessionId = id
+  state.sessionTitle = title || id
+  try {
+    const events = await rpc('session.events', { sessionId: id })
+    state.transcript = events
+      .filter((event) => event.type === 'message' && event.payload.role !== 'system')
+      .map((event) => ({
+        role: event.payload.role,
+        name: event.payload.name,
+        text: (event.payload.content || []).filter((p) => p.type === 'text').map((p) => p.text).join(''),
+      }))
+    $('chatTitle').textContent = state.sessionTitle
+    $('chatSid').textContent = id
+    setView('chat')
+    paintThread()
+    paintSessions()
+  } catch (error) { toast(error.message, 'err') }
+}
+
+/* ── 发送 ────────────────────────────────────────────── */
+async function send(prompt, kind) {
+  const text = String(prompt || '').trim()
+  if (text === '' || state.busy) return
+  state.busy = true
+  const tag = kind || state.mode
+  paintActivity()
+  try {
+    if (!state.sessionId) {
+      const session = await rpc('session.create', { title: tag ? tag + ' · ' + text.slice(0, 16) : text.slice(0, 20) })
+      state.sessionId = session.id
+      state.sessionTitle = session.title
+      state.transcript = []
+      $('chatTitle').textContent = session.title
+      $('chatSid').textContent = session.id
+    }
+    setView('chat')
+    paintThread()
+    const tone = state.prefs.tone
+    const tonePrefix = tone === 'concise'
+      ? (currentLanguage() === 'en' ? 'Answer concisely. ' : '请简洁回答。')
+      : tone === 'detailed'
+        ? (currentLanguage() === 'en' ? 'Explain in detail. ' : '请详细说明。')
+        : ''
+    await rpc('agent.run', { sessionId: state.sessionId, presetId: state.presetId, prompt: tonePrefix + (tag ? '【' + tag + '】' + text : text) })
+  } catch (error) {
+    toast(error.message, 'err')
+  } finally {
+    state.busy = false
+    paintActivity()
+    refreshSessions()
+  }
+}
+
+function sendFromHome() {
+  const input = $('homePrompt')
+  const text = input.value
+  if (text.trim() === '') {
+    input.focus()
+    toast('先输入一句需求，或选一个模板试试。')
+    return
+  }
+  input.value = ''
+  send(text)
+}
+
+function sendFromChat() {
+  const input = $('chatPrompt')
+  const text = input.value
+  if (text.trim() === '') return
+  input.value = ''
+  send(text)
+}
+
+/* ── 提示 ─────────────────────── */
+
+async function unmount(rowId, cascade) {
+  try {
+    const result = await rpc('plugins.unmount', { rowId: rowId, cascade: cascade })
+    toast('已卸载：' + result.removed.join(' → '), 'ok')
+  } catch (error) {
+    toast(error.message, 'err')
+  }
+  void loadPlugins()
+}
+
+function toast(message, kind) {
+  const node = document.createElement('div')
+  node.className = 't ' + (kind || '')
+  node.textContent = t(message)
+  $('toast').appendChild(node)
+  setTimeout(() => node.remove(), 4600)
+}
+
+function markSoon(el, label) {
+  if (!el || el.dataset.soon) return
+  el.dataset.soon = '1'
+  el.insertAdjacentHTML('beforeend', '<span class="soon">' + (label || '未接入') + '</span>')
+  el.style.cursor = 'default'
+  el.onclick = (event) => event.preventDefault()
+}
+
+function markDesktop(el) {
+  if (!el || el.dataset.desktop) return
+  el.dataset.desktop = '1'
+  el.disabled = true
+  const host = el.closest('.sp-ctl') || el.parentElement
+  if (host) host.insertAdjacentHTML('beforeend', '<span class="soon">仅桌面版</span>')
+}
+
+function syncNickname() {
+  const el = $('homeHello')
+  if (!el) return
+  const name = String(state.prefs.nickname || '').trim()
+  el.hidden = name === ''
+  el.textContent = name === '' ? '' : (currentLanguage() === 'en' ? 'Hi, ' : '你好，') + name
+}
+
+/* 命令面板 */
+function paletteItems() {
+  const items = []
+  for (const session of state.sessions) {
+    items.push({ label: session.title || session.id, hint: '会话', run: () => openSession(session.id, session.title) })
+  }
+  for (const preset of state.presets) {
+    items.push({ label: preset.name, hint: '专家', run: () => { state.presetId = preset.id; setView('home'); $('homePrompt').focus(); toast('已选择专家：' + preset.name, 'ok') } })
+  }
+  for (const tool of state.tools) {
+    items.push({ label: tool.name, hint: '工具', run: () => toast(tool.name + '：' + (tool.description || '')) })
+  }
+  return items
+}
+
+function paintPalette(query) {
+  const list = $('paletteList')
+  list.innerHTML = ''
+  const q = String(query || '').trim().toLowerCase()
+  const items = paletteItems().filter((item) => q === '' || item.label.toLowerCase().includes(q))
+  if (items.length === 0) {
+    const empty = document.createElement('div')
+    empty.className = 'opt'
+    empty.textContent = '没有匹配项'
+    list.appendChild(empty)
+    return
+  }
+  for (const item of items.slice(0, 30)) {
+    const btn = document.createElement('button')
+    btn.className = 'opt'
+    btn.innerHTML = '<span></span><small></small>'
+    btn.firstChild.textContent = item.label
+    btn.lastChild.textContent = item.hint
+    btn.onclick = () => { closePalette(); item.run() }
+    list.appendChild(btn)
+  }
+}
+
+function openPalette() {
+  $('palette').classList.add('on')
+  $('paletteInput').value = ''
+  paintPalette('')
+  $('paletteInput').focus()
+}
+function closePalette() { $('palette').classList.remove('on') }
+
+/* ── 事件绑定 ────────────────────────────────────────── */
+$('homeSend').onclick = sendFromHome
+$('chatSend').onclick = sendFromChat
+$('homePrompt').addEventListener('keydown', (e) => { if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') sendFromHome() })
+$('chatPrompt').addEventListener('keydown', (e) => { if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') sendFromChat() })
+$('backHome').onclick = () => setView('home')
+$('openDrawer').onclick = () => openSettings('general')
+$('openPalette2').onclick = openPalette
+$('paletteInput').addEventListener('input', (e) => paintPalette(e.target.value))
+$('help').onclick = () => toast('演示环境：输入需求会真实驱动本地 Agent Runtime。')
+$('blankNew').onclick = () => { exitMode(); setView('home'); $('homePrompt').value = ''; $('homePrompt').focus() }
+$('newBlank').onclick = () => { exitMode(); setView('home'); $('homePrompt').value = ''; $('homePrompt').focus() }
+$('setFontSize').oninput = () => {
+  state.prefs.fontSize = FONT_STEPS[Number($('setFontSize').value)] || DEFAULT_PREFS.fontSize
+  applyPrefs(); savePrefs()
+}
+$('recentChats').onclick = () => { if (state.sessions[0]) openSession(state.sessions[0].id, state.sessions[0].title); else toast('还没有对话记录。') }
+$('attach').onclick = (event) => { event.stopPropagation(); openPlusMenu($('attach')) }
+document.querySelectorAll('.bcard').forEach((card) => {
+  card.onclick = () => {
+    const presets = {
+      style: '更换视觉风格：采用全新的主题、字体和配色',
+      layout: '重新设计布局：用更强大的布局重构卡片',
+      text: '精简文字：让标题更清晰，文案更简洁',
+    }
+    $('modePrompt').value = presets[card.dataset.act] || ''
+    document.querySelectorAll('.bcard').forEach((item) => item.classList.toggle('on', item === card))
+    $('modePrompt').focus()
+  }
+})
+$('dropzone').onclick = () => $('fileInput').click()
+$('chatModel').onclick = (event) => { event.stopPropagation(); openEffort($('chatModel')) }
+$('settingsClose').onclick = closeSettings
+$('settings').addEventListener('click', (event) => { if (event.target === $('settings')) closeSettings() })
+$('spSearch').addEventListener('input', (event) => renderSettingsNav(event.target.value))
+document.querySelectorAll('.sp-toggle').forEach((btn) => {
+  const key = btn.dataset.key
+  if (key && state.prefs.toggles[key] !== undefined) {
+    btn.dataset.on = String(state.prefs.toggles[key])
+    btn.classList.toggle('on', state.prefs.toggles[key])
+  }
+  btn.onclick = () => {
+    const next = btn.dataset.on !== 'true'
+    btn.dataset.on = String(next)
+    btn.classList.toggle('on', next)
+    if (key) { state.prefs.toggles[key] = next; savePrefs() }
+  }
+})
+document.querySelectorAll('.sp-select').forEach((el) => {
+  const key = el.id || el.dataset.key
+  if (key && state.prefs.controls[key] !== undefined) el.value = state.prefs.controls[key]
+  el.onchange = () => {
+    if (key) { state.prefs.controls[key] = el.value; savePrefs() }
+    toast('已保存', 'ok')
+  }
+})
+$('setLanguage').addEventListener('change', () => {
+  applyLanguage($('setLanguage').value === 'English' ? 'en' : 'zh')
+  syncNickname()
+})
+markDesktop($('setLockRun'))
+markDesktop($('setProxy'))
+document.querySelectorAll('.sp-toggle[data-key="sleep"], .sp-toggle[data-key="autostart"], .sp-toggle[data-key="skills"]').forEach(markDesktop)
+document.addEventListener('click', (event) => {
+  const link = event.target.closest && event.target.closest('a[href]')
+  if (!link) return
+  const href = link.getAttribute('href') || ''
+  if (!/^https?:/i.test(href)) return
+  if (state.prefs.controls.setLinkOpen === '系统浏览器') {
+    event.preventDefault()
+    window.open(href, '_blank', 'noopener')
+  }
+})
+$('imagePickHome').onclick = (event) => { event.stopPropagation(); openImageMenu($('imagePickHome')) }
+$('imagePickMode').onclick = (event) => { event.stopPropagation(); openImageMenu($('imagePickMode')) }
+$('modeSend').onclick = sendFromMode
+$('modePrompt').addEventListener('keydown', (e) => { if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') sendFromMode() })
+$('modeBack').onclick = exitMode
+$('modeClear').onclick = exitMode
+$('attachMode').onclick = (event) => { event.stopPropagation(); openPlusMenu($('attachMode')) }
+$('modeModel').onclick = (event) => { event.stopPropagation(); openEffort($('modeModel')) }
+$('uploadTpl').onclick = () => $('fileInput').click()
+$('attachChat').onclick = (event) => { event.stopPropagation(); openPlusMenu($('attachChat')) }
+$('modelPick').onclick = (event) => { event.stopPropagation(); openEffort($('modelPick')) }
+document.querySelectorAll('.chip').forEach((chip) => {
+  chip.onclick = () => {
+    if (chip.dataset.kind === '图片') { openImageMenu(chip); return }
+    enterMode(chip.dataset.kind)
+  }
+})
+/* 未接入入口：统一徽标或隐藏，不再点击后弹提示 */
+markSoon($('exSubtabs').querySelector('[data-sub="teams"]'))
+markSoon($('exMine'))
+markSoon($('skAdd'))
+markSoon($('cnCustom'))
+markSoon($('upgrade'), '演示')
+markSoon($('credits'), '演示')
+markSoon($('classicMode'))
+markSoon($('recentDocs'))
+markSoon($('browseTpl'))
+markSoon($('allTemplates'))
+$('mic').hidden = true
+$('micMode').hidden = true
+$('exFilter').hidden = true
+$('newFolder').hidden = true
+document.querySelector('.gtabs').hidden = true
+$('setDefaultOpen').closest('.sp-row').hidden = true
+document.querySelector('#importBox .bgrid').hidden = true
+document.querySelectorAll('.side .row').forEach((row) => {
+  const label = row.textContent.trim()
+  if (['全部', '与您共享', '网站', 'API 生成', '垃圾箱'].includes(label)) markSoon(row)
+})
+document.querySelectorAll('.rail .rbtn[title="媒体"], .rail .rbtn[title="邀请成员"]').forEach((btn) => { btn.hidden = true })
+document.querySelectorAll('.bar .icobtn[title="文本设置"]').forEach((btn) => { btn.hidden = true })
+
+document.addEventListener('keydown', (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); openPalette() }
+  if (e.key === 'Escape') { closePalette(); closePlusMenu(); closeEffort(); closeImageMenu(); closeSettings(); closeMoreMenu() }
+})
+
+/* ── 输入框 "+" 菜单 ─────────────────────────────────── */
+const plusMenu = $('plusMenu')
+const plusSub = $('plusSub')
+
+function closePlusSub() {
+  plusSub.hidden = true
+  plusSub.innerHTML = ''
+}
+
+function closePlusMenu() {
+  plusMenu.hidden = true
+  closePlusSub()
+}
+
+function openPlusMenu(anchor) {
+  closePlusSub()
+  plusMenu.hidden = false
+  const rect = anchor.getBoundingClientRect()
+  const width = plusMenu.offsetWidth || 212
+  const height = plusMenu.offsetHeight || 240
+  let left = rect.left - 4
+  left = Math.max(12, Math.min(left, window.innerWidth - width - 12))
+  plusMenu.style.left = left + 'px'
+  // 优先向上弹（截图里就是向上），上方空间不足时改为向下
+  if (rect.top > height + 16) {
+    plusMenu.style.top = 'auto'
+    plusMenu.style.bottom = (window.innerHeight - rect.top + 8) + 'px'
+  } else {
+    plusMenu.style.bottom = 'auto'
+    plusMenu.style.top = (rect.bottom + 8) + 'px'
+  }
+}
+
+function subItems(act) {
+  if (act === 'mode') {
+    return [
+      { label: '标准', desc: '当前路由：mock-planner → mock-designer', on: true, run: () => toast('已是标准模式', 'ok') },
+      { label: '深度思考', desc: '需要真实推理模型', soon: true },
+      { label: '经典版', desc: '旧版生成工具', soon: true },
+    ]
+  }
+  if (act === 'expert') {
+    return state.presets.map((preset) => ({
+      label: preset.name,
+      desc: preset.role || preset.id,
+      on: preset.id === state.presetId,
+      run: () => {
+        state.presetId = preset.id
+        toast('已切换专家：' + preset.name, 'ok')
+        closePlusMenu()
+      },
+    }))
+  }
+  if (act === 'skill') {
+    return state.tools.map((tool) => ({
+      label: tool.name,
+      desc: tool.description || '',
+      run: () => {
+        const target = $('viewChat').classList.contains('on') ? $('chatPrompt') : $('homePrompt')
+        target.value = (target.value ? target.value.replace(/\s*$/, ' ') : '') + '@' + tool.name + ' '
+        target.focus()
+        closePlusMenu()
+      },
+    }))
+  }
+  if (act === 'connector') {
+    const connectors = state.rows.filter((row) => /figma|connector|web|mcp|ssh/i.test(row.plugin))
+    if (connectors.length === 0) return [{ label: '暂无连接器', desc: '在设置 · 设备连接中查看', run: () => { closePlusMenu(); openSettings('devices') } }]
+    return connectors.map((row) => ({
+      label: row.plugin,
+      desc: row.id + (row.mounted ? ' · 已装载' : ' · 未装载'),
+      run: () => {
+        closePlusMenu()
+        openSettings('devices')
+      },
+    }))
+  }
+  return []
+}
+
+function openSub(act, anchorBtn) {
+  const items = subItems(act)
+  if (items.length === 0) { toast('暂无可用项'); return }
+  plusSub.innerHTML = ''
+  for (const item of items) {
+    const btn = document.createElement('button')
+    btn.className = 'smi' + (item.on ? ' on' : '')
+    const label = document.createElement('span')
+    label.textContent = item.label
+    btn.appendChild(label)
+    if (item.soon) {
+      const tag = document.createElement('span')
+      tag.className = 'soon'
+      tag.textContent = '未接入'
+      label.appendChild(tag)
+    }
+    if (item.desc) {
+      const desc = document.createElement('small')
+      desc.className = 'd'
+      desc.textContent = item.desc
+      btn.appendChild(desc)
+    }
+    if (item.soon) { btn.disabled = true; btn.style.cursor = 'default' }
+    btn.onclick = (event) => { event.stopPropagation(); if (item.soon) return; item.run() }
+    plusSub.appendChild(btn)
+  }
+  plusSub.hidden = false
+
+  const menuRect = plusMenu.getBoundingClientRect()
+  const btnRect = anchorBtn.getBoundingClientRect()
+  const width = plusSub.offsetWidth || 214
+  const height = plusSub.offsetHeight || 200
+  let left = menuRect.right + 6
+  if (left + width > window.innerWidth - 12) left = menuRect.left - width - 6
+  plusSub.style.left = Math.max(12, left) + 'px'
+  let bottom = window.innerHeight - btnRect.bottom
+  bottom = Math.max(12, Math.min(bottom, window.innerHeight - height - 12))
+  plusSub.style.bottom = bottom + 'px'
+}
+
+plusMenu.querySelectorAll('.pmi').forEach((btn) => {
+  btn.onclick = (event) => {
+    event.stopPropagation()
+    const act = btn.dataset.act
+    if (act === 'files') {
+      $('fileInput').click()
+      return
+    }
+    if (!plusSub.hidden && plusSub.dataset.act === act) { closePlusSub(); return }
+    plusSub.dataset.act = act
+    openSub(act, btn)
+  }
+})
+
+let pendingOfficeFile = null
+$('fileInput').onchange = (event) => {
+  const file = event.target.files && event.target.files[0]
+  event.target.value = ''
+  closePlusMenu()
+  if (!file) { toast('未选择文件'); return }
+  const ext = (file.name.split('.').pop() || '').toLowerCase()
+  const key = { pptx: 'pptx', docx: 'docx', xlsx: 'xlsx', pdf: 'pdf' }[ext]
+  if (!key) { toast('已选择：' + file.name + '；办公面板支持 PPTX/DOCX/XLSX/PDF'); return }
+  pendingOfficeFile = file
+  officeSrc = 'upload'
+  $('opSrcUpload').classList.add('on')
+  $('opSrcPath').classList.remove('on')
+  openOffice(key)
+  $('opResult').textContent = '已选择 ' + file.name + '，点「运行」读取。'
+}
+
+document.addEventListener('click', (event) => {
+  if (plusMenu.hidden) return
+  if (plusMenu.contains(event.target) || plusSub.contains(event.target)) return
+  if (event.target.closest && event.target.closest('#attach, #attachChat, #attachMode')) return
+  closePlusMenu()
+})
+window.addEventListener('resize', closePlusMenu)
+window.addEventListener('scroll', closePlusMenu, true)
+
+/* ── 类型模式：每种类型有自己的标题、示例与模板 ───────── */
+const MODE_CONTENT = {
+  '演示文稿': {
+    title: '今天我们要做点什么呢？',
+    placeholder: '描述您的演示主题',
+    examples: ['房地产投资指南', '[name] 组合演示文稿', '毕业论文答辩', '课程大纲'],
+    gallery: [
+      { name: 'Fright Night Market', cls: 'g-fright', html: '<div class="gt">FRIGHT<br>NIGHT<br>MARKET</div>' },
+      { name: 'Tumble', cls: 'g-tumble', html: '<div class="fruit"></div><div class="gt">TUMBLE</div>' },
+      { name: 'Mastering Your Difference', cls: 'g-master', html: '<div class="photo"></div><div class="gt">MASTERING YOUR DIFFERENCE</div>' },
+      { name: 'Your First Thirty', cls: 'g-thirty', html: '<div class="win"></div><div class="gt">YOUR<br>FIRST<br>THIRTY</div>' },
+    ],
+  },
+  '文档': {
+    title: '今天想写哪份文档？',
+    placeholder: '描述您的文档主题',
+    examples: ['产品需求文档', '竞品分析报告', '项目周报', '用户使用手册'],
+    gallery: [
+      { name: '产品需求文档', cls: 'g-doc', html: '<div class="gt">产品需求<br>文档</div>' },
+      { name: '竞品分析报告', cls: 'g-doc warm', html: '<div class="gt">竞品分析<br>报告</div>' },
+      { name: '项目周报', cls: 'g-doc cool', html: '<div class="gt">项目<br>周报</div>' },
+      { name: '用户使用手册', cls: 'g-doc dark', html: '<div class="gt">用户<br>手册</div>' },
+    ],
+  },
+  '轮播图': {
+    title: '今天想做什么样的轮播？',
+    placeholder: '描述您的轮播主题',
+    examples: ['小红书九宫格', 'Instagram 新品发布', '知识科普 6 屏', '活动倒计时'],
+    gallery: [
+      { name: '九宫格笔记', cls: 'g-car', html: '<div class="gt">九宫格<br>笔记</div>' },
+      { name: '新品发布', cls: 'g-car mint', html: '<div class="gt">新品<br>发布</div>' },
+      { name: '知识科普', cls: 'g-car lavender', html: '<div class="gt">知识<br>科普</div>' },
+      { name: '活动倒计时', cls: 'g-car amber', html: '<div class="gt">倒计时<br>3 天</div>' },
+    ],
+  },
+  '图片': {
+    title: '今天想生成什么图？',
+    placeholder: '描述您想要的画面',
+    examples: ['品牌主视觉', '产品场景图', '插画风海报', '社交头像'],
+    gallery: [
+      { name: '品牌主视觉', cls: 'g-img', html: '<div class="gt">主视觉</div>' },
+      { name: '产品场景图', cls: 'g-img mint', html: '<div class="gt">场景图</div>' },
+      { name: '插画风海报', cls: 'g-img lavender', html: '<div class="gt">插画<br>海报</div>' },
+      { name: '社交头像', cls: 'g-img amber', html: '<div class="gt">头像</div>' },
+    ],
+  },
+}
+
+const CHIP_ICONS = {
+  '演示文稿': '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="11" rx="1.8"/><path d="M12 15.5V19M8.5 19h7"/></svg>',
+  '文档': '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5h7l5 5v12H6z"/><path d="M13 3.5v5h5"/></svg>',
+  '轮播图': '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.5" width="13" height="13" rx="2"/><path d="M19.5 8v8"/></svg>',
+  '图片': '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="14" rx="2.2"/><circle cx="9" cy="10" r="1.5"/><path d="m5 17 4.2-3.9a1.8 1.8 0 0 1 2.4 0L15 16l1.8-1.6a1.8 1.8 0 0 1 2.3 0l.9.8"/></svg>',
+  '美化': '<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l1.8 5.2L19 9.6l-5.2 1.8L12 16.6l-1.8-5.2L5 9.6l5.2-1.8z"/></svg>',
+  '导入': '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.2v9m0 0 3.3-3.3M12 13.2 8.7 9.9"/><path d="M5 16.4v2A1.6 1.6 0 0 0 6.6 20h10.8a1.6 1.6 0 0 0 1.6-1.6v-2"/></svg>',
+}
+
+function paintExamples(labels) {
+  const box = $('exGrid')
+  box.innerHTML = ''
+  for (const label of labels) {
+    const card = document.createElement('button')
+    card.className = 'excard'
+    const text = document.createElement('span')
+    text.textContent = label
+    const go = document.createElement('span')
+    go.className = 'go'
+    go.textContent = '↖'
+    card.append(text, go)
+    card.onclick = () => { $('modePrompt').value = label; $('modePrompt').focus() }
+    box.appendChild(card)
+  }
+}
+
+function paintGallery(items) {
+  const grid = $('gGrid')
+  grid.innerHTML = ''
+  for (const item of items) {
+    const card = document.createElement('button')
+    card.className = 'gcover ' + item.cls
+    card.innerHTML = item.html
+    card.title = item.name
+    card.onclick = () => toast('模板「' + item.name + '」未接入。')
+    grid.appendChild(card)
+  }
+}
+
+function setHidden(el, hidden) {
+  // SVGElement 没有 hidden 这个 IDL 属性：必须走 attribute，CSS 的 [hidden] 才生效。
+  if (!el) return
+  if (hidden) el.setAttribute('hidden', '')
+  else el.removeAttribute('hidden')
+}
+
+function enterMode(kind) {
+  state.mode = kind
+  const beautify = kind === '美化'
+  const importing = kind === '导入'
+  const fileMode = beautify || importing
+  const content = MODE_CONTENT[kind] || MODE_CONTENT['演示文稿']
+
+  setHidden($('heroHome'), true)
+  setHidden($('heroMode'), false)
+  setHidden($('tplwrap'), true)
+  setHidden($('modeBack'), false)
+  $('modeChipLabel').textContent = kind
+  $('modeChipIcon').innerHTML = CHIP_ICONS[kind] || CHIP_ICONS['演示文稿']
+
+  // 头图、标题、输入区形态按类型切换（美化 / 导入共用照片头图与文件区）
+  setHidden($('artPhoto'), !fileMode)
+  setHidden(document.querySelector('#heroMode .art.wide'), fileMode)
+  $('modeTitle').textContent = fileMode ? '今天您想要创作什么？' : content.title
+  setHidden($('dropzone'), !fileMode)
+  setHidden($('beautifyBox'), !beautify)
+  setHidden($('importBox'), !importing)
+  setHidden($('modeExamples'), fileMode)
+  setHidden($('modeTplActions'), fileMode)
+  setHidden($('modeGallery'), fileMode)
+
+  if (!fileMode) {
+    paintExamples(content.examples)
+    paintGallery(content.gallery)
+  }
+  $('modePrompt').placeholder = beautify
+    ? '描述您希望更改或改进的内容'
+    : importing
+      ? '添加要导入的文件，或从下方选择任务'
+      : content.placeholder
+
+  setView('home')
+  requestAnimationFrame(() => $('modePrompt').focus())
+}
+
+function exitMode() {
+  state.mode = null
+  setHidden($('heroHome'), false)
+  setHidden($('heroMode'), true)
+  setHidden($('tplwrap'), false)
+  setHidden($('modeBack'), true)
+  document.querySelectorAll('.bcard').forEach((card) => card.classList.remove('on'))
+}
+
+function sendFromMode() {
+  const input = $('modePrompt')
+  const text = input.value
+  if (text.trim() === '') { input.focus(); toast('先描述一下' + (state.mode || '') + '主题。'); return }
+  input.value = ''
+  send(text, state.mode)
+}
+
+/* ── 专家页 ─────────────────────────────────────────── */
+
+
+
+
+
+function expertAvatar(name) {
+  let hash = 0
+  for (const ch of name) hash = (hash * 31 + ch.codePointAt(0)) % 360
+  return 'background:linear-gradient(135deg,hsl(' + hash + ',62%,64%),hsl(' + ((hash + 42) % 360) + ',58%,48%))'
+}
+
+function renderExCategories() {
+  const box = $('exCats')
+  box.innerHTML = ''
+  for (const cat of EX_CATEGORIES) {
+    const card = document.createElement('div')
+    card.className = 'ex-cat'
+    const head = document.createElement('div')
+    head.className = 'hd ' + cat.tone
+    head.innerHTML = '<svg width="42" height="42" viewBox="0 0 48 48" fill="none" stroke="#ffffff" stroke-width="1.4" opacity=".55">' +
+      '<circle cx="30" cy="16" r="6"/><path d="M12 38c2-7 7-10 12-10s10 3 12 10"/><rect x="6" y="8" width="12" height="9" rx="2"/></svg>' +
+      '<b>' + cat.name + '</b>'
+    const body = document.createElement('div')
+    body.className = 'bd'
+    for (const item of cat.items) {
+      const row = document.createElement('button')
+      row.className = 'li'
+      row.innerHTML = '<span>' + item + '</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>'
+      row.onclick = () => toast('示例入口：' + item)
+      body.appendChild(row)
+    }
+    card.append(head, body)
+    box.appendChild(card)
+  }
+}
+
+function renderExChips() {
+  const box = $('exChips')
+  box.innerHTML = ''
+  for (const chip of EX_CHIPS) {
+    const btn = document.createElement('button')
+    btn.className = 'ex-chip' + (state.exChip === chip ? ' on' : '')
+    btn.textContent = chip
+    btn.onclick = () => { state.exChip = chip; renderExChips(); paintExperts() }
+    box.appendChild(btn)
+  }
+}
+
+function paintExperts() {
+  const grid = $('exGrid')
+  grid.innerHTML = ''
+  const query = state.exQuery.trim().toLowerCase()
+  const cards = []
+  for (const preset of state.presets) {
+    cards.push({
+      kind: 'real', id: preset.id, name: preset.name, desc: preset.role || '',
+      tags: [preset.kind, preset.tools ? preset.tools.length + ' 个工具' : '全部工具', preset.maxSteps ? preset.maxSteps + ' 步' : '默认步数'],
+      stat: '已接入', weight: 1e9, cats: ['产品设计', '技术工程'],
+    })
+  }
+  for (const demo of EX_DEMO) cards.push(Object.assign({ kind: 'demo' }, demo))
+
+  let list = cards.filter((card) => state.exChip === '全部' || (card.cats || []).indexOf(state.exChip) >= 0)
+  if (query) list = list.filter((card) => (card.name + card.desc).toLowerCase().indexOf(query) >= 0)
+  if (state.exSort === '最热') list = list.slice().sort((a, b) => b.weight - a.weight)
+  if (state.exSort === '最新') list = list.slice().reverse()
+
+  for (const card of list) {
+    const btn = document.createElement('button')
+    btn.className = 'ex-card'
+    btn.innerHTML =
+      '<div class="ex-top">' +
+        '<span class="ex-ava" style="' + expertAvatar(card.name) + '">' + card.name.slice(0, 1) + '</span>' +
+        '<span class="ex-nm">' + card.name +
+          (card.kind === 'real' ? '<span class="ex-badge real">已接入</span>' : card.badge ? '<span class="ex-badge">' + card.badge + '</span>' : '') +
+        '</span>' +
+      '</div>' +
+      '<div class="ex-desc">' + card.desc + '</div>' +
+      '<div class="ex-tags">' + card.tags.map((tag) => '<span class="ex-tag">' + tag + '</span>').join('') + '</div>' +
+      '<div class="ex-foot">⚡ ' + card.stat + '</div>'
+    btn.onclick = () => {
+      if (card.kind === 'real') {
+        state.presetId = card.id
+        toast('默认专家已切换为 ' + card.name, 'ok')
+        paintExperts()
+      } else {
+        toast('示例专家「' + card.name + '」，尚未接入执行引擎。')
+      }
+    }
+    grid.appendChild(btn)
+  }
+  if (list.length === 0) {
+    const empty = document.createElement('div')
+    empty.className = 'ex-empty'
+    empty.textContent = '该筛选下暂无专家，试试「全部」。'
+    grid.appendChild(empty)
+  }
+}
+
+function statWeight(text) {
+  const raw = String(text || '').replace(/,/g, '')
+  const value = parseFloat(raw)
+  if (isNaN(value)) return 0
+  if (/w$/i.test(raw)) return value * 10000
+  if (/亿/.test(raw)) return value * 100000000
+  return value
+}
+
+function skillCard(skill, options) {
+  const card = document.createElement('button')
+  card.className = 'sk-card'
+  card.innerHTML =
+    '<div class="sk-top">' +
+      '<span class="sk-ico" style="background:linear-gradient(135deg,hsl(' + skill.hue + ' 68% 58%),hsl(' + ((skill.hue + 38) % 360) + ' 62% 46%))">' + skill.name.slice(0, 1) + '</span>' +
+      '<span class="sk-nm">' + skill.name + '</span>' +
+    '</div>' +
+    '<div class="sk-desc">' + (skill.desc || '') + '</div>' +
+    '<div class="sk-foot"><span>⚡ ' + skill.use + '</span><span>⬇ ' + skill.install + '</span></div>' +
+    '<span class="sk-addbtn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>'
+  card.onclick = (event) => {
+    if (event.target.closest('.sk-addbtn')) {
+      toast('已请求安装「' + skill.name + '」（演示环境不执行安装）', 'ok')
+      return
+    }
+    toast('技能「' + skill.name + '」：' + (options && options.real ? '来自当前插件' : '示例数据，未接入安装'))
+  }
+  return card
+}
+
+function paintSkills() {
+  const featured = $('skFeatured')
+  featured.innerHTML = ''
+  const pool = SKILL_FEATURED.concat(SKILL_GRID.slice(0, 10))
+  const offset = state.skOffset % pool.length
+  for (let index = 0; index < 5; index += 1) {
+    featured.appendChild(skillCard(pool[(offset + index) % pool.length]))
+  }
+
+  const chips = $('skChips')
+  chips.innerHTML = ''
+  for (const chip of SK_CHIPS) {
+    const btn = document.createElement('button')
+    btn.className = 'ex-chip' + (state.skChip === chip ? ' on' : '')
+    btn.textContent = chip
+    btn.onclick = () => { state.skChip = chip; paintSkills() }
+    chips.appendChild(btn)
+  }
+
+  const grid = $('skGrid')
+  grid.innerHTML = ''
+  let list = SKILL_GRID.slice()
+  if (state.skTab === 'SkillHub') list = list.slice(0, 10)
+  if (state.skTab === '套件') list = list.filter((item) => item.name.indexOf('套件') >= 0)
+  if (state.skChip !== '全部') list = list.filter((item) => (item.cats || []).indexOf(state.skChip) >= 0)
+  const query = state.skQuery.trim().toLowerCase()
+  if (query) list = list.filter((item) => (item.name + item.desc).toLowerCase().indexOf(query) >= 0)
+  if (state.skSort === '使用量') list.sort((a, b) => statWeight(b.use) - statWeight(a.use))
+  if (state.skSort === '安装量') list.sort((a, b) => statWeight(b.install) - statWeight(a.install))
+  if (state.skSort === '最新') list.reverse()
+
+  for (const skill of list) grid.appendChild(skillCard(skill))
+  if (list.length === 0) {
+    const empty = document.createElement('div')
+    empty.className = 'ex-empty'
+    empty.textContent = '该筛选下暂无技能，试试「全部」。'
+    grid.appendChild(empty)
+  }
+}
+
+/* ── 办公能力：技能卡 + 本地处理面板 ─────────────────── */
+const OFFICE_ITEMS = [
+  { key: 'pptx', name: 'PPTX 阅读器', desc: '逐页提取标题与正文', tools: [['office.read_pptx', '读取 PPTX']] },
+  { key: 'docx', name: 'Word 文档处理', desc: '读取段落与表格，或生成新文档', tools: [['office.read_docx', '读取 DOCX'], ['office.write_docx', '生成 DOCX']] },
+  { key: 'formula', name: 'Word 公式处理', desc: 'OMML → LaTeX，显示公式编号', tools: [['office.docx_formulas', '公式处理']] },
+  { key: 'xlsx', name: 'Excel 表格', desc: '读取工作表，或按行生成表格', tools: [['office.read_xlsx', '读取 XLSX'], ['office.write_xlsx', '生成 XLSX']] },
+  { key: 'pdf', name: 'PDF 文本提取', desc: '抽取可复制文本', tools: [['office.read_pdf', '读取 PDF']] },
+]
+let officeSrc = 'upload'
+
+function renderOfficeCards() {
+  const box = $('skOffice')
+  if (!box) return
+  box.innerHTML = ''
+  for (const item of OFFICE_ITEMS) {
+    const card = document.createElement('button')
+    card.className = 'sk-card'
+    card.innerHTML =
+      '<div class="sk-top"><span class="sk-ico" style="background:linear-gradient(135deg,#2f6fed,#7c5cf0)">' + item.name.slice(0, 1) + '</span>' +
+      '<span class="sk-nm">' + item.name + '<span class="ex-badge real">已接入</span></span></div>' +
+      '<div class="sk-desc">' + item.desc + '</div>' +
+      '<div class="sk-foot"><span>⚡ 本地处理</span><span>⬇ 无需联网</span></div>'
+    card.onclick = () => openOffice(item.key)
+    box.appendChild(card)
+  }
+}
+
+function openOffice(key) {
+  const item = OFFICE_ITEMS.find((entry) => entry.key === key) || OFFICE_ITEMS[0]
+  $('opTitle').textContent = item.name
+  const select = $('opTool')
+  select.innerHTML = ''
+  for (const [tool, label] of item.tools) {
+    const option = document.createElement('option')
+    option.value = tool
+    option.textContent = label
+    select.appendChild(option)
+  }
+  $('officePanel').hidden = false
+  $('opResult').textContent = '选择文件后点「运行」。'
+  syncOfficeForm()
+}
+
+function syncOfficeForm() {
+  const tool = $('opTool').value
+  const write = tool.startsWith('office.write_')
+  const formula = tool === 'office.docx_formulas'
+  $('opSourceRow').hidden = write
+  $('opFile').hidden = write || officeSrc !== 'upload'
+  $('opPath').hidden = write || officeSrc !== 'path'
+  $('opActionRow').hidden = !formula
+  $('opOutputRow').hidden = !(write || (formula && $('opAction').value === 'number'))
+  $('opText').hidden = !write
+  if (write) {
+    $('opText').placeholder = tool === 'office.write_xlsx'
+      ? '[{"name":"Sheet1","rows":[["名称","数量"],["苹果",3]]}]'
+      : '# 标题\n正文段落\n- 列表项'
+  }
+}
+
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => resolve(String(reader.result).split(',')[1] || '')
+    reader.onerror = () => reject(reader.error)
+    reader.readAsDataURL(file)
+  })
+}
+
+async function runOffice() {
+  const tool = $('opTool').value
+  const args = {}
+  try {
+    if (tool.startsWith('office.read_') || tool === 'office.docx_formulas') {
+      if (officeSrc === 'upload') {
+        const file = ($('opFile').files && $('opFile').files[0]) || pendingOfficeFile
+        pendingOfficeFile = null
+        if (!file) { toast('先选择一个文件'); return }
+        args.dataBase64 = await fileToBase64(file)
+        args.filename = file.name
+      } else {
+        const path = $('opPath').value.trim()
+        if (!path) { toast('填写本地文件路径'); return }
+        args.filePath = path
+      }
+    }
+    if (tool === 'office.write_docx') {
+      const outputPath = $('opOutput').value.trim()
+      if (!outputPath) { toast('填写保存路径'); return }
+      args.outputPath = outputPath
+      args.text = $('opText').value
+    }
+    if (tool === 'office.write_xlsx') {
+      const outputPath = $('opOutput').value.trim()
+      if (!outputPath) { toast('填写保存路径'); return }
+      args.outputPath = outputPath
+      args.sheets = JSON.parse($('opText').value || '[]')
+    }
+    if (tool === 'office.docx_formulas') {
+      args.action = $('opAction').value
+      if (args.action === 'number') {
+        const outputPath = $('opOutput').value.trim()
+        if (!outputPath) { toast('编号需要填写另存路径'); return }
+        args.outputPath = outputPath
+      }
+    }
+    $('opResult').textContent = '运行中…'
+    const result = await rpc('office.run', { tool, args })
+    $('opResult').textContent = result && result.content ? result.content : '(无输出)'
+    if (result && result.isError) toast('办公操作失败：' + result.content, 'err')
+  } catch (error) {
+    $('opResult').textContent = error.message
+    toast(error.message, 'err')
+  }
+}
+
+$('opClose').onclick = () => { $('officePanel').hidden = true }
+$('officePanel').addEventListener('click', (event) => { if (event.target === $('officePanel')) $('officePanel').hidden = true })
+$('opTool').onchange = syncOfficeForm
+$('opAction').onchange = syncOfficeForm
+$('opSrcUpload').onclick = () => {
+  officeSrc = 'upload'
+  $('opSrcUpload').classList.add('on')
+  $('opSrcPath').classList.remove('on')
+  syncOfficeForm()
+}
+$('opSrcPath').onclick = () => {
+  officeSrc = 'path'
+  $('opSrcPath').classList.add('on')
+  $('opSrcUpload').classList.remove('on')
+  syncOfficeForm()
+}
+$('opRun').onclick = runOffice
+document.addEventListener('keydown', (event) => { if (event.key === 'Escape') $('officePanel').hidden = true })
+
+async function paintConnectors() {
+  const grid = $('cnGrid')
+  grid.innerHTML = ''
+  let real = []
+  try {
+    const rows = await rpc('plugins.rows')
+    real = rows
+      .filter((row) => /figma|connector|web|mcp|ssh/i.test(row.plugin))
+      .map((row) => ({
+        name: row.plugin,
+        desc: '插件行 ' + row.id + (row.mounted ? ' · 已连接' : ' · 未装载'),
+        hue: 265,
+        connected: row.mounted,
+        row,
+      }))
+  } catch (error) {
+    toast(error.message, 'err')
+  }
+
+  const list = real.concat(CN_CONNECTORS.map((item) => Object.assign({}, item)))
+  const query = state.exQuery.trim().toLowerCase()
+  const filtered = query
+    ? list.filter((item) => (item.name + item.desc).toLowerCase().indexOf(query) >= 0)
+    : list
+
+  for (const item of filtered) {
+    const card = document.createElement('div')
+    card.className = 'cn-card'
+    card.innerHTML =
+      '<span class="cn-ico" style="background:linear-gradient(135deg,hsl(' + item.hue + ' 68% 58%),hsl(' + ((item.hue + 38) % 360) + ' 62% 46%))">' + item.name.slice(0, 1) + '</span>' +
+      '<span class="cn-main">' +
+        '<span class="cn-nm">' + item.name + (item.connected ? '<span class="ex-badge real">已连接</span>' : '') + '</span>' +
+        '<span class="cn-desc">' + item.desc + '</span>' +
+      '</span>' +
+      '<span class="cn-add"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>'
+    card.onclick = (event) => {
+      if (event.target.closest('.cn-add')) {
+        toast('已请求连接「' + item.name + '」（演示环境不执行授权）', 'ok')
+        return
+      }
+      if (item.row) { closeSettings(); openSettings('devices'); return }
+      toast('示例连接器「' + item.name + '」，尚未接入。')
+    }
+    grid.appendChild(card)
+  }
+
+  if (filtered.length === 0) {
+    const empty = document.createElement('div')
+    empty.className = 'ex-empty'
+    empty.textContent = '没有匹配的连接器。'
+    grid.appendChild(empty)
+  }
+}
+
+function switchExTab(tab) {
+  state.exTab = tab
+  document.querySelectorAll('.ex-tab').forEach((el) => el.classList.toggle('on', el.dataset.extab === tab))
+  $('paneExperts').hidden = tab !== 'experts'
+  $('paneSkills').hidden = tab !== 'skills'
+  $('paneConnectors').hidden = tab !== 'connectors'
+  const isSkills = tab === 'skills'
+  $('exMine').hidden = tab !== 'experts'
+  $('skInstalled').hidden = !isSkills
+  $('skAdd').hidden = !isSkills
+  $('cnCustom').hidden = tab !== 'connectors'
+  $('exSearch').placeholder = isSkills ? '搜索技能' : tab === 'connectors' ? '搜索连接器' : '搜索专家'
+  if (isSkills) $('skInstalledCount').textContent = String(state.tools.length)
+  if (tab === 'experts') paintExperts()
+  if (tab === 'skills') paintSkills()
+  if (tab === 'connectors') void paintConnectors()
+}
+
+function openExperts(tab) {
+  closeSettings()
+  closeMoreMenu()
+  exitMode()
+  document.querySelector('.main').classList.add('experts-mode')
+  $('viewExperts').hidden = false
+  $('viewHome').classList.add('off')
+  $('viewChat').classList.remove('on')
+  state.view = 'experts'
+  renderExCategories()
+  renderExChips()
+  switchExTab(tab || 'experts')
+}
+
+/* ── 更多：技能 / 专家 / 连接器 ───────────────────────── */
+const MORE_ITEMS = [
+  {
+    key: 'skills', name: '技能', desc: '已装载的工具能力', view: 'skills',
+    icon: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.6 14.4 4.9 19.1"/><path d="M14.8 4.9a2 2 0 0 1 2.8 0l1.5 1.5a2 2 0 0 1 0 2.9l-7.1 7.1-4.4-4.4z"/></svg>',
+  },
+  {
+    key: 'office', name: '办公', desc: 'PPTX · DOCX · XLSX · PDF', view: 'skills',
+    icon: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5h7l5 5v12H6z"/><path d="M13 3.5v5h5"/></svg>',
+  },
+  {
+    key: 'experts', name: '专家', desc: 'Agent 预设与分工', view: 'experts',
+    icon: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.2"/><circle cx="9.2" cy="10.4" r=".95" fill="currentColor" stroke="none"/><circle cx="14.8" cy="10.4" r=".95" fill="currentColor" stroke="none"/><path d="M8.7 14.1c.9 1.5 2.1 2.2 3.3 2.2s2.4-.7 3.3-2.2"/></svg>',
+  },
+  {
+    key: 'connectors', name: '连接器', desc: '外部工具接入', view: 'connectors',
+    icon: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10.4 13.6a3.6 3.6 0 0 0 5.1 0l2.3-2.3a3.6 3.6 0 0 0-5.1-5.1l-1.2 1.2"/><path d="M13.6 10.4a3.6 3.6 0 0 0-5.1 0l-2.3 2.3a3.6 3.6 0 0 0 5.1 5.1l1.2-1.2"/></svg>',
+  },
+]
+
+async function renderMoreMenu() {
+  const box = $('moreList')
+  box.innerHTML = ''
+  const counts = { skills: '·', experts: '·', connectors: '·' }
+  try {
+    const [tools, presets, rows] = await Promise.all([rpc('tools.list'), rpc('presets.list'), rpc('plugins.rows')])
+    counts.skills = tools.length
+    counts.experts = presets.length
+    counts.connectors = rows.filter((row) => /figma|connector|web|mcp|ssh/i.test(row.plugin) && row.mounted).length
+  } catch (error) {
+    toast(error.message, 'err')
+  }
+  for (const item of MORE_ITEMS) {
+    const btn = document.createElement('button')
+    btn.className = 'mm-item'
+    btn.innerHTML =
+      '<span class="mm-ico">' + item.icon + '</span>' +
+      '<span class="mm-txt"><b>' + item.name + '</b><small>' + item.desc + '</small></span>' +
+      '<span class="mm-count">' + counts[item.key] + '</span>'
+    btn.onclick = () => {
+      closeMoreMenu()
+      openExperts(item.view)
+      if (item.key === 'office') {
+        const box = $('skOffice')
+        box.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        box.classList.add('flash')
+        setTimeout(() => box.classList.remove('flash'), 1200)
+      }
+    }
+    box.appendChild(btn)
+  }
+}
+
+function openMoreMenu() {
+  const menu = $('moreMenu')
+  if (!menu.hidden) return
+  menu.hidden = false
+  void renderMoreMenu()
+  const rect = $('moreMenuBtn').getBoundingClientRect()
+  const width = menu.offsetWidth || 220
+  const height = menu.offsetHeight || 168
+  const left = Math.min(rect.right + 10, window.innerWidth - width - 12)
+  const top = Math.max(12, Math.min(rect.top - 6, window.innerHeight - height - 12))
+  menu.style.left = left + 'px'
+  menu.style.top = top + 'px'
+}
+
+function closeMoreMenu() {
+  $('moreMenu').hidden = true
+}
+
+let moreTimer = null
+const scheduleCloseMore = () => {
+  clearTimeout(moreTimer)
+  moreTimer = setTimeout(closeMoreMenu, 150)
+}
+const cancelCloseMore = () => clearTimeout(moreTimer)
+
+$('navTemplates').onclick = () => {
+  closeSettings()
+  closeMoreMenu()
+  exitMode()
+  setView('home')
+  const box = $('tplwrap')
+  if (!box) return
+  box.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  box.classList.add('flash')
+  setTimeout(() => box.classList.remove('flash'), 1400)
+}
+$('exTabs').addEventListener('click', (event) => {
+  const tab = event.target.closest('.ex-tab')
+  if (tab) switchExTab(tab.dataset.extab)
+})
+$('exSearch').addEventListener('input', (event) => {
+  const value = event.target.value
+  if (state.exTab === 'skills') { state.skQuery = value; paintSkills(); return }
+  state.exQuery = value
+  if (state.exTab === 'connectors') { void paintConnectors(); return }
+  if (state.exTab !== 'experts') switchExTab('experts')
+  paintExperts()
+})
+$('exSort').addEventListener('click', (event) => {
+  const btn = event.target.closest('button')
+  if (!btn) return
+  state.exSort = btn.dataset.sort
+  document.querySelectorAll('#exSort button').forEach((el) => el.classList.toggle('on', el === btn))
+  paintExperts()
+})
+$('exSubtabs').addEventListener('click', (event) => {
+  const btn = event.target.closest('button')
+  if (!btn || btn.dataset.sub === 'teams') return
+  document.querySelectorAll('#exSubtabs button').forEach((el) => el.classList.toggle('on', el === btn))
+  paintExperts()
+})
+$('skRefresh').onclick = () => { state.skOffset += 5; paintSkills() }
+$('skTabs').addEventListener('click', (event) => {
+  const btn = event.target.closest('button')
+  if (!btn) return
+  state.skTab = btn.dataset.sk
+  document.querySelectorAll('#skTabs button').forEach((el) => el.classList.toggle('on', el === btn))
+  paintSkills()
+})
+$('skSort').addEventListener('click', (event) => {
+  const btn = event.target.closest('button')
+  if (!btn) return
+  state.skSort = btn.dataset.sksort
+  document.querySelectorAll('#skSort button').forEach((el) => el.classList.toggle('on', el === btn))
+  paintSkills()
+})
+$('skInstalled').onclick = () => toast('已安装技能来自插件，可在设置 → 应用管理中查看。')
+document.querySelector('.rail [data-nav="home"]').onclick = () => {
+  closeSettings(); closeMoreMenu(); exitMode(); setView('home')
+}
+$('moreMenuBtn').addEventListener('mouseenter', () => { cancelCloseMore(); openMoreMenu() })
+$('moreMenuBtn').addEventListener('mouseleave', scheduleCloseMore)
+$('moreMenu').addEventListener('mouseenter', cancelCloseMore)
+$('moreMenu').addEventListener('mouseleave', scheduleCloseMore)
+$('moreMenuBtn').addEventListener('click', () => { cancelCloseMore(); openMoreMenu() })
+window.addEventListener('resize', closeMoreMenu)
+window.addEventListener('scroll', closeMoreMenu, true)
+
+/* ── 设置窗口 ─────────────────────────────────────────── */
+const SP_ICONS = {
+  gear: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 3.5v2.2M12 18.3v2.2M3.5 12h2.2M18.3 12h2.2M6 6l1.6 1.6M16.4 16.4 18 18M18 6l-1.6 1.6M7.6 16.4 6 18"/></svg>',
+  user: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="8.5" r="3.4"/><path d="M5 19c.9-3.4 3.6-5 7-5s6.1 1.6 7 5"/></svg>',
+  card: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="3.5" y="5.5" width="17" height="13" rx="2.4"/><path d="M3.5 10h17"/></svg>',
+  palette: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M12 3.8a8.2 8.2 0 0 0 0 16.4c1.4 0 2-.8 2-1.8 0-1.6-1.6-1.7-1.6-3 0-1 .8-1.8 1.9-1.8h1.5c2 0 3.4-1.4 3.4-3.4 0-3.6-3.3-6.4-7.2-6.4z"/><circle cx="8" cy="10" r="1"/><circle cx="11" cy="7.4" r="1"/><circle cx="15" cy="8.4" r="1"/></svg>',
+  keyboard: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="3" y="6.5" width="18" height="11" rx="2"/><path d="M6.5 10h.01M9.5 10h.01M12.5 10h.01M15.5 10h.01M18 10h.01M7.5 14h9"/></svg>',
+  sparkle: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.6l1.7 4.7 4.7 1.7-4.7 1.7L12 16.4l-1.7-4.7L5.6 10l4.7-1.7z"/><path d="M17.6 15.4l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/></svg>',
+  brain: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M9.5 5.5A3 3 0 0 0 6.6 8.4 3 3 0 0 0 5.4 14a3 3 0 0 0 4.1 4.4V5.5z"/><path d="M14.5 5.5a3 3 0 0 1 2.9 2.9 3 3 0 0 1 1.2 5.6 3 3 0 0 1-4.1 4.4V5.5z"/></svg>',
+  robot: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="4.5" y="8" width="15" height="11" rx="3"/><circle cx="9.4" cy="13" r="1.1"/><circle cx="14.6" cy="13" r="1.1"/><path d="M12 4.5V8M9 16.5h6"/></svg>',
+  cube: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3.5 8 4.2v8.6l-8 4.2-8-4.2V7.7z"/><path d="m4 7.7 8 4.3 8-4.3M12 12v8.5"/></svg>',
+  life: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="8.2"/><circle cx="12" cy="12" r="3.2"/><path d="m6.3 6.3 3.5 3.5M17.7 6.3l-3.5 3.5M6.3 17.7l3.5-3.5M17.7 17.7l-3.5-3.5"/></svg>',
+  plug: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M9 3.5v5M15 3.5v5"/><path d="M6.5 8.5h11v3a5.5 5.5 0 0 1-11 0z"/><path d="M12 17v3.5"/></svg>',
+  list: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M8 7h12M8 12h12M8 17h12"/><circle cx="4.4" cy="7" r="1"/><circle cx="4.4" cy="12" r="1"/><circle cx="4.4" cy="17" r="1"/></svg>',
+  db: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><ellipse cx="12" cy="6.4" rx="7" ry="2.8"/><path d="M5 6.4v11.2c0 1.5 3.1 2.8 7 2.8s7-1.3 7-2.8V6.4"/><path d="M5 12c0 1.5 3.1 2.8 7 2.8s7-1.3 7-2.8"/></svg>',
+  app: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="4" y="4" width="7" height="7" rx="1.8"/><rect x="13" y="4" width="7" height="7" rx="1.8"/><rect x="4" y="13" width="7" height="7" rx="1.8"/><rect x="13" y="13" width="7" height="7" rx="1.8"/></svg>',
+}
+
+const SETTINGS_NAV = [
+  { group: '设置', items: [
+    { id: 'general', name: '通用', icon: 'gear' },
+    { id: 'profile', name: '个人主页', icon: 'user' },
+    { id: 'plan', name: '套餐与积分', icon: 'card' },
+    { id: 'appearance', name: '外观', icon: 'palette' },
+    { id: 'shortcuts', name: '快捷键', icon: 'keyboard' },
+  ]},
+  { group: '功能', items: [
+    { id: 'personal', name: '个性化', icon: 'sparkle' },
+    { id: 'memory', name: '记忆与进化', icon: 'brain' },
+    { id: 'agents', name: '智能体', icon: 'robot' },
+    { id: 'models', name: '模型', icon: 'cube' },
+    { id: 'assistant', name: '助理', icon: 'life' },
+    { id: 'devices', name: '设备连接', icon: 'plug' },
+    { id: 'dialogue', name: '对话流', icon: 'list' },
+  ]},
+  { group: '数据与安全', items: [
+    { id: 'data', name: '数据管理', icon: 'db' },
+    { id: 'apps', name: '应用管理', icon: 'app' },
+  ]},
+]
+
+function renderSettingsNav(filter) {
+  const nav = $('spNav')
+  nav.innerHTML = ''
+  const q = String(filter || '').trim().toLowerCase()
+  for (const group of SETTINGS_NAV) {
+    const items = group.items.filter((item) => q === '' || item.name.toLowerCase().includes(q))
+    if (items.length === 0) continue
+    const label = document.createElement('div')
+    label.className = 'sp-group'
+    label.textContent = group.group
+    nav.appendChild(label)
+    for (const item of items) {
+      const btn = document.createElement('button')
+      btn.className = 'sp-item' + (state.settingsPanel === item.id ? ' on' : '')
+      btn.dataset.panel = item.id
+      btn.innerHTML = SP_ICONS[item.icon] + '<span>' + item.name + '</span>'
+      btn.onclick = () => selectSettingsPanel(item.id)
+      nav.appendChild(btn)
+    }
+  }
+}
+
+function selectSettingsPanel(id) {
+  state.settingsPanel = id
+  document.querySelectorAll('.sp-item').forEach((el) => el.classList.toggle('on', el.dataset.panel === id))
+  const custom = id !== 'general' && id !== 'apps'
+  $('pageGeneral').hidden = id !== 'general'
+  $('pageApps').hidden = id !== 'apps'
+  $('pageCustom').hidden = !custom
+  if (custom) void openPanel(id)
+  if (id === 'apps') paintSettingsApps()
+}
+
+/* ── 设置面板的小部件 ───────────────────────────────── */
+function spSection(text) {
+  const el = document.createElement('div')
+  el.className = 'sp-sec'
+  el.textContent = text
+  return el
+}
+
+function spCard() {
+  const el = document.createElement('div')
+  el.className = 'sp-card'
+  return el
+}
+
+function spValue(text) {
+  const el = document.createElement('span')
+  el.className = 'sp-value'
+  el.textContent = text
+  return el
+}
+
+function spKbd(text) {
+  const el = document.createElement('span')
+  el.className = 'sp-kbd'
+  el.textContent = text
+  return el
+}
+
+function spRow(title, desc, control) {
+  const row = document.createElement('div')
+  row.className = 'sp-row'
+  const main = document.createElement('div')
+  main.className = 'sp-main'
+  const t = document.createElement('div')
+  t.className = 'sp-title'
+  t.textContent = title
+  main.appendChild(t)
+  if (desc) {
+    const d = document.createElement('div')
+    d.className = 'sp-desc'
+    d.textContent = desc
+    main.appendChild(d)
+  }
+  row.appendChild(main)
+  if (control) {
+    const ctl = document.createElement('div')
+    ctl.className = 'sp-ctl'
+    ctl.appendChild(control)
+    row.appendChild(ctl)
+  }
+  return row
+}
+
+function spSelect(options, value, onChange) {
+  const sel = document.createElement('select')
+  sel.className = 'sp-select'
+  for (const option of options) {
+    const opt = document.createElement('option')
+    opt.textContent = option
+    sel.appendChild(opt)
+  }
+  sel.value = value
+  sel.onchange = () => onChange(sel.value)
+  return sel
+}
+
+function spToggle(on, onChange) {
+  const btn = document.createElement('button')
+  btn.className = 'sp-toggle' + (on ? ' on' : '')
+  btn.dataset.on = String(!!on)
+  btn.innerHTML = '<span></span>'
+  btn.onclick = () => {
+    const next = btn.dataset.on !== 'true'
+    btn.dataset.on = String(next)
+    btn.classList.toggle('on', next)
+    onChange(next)
+  }
+  return btn
+}
+
+function spButton(label, onClick, kind) {
+  const btn = document.createElement('button')
+  btn.className = 'mini' + (kind === 'danger' ? ' danger' : '')
+  btn.textContent = label
+  btn.onclick = onClick
+  return btn
+}
+
+async function openPanel(id) {
+  const box = $('pageCustom')
+  box.innerHTML = ''
+  const meta = SETTINGS_NAV.flatMap((group) => group.items).find((entry) => entry.id === id)
+  const head = document.createElement('div')
+  head.className = 'sp-sec'
+  head.textContent = meta ? meta.name : id
+  box.appendChild(head)
+  const builder = PANEL_BUILDERS[id]
+  if (!builder) {
+    const soon = document.createElement('div')
+    soon.className = 'sp-soon'
+    soon.textContent = '该设置项尚未接入。'
+    box.appendChild(soon)
+    return
+  }
+  try {
+    await builder(box)
+  } catch (error) {
+    const err = document.createElement('div')
+    err.className = 'sp-soon'
+    err.textContent = '加载失败：' + error.message
+    box.appendChild(err)
+  }
+}
+
+/* ── 各栏目 ─────────────────────────────────────────── */
+async function buildProfilePanel(box) {
+  const sessions = await rpc('session.list')
+  const card = spCard()
+  card.append(
+    spRow('工作区', '当前工作区名称', spValue('DesignBuddy Workspace')),
+    spRow('计划', null, spValue('Free')),
+    spRow('会话数', '本进程内创建过的会话', spValue(String(sessions.length))),
+    spRow('成员', null, spValue('1（本地）')),
+  )
+  box.append(spSection('身份'), card)
+  const actions = spCard()
+  actions.append(spRow('打开工作区', '关闭设置并回到首页', spButton('打开', () => { closeSettings(); setView('home') })))
+  box.append(actions)
+}
+
+async function buildPlanPanel(box) {
+  const sessions = await rpc('session.list')
+  const messages = sessions.reduce((total, item) => total + (item.messages || 0), 0)
+  const card = spCard()
+  card.append(
+    spRow('当前计划', null, spValue('Free')),
+    spRow('剩余额度', '演示值，不接计费', spValue('173')),
+    spRow('已产生会话', null, spValue(String(sessions.length))),
+    spRow('已产生消息', null, spValue(String(messages))),
+  )
+  box.append(spSection('套餐与积分'), card)
+  const cta = spCard()
+  const upgradeBtn = spButton('升级', () => {})
+  upgradeBtn.disabled = true
+  upgradeBtn.insertAdjacentHTML('beforeend', '<span class="soon">未接入</span>')
+  cta.append(spRow('升级到 Pro', '解锁 Max 档位与更高额度', upgradeBtn))
+  box.append(cta)
+}
+
+function buildAppearancePanel(box) {
+  const range = document.createElement('input')
+  range.type = 'range'
+  range.min = '12'
+  range.max = '18'
+  range.step = '1'
+  range.value = String(state.prefs.fontSize)
+  range.className = 'sp-range'
+  const label = spValue(state.prefs.fontSize + 'px')
+  range.oninput = () => {
+    state.prefs.fontSize = Number(range.value)
+    label.textContent = range.value + 'px'
+    applyPrefs()
+    savePrefs()
+    syncFontStep()
+  }
+  const slider = document.createElement('div')
+  slider.className = 'sp-sliderwrap'
+  slider.append(range, label)
+
+  const card = spCard()
+  card.append(
+    spRow('字体大小', '即时生效，保存在本地', slider),
+    spRow('界面密度', null, spSelect(['舒适', '紧凑'], state.prefs.density === 'compact' ? '紧凑' : '舒适', (value) => {
+      state.prefs.density = value === '紧凑' ? 'compact' : 'comfortable'
+      applyPrefs(); savePrefs()
+    })),
+    spRow('等宽字体', '聊天气泡与工具输出使用等宽字体', spToggle(state.prefs.mono, (on) => {
+      state.prefs.mono = on; applyPrefs(); savePrefs()
+    })),
+  )
+  box.append(spSection('外观'), card)
+}
+
+function buildShortcutsPanel(box) {
+  const card = spCard()
+  card.append(
+    spRow('打开命令面板', '搜索会话、专家与工具', spKbd('⌘K / Ctrl+K')),
+    spRow('发送消息', '在任一输入框中发送', spKbd('⌘↵ / Ctrl+Enter')),
+    spRow('关闭弹层', '菜单、抽屉与设置', spKbd('Esc')),
+  )
+  box.append(spSection('快捷键'), card)
+  const note = document.createElement('div')
+  note.className = 'sp-soon'
+  note.textContent = '快捷键当前固定，暂不支持自定义。'
+  box.append(note)
+}
+
+function buildPersonalPanel(box) {
+  const nickname = document.createElement('input')
+  nickname.className = 'sp-input'
+  nickname.placeholder = '例如：设计师小李'
+  nickname.value = state.prefs.nickname || ''
+  nickname.oninput = () => { state.prefs.nickname = nickname.value; savePrefs(); syncNickname() }
+
+  const card = spCard()
+  card.append(
+    spRow('称呼', '用于界面问候，不写入会话', nickname),
+    spRow('回复语气', '仅本地偏好，不改变后端', spSelect(['平衡', '简洁', '详尽'],
+      state.prefs.tone === 'concise' ? '简洁' : state.prefs.tone === 'detailed' ? '详尽' : '平衡',
+      (value) => {
+        state.prefs.tone = value === '简洁' ? 'concise' : value === '详尽' ? 'detailed' : 'balanced'
+        savePrefs()
+      })),
+  )
+  box.append(spSection('个性化'), card)
+  const note = document.createElement('div')
+  note.className = 'sp-soon'
+  note.textContent = '这些偏好保存在浏览器 localStorage，不会发送到后端。'
+  box.append(note)
+}
+
+async function buildMemoryPanel(box) {
+  const entries = await rpc('memory.list')
+  const card = spCard()
+  if (entries.length === 0) card.append(spRow('暂无设计决策', '保存后会进入系统提示词'))
+  for (const entry of entries) card.append(spRow(entry.topic, entry.content, spValue(entry.id)))
+  box.append(spSection('设计记忆（会进入系统提示词）'), card)
+
+  const form = spCard()
+  const topic = document.createElement('input')
+  topic.className = 'sp-input'
+  topic.placeholder = '主题，例如「圆角」'
+  const content = document.createElement('input')
+  content.className = 'sp-input'
+  content.placeholder = '内容，例如「统一 8px」'
+  const save = spButton('写入', async () => {
+    if (!topic.value.trim() || !content.value.trim()) { toast('主题和内容都要填。'); return }
+    try {
+      await rpc('memory.save', { topic: topic.value.trim(), content: content.value.trim() })
+      toast('已写入设计记忆', 'ok')
+      void openPanel('memory')
+    } catch (error) { toast(error.message, 'err') }
+  })
+  const fields = document.createElement('div')
+  fields.className = 'sp-form'
+  fields.append(topic, content, save)
+  form.append(fields)
+  box.append(spSection('新增决策'), form)
+}
+
+async function buildAgentsPanel(box) {
+  const presets = await rpc('presets.list')
+  const card = spCard()
+  for (const preset of presets) {
+    const isDefault = preset.id === state.presetId
+    const btn = spButton(isDefault ? '默认' : '设为默认', () => {
+      state.presetId = preset.id
+      toast('默认专家：' + preset.name, 'ok')
+      void openPanel('agents')
+    })
+    if (isDefault) btn.disabled = true
+    const bits = [preset.role]
+    bits.push(preset.tools ? '工具 ' + preset.tools.length + ' 个' : '全部工具')
+    if (preset.maxSteps) bits.push('最多 ' + preset.maxSteps + ' 步')
+    card.append(spRow(preset.name, bits.join(' · '), btn))
+  }
+  box.append(spSection('智能体'), card)
+}
+
+async function buildModelsPanel(box) {
+  const status = await rpc('router.status')
+  const adapters = spCard()
+  if (status.adapters.length === 0) adapters.append(spRow('未注册适配器', '装载 llm 适配器插件后出现'))
+  for (const adapter of status.adapters) {
+    adapters.append(spRow(adapter.id, '模型：' + adapter.models.join(', '), spValue('当前 ' + state.effort)))
+  }
+  box.append(spSection('适配器'), adapters)
+
+  const policies = spCard()
+  if (status.policies.length === 0) policies.append(spRow('无路由策略', null))
+  for (const policy of status.policies) {
+    policies.append(spRow(policy.kind, '候选链（按顺序回退）', spValue(policy.candidates.join(' → '))))
+  }
+  box.append(spSection('路由策略'), policies)
+
+  const attempts = spCard()
+  const recent = status.attempts.slice(-5).reverse()
+  if (recent.length === 0) attempts.append(spRow('尚无调用', '发起一次对话后这里会记录'))
+  for (const attempt of recent) {
+    attempts.append(spRow(
+      attempt.adapter,
+      (attempt.model || '—') + ' · ' + (attempt.ok ? '成功' : '失败') + (attempt.error ? ' · ' + attempt.error : ''),
+      spValue(attempt.ms + 'ms'),
+    ))
+  }
+  box.append(spSection('最近调用'), attempts)
+}
+
+async function buildAssistantPanel(box) {
+  const presets = await rpc('presets.list')
+  const names = presets.map((preset) => preset.name)
+  const current = presets.find((preset) => preset.id === state.presetId)
+  const card = spCard()
+  card.append(
+    spRow('默认助理', '新建会话使用的 preset', spSelect(names, current ? current.name : names[0], (value) => {
+      const target = presets.find((preset) => preset.name === value)
+      if (target) { state.presetId = target.id; toast('默认助理：' + target.name, 'ok') }
+    })),
+    spRow('完成后返回首页', 'Agent 结束时自动切回首页', spToggle(state.prefs.autoHome, (on) => {
+      state.prefs.autoHome = on; savePrefs()
+    })),
+  )
+  box.append(spSection('助理'), card)
+  const reset = spCard()
+  reset.append(spRow('重置为设计经理', '恢复 manager preset', spButton('重置', () => {
+    state.presetId = 'manager'
+    toast('已重置为 manager', 'ok')
+    void openPanel('assistant')
+  })))
+  box.append(reset)
+}
+
+async function buildDevicesPanel(box) {
+  const rows = await rpc('plugins.rows')
+  const connectors = rows.filter((row) => /figma|connector|web|mcp|ssh/i.test(row.plugin))
+  const card = spCard()
+  if (connectors.length === 0) card.append(spRow('暂无连接器', '装载连接器插件后出现'))
+  for (const row of connectors) {
+    const wrap = document.createElement('div')
+    wrap.className = 'sp-inline'
+    wrap.append(spValue(row.mounted ? '已连接' : '未装载'))
+    if (row.mounted) {
+      wrap.append(spButton('断开', async () => {
+        try {
+          await unmount(row.id, false)
+          toast('已断开 ' + row.plugin, 'ok')
+        } catch (error) { toast(error.message, 'err') }
+        void openPanel('devices')
+      }, 'danger'))
+    }
+    card.append(spRow(row.plugin, row.id, wrap))
+  }
+  box.append(spSection('设备连接'), card)
+}
+
+async function buildDialoguePanel(box) {
+  const presets = await rpc('presets.list')
+  const current = presets.find((preset) => preset.id === state.presetId)
+  const card = spCard()
+  card.append(
+    spRow('当前专家', null, spValue(current ? current.name : '—')),
+    spRow('最大步数', '单次对话最多调用模型的次数', spValue(current && current.maxSteps ? String(current.maxSteps) : '默认 6')),
+    spRow('显示工具结果', '关闭后聊天里只保留文字', spToggle(state.prefs.showTools, (on) => {
+      state.prefs.showTools = on; savePrefs(); paintThread()
+    })),
+    spRow('自动滚动', '新消息到达时滚动到底部', spToggle(state.prefs.autoScroll, (on) => {
+      state.prefs.autoScroll = on; savePrefs()
+    })),
+  )
+  box.append(spSection('对话流'), card)
+}
+
+async function buildDataPanel(box) {
+  const sessions = await rpc('session.list')
+  const card = spCard()
+  if (sessions.length === 0) card.append(spRow('暂无会话', '发送一条消息后出现在这里'))
+  for (const session of sessions.slice(0, 8)) {
+    const actions = document.createElement('div')
+    actions.className = 'sp-inline'
+    actions.append(
+      spButton('打开', () => { closeSettings(); void openSession(session.id, session.title) }),
+      spButton('导出', async () => {
+        try {
+          const jsonl = await rpc('session.export', { sessionId: session.id })
+          try {
+            await navigator.clipboard.writeText(jsonl)
+            toast('已复制 ' + jsonl.split('\n').length + ' 行 JSONL', 'ok')
+          } catch {
+            console.log(jsonl)
+            toast('复制失败，导出内容已打印到控制台', 'err')
+          }
+        } catch (error) { toast(error.message, 'err') }
+      }),
+    )
+    card.append(spRow(session.title || session.id, session.messages + ' 条消息 · ' + session.events + ' 个事件', actions))
+  }
+  box.append(spSection('会话数据'), card)
+
+  const danger = spCard()
+  danger.append(spRow('清空界面会话', '只清空当前窗口显示，不删除服务端记录', spButton('清空', () => {
+    state.transcript = []
+    paintThread()
+    toast('已清空界面', 'ok')
+  }, 'danger')))
+  box.append(danger)
+}
+
+const PANEL_BUILDERS = {
+  profile: buildProfilePanel,
+  plan: buildPlanPanel,
+  appearance: buildAppearancePanel,
+  shortcuts: buildShortcutsPanel,
+  personal: buildPersonalPanel,
+  memory: buildMemoryPanel,
+  agents: buildAgentsPanel,
+  models: buildModelsPanel,
+  assistant: buildAssistantPanel,
+  devices: buildDevicesPanel,
+  dialogue: buildDialoguePanel,
+  data: buildDataPanel,
+}
+
+function syncFontStep() {
+  const idx = FONT_STEPS.reduce((best, v, i) => Math.abs(v - state.prefs.fontSize) < Math.abs(FONT_STEPS[best] - state.prefs.fontSize) ? i : best, 0)
+  $('setFontSize').value = String(idx)
+}
+
+function openSettings(panel) {
+  $('settings').hidden = false
+  syncFontStep()
+  renderSettingsNav('')
+  selectSettingsPanel(panel || 'general')
+}
+
+function closeSettings() {
+  $('settings').hidden = true
+}
+
+async function paintSettingsApps() {
+  try {
+    const [rows, tools] = await Promise.all([rpc('plugins.rows'), rpc('tools.list')])
+    const box = $('spRows')
+    box.innerHTML = ''
+    for (const row of rows) {
+      const item = document.createElement('div')
+      item.className = 'prow' + (row.mounted ? '' : ' off')
+      item.innerHTML = '<div class="pin"><div class="pname">' + row.plugin +
+        '</div><div class="pid">' + row.id + (row.mounted ? '' : ' · 未装载') + '</div></div>'
+      if (row.mounted) {
+        const unload = document.createElement('button')
+        unload.className = 'mini danger'
+        unload.textContent = '卸载'
+        unload.onclick = () => unmount(row.id, false)
+        const cascade = document.createElement('button')
+        cascade.className = 'mini'
+        cascade.textContent = '级联'
+        cascade.onclick = () => unmount(row.id, true)
+        item.append(unload, cascade)
+      }
+      box.appendChild(item)
+    }
+    const toolsBox = $('spTools')
+    toolsBox.innerHTML = ''
+    for (const tool of tools) {
+      const line = document.createElement('div')
+      line.className = 'trow'
+      line.innerHTML = '<code></code><span></span>'
+      line.firstChild.textContent = tool.name
+      line.lastChild.textContent = tool.description || ''
+      toolsBox.appendChild(line)
+    }
+  } catch (error) {
+    toast(error.message, 'err')
+  }
+}
+
+/* ── 图片选项面板 ─────────────────────────────────────── */
+const IMAGE_OPTIONS = [
+  { id: 'auto', name: '自动', desc: '根据主题智能匹配', art: 'slide' },
+  { id: 'add', name: '添加图片', desc: '图文并茂', art: 'slide' },
+  { id: 'slides', name: '图片幻灯片', desc: '每张幻灯片对应一张图片，文字保持可编辑状态。', art: 'slide' },
+  { id: 'none', name: '不添加图片', desc: '保留您附加的所有图片', art: 'chart' },
+]
+
+function imageThumb(art) {
+  const base = '<rect x="0.5" y="0.5" width="45" height="31" rx="3" fill="#fff" stroke="#e4e4e8"/>'
+  const lines =
+    '<rect x="4" y="7" width="14" height="1.7" rx=".85" fill="#d5d5dc"/>' +
+    '<rect x="4" y="11" width="10" height="1.7" rx=".85" fill="#e6e6ea"/>' +
+    '<rect x="4" y="15" width="12" height="1.7" rx=".85" fill="#e6e6ea"/>'
+  if (art === 'chart') {
+    const bars =
+      '<rect x="24" y="18" width="3" height="7" rx="1" fill="#c4b5fd"/>' +
+      '<rect x="29" y="13" width="3" height="12" rx="1" fill="#8b5cf6"/>' +
+      '<rect x="34" y="20" width="3" height="5" rx="1" fill="#ddd6fe"/>'
+    return '<svg width="46" height="32" viewBox="0 0 46 32">' + base + lines +
+      '<rect x="21" y="5" width="20" height="22" rx="2" fill="#f6f7f9"/>' + bars + '</svg>'
+  }
+  const pic =
+    '<rect x="21" y="5" width="20" height="15" rx="2" fill="#eaf3fb"/>' +
+    '<path d="M21 17l5-5 4 4 3.4-3.4L41 19.6V20H21z" fill="#57a377"/>' +
+    '<circle cx="35" cy="9" r="2" fill="#f3c56a"/>'
+  return '<svg width="46" height="32" viewBox="0 0 46 32">' + base + lines + pic + '</svg>'
+}
+
+function renderImageOptions() {
+  const list = $('imgList')
+  list.innerHTML = ''
+  for (const item of IMAGE_OPTIONS) {
+    const btn = document.createElement('button')
+    btn.className = 'im-item' + (state.imageOption === item.id ? ' on' : '')
+    btn.innerHTML =
+      '<span class="im-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span>' +
+      '<span class="im-thumb">' + imageThumb(item.art) + '</span>' +
+      '<span class="im-txt"><b>' + item.name + '</b><small>' + item.desc + '</small></span>'
+    btn.onclick = (event) => {
+      event.stopPropagation()
+      state.imageOption = item.id
+      renderImageOptions()
+      closeImageMenu()
+    }
+    list.appendChild(btn)
+  }
+}
+
+function openImageMenu(anchor) {
+  renderImageOptions()
+  const menu = $('imageMenu')
+  menu.hidden = false
+  const rect = anchor.getBoundingClientRect()
+  const width = menu.offsetWidth || 432
+  const height = menu.offsetHeight || 300
+  const left = Math.max(12, Math.min(rect.left - 6, window.innerWidth - width - 12))
+  menu.style.left = left + 'px'
+  if (rect.top > height + 16) {
+    menu.style.top = 'auto'
+    menu.style.bottom = (window.innerHeight - rect.top + 8) + 'px'
+  } else {
+    menu.style.bottom = 'auto'
+    menu.style.top = (rect.bottom + 8) + 'px'
+  }
+}
+
+function closeImageMenu() {
+  $('imageMenu').hidden = true
+}
+
+document.addEventListener('click', (event) => {
+  const menu = $('imageMenu')
+  if (menu.hidden) return
+  if (menu.contains(event.target)) return
+  if (event.target.closest && event.target.closest('.chip[data-kind="图片"], #imagePickHome, #imagePickMode')) return
+  closeImageMenu()
+})
+window.addEventListener('resize', closeImageMenu)
+window.addEventListener('scroll', closeImageMenu, true)
+
+/* ── 努力档位面板 ─────────────────────────────────────── */
+const EFFORTS = [
+  { id: 'lite', name: 'Lite', desc: '适用于简单任务的基础模式', color: '#3b82f6' },
+  { id: 'standard', name: '标准', desc: '适合日常工作的均衡效能', color: '#8b5cf6' },
+  { id: 'max', name: 'Max', desc: '对重要工作全力以赴', color: '#ec4899', soon: true },
+]
+
+function effortIcon(color) {
+  const dots = []
+  for (let row = 0; row < 3; row += 1) {
+    for (let col = 0; col < 3; col += 1) {
+      const cx = 3 + col * 6
+      const cy = 3 + row * 6
+      const strong = row === col
+      dots.push('<circle cx="' + cx + '" cy="' + cy + '" r="1.7" fill="' + color + '" opacity="' + (strong ? 1 : 0.32) + '"/>')
+    }
+  }
+  return '<svg width="18" height="18" viewBox="0 0 18 18">' + dots.join('') + '</svg>'
+}
+
+function renderEffort() {
+  const list = $('effList')
+  list.innerHTML = ''
+  for (const item of EFFORTS) {
+    const btn = document.createElement('button')
+    btn.className = 'eff-item' + (state.effort === item.id ? ' on' : '')
+    btn.innerHTML =
+      '<span class="eff-ico">' + effortIcon(item.color) + '</span>' +
+      '<span class="eff-body">' +
+        '<span class="eff-name">' + item.name + (item.soon ? '<span class="soon">未接入</span>' : '') + '</span>' +
+        '<span class="eff-desc">' + item.desc + '</span>' +
+      '</span>'
+    btn.disabled = !!item.soon
+    btn.onclick = (event) => {
+      event.stopPropagation()
+      if (item.soon) return
+      state.effort = item.id
+      document.querySelectorAll('.mlabel').forEach((label) => { label.textContent = item.name })
+      renderEffort()
+      closeEffort()
+    }
+    list.appendChild(btn)
+  }
+}
+
+function openEffort(anchor) {
+  renderEffort()
+  const menu = $('effortMenu')
+  menu.hidden = false
+  const rect = anchor.getBoundingClientRect()
+  const width = menu.offsetWidth || 276
+  const height = menu.offsetHeight || 240
+  const left = Math.max(12, Math.min(rect.left - 6, window.innerWidth - width - 12))
+  menu.style.left = left + 'px'
+  if (rect.top > height + 16) {
+    menu.style.top = 'auto'
+    menu.style.bottom = (window.innerHeight - rect.top + 8) + 'px'
+  } else {
+    menu.style.bottom = 'auto'
+    menu.style.top = (rect.bottom + 8) + 'px'
+  }
+}
+
+function closeEffort() {
+  $('effortMenu').hidden = true
+}
+
+document.addEventListener('click', (event) => {
+  const menu = $('effortMenu')
+  if (menu.hidden) return
+  if (menu.contains(event.target)) return
+  if (event.target.closest && event.target.closest('#modelPick, #modeModel, #chatModel')) return
+  closeEffort()
+})
+window.addEventListener('resize', closeEffort)
+window.addEventListener('scroll', closeEffort, true)
+
+/* ── 启动 ────────────────────────────────────────────── */
+applyPrefs()
+applyLanguage(state.prefs.controls.setLanguage === 'English' ? 'en' : 'zh')
+startAutoTranslate()
+paintTemplates()
+paintSessions()
+paintActivity()
+renderOfficeCards()
+syncNickname()
+
+await connected
+try {
+  const [presets] = await Promise.all([rpc('presets.list'), loadPlugins()])
+  state.presets = presets
+  const preferred = presets.find((preset) => preset.id === 'manager') || presets[0]
+  if (preferred) state.presetId = preferred.id
+  await refreshSessions()
+} catch (error) {
+  toast('初始化失败：' + error.message, 'err')
+}
+</script>
+</body>
+</html>
