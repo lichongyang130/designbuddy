@@ -82,7 +82,35 @@ AgentLoopService.run()
 - **step 上限**在插件配置里（默认 6），防止模型陷入工具循环。
 - **subagent** 是 `agentLoop.delegate()`：新开一个会话、用另一个专家跑完、把结论以 `note` 事件写回父会话。父会话的历史因此保持可读，子会话仍然可以单独打开复盘。
 
-## 3. Host / Client
+## 3. 副作用策略（packages/policy）
+
+写入类工具不应该只靠提示词里的一句"先征求用户同意"。这里的做法是：
+
+```
+LLM 发起 tool call
+        │
+        ▼
+ToolsService.execute()
+        ├─ 未知工具 / 缺参数 → 直接失败
+        ├─ guard.before(call)            ← policy 挂在这里
+        │    ├─ scope=read        → 放行
+        │    ├─ 命中 allow 列表    → 放行（默认 plan.*，只改会话内状态）
+        │    ├─ mode=readonly     → 拒绝，不产生待确认项
+        │    └─ 其它              → 挂起，emit approval/request，等待人
+        │                             超时 / abort / 拒绝 → 拒绝
+        ├─ tool.handler()
+        └─ guard.after(...)
+```
+
+三个设计决定值得强调：
+
+1. **拦截点必须在执行器**。守卫注册在 `ToolsService`，不是包在某个工具里，也不是写进 schema。工具作者不需要知道策略存在，策略也不需要知道有哪些工具。
+2. **阻塞而不是事后审计**。`before` 返回 Promise，工具调用在 `await` 上停住，模型这一步本来就没结束——所以不存在"先写后撤"。
+3. **拒绝是一次普通的工具失败**。模型收到 `denied: 用户没有批准 memory.save`，会自己换策略或解释，循环不需要特殊分支。
+
+因为 policy 本身是插件，把它卸掉，审批就消失（模型直接写）——这既是可演示的行为，也是"一切皆插件"的代价：安全边界必须显式装载。
+
+## 4. Host / Client
 
 `packages/host` 是一个插件，且**不 inject 任何业务服务**。它在处理请求时才 `ctx.get('sessions')`，取不到就返回 503。
 
@@ -95,7 +123,7 @@ AgentLoopService.run()
 
 所以 `agent/delta` 的流式文本、`fork/change` 的插件状态、`log/append` 的日志，走的是同一条通道。前端不轮询，也不需要知道任何业务逻辑。
 
-## 4. 与 DeepSeek Harness 的取舍
+## 5. 与 DeepSeek Harness 的取舍
 
 借鉴的部分：
 
@@ -116,7 +144,7 @@ AgentLoopService.run()
 
 如果你要往这个方向继续走，优先级建议是：
 
-1. **工具守卫做成独立插件**（现已内置 hook，抽出来即可实现"只读模式""审批模式"）。
+1. ~~工具守卫做成独立插件~~ —— 已完成（`packages/policy`）。下一步是把审批做成可持久化的队列（跨进程重启仍待决）。
 2. **MCP 客户端插件**：把外部工具注册进 `tools`，模型侧无感。
 3. **记忆检索换成向量**：`MemoryService.search` 是唯一需要改的地方。
 4. **会话分支**：事件日志天然支持从任意 seq 分叉。

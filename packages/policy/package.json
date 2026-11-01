@@ -1,0 +1,19 @@
+{
+  "name": "@designbuddy/policy",
+  "version": "0.1.0",
+  "description": "Tool policy: read-only mode and human approval for side effects.",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "tsc -b --clean"
+  },
+  "dependencies": {
+    "@designbuddy/core": "0.1.0",
+    "@designbuddy/tools": "0.1.0"
+  }
+}

@@ -9,22 +9,25 @@
   ],
   "references": [
     {
+      "path": "../agents"
+    },
+    {
       "path": "../core"
     },
     {
       "path": "../llm"
     },
     {
+      "path": "../policy"
+    },
+    {
       "path": "../session"
     },
     {
-      "path": "../tools"
-    },
-    {
-      "path": "../agents"
-    },
-    {
       "path": "../system-prompt"
+    },
+    {
+      "path": "../tools"
     }
   ]
 }

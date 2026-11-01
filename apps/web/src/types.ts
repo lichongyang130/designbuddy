@@ -110,6 +110,26 @@ export interface LogEntry {
   message: string
 }
 
+export type PolicyMode = 'auto' | 'approve-writes' | 'readonly'
+
+export interface ApprovalRequest {
+  id: string
+  tool: string
+  scope: 'read' | 'write' | 'danger'
+  args: Record<string, unknown>
+  sessionId: string
+  agent: string
+  createdAt: number
+  status: 'pending' | 'allowed' | 'denied' | 'timeout' | 'aborted'
+  resolvedAt: number | null
+}
+
+export interface PolicySnapshot {
+  mode: PolicyMode
+  allow: string[]
+  pending: ApprovalRequest[]
+}
+
 export interface AppState {
   ok: boolean
   services: string[]
@@ -123,6 +143,7 @@ export interface AppState {
   memory: MemoryEntry[]
   skills: SkillInfo[]
   promptSections: string[]
+  policy: PolicySnapshot | null
   logs: LogEntry[]
   workspaceRoot: string | null
 }

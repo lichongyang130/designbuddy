@@ -1,4 +1,13 @@
-import type { AppState, MarketEntry, MemoryEntry, PlanItem, SessionSummary, StoredEvent } from './types'
+import type {
+  AppState,
+  MarketEntry,
+  MemoryEntry,
+  PlanItem,
+  PolicyMode,
+  PolicySnapshot,
+  SessionSummary,
+  StoredEvent,
+} from './types'
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(path, {
@@ -40,6 +49,17 @@ export const api = {
 
   configurePlugin: (name: string, config: Record<string, unknown>) =>
     request<{ ok: true }>(`/api/market/${name}/config`, { method: 'POST', body: JSON.stringify({ config }) }),
+
+  policy: () => request<PolicySnapshot>('/api/policy'),
+
+  setPolicyMode: (mode: PolicyMode) =>
+    request<{ ok: true; mode: PolicyMode }>('/api/policy/mode', {
+      method: 'POST',
+      body: JSON.stringify({ mode }),
+    }),
+
+  decideApproval: (id: string, allow: boolean) =>
+    request<{ ok: true }>(`/api/approvals/${id}`, { method: 'POST', body: JSON.stringify({ allow }) }),
 
   memory: () => request<{ entries: MemoryEntry[] }>('/api/memory'),
 

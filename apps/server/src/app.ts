@@ -7,6 +7,8 @@ import { market } from './registry'
 export interface BootOptions {
   port?: number
   webDir?: string
+  dataDir?: string
+  workspaceDir?: string
   /** Load the HTTP host (tests skip it). */
   serve?: boolean
 }
@@ -27,10 +29,21 @@ export interface App {
 export function createApplication(options: BootOptions = {}): App {
   const { ctx } = createApp()
   const entries = market
+  const dataDir = options.dataDir ?? process.env.DESIGNBUDDY_DATA ?? '.data'
+  const workspaceDir = options.workspaceDir ?? process.env.DESIGNBUDDY_WORKSPACE ?? 'workspace'
+
+  /** Storage paths are resolved at boot so tests can point them at a temp dir. */
+  const configFor = (entry: (typeof market)[number]): Record<string, unknown> => {
+    const base = { ...(entry.defaultConfig ?? {}) }
+    if (entry.plugin.name === 'sessions') return { ...base, dir: `${dataDir}/sessions` }
+    if (entry.plugin.name === 'memory') return { ...base, file: `${dataDir}/memory.json` }
+    if (entry.plugin.name === 'workspace') return { ...base, root: workspaceDir }
+    return base
+  }
 
   const loadAll = () => {
     for (const entry of entries) {
-      if (entry.required) ctx.plugin(entry.plugin as Plugin, entry.defaultConfig ?? {})
+      if (entry.required) ctx.plugin(entry.plugin as Plugin, configFor(entry))
     }
     // Optional capabilities start enabled: the product should be complete on
     // first run, and the market is where people *remove* things.
@@ -40,7 +53,7 @@ export function createApplication(options: BootOptions = {}): App {
         ctx.container.log('info', 'provider-openai', 'no API key found — kept unloaded, demo model is active')
         continue
       }
-      ctx.plugin(entry.plugin as Plugin, entry.defaultConfig ?? {})
+      ctx.plugin(entry.plugin as Plugin, configFor(entry))
     }
   }
 

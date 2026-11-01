@@ -5,14 +5,14 @@ import type { AgentLoopService, AgentService } from '@designbuddy/agents'
 import type { SessionService } from '@designbuddy/session'
 import type { SystemPromptService } from '@designbuddy/system-prompt'
 import type { ToolsService } from '@designbuddy/tools'
-import { createApplication } from '../app'
+import { bootTestApp } from './harness'
 
 function boot() {
-  const app = createApplication({ serve: false })
-  const ctx = app.ctx
+  const { app, ctx, dispose } = bootTestApp()
   return {
     app,
     ctx,
+    dispose,
     sessions: ctx.get<SessionService>('sessions')!,
     agents: ctx.get<AgentService>('agents')!,
     loop: ctx.get<AgentLoopService>('agentLoop')!,
@@ -22,7 +22,7 @@ function boot() {
 }
 
 test('the loop records a full turn: user, tool call, tool result, assistant', async () => {
-  const { ctx, sessions, loop } = boot()
+  const { ctx, sessions, loop, dispose } = boot()
   const session = sessions.create({ model: 'mock/designer', agent: 'host' })
 
   const result = await loop.run({ sessionId: session.id, input: '帮我规划一下首页改版的步骤' })
@@ -42,11 +42,11 @@ test('the loop records a full turn: user, tool call, tool result, assistant', as
   // The plan tool wrote live state, not just a message.
   const plan = ctx.get<any>('plan')
   assert.equal(plan.get(session.id).length, 4)
-  ctx.container.stop()
+  dispose()
 })
 
 test('an expert allowlist hides tools from the model', async () => {
-  const { ctx, sessions, loop } = boot()
+  const { ctx, sessions, loop, dispose } = boot()
   const session = sessions.create({ model: 'mock/designer', agent: 'critic' })
   await loop.run({ sessionId: session.id, input: '帮我把计划写出来' })
 
@@ -55,11 +55,11 @@ test('an expert allowlist hides tools from the model', async () => {
     .events.map((entry) => entry.event)
     .filter((event) => event.type === 'tool-call') as any[]
   assert.equal(calls.length, 0, 'critic cannot call plan.write')
-  ctx.container.stop()
+  dispose()
 })
 
 test('memory entries reach the prompt through a plugin-contributed section', async () => {
-  const { ctx, prompt } = boot()
+  const { ctx, prompt, dispose } = boot()
   const memory = ctx.get<any>('memory')
   memory.add({ text: '移动端首屏只允许一个主要行动', kind: 'constraint', tags: ['mobile'] })
 
@@ -71,11 +71,11 @@ test('memory entries reach the prompt through a plugin-contributed section', asy
   ctx.container.remove('memory')
   const after = await prompt.assemble({ sessionId: 's', agent: 'host', input: '移动端首屏怎么改？' })
   assert.doesNotMatch(after, /移动端首屏只允许一个主要行动/)
-  ctx.container.stop()
+  dispose()
 })
 
 test('tool guards are enforced in the executor, not the prompt', async () => {
-  const { ctx, loop, sessions } = boot()
+  const { ctx, loop, sessions, dispose } = boot()
   ctx.plugin({
     name: 'read-only-guard',
     inject: ['tools'],
@@ -95,5 +95,5 @@ test('tool guards are enforced in the executor, not the prompt', async () => {
     .find((event) => event.type === 'tool-result') as any
   assert.equal(result.ok, false)
   assert.match(result.error, /read-only/)
-  ctx.container.stop()
+  dispose()
 })

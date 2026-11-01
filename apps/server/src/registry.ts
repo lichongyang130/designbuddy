@@ -5,6 +5,7 @@ import * as llm from '@designbuddy/llm'
 import * as memory from '@designbuddy/memory'
 import * as modelMock from '@designbuddy/model-mock'
 import * as plan from '@designbuddy/plan'
+import * as policy from '@designbuddy/policy'
 import * as presets from '@designbuddy/presets'
 import * as providerOpenai from '@designbuddy/provider-openai'
 import * as session from '@designbuddy/session'
@@ -38,6 +39,10 @@ export const market: MarketEntry[] = [
   { plugin: workspace, required: true, defaultConfig: { root: 'workspace' } },
   { plugin: memory, defaultConfig: { file: '.data/memory.json' } },
   { plugin: plan },
+  {
+    plugin: policy,
+    defaultConfig: { mode: 'approve-writes', allow: 'plan.*', timeout: 180 },
+  },
   { plugin: skills, defaultConfig: { dir: 'skills' } },
 
   { plugin: modelMock },

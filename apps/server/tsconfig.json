@@ -9,6 +9,9 @@
   ],
   "references": [
     {
+      "path": "../../packages/agents"
+    },
+    {
       "path": "../../packages/core"
     },
     {
@@ -18,19 +21,25 @@
       "path": "../../packages/llm"
     },
     {
-      "path": "../../packages/session"
-    },
-    {
-      "path": "../../packages/tools"
-    },
-    {
-      "path": "../../packages/workspace"
-    },
-    {
       "path": "../../packages/memory"
     },
     {
+      "path": "../../packages/model-mock"
+    },
+    {
       "path": "../../packages/plan"
+    },
+    {
+      "path": "../../packages/policy"
+    },
+    {
+      "path": "../../packages/presets"
+    },
+    {
+      "path": "../../packages/provider-openai"
+    },
+    {
+      "path": "../../packages/session"
     },
     {
       "path": "../../packages/skills"
@@ -39,10 +48,7 @@
       "path": "../../packages/system-prompt"
     },
     {
-      "path": "../../packages/agents"
-    },
-    {
-      "path": "../../packages/presets"
+      "path": "../../packages/tool-agent"
     },
     {
       "path": "../../packages/tool-fs"
@@ -57,13 +63,10 @@
       "path": "../../packages/tool-skill"
     },
     {
-      "path": "../../packages/tool-agent"
+      "path": "../../packages/tools"
     },
     {
-      "path": "../../packages/model-mock"
-    },
-    {
-      "path": "../../packages/provider-openai"
+      "path": "../../packages/workspace"
     }
   ]
 }

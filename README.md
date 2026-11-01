@@ -13,6 +13,7 @@
 打开页面后你看到的不是一个聊天框，而是一个可观察的 Agent 运行时：
 
 - 左侧是会话，中间是对话与工具调用卡片，右侧是**正在运行的内核**。
+- 模型要写文件时先停下：顶部出现确认条，写清工具名和参数，你点"允许"才执行；也可以一键切到只读。拦截在执行器里，模型无论怎么被提示词诱导都绕不过去。
 - 在右侧「插件」面板关掉 `memory`，模型的系统提示词里立刻少一段，`memory.save` 工具立刻消失。
 - 关掉 `tools`，所有工具插件自动进入 `pending`，重新打开时自动恢复 —— 不需要重启进程。
 - 每个插件都可以在面板里改配置并热重载。
@@ -96,6 +97,7 @@ export function apply(ctx) {
 | `sessions` | append-only 事件日志 + JSONL 持久化 |
 | `systemPrompt` | 按 `order` 拼装提示词段落 |
 | `tools` | 工具注册 + 守卫管线 |
+| `policy` | 副作用策略：只读 / 写需确认 / 自动放行 |
 | `agents` / `presets` | Agent 循环 / 专家团 |
 | `memory` | 设计记忆，跨会话注入 |
 | `skills` | Markdown 技能库，按需打开 |
@@ -119,6 +121,9 @@ export function apply(ctx) {
 | POST | `/api/sessions/:id/messages` | 触发一轮，结果通过 SSE 推送 |
 | GET | `/api/events` | 内核事件总线（SSE），前端不轮询 |
 | GET/POST | `/api/memory` | 设计记忆 |
+| GET | `/api/policy` | 当前策略模式与待确认队列 |
+| POST | `/api/policy/mode` | 切换 `auto` / `approve-writes` / `readonly` |
+| POST | `/api/approvals/:id` | 批准或拒绝一次副作用（`{ allow }`） |
 
 ## 与 DeepSeek Harness 的对照
 
@@ -129,7 +134,8 @@ export function apply(ctx) {
 | Agent 循环 | `packages/core/agent-loop` | `packages/agents/loop.ts` |
 | 会话 | append-only event log | 同（JSONL 持久化） |
 | 提示词 | section 拼装 | 同 |
-| 工具 | registry + 执行管线 | 同（多了 guard 钩子） |
+| 工具 | registry + 执行管线 | 同（多了 guard 钩子 + policy 插件） |
+| 副作用审批 | 权限/审批层 | `packages/policy`，阻塞式 human-in-the-loop |
 | Host / Client | host 包 + client 包 | `packages/host` + `apps/web` |
 | 规模 | 60+ 包 | 20 包，够读懂 |
 

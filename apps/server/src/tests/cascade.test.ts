@@ -1,10 +1,10 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
 import type { ToolsService } from '@designbuddy/tools'
-import { createApplication } from '../app'
+import { bootTestApp } from './harness'
 
 test('unloading a shared service cascades through the real composition', () => {
-  const { ctx } = createApplication({ serve: false })
+  const { ctx, dispose } = bootTestApp()
   const container = ctx.container
   const tools = ctx.get<ToolsService>('tools')!
 
@@ -29,11 +29,11 @@ test('unloading a shared service cascades through the real composition', () => {
   assert.equal(container.find('tool-fs')!.state, 'active')
   assert.ok(ctx.get<ToolsService>('tools')!.list().some((tool) => tool.name === 'fs.write'))
 
-  container.stop()
+  return dispose()
 })
 
 test('the agent loop refuses to run two turns on one session', async () => {
-  const { ctx } = createApplication({ serve: false })
+  const { ctx, dispose } = bootTestApp()
   const sessions = ctx.get<any>('sessions')
   const loop = ctx.get<any>('agentLoop')
   const session = sessions.create({ model: 'mock/designer', agent: 'host' })
@@ -44,5 +44,5 @@ test('the agent loop refuses to run two turns on one session', async () => {
     /already running a turn/,
   )
   await first
-  ctx.container.stop()
+  return dispose()
 })

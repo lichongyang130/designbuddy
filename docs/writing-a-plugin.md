@@ -92,6 +92,8 @@ export function apply(ctx: Context): void {
 
 模型看到的是 `parameters`（JSON Schema）和 `description`，所以这两项要当产品文案写。
 
+`scope` 决定了 `policy` 插件怎么对待这个工具：`read` 永远放行，`write` 默认需要人确认，`danger` 同 `write` 但在 UI 上标红。写工具时不要图省事标 `read` —— 那等于绕过审批。
+
 守卫在 `ToolsService.execute()` 里执行，模型绕不过去：
 
 ```ts

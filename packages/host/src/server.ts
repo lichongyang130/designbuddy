@@ -6,7 +6,8 @@ import type { LlmService } from '@designbuddy/llm'
 import type { SessionService } from '@designbuddy/session'
 import type { ToolsService } from '@designbuddy/tools'
 import type { SystemPromptService } from '@designbuddy/system-prompt'
-import type { AgentLoopService, AgentService, Expert } from '@designbuddy/agents'
+import type { AgentLoopService, AgentService } from '@designbuddy/agents'
+import type { PolicyMode, PolicyService } from '@designbuddy/policy'
 import { Router, readJson, sendError, sendJson } from './router'
 import type { MarketEntry, StartOptions } from './types'
 
@@ -48,6 +49,9 @@ export class HostServer {
   }
   private prompt() {
     return this.ctx.get<SystemPromptService>('systemPrompt')
+  }
+  private policy() {
+    return this.ctx.get<PolicyService>('policy')
   }
 
   private routes(): void {
@@ -165,6 +169,35 @@ export class HostServer {
         sendJson(res, 200, { ok: true })
       })
 
+      // ----------------------------------------------------- policy / approvals
+      .get('/api/policy', ({ res }) => {
+        const policy = this.policy()
+        if (!policy) return sendError(res, 503, 'policy plugin is not loaded')
+        sendJson(res, 200, {
+          ok: true,
+          mode: policy.mode,
+          allow: policy.allowList,
+          pending: policy.pendingRequests(),
+          history: policy.list().filter((request) => request.status !== 'pending').slice(0, 12),
+        })
+      })
+      .post('/api/policy/mode', async ({ req, res }) => {
+        const policy = this.policy()
+        if (!policy) return sendError(res, 503, 'policy plugin is not loaded')
+        const body = await readJson<{ mode?: PolicyMode }>(req)
+        if (!body.mode) return sendError(res, 400, 'mode is required')
+        policy.setMode(body.mode)
+        sendJson(res, 200, { ok: true, mode: policy.mode })
+      })
+      .post('/api/approvals/:id', async ({ req, res, params }) => {
+        const policy = this.policy()
+        if (!policy) return sendError(res, 503, 'policy plugin is not loaded')
+        const body = await readJson<{ allow?: boolean }>(req)
+        const decided = policy.decide(params.id, body.allow !== false)
+        if (!decided) return sendError(res, 404, 'approval not found (already decided or timed out)')
+        sendJson(res, 200, { ok: true })
+      })
+
       // ---------------------------------------------------------- workspace
       .get('/api/workspace/files', ({ res, url }) => {
         const workspace = this.ctx.get<any>('workspace')
@@ -223,6 +256,13 @@ export class HostServer {
       memory: this.ctx.get<any>('memory')?.all() ?? [],
       skills: this.ctx.get<any>('skills')?.list() ?? [],
       promptSections: this.prompt()?.ids() ?? [],
+      policy: this.policy()
+        ? {
+            mode: this.policy()!.mode,
+            allow: this.policy()!.allowList,
+            pending: this.policy()!.pendingRequests(),
+          }
+        : null,
       logs: container.logs.slice(-120),
       workspaceRoot: this.ctx.get<any>('workspace')?.root ?? null,
     }

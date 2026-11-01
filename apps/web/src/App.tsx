@@ -3,7 +3,17 @@ import { api, subscribe } from './api'
 import { Sidebar } from './components/Sidebar'
 import { Timeline } from './components/Timeline'
 import { Inspector, type InspectorTab } from './components/Inspector'
-import type { AppState, LogEntry, MarketEntry, PlanItem, SessionSummary, StoredEvent } from './types'
+import { ApprovalBar } from './components/ApprovalBar'
+import type {
+  AppState,
+  ApprovalRequest,
+  LogEntry,
+  MarketEntry,
+  PlanItem,
+  PolicyMode,
+  SessionSummary,
+  StoredEvent,
+} from './types'
 
 const PROMPT_HINTS = [
   '看看项目里有什么，给我一个现状判断',
@@ -28,6 +38,7 @@ export default function App() {
   const [input, setInput] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [panelOpen, setPanelOpen] = useState(true)
+  const [approvals, setApprovals] = useState<ApprovalRequest[]>([])
 
   const activeRef = useRef<string | null>(null)
   const refreshTimer = useRef<number | null>(null)
@@ -43,6 +54,7 @@ export default function App() {
       setMarket([...marketResponse.entries].sort((a, b) => a.order - b.order || a.name.localeCompare(b.name)))
       setSessions(next.sessions)
       setLogs(next.logs)
+      setApprovals(next.policy?.pending ?? [])
       setModel((current) => current || next.defaultModel || '')
       setAgent((current) => (next.experts.some((expert) => expert.name === current) ? current : next.experts[0]?.name ?? 'host'))
     } catch (cause) {
@@ -109,6 +121,17 @@ export default function App() {
         case 'agent/state': {
           if (data?.sessionId !== activeRef.current) return
           setPhase(data.phase === 'idle' ? 'idle' : data.phase)
+          break
+        }
+        case 'approval/request': {
+          setApprovals((current) =>
+            current.some((item) => item.id === data.id) ? current : [...current, data as ApprovalRequest],
+          )
+          setPhase((current) => current)
+          break
+        }
+        case 'approval/resolved': {
+          setApprovals((current) => current.filter((item) => item.id !== data.id))
           break
         }
         case 'plan/changed': {
@@ -224,6 +247,24 @@ export default function App() {
     [load],
   )
 
+  async function setPolicyMode(mode: PolicyMode) {
+    try {
+      await api.setPolicyMode(mode)
+      await load()
+    } catch (cause) {
+      setError((cause as Error).message)
+    }
+  }
+
+  async function decideApproval(id: string, allow: boolean) {
+    try {
+      await api.decideApproval(id, allow)
+      setApprovals((current) => current.filter((item) => item.id !== id))
+    } catch (cause) {
+      setError((cause as Error).message)
+    }
+  }
+
   const active = sessions.find((session) => session.id === activeId)
 
   return (
@@ -283,6 +324,19 @@ export default function App() {
                 ))}
               </select>
             </label>
+            {state?.policy && (
+              <label className={`select select-mode ${state.policy.mode === 'auto' ? 'warn' : ''}`}>
+                <span>策略</span>
+                <select
+                  value={state.policy.mode}
+                  onChange={(event) => void setPolicyMode(event.target.value as PolicyMode)}
+                >
+                  <option value="approve-writes">写操作需确认</option>
+                  <option value="readonly">只读</option>
+                  <option value="auto">自动放行</option>
+                </select>
+              </label>
+            )}
             {phase !== 'idle' && (
               <button
                 className="btn btn-ghost"
@@ -307,6 +361,11 @@ export default function App() {
         )}
 
         <Timeline events={events} live={live} phase={phase} plan={plan} />
+
+        <ApprovalBar
+          requests={approvals}
+          onDecide={(id, allow) => void decideApproval(id, allow)}
+        />
 
         <footer className="composer">
           <div className="hints">
