@@ -1,0 +1,14 @@
+{
+  "name": "@designbuddy/session",
+  "version": "0.1.0",
+  "description": "Append-only session event log — the single source of truth for history.",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": { "build": "tsc -b", "clean": "tsc -b --clean" },
+  "dependencies": {
+    "@designbuddy/core": "0.1.0",
+    "@designbuddy/llm": "0.1.0"
+  }
+}

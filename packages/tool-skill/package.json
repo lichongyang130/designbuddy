@@ -1,0 +1,20 @@
+{
+  "name": "@designbuddy/tool-skill",
+  "version": "0.1.0",
+  "description": "Tool that opens one skill by name.",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "tsc -b --clean"
+  },
+  "dependencies": {
+    "@designbuddy/core": "0.1.0",
+    "@designbuddy/tools": "0.1.0",
+    "@designbuddy/skills": "0.1.0"
+  }
+}

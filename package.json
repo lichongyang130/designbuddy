@@ -1,0 +1,29 @@
+{
+  "name": "designbuddy",
+  "version": "0.1.0",
+  "private": true,
+  "description": "DesignBuddy \u2014 an agent framework for design work. Everything is a plugin.",
+  "license": "MIT",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "tsc -b tsconfig.build.json && npm run build --workspace @designbuddy/web",
+    "build:server": "tsc -b tsconfig.build.json",
+    "build:web": "npm run build --workspace @designbuddy/web",
+    "start": "node apps/server/dist/main.js",
+    "dev": "npm run build && npm start",
+    "dev:web": "npm run dev --workspace @designbuddy/web",
+    "typecheck": "tsc -b tsconfig.build.json --pretty",
+    "clean": "tsc -b tsconfig.build.json --clean",
+    "test": "npm run build:server && node --test \"apps/server/dist/tests/*.test.js\""
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

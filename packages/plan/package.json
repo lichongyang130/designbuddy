@@ -1,0 +1,19 @@
+{
+  "name": "@designbuddy/plan",
+  "version": "0.1.0",
+  "description": "Per-session plan: the runtime's shared todo list.",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "tsc -b --clean"
+  },
+  "dependencies": {
+    "@designbuddy/core": "0.1.0",
+    "@designbuddy/system-prompt": "0.1.0"
+  }
+}

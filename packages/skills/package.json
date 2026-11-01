@@ -1,0 +1,19 @@
+{
+  "name": "@designbuddy/skills",
+  "version": "0.1.0",
+  "description": "Markdown skills injected into the prompt and readable on demand.",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "tsc -b --clean"
+  },
+  "dependencies": {
+    "@designbuddy/core": "0.1.0",
+    "@designbuddy/system-prompt": "0.1.0"
+  }
+}

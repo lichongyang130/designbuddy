@@ -1,0 +1,20 @@
+{
+  "name": "@designbuddy/tool-plan",
+  "version": "0.1.0",
+  "description": "Tools the model uses to write and update the plan.",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "tsc -b --clean"
+  },
+  "dependencies": {
+    "@designbuddy/core": "0.1.0",
+    "@designbuddy/tools": "0.1.0",
+    "@designbuddy/plan": "0.1.0"
+  }
+}

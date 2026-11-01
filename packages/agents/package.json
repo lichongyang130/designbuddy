@@ -1,0 +1,22 @@
+{
+  "name": "@designbuddy/agents",
+  "version": "0.1.0",
+  "description": "Agent registry and the turn/step loop that drives models and tools.",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "tsc -b --clean"
+  },
+  "dependencies": {
+    "@designbuddy/core": "0.1.0",
+    "@designbuddy/llm": "0.1.0",
+    "@designbuddy/tools": "0.1.0",
+    "@designbuddy/session": "0.1.0",
+    "@designbuddy/system-prompt": "0.1.0"
+  }
+}

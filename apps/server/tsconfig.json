@@ -1,0 +1,69 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist"
+  },
+  "include": [
+    "src"
+  ],
+  "references": [
+    {
+      "path": "../../packages/core"
+    },
+    {
+      "path": "../../packages/host"
+    },
+    {
+      "path": "../../packages/llm"
+    },
+    {
+      "path": "../../packages/session"
+    },
+    {
+      "path": "../../packages/tools"
+    },
+    {
+      "path": "../../packages/workspace"
+    },
+    {
+      "path": "../../packages/memory"
+    },
+    {
+      "path": "../../packages/plan"
+    },
+    {
+      "path": "../../packages/skills"
+    },
+    {
+      "path": "../../packages/system-prompt"
+    },
+    {
+      "path": "../../packages/agents"
+    },
+    {
+      "path": "../../packages/presets"
+    },
+    {
+      "path": "../../packages/tool-fs"
+    },
+    {
+      "path": "../../packages/tool-memory"
+    },
+    {
+      "path": "../../packages/tool-plan"
+    },
+    {
+      "path": "../../packages/tool-skill"
+    },
+    {
+      "path": "../../packages/tool-agent"
+    },
+    {
+      "path": "../../packages/model-mock"
+    },
+    {
+      "path": "../../packages/provider-openai"
+    }
+  ]
+}

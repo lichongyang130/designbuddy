@@ -1,0 +1,13 @@
+{
+  "name": "@designbuddy/core",
+  "version": "0.1.0",
+  "description": "Plugin kernel: context, services, dependency injection, plugin lifecycle.",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "tsc -b --clean"
+  }
+}
