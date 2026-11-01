@@ -62,6 +62,8 @@ ctx.inject(['systemPrompt'], (scoped) => {
 
 工具是模型能调用的能力。**副作用必须有 scope**，执行管线会据此加守卫。
 
+用 `registerTool(ctx, ...)` 而不是 `tools.register(...)`：前者会把工具归属记成**你的插件**，UI 和日志里才不会所有工具都显示成 `tools`。
+
 ```ts
 export const name = 'tool-jira'
 export const inject = ['tools']
@@ -69,7 +71,7 @@ export const inject = ['tools']
 export function apply(ctx: Context): void {
   const tools = ctx.get<ToolsService>('tools')
 
-  const tool = tools.register({
+  const tool = registerTool(ctx, {
     name: 'jira.search',
     title: '搜索工单',
     description: '按关键词搜索 Jira 工单，返回标题与状态。',

@@ -1,4 +1,5 @@
 import type { Context, PluginMeta } from '@designbuddy/core'
+import { registerTool } from '@designbuddy/tools'
 import type { Tool, ToolsService } from '@designbuddy/tools'
 import type { SkillService } from '@designbuddy/skills'
 
@@ -17,7 +18,7 @@ export function apply(ctx: Context): void {
   const skills = ctx.get<SkillService>('skills')
   if (!tools || !skills) return
 
-  const tool = tools.register({
+  const tool = registerTool(ctx, {
     name: 'skill.read',
     title: '打开技能',
     description: '读取一个技能的完整内容。只在确实需要该方法论时调用，以节省上下文。',

@@ -15,6 +15,7 @@
     "@designbuddy/core": "0.1.0",
     "@designbuddy/host": "0.1.0",
     "@designbuddy/llm": "0.1.0",
+    "@designbuddy/mcp": "0.1.0",
     "@designbuddy/memory": "0.1.0",
     "@designbuddy/model-mock": "0.1.0",
     "@designbuddy/plan": "0.1.0",

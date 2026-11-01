@@ -1,4 +1,5 @@
 import type { Context, PluginMeta } from '@designbuddy/core'
+import { registerTool } from '@designbuddy/tools'
 import type { Tool, ToolsService } from '@designbuddy/tools'
 import type { MemoryService } from '@designbuddy/memory'
 
@@ -18,7 +19,7 @@ export function apply(ctx: Context): void {
   if (!tools || !memory) return
 
   const registered: Tool[] = [
-    tools.register({
+    registerTool(ctx, {
       name: 'memory.save',
       title: '记住一条决策',
       description: '把一条值得跨会话保留的设计决策、约束或偏好写入设计记忆。',
@@ -45,7 +46,7 @@ export function apply(ctx: Context): void {
         return `已记住（${entry.kind}）：${entry.text}`
       },
     }),
-    tools.register({
+    registerTool(ctx, {
       name: 'memory.search',
       title: '检索设计记忆',
       description: '按关键词召回与当前任务相关的历史决策与约束。',

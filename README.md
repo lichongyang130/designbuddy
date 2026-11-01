@@ -37,7 +37,7 @@ npm run dev:web      # Vite 5179，代理 /api 到 5178
 跑测试：
 
 ```bash
-npm test             # 内核生命周期、依赖挂起、Agent 循环、工具守卫
+npm test             # 18 个测试：内核生命周期、依赖挂起、Agent 循环、审批门禁、MCP 子进程
 ```
 
 接入真实模型：在右侧「插件 → OpenAI 兼容模型」里填 `baseUrl` / `apiKey` / `models`，或直接用环境变量：
@@ -104,10 +104,27 @@ export function apply(ctx) {
 | `plan` | 会话级计划器 |
 | `workspace` | 沙箱化工作目录 |
 | `tool-fs` `tool-memory` `tool-plan` `tool-skill` `tool-agent` | 具体工具 |
+| `mcp` | MCP 客户端：外部服务器（Figma / Notion / 文件系统…）的工具注册进同一个 registry |
 | `model-mock` `provider-openai` | 模型 |
 | `host` | REST + SSE + 静态托管 |
 
 新增一个能力 = 新增一个包 = 在 `apps/server/src/registry.ts` 里加一行。
+
+### 接一个外部 MCP 服务器
+
+在右侧「插件 → MCP 客户端 → 配置」里填：
+
+```json
+[{ "name": "figma", "command": "npx", "args": ["-y", "figma-mcp"], "readOnly": true }]
+```
+
+它的工具会以 `mcp__figma__<tool>` 出现在工具列表里，Agent 循环、提示词、审批门禁全部自动生效——因为对内核来说它和本地工具没有区别。仓库里带了一个可运行的最小 MCP 服务器 `apps/server/test-fixtures/design-mcp-server.js`，可以用它先验证链路：
+
+```json
+[{ "name": "design", "command": "node", "args": ["apps/server/test-fixtures/design-mcp-server.js"], "readOnly": true }]
+```
+
+然后问「查一下最近的评审记录」。
 
 ## API
 
@@ -136,10 +153,11 @@ export function apply(ctx) {
 | 提示词 | section 拼装 | 同 |
 | 工具 | registry + 执行管线 | 同（多了 guard 钩子 + policy 插件） |
 | 副作用审批 | 权限/审批层 | `packages/policy`，阻塞式 human-in-the-loop |
+| MCP | 内置 MCP 支持 | `packages/mcp`，stdio 传输，工具自动注册 |
 | Host / Client | host 包 + client 包 | `packages/host` + `apps/web` |
 | 规模 | 60+ 包 | 20 包，够读懂 |
 
-有意没做的：ACP/MCP、sandbox 进程隔离、云端多租户、Electron。这些都可以按同样方式加插件，不影响内核。
+有意没做的：ACP、sandbox 进程隔离、云端多租户、Electron。这些都可以按同样方式加插件，不影响内核。
 
 详见 [`docs/architecture.md`](docs/architecture.md) 与 [`docs/writing-a-plugin.md`](docs/writing-a-plugin.md)。
 

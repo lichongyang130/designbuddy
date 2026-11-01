@@ -1,4 +1,5 @@
 import type { Context, PluginMeta } from '@designbuddy/core'
+import { registerTool } from '@designbuddy/tools'
 import type { Tool, ToolsService } from '@designbuddy/tools'
 import type { PlanService, PlanStatus } from '@designbuddy/plan'
 
@@ -18,7 +19,7 @@ export function apply(ctx: Context): void {
   if (!tools || !plan) return
 
   const registered: Tool[] = [
-    tools.register({
+    registerTool(ctx, {
       name: 'plan.write',
       title: '写计划',
       description: '为当前任务设定或替换完整计划。复杂任务开始时先写计划，再逐项执行。',
@@ -40,7 +41,7 @@ export function apply(ctx: Context): void {
         return `计划已更新（${next.length} 步）：\n${plan.render(run.sessionId)}`
       },
     }),
-    tools.register({
+    registerTool(ctx, {
       name: 'plan.update',
       title: '更新计划进度',
       description: '把某个计划步骤标记为 doing 或 done。每完成一步就更新一次。',

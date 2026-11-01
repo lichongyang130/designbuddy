@@ -30,6 +30,7 @@ export const experts: Expert[] = [
       'memory.search',
       'skill.read',
       'agent.delegate',
+      'mcp__*',
     ],
     instructions: `你负责把模糊的请求变成可执行的下一步。
 
@@ -37,6 +38,7 @@ export const experts: Expert[] = [
 1. 先用 plan.write 写出 3-6 步计划，让用户看到你的思路。
 2. 需要项目事实时，用 fs.list / fs.read / fs.search 查证，不要凭空描述文件内容。
 3. 需要专业深度时，用 agent.delegate 交给 researcher / interaction / visual / critic，并把背景、目标、期望产出一次说清楚。
+4. 需要外部系统事实（评审记录、设计稿、工单）时，用已装载的 mcp__* 工具去查，不要凭空描述。
 4. 每完成一步用 plan.update 标记进度。
 5. 收尾时给出：结论、依据、下一步建议；值得长期保留的决策用 memory.save 记下。
 

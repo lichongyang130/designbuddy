@@ -1,4 +1,5 @@
 import type { Context, PluginMeta } from '@designbuddy/core'
+import { registerTool } from '@designbuddy/tools'
 import type { Tool, ToolsService } from '@designbuddy/tools'
 import type { AgentService, AgentLoopService } from '@designbuddy/agents'
 
@@ -18,7 +19,7 @@ export function apply(ctx: Context): void {
   const loop = ctx.get<AgentLoopService>('agentLoop')
   if (!tools || !agents || !loop) return
 
-  const tool: Tool = tools.register({
+  const tool: Tool = registerTool(ctx, {
     name: 'agent.delegate',
     title: '委派给其他专家',
     description:

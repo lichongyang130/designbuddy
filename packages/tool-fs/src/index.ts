@@ -1,4 +1,5 @@
 import type { Context, PluginMeta } from '@designbuddy/core'
+import { registerTool } from '@designbuddy/tools'
 import type { Tool, ToolsService } from '@designbuddy/tools'
 import type { WorkspaceService } from '@designbuddy/workspace'
 
@@ -18,7 +19,7 @@ export function apply(ctx: Context): void {
   if (!tools || !workspace) return
 
   const registered: Tool[] = [
-    tools.register({
+    registerTool(ctx, {
       name: 'fs.list',
       title: '列出文件',
       description: '列出工作目录中的文件。用于建立对项目现状的认识。',
@@ -36,7 +37,7 @@ export function apply(ctx: Context): void {
         return entries.map((entry) => `${entry.path} (${entry.size}B)`).join('\n')
       },
     }),
-    tools.register({
+    registerTool(ctx, {
       name: 'fs.read',
       title: '读取文件',
       description: '读取工作目录中一个文本文件的内容。',
@@ -51,7 +52,7 @@ export function apply(ctx: Context): void {
         return content.length > 8000 ? `${content.slice(0, 8000)}\n…（已截断）` : content
       },
     }),
-    tools.register({
+    registerTool(ctx, {
       name: 'fs.write',
       title: '写入文件',
       description: '在工作目录中创建或覆盖一个文件。写入前应确认内容完整。',
@@ -69,7 +70,7 @@ export function apply(ctx: Context): void {
         return `已写入 ${entry.path}（${entry.size}B）`
       },
     }),
-    tools.register({
+    registerTool(ctx, {
       name: 'fs.search',
       title: '搜索项目',
       description: '在工作目录的文本文件中搜索关键词，返回命中的文件与行。',

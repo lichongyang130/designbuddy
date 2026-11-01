@@ -19,11 +19,11 @@ export class ToolsService {
 
   constructor(private readonly ctx: Context) {}
 
-  register(tool: Tool): Tool {
+  register(tool: Tool, owner = this.owner()): Tool {
     if (!tool.name || !/^[a-z][a-z0-9_.-]*$/i.test(tool.name)) {
       throw new Error(`invalid tool name: ${tool.name}`)
     }
-    this.tools.set(tool.name, { tool, owner: this.owner() })
+    this.tools.set(tool.name, { tool, owner })
     this.ctx.set(`tool:${tool.name}`, tool)
     this.ctx.emit('tools/changed', this.list())
     return tool

@@ -2,6 +2,7 @@ import * as agents from '@designbuddy/agents'
 import * as core from '@designbuddy/core'
 import * as host from '@designbuddy/host'
 import * as llm from '@designbuddy/llm'
+import * as mcp from '@designbuddy/mcp'
 import * as memory from '@designbuddy/memory'
 import * as modelMock from '@designbuddy/model-mock'
 import * as plan from '@designbuddy/plan'
@@ -53,6 +54,7 @@ export const market: MarketEntry[] = [
   { plugin: toolPlan },
   { plugin: toolSkill },
   { plugin: toolAgent },
+  { plugin: mcp, defaultConfig: { servers: '[]' } },
 ]
 
 export { core, host }

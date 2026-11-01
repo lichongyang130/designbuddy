@@ -202,7 +202,11 @@ export class AgentLoopService {
   private schemasFor(expert: Expert) {
     const all = this.deps.tools.schemas()
     if (!expert.tools || expert.tools.includes('*')) return all
-    return all.filter((tool) => expert.tools!.includes(tool.name))
+    const allowed = (name: string) =>
+      expert.tools!.some((pattern) =>
+        pattern.endsWith('*') ? name.startsWith(pattern.slice(0, -1)) : pattern === name,
+      )
+    return all.filter((tool) => allowed(tool.name))
   }
 }
 

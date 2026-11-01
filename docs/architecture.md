@@ -110,7 +110,29 @@ ToolsService.execute()
 
 因为 policy 本身是插件，把它卸掉，审批就消失（模型直接写）——这既是可演示的行为，也是"一切皆插件"的代价：安全边界必须显式装载。
 
-## 4. Host / Client
+## 4. 外部能力（packages/mcp）
+
+MCP 服务器对内核来说就是一个工具制造机：
+
+```
+McpClient.connect({command, args})   spawn → initialize → tools/list
+        │
+        ▼
+registerTool(ctx, { name: 'mcp__figma__get_frames', scope: readOnly ? 'read' : 'write' })
+        │
+        ▼
+tools/call  ← 模型调用时；崩溃只影响这一个工具
+```
+
+三件事是刻意这样设计的：
+
+- **命名空间 `mcp__<server>__<tool>`**：提示词和 UI 里一眼看出归属，也避免与本地工具撞名。
+- **连接失败不致命**：连接、列工具都在 `try` 里，失败只写日志。一个挂掉的 MCP 服务器等于少了个能力，不等于工作台坏了。
+- **进程归插件所有**：`ctx.effect` 里 `client.close()`，卸载插件就 `SIGTERM`（1.5s 后 `SIGKILL`），测试里断言过没有孤儿进程。
+
+专家白名单支持前缀通配（`mcp__*`），所以主理人能用到任何后来接入的外部工具，而后加入的专家也可以选择只看本地工具。
+
+## 5. Host / Client
 
 `packages/host` 是一个插件，且**不 inject 任何业务服务**。它在处理请求时才 `ctx.get('sessions')`，取不到就返回 503。
 
@@ -123,7 +145,7 @@ ToolsService.execute()
 
 所以 `agent/delta` 的流式文本、`fork/change` 的插件状态、`log/append` 的日志，走的是同一条通道。前端不轮询，也不需要知道任何业务逻辑。
 
-## 5. 与 DeepSeek Harness 的取舍
+## 6. 与 DeepSeek Harness 的取舍
 
 借鉴的部分：
 
@@ -136,7 +158,7 @@ ToolsService.execute()
 
 | 没做 | 原因 |
 |---|---|
-| ACP / MCP 协议接入 | 需要真实的进程与传输层，属于"再加一个插件"，不改内核 |
+| ACP 协议接入 | 需要真实的会话传输层；MCP 已完成（见上） |
 | sandbox 进程隔离 | 当前工作区用路径沙箱（`WorkspaceService.resolvePath`）已能阻止越界 |
 | 云端多租户 | Host 是无状态的，加一层会话归属即可 |
 | Electron 桌面壳 | Web 已经能跑；桌面只是再包一层 |
@@ -145,6 +167,6 @@ ToolsService.execute()
 如果你要往这个方向继续走，优先级建议是：
 
 1. ~~工具守卫做成独立插件~~ —— 已完成（`packages/policy`）。下一步是把审批做成可持久化的队列（跨进程重启仍待决）。
-2. **MCP 客户端插件**：把外部工具注册进 `tools`，模型侧无感。
+2. ~~MCP 客户端插件~~ —— 已完成（`packages/mcp`）。下一步是支持 HTTP/SSE 传输与 resources/prompts。
 3. **记忆检索换成向量**：`MemoryService.search` 是唯一需要改的地方。
 4. **会话分支**：事件日志天然支持从任意 seq 分叉。

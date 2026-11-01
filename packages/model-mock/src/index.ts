@@ -79,6 +79,8 @@ function planToolCall(text: string, available: Set<string>): ToolCall | null {
   const wantsProject = /(项目|文件|工作区|现状|看看|读一下|review 一下|评审一下)/.test(text)
   const wantsPlan = /(计划|步骤|怎么开始|拆解|分几步|规划)/.test(text)
   const wantsRemember = /(记住|记一下|记下)/.test(text)
+  const wantsExternal = /(评审|review|记录|外部|MCP)/i.test(text)
+  const external = [...available].find((name) => name.startsWith('mcp__'))
 
   if (wantsRemember && available.has('memory.save')) {
     return {
@@ -89,6 +91,13 @@ function planToolCall(text: string, available: Set<string>): ToolCall | null {
         kind: 'decision',
         tags: ['from-demo'],
       },
+    }
+  }
+  if (wantsExternal && external) {
+    return {
+      id: `call_${Math.random().toString(36).slice(2, 8)}`,
+      name: external,
+      arguments: { limit: 5 },
     }
   }
   if (wantsPlan && available.has('plan.write')) {
