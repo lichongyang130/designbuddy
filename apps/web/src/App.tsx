@@ -1,9 +1,17 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { api, subscribe } from './api'
+import { Rail, type View } from './components/Rail'
 import { Sidebar } from './components/Sidebar'
-import { Timeline } from './components/Timeline'
-import { Inspector, type InspectorTab } from './components/Inspector'
-import { ApprovalBar } from './components/ApprovalBar'
+import { Home } from './components/Home'
+import { ChatView } from './components/ChatView'
+import { WorkspaceView } from './components/WorkspaceView'
+import { MemoryView } from './components/MemoryView'
+import { SettingsView } from './components/SettingsView'
+import { PluginsOverview } from './components/PluginsOverview'
+import { PluginsPanel } from './components/PluginsPanel'
+import { Palette } from './components/Palette'
+import type { InspectorTab } from './components/Inspector'
+import type { Template } from './templates'
 import type {
   AppState,
   ApprovalRequest,
@@ -15,14 +23,8 @@ import type {
   StoredEvent,
 } from './types'
 
-const PROMPT_HINTS = [
-  '看看项目里有什么，给我一个现状判断',
-  '帮我拆解这个需求的执行步骤',
-  '评审一下现有的设计方向',
-  '记住：移动端首屏只保留一个主要行动',
-]
-
 export default function App() {
+  const [view, setView] = useState<View>('home')
   const [state, setState] = useState<AppState | null>(null)
   const [market, setMarket] = useState<MarketEntry[]>([])
   const [sessions, setSessions] = useState<SessionSummary[]>([])
@@ -37,8 +39,10 @@ export default function App() {
   const [model, setModel] = useState('')
   const [input, setInput] = useState('')
   const [error, setError] = useState<string | null>(null)
-  const [panelOpen, setPanelOpen] = useState(true)
   const [approvals, setApprovals] = useState<ApprovalRequest[]>([])
+  const [paletteOpen, setPaletteOpen] = useState(false)
+  const [panelOpen, setPanelOpen] = useState(false)
+  const [fileCount, setFileCount] = useState(0)
 
   const activeRef = useRef<string | null>(null)
   const refreshTimer = useRef<number | null>(null)
@@ -50,13 +54,21 @@ export default function App() {
   const load = useCallback(async () => {
     try {
       const [next, marketResponse] = await Promise.all([api.state(), api.market()])
+      void fetch('/api/workspace/files?recursive=1')
+        .then((response) => response.json())
+        .then((json) => {
+          if (json.ok) setFileCount((json.files as unknown[]).length)
+        })
+        .catch(() => undefined)
       setState(next)
       setMarket([...marketResponse.entries].sort((a, b) => a.order - b.order || a.name.localeCompare(b.name)))
       setSessions(next.sessions)
       setLogs(next.logs)
       setApprovals(next.policy?.pending ?? [])
-      setModel((current) => current || next.defaultModel || '')
-      setAgent((current) => (next.experts.some((expert) => expert.name === current) ? current : next.experts[0]?.name ?? 'host'))
+      setModel((current) => (current && next.models.some((m) => m.id === current) ? current : next.defaultModel ?? ''))
+      setAgent((current) =>
+        next.experts.some((expert) => expert.name === current) ? current : next.experts[0]?.name ?? 'host',
+      )
     } catch (cause) {
       setError((cause as Error).message)
     }
@@ -67,7 +79,7 @@ export default function App() {
     refreshTimer.current = window.setTimeout(() => {
       refreshTimer.current = null
       void load()
-    }, 320)
+    }, 300)
   }, [load])
 
   const openSession = useCallback(async (id: string) => {
@@ -75,20 +87,19 @@ export default function App() {
     activeRef.current = id
     setLive('')
     setPhase('idle')
+    setView('chat')
     try {
       const detail = await api.session(id)
-      const summary = detail.session
       setEvents(detail.events)
       setPlan(detail.plan)
-      setAgent(summary.agent)
-      setModel(summary.model)
-      setSessions((current) => current.map((item) => (item.id === id ? summary : item)))
+      setAgent(detail.session.agent)
+      setModel(detail.session.model)
+      setSessions((current) => current.map((item) => (item.id === id ? detail.session : item)))
     } catch (cause) {
       setError((cause as Error).message)
     }
   }, [])
 
-  // Boot + live kernel events.
   useEffect(() => {
     void load()
     const unsubscribe = subscribe(({ event, data }) => {
@@ -105,7 +116,7 @@ export default function App() {
             const id = activeRef.current
             if (id && stored.event.type === 'turn-end') {
               setSessions((list) =>
-                list.map((item) => (item.id === id ? { ...item, eventCount: next.length, updatedAt: stored.at } : item)),
+                list.map((item) => (item.id === id ? { ...item, eventCount: next.length } : item)),
               )
             }
             return next
@@ -127,7 +138,6 @@ export default function App() {
           setApprovals((current) =>
             current.some((item) => item.id === data.id) ? current : [...current, data as ApprovalRequest],
           )
-          setPhase((current) => current)
           break
         }
         case 'approval/resolved': {
@@ -151,6 +161,7 @@ export default function App() {
         case 'llm/changed':
         case 'skills/changed':
         case 'memory/changed':
+        case 'mcp/connected':
         case 'session/created':
         case 'session/updated':
         case 'session/deleted':
@@ -163,17 +174,37 @@ export default function App() {
     return unsubscribe
   }, [load, scheduleRefresh])
 
-  const createSession = useCallback(async (): Promise<string | null> => {
-    try {
-      const created = await api.createSession({ title: '新的设计会话', agent, model })
-      setSessions((current) => [created.session, ...current])
-      await openSession(created.session.id)
-      return created.session.id
-    } catch (cause) {
-      setError((cause as Error).message)
-      return null
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+        event.preventDefault()
+        setPaletteOpen((value) => !value)
+      }
     }
-  }, [agent, model, openSession])
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
+  const createSession = useCallback(
+    async (title?: string): Promise<string | null> => {
+      try {
+        const created = await api.createSession({ title: title ?? '新的设计会话', agent, model })
+        setSessions((current) => [created.session, ...current])
+        setActiveId(created.session.id)
+        activeRef.current = created.session.id
+        setEvents([])
+        setPlan([])
+        setLive('')
+        setPhase('idle')
+        setView('chat')
+        return created.session.id
+      } catch (cause) {
+        setError((cause as Error).message)
+        return null
+      }
+    },
+    [agent, model],
+  )
 
   const send = useCallback(
     async (text: string) => {
@@ -224,9 +255,9 @@ export default function App() {
   )
 
   const addMemory = useCallback(
-    async (text: string) => {
+    async (text: string, kind = 'decision') => {
       try {
-        await api.addMemory({ text, kind: 'decision' })
+        await api.addMemory({ text, kind })
         await load()
       } catch (cause) {
         setError((cause as Error).message)
@@ -247,35 +278,33 @@ export default function App() {
     [load],
   )
 
-  async function setPolicyMode(mode: PolicyMode) {
-    try {
-      await api.setPolicyMode(mode)
-      await load()
-    } catch (cause) {
-      setError((cause as Error).message)
-    }
-  }
+  const changeView = useCallback((next: View) => {
+    setView(next)
+    if (next === 'plugins') setPanelOpen(true)
+  }, [])
 
-  async function decideApproval(id: string, allow: boolean) {
-    try {
-      await api.decideApproval(id, allow)
-      setApprovals((current) => current.filter((item) => item.id !== id))
-    } catch (cause) {
-      setError((cause as Error).message)
-    }
-  }
+  const openTemplate = useCallback(
+    async (template: Template) => {
+      await createSession(template.title)
+      setInput(template.prompt)
+    },
+    [createSession],
+  )
 
-  const active = sessions.find((session) => session.id === activeId)
+  const active = sessions.find((session) => session.id === activeId) ?? null
 
   return (
-    <div className={`app ${panelOpen ? '' : 'panel-closed'}`}>
+    <div className={`shell ${panelOpen ? 'with-panel' : ''}`}>
+      <Rail view={view} onView={changeView} paletteOpen={paletteOpen} onPalette={() => setPaletteOpen(true)} />
+
       <Sidebar
         sessions={sessions}
         activeId={activeId}
-        serviceCount={state?.services.length ?? 0}
-        pluginCount={state?.plugins.length ?? 0}
-        onSelect={(id) => void openSession(id)}
+        view={view}
+        memoryCount={state?.memory.length ?? 0}
+        fileCount={fileCount}
         onCreate={() => void createSession()}
+        onSelect={(id) => void openSession(id)}
         onDelete={(id) => {
           void (async () => {
             try {
@@ -285,6 +314,7 @@ export default function App() {
                 activeRef.current = null
                 setEvents([])
                 setPlan([])
+                setView('home')
               }
               await load()
             } catch (cause) {
@@ -292,122 +322,129 @@ export default function App() {
             }
           })()
         }}
+        onView={changeView}
+        onSearch={() => setPaletteOpen(true)}
       />
 
-      <main className="workspace">
-        <header className="topbar">
-          <div className="topbar-title">
-            <h1>{active?.title ?? 'DesignBuddy'}</h1>
-            <span className="topbar-sub">
-              {state?.models.length ?? 0} 个模型 · {state?.experts.length ?? 0} 位专家 ·{' '}
-              {state?.tools.length ?? 0} 个工具
-            </span>
-          </div>
-          <div className="topbar-controls">
-            <label className="select">
-              <span>角色</span>
-              <select value={agent} onChange={(event) => setAgent(event.target.value)}>
-                {(state?.experts ?? []).map((expert) => (
-                  <option key={expert.name} value={expert.name}>
-                    {expert.title}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="select">
-              <span>模型</span>
-              <select value={model} onChange={(event) => setModel(event.target.value)}>
-                {(state?.models ?? []).map((item) => (
-                  <option key={item.id} value={item.id}>
-                    {item.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-            {state?.policy && (
-              <label className={`select select-mode ${state.policy.mode === 'auto' ? 'warn' : ''}`}>
-                <span>策略</span>
-                <select
-                  value={state.policy.mode}
-                  onChange={(event) => void setPolicyMode(event.target.value as PolicyMode)}
-                >
-                  <option value="approve-writes">写操作需确认</option>
-                  <option value="readonly">只读</option>
-                  <option value="auto">自动放行</option>
-                </select>
-              </label>
-            )}
-            {phase !== 'idle' && (
-              <button
-                className="btn btn-ghost"
-                onClick={() => activeId && void api.abort(activeId)}
-              >
-                中断
-              </button>
-            )}
-            <button className="btn btn-ghost" onClick={() => setPanelOpen((value) => !value)}>
-              {panelOpen ? '隐藏面板' : '显示面板'}
-            </button>
-          </div>
-        </header>
-
+      <main className="main">
         {error && (
           <div className="banner">
             {error}
-            <button className="icon-btn" onClick={() => setError(null)}>
+            <button className="icon-btn" onClick={() => setError(null)} aria-label="关闭提示">
               ×
             </button>
           </div>
         )}
 
-        <Timeline events={events} live={live} phase={phase} plan={plan} />
+        {view === 'home' && (
+          <Home
+            value={input}
+            onChange={setInput}
+            onSubmit={() => void send(input)}
+            onTemplate={(template) => void openTemplate(template)}
+            onCapability={(hint) => setInput(hint)}
+            busy={phase !== 'idle'}
+            templateCount={6}
+            expertLabel={state?.experts.find((expert) => expert.name === agent)?.title ?? '主理人'}
+            modelLabel={state?.models.find((item) => item.id === model)?.label.split(' · ').pop() ?? '示例模型'}
+            onOpenExperts={() => changeView('settings')}
+          />
+        )}
 
-        <ApprovalBar
-          requests={approvals}
-          onDecide={(id, allow) => void decideApproval(id, allow)}
-        />
-
-        <footer className="composer">
-          <div className="hints">
-            {PROMPT_HINTS.map((hint) => (
-              <button key={hint} className="hint-chip" onClick={() => setInput(hint)}>
-                {hint}
-              </button>
-            ))}
-          </div>
-          <div className="composer-box">
-            <textarea
-              value={input}
-              placeholder="描述你的设计问题…（Enter 发送，Shift+Enter 换行）"
-              rows={1}
-              onChange={(event) => setInput(event.target.value)}
-              onKeyDown={(event) => {
-                if (event.key === 'Enter' && !event.shiftKey) {
-                  event.preventDefault()
-                  void send(input)
+        {view === 'chat' && (
+          <ChatView
+            session={active}
+            events={events}
+            live={live}
+            phase={phase}
+            plan={plan}
+            approvals={approvals}
+            input={input}
+            onInput={setInput}
+            onSend={() => void send(input)}
+            onAbort={() => activeId && void api.abort(activeId)}
+            onDecide={(id, allow) => {
+              void (async () => {
+                try {
+                  await api.decideApproval(id, allow)
+                  setApprovals((current) => current.filter((item) => item.id !== id))
+                } catch (cause) {
+                  setError((cause as Error).message)
                 }
-              }}
-            />
-            <button className="btn btn-primary" disabled={!input.trim() || phase !== 'idle'} onClick={() => void send(input)}>
-              {phase === 'idle' ? '发送' : '生成中'}
-            </button>
-          </div>
-        </footer>
+              })()
+            }}
+            experts={state?.experts ?? []}
+            models={state?.models ?? []}
+            agent={agent}
+            model={model}
+            onAgent={setAgent}
+            onModel={setModel}
+            policyMode={state?.policy?.mode ?? 'approve-writes'}
+            onPolicyMode={(mode: PolicyMode) => {
+              void (async () => {
+                try {
+                  await api.setPolicyMode(mode)
+                  await load()
+                } catch (cause) {
+                  setError((cause as Error).message)
+                }
+              })()
+            }}
+            onHome={() => changeView('home')}
+          />
+        )}
+
+        {view === 'files' && (
+          <WorkspaceView
+            root={state?.workspaceRoot ?? null}
+            onRead={async (path) => {
+              const response = await fetch(`/api/workspace/file?path=${encodeURIComponent(path)}`)
+              const json = await response.json()
+              if (!json.ok) throw new Error(json.error)
+              return { path: json.path, content: json.content }
+            }}
+          />
+        )}
+
+        {view === 'memory' && (
+          <MemoryView
+            entries={state?.memory ?? []}
+            onAdd={(text, kind) => void addMemory(text, kind)}
+            onDelete={(id) => void deleteMemory(id)}
+          />
+        )}
+
+        {view === 'settings' && (
+          <SettingsView state={state} onOpenPlugins={() => setPanelOpen(true)} />
+        )}
+
+        {view === 'plugins' && <PluginsOverview state={state} market={market} />}
       </main>
 
       {panelOpen && (
-        <Inspector
+        <PluginsPanel
           tab={tab}
           onTab={setTab}
           market={market}
           state={state}
           plan={plan}
           logs={logs}
-          error={null}
           onToggle={togglePlugin}
           onConfigure={configurePlugin}
           onMemoryAdd={(text) => void addMemory(text)}
           onMemoryDelete={(id) => void deleteMemory(id)}
+          onClose={() => setPanelOpen(false)}
+        />
+      )}
+
+      {paletteOpen && (
+        <Palette
+          sessions={sessions}
+          memory={state?.memory ?? []}
+          onClose={() => setPaletteOpen(false)}
+          onView={changeView}
+          onSession={(id) => void openSession(id)}
+          onCreate={() => void createSession()}
         />
       )}
     </div>

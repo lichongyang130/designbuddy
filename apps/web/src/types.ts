@@ -89,6 +89,12 @@ export interface MemoryEntry {
   at: number
 }
 
+export interface FileEntry {
+  path: string
+  size: number
+  updatedAt: number
+}
+
 export interface SkillInfo {
   name: string
   title: string
