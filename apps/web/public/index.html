@@ -4,8 +4,12 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>DesignBuddy · 工作台</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%230b1a3d'/%3E%3Cpath d='M22 11.6a6.4 6.4 0 1 0 0 8.8h-4.6' fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='22' cy='20.4' r='1.9' fill='%230c4ef6'/%3E%3C/svg%3E">
 <style>
   :root{
+  --ico-chevron-right:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='m9.4 6.4 5.6 5.6-5.6 5.6'/></svg>");
+  --ico-close:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='m6.6 6.6 10.8 10.8M17.4 6.6 6.6 17.4'/></svg>");
+
     /* 表面 */
     --bg:#f8fafe; --surface:#fff; --surface-2:#f5f8fd; --surface-3:#eef3fb;
     --rail:#eaf1f9; --rail-active:#cfe0f9;
@@ -43,6 +47,9 @@
   }
   button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
   svg{display:block}
+  /* 图标系统 v2（见 icons.js / icons.html）：24 网格、1.7 描边、currentColor */
+  .ic{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .ic-xs{stroke-width:2.2}
   input,textarea{font:inherit;color:inherit}
 
   .app{height:100%;display:grid;grid-template-columns:72px 250px minmax(0,1fr);grid-template-rows:minmax(0,1fr)}
@@ -477,7 +484,9 @@
   .tool{border:1px solid var(--line);border-radius:var(--r-lg);background:var(--surface);font-size:13px;max-width:min(720px,92%)}
   .tool summary{cursor:pointer;padding:10px 13px;color:var(--fg-muted);list-style:none;border-radius:var(--r-lg)}
   .tool summary::-webkit-details-marker{display:none}
-  .tool summary::before{content:"▸";display:inline-block;margin-right:7px;transition:transform var(--d2) var(--ease);color:var(--fg-subtle)}
+  .tool summary::before{content:"";display:inline-block;width:9px;height:9px;margin-right:7px;
+    background:currentColor;color:var(--fg-subtle);transition:transform var(--d2) var(--ease);
+    -webkit-mask:var(--ico-chevron-right) center/contain no-repeat;mask:var(--ico-chevron-right) center/contain no-repeat}
   .tool[open] summary::before{transform:rotate(90deg)}
   .tool pre{margin:0;padding:0 13px 11px;white-space:pre-wrap;color:var(--fg-muted);font-size:12px;line-height:1.6}
   .activity{height:24px;padding:0 max(32px,calc((100% - 820px)/2));font-size:12px;color:var(--fg-subtle);display:flex;align-items:center;gap:7px}
@@ -679,7 +688,8 @@
     color:var(--fg-muted);font-size:14px;line-height:1;display:grid;place-items:center;z-index:3;
     transition:background var(--d1) var(--ease),color var(--d1) var(--ease);
   }
-  .sp-close::before{content:"✕"}
+  .sp-close::before{content:"";width:12px;height:12px;background:currentColor;
+    -webkit-mask:var(--ico-close) center/contain no-repeat;mask:var(--ico-close) center/contain no-repeat}
   .sp-close:hover{background:var(--surface-2);color:var(--fg)}
   .sp-nav{
     width:216px;flex:none;background:var(--surface-2);border-right:1px solid var(--line);
@@ -712,7 +722,7 @@
   .sp-select{
     appearance:none;height:30px;padding:0 26px 0 10px;border:1px solid var(--line-strong);border-radius:var(--r-md);
     font:inherit;font-size:13px;color:var(--fg);background:var(--surface)
-      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236f6f7a' stroke-width='2.4' stroke-linecap='round'><path d='m6 9 6 6 6-6'/></svg>")
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236f6f7a' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='m6.4 9.4 5.6 5.6 5.6-5.6'/></svg>")
       no-repeat right 8px center;
     cursor:pointer;
   }
@@ -981,48 +991,49 @@
 </style>
 </head>
 <body>
+<script src="icons.js"></script>
 <div class="app">
   <!-- 图标栏 -->
   <nav class="rail">
     <div class="logo">G<i></i></div>
 
     <button class="rbtn on" data-nav="home" title="首页">
-      <i class="ric"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.6 10.6 12 3.8l8.4 6.8V19a1.2 1.2 0 0 1-1.2 1.2h-4.1v-5.6H8.9v5.6H4.8A1.2 1.2 0 0 1 3.6 19z"/></svg></i>
+      <i class="ric"><svg class="ic" width="19" height="19" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-home"></use></svg></i>
       <span data-i18n-key="rail.home">首页</span>
     </button>
 
     <button class="rbtn" title="资料库">
-      <i class="ric"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.6" y="4.4" width="4.4" height="15.2" rx="1.2"/><rect x="9.4" y="4.4" width="4.4" height="15.2" rx="1.2"/><path d="m15.6 5.4 3.5-.9a1.2 1.2 0 0 1 1.5.9l2.1 12.6"/><path d="M3.6 20h16.8"/></svg></i>
+      <i class="ric"><svg class="ic" width="19" height="19" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-library"></use></svg></i>
       <span data-i18n-key="rail.library">资料库</span>
     </button>
 
     <button class="rbtn" id="navTemplates" data-nav="templates" title="模版">
-      <i class="ric"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 8.5 4.5L12 12 3.5 7.5z"/><path d="m3.5 12.2 8.5 4.5 8.5-4.5"/><path d="m3.5 16.7 8.5 4.5 8.5-4.5"/></svg></i>
+      <i class="ric"><svg class="ic" width="19" height="19" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-templates"></use></svg></i>
       <span data-i18n-key="rail.templates">模版</span>
     </button>
 
     <button class="rbtn" id="navCustom" data-nav="custom" title="主题">
-      <i class="ric"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.4c-4.8 0-8.6 3.8-8.6 8.6s3.8 8.6 8.6 8.6c1.2 0 2.1-.9 2.1-2.1 0-.5-.2-1-.5-1.3-.3-.4-.5-.8-.5-1.3 0-1.2 1-2.1 2.1-2.1h2.1c2.1 0 3.7-1.6 3.7-3.7 0-3.8-4-6.7-8.9-6.7z"/><circle cx="8.6" cy="10.4" r="1.05" fill="currentColor" stroke="none"/><circle cx="12" cy="8.2" r="1.05" fill="currentColor" stroke="none"/><circle cx="15.4" cy="10.4" r="1.05" fill="currentColor" stroke="none"/><circle cx="9.4" cy="14.2" r="1.05" fill="currentColor" stroke="none"/></svg></i>
+      <i class="ric"><svg class="ic" width="19" height="19" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-theme"></use></svg></i>
       <span data-i18n-key="rail.theme">主题</span>
     </button>
 
     <button class="rbtn" id="openDrawer" title="设置">
-      <i class="ric"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.1"/><path d="M19.1 14.6a1.5 1.5 0 0 0 .3 1.7l.1.1a1.9 1.9 0 1 1-2.7 2.7l-.1-.1a1.5 1.5 0 0 0-1.7-.3 1.5 1.5 0 0 0-.9 1.4v.3a1.9 1.9 0 1 1-3.8 0v-.2a1.5 1.5 0 0 0-1-1.4 1.5 1.5 0 0 0-1.7.3l-.1.1a1.9 1.9 0 1 1-2.7-2.7l.1-.1a1.5 1.5 0 0 0 .3-1.7 1.5 1.5 0 0 0-1.4-.9H3.3a1.9 1.9 0 1 1 0-3.8h.2a1.5 1.5 0 0 0 1.4-1 1.5 1.5 0 0 0-.3-1.7l-.1-.1a1.9 1.9 0 1 1 2.7-2.7l.1.1a1.5 1.5 0 0 0 1.7.3h.1a1.5 1.5 0 0 0 .9-1.4V3.3a1.9 1.9 0 1 1 3.8 0v.2a1.5 1.5 0 0 0 .9 1.4 1.5 1.5 0 0 0 1.7-.3l.1-.1a1.9 1.9 0 1 1 2.7 2.7l-.1.1a1.5 1.5 0 0 0-.3 1.7v.1a1.5 1.5 0 0 0 1.4.9h.3a1.9 1.9 0 1 1 0 3.8h-.2a1.5 1.5 0 0 0-1.4.9z"/></svg></i>
+      <i class="ric"><svg class="ic" width="19" height="19" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-settings"></use></svg></i>
       <span data-i18n-key="rail.settings">设置</span>
     </button>
 
     <button class="rbtn" id="moreMenuBtn" title="更多">
-      <i class="ric"><svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><circle cx="5.5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="18.5" cy="12" r="1.7"/></svg></i>
+      <i class="ric"><svg class="ic" width="19" height="19" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-more"></use></svg></i>
       <span data-i18n-key="rail.more">更多</span>
     </button>
 
     <div class="grow"></div>
 
     <button class="rbtn mini" title="邀请成员">
-      <i class="ric"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9.5" cy="9" r="3.1"/><path d="M4 19c.7-3 3.1-4.6 5.5-4.6S14.3 16 15 19"/><path d="M17.5 8.5v5M20 11h-5"/></svg></i>
+      <i class="ric"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-user-plus"></use></svg></i>
     </button>
     <button class="rbtn mini" title="帮助与反馈">
-      <i class="ric"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5a2.5 2.5 0 0 1-2.5 2.5H9l-4 3v-3H6a2.5 2.5 0 0 1-2.5-2.5v-7A2.5 2.5 0 0 1 6 5h11.5A2.5 2.5 0 0 1 20 7.5z"/></svg></i>
+      <i class="ric"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-feedback"></use></svg></i>
     </button>
     <div class="me" title="星W">星W<i></i></div>
   </nav>
@@ -1035,23 +1046,23 @@
         <div class="name">重阳李's Workspace</div>
         <div class="plan">Free</div>
       </div>
-      <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+      <svg class="chev ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
     </div>
 
     <button class="create" id="newBlank">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"></use></svg>
       创建
     </button>
 
     <div class="nav">
       <button class="row" id="recentChats">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5a2.5 2.5 0 0 1-2.5 2.5H9l-4 3v-3H6a2.5 2.5 0 0 1-2.5-2.5v-7A2.5 2.5 0 0 1 6 5h11.5A2.5 2.5 0 0 1 20 7.5z"/></svg>
+        <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-message"></use></svg>
         最近的对话记录
       </button>
       <div class="sesslist" id="sessList"></div>
 
       <button class="row" id="recentDocs">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7.5A1.5 1.5 0 0 1 5.5 6H9l1.8 2H19a1.5 1.5 0 0 1 1.5 1.5v8A1.5 1.5 0 0 1 19 19H5.5A1.5 1.5 0 0 1 4 17.5z"/></svg>
+        <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-folder"></use></svg>
         最近的 gammas
       </button>
     </div>
@@ -1061,23 +1072,23 @@
     <div class="side-scroll">
       <div class="nav">
         <button class="row" id="openPalette2">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.2"/><path d="m16 16 4 4"/></svg>
+          <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-search"></use></svg>
           搜索<span class="kbd">⌘K</span>
         </button>
         <button class="row">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="4.5" width="15" height="15" rx="3"/><path d="M4.5 10h15"/></svg>
+          <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-panel"></use></svg>
           全部
         </button>
         <button class="row">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="3.2"/><path d="M3.5 19c.7-3 3-4.6 5.5-4.6s4.8 1.6 5.5 4.6"/><circle cx="17" cy="8" r="2.4"/><path d="M16 13.5c2.2.2 3.9 1.9 4.5 4.5"/></svg>
+          <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-users"></use></svg>
           <span data-i18n-key="nav.shared">与您共享</span>
         </button>
         <button class="row">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.2"/><path d="M3.8 12h16.4M12 3.8c4 4.4 4 12 0 16.4M12 3.8c-4 4.4-4 12 0 16.4"/></svg>
+          <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-globe"></use></svg>
           网站
         </button>
         <button class="row">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 8-4 4 4 4M15 8l4 4-4 4"/></svg>
+          <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-code"></use></svg>
           <span data-i18n-key="nav.api">API 生成</span>
         </button>
       </div>
@@ -1085,11 +1096,11 @@
       <div class="label">文件夹</div>
       <div class="folders">
         <div class="fld">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7.5A1.5 1.5 0 0 1 5.5 6H9l1.8 2H19a1.5 1.5 0 0 1 1.5 1.5v8A1.5 1.5 0 0 1 19 19H5.5A1.5 1.5 0 0 1 4 17.5z"/></svg>
+          <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-folder"></use></svg>
           <i></i>
         </div>
         <div class="fld">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7.5A1.5 1.5 0 0 1 5.5 6H9l1.8 2H19a1.5 1.5 0 0 1 1.5 1.5v8A1.5 1.5 0 0 1 19 19H5.5A1.5 1.5 0 0 1 4 17.5z"/></svg>
+          <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-folder"></use></svg>
           <i class="s"></i>
         </div>
         <p>将相关的 gammas 分组，并一次性全部分享。</p>
@@ -1099,7 +1110,7 @@
       <div class="sep"></div>
       <div class="nav">
         <button class="row">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7h14M10 7V5.5A1.5 1.5 0 0 1 11.5 4h1A1.5 1.5 0 0 1 14 5.5V7"/><path d="M6.5 7l.8 11.2A1.8 1.8 0 0 0 9.1 20h5.8a1.8 1.8 0 0 0 1.8-1.8L17.5 7"/><path d="M10.5 11v5M13.5 11v5"/></svg>
+          <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-trash"></use></svg>
           垃圾箱
         </button>
       </div>
@@ -1113,19 +1124,19 @@
       <div class="ts-label navy">工作区</div>
       <div class="ts-nav">
         <button class="ts-row">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3.6 8.4 4.2L12 12l-8.4-4.2z"/><path d="m3.6 12.2 8.4 4.2 8.4-4.2"/></svg>
+          <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"></use></svg>
           工作区模板
         </button>
         <button class="ts-row">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.3"/><path d="M12 7.6V12l3 1.8"/></svg>
+          <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-clock"></use></svg>
           最近
         </button>
         <button class="ts-row">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.6" r="3.4"/><path d="M5 19.4c.9-3.4 3.6-5.2 7-5.2s6.1 1.8 7 5.2"/></svg>
+          <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-user"></use></svg>
           由您创建
         </button>
         <button class="ts-row">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.6" y="4.6" width="16.8" height="4.2" rx="1.4"/><path d="M5.4 8.8v9.1a1.5 1.5 0 0 0 1.5 1.5h10.2a1.5 1.5 0 0 0 1.5-1.5V8.8"/><path d="M10 12.4h4"/></svg>
+          <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-archive"></use></svg>
           已归档
         </button>
       </div>
@@ -1135,7 +1146,7 @@
       <div class="ts-label navy">探索</div>
       <div class="ts-nav">
         <button class="ts-row on">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="4" y="4" width="6.6" height="6.6" rx="1.6"/><rect x="13.4" y="4" width="6.6" height="6.6" rx="1.6"/><rect x="4" y="13.4" width="6.6" height="6.6" rx="1.6"/><rect x="13.4" y="13.4" width="6.6" height="6.6" rx="1.6"/></svg>
+          <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-compass"></use></svg>
           探索模板
         </button>
       </div>
@@ -1147,31 +1158,31 @@
       <div class="ts-group">
         <button class="ts-ghead" data-fold="fmt" aria-expanded="true">
           格式
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 15 6-6 6 6"/></svg>
+          <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-up"></use></svg>
         </button>
         <div class="ts-opts" id="tsFmt">
           <label class="ts-opt">
             <input type="radio" name="tplFmt" value="all" checked />
             <span class="ts-dot"></span>
-            <svg class="ts-ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="4" y="4" width="6.6" height="6.6" rx="1.6"/><rect x="13.4" y="4" width="6.6" height="6.6" rx="1.6"/><rect x="4" y="13.4" width="6.6" height="6.6" rx="1.6"/><rect x="13.4" y="13.4" width="6.6" height="6.6" rx="1.6"/></svg>
+            <svg class="ts-ico ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-grid"></use></svg>
             <span class="ts-txt">所有格式</span>
           </label>
           <label class="ts-opt">
             <input type="radio" name="tplFmt" value="deck" />
             <span class="ts-dot"></span>
-            <svg class="ts-ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.4" y="5" width="17.2" height="11.6" rx="2"/><path d="M3.4 8.6h17.2"/><path d="M9 20h6M12 16.6V20"/></svg>
+            <svg class="ts-ico ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-presentation"></use></svg>
             <span class="ts-txt">演示文稿</span>
           </label>
           <label class="ts-opt">
             <input type="radio" name="tplFmt" value="doc" />
             <span class="ts-dot"></span>
-            <svg class="ts-ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.6h7.4L18.4 8v12.4H6z"/><path d="M13.2 3.8V8h4.9"/><path d="M9 12.4h6M9 15.6h4.4"/></svg>
+            <svg class="ts-ico ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-doc"></use></svg>
             <span class="ts-txt">文档</span>
           </label>
           <label class="ts-opt">
             <input type="radio" name="tplFmt" value="card" />
             <span class="ts-dot"></span>
-            <svg class="ts-ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6.6" y="3.4" width="10.8" height="17.2" rx="2.4"/><path d="M10.6 18.2h2.8"/></svg>
+            <svg class="ts-ico ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"></use></svg>
             <span class="ts-txt">社交轮播卡片</span>
           </label>
         </div>
@@ -1180,7 +1191,7 @@
       <div class="ts-group">
         <button class="ts-ghead" data-fold="cat" aria-expanded="true">
           类别
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 15 6-6 6 6"/></svg>
+          <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-up"></use></svg>
         </button>
         <div class="ts-opts" id="tsCat">
           <label class="ts-opt"><input type="checkbox" name="tplCat" value="课程" /><span class="ts-box"></span><span class="ts-txt">课程</span><i class="ts-count">220</i></label>
@@ -1210,7 +1221,7 @@
 
       <button class="ts-ghead" data-fold="theme" aria-expanded="false">
         主题
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 15 6-6 6 6"/></svg>
+        <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-up"></use></svg>
       </button>
       <div class="ts-opts" id="tsTheme" hidden>
         <label class="ts-opt"><input type="radio" name="tplTheme" value="light" checked /><span class="ts-dot"></span><span class="ts-txt">浅色</span></label>
@@ -1225,20 +1236,20 @@
     <div class="cus-t">自定义</div>
     <div class="cus-nav">
       <button class="cus-row on">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.4a8.6 8.6 0 1 0 0 17.2c1.2 0 1.9-.8 1.9-1.8 0-.5-.2-.9-.5-1.2-.3-.3-.4-.7-.4-1.1 0-1 .8-1.8 1.8-1.8h1.6a3.8 3.8 0 0 0 3.8-3.8c0-4.2-3.9-7.5-8.2-7.5z"/><circle cx="8.6" cy="9.6" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="7.6" r="1" fill="currentColor" stroke="none"/><circle cx="15.4" cy="9.6" r="1" fill="currentColor" stroke="none"/><circle cx="9.4" cy="13" r="1" fill="currentColor" stroke="none"/></svg>
+        <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-theme"></use></svg>
         主题
       </button>
       <button class="cus-row">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.6 18.4 9 6.2l4.4 12.2"/><path d="M6.2 14.4h5.6"/><path d="M16.4 6.6v11.8"/><path d="M16.4 12h4"/></svg>
+        <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-font"></use></svg>
         自定义字体
       </button>
       <button class="cus-row">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.4 5.4h15.2v10.2H12l-4.4 3.4v-3.4H4.4z"/><path d="M8 9h8M8 12.2h5"/></svg>
+        <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-command"></use></svg>
         自定义指令
         <span class="cus-beta">测试版</span>
       </button>
       <button class="cus-row">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6.6" height="6.6" rx="1.6"/><rect x="13.4" y="4" width="6.6" height="6.6" rx="1.6"/><rect x="4" y="13.4" width="6.6" height="6.6" rx="1.6"/><circle cx="16.7" cy="16.7" r="3.3"/></svg>
+        <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-icons"></use></svg>
         图标库
       </button>
     </div>
@@ -1249,11 +1260,11 @@
     <div class="topbar">
       <div class="top-left">
       <button class="pill backpill" id="modeBack" hidden>
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+        <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-left"></use></svg>
         返回
       </button>
       <button class="pill" id="upgrade">
-        <svg class="spark" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l1.8 5.2L19 9.6l-5.2 1.8L12 16.6l-1.8-5.2L5 9.6l5.2-1.8z"/><path d="M18.4 15.2l.8 2.3 2.3.8-2.3.8-.8 2.3-.8-2.3-2.3-.8 2.3-.8z"/></svg>
+        <svg class="spark ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sparkle"></use></svg>
         升级获得更多 AI 功能
       </button>
       </div>
@@ -1292,23 +1303,23 @@
             <textarea id="homePrompt" rows="2" placeholder="将此电子表格精简为 6 张幻灯片的演示文稿。仅绘制三个最重要的趋势，每张幻灯片展示一个趋势，并在结尾处说明这些数据对下一季度的意义。"></textarea>
             <div class="bar">
               <button class="icobtn" id="attach" title="添加文件">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+                <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"></use></svg>
               </button>
               <div class="grow"></div>
               <button class="icobtn" title="文本设置">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7V5h14v2M12 5v14M9 19h6"/></svg>
+                <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-text"></use></svg>
               </button>
               <button class="icobtn" id="imagePickHome" title="图片">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="14" rx="2.4"/><circle cx="9" cy="10" r="1.5"/><path d="m5 17 4.2-3.9a1.8 1.8 0 0 1 2.4 0L15 16l1.8-1.6a1.8 1.8 0 0 1 2.3 0l.9.8"/></svg>
+                <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-image"></use></svg>
               </button>
               <button class="model" id="modelPick"><i>✦</i><span class="mlabel">标准</span>
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                <svg class="ic ic-xs" width="11" height="11" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
               </button>
               <button class="icobtn" id="mic" title="语音">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="9.2" y="3.5" width="5.6" height="10" rx="2.8"/><path d="M5.8 11.5a6.2 6.2 0 0 0 12.4 0M12 17.8V21"/></svg>
+                <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-microphone"></use></svg>
               </button>
               <button class="send" id="homeSend" title="发送">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+                <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-send"></use></svg>
               </button>
             </div>
           </div>
@@ -1316,27 +1327,27 @@
 
         <div class="chips" id="chips">
           <button class="chip" data-kind="演示文稿">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="11" rx="1.8"/><path d="M12 15.5V19M8.5 19h7"/></svg>
+            <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-presentation"></use></svg>
             演示文稿
           </button>
           <button class="chip" data-kind="文档">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5h7l5 5v12H6z"/><path d="M13 3.5v5h5"/></svg>
+            <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-doc"></use></svg>
             文档
           </button>
           <button class="chip" data-kind="轮播图">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.5" width="13" height="13" rx="2"/><path d="M19.5 8v8"/></svg>
+            <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-carousel"></use></svg>
             轮播图
           </button>
           <button class="chip" data-kind="图片">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="14" rx="2.2"/><circle cx="9" cy="10" r="1.5"/><path d="m5 17 4.2-3.9a1.8 1.8 0 0 1 2.4 0L15 16l1.8-1.6a1.8 1.8 0 0 1 2.3 0l.9.8"/></svg>
+            <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-image"></use></svg>
             图片
           </button>
           <button class="chip" data-kind="美化">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l3.2-.6 9-9a2 2 0 0 0-2.8-2.8l-9 9z"/><path d="M15 6.8 17.2 9"/></svg>
+            <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wand"></use></svg>
             美化
           </button>
           <button class="chip" data-kind="导入">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v10m0 0 3.6-3.6M12 14l-3.6-3.6"/><path d="M5 16.5v2A1.5 1.5 0 0 0 6.5 20h11a1.5 1.5 0 0 0 1.5-1.5v-2"/></svg>
+            <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-import"></use></svg>
             导入
           </button>
         </div>
@@ -1379,7 +1390,7 @@
           <div class="inner">
             <div class="dropzone" id="dropzone" hidden>
               <span class="dz-add">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+                <svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"></use></svg>
                 添加文件
               </span>
               <span class="badge">PPTX</span>
@@ -1389,7 +1400,7 @@
             <textarea id="modePrompt" rows="2" placeholder="描述您的演示主题"></textarea>
             <div class="bar">
               <button class="icobtn" id="attachMode" title="添加或连接">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+                <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"></use></svg>
               </button>
               <div class="modechip">
                 <span class="mchip">
@@ -1397,24 +1408,24 @@
                   <span id="modeChipLabel">演示文稿</span>
                 </span>
                 <button class="mclear" id="modeClear" title="移除类型">
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+                  <svg class="ic ic-xs" width="11" height="11" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-close"></use></svg>
                 </button>
               </div>
               <div class="grow"></div>
               <button class="icobtn" title="文本设置">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7V5h14v2M12 5v14M9 19h6"/></svg>
+                <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-text"></use></svg>
               </button>
               <button class="icobtn" id="imagePickMode" title="图片">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="14" rx="2.4"/><circle cx="9" cy="10" r="1.5"/><path d="m5 17 4.2-3.9a1.8 1.8 0 0 1 2.4 0L15 16l1.8-1.6a1.8 1.8 0 0 1 2.3 0l.9.8"/></svg>
+                <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-image"></use></svg>
               </button>
               <button class="model" id="modeModel"><i>✦</i><span class="mlabel">标准</span>
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                <svg class="ic ic-xs" width="11" height="11" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
               </button>
               <button class="icobtn" id="micMode" title="语音">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="9.2" y="3.5" width="5.6" height="10" rx="2.8"/><path d="M5.8 11.5a6.2 6.2 0 0 0 12.4 0M12 17.8V21"/></svg>
+                <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-microphone"></use></svg>
               </button>
               <button class="send blue" id="modeSend" title="发送">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+                <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-send"></use></svg>
               </button>
             </div>
           </div>
@@ -1424,9 +1435,9 @@
           <div class="exhead">
             <span>示例指令</span>
             <button class="exfilter" id="exFilter">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="4.5" width="15" height="15" rx="2.6"/></svg>
+              <svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-square"></use></svg>
               常规
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+              <svg class="ic ic-xs" width="11" height="11" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
             </button>
           </div>
           <div class="exgrid" id="exGridHome"></div>
@@ -1434,11 +1445,11 @@
 
         <div class="tplactions" id="modeTplActions">
           <button class="tplbtn primary" id="browseTpl">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3.5 8.5 4.5L12 12.5 3.5 8z"/><path d="m3.5 12.6 8.5 4.5 8.5-4.5"/></svg>
+            <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"></use></svg>
             浏览模板
           </button>
           <button class="tplbtn" id="uploadTpl">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4m0 0 3.6 3.6M12 4 8.4 7.6"/><path d="M5 15.5v2A1.5 1.5 0 0 0 6.5 19h11a1.5 1.5 0 0 0 1.5-1.5v-2"/></svg>
+            <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-upload"></use></svg>
             上传模板
           </button>
         </div>
@@ -1456,7 +1467,7 @@
           <div class="bgrid">
             <button class="bcard" id="importTemplate">
               <span class="bico">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="12" rx="2"/><path d="M9 20h6M12 16.5V20"/></svg>
+                <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-presentation"></use></svg>
               </span>
               <span class="btxt"><b>导入模板</b><small>创建可复用的工作区模板</small></span>
             </button>
@@ -1464,10 +1475,10 @@
           <div class="ihint">
             提示：使用连接器从您喜爱的工具中导入。
             <span class="ibrands">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3.4"/><path d="M8.6 15.8V8.2l6.8 7.6V8.2"/></svg>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="3.6" y="9.8" width="6.4" height="4.4" rx="2.2"/><rect x="14" y="9.8" width="6.4" height="4.4" rx="2.2"/><rect x="9.8" y="3.6" width="4.4" height="6.4" rx="2.2"/><rect x="9.8" y="14" width="4.4" height="6.4" rx="2.2"/></svg>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="7.2" r="2.6"/><circle cx="12" cy="12.8" r="2.6"/><circle cx="12" cy="18.4" r="2.6"/></svg>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="6.6"/></svg>
+              <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-font"></use></svg>
+              <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-shapes"></use></svg>
+              <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-dots-vertical"></use></svg>
+              <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-circle"></use></svg>
             </span>
           </div>
         </div>
@@ -1477,19 +1488,19 @@
           <div class="bgrid">
             <button class="bcard" data-act="style">
               <span class="bico">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.4l1.5 4.3 4.3 1.5-4.3 1.5L12 15l-1.5-4.3L6.2 9.2l4.3-1.5z"/><path d="M18 15.2l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/></svg>
+                <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sparkle"></use></svg>
               </span>
               <span class="btxt"><b>更换视觉风格</b><small>全新的主题、字体和配色</small></span>
             </button>
             <button class="bcard" data-act="layout">
               <span class="bico">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4.5" width="6.5" height="15" rx="1.6"/><rect x="13.5" y="4.5" width="6.5" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="6.5" height="6" rx="1.6"/></svg>
+                <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layout"></use></svg>
               </span>
               <span class="btxt"><b>重新设计布局</b><small>用更强大的布局重构卡片</small></span>
             </button>
             <button class="bcard" data-act="text">
               <span class="bico">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l3.4-.7 9.2-9.2a2.1 2.1 0 0 0-3-3L4.4 16.3z"/><path d="M14.6 5.9 17 8.3"/></svg>
+                <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-eraser"></use></svg>
               </span>
               <span class="btxt"><b>精简文字</b><small>标题更清晰，文案更简洁</small></span>
             </button>
@@ -1508,20 +1519,20 @@
     <section class="tplpage" id="viewTemplates" hidden>
       <div class="tpl-inner">
         <h1 class="tpl-h1">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><rect x="4" y="4" width="6.6" height="6.6" rx="1.6"/><rect x="13.4" y="4" width="6.6" height="6.6" rx="1.6"/><rect x="4" y="13.4" width="6.6" height="6.6" rx="1.6"/><rect x="13.4" y="13.4" width="6.6" height="6.6" rx="1.6"/></svg>
+          <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-compass"></use></svg>
           探索模板
         </h1>
         <p class="tpl-sub">精心设计的模板，助您快速上手</p>
 
         <div class="tpl-tools">
           <label class="tpl-search">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="11" cy="11" r="6.2"/><path d="m15.8 15.8 4.2 4.2"/></svg>
+            <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-search"></use></svg>
             <input id="tpSearch" placeholder="搜索模板" />
           </label>
           <button class="tpl-sort" id="tpSort" title="排序">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h9M4 12h13M4 17h6"/><path d="M18 8.5v9M15.5 15l2.5 2.5 2.5-2.5"/></svg>
+            <svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sort"></use></svg>
             <span id="tpSortLabel">创建日期</span>
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            <svg class="ic ic-xs" width="11" height="11" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
           </button>
         </div>
 
@@ -1537,19 +1548,19 @@
     <section class="thpage" id="viewThemes" hidden>
       <div class="th-inner">
         <h1 class="th-h1">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.4a8.6 8.6 0 1 0 0 17.2c1.2 0 1.9-.8 1.9-1.8 0-.5-.2-.9-.5-1.2-.3-.3-.4-.7-.4-1.1 0-1 .8-1.8 1.8-1.8h1.6a3.8 3.8 0 0 0 3.8-3.8c0-4.2-3.9-7.5-8.2-7.5z"/><circle cx="8.6" cy="9.6" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="7.6" r="1" fill="currentColor" stroke="none"/><circle cx="15.4" cy="9.6" r="1" fill="currentColor" stroke="none"/><circle cx="9.4" cy="13" r="1" fill="currentColor" stroke="none"/></svg>
+          <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-theme"></use></svg>
           主题
         </h1>
         <p class="th-sub" data-i18n-key="theme.sub">主题可控制 gammas 的颜色、字体、徽标和设计。创建自己的主题、导入 PPT 或自定义标准主题。</p>
 
         <button class="th-new" id="thNew">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5.5v13M5.5 12h13"/></svg>
+          <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"></use></svg>
           新建主题
         </button>
 
         <div class="th-bar">
           <button class="th-tab" data-thtab="mine">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.4 19.6l1-4.2 9.4-9.4a2 2 0 0 1 2.8 0l1 1a2 2 0 0 1 0 2.8l-9.4 9.4z"/><path d="M13.4 6.6l2.8 2.8"/></svg>
+            <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sliders"></use></svg>
             自定义
           </button>
           <button class="th-tab on" data-thtab="std">
@@ -1557,11 +1568,11 @@
             标准
           </button>
           <button class="th-tab" data-thtab="arch">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.6" y="4.6" width="16.8" height="4.2" rx="1.4"/><path d="M5.4 8.8v9.1a1.5 1.5 0 0 0 1.5 1.5h10.2a1.5 1.5 0 0 0 1.5-1.5V8.8"/><path d="M10 12.4h4"/></svg>
+            <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-archive"></use></svg>
             已归档
           </button>
           <label class="th-search">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="11" cy="11" r="6.2"/><path d="m15.8 15.8 4.2 4.2"/></svg>
+            <svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-search"></use></svg>
             <input id="thSearch" placeholder="按标题、关键字、作者姓名等搜索" />
           </label>
         </div>
@@ -1577,7 +1588,7 @@
     <section class="chat" id="viewChat">
       <div class="chatbar">
         <button class="back" id="backHome">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m14 6-6 6 6 6"/></svg>
+          <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-left"></use></svg>
           首页
         </button>
         <div class="title" id="chatTitle">新对话</div>
@@ -1591,12 +1602,12 @@
             <textarea id="chatPrompt" rows="1" placeholder="继续描述你的设计需求…"></textarea>
             <div class="bar">
               <button class="icobtn" id="attachChat" title="更多">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+                <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"></use></svg>
               </button>
               <div class="grow"></div>
               <button class="model" id="chatModel"><i>✦</i><span class="mlabel">标准</span></button>
               <button class="send" id="chatSend" title="发送">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+                <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-send"></use></svg>
               </button>
             </div>
           </div>
@@ -1608,37 +1619,37 @@
       <div class="ex-head">
         <div class="ex-tabs" id="exTabs">
           <button class="ex-tab on" data-extab="experts">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l1.8 5.2L19 9.6l-5.2 1.8L12 16.6l-1.8-5.2L5 9.6l5.2-1.8z"/><path d="M18.4 15.2l.8 2.3 2.3.8-2.3.8-.8 2.3-.8-2.3-2.3-.8 2.3-.8z"/></svg>
+            <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sparkle"></use></svg>
             专家
           </button>
           <button class="ex-tab" data-extab="skills">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M8 7h12M8 12h12M8 17h12"/><circle cx="4.4" cy="7" r="1"/><circle cx="4.4" cy="12" r="1"/><circle cx="4.4" cy="17" r="1"/></svg>
+            <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-list"></use></svg>
             技能
           </button>
           <button class="ex-tab" data-extab="connectors">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.4 13.6a3.6 3.6 0 0 0 5.1 0l2.3-2.3a3.6 3.6 0 0 0-5.1-5.1l-1.2 1.2"/><path d="M13.6 10.4a3.6 3.6 0 0 0-5.1 0l-2.3 2.3a3.6 3.6 0 0 0 5.1 5.1l1.2-1.2"/></svg>
+            <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-link"></use></svg>
             连接器
           </button>
         </div>
         <div class="ex-actions">
           <label class="ex-search">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.4"/><path d="m16 16 4 4"/></svg>
+            <svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-search"></use></svg>
             <input id="exSearch" placeholder="搜索专家" />
           </label>
           <button class="ex-mine" id="exMine">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8.5" r="3.4"/><path d="M5 19c.9-3.4 3.6-5 7-5s6.1 1.6 7 5"/></svg>
+            <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-user"></use></svg>
             我的专家
           </button>
           <button class="ex-mine" id="skInstalled" hidden>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg>
+            <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"></use></svg>
             已安装(<span id="skInstalledCount">0</span>)
           </button>
           <button class="sk-add" id="cnCustom" hidden>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15.5 4.5a2.8 2.8 0 0 1 4 4L9 19l-5 1.2L5.2 15z"/></svg>
+            <svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-filter"></use></svg>
             自定义连接器
           </button>
           <button class="sk-add" id="skAdd" hidden>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+            <svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"></use></svg>
             添加技能
           </button>
         </div>
@@ -1673,7 +1684,7 @@
           <div class="sk-sechead">
             <b>精选技能</b>
             <button class="sk-refresh" id="skRefresh">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20 4v4.5h-4.5"/></svg>
+              <svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-refresh"></use></svg>
               换一批
             </button>
           </div>
@@ -1714,30 +1725,30 @@
 
 <div class="plusmenu" id="plusMenu" hidden>
   <button class="pmi" data-act="files">
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.4 11.6 12.3 19.7a5 5 0 0 1-7.1-7.1l8.5-8.5a3.4 3.4 0 0 1 4.8 4.8l-8.4 8.4a1.8 1.8 0 0 1-2.5-2.5l7.7-7.7"/></svg>
+    <svg class="ic" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-paperclip"></use></svg>
     添加文件
-    <span class="chev"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></span>
+    <span class="chev"><svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-right"></use></svg></span>
   </button>
   <div class="pmsep"></div>
   <button class="pmi" data-act="mode">
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 19.5l4.4-1.1L19.7 7.6a2.1 2.1 0 0 0-3-3L5.9 15.4z"/><path d="M14.8 5.9 17.2 8.3"/></svg>
+    <svg class="ic" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wand"></use></svg>
     模式
-    <span class="chev"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></span>
+    <span class="chev"><svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-right"></use></svg></span>
   </button>
   <button class="pmi" data-act="expert">
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.2"/><circle cx="9.2" cy="10.4" r=".95" fill="currentColor" stroke="none"/><circle cx="14.8" cy="10.4" r=".95" fill="currentColor" stroke="none"/><path d="M8.7 14.1c.9 1.5 2.1 2.2 3.3 2.2s2.4-.7 3.3-2.2"/></svg>
+    <svg class="ic" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-face"></use></svg>
     专家
-    <span class="chev"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></span>
+    <span class="chev"><svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-right"></use></svg></span>
   </button>
   <button class="pmi" data-act="skill">
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.6 14.4 4.9 19.1"/><path d="M14.8 4.9a2 2 0 0 1 2.8 0l1.5 1.5a2 2 0 0 1 0 2.9l-7.1 7.1-4.4-4.4z"/></svg>
+    <svg class="ic" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pen"></use></svg>
     技能
-    <span class="chev"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></span>
+    <span class="chev"><svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-right"></use></svg></span>
   </button>
   <button class="pmi" data-act="connector">
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10.4 13.6a3.6 3.6 0 0 0 5.1 0l2.3-2.3a3.6 3.6 0 0 0-5.1-5.1l-1.2 1.2"/><path d="M13.6 10.4a3.6 3.6 0 0 0-5.1 0l-2.3 2.3a3.6 3.6 0 0 0 5.1 5.1l1.2-1.2"/></svg>
+    <svg class="ic" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-link"></use></svg>
     连接器
-    <span class="chev"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></span>
+    <span class="chev"><svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-right"></use></svg></span>
   </button>
 </div>
 <div class="submenu" id="plusSub" hidden></div>
@@ -1757,7 +1768,7 @@
     <button class="sp-close" id="settingsClose" title="关闭"></button>
     <aside class="sp-nav">
       <div class="sp-search">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.4"/><path d="m16 16 4 4"/></svg>
+        <svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-search"></use></svg>
         <input id="spSearch" placeholder="搜索设置项" />
       </div>
       <div id="spNav"></div>
@@ -1810,7 +1821,7 @@
             </div>
             <div class="sp-ctl">
               <button class="sp-link" id="setDefaultOpen">未设置
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
+                <svg class="ic ic-xs" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-right"></use></svg>
               </button>
             </div>
           </div>
@@ -1878,19 +1889,19 @@
 </div>
 <div class="moremenu" id="moreMenu" hidden>
   <button class="mm-item" data-ex="experts">
-    <span class="mm-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.2"/><circle cx="9.2" cy="10.4" r=".95" fill="currentColor" stroke="none"/><circle cx="14.8" cy="10.4" r=".95" fill="currentColor" stroke="none"/><path d="M8.7 14.1c.9 1.5 2.1 2.2 3.3 2.2s2.4-.7 3.3-2.2"/></svg></span>
+    <span class="mm-ico"><svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-face"></use></svg></span>
     专家
   </button>
   <button class="mm-item" data-ex="skills">
-    <span class="mm-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.6 14.4 4.9 19.1"/><path d="M14.8 4.9a2 2 0 0 1 2.8 0l1.5 1.5a2 2 0 0 1 0 2.9l-7.1 7.1-4.4-4.4z"/></svg></span>
+    <span class="mm-ico"><svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pen"></use></svg></span>
     技能
   </button>
   <button class="mm-item" data-ex="connectors">
-    <span class="mm-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10.4 13.6a3.6 3.6 0 0 0 5.1 0l2.3-2.3a3.6 3.6 0 0 0-5.1-5.1l-1.2 1.2"/><path d="M13.6 10.4a3.6 3.6 0 0 0-5.1 0l-2.3 2.3a3.6 3.6 0 0 0 5.1 5.1l1.2-1.2"/></svg></span>
+    <span class="mm-ico"><svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-link"></use></svg></span>
     连接器
   </button>
 </div>
-<button class="help" id="help" title="帮助">?</button>
+<button class="help" id="help" title="帮助" aria-label="帮助"><svg class="ic" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-help"></use></svg></button>
 <div class="op" id="officePanel" hidden>
   <div class="op-box">
     <header><b id="opTitle">办公能力</b><button class="op-close" id="opClose" title="关闭">×</button></header>
@@ -2252,7 +2263,7 @@ function tplHits() {
 }
 
 const TPL_CAP_ICON =
-  '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4.2" y="3.4" width="15.6" height="17.2" rx="2.6"/><path d="M9.4 3.4v17.2"/></svg>'
+  '<svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"></use></svg>'
 
 function paintTplGallery() {
   const grid = $('tpGrid')
@@ -3122,12 +3133,12 @@ const MODE_CONTENT = {
 }
 
 const CHIP_ICONS = {
-  '演示文稿': '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="11" rx="1.8"/><path d="M12 15.5V19M8.5 19h7"/></svg>',
-  '文档': '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5h7l5 5v12H6z"/><path d="M13 3.5v5h5"/></svg>',
-  '轮播图': '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.5" width="13" height="13" rx="2"/><path d="M19.5 8v8"/></svg>',
-  '图片': '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="14" rx="2.2"/><circle cx="9" cy="10" r="1.5"/><path d="m5 17 4.2-3.9a1.8 1.8 0 0 1 2.4 0L15 16l1.8-1.6a1.8 1.8 0 0 1 2.3 0l.9.8"/></svg>',
-  '美化': '<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l1.8 5.2L19 9.6l-5.2 1.8L12 16.6l-1.8-5.2L5 9.6l5.2-1.8z"/></svg>',
-  '导入': '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.2v9m0 0 3.3-3.3M12 13.2 8.7 9.9"/><path d="M5 16.4v2A1.6 1.6 0 0 0 6.6 20h10.8a1.6 1.6 0 0 0 1.6-1.6v-2"/></svg>',
+  '演示文稿': '<svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-presentation"></use></svg>',
+  '文档': '<svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-doc"></use></svg>',
+  '轮播图': '<svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-carousel"></use></svg>',
+  '图片': '<svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-image"></use></svg>',
+  '美化': '<svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sparkle-solid"></use></svg>',
+  '导入': '<svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-import"></use></svg>',
 }
 
 function paintExamples(labels) {
@@ -3258,7 +3269,7 @@ function renderExCategories() {
     for (const item of cat.items) {
       const row = document.createElement('button')
       row.className = 'li'
-      row.innerHTML = '<span>' + item + '</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>'
+      row.innerHTML = '<span>' + item + '</span><svg class="ic ic-xs" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-right"></use></svg>'
       row.onclick = () => toast('示例入口：' + item)
       body.appendChild(row)
     }
@@ -3349,7 +3360,7 @@ function skillCard(skill, options) {
     '</div>' +
     '<div class="sk-desc">' + (skill.desc || '') + '</div>' +
     '<div class="sk-foot"><span>⚡ ' + skill.use + '</span><span>⬇ ' + skill.install + '</span></div>' +
-    '<span class="sk-addbtn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>'
+    '<span class="sk-addbtn"><svg class="ic ic-xs" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"></use></svg></span>'
   card.onclick = (event) => {
     if (event.target.closest('.sk-addbtn')) {
       toast('已请求安装「' + skill.name + '」（演示环境不执行安装）', 'ok')
@@ -3569,7 +3580,7 @@ async function paintConnectors() {
         '<span class="cn-nm">' + item.name + (item.connected ? '<span class="ex-badge real">已连接</span>' : '') + '</span>' +
         '<span class="cn-desc">' + item.desc + '</span>' +
       '</span>' +
-      '<span class="cn-add"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>'
+      '<span class="cn-add"><svg class="ic ic-xs" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"></use></svg></span>'
     card.onclick = (event) => {
       if (event.target.closest('.cn-add')) {
         toast('已请求连接「' + item.name + '」（演示环境不执行授权）', 'ok')
@@ -3727,20 +3738,20 @@ document.querySelector('.rail [data-nav="home"]').onclick = () => {
 }
 /* ── 设置窗口 ─────────────────────────────────────────── */
 const SP_ICONS = {
-  gear: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 3.5v2.2M12 18.3v2.2M3.5 12h2.2M18.3 12h2.2M6 6l1.6 1.6M16.4 16.4 18 18M18 6l-1.6 1.6M7.6 16.4 6 18"/></svg>',
-  user: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="8.5" r="3.4"/><path d="M5 19c.9-3.4 3.6-5 7-5s6.1 1.6 7 5"/></svg>',
-  card: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="3.5" y="5.5" width="17" height="13" rx="2.4"/><path d="M3.5 10h17"/></svg>',
-  palette: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M12 3.8a8.2 8.2 0 0 0 0 16.4c1.4 0 2-.8 2-1.8 0-1.6-1.6-1.7-1.6-3 0-1 .8-1.8 1.9-1.8h1.5c2 0 3.4-1.4 3.4-3.4 0-3.6-3.3-6.4-7.2-6.4z"/><circle cx="8" cy="10" r="1"/><circle cx="11" cy="7.4" r="1"/><circle cx="15" cy="8.4" r="1"/></svg>',
-  keyboard: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="3" y="6.5" width="18" height="11" rx="2"/><path d="M6.5 10h.01M9.5 10h.01M12.5 10h.01M15.5 10h.01M18 10h.01M7.5 14h9"/></svg>',
-  sparkle: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.6l1.7 4.7 4.7 1.7-4.7 1.7L12 16.4l-1.7-4.7L5.6 10l4.7-1.7z"/><path d="M17.6 15.4l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/></svg>',
-  brain: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M9.5 5.5A3 3 0 0 0 6.6 8.4 3 3 0 0 0 5.4 14a3 3 0 0 0 4.1 4.4V5.5z"/><path d="M14.5 5.5a3 3 0 0 1 2.9 2.9 3 3 0 0 1 1.2 5.6 3 3 0 0 1-4.1 4.4V5.5z"/></svg>',
-  robot: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="4.5" y="8" width="15" height="11" rx="3"/><circle cx="9.4" cy="13" r="1.1"/><circle cx="14.6" cy="13" r="1.1"/><path d="M12 4.5V8M9 16.5h6"/></svg>',
-  cube: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3.5 8 4.2v8.6l-8 4.2-8-4.2V7.7z"/><path d="m4 7.7 8 4.3 8-4.3M12 12v8.5"/></svg>',
-  life: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="8.2"/><circle cx="12" cy="12" r="3.2"/><path d="m6.3 6.3 3.5 3.5M17.7 6.3l-3.5 3.5M6.3 17.7l3.5-3.5M17.7 17.7l-3.5-3.5"/></svg>',
-  plug: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M9 3.5v5M15 3.5v5"/><path d="M6.5 8.5h11v3a5.5 5.5 0 0 1-11 0z"/><path d="M12 17v3.5"/></svg>',
-  list: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M8 7h12M8 12h12M8 17h12"/><circle cx="4.4" cy="7" r="1"/><circle cx="4.4" cy="12" r="1"/><circle cx="4.4" cy="17" r="1"/></svg>',
-  db: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><ellipse cx="12" cy="6.4" rx="7" ry="2.8"/><path d="M5 6.4v11.2c0 1.5 3.1 2.8 7 2.8s7-1.3 7-2.8V6.4"/><path d="M5 12c0 1.5 3.1 2.8 7 2.8s7-1.3 7-2.8"/></svg>',
-  app: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="4" y="4" width="7" height="7" rx="1.8"/><rect x="13" y="4" width="7" height="7" rx="1.8"/><rect x="4" y="13" width="7" height="7" rx="1.8"/><rect x="13" y="13" width="7" height="7" rx="1.8"/></svg>',
+  gear: '<svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-settings"></use></svg>',
+  user: '<svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-user"></use></svg>',
+  card: '<svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-card"></use></svg>',
+  palette: '<svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-theme"></use></svg>',
+  keyboard: '<svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-keyboard"></use></svg>',
+  sparkle: '<svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sparkle"></use></svg>',
+  brain: '<svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-brain"></use></svg>',
+  robot: '<svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-robot"></use></svg>',
+  cube: '<svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-cube"></use></svg>',
+  life: '<svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-life"></use></svg>',
+  plug: '<svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plug"></use></svg>',
+  list: '<svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-list"></use></svg>',
+  db: '<svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-db"></use></svg>',
+  app: '<svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-apps"></use></svg>',
 }
 
 const SETTINGS_NAV = [
@@ -4302,7 +4313,7 @@ function renderImageOptions() {
     const btn = document.createElement('button')
     btn.className = 'im-item' + (state.imageOption === item.id ? ' on' : '')
     btn.innerHTML =
-      '<span class="im-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span>' +
+      '<span class="im-check"><svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"></use></svg></span>' +
       '<span class="im-thumb">' + imageThumb(item.art) + '</span>' +
       '<span class="im-txt"><b>' + item.name + '</b><small>' + item.desc + '</small></span>'
     btn.onclick = (event) => {

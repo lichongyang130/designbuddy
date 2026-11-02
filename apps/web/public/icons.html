@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DesignBuddy 图标总览</title>
+<style>
+  :root{
+    --ink:#011f49; --fg:#313233; --sub:#5b5b60; --line:#d6e1f1; --bg:#f5f8fd; --accent:#0c4ef6;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;padding:48px 56px 80px;background:#fff;color:var(--fg);
+    font:14px/1.6 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif}
+  h1{margin:0 0 6px;font-size:26px;letter-spacing:-.02em;color:var(--ink)}
+  .lede{margin:0 0 34px;color:var(--sub);max-width:760px}
+  .specs{display:flex;gap:28px;flex-wrap:wrap;margin:0 0 44px;padding:18px 22px;background:var(--bg);
+    border:1px solid var(--line);border-radius:14px}
+  .spec{display:flex;flex-direction:column;gap:2px}
+  .spec b{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--sub);font-weight:600}
+  .spec span{color:var(--ink);font-weight:600}
+  h2{margin:44px 0 16px;font-size:15px;letter-spacing:.04em;color:var(--ink);font-weight:700}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:10px}
+  .cell{display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 8px 12px;border:1px solid #e8eef8;
+    border-radius:12px;background:#fff;transition:.18s}
+  .cell:hover{border-color:#c6d8f4;box-shadow:0 4px 14px rgba(12,78,246,.08);transform:translateY(-1px)}
+  .row{display:flex;align-items:flex-end;gap:18px;height:48px;color:var(--ink)}
+  .row .a{opacity:.95}
+  .name{font-size:11px;color:var(--sub);font-variant-numeric:tabular-nums}
+  .ic{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .ic-xs{stroke-width:2.2}
+  .tint{display:flex;gap:14px;align-items:center;margin-top:8px}
+  .tint .chip{display:flex;align-items:center;gap:7px;padding:7px 12px;border-radius:9px;font-size:12.5px}
+</style>
+</head>
+<body>
+<h1>DesignBuddy 图标系统 v2 · 墨白</h1>
+<p class="lede">全部图标重绘：统一 24×24 网格与 1.8 描边，圆角端点、统一安全边距；颜色一律 currentColor，可随文字色与主题切换。</p>
+
+<div class="specs">
+  <div class="spec"><b>网格</b><span>24 × 24 · 安全区 2.9–21.1</span></div>
+  <div class="spec"><b>描边</b><span>1.8px · 小图标 2.2px</span></div>
+  <div class="spec"><b>端点</b><span>round cap / round join</span></div>
+  <div class="spec"><b>颜色</b><span>currentColor</span></div>
+</div>
+
+<div class="tint">
+  <span class="chip" style="background:#f5f8fd;color:#011f49"><svg class="ic" width="17" height="17" viewBox="0 0 24 24"><use href="#i-settings"></use></svg>侧栏常态</span>
+  <span class="chip" style="background:#d4e3f8;color:#011f49"><svg class="ic" width="17" height="17" viewBox="0 0 24 24"><use href="#i-home"></use></svg>激活药丸</span>
+  <span class="chip" style="background:#0c4ef6;color:#fff"><svg class="ic" width="17" height="17" viewBox="0 0 24 24"><use href="#i-send"></use></svg>主按钮</span>
+  <span class="chip" style="background:#fff;color:#8d9196;border:1px solid #e8eef8"><svg class="ic" width="17" height="17" viewBox="0 0 24 24"><use href="#i-clock"></use></svg>弱化</span>
+</div>
+
+<div id="sheet"></div>
+
+<script src="icons.js"></script>
+<script>
+  var SIZES = [24, 32, 48]
+  var sheet = document.getElementById('sheet')
+  window.DB_ICON_GROUPS.forEach(function (group) {
+    var h = document.createElement('h2')
+    h.textContent = group[0] + ' · ' + group[1].length
+    sheet.appendChild(h)
+    var g = document.createElement('div')
+    g.className = 'grid'
+    group[1].forEach(function (name) {
+      if (!window.DB_ICONS[name]) return
+      var cell = document.createElement('div')
+      cell.className = 'cell'
+      var row = document.createElement('div')
+      row.className = 'row'
+      SIZES.forEach(function (s, i) {
+        var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+        svg.setAttribute('class', 'ic' + (s <= 15 ? ' ic-xs' : ''))
+        svg.setAttribute('width', s); svg.setAttribute('height', s)
+        svg.setAttribute('viewBox', '0 0 24 24')
+        if (i === 2) svg.style.opacity = '.45'
+        var use = document.createElementNS('http://www.w3.org/2000/svg', 'use')
+        use.setAttribute('href', '#i-' + name)
+        svg.appendChild(use)
+        row.appendChild(svg)
+      })
+      var n = document.createElement('div')
+      n.className = 'name'
+      n.textContent = name
+      cell.appendChild(row); cell.appendChild(n)
+      g.appendChild(cell)
+    })
+    sheet.appendChild(g)
+  })
+</script>
+</body>
+</html>
