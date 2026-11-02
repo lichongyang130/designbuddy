@@ -88,6 +88,20 @@
     cube: '<path d="m12 3.4 8.2 4.3v8.6L12 20.6l-8.2-4.3V7.7z"/><path d="m3.8 7.7 8.2 4.3 8.2-4.3M12 12v8.6"/>',
     life: '<circle cx="12" cy="12" r="8.2"/><circle cx="12" cy="12" r="3.6"/><path d="m6.2 6.2 3.3 3.3M17.8 6.2l-3.3 3.3M6.2 17.8l3.3-3.3M17.8 17.8l-3.3-3.3"/>',
     plug: '<path d="M9 3.6v5M15 3.6v5"/><path d="M6.4 8.6h11.2v3a5.6 5.6 0 0 1-11.2 0z"/><path d="M12 17.2v3.2"/>',
+    tool: '<path d="M15.1 4.6a5.1 5.1 0 0 0-6 7.1l-4.5 4.6a2.1 2.1 0 0 0 3 3l4.6-4.6a5.1 5.1 0 0 0 7.1-5.9l-3.1 3.1-2.5-2.5z"/>',
+    bolt: '<path d="M13.6 3.4 6.2 13.6h4.8l-1.4 7 7.4-10.2h-4.8z"/>',
+    download: '<path d="M12 4.4v10.4"/><path d="m7.6 10.6 4.4 4.4 4.4-4.4"/><path d="M4.8 19.6h14.4"/>',
+    mail: '<rect x="3.4" y="5.2" width="17.2" height="13.6" rx="2.8"/><path d="m4.8 7.6 6.2 4.6a1.9 1.9 0 0 0 2 0l6.2-4.6"/>',
+    video: '<rect x="3.4" y="6" width="12.8" height="12" rx="2.8"/><path d="m16.2 10.4 4.4-2.6v8.4l-4.4-2.6z"/>',
+    form: '<rect x="3.8" y="4.2" width="16.4" height="15.6" rx="2.8"/><path d="m7.6 9.6 1.5 1.5 2.5-2.5M7.6 15.4l1.5 1.5 2.5-2.5"/><path d="M14 10.4h2.8M14 16.2h2.8"/>',
+    task: '<path d="m3.6 6.6 1.6 1.6 2.6-2.6M3.6 12.2l1.6 1.6 2.6-2.6M3.6 17.8l1.6 1.6 2.6-2.6"/><path d="M11.4 7h9M11.4 12.6h9M11.4 18.2h9"/>',
+    book: '<path d="M12 6.3C10.3 4.9 8.1 4.3 5.3 4.5a1.2 1.2 0 0 0-1.1 1.2v11.4a1 1 0 0 0 1.1 1c2.6-.1 4.7.5 6.7 1.9 1.9-1.4 4.1-2 6.7-1.9a1 1 0 0 0 1.1-1V5.7a1.2 1.2 0 0 0-1.1-1.2c-2.8-.2-5 .4-6.7 1.8z"/><path d="M12 6.5v13.6"/>',
+    terminal: '<rect x="3.4" y="4.6" width="17.2" height="14.8" rx="2.8"/><path d="m7.6 9.8 2.9 2.5-2.9 2.5M12.8 15h4"/>',
+    cart: '<path d="M3.4 4.4h2.2l2.5 10.3a1.7 1.7 0 0 0 1.7 1.3h7.7a1.7 1.7 0 0 0 1.7-1.3l1.5-6.4H6.5"/><circle cx="9.6" cy="19.2" r="1.5"/><circle cx="16.8" cy="19.2" r="1.5"/>',
+    trend: '<path d="M4 16.8 9.6 11l3.6 3.6L20 7.4"/><path d="M15 7.4h5v5"/>',
+    barchart: '<path d="M4 20h16"/><path d="M7.4 16.6V11M12 16.6V5.8M16.6 16.6v-3.4"/>',
+    scale: '<path d="M12 4.8v14.4M6.8 19.4h10.4M5.2 7.4h13.6"/><path d="M5.2 7.4 2.6 13.2a2.9 2.9 0 0 0 5.2 0z"/><path d="M18.8 7.4l2.6 5.8a2.9 2.9 0 0 1-5.2 0z"/>',
+    storefront: '<path d="M4.2 9.4v9.2a1.6 1.6 0 0 0 1.6 1.6h12.4a1.6 1.6 0 0 0 1.6-1.6V9.4"/><path d="M3.2 9.4 4.9 4.6h14.2l1.7 4.8a2.7 2.7 0 0 1-5.4 0 2.7 2.7 0 0 1-5.4 0 2.7 2.7 0 0 1-5.4 0z"/><path d="M10.2 20.2v-4.4h3.6v4.4"/>',
     db: '<ellipse cx="12" cy="6.3" rx="7.4" ry="2.9"/><path d="M4.6 6.3v11.4c0 1.6 3.3 2.9 7.4 2.9s7.4-1.3 7.4-2.9V6.3"/><path d="M4.6 12c0 1.6 3.3 2.9 7.4 2.9s7.4-1.3 7.4-2.9"/>',
 
     /* ——— 编辑器 / 设置 ——— */
@@ -107,7 +121,8 @@
     ['操作', ['upload', 'import', 'paperclip', 'link', 'pen', 'wand', 'eraser', 'sparkle', 'sparkle-solid']],
     ['导航与容器', ['folder', 'message', 'panel', 'users', 'globe', 'code', 'trash', 'archive', 'clock', 'user', 'apps', 'grid', 'icons', 'layers', 'compass', 'layout', 'list', 'dots-vertical', 'circle', 'shapes']],
     ['内容类型', ['image', 'presentation', 'doc', 'phone', 'carousel']],
-    ['专家 · 技能 · 连接器', ['face', 'brain', 'robot', 'cube', 'life', 'plug', 'db']],
+    ['专家 · 技能 · 连接器', ['face', 'brain', 'robot', 'cube', 'life', 'plug', 'db', 'tool', 'bolt', 'download']],
+    ['分类与场景', ['cart', 'trend', 'barchart', 'scale', 'storefront', 'book', 'mail', 'video', 'form', 'task', 'terminal']],
     ['编辑器与设置', ['font', 'text', 'card', 'keyboard', 'command', 'microphone', 'help']]
   ]
 

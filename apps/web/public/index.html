@@ -577,13 +577,17 @@
   .ex-cat:hover{border-color:var(--line-strong);box-shadow:var(--e2)}
   .ex-cat .hd{height:84px;padding:10px 12px;position:relative;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;color:var(--accent)}
   .ex-cat .hd b{font-size:13px;font-weight:600;color:var(--fg);position:relative;z-index:1}
-  .ex-cat .hd svg{position:absolute;right:6px;top:6px;opacity:.5}
+  .ex-cat .hd svg{position:absolute;right:9px;top:9px;opacity:.92}
   .ex-cat .bd{padding:6px 8px 8px}
   .ex-cat .li{display:flex;align-items:center;gap:3px;width:100%;font-size:12px;color:var(--fg-muted);padding:4px;border-radius:var(--r-sm);text-align:left}
   .ex-cat .li:hover{background:var(--surface-2);color:var(--fg)}
   .ex-cat .li span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .c-violet,.c-green,.c-blue,.c-mint,.c-sky{background:var(--accent-soft)}
-  .c-slate{background:var(--surface-2)}
+  .c-violet{background:#f3f1fe;color:#6154cf}
+  .c-green{background:#eef7f1;color:#37885f}
+  .c-blue{background:#eef3fe;color:#3d5fc7}
+  .c-slate{background:#f2f4f8;color:#5a6575}
+  .c-mint{background:#ecf8f4;color:#2a8874}
+  .c-sky{background:#edf6fc;color:#2b79a4}
   .ex-row{display:flex;align-items:center;gap:16px;margin:18px 0 10px}
   .ex-subtabs{display:flex;gap:16px}
   .ex-subtabs button{font-size:13px;color:var(--fg-subtle)}
@@ -600,7 +604,7 @@
   .ex-card{border:1px solid var(--line);border-radius:var(--r-lg);padding:14px;text-align:left;background:var(--surface)}
   .ex-card:hover{border-color:var(--line-strong);box-shadow:var(--e1)}
   .ex-top{display:flex;gap:10px;align-items:flex-start}
-  .ex-ava{width:38px;height:38px;border-radius:var(--r-md);display:grid;place-items:center;color:var(--surface);font-size:13px;font-weight:600;flex:none}
+  .ex-ava{width:38px;height:38px;border-radius:var(--r-md);display:grid;place-items:center;flex:none}
   .ex-nm{font-size:13px;font-weight:600;color:var(--fg);display:flex;align-items:center;gap:6px;line-height:1.3}
   .ex-badge{font-size:11px;padding:2px 6px;border-radius:var(--r-sm);background:var(--accent-soft);color:var(--accent);flex:none;font-weight:500}
   .ex-badge.real{background:var(--ok-soft);color:var(--ok)}
@@ -612,6 +616,7 @@
   .ex-tags{display:flex;gap:5px;flex-wrap:wrap;min-height:22px}
   .ex-tag{font-size:11px;color:var(--fg-muted);background:var(--surface-2);border-radius:var(--r-sm);padding:2px 6px}
   .ex-foot{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--fg-subtle);margin-top:10px}
+  .ex-foot svg{color:var(--fg-muted)}
   .ex-empty{grid-column:1/-1;font-size:13px;color:var(--fg-subtle);padding:30px;text-align:center;border:1px dashed var(--line);border-radius:var(--r-md)}
 
   /* ── 技能页 ───────────────────────────────── */
@@ -625,12 +630,14 @@
   .sk-card{border:1px solid var(--line);border-radius:var(--r-lg);padding:14px;background:var(--surface);position:relative;text-align:left}
   .sk-card:hover{border-color:var(--line-strong);box-shadow:var(--e2)}
   .sk-top{display:flex;gap:10px;align-items:flex-start;padding-right:24px}
-  .sk-ico{width:36px;height:36px;border-radius:var(--r-md);display:grid;place-items:center;color:var(--surface);font-size:14px;font-weight:600;flex:none}
+  .sk-ico{width:36px;height:36px;border-radius:var(--r-md);display:grid;place-items:center;flex:none}
   .sk-nm{font-size:13px;font-weight:600;color:var(--fg);line-height:1.35;padding-top:2px}
   .sk-addbtn{position:absolute;right:10px;top:10px;width:22px;height:22px;border:1px solid var(--line-strong);border-radius:var(--r-sm);color:var(--fg-muted);display:grid;place-items:center}
   .sk-addbtn:hover{background:var(--surface-2);color:var(--fg)}
   .sk-desc{font-size:12px;color:var(--fg-subtle);margin:8px 0;line-height:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .sk-foot{display:flex;align-items:center;gap:14px;font-size:11px;color:var(--fg-subtle)}
+  .sk-foot span{display:inline-flex;align-items:center;gap:4px}
+  .sk-foot svg{color:var(--fg-muted)}
   .sk-tabs{display:flex;gap:16px}
   .sk-tabs button{font-size:13px;color:var(--fg-subtle)}
   .sk-tabs button.on{color:var(--fg);font-weight:600}
@@ -665,7 +672,7 @@
   .cn-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;padding-top:2px}
   .cn-card{border:1px solid var(--line);border-radius:var(--r-lg);padding:14px;background:var(--surface);position:relative;text-align:left;display:flex;gap:10px;align-items:flex-start}
   .cn-card:hover{border-color:var(--line-strong);box-shadow:var(--e2)}
-  .cn-ico{width:40px;height:40px;border-radius:var(--r-md);display:grid;place-items:center;color:var(--surface);font-size:14px;font-weight:600;flex:none}
+  .cn-ico{width:40px;height:40px;border-radius:var(--r-md);display:grid;place-items:center;flex:none}
   .cn-main{flex:1;min-width:0;padding-right:20px}
   .cn-nm{font-size:13px;font-weight:600;color:var(--fg);line-height:1.35;display:flex;align-items:center;gap:6px}
   .cn-desc{font-size:12px;color:var(--fg-subtle);margin-top:5px;line-height:1.45;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -1619,11 +1626,11 @@
       <div class="ex-head">
         <div class="ex-tabs" id="exTabs">
           <button class="ex-tab on" data-extab="experts">
-            <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sparkle"></use></svg>
+            <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-face"></use></svg>
             专家
           </button>
           <button class="ex-tab" data-extab="skills">
-            <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-list"></use></svg>
+            <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-tool"></use></svg>
             技能
           </button>
           <button class="ex-tab" data-extab="connectors">
@@ -1645,7 +1652,7 @@
             已安装(<span id="skInstalledCount">0</span>)
           </button>
           <button class="sk-add" id="cnCustom" hidden>
-            <svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-filter"></use></svg>
+            <svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"></use></svg>
             自定义连接器
           </button>
           <button class="sk-add" id="skAdd" hidden>
@@ -1741,7 +1748,7 @@
     <span class="chev"><svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-right"></use></svg></span>
   </button>
   <button class="pmi" data-act="skill">
-    <svg class="ic" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pen"></use></svg>
+    <svg class="ic" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-tool"></use></svg>
     技能
     <span class="chev"><svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-right"></use></svg></span>
   </button>
@@ -1893,7 +1900,7 @@
     专家
   </button>
   <button class="mm-item" data-ex="skills">
-    <span class="mm-ico"><svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pen"></use></svg></span>
+    <span class="mm-ico"><svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-tool"></use></svg></span>
     技能
   </button>
   <button class="mm-item" data-ex="connectors">
@@ -3240,17 +3247,91 @@ function sendFromMode() {
 
 
 
-function expertAvatar(name) {
+function nameHue(text, base) {
+  const b = base == null ? 198 : Number(base)
   let hash = 0
-  for (const ch of name) hash = (hash * 31 + ch.codePointAt(0)) % 360
-  const h = 208 + (((Number(hash) || 0) % 48) + 48) % 48
-  return 'background:linear-gradient(135deg,hsl(' + h + ' 82% 62%),hsl(' + (h - 8) + ' 74% 46%))'
+  for (const ch of String(text || '')) hash = (hash * 31 + ch.codePointAt(0)) % 74
+  return b + ((hash % 74) + 74) % 74
 }
 
-function brandTint(seed) {
-  // 全站唯一色温：蓝墨 208–256，靠明度区分个体，不再满屏彩虹
-  const h = 208 + (((Number(seed) || 0) % 48) + 48) % 48
-  return 'linear-gradient(135deg,hsl(' + h + ' 82% 62%),hsl(' + (h - 8) + ' 74% 46%))'
+/* 图标瓦片：柔和同色系底 + 深一档的同色图标（原先是高饱和渐变 + 首字，像随机色块） */
+function softTile(seed) {
+  const h = typeof seed === 'number' ? ((seed % 360) + 360) % 360 : nameHue(seed)
+  return 'background:hsl(' + h + ' 66% 95%);color:hsl(' + h + ' 50% 40%);' +
+    'box-shadow:inset 0 0 0 1px hsl(' + h + ' 44% 88%)'
+}
+
+const ICON_RULES = {
+  expert: [
+    [/开发|工程|架构|代码|程序|脚本|全栈|后端|前端/, 'code'],
+    [/小程序|微信/, 'phone'],
+    [/游戏|Godot|引擎/, 'cube'],
+    [/数据|分析|报表/, 'barchart'],
+    [/投资|股票|金融|交易|行情|基金|财报/, 'trend'],
+    [/法律|合同|合规|财税|法务/, 'scale'],
+    [/电商|商家|营销|运营|增长|海报|宣传/, 'cart'],
+    [/内容|写作|文案|公众号|创作/, 'pen'],
+    [/设计|视觉|主题|排版/, 'theme'],
+    [/产品|工作台|网页|界面|交互/, 'layout'],
+    [/求职|职业|招聘|人岗|简历/, 'user'],
+    [/创业|销售|商务|客户|GTM/, 'storefront'],
+    [/嵌入|单片机|RTOS|硬件/, 'robot'],
+    [/健康|医疗|心理/, 'life'],
+    [/教育|学习|课程|读书/, 'book'],
+    [/助手|搜索/, 'search'],
+  ],
+  skill: [
+    [/Word|DOCX|docx|文档/, 'doc'],
+    [/Excel|XLSX|xlsx|表格|工作表/, 'grid'],
+    [/PPT|演示|幻灯片/, 'presentation'],
+    [/PDF|pdf/, 'book'],
+    [/浏览器|Web|浏览器|爬/, 'globe'],
+    [/搜索|查询|检索/, 'search'],
+    [/自检|检查|质检|审核/, 'check'],
+    [/会议|日程|日历/, 'video'],
+    [/邮件|邮箱/, 'mail'],
+    [/金融|股票|行情|基金|投资/, 'trend'],
+    [/知识库|笔记|ima|乐享/, 'book'],
+    [/图片|视觉|美化|设计/, 'image'],
+    [/代码|开发|CLI|终端|命令/, 'terminal'],
+    [/问卷|表单/, 'form'],
+    [/任务|需求|缺陷|迭代/, 'task'],
+    [/企业微信|飞书|钉钉|消息|群/, 'message'],
+    [/套件/, 'cube'],
+  ],
+  connector: [
+    [/邮箱/, 'mail'],
+    [/会议/, 'video'],
+    [/文档/, 'doc'],
+    [/问卷/, 'form'],
+    [/知识|ima|乐享/, 'book'],
+    [/自选股|股票|行情|通达信|金融/, 'trend'],
+    [/微信|飞书|钉钉/, 'message'],
+    [/TAPD|需求|缺陷/, 'task'],
+    [/figma/i, 'icons'],
+    [/web|browser|浏览器|chrome/i, 'globe'],
+    [/github|gitlab|代码|仓库|repo/i, 'terminal'],
+    [/wps|word|文档/i, 'doc'],
+    [/notion|笔记|知识/, 'book'],
+    [/bugly|缺陷|监控|告警/, 'task'],
+    [/cloudbase|数据库|存储/, 'db'],
+    [/crm|srm|客户|销售/, 'users'],
+    [/tushare|neodata|行情|股票|金融|投资/, 'trend'],
+    [/AI|智能|大模型/, 'sparkle'],
+    [/问卷|表单/, 'form'],
+    [/mcp|ssh|cli|插件|连接器/i, 'plug'],
+  ],
+}
+
+function pickIcon(kind, name, fallback) {
+  const rules = ICON_RULES[kind] || []
+  for (const [re, icon] of rules) if (re.test(String(name || ''))) return icon
+  return fallback
+}
+
+function iconMark(icon, size) {
+  return '<svg class="ic' + (size <= 13 ? ' ic-xs' : '') + '" width="' + size + '" height="' + size +
+    '" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-' + icon + '"></use></svg>'
 }
 
 function renderExCategories() {
@@ -3261,8 +3342,8 @@ function renderExCategories() {
     card.className = 'ex-cat'
     const head = document.createElement('div')
     head.className = 'hd ' + cat.tone
-    head.innerHTML = '<svg width="42" height="42" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".22">' +
-      '<circle cx="30" cy="16" r="6"/><path d="M12 38c2-7 7-10 12-10s10 3 12 10"/><rect x="6" y="8" width="12" height="9" rx="2"/></svg>' +
+    head.innerHTML = '<svg class="ic" width="34" height="34" viewBox="0 0 24 24" aria-hidden="true">' +
+        '<use href="#i-' + (cat.icon || 'face') + '"></use></svg>' +
       '<b>' + cat.name + '</b>'
     const body = document.createElement('div')
     body.className = 'bd'
@@ -3314,14 +3395,14 @@ function paintExperts() {
     btn.className = 'ex-card'
     btn.innerHTML =
       '<div class="ex-top">' +
-        '<span class="ex-ava" style="' + expertAvatar(card.name) + '">' + card.name.slice(0, 1) + '</span>' +
+        '<span class="ex-ava" style="' + softTile(card.name) + '">' + iconMark(pickIcon('expert', card.name, 'brain'), 18) + '</span>' +
         '<span class="ex-nm">' + card.name +
           (card.kind === 'real' ? '<span class="ex-badge real">已接入</span>' : card.badge ? '<span class="ex-badge">' + card.badge + '</span>' : '') +
         '</span>' +
       '</div>' +
       '<div class="ex-desc">' + card.desc + '</div>' +
       '<div class="ex-tags">' + card.tags.map((tag) => '<span class="ex-tag">' + tag + '</span>').join('') + '</div>' +
-      '<div class="ex-foot">⚡ ' + card.stat + '</div>'
+      '<div class="ex-foot">' + iconMark('bolt', 12) + '<span>' + card.stat + '</span></div>'
     btn.onclick = () => {
       if (card.kind === 'real') {
         state.presetId = card.id
@@ -3355,11 +3436,11 @@ function skillCard(skill, options) {
   card.className = 'sk-card'
   card.innerHTML =
     '<div class="sk-top">' +
-      '<span class="sk-ico" style="background:' + brandTint(skill.hue) + '">' + skill.name.slice(0, 1) + '</span>' +
+      '<span class="sk-ico" style="' + softTile(skill.hue) + '">' + iconMark(pickIcon('skill', skill.name, 'tool'), 17) + '</span>' +
       '<span class="sk-nm">' + skill.name + '</span>' +
     '</div>' +
     '<div class="sk-desc">' + (skill.desc || '') + '</div>' +
-    '<div class="sk-foot"><span>⚡ ' + skill.use + '</span><span>⬇ ' + skill.install + '</span></div>' +
+    '<div class="sk-foot"><span>' + iconMark('bolt', 12) + skill.use + '</span><span>' + iconMark('download', 12) + skill.install + '</span></div>' +
     '<span class="sk-addbtn"><svg class="ic ic-xs" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"></use></svg></span>'
   card.onclick = (event) => {
     if (event.target.closest('.sk-addbtn')) {
@@ -3413,11 +3494,11 @@ function paintSkills() {
 
 /* ── 办公能力：技能卡 + 本地处理面板 ─────────────────── */
 const OFFICE_ITEMS = [
-  { key: 'pptx', name: 'PPTX 阅读器', desc: '逐页提取标题与正文', tools: [['office.read_pptx', '读取 PPTX']] },
-  { key: 'docx', name: 'Word 文档处理', desc: '读取段落与表格，或生成新文档', tools: [['office.read_docx', '读取 DOCX'], ['office.write_docx', '生成 DOCX']] },
-  { key: 'formula', name: 'Word 公式处理', desc: 'OMML → LaTeX，显示公式编号', tools: [['office.docx_formulas', '公式处理']] },
-  { key: 'xlsx', name: 'Excel 表格', desc: '读取工作表，或按行生成表格', tools: [['office.read_xlsx', '读取 XLSX'], ['office.write_xlsx', '生成 XLSX']] },
-  { key: 'pdf', name: 'PDF 文本提取', desc: '抽取可复制文本', tools: [['office.read_pdf', '读取 PDF']] },
+  { key: 'pptx', name: 'PPTX 阅读器', desc: '逐页提取标题与正文', icon: 'presentation', hue: 14, tools: [['office.read_pptx', '读取 PPTX']] },
+  { key: 'docx', name: 'Word 文档处理', desc: '读取段落与表格，或生成新文档', icon: 'doc', hue: 214, tools: [['office.read_docx', '读取 DOCX'], ['office.write_docx', '生成 DOCX']] },
+  { key: 'formula', name: 'Word 公式处理', desc: 'OMML → LaTeX，显示公式编号', icon: 'font', hue: 232, tools: [['office.docx_formulas', '公式处理']] },
+  { key: 'xlsx', name: 'Excel 表格', desc: '读取工作表，或按行生成表格', icon: 'grid', hue: 148, tools: [['office.read_xlsx', '读取 XLSX'], ['office.write_xlsx', '生成 XLSX']] },
+  { key: 'pdf', name: 'PDF 文本提取', desc: '抽取可复制文本', icon: 'book', hue: 348, tools: [['office.read_pdf', '读取 PDF']] },
 ]
 let officeSrc = 'upload'
 
@@ -3429,10 +3510,10 @@ function renderOfficeCards() {
     const card = document.createElement('button')
     card.className = 'sk-card'
     card.innerHTML =
-      '<div class="sk-top"><span class="sk-ico" style="background:var(--accent)">' + item.name.slice(0, 1) + '</span>' +
+      '<div class="sk-top"><span class="sk-ico" style="' + softTile(item.hue) + '">' + iconMark(item.icon, 17) + '</span>' +
       '<span class="sk-nm">' + item.name + '<span class="ex-badge real">已接入</span></span></div>' +
       '<div class="sk-desc">' + item.desc + '</div>' +
-      '<div class="sk-foot"><span>⚡ 本地处理</span><span>⬇ 无需联网</span></div>'
+      '<div class="sk-foot"><span>' + iconMark('bolt', 12) + '本地处理</span><span>' + iconMark('check', 12) + '无需联网</span></div>'
     card.onclick = () => openOffice(item.key)
     box.appendChild(card)
   }
@@ -3575,7 +3656,7 @@ async function paintConnectors() {
     const card = document.createElement('div')
     card.className = 'cn-card'
     card.innerHTML =
-      '<span class="cn-ico" style="background:' + brandTint(item.hue) + '">' + item.name.slice(0, 1) + '</span>' +
+      '<span class="cn-ico" style="' + softTile(item.hue) + '">' + iconMark(pickIcon('connector', item.name, 'plug'), 18) + '</span>' +
       '<span class="cn-main">' +
         '<span class="cn-nm">' + item.name + (item.connected ? '<span class="ex-badge real">已连接</span>' : '') + '</span>' +
         '<span class="cn-desc">' + item.desc + '</span>' +

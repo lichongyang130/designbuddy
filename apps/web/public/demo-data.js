@@ -3,12 +3,12 @@
 // 线上接入后应整份替换或删除。
 
 export const EX_CATEGORIES = [
-  { name: '电商运营', tone: 'c-violet', items: ['中国电商运营专家', '商家宣传页与海报设计师', '跨境电商专家'] },
-  { name: '内容创作', tone: 'c-green', items: ['内容创作专家团', '内容创作专家', '微信公众号运营专家'] },
-  { name: '投资分析', tone: 'c-blue', items: ['交易分析团队', '股票研究专家', '腾讯自选股股票投研专家团'] },
-  { name: '法律咨询', tone: 'c-slate', items: ['法律检索专家', '资深合同法务专家', '财税合规专家团'] },
-  { name: '小微企业', tone: 'c-mint', items: ['销售教练', '微信公众号运营专家', '创业伙伴'] },
-  { name: '数据分析', tone: 'c-sky', items: ['数据分析报告师', '深度研究团队', '花叔数据分析专家团'] },
+  { name: '电商运营', icon: 'cart', tone: 'c-violet', items: ['中国电商运营专家', '商家宣传页与海报设计师', '跨境电商专家'] },
+  { name: '内容创作', icon: 'pen', tone: 'c-green', items: ['内容创作专家团', '内容创作专家', '微信公众号运营专家'] },
+  { name: '投资分析', icon: 'trend', tone: 'c-blue', items: ['交易分析团队', '股票研究专家', '腾讯自选股股票投研专家团'] },
+  { name: '法律咨询', icon: 'scale', tone: 'c-slate', items: ['法律检索专家', '资深合同法务专家', '财税合规专家团'] },
+  { name: '小微企业', icon: 'storefront', tone: 'c-mint', items: ['销售教练', '微信公众号运营专家', '创业伙伴'] },
+  { name: '数据分析', icon: 'barchart', tone: 'c-sky', items: ['数据分析报告师', '深度研究团队', '花叔数据分析专家团'] },
 ]
 
 export const EX_DEMO = [
