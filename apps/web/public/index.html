@@ -2027,8 +2027,9 @@
   .cn-ico{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none;
     background:#fff;border:1px solid var(--line);color:var(--fg);overflow:hidden}
   .cn-ico svg{width:23px;height:23px;display:block}
-  .cn-ico-mono{color:#fff;border-color:transparent;font-size:12.5px;font-weight:600;letter-spacing:.02em;
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.22), 0 1px 2px rgba(16,24,40,.10)}
+  .cn-ico-txt{font-size:12.5px;font-weight:650;letter-spacing:.01em;line-height:1;white-space:nowrap;
+    border-color:transparent}
+  .cn-ico-txt.long{font-size:9.5px;letter-spacing:-.01em}
   .cn-main{flex:1;min-width:0;padding-right:20px}
   .cn-nm{font-size:13px;font-weight:600;color:var(--fg);line-height:1.35;display:flex;align-items:center;gap:6px}
   .cn-desc{font-size:12px;color:var(--fg-subtle);margin-top:5px;line-height:1.45;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -2214,7 +2215,8 @@
   .smi-face img{width:100%;height:100%;object-fit:cover;display:block}
   .smi-brand .cn-ico{width:26px;height:26px;border-radius:8px}
   .smi-brand .cn-ico svg{width:16px;height:16px}
-  .smi-brand .cn-ico-mono{font-size:9.5px}
+  .smi-brand .cn-ico-txt{font-size:9px}
+  .smi-brand .cn-ico-txt.long{font-size:7.5px}
   .smi-all{margin-top:5px;border-top:1px solid var(--line);border-radius:0 0 var(--r-md) var(--r-md);color:var(--fg-muted);font-size:12.5px}
   .smi-arrow{margin-left:auto;color:var(--fg-subtle);font-size:12px}
 
@@ -5222,12 +5224,50 @@ const BRAND_KEYS = [
   [/WPS|金山文档/, 'wps'],
   [/微云/, 'weiyun'],
   [/天眼查/, 'tianyancha'],
+  [/企查查/, 'qcc'],
   [/百度网盘/, 'baidunetdisk'],
   [/微信/, 'wechat'],
   [/^QQ$/, 'qq'],
   [/QQ\s*邮箱/, 'qqmail'],
   [/CloudBase|腾讯云/, 'tencentcloud'],
 ]
+
+/* 没有官方矢量的品牌：白底 + 品牌色简称（两字够用时用两字，避免一排「腾讯」） */
+const CN_MARKS = [
+  [/腾讯文档/, ['文档', '#2B7BFF']],
+  [/腾讯问卷/, ['问卷', '#0AA1F5']],
+  [/腾讯地图/, ['地图', '#1AA0E8']],
+  [/腾讯自选股/, ['自选股', '#E5342A']],
+  [/腾讯企点/, ['企点', '#0091FF']],
+  [/腾讯营销投放/, ['营销', '#1B4DFF']],
+  [/NeoData/i, ['Neo', '#0F62FE']],
+  [/通达信/, ['通达信', '#E6362D']],
+  [/飞书|Lark/i, ['飞书', '#3370FF']],
+  [/\bima\b/i, ['ima', '#1E6FFF']],
+  [/乐享知识库/, ['乐享', '#0EA5E9']],
+  [/福帮手/, ['福帮手', '#F08300']],
+  [/Tushare/i, ['TS', '#2C3E50']],
+  [/OpenBoost/i, ['OB', '#0E7490']],
+  [/邓白氏/, ['D&B', '#0056A4']],
+  [/新华财经/, ['新华', '#C0392B']],
+  [/北大法宝/, ['法宝', '#8C1B2B']],
+  [/Bugly/i, ['Bugly', '#3A7AFE']],
+  [/EdgeOne/i, ['EO', '#0A66FF']],
+  [/销售易/, ['销售易', '#FF6B00']],
+  [/小鹅通/, ['小鹅通', '#FF6A00']],
+  [/华宇元典/, ['元典', '#1F4E79']],
+  [/微盛/, ['微盛', '#2B7CE9']],
+  [/中兴新云/, ['中兴云', '#C8102E']],
+  [/恒生聚源/, ['聚源', '#1D4ED8']],
+  [/启信慧眼/, ['启信', '#1E6FFF']],
+  [/金山文档|WPS/i, ['WPS', '#E5352B']],
+]
+
+function brandMark(name) {
+  const text = String(name || '')
+  for (const [re, mark] of CN_MARKS) if (re.test(text)) return mark
+  return null
+}
 
 const MONO_COLORS = ['#C0392B', '#B4641E', '#0F7B6C', '#2D6AE3', '#5B4BE0', '#B0487A', '#43536B', '#0E7490']
 
@@ -5258,10 +5298,27 @@ function brandTile(name, hue) {
     return '<span class="cn-ico" style="color:' + brand.color + '" title="' + (brand.label || '') + '">' +
       '<svg viewBox="' + brand.v + '" aria-hidden="true">' + brand.body + '</svg></span>'
   }
-  return '<span class="cn-ico cn-ico-mono" style="background:' + monoColor(name, hue) + '">' + shortBrand(name) + '</span>'
+  const mark = brandMark(name)
+  const text = mark ? mark[0] : shortBrand(name)
+  const color = mark ? mark[1] : monoColor(name, hue)
+  const rgb = brandTint(color)
+  const tint = rgb ? 'rgba(' + rgb + ',.11)' : 'rgba(16,24,40,.06)'
+  return '<span class="cn-ico cn-ico-txt' + (text.length > 2 ? ' long' : '') + '" style="color:' + color +
+    ';background:' + tint + '" title="' + name + '">' + text + '</span>'
 }
 
+function brandTint(color) {
+  const hex = String(color || '').trim()
+  if (hex.charAt(0) !== '#' || hex.length !== 7) return null
+  const r = parseInt(hex.slice(1, 3), 16)
+  const g = parseInt(hex.slice(3, 5), 16)
+  const b = parseInt(hex.slice(5, 7), 16)
+  return r + ',' + g + ',' + b
+}
+
+let cnPaintSeq = 0
 async function paintConnectors() {
+  const seq = ++cnPaintSeq
   const grid = $('cnGrid')
   grid.innerHTML = ''
   let real = []
@@ -5280,6 +5337,7 @@ async function paintConnectors() {
     toast(error.message, 'err')
   }
 
+  if (seq !== cnPaintSeq) return
   const list = real.concat(CN_CONNECTORS.map((item) => Object.assign({}, item)))
   const query = state.exQuery.trim().toLowerCase()
   const filtered = query
