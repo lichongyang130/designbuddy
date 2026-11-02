@@ -1394,6 +1394,151 @@
   .sld.k-coldline .d-end-row span:first-child{color:var(--second);font-weight:600;min-width:96px}
   .sld.k-coldline .d-end-img{margin:30px 0 0 -112px}
 
+  /* ── 文档家族：Dayline（横向时间轴 · 暖纸 · 松绿/赭黄 · 右栏时刻表） ── */
+  .sld.k-dayline{background-color:var(--paper);--at:.3}
+  .sld.k-dayline::before{
+    content:"";position:absolute;left:84px;right:84px;top:74px;height:20px;z-index:0;
+    background-image:
+      radial-gradient(circle at 50% 50%, var(--second) 0 4px, transparent 4.5px),
+      linear-gradient(var(--accent),var(--accent)),
+      linear-gradient(var(--rule),var(--rule)),
+      repeating-linear-gradient(to right, var(--rule) 0 1px, transparent 1px 100%);
+    background-size:9px 9px,calc(var(--at) * 100%) 2px,100% 1px,calc(100% / 14) 5px;
+    background-position:calc(var(--at) * (100% - 9px)) 6px,0 10px,0 10px,0 11px;
+    background-repeat:no-repeat,no-repeat,no-repeat,repeat-x;
+  }
+  .sld.k-dayline .d-pad{padding:124px 84px 96px}
+  .sld.k-dayline .d-run{
+    left:84px;right:84px;top:38px;padding-bottom:0;border-bottom:0;
+    font-size:8.5px;letter-spacing:.16em;color:var(--muted);
+  }
+  .sld.k-dayline .d-run span:last-child{color:var(--accent);font-weight:600}
+  .sld.k-dayline .sd-folio{
+    left:84px;right:84px;bottom:42px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-size:8.5px;letter-spacing:.14em;color:var(--muted);
+  }
+  .sld.k-dayline .sd-folio span:last-child{color:var(--ink)}
+  .sld.k-dayline .d-kicker{font-size:9px;letter-spacing:.2em;color:var(--second);font-weight:600}
+  .sld.k-dayline .d-h1{margin:0;font-size:96px;line-height:1.06;font-weight:600;letter-spacing:-.04em}
+  .sld.k-dayline .d-h2{margin:14px 0 0;font-size:40px;line-height:1.24;font-weight:600;letter-spacing:-.03em;color:var(--ink)}
+  .sld.k-dayline .d-lead{margin-top:18px;font-size:15px;line-height:2;color:var(--body)}
+  .sld.k-dayline .d-main p{font-size:16px;line-height:2.02;text-align:justify;color:var(--body)}
+  .sld.k-dayline .d-main p + p{margin-top:16px}
+  .sld.k-dayline .d-main p:first-child::first-letter{font-size:1em;font-weight:inherit}
+  .sld.k-dayline .d-cols{grid-template-columns:minmax(0,1fr) 206px;gap:38px;margin-top:28px}
+  /* 右栏：时刻表 */
+  .sld.k-dayline .d-side{display:block;padding:0;border-top:0}
+  .sld.k-dayline .d-side p{
+    position:relative;padding:10px 0 10px 17px;border-bottom:1px solid var(--rule);
+    font-family:inherit;font-size:10.5px;line-height:1.8;color:var(--muted);
+  }
+  .sld.k-dayline .d-side p::before{
+    content:"";position:absolute;left:0;top:16px;width:5px;height:5px;border-radius:50%;background:var(--second);
+  }
+  .sld.k-dayline .d-side p:first-child{border-top:2px solid var(--ink);padding-top:12px}
+  .sld.k-dayline .d-side p + p{margin-top:0}
+  .sld.k-dayline .d-note{
+    margin-top:auto;padding-top:11px;border-top:1px solid var(--rule);
+    font-family:inherit;font-size:9px;letter-spacing:.02em;line-height:1.75;
+  }
+  .sld.k-dayline .d-pull{
+    margin:auto 0 0;padding:22px 0 0;border-left:0;border-top:2px solid var(--second);
+    font-size:25px;line-height:1.55;font-weight:500;letter-spacing:-.02em;color:var(--ink);
+  }
+  .sld.k-dayline .d-pull span{
+    display:block;margin-top:12px;font-family:inherit;font-size:10px;letter-spacing:.02em;
+    text-transform:none;font-weight:400;color:var(--muted);
+  }
+  .sld.k-dayline .d-pull ~ .d-note{margin-top:20px}
+  /* 要点排成时刻行 */
+  .sld.k-dayline .d-points{
+    grid-template-columns:minmax(0,1fr);gap:0;padding-top:0;border-top:2px solid var(--ink);
+  }
+  .sld.k-dayline .d-points > div{
+    display:grid;grid-template-columns:62px 216px minmax(0,1fr);gap:18px;align-items:baseline;
+    padding:13px 0;border-top:0;border-bottom:1px solid var(--rule);
+  }
+  .sld.k-dayline .d-points span{font-family:inherit;font-size:9.5px;letter-spacing:.1em;color:var(--second);font-weight:600}
+  .sld.k-dayline .d-points b{margin:0;font-size:17px;font-weight:600;letter-spacing:-.01em}
+  .sld.k-dayline .d-points i{margin:0;font-size:11px;line-height:1.75}
+  /* 表格：无斑马，双线收口 */
+  .sld.k-dayline .d-table{margin-top:26px}
+  .sld.k-dayline .d-table th{
+    padding:0 0 10px;font-family:inherit;font-size:9px;letter-spacing:.14em;color:var(--accent);
+    font-weight:600;text-transform:none;
+  }
+  .sld.k-dayline .d-table td{padding:28px 0;font-size:14.5px;line-height:1.6;border-bottom:1px solid var(--rule)}
+  .sld.k-dayline .d-table th:first-child,.sld.k-dayline .d-table td:first-child{width:30%}
+  .sld.k-dayline .d-table td.num{font-family:inherit;font-size:13.5px;color:var(--body);font-variant-numeric:tabular-nums}
+  .sld.k-dayline .d-table tbody tr:last-child td{
+    border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);font-weight:600;
+  }
+  .sld.k-dayline .d-read{margin-top:auto;padding-top:16px;border-top:1px solid var(--rule);font-size:13px;line-height:1.95}
+  .sld.k-dayline .d-read ~ .d-note{margin-top:16px}
+  /* 封面 */
+  .sld.k-dayline .d-cover{padding:124px 84px 74px}
+  .sld.k-dayline .d-cover-top{
+    border-bottom:0;padding-bottom:0;color:var(--muted);font-size:8.5px;letter-spacing:.16em;
+  }
+  .sld.k-dayline .d-cover .d-h1{margin-top:40px}
+  .sld.k-dayline .d-cover .d-lead{max-width:560px;font-size:15px;line-height:2}
+  .sld.k-dayline .d-cover-img{margin:30px 0 24px}
+  .sld.k-dayline .d-cover-foot{gap:22px;border-top:2px solid var(--ink);padding-top:12px}
+  .sld.k-dayline .d-cover-foot b{font-size:11px;font-weight:600}
+  .sld.k-dayline .d-cover-foot span{font-family:inherit;font-size:9.5px;letter-spacing:.01em;text-transform:none;color:var(--muted)}
+  /* 摘要：两列事实 */
+  .sld.k-dayline[data-k="dmeta"] .d-facts{
+    margin-top:32px;border-top:2px solid var(--ink);display:grid;grid-template-columns:1fr 1fr;gap:0 44px;
+  }
+  .sld.k-dayline .d-fact{grid-template-columns:118px minmax(0,1fr);gap:14px;padding:17px 0}
+  .sld.k-dayline .d-fact span{font-family:inherit;font-size:10px;letter-spacing:.01em;text-transform:none}
+  .sld.k-dayline .d-fact b{font-size:14px;font-weight:600;color:var(--accent)}
+  /* 目录 */
+  .sld.k-dayline .d-toc li{grid-template-columns:56px minmax(0,1fr) 196px;gap:20px;padding:62px 0;border-top:1px solid var(--rule)}
+  .sld.k-dayline .d-toc .n{font-size:9.5px;letter-spacing:.12em;color:var(--second)}
+  .sld.k-dayline .d-toc .t{font-size:26px;font-weight:600;letter-spacing:-.02em}
+  .sld.k-dayline .d-toc .d{font-size:10.5px;line-height:1.6;color:var(--muted)}
+  .sld.k-dayline .d-toc-figs{margin-top:auto;border-top:2px solid var(--ink);padding-top:13px}
+  .sld.k-dayline .d-toc-figs ul{gap:8px 40px}
+  .sld.k-dayline .d-toc-figs b{font-family:inherit;font-size:9px;letter-spacing:.06em;color:var(--second);font-weight:600}
+  .sld.k-dayline .d-toc-figs li{font-size:11px}
+  .sld.k-dayline .d-toc-figs ~ .d-note{margin-top:16px}
+  /* 章节页：大字时刻 + 底部图带 */
+  .sld.k-dayline .d-sec{position:absolute;inset:0;display:flex;flex-direction:column;padding:0}
+  .sld.k-dayline .d-sec-txt{position:relative;z-index:2;padding:124px 84px 0}
+  .sld.k-dayline .d-sec-num{
+    font-family:ui-sans-serif,system-ui,'PingFang SC',sans-serif;font-size:128px;line-height:.9;font-weight:700;
+    letter-spacing:-.06em;color:transparent;-webkit-text-stroke:1.4px var(--accent);
+  }
+  .sld.k-dayline .d-sec-t{margin:18px 0 0;font-size:50px;line-height:1.16;font-weight:600;letter-spacing:-.03em;color:var(--ink)}
+  .sld.k-dayline .d-sec-lead{margin-top:18px;max-width:560px;font-size:14.5px;line-height:1.95;color:var(--body)}
+  .sld.k-dayline .d-sec-img{margin-top:auto;height:470px;overflow:hidden;background:var(--ink)}
+  .sld.k-dayline .d-sec-img .sd-img{width:100%;height:100%;object-fit:cover}
+  /* 图版页：整幅图 + 左下纸色图注牌 */
+  .sld.k-dayline .d-fig{position:absolute;inset:0;margin:0;padding:0}
+  .sld.k-dayline .d-fig-img{position:absolute;inset:0;background:var(--ink)}
+  .sld.k-dayline .d-fig-img .sd-img{width:100%;height:100%;object-fit:cover}
+  .sld.k-dayline .d-fig-cap{
+    position:absolute;left:84px;bottom:84px;width:524px;z-index:2;display:block;
+    background:var(--paper);padding:24px 26px 20px;border-top:3px solid var(--second);border-bottom:0;
+  }
+  .sld.k-dayline .d-fig-no{font-family:inherit;font-size:9px;letter-spacing:.14em;color:var(--second);font-weight:600}
+  .sld.k-dayline .d-fig-cap p{margin:10px 0 0;font-size:12.5px;line-height:1.9;color:var(--body)}
+  .sld.k-dayline .d-fig-src{
+    grid-column:auto;display:block;margin-top:12px;font-family:inherit;font-size:9px;
+    letter-spacing:.02em;text-transform:none;color:var(--muted);
+  }
+  /* 尾声 */
+  .sld.k-dayline .d-end-txt{padding:124px 84px 0}
+  .sld.k-dayline .d-end-t{margin:16px 0 0;font-size:48px;line-height:1.2;font-weight:600;letter-spacing:-.03em}
+  .sld.k-dayline .d-end-rows{margin-top:26px}
+  .sld.k-dayline .d-end-row{
+    padding:11px 0;border-top:1px solid var(--rule);font-family:inherit;font-size:10.5px;letter-spacing:.02em;color:var(--body);
+  }
+  .sld.k-dayline .d-end-row span:first-child{color:var(--second);font-weight:600;min-width:112px}
+  .sld.k-dayline .d-end-img{margin:26px 0 0;height:430px;overflow:hidden;background:var(--ink)}
+  .sld.k-dayline .d-end-img .sd-img{width:100%;height:100%;object-fit:cover}
+
   /* ── 文档家族 B：Heatline（无衬线 · 非对称版心 · 左侧发丝线） ── */
   .sld.k-heatline .d-pad{padding:100px 84px 96px 128px}
   .sld.k-heatline .d-pad::before{content:"";position:absolute;left:84px;top:100px;bottom:96px;width:1px;background:var(--rule)}
