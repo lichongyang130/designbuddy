@@ -1135,7 +1135,7 @@ export const CASE_DECKS = [
         k: 'cover', label: '封面',
         kicker: 'LAUNCH · 2027.03',
         title: '气泡计划',
-        meta: 'BUBBLE PROGRAM · 新品发布 + 三城快闪 · 执行方案',
+        meta: 'BUBBLE PROGRAM · 新品发布 + 六城快闪 · 执行方案',
         img: '01',
       },
       {
@@ -1158,7 +1158,7 @@ export const CASE_DECKS = [
       },
       {
         k: 'ticker', label: '口号',
-        text: 'BUBBLE 4℃ 限量 1,200 罐 三城同步',
+        text: 'BUBBLE 4℃ 限量 1,200 罐 六城同步',
         big: '三天\n只做一件事',
       },
       {
@@ -1181,12 +1181,45 @@ export const CASE_DECKS = [
         ],
         bullets: ['4℃ 冷水槽，每两小时换冰', '限量编号，不做补货', '空罐可换下一罐半价'],
       },
+      { k: 'fullimg', label: '限量', img: '09', cap: '一千二百罐，一面墙 · 编号 0001 到 1200，卖完这面墙就空了' },
       {
         k: 'board', label: '视觉',
         img: '04',
         title: '四种颜色打完',
         text: '酸性黄做底、电紫切块、荧光粉只给“限量”两个字、黑压住所有正文。现场不出现第五种颜色，包括工作人员的服装。',
         swatches: [['#E9F24D', '酸性黄 · 底色'], ['#4B1FD6', '电紫 · 分块'], ['#FF3D8A', '荧光粉 · 限量'], ['#161616', '墨黑 · 正文']],
+      },
+      {
+        k: 'columns', label: '规矩',
+        title: '视觉只有四条规矩',
+        note: 'RULES',
+        cols: [
+          { t: '只用四种颜色', d: '多一种都不行。工作人员服装也算在场物料，同样按两色做。' },
+          { t: '标题压满整行', d: '字号永远顶到版心两端。宁可换行，也不留半行空白。' },
+          { t: '照片必须开闪光', d: '现场所有照片都是直闪，不打柔光。颗粒和过曝是这套视觉的一部分。' },
+          { t: '一种字体', d: '全站只用一套黑体：粗体做标题，常规做正文，不加衬线。' },
+        ],
+      },
+      { k: 'fullimg', label: '场地', img: '06', cap: '开场前四十八小时 · 场地只喷地线，不搭舞台，不做背板' },
+      {
+        k: 'split', label: '排队',
+        img: '07',
+        title: '队伍要先于\n海报出现',
+        paras: [
+          '线上不投放，只做一件事：让第一天的队在街角能被看见。黄色警戒带、卷帘门、一块手写板，够了。',
+          '队尾每分钟都在被拍照，照片里一定有那道黄带——它是这场活动唯一的户外媒体。',
+        ],
+        bullets: ['开场前一小时放队', '黄带只拉三十米', '队尾发号码，不发票'],
+      },
+      {
+        k: 'split', label: '冰槽',
+        img: '08',
+        title: '4℃ 是\n唯一卖点',
+        paras: [
+          '现场六组冷水槽，每两小时换一次冰。罐子从水里捞出来递到手上，水珠还没落就先被拍了一遍。',
+          '不解释配方，只解释温度：罐身摸上去多少度，就是这场发布会的全部产品语言。',
+        ],
+        bullets: ['六组冷水槽 · 两小时换冰', '罐身只印编号', '递罐不用托盘，用手'],
       },
       { k: 'fullimg', label: '现场', img: '03', cap: '现场只在地面喷漆，不做背板 · 夜里八点后关灯开闪光' },
       {
@@ -1913,6 +1946,13 @@ export const CASE_DECKS = [
         src: 'THERMAL SURVEY · AUGUST 2026',
       },
       {
+        k: 'figpair', label: 'Figures 4-5',
+        a: '11', aNo: 'FIG. 4',
+        aCap: 'Service alley behind block 03. Six degrees cooler than the street it joins, with no planting of its own.',
+        b: '12', bNo: 'FIG. 5',
+        bCap: 'Shade sail over block 02, summer two. 40 m² of fabric took 9°C off the paving below it.',
+      },
+      {
         k: 'timeline', label: 'Plan',
         title: 'Three summers',
         items: [
@@ -1922,6 +1962,13 @@ export const CASE_DECKS = [
         ],
       },
       {
+        k: 'figpair', label: 'Figures 6-7',
+        a: '13', aNo: 'FIG. 6',
+        aCap: 'Misting line above block 06. Two degrees at head height, 40 litres an hour, nothing retained.',
+        b: '14', bNo: 'FIG. 7',
+        bCap: 'Paving build-up, block 04: 80 mm pavers, open joints, 150 mm gravel. The base is where the water goes.',
+      },
+            {
         k: 'columns', label: 'Interventions',
         title: 'Three things that work',
         note: 'INTERVENTIONS',
@@ -1983,9 +2030,11 @@ export const CASE_DECKS = [
         note: 'Raw data on request; all sensors calibrated in June',
       },
       {
-        k: 'statement', label: 'The ask',
+        k: 'fullimg', label: 'The ask',
+        img: '15',
+        kicker: 'THE ASK · 2027 BUDGET',
         text: 'We are asking for one summer of planting in six blocks, and the sensors to prove that it worked.',
-        foot: 'THE ASK · 2027 BUDGET',
+        foot: 'PAVING STILL 31°C AT 23:00 · COOLING THE BLOCK · 2026',
       },
       {
         k: 'end', label: 'End',
