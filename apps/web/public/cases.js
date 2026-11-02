@@ -27,6 +27,8 @@ export const CASE_DECKS = [
     bestFor: ['建筑与空间改造提案', '城市更新与保护案例研究', '设计与竞赛汇报', '工作室课程讲义'],
     styles: ['#f6f1e4', '#a8342a', '#31507e'],
     colorway: '沙纸 · 朱砂 · 石板蓝',
+    folio: true,
+    footLeft: 'ARCHIVE 07 · CALDER HARBOR',
     paper: '#f6f1e4',
     ink: '#24211c',
     accent: '#a8342a',
@@ -102,6 +104,12 @@ export const CASE_DECKS = [
         cap: '原状立面测绘图 · 1:200 · 2026.09 现场复核',
       },
       {
+        k: 'sheet', label: '图签',
+        img: '02',
+        title: '原状立面',
+        block: [['项目', 'MALLOW BUILDING'], ['图号', 'AR-102'], ['比例', '1 : 200'], ['日期', '2026.09.14'], ['绘制', 'ATELIER REDLINE']],
+      },
+      {
         k: 'board', label: '材料',
         title: '材料与色板',
         text: '新建部分只用三种材料：耐候钢、再生骨料混凝土、与原砖墙同窑复烧的补配砖。旧与新用颜色区分，不做仿旧。',
@@ -161,6 +169,8 @@ export const CASE_DECKS = [
     bestFor: ['A 轮 / B 轮融资路演', '基建与能源项目立项', '企业年度战略沟通', '技术尽调与客户答疑'],
     styles: ['#101114', '#d8a04a', '#6f7a72'],
     colorway: '石墨 · 琥珀金 · 松灰',
+    folio: true,
+    footLeft: 'MERIDIAN COMPUTE · 2026',
     paper: '#101114',
     ink: '#f3f0e8',
     accent: '#d8a04a',
@@ -225,6 +235,13 @@ export const CASE_DECKS = [
           { t: '液冷', d: '冷板式液冷从一期就按 80kW/柜 设计，改造零成本，交付即满功率。' },
           { t: '调度', d: '自研调度栈把训练任务的排产、迁移和容错做成产品，客户不必自己拼。' },
         ],
+      },
+      {
+        k: 'metric', label: '单柜毛利',
+        kicker: 'UNIT MARGIN · 2026 Q3',
+        big: '43%',
+        label: '单柜毛利 / 行业均值 28%',
+        note: '满负荷工况 · 含电费与折旧',
       },
       {
         k: 'bars', label: '交付',
@@ -347,6 +364,12 @@ export const CASE_DECKS = [
         swatches: [['#7d9484', '青瓷绿 · 主色'], ['#f0e9d8', '生纸白 · 底色'], ['#b98d68', '陶土棕 · 触点'], ['#232620', '墨 · 文字']],
       },
       {
+        k: 'plate', label: '图版',
+        img: '03',
+        no: 'PLATE 04',
+        cap: '青瓷釉在上午九点的侧光下开片 · 放大 4 倍',
+      },
+      {
         k: 'columns', label: '原则',
         title: '三条视觉原则',
         note: 'PRINCIPLES',
@@ -423,6 +446,8 @@ export const CASE_DECKS = [
     bestFor: ['可持续与 ESG 年度报告', '碳资产与林业项目说明', '流域与生态修复提案', '长期主义主题演讲'],
     styles: ['#0F2A24', '#D8A03C', '#6E8F7C'],
     colorway: '深墨绿 · 琥珀金 · 苔绿',
+    folio: true,
+    footLeft: 'DEEP CANOPY · 2026',
     paper: '#0F2A24',
     ink: '#EDE8D9',
     accent: '#D8A03C',
@@ -507,6 +532,19 @@ export const CASE_DECKS = [
         note: '口径：合并口径，未审计；碳汇按当年核证量确认',
       },
       {
+        k: 'ledger', label: '林班',
+        title: '林班明细（前五）',
+        head: ['林班', '树种', '面积', '年碳汇'],
+        rows: [
+          ['A-03', '杉木', '218 公顷', '+12.4%'],
+          ['A-07', '栎类', '186 公顷', '+9.8%'],
+          ['B-12', '混交', '164 公顷', '+11.1%'],
+          ['B-19', '杉木', '142 公顷', '+7.6%'],
+          ['C-02', '栎类', '121 公顷', '+13.2%'],
+        ],
+        note: '同比口径：较 2025 年核证量',
+      },
+      {
         k: 'timeline', label: '周期',
         title: '轮伐与核证周期',
         items: [
@@ -545,6 +583,8 @@ export const CASE_DECKS = [
     bestFor: ['餐饮与生活方式品牌手册', '门店与空间提案', '菜单与产品线规划', '加盟与招商材料'],
     styles: ['#B0532F', '#F2C14E', '#FBEFE2'],
     colorway: '陶土橙 · 麦黄 · 生奶白',
+    folio: true,
+    footLeft: 'TERRACOTTA · 2026',
     paper: '#B0532F',
     ink: '#FBEFE2',
     accent: '#F2C14E',
@@ -596,6 +636,15 @@ export const CASE_DECKS = [
         title: '色彩与材质',
         text: '主色就是陶器烧出来的那层橙，不做渐变；麦黄只出现在价格牌和强调字上；底色是生奶白，比纯白暖一档。',
         swatches: [['#B0532F', '陶土 · 主色'], ['#F2C14E', '麦黄 · 强调'], ['#FBEFE2', '生奶白 · 底色'], ['#3A2A22', '炭 · 文字']],
+      },
+      {
+        k: 'menu', label: '菜单',
+        title: '一页菜单',
+        groups: [
+          { h: '常驻 · ALWAYS', items: [['手撕面包 · 橄榄油', '18'], ['炭烤时蔬', '26'], ['番茄冷汤', '22'], ['生火腿 · 无花果', '38'], ['烤茄子 · 芝麻酱', '24'], ['慢炖牛颊', '68']] },
+          { h: '季节 · THIS SEASON', items: [['烤无花果 · 里科塔', '32'], ['石榴 · 开心果沙拉', '30'], ['柠檬叶烤鸡', '58'], ['陶罐焖豆', '34'], ['蜂蜜烤桃 · 山羊奶酪', '36'], ['橙皮橄榄油蛋糕', '28']] },
+        ],
+        note: '价格含税；面包与油可续一次',
       },
       {
         k: 'columns', label: '规范',
@@ -740,6 +789,13 @@ export const CASE_DECKS = [
       },
       { k: 'fullimg', label: '方法', img: '03', cap: '每讲都从一张白纸开始 · 先画结构，再写字' },
       {
+        k: 'work', label: '作业',
+        kicker: 'ASSIGNMENT 03',
+        title: '第三讲作业',
+        steps: ['把上周的文档删掉三分之一，不改内容只删句子', '用一句话重写开头，主语必须是读者', '请两个不熟悉项目的人只读第一段，复述要点'],
+        note: '下周一前提交 · 课上互改，只允许问「这句要读者做什么」',
+      },
+      {
         k: 'split', label: '练习',
         img: '05',
         title: '三张纸，\n改到能发为止',
@@ -793,6 +849,8 @@ export const CASE_DECKS = [
     bestFor: ['新品发布与快闪企划', '活动执行方案', '品牌联名与街头营销', '招商与赞助提案'],
     styles: ['#E9F24D', '#5B2BE0', '#161616'],
     colorway: '酸性黄 · 电紫 · 墨黑',
+    folio: true,
+    footLeft: 'BUBBLE PROGRAM · 2027',
     paper: '#E9F24D',
     ink: '#161616',
     accent: '#4B1FD6',
@@ -827,6 +885,11 @@ export const CASE_DECKS = [
         k: 'statement', label: '命题',
         text: '把一罐饮料的发布，做成三天里有人愿意排队、愿意拍照、愿意再来的现场。',
         foot: '策略单 · 第一版',
+      },
+      {
+        k: 'ticker', label: '口号',
+        text: 'BUBBLE 4℃ 限量 1,200 罐 三城同步',
+        big: '三天\n只做一件事',
       },
       {
         k: 'stats', label: '关键数字',
@@ -1040,6 +1103,69 @@ export function slideInner(deck, s) {
         '</div>'
       )
     }
+    case 'sheet':
+      return (
+        '<div class="sh">' + imgTag(deck, s.img, 'sd-fill') +
+        '<div class="sh-frame"></div>' +
+        '<div class="sh-block">' +
+        '<div class="sh-title">' + esc(s.title || '') + '</div>' +
+        s.block.map(([k, v]) => '<div class="sh-row"><span>' + esc(k) + '</span><b>' + esc(v) + '</b></div>').join('') +
+        '</div></div>'
+      )
+    case 'metric':
+      return (
+        '<div class="sd-pad sd-metric">' +
+        '<div class="sd-mono">' + esc(s.kicker || '') + '</div>' +
+        '<div class="sd-metric-v">' + esc(s.big) + '</div>' +
+        '<div class="sd-metric-l">' + esc(s.label) + '</div>' +
+        (s.note ? '<div class="sd-mono sd-foot">' + esc(s.note) + '</div>' : '') +
+        '</div>'
+      )
+    case 'plate':
+      return (
+        '<div class="pl">' +
+        '<div class="sd-mono pl-no">' + esc(s.no || '') + '</div>' +
+        '<div class="pl-img">' + imgTag(deck, s.img, 'sd-fill') + '</div>' +
+        '<div class="pl-cap">' + esc(s.cap || '') + '</div>' +
+        '</div>'
+      )
+    case 'ledger':
+      return (
+        '<div class="sd-pad sd-ledger">' +
+        '<h2 class="sd-h2">' + esc(s.title) + '</h2>' +
+        '<div class="lg-head">' + s.head.map((h) => '<span>' + esc(h) + '</span>').join('') + '</div>' +
+        s.rows.map((r) => '<div class="lg-row">' + r.map((c, i) => '<span' + (i ? ' class="num"' : '') + '>' + esc(c) + '</span>').join('') + '</div>').join('') +
+        (s.note ? '<div class="sd-mono sd-foot">' + esc(s.note) + '</div>' : '') +
+        '</div>'
+      )
+    case 'menu':
+      return (
+        '<div class="sd-pad sd-menu">' +
+        '<h2 class="sd-h2">' + esc(s.title) + '</h2>' +
+        '<div class="mn-cols">' + s.groups.map((g) =>
+          '<div class="mn-col"><div class="sd-mono mn-h">' + esc(g.h) + '</div>' +
+          g.items.map(([n, p]) => '<div class="mn-item"><span class="mn-n">' + esc(n) + '</span><i></i><span class="mn-p">' + esc(p) + '</span></div>').join('') +
+          '</div>'
+        ).join('') + '</div>' +
+        (s.note ? '<div class="sd-mono sd-foot">' + esc(s.note) + '</div>' : '') +
+        '</div>'
+      )
+    case 'work':
+      return (
+        '<div class="sd-pad sd-work">' +
+        '<div class="sd-mono">' + esc(s.kicker || 'ASSIGNMENT') + '</div>' +
+        '<h2 class="sd-h2">' + esc(s.title) + '</h2>' +
+        '<ol class="wk-list">' + s.steps.map((t) => '<li><span class="wk-box"></span>' + esc(t) + '</li>').join('') + '</ol>' +
+        (s.note ? '<div class="wk-note">' + esc(s.note) + '</div>' : '') +
+        '</div>'
+      )
+    case 'ticker':
+      return (
+        '<div class="tk">' +
+        '<div class="tk-band"><div class="tk-run">' + new Array(4).fill(esc(s.text)).join('<span>·</span>') + '</div></div>' +
+        '<div class="tk-body"><div class="tk-big">' + esc(s.big || '').replace(/\n/g, '<br>') + '</div></div>' +
+        '</div>'
+      )
     case 'quote':
       return (
         '<div class="sd-pad sd-statement">' +
@@ -1070,11 +1196,15 @@ export function slideTheme(deck) {
     : 'ui-sans-serif,system-ui,"PingFang SC",sans-serif')
 }
 
-export function slideHTML(deck, s) {
-  return '<div class="sld' + (deck.imgLine ? ' sld-line' : '') + '" data-k="' + s.k + '" style="' + slideTheme(deck) + '">' +
-    slideInner(deck, s) + '</div>'
+export function slideHTML(deck, s, index) {
+  const folio = deck.folio
+    ? '<div class="sd-folio"><span>' + esc(deck.footLeft || deck.name) + '</span>' +
+      '<span>' + esc(String((index || 0) + 1).padStart(2, '0')) + '</span></div>'
+    : ''
+  return '<div class="sld k-' + deck.id + (deck.imgLine ? ' sld-line' : '') + '" data-k="' + s.k + '" style="' + slideTheme(deck) + '">' +
+    slideInner(deck, s) + folio + '</div>'
 }
 
 export function deckSlides(deck) {
-  return deck.slides.map((s) => ({ s, html: slideHTML(deck, s) }))
+  return deck.slides.map((s, i) => ({ s, html: slideHTML(deck, s, i) }))
 }

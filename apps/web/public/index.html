@@ -448,6 +448,194 @@
   .sld .sd-end .sd-hair{max-width:420px}
   .sld .sd-end-lines{margin-top:auto;display:flex;flex-direction:column;gap:4px}
 
+  /* ── 页脚（部分案例启用） ─────────────────────────── */
+  .sld .sd-folio{
+    position:absolute;left:64px;right:64px;bottom:15px;display:flex;justify-content:space-between;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:8.5px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--muted);opacity:.85;
+  }
+  .sld[data-k="cover"] .sd-folio,.sld[data-k="section"] .sd-folio,.sld[data-k="fullimg"] .sd-folio{display:none}
+
+  /* ── 专属页面：图签 / 单指标 / 图版 / 台账 / 菜单 / 作业 / 口号条 ── */
+  .sld .sh{position:absolute;inset:0}
+  .sld .sh .sd-img{position:absolute;left:64px;right:64px;top:52px;height:286px;object-fit:cover}
+  .sld .sh-frame{position:absolute;left:44px;right:44px;top:32px;bottom:34px;border:1px solid var(--accent);opacity:.45}
+  .sld .sh-block{
+    position:absolute;left:64px;right:64px;bottom:58px;display:grid;grid-template-columns:repeat(5,1fr);
+    gap:10px;border-top:1px solid var(--ink);padding-top:11px;
+  }
+  .sld .sh-title{grid-column:1/-1;font-size:21px;color:var(--accent);margin-bottom:6px}
+  .sld .sh-row{display:flex;flex-direction:column;gap:3px}
+  .sld .sh-row span{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .sld .sh-row b{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;font-weight:500}
+
+  .sld .sd-metric{display:flex;flex-direction:column;justify-content:center}
+  .sld .sd-metric .sd-mono{margin-bottom:20px}
+  .sld .sd-metric-v{font-size:200px;line-height:.84;letter-spacing:-.045em;color:var(--accent);font-variant-numeric:tabular-nums}
+  .sld .sd-metric-l{margin-top:20px;font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif;font-size:13px;color:var(--body)}
+
+  .sld .pl{position:absolute;inset:0;padding:64px 96px 46px;display:flex;flex-direction:column}
+  .sld .pl-no{position:absolute;left:96px;top:38px}
+  .sld .pl-img{position:relative;flex:1;overflow:hidden}
+  .sld .pl-cap{margin-top:16px;text-align:center;font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif;font-size:10.5px;letter-spacing:.06em;color:var(--muted)}
+
+  .sld .sd-ledger .sd-h2{font-size:26px;margin-bottom:20px}
+  .sld .lg-head,.sld .lg-row{display:grid;grid-template-columns:1.1fr 1fr 1fr 1fr;gap:14px}
+  .sld .lg-head{padding-bottom:7px;border-bottom:1px solid var(--accent)}
+  .sld .lg-head span{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .sld .lg-row{padding:10px 0;border-bottom:1px solid var(--rule)}
+  .sld .lg-row span{font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif;font-size:11.5px}
+  .sld .lg-row .num{text-align:right;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--accent);font-variant-numeric:tabular-nums}
+
+  .sld .sd-menu .sd-h2{font-size:38px;margin-bottom:24px}
+  .sld .mn-cols{display:grid;grid-template-columns:1fr 1fr;gap:44px}
+  .sld .mn-h{margin-bottom:10px;color:var(--ink);opacity:.75}
+  .sld .mn-item{display:flex;align-items:baseline;gap:9px;padding:7px 0}
+  .sld .mn-item i{flex:1;border-bottom:1px dotted rgba(255,255,255,.45)}
+  .sld .mn-n{font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif;font-size:11.5px}
+  .sld .mn-p{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;font-variant-numeric:tabular-nums}
+
+  .sld .sd-work{display:flex;flex-direction:column}
+  .sld .sd-work .sd-mono{margin-bottom:10px}
+  .sld .sd-work .sd-h2{font-size:29px;margin-bottom:24px}
+  .sld .wk-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:13px}
+  .sld .wk-list li{position:relative;padding-left:30px;font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif;font-size:12.5px;line-height:1.65;color:var(--body)}
+  .sld .wk-box{position:absolute;left:0;top:3px;width:14px;height:14px;border:1.5px solid var(--accent);border-radius:3px}
+  .sld .wk-note{margin-top:auto;padding-top:12px;border-top:1px solid var(--rule);font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif;font-size:10.5px;line-height:1.7;color:var(--muted)}
+
+  .sld .tk{position:absolute;inset:0;display:flex;flex-direction:column}
+  .sld .tk-band{overflow:hidden;padding:9px 0;background:var(--ink);color:var(--paper)}
+  .sld .tk-run{display:flex;gap:14px;white-space:nowrap;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;animation:tk-run 22s linear infinite}
+  .sld .tk-run span{color:var(--second)}
+  .sld .tk-body{flex:1;display:flex;align-items:flex-end;padding:0 40px 44px}
+  .sld .tk-big{font-weight:700;font-size:132px;line-height:.9;letter-spacing:-.05em;color:var(--ink)}
+  @keyframes tk-run{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .tv-th .tk-run,.tpl-card .tk-run{animation:none}
+
+  /* 引用页也各有姿态：竖排/居中/超小号/贴底 */
+  .sld.k-arcade .sd-statement{justify-content:flex-start;padding-top:96px}
+  .sld.k-arcade .sd-quote{font-size:34px;line-height:1.5;max-width:660px;border-left:2px solid var(--accent);padding-left:28px}
+
+  .sld.k-meridian .sd-statement{justify-content:center;align-items:flex-start}
+  .sld.k-meridian .sd-quote{font-size:40px;line-height:1.4;max-width:700px;letter-spacing:-.01em}
+
+  .sld.k-stillwater .sd-statement{align-items:center;text-align:center}
+  .sld.k-stillwater .sd-quote-mark{height:34px;font-size:70px;opacity:.45}
+  .sld.k-stillwater .sd-quote{font-size:27px;line-height:1.95;max-width:560px;letter-spacing:.02em}
+
+  .sld.k-canopy .sd-statement{justify-content:flex-end;padding-bottom:110px}
+  .sld.k-canopy .sd-quote{font-size:26px;line-height:1.7;max-width:520px;color:var(--paper)}
+
+  .sld.k-terracotta .sd-statement{align-items:center;text-align:center;justify-content:center}
+  .sld.k-terracotta .sd-quote{font-size:44px;line-height:1.34;max-width:700px}
+
+  .sld.k-lilac .sd-statement{justify-content:center}
+  .sld.k-lilac .sd-quote-mark{opacity:.22}
+  .sld.k-lilac .sd-quote{font-size:33px;line-height:1.6;max-width:620px;color:#3E22A8}
+
+  .sld.k-acid .sd-statement{justify-content:flex-start;padding-top:26px}
+  .sld.k-acid .sd-quote{font-size:48px;line-height:1.16;letter-spacing:-.03em;max-width:840px}
+
+  /* 陶土菜单：字更大、行距更松 */
+  .sld.k-terracotta .sd-menu .sd-h2{font-size:46px;margin-bottom:34px}
+  .sld.k-terracotta .mn-item{padding:13px 0}
+  .sld.k-terracotta .mn-n{font-size:13px}
+  .sld.k-terracotta .mn-p{font-size:13px}
+
+  /* ── 版式家族：每套案例独立一套网格 / 字号 / 装饰 ───── */
+
+  /* 01 拱廊再生：档案与制图 —— 左侧竖线、衬线大标题、编号分栏 */
+  .sld.k-arcade .sd-pad{padding:46px 52px 46px 76px}
+  .sld.k-arcade .sd-pad::before{content:"";position:absolute;left:42px;top:46px;bottom:46px;width:1px;background:var(--rule)}
+  .sld.k-arcade .sd-h1{font-size:78px}
+  .sld.k-arcade .sd-h2{font-size:38px;line-height:1.16}
+  .sld.k-arcade .sd-col{padding:16px 22px 16px 0;border-right:1px solid var(--rule)}
+  .sld.k-arcade .sd-col:last-child{border-right:0}
+  .sld.k-arcade .sd-stat-v{font-size:54px}
+  .sld.k-arcade .sd-folio{left:76px;right:52px}
+
+  /* 02 赤道算力：数据中心仪表 —— 竖向网格线、数字右对齐、行式指标 */
+  .sld.k-meridian .sd-pad{padding:48px 48px 48px 56px}
+  .sld.k-meridian::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 1px,transparent 1px 152px);
+  }
+  .sld.k-meridian .sd-h1{font-size:62px;letter-spacing:-.02em}
+  .sld.k-meridian .sd-h2{font-size:29px}
+  .sld.k-meridian .sd-col-row{gap:0}
+  .sld.k-meridian .sd-col{padding:14px 20px 0 0;border-top:1px solid var(--accent);border-right:1px solid var(--rule)}
+  .sld.k-meridian .sd-col:last-child{border-right:0}
+  .sld.k-meridian .sd-stat-row{display:block;border-top:1px solid var(--accent)}
+  .sld.k-meridian .sd-stat{display:grid;grid-template-columns:1fr auto;align-items:baseline;gap:4px 20px;padding:16px 0;border-right:0;border-bottom:1px solid var(--rule)}
+  .sld.k-meridian .sd-stat-v{grid-area:1/2;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:44px;letter-spacing:-.02em}
+  .sld.k-meridian .sd-stat-t{grid-area:1/1;margin:0;font-size:12px}
+  .sld.k-meridian .sd-stat-d{grid-area:2/1;margin:0}
+  .sld.k-meridian .sd-folio{left:56px;right:48px}
+
+  /* 03 静水：画廊 —— 大字距、无分隔线、图版居中 */
+  .sld.k-stillwater .sd-pad{padding:78px 104px 70px}
+  .sld.k-stillwater .sd-h1{font-size:68px;letter-spacing:.06em}
+  .sld.k-stillwater .sd-h2{font-size:28px;letter-spacing:.04em;line-height:1.55}
+  .sld.k-stillwater .sd-mono{letter-spacing:.26em}
+  .sld.k-stillwater .sd-quote{font-size:30px;line-height:1.8;max-width:600px}
+  .sld.k-stillwater .sd-toc-list{border-top:0}
+  .sld.k-stillwater .sd-toc-list li{border-bottom:0;padding:8px 0;grid-template-columns:44px 1fr auto}
+  .sld.k-stillwater .sd-col{padding:0 26px 0 0;border-top:0}
+  .sld.k-stillwater .sd-split{grid-template-columns:52% 48%}
+  .sld.k-stillwater .sd-split-media{padding:0 26px 0 0;overflow:visible}
+  .sld.k-stillwater .sd-split-media .sd-img{position:relative;inset:auto;width:100%;height:100%}
+  .sld.k-stillwater .sd-split-body{padding:66px 92px 56px 36px}
+  .sld.k-stillwater .sd-stat-row{border-top:0}
+  .sld.k-stillwater .sd-stat{border-right:0;padding-right:0}
+  .sld.k-stillwater .sd-stat-v{font-size:50px;font-weight:400}
+
+  /* 04 深林：台账 —— 一切压线，数字右对齐 */
+  .sld.k-canopy .sd-pad{padding:42px 52px 46px}
+  .sld.k-canopy .sd-h1{font-size:64px}
+  .sld.k-canopy .sd-h2{font-size:26px}
+  .sld.k-canopy .sd-cols-head{padding-bottom:12px;border-bottom:1px solid var(--accent)}
+  .sld.k-canopy .sd-col{padding-top:0;border-top:0}
+  .sld.k-canopy .sd-stat-row{display:block;border-top:1px solid var(--accent)}
+  .sld.k-canopy .sd-stat{display:grid;grid-template-columns:1fr auto;align-items:baseline;gap:3px 18px;padding:13px 0;border-right:0;border-bottom:1px solid var(--rule)}
+  .sld.k-canopy .sd-stat-v{grid-area:1/2;font-size:36px}
+  .sld.k-canopy .sd-stat-t{grid-area:1/1;margin:0}
+  .sld.k-canopy .sd-stat-d{grid-area:2/1;margin:0}
+
+  /* 05 陶土：海报 —— 超大标题、三栏改竖直条目 */
+  .sld.k-terracotta .sd-pad{padding:48px 56px 52px}
+  .sld.k-terracotta .sd-h1{font-size:86px}
+  .sld.k-terracotta .sd-h2{font-size:44px;line-height:1.08}
+  .sld.k-terracotta .sd-col-row{grid-template-columns:1fr;gap:0;border-top:1px solid rgba(255,255,255,.42)}
+  .sld.k-terracotta .sd-col{display:grid;grid-template-columns:186px 1fr;gap:24px;padding:14px 0;border-top:0;border-bottom:1px solid rgba(255,255,255,.22)}
+  .sld.k-terracotta .sd-col-i{grid-area:1/1}
+  .sld.k-terracotta .sd-col-t{grid-area:2/1;margin:0;font-size:19px}
+  .sld.k-terracotta .sd-col-d{grid-area:1/2/3/3;margin:0}
+  .sld.k-terracotta .sd-folio{left:56px;right:56px}
+
+  /* 06 把复杂讲清楚：练习册 —— 整页压在一张白纸上 */
+  .sld.k-lilac::before{
+    content:"";position:absolute;inset:19px;border-radius:18px;background:#FBFAFF;
+    box-shadow:0 12px 26px rgba(60,40,120,.09);
+  }
+  .sld.k-lilac[data-k="cover"]::before,.sld.k-lilac[data-k="section"]::before,.sld.k-lilac[data-k="fullimg"]::before{display:none}
+  .sld.k-lilac .sd-pad{padding:60px 66px 58px}
+  .sld.k-lilac .sd-h1{font-size:60px;color:#3E22A8}
+  .sld.k-lilac .sd-h2{font-size:31px}
+  .sld.k-lilac .sd-col{padding-top:12px;border-top:2px solid var(--accent)}
+  .sld.k-lilac .sd-toc-list li{padding:8px 0}
+
+  /* 07 气泡计划：海报 —— 巨型字、黑条切页 */
+  .sld.k-acid .sd-pad{padding:36px 40px 46px}
+  .sld.k-acid .sd-h1{font-size:94px;letter-spacing:-.045em;line-height:.94}
+  .sld.k-acid .sd-h2{font-size:56px;letter-spacing:-.03em;line-height:.98}
+  .sld.k-acid .sd-toc-list li{padding:8px 0;border-bottom:2px solid var(--ink)}
+  .sld.k-acid .sd-col-row{grid-template-columns:1fr;gap:0;border-top:2px solid var(--ink)}
+  .sld.k-acid .sd-col{display:grid;grid-template-columns:206px 1fr;gap:22px;padding:12px 0;border-top:0;border-bottom:2px solid var(--ink)}
+  .sld.k-acid .sd-col-i{grid-area:1/1}
+  .sld.k-acid .sd-col-t{grid-area:2/1;margin:0;font-size:20px}
+  .sld.k-acid .sd-col-d{grid-area:1/2/3/3;margin:0;font-size:11.5px}
+  .sld.k-acid .sd-folio{left:40px;right:40px}
+
   /* ── 案例详情页（1:1 复刻参考截图） ─────────────── */
   .tplview{position:fixed;inset:0;z-index:80;display:flex;flex-direction:column;background:#fff}
   .tplview[hidden]{display:none}
@@ -2194,13 +2382,13 @@ function renderCase() {
   const deck = caseState.deck
   if (!deck) return
   const slide = deck.slides[caseState.i]
-  $('tvStage').innerHTML = '<div class="sdbox">' + slideHTML(deck, slide) + '</div>'
+  $('tvStage').innerHTML = '<div class="sdbox">' + slideHTML(deck, slide, caseState.i) + '</div>'
   const thumbs = $('tvThumbs')
   if (thumbs.dataset.deck !== deck.id) {
     thumbs.dataset.deck = deck.id
     thumbs.innerHTML = deck.slides.map((sl, i) =>
       '<button class="tv-th" data-i="' + i + '" title="' + sl.label + '">' +
-      '<div class="sdbox">' + slideHTML(deck, sl) + '</div><span>' + sl.label + '</span></button>'
+      '<div class="sdbox">' + slideHTML(deck, sl, i) + '</div><span>' + sl.label + '</span></button>'
     ).join('')
     thumbs.querySelectorAll('.tv-th').forEach((el) => {
       el.onclick = () => gotoCasePage(Number(el.dataset.i))
