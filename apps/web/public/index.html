@@ -2858,6 +2858,10 @@ markDesktop($('setLockRun'))
 markDesktop($('setProxy'))
 document.querySelectorAll('.sp-toggle[data-key="sleep"], .sp-toggle[data-key="autostart"], .sp-toggle[data-key="skills"]').forEach(markDesktop)
 document.addEventListener('click', (event) => {
+  const menu = $('moreMenu')
+  if (!menu.hidden && !menu.contains(event.target) && !(event.target.closest && event.target.closest('#moreMenuBtn'))) {
+    closeMoreMenu()
+  }
   const link = event.target.closest && event.target.closest('a[href]')
   if (!link) return
   const href = link.getAttribute('href') || ''
@@ -3679,13 +3683,6 @@ function closeMoreMenu() {
   $('moreMenu').hidden = true
 }
 
-let moreTimer = null
-const scheduleCloseMore = () => {
-  clearTimeout(moreTimer)
-  moreTimer = setTimeout(closeMoreMenu, 150)
-}
-const cancelCloseMore = () => clearTimeout(moreTimer)
-
 $('navTemplates').onclick = () => {
   closeSettings()
   closeMoreMenu()
@@ -3751,11 +3748,10 @@ $('skInstalled').onclick = () => toast('已安装技能来自插件，可在设�
 document.querySelector('.rail [data-nav="home"]').onclick = () => {
   closeSettings(); closeMoreMenu(); exitMode(); setView('home')
 }
-$('moreMenuBtn').addEventListener('mouseenter', () => { cancelCloseMore(); openMoreMenu() })
-$('moreMenuBtn').addEventListener('mouseleave', scheduleCloseMore)
-$('moreMenu').addEventListener('mouseenter', cancelCloseMore)
-$('moreMenu').addEventListener('mouseleave', scheduleCloseMore)
-$('moreMenuBtn').addEventListener('click', () => { cancelCloseMore(); openMoreMenu() })
+$('moreMenuBtn').addEventListener('click', () => {
+  if ($('moreMenu').hidden) openMoreMenu()
+  else closeMoreMenu()
+})
 window.addEventListener('resize', closeMoreMenu)
 window.addEventListener('scroll', closeMoreMenu, true)
 
