@@ -304,6 +304,7 @@
     box-shadow:0 0 0 .5px rgba(18,30,60,.06);
     transition:transform var(--d2) var(--ease),box-shadow var(--d2) var(--ease);
   }
+  .tpl-card .cover.doc .sdbox{position:absolute;top:50%;left:50%;width:auto;height:100%;aspect-ratio:960/1358;transform:translate(-50%,-50%);box-shadow:0 8px 22px rgba(20,24,20,.22),0 1px 3px rgba(20,24,20,.16)}
   .tpl-card:hover .cover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(18,30,60,.16)}
   .tpl-card:focus-visible .cover{box-shadow:0 0 0 3px rgba(39,125,246,.35)}
   .tpl-cap{display:flex;align-items:center;gap:6px;margin-top:7px;font-size:12.5px;line-height:1.35;color:#313233}
@@ -535,6 +536,129 @@
   .sld .stp-n{font-size:30px;line-height:1;color:var(--accent)}
   .sld .stp-t{margin-top:9px;font-size:13px;line-height:1.5}
   .sld .stp-d{margin:7px 0 0;font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif;font-size:10.5px;line-height:1.75;color:var(--body)}
+
+  /* ── 文档画布：A4 竖版 960×1358 ──────────────────── */
+  .sdbox.doc{aspect-ratio:960/1358}
+  .sld.doc{width:960px;height:1358px}
+  .sld.doc .d-pad{position:absolute;inset:0;padding:104px 96px 108px;display:flex;flex-direction:column}
+  .sld.doc .d-run{
+    position:absolute;left:96px;right:96px;top:54px;display:flex;justify-content:space-between;gap:24px;
+    padding-bottom:9px;border-bottom:1px solid var(--rule);
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:8.5px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--muted);
+  }
+  .sld.doc .sd-folio{left:96px;right:96px;bottom:50px}
+  .sld.doc[data-k="dcover"] .sd-folio,.sld.doc[data-k="dsection"] .sd-folio,.sld.doc[data-k="dfigure"] .sd-folio,.sld.doc[data-k="dend"] .sd-folio{display:none}
+  .sld.doc .d-kicker{
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--accent);
+  }
+  .sld.doc .d-h1{margin:0;font-size:58px;line-height:1.1;font-weight:400;letter-spacing:-.01em}
+  .sld.doc .d-h2{margin:14px 0 0;font-size:31px;line-height:1.3;font-weight:400;letter-spacing:-.005em}
+  .sld.doc .d-h3{margin:0;font-size:17px;line-height:1.5;font-weight:600}
+  .sld.doc .d-lead{margin:24px 0 0;font-size:18px;line-height:1.85;color:var(--ink)}
+  .sld.doc .d-lead + .d-lead{margin-top:14px}
+  .sld.doc .d-paras{margin-top:22px}
+  .sld.doc .d-paras p{margin:0;font-size:14.5px;line-height:2;color:var(--body)}
+  .sld.doc .d-cols{display:grid;grid-template-columns:minmax(0,1fr) 208px;gap:46px;margin-top:30px;align-items:start}
+  .sld.doc .d-cols:not(:has(.d-side)){grid-template-columns:minmax(0,1fr)}
+  .sld.doc .d-main p{margin:0;font-size:17px;line-height:2.05;color:var(--body);text-align:justify}
+  .sld.doc .d-main p + p{margin-top:20px}
+  .sld.doc .d-main p:first-child::first-letter{font-size:1.5em;line-height:1}
+  .sld.doc .d-side{padding-top:12px;border-top:1px solid var(--ink)}
+  .sld.doc .d-side p{margin:0;font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif;
+    font-size:10.5px;line-height:1.9;color:var(--muted)}
+  .sld.doc .d-side p + p{margin-top:12px}
+  .sld.doc .d-lead-sm{margin-top:16px;font-size:14px;line-height:1.9;color:var(--body)}
+  .sld.doc .d-read{margin:22px 0 0;padding-top:16px;border-top:1px solid var(--rule);
+    font-size:13px;line-height:1.95;color:var(--body)}
+  .sld.doc .d-paras p + p{margin-top:18px}
+  .sld.doc .d-points{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;
+    margin-top:auto;padding-top:15px;border-top:1px solid var(--ink)}
+  .sld.doc .d-points span{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:8.5px;letter-spacing:.2em;color:var(--accent)}
+  .sld.doc .d-points b{display:block;margin-top:7px;font-size:17px;font-weight:400;letter-spacing:-.01em}
+  .sld.doc .d-points i{display:block;margin-top:6px;font-style:normal;font-size:11px;line-height:1.7;color:var(--muted)}
+  .sld.doc .d-note{margin-top:24px;padding-top:14px;border-top:1px solid var(--rule);
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9px;line-height:1.8;letter-spacing:.1em;color:var(--muted)}
+  .sld.doc .d-pull{margin:32px 0 0;padding:20px 0 20px 26px;border-left:2px solid var(--accent);
+    font-size:21px;line-height:1.7;color:var(--ink)}
+  .sld.doc .d-pull span{display:block;margin-top:10px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+  /* 封面 */
+  .sld.doc .d-cover{position:absolute;inset:0;padding:104px 96px 92px;display:flex;flex-direction:column}
+  .sld.doc .d-cover-top{display:flex;justify-content:space-between;gap:24px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--muted);padding-bottom:10px;border-bottom:1px solid var(--rule)}
+  .sld.doc .d-cover .d-h1{margin-top:44px;font-size:66px}
+  .sld.doc .d-cover .d-lead{max-width:640px}
+  .sld.doc .d-cover-img{flex:1;min-height:0;margin:40px 0 30px;overflow:hidden}
+  .sld.doc .d-cover-img .sd-img{width:100%;height:100%;object-fit:cover}
+  .sld.doc .d-cover-foot{display:flex;justify-content:space-between;gap:32px;padding-top:14px;border-top:1px solid var(--ink)}
+  .sld.doc .d-cover-foot b{display:block;font-size:12.5px;font-weight:600;letter-spacing:.01em}
+  .sld.doc .d-cover-foot span{display:block;margin-top:4px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  /* 摘要事实条 */
+  .sld.doc .d-facts{margin-top:34px;border-top:1px solid var(--ink)}
+  .sld.doc .d-fact{display:grid;grid-template-columns:190px 1fr;gap:24px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--rule)}
+  .sld.doc .d-fact span{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--muted)}
+  .sld.doc .d-fact b{font-size:16px;font-weight:400;color:var(--ink)}
+  /* 目录 */
+  .sld.doc .d-toc{margin:32px 0 0;padding:0;list-style:none}
+  .sld.doc .d-toc li{display:grid;grid-template-columns:54px minmax(0,1fr) 232px;gap:22px;align-items:baseline;padding:26px 0;border-top:1px solid var(--rule)}
+  .sld.doc .d-toc .n{display:block;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9px;
+    letter-spacing:.18em;color:var(--accent)}
+  .sld.doc .d-toc .t{display:block;font-size:22px;line-height:1.4;letter-spacing:-.005em}
+  .sld.doc .d-toc .d{display:block;font-size:11px;line-height:1.7;color:var(--muted);text-align:right}
+  .sld.doc .d-toc-figs{margin-top:auto;padding-top:16px;border-top:1px solid var(--ink)}
+  .sld.doc .d-toc-figs ul{list-style:none;margin:14px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:9px 44px}
+  .sld.doc .d-toc-figs li{display:grid;grid-template-columns:52px 1fr;gap:12px;align-items:baseline;
+    font-size:11.5px;line-height:1.7;color:var(--body)}
+  .sld.doc .d-toc-figs b{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:8.5px;
+    letter-spacing:.14em;color:var(--accent);font-weight:400}
+  /* 章节页 */
+  .sld.doc .d-sec{position:absolute;inset:0;display:flex;flex-direction:column}
+  .sld.doc .d-sec-txt{padding:104px 96px 0}
+  .sld.doc .d-sec-num{font-size:15px;letter-spacing:.06em;color:var(--accent);
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .sld.doc .d-sec-t{margin:18px 0 0;font-size:52px;line-height:1.16;font-weight:400}
+  .sld.doc .d-sec-lead{margin:26px 0 0;max-width:600px;font-size:16px;line-height:1.9;color:var(--body)}
+  .sld.doc .d-sec-img{flex:1;min-height:0;margin-top:44px;overflow:hidden}
+  .sld.doc .d-sec-img .sd-img{width:100%;height:100%;object-fit:cover}
+  /* 图版页 */
+  .sld.doc .d-fig{position:absolute;inset:0;margin:0;padding:96px 96px 84px;display:flex;flex-direction:column}
+  .sld.doc .d-fig-img{flex:1;min-height:0;overflow:hidden;background:#000}
+  .sld.doc .d-fig-img .sd-img{width:100%;height:100%;object-fit:cover}
+  .sld.doc .d-fig-cap{display:grid;grid-template-columns:74px 1fr;gap:20px;margin-top:20px;padding-top:14px;border-top:1px solid var(--ink)}
+  .sld.doc .d-fig-no{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9px;letter-spacing:.18em;color:var(--accent)}
+  .sld.doc .d-fig-cap p{margin:0;font-size:13px;line-height:1.8;color:var(--body)}
+  .sld.doc .d-fig-src{grid-column:2;display:block;margin-top:8px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  /* 文档表格 */
+  .sld.doc .d-table{margin-top:30px;width:100%;border-collapse:collapse}
+  .sld.doc .d-table th{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--muted);text-align:left;padding:0 0 10px;border-bottom:1px solid var(--ink)}
+  .sld.doc .d-table td{padding:13px 0;border-bottom:1px solid var(--rule);font-size:13.5px;line-height:1.7;color:var(--ink)}
+  .sld.doc .d-table td.num{text-align:right;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;color:var(--body)}
+  .sld.doc .d-table th.num{text-align:right}
+  /* 编号清单 */
+  .sld.doc .d-list{margin:30px 0 0;padding:0;list-style:none}
+  .sld.doc .d-list li{display:grid;grid-template-columns:52px 1fr;gap:22px;padding:20px 0;border-top:1px solid var(--rule)}
+  .sld.doc .d-list .n{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;letter-spacing:.1em;color:var(--accent)}
+  .sld.doc .d-list p{margin:7px 0 0;font-size:13px;line-height:1.9;color:var(--body)}
+  /* 引文页 / 尾声 */
+  .sld.doc .d-quote{position:absolute;inset:0;padding:104px 96px 96px;display:flex;flex-direction:column;justify-content:center}
+  .sld.doc .d-quote p{margin:0;font-size:38px;line-height:1.55;letter-spacing:-.005em;color:var(--ink)}
+  .sld.doc .d-quote span{display:block;margin-top:28px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+  .sld.doc .d-end{position:absolute;inset:0;display:flex;flex-direction:column}
+  .sld.doc .d-end-txt{padding:104px 96px 0}
+  .sld.doc .d-end-t{margin:20px 0 0;font-size:44px;line-height:1.25}
+  .sld.doc .d-end-rows{margin-top:34px}
+  .sld.doc .d-end-row{display:flex;justify-content:space-between;gap:24px;padding:11px 0;border-top:1px solid var(--rule);
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9.5px;letter-spacing:.14em;color:var(--body)}
+  .sld.doc .d-end-img{flex:1;min-height:0;margin-top:34px;overflow:hidden}
+  .sld.doc .d-end-img .sd-img{width:100%;height:100%;object-fit:cover}
 
   /* 对比页 / 三联图版 */
   .sld .cmp-cols{display:grid;grid-template-columns:1fr 1fr;gap:38px;margin-top:26px}
@@ -794,6 +918,10 @@
   .tv-left{min-width:0;display:flex;flex-direction:column;background:#e9e9e7}
   .tv-stage{flex:1;min-height:0;display:grid;place-items:center;padding:24px 66px 16px;overflow:hidden}
   .tv-stage .sdbox{width:100%;max-width:1120px;box-shadow:0 14px 34px rgba(18,22,30,.18),0 2px 6px rgba(18,22,30,.08)}
+  .tv-stage .sdbox.doc{width:auto;height:100%;max-width:none;max-height:100%;aspect-ratio:960/1358}
+  .tv-stage:has(.sdbox.doc){padding:14px 40px 10px}
+  .tv-th.doc{width:58px}
+  .tv-th.doc .sdbox{aspect-ratio:960/1358}
   .tv-strip{flex:none;display:flex;align-items:center;gap:2px;padding:9px 4px 13px;background:#fff;border-top:1px solid #e8e8e8}
   .tv-nav{flex:none;display:grid;place-items:center;width:34px;height:66px;border-radius:7px;color:#43474d}
   .tv-nav:hover{background:#f4f5f7}
@@ -2227,8 +2355,12 @@ const TPL_CAP_ICON =
   '<svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"></use></svg>'
 
 /* ── 案例封面：直接用第 1 页幻灯片渲染，卡片与详情页共用一套画布 ── */
+function boxClass(deck) {
+  return deck && deck.fmt === 'doc' ? 'sdbox doc' : 'sdbox'
+}
+
 function deckCoverHTML(deck) {
-  return '<div class="sdbox">' + slideHTML(deck, deck.slides[0]) + '</div>'
+  return '<div class="' + boxClass(deck) + '">' + slideHTML(deck, deck.slides[0]) + '</div>'
 }
 
 function paintTplGallery() {
@@ -2240,7 +2372,7 @@ function paintTplGallery() {
     card.className = 'tpl-card'
     card.dataset.cat = deck.kind
     card.innerHTML =
-      '<div class="cover">' + deckCoverHTML(deck) + '</div>' +
+      '<div class="cover' + (deck.fmt === 'doc' ? ' doc' : '') + '"' + (deck.fmt === 'doc' ? ' style="background:' + deck.paper + '"' : '') + '>' + deckCoverHTML(deck) + '</div>' +
       '<div class="tpl-cap">' + TPL_CAP_ICON + '<span>' + deck.name + '</span></div>'
     card.onclick = () => openCase(deck)
     grid.appendChild(card)
@@ -2283,13 +2415,13 @@ function renderCase() {
   const deck = caseState.deck
   if (!deck) return
   const slide = deck.slides[caseState.i]
-  $('tvStage').innerHTML = '<div class="sdbox">' + slideHTML(deck, slide, caseState.i) + '</div>'
+  $('tvStage').innerHTML = '<div class="' + boxClass(deck) + '">' + slideHTML(deck, slide, caseState.i) + '</div>'
   const thumbs = $('tvThumbs')
   if (thumbs.dataset.deck !== deck.id) {
     thumbs.dataset.deck = deck.id
     thumbs.innerHTML = deck.slides.map((sl, i) =>
-      '<button class="tv-th" data-i="' + i + '" title="' + sl.label + '">' +
-      '<div class="sdbox">' + slideHTML(deck, sl, i) + '</div><span>' + sl.label + '</span></button>'
+      '<button class="tv-th' + (deck.fmt === 'doc' ? ' doc' : '') + '" data-i="' + i + '" title="' + sl.label + '">' +
+      '<div class="' + boxClass(deck) + '">' + slideHTML(deck, sl, i) + '</div><span>' + sl.label + '</span></button>'
     ).join('')
     thumbs.querySelectorAll('.tv-th').forEach((el) => {
       el.onclick = () => gotoCasePage(Number(el.dataset.i))

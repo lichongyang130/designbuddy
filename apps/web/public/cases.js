@@ -2191,6 +2191,266 @@ export const CASE_DECKS = [
       },
     ],
   },
+  {
+    id: 'nightstreet',
+    name: '夜街白皮书',
+    en: 'Night Street Study',
+    by: 'Gamma',
+    cat: '文档',
+    fmt: 'doc',
+    ratio: 'A4 · 竖版',
+    date: 20261103,
+    kind: '研究报告',
+    category: '报告',
+    tags: ['照明', '公共空间', '步行安全', '白皮书'],
+    desc: '一份 A4 竖版的夜街照明白皮书：亚麻纸底、单栏长文、等宽页眉与图号，苔绿只用来标章节号和关键数字；配图全是夜里直拍的现场——暗巷、灯头、照度计、过街、鸟瞰与同一机位的改造前后。适合研究报告、白皮书、现状调查与政策建议书。',
+    bestFor: ['研究报告与白皮书', '城市现状调查', '政策建议与立项材料', '田野调查结项文档'],
+    styles: ['#E9E6DC', '#4A6B57', '#B4763C'],
+    colorway: '亚麻纸 · 苔绿 · 黄铜',
+    folio: true,
+    footLeft: '夜街白皮书 · 2026',
+    runHead: 'NIGHT STREET STUDY · 2026',
+    paper: '#E9E6DC',
+    ink: '#1D1F1A',
+    accent: '#4A6B57',
+    second: '#B4763C',
+    muted: '#7C7768',
+    rule: '#C9C2AE',
+    body: '#3B3B33',
+    display: 'serif',
+    slides: [
+      {
+        k: 'dcover', label: '封面',
+        kicker: 'FIELD STUDY · NO. 04',
+        note: '2026.11 · 内部版',
+        title: '夜里九点\n之后的路',
+        sub: ['六个街区、四百一十七个夜晚、两千一百四十份路侧问卷：把「敢不敢走」拆成可以测量的光。'],
+        img: '01',
+        facts: [['研究', '夜街照明白皮书'], ['样本', '6 个街区 · 417 个夜晚'], ['版本', 'v1.0 · 2026.11']],
+      },
+      {
+        k: 'dmeta', label: '摘要', run: '摘要',
+        kicker: 'ABSTRACT',
+        title: '照度达标，不等于敢走',
+        paras: [
+          '现行规范只要求「平均照度不低于 5 lx」。我们在六个街区连续测了四百一十七个夜晚，其中四条街达标，但夜里十点后的步行量只有白天的百分之六。',
+          '真正把人挡在路边的是均匀度：灯与灯之间那段黑，比整条街暗更让人不敢走。均匀度低于 0.25 的街段，夜间步行量平均下降 46%。',
+        ],
+        facts: [
+          ['样本', '6 个街区 · 417 个夜晚 · 2,140 份路侧问卷'],
+          ['核心发现', '均匀度低于 0.25 时，夜间步行量下降 46%'],
+          ['建议', '先补均匀度，再谈亮度'],
+        ],
+        note: '口径：照度取 1.5m 水平面，每 10m 一点；步行量取 21:00—23:00 人工计数',
+      },
+      {
+        k: 'dtoc', label: '目录', run: '目录',
+        kicker: 'CONTENTS',
+        title: '目录',
+        items: [
+          ['01', '问题', '一条街的夜晚从九点开始'],
+          ['02', '方法', '照度计、步行计数与问卷'],
+          ['03', '实测', '六条街的夜间数据'],
+          ['04', '解释', '为什么亮着也黑'],
+          ['05', '建议', '五条可以立刻做的事'],
+          ['06', '试点', '成本、工期与评估'],
+        ],
+        figs: [
+          ['图 01', '照度计与测点网格'],
+          ['图 02', '灯头维护现场'],
+          ['图 03', '同一条斑马线的两侧'],
+          ['图 04', '最暗的 26 米'],
+          ['图 05', '口袋公园的低位补光'],
+          ['图 06', '改造前后同机位对照'],
+          ['表 01', '六条街夜间实测'],
+          ['表 02', '试点成本与工期'],
+        ],
+        note: '全文 19 页 · 图 6 幅 · 表 2 张',
+      },
+      {
+        k: 'dsection', label: '章节 01', num: '01', kicker: 'PROBLEM',
+        title: '九点以后，街只剩两种光',
+        lead: '一种是灯下的亮，一种是灯与灯之间那段黑。人们记住的往往是后者。',
+        img: '02',
+      },
+      {
+        k: 'dbody', label: '正文', run: '01 · 问题',
+        kicker: '01 — 现状',
+        title: '路灯不是不够亮，是亮在错的地方',
+        paras: [
+          '六条街的灯杆平均间距 31 米，超出灯具有效照射范围将近一倍。灯正下方能到 18 lx，走两步就掉到 1.6 lx。规范看的是平均值，人走的是那两步。',
+          '老码头街更典型：灯具全部换过，光通量比十年前高 40%，但灯头角度朝向车行道，人行道只吃到溢出的余光。技术上更亮了，走起来更暗了。',
+          '这也解释了问卷里的分歧：六成受访者说「这条街挺亮的」，同一批人里只有一成说「晚上愿意一个人走」。',
+          '测量方法很朴素：每条街各取 300 米，每 10 米一个测点，只在晴夜测，每条街测三次取中位数。把数据画成折线，会看到很规律的锯齿——灯下往上，中段掉下去。锯齿的谷底，就是问卷里说的「不敢走的那一段」。',
+          '六个街区里，有五条的谷底低于 2 lx。按现行规范，它们全部合格；按走在这条街上的人的判断，它们全部不合格。这个落差，就是这份白皮书想讨论的东西。',
+          '顺带算一笔账：把一条街的平均照度从 5 lx 提到 10 lx，要换掉约三分之二的灯头；把谷底从 1.6 lx 抬到 4 lx，只需要加密三分之一的灯杆。后者更便宜，也更接近人们真正抱怨的那件事。',
+          '现场还有一项没进表格的发现：眩光。好几处灯具装得低而亮，人走到灯下反而看不清路面——瞳孔要重新适应，头三秒里什么都看不见。我们把这叫「灯下的黑」，它不体现在任何一张照度表上，却出现在每一次夜访的访谈里。',
+          '于是这份研究同时记了两套数据：仪器读到的，和人说出来的。两套数据在六个街区里始终对不上，而后者更接近「敢不敢走」这个问题的答案。',
+        ],
+        points: [
+          ['01', '18 lx', '灯杆正下方的实测照度'],
+          ['02', '1.6 lx', '两灯之间最暗处'],
+          ['03', '31 m', '六条街的平均灯距'],
+        ],
+        side: [
+          '环城东路 21:40：两个灯杆间距 34 米，中段最低照度 1.6 lx。',
+          '同一条街 2019 年换过全部灯头，功率 150W → 90W，平均照度反而上升 12%。',
+        ],
+        pull: '我们量的不是灯，是人从一盏灯走到下一盏灯的那十三秒。',
+        pullBy: '勘查笔记 · 2026.09.22',
+        note: '图为环城东路 21:40 实拍，同一机位两个灯距之间',
+      },
+      {
+        k: 'dfigure', label: '图版', no: 'FIG. 01', img: '03',
+        cap: '照度计读数与地面网格同步记录，每 10 米一点，每个点位测三次取中位。',
+        src: '实测 · 2026.09 · 21:00—23:00',
+      },
+      {
+        k: 'dbody', label: '正文', run: '01 · 问题',
+        kicker: '01 — 现状',
+        title: '均匀度是安全感，亮度只是数字',
+        paras: [
+          '把六条街的实测值按均匀度排序，与夜间步行量做相关，得到一条很清楚的线：均匀度每提高 0.1，夜间步行量增加约 22%。',
+          '而在均匀度不变的情况下，单纯把整体照度提高三成，步行量只多了 4%——人们并没有因为「更亮」而更愿意出门。',
+          '这条曲线还有上限：均匀度超过 0.45 之后，步行量的增长明显变平，再往上加钱，基本只让照片更好看。',
+          '所以这份白皮书把建议的顺序倒过来：先把预算从「换大功率灯」挪到「加密灯杆、改配光」，改的是谷底，不是峰值。',
+          '这一条在预算上并不激进：六个街区的灯具总量甚至会减少，省下的钱正好用来立杆。',
+          '这条曲线也能解释为什么一些「网红街」的照明改造失败了：整体提亮之后照片确实好看，但灯下到中段依然是陡坡，走起来该怕还是怕。镜头需要峰值，人需要连续。',
+          '更麻烦的是光衰。我们抽测了 240 套在册灯具，实际光通量比台账平均低 15%，最老的灯头低了 31%。台账上写着达标，地面上早就不达标了——维护不是运维细节，它直接改写设计值。',
+        ],
+        points: [
+          ['01', '+22%', '均匀度每提高 0.1，夜间步行量'],
+          ['02', '+4%', '只提照度三成时的步行量'],
+          ['03', '0.45', '收益开始变平的均匀度拐点'],
+        ],
+        side: [
+          '控制街区形态（宽度、沿街商业密度、是否有非机动车道）后，均匀度与步行量的偏相关为 0.63。',
+          '六个街区不足以做因果推断，本结论按「强相关」表述。',
+        ],
+        note: '相关性不等于因果；下一节给出控制街区形态与商业密度后的分层结果',
+      },
+      {
+        k: 'dfigure', label: '图版', no: 'FIG. 02', img: '08',
+        cap: '维护车每晚更换 6–11 套灯头，实际功率常比台账低 15%：光衰没人计量。',
+        src: '现场 · 2026.10 · 23:10',
+      },
+      {
+        k: 'dtable', label: '表格', run: '01 · 实测',
+        kicker: 'TABLE 01',
+        title: '六条街的夜间实测',
+        lead: '六条街按均匀度排序。照度最高的文昌南路步行量也最高，但两者并不同步：新村一巷照度只有文昌南路的三分之一，均匀度更低，夜里几乎没人走。',
+        head: ['街道', '平均照度 lx', '均匀度', '步行 / 小时'],
+        rows: [
+          ['环城东路', '8.4', '0.21', '14'],
+          ['老码头街', '5.1', '0.16', '9'],
+          ['学院后街', '12.7', '0.34', '27'],
+          ['新村一巷', '3.6', '0.12', '5'],
+          ['文昌南路', '15.2', '0.41', '38'],
+          ['沿河步道', '6.8', '0.18', '11'],
+        ],
+        read: '解读：把「最暗处」抬起来，比把「最亮处」压下去更难，也更有效。均匀度 0.41 的文昌南路，夜间步行量是 0.12 的新村一巷的 7.6 倍，而两条街的平均照度只差 4.2 倍。',
+        note: '均匀度 = 最小照度 / 平均照度；步行量取 21:00—23:00 两小时均值，晴夜',
+      },
+      {
+        k: 'dsection', label: '章节 02', num: '02', kicker: 'WHO WALKS',
+        title: '夜里走路的是谁',
+        lead: '下夜班的人、遛狗的人、从公交站回家的人。他们都不看灯，只看路面。',
+        img: '05',
+      },
+      {
+        k: 'dfigure', label: '图版', no: 'FIG. 03', img: '04',
+        cap: '同一条斑马线，一半在新灯下，一半在老灯的光斑之外；过街速度在这里差 1.4 秒。',
+        src: '实测 · 2026.10 · 22:20',
+      },
+      {
+        k: 'dbody', label: '正文', run: '02 · 方法',
+        kicker: '02 — 方法',
+        title: '三种人，三种夜路',
+        paras: [
+          '第一种是通勤者，路线固定、速度最快，只需要「看得见脚下」；他们要的是连续光带，不是亮斑。',
+          '第二种是陪伴者，遛狗、推婴儿车、扶着老人，速度最慢，对眩光最敏感——灯太亮反而看不清台阶。',
+          '第三种是停留者，在店门口、公交站、口袋公园待着的人。他们需要的是「被看见」，而不是「看得清」。三类需求对应三种配光，一套通用灯头解决不了。',
+          '问卷里有个细节：三类人给「这条街晚上怎么样」打的分几乎一样，但对「你会不会在十点后一个人走」的回答差得很远。需求藏在具体动作里，不在总体评价里。',
+          '按人群拆灯，比按道路等级拆灯更接近问题的形状：同一条街，通勤段要连续光带，停留段要低位遮光，两者只差三盏灯的位置。',
+          '三类人的时间分布也不同：通勤集中在 21:00—22:00，陪伴者多在 19:00—20:30，停留者最晚，常常到午夜。灯不必为所有人同时最亮，只需要在各自出现的时候，别让人踩空。',
+          '还有一个容易被忽略的变量是报修。三类人对「灯坏了」的反应不同：通勤者绕路，陪伴者改时间，停留者直接不来了。一次未报修的故障，影响的不是亮度，是习惯。',
+          '所以我们把「报修到修复」的中位天数也列进了评估：文昌南路 1.8 天，新村一巷 11 天。前者是被投诉推动的，后者没有人投诉，因为那条街晚上本来就没人走。',
+        ],
+        points: [
+          ['01', '58%', '女性 21:00 后选择绕行的比例'],
+          ['02', '21%', '男性同一问题的比例'],
+          ['03', '80 m', '绕行的最短额外距离'],
+        ],
+        side: [
+          '2,140 份问卷中，女性受访者在 21:00 后选择绕行的比例是 58%，男性为 21%。',
+          '口径：绕行 = 放弃最短路径、多走 80 米以上。',
+        ],
+        note: '分类依据：2,140 份问卷中的出行目的与停留时长',
+      },
+      {
+        k: 'dfigure', label: '图版', no: 'FIG. 04', img: '06',
+        cap: '一位通勤者走过环城东路最暗的 26 米：影子比人先到灯下。',
+        src: '现场 · 2026.09 · 22:40',
+      },
+      {
+        k: 'dlist', label: '建议', run: '03 · 建议',
+        kicker: '03 — 建议',
+        title: '五条可以立刻做的事',
+        lead: '按「投入 / 见效」排序。前两条不需要换灯，只改灯头角度与间距。',
+        items: [
+          ['01', '先改灯距，再改功率', '把 31 米的平均间距压到 18 米以内，照度可以降一档，均匀度会显著上升。'],
+          ['02', '灯头转向人行道', '现有多数灯头朝向车行道。换配光曲线或加装偏光罩，成本低于换灯。'],
+          ['03', '入口与过街点单独补光', '斑马线、巷口、公交站三处用低杆灯补光，把人流节点照亮，而不是把整条街照亮。'],
+          ['04', '色温统一到 3000K', '混用 4000K 与 2200K 会让暗区显得更暗；统一色温是最便宜的一致性改造。'],
+          ['05', '按季度计量光衰', '用照度计抽测而非台账功率；光衰超过 20% 的灯头强制更换。'],
+        ],
+        note: '五条建议按「投入 / 见效」排序，第一条的单价最低',
+      },
+      {
+        k: 'dfigure', label: '图版', no: 'FIG. 05', img: '07',
+        cap: '口袋公园的座椅区用低位遮光灯具补光：亮的是地面与坐面，不是人的眼睛。',
+        src: '试点 · 2026.10 · 21:30',
+      },
+      {
+        k: 'dtable', label: '表格', run: '03 · 试点',
+        kicker: 'TABLE 02',
+        title: '试点成本与工期',
+        lead: '六个街区一次性改造总投入 226 万元，折合每米人行道 412 元；分三批夜间施工，不封路。',
+        head: ['项目', '数量', '金额（万元）'],
+        rows: [
+          ['更换低眩光灯头', '240 套', '96'],
+          ['加装灯杆', '38 根', '34'],
+          ['线路改造', '2.6 km', '58'],
+          ['调光与集中控制', '6 街区', '22'],
+          ['设计与评估', '—', '16'],
+          ['合计', '—', '226'],
+        ],
+        read: '按当前夜间步行量测算，每增加 1% 的步行人次约需投入 9.4 万元。若只做「灯头转向 + 色温统一」两项，投入可降到 41 万元，均匀度仍能提升约 0.09。',
+        note: '口径：含税建安，不含后期运维；工期 14 周，分三批夜间施工',
+      },
+      {
+        k: 'dfigure', label: '图版', no: 'FIG. 06', img: '09',
+        cap: '同一机位、同一时刻（21:40），试点完成后的环城东路：灯少了三盏，路反而连续了。',
+        src: '复核 · 2026.11 · 同比照片',
+      },
+      {
+        k: 'dquote', label: '引文',
+        text: '衡量一条街的夜，不看灯有多少，看有多少人愿意在灯下多站一会儿。',
+        by: '研究笔记 · 2026.10',
+      },
+      {
+        k: 'dend', label: '尾声',
+        kicker: 'CLOSING',
+        title: '让灯照在人的脚上，而不是照在招牌上。',
+        rows: [
+          ['研究', '夜街白皮书 · NIGHT STREET STUDY'],
+          ['发布', '2026.11 · 城市照明工作组'],
+          ['联系', 'study@nightstreet.example'],
+        ],
+        img: '10',
+      },
+    ],
+  },
 ]
 
 /* ── 渲染 ─────────────────────────────────────────────
@@ -2211,7 +2471,138 @@ function bulletList(items) {
 
 export function slideInner(deck, s) {
   const paras = (list) => '<div class="sd-paras">' + list.map((p) => '<p>' + esc(p) + '</p>').join('') + '</div>'
+
+  /* ── 文档页型（A4 竖版）：run 是页眉，d-pad 是正文版心 ── */
+  const run = (x) =>
+    '<div class="d-run"><span>' + esc(deck.runHead || deck.name) + '</span><span>' + esc(x.run || '') + '</span></div>'
+  const leads = (list) => (list || []).map((p) => '<p class="d-lead">' + esc(p) + '</p>').join('')
+  const dnote = (t) => (t ? '<div class="d-note">' + esc(t) + '</div>' : '')
+
   switch (s.k) {
+    case 'dcover':
+      return (
+        '<div class="d-cover">' +
+        '<div class="d-cover-top"><span>' + esc(s.kicker || '') + '</span><span>' + esc(s.note || '') + '</span></div>' +
+        '<h1 class="d-h1">' + esc(s.title) + '</h1>' +
+        leads(s.sub) +
+        '<div class="d-cover-img">' + imgTag(deck, s.img) + '</div>' +
+        '<div class="d-cover-foot">' + (s.facts || []).map(([k, v]) =>
+          '<div><b>' + esc(k) + '</b><span>' + esc(v) + '</span></div>').join('') + '</div>' +
+        '</div>'
+      )
+    case 'dmeta':
+      return (
+        run(s) +
+        '<div class="d-pad">' +
+        '<div class="d-kicker">' + esc(s.kicker || 'ABSTRACT') + '</div>' +
+        '<h2 class="d-h2">' + esc(s.title) + '</h2>' +
+        leads(s.paras) +
+        '<div class="d-facts">' + (s.facts || []).map(([k, v]) =>
+          '<div class="d-fact"><span>' + esc(k) + '</span><b>' + esc(v) + '</b></div>').join('') + '</div>' +
+        dnote(s.note) +
+        '</div>'
+      )
+    case 'dtoc':
+      return (
+        run(s) +
+        '<div class="d-pad">' +
+        '<div class="d-kicker">' + esc(s.kicker || 'CONTENTS') + '</div>' +
+        '<h2 class="d-h2">' + esc(s.title) + '</h2>' +
+        '<ol class="d-toc">' + s.items.map(([n, t, d]) =>
+          '<li><span class="n">' + esc(n) + '</span><span class="t">' + esc(t) + '</span>' +
+          (d ? '<span class="d">' + esc(d) + '</span>' : '') + '</li>').join('') + '</ol>' +
+        (s.figs ? '<div class="d-toc-figs"><div class="d-kicker">FIGURES &amp; TABLES</div><ul>' +
+          s.figs.map(([n, t]) => '<li><b>' + esc(n) + '</b><span>' + esc(t) + '</span></li>').join('') +
+          '</ul></div>' : '') +
+        dnote(s.note) +
+        '</div>'
+      )
+    case 'dsection':
+      return (
+        '<div class="d-sec">' +
+        '<div class="d-sec-txt">' +
+        '<div class="d-sec-num">' + esc(s.num || '') + ' — ' + esc(s.kicker || '') + '</div>' +
+        '<h2 class="d-sec-t">' + esc(s.title) + '</h2>' +
+        (s.lead ? '<p class="d-sec-lead">' + esc(s.lead) + '</p>' : '') +
+        '</div>' +
+        '<div class="d-sec-img">' + imgTag(deck, s.img) + '</div>' +
+        '</div>'
+      )
+    case 'dbody':
+      return (
+        run(s) +
+        '<div class="d-pad">' +
+        '<div class="d-kicker">' + esc(s.kicker || '') + '</div>' +
+        '<h2 class="d-h2">' + esc(s.title) + '</h2>' +
+        '<div class="d-cols"><div class="d-main">' +
+        (s.paras || []).map((p) => '<p>' + esc(p) + '</p>').join('') +
+        '</div>' +
+        (s.side ? '<aside class="d-side">' + s.side.map((p) => '<p>' + esc(p) + '</p>').join('') + '</aside>' : '') +
+        '</div>' +
+        (s.pull ? '<blockquote class="d-pull">' + esc(s.pull) +
+          (s.pullBy ? '<span>' + esc(s.pullBy) + '</span>' : '') + '</blockquote>' : '') +
+        (s.points ? '<div class="d-points">' + s.points.map(([n, b, i]) =>
+          '<div><span>' + esc(n) + '</span><b>' + esc(b) + '</b><i>' + esc(i) + '</i></div>').join('') + '</div>' : '') +
+        dnote(s.note) +
+        '</div>'
+      )
+    case 'dfigure':
+      return (
+        '<figure class="d-fig">' +
+        '<div class="d-fig-img">' + imgTag(deck, s.img) + '</div>' +
+        '<figcaption class="d-fig-cap">' +
+        '<span class="d-fig-no">' + esc(s.no || 'FIG.') + '</span>' +
+        '<p>' + esc(s.cap || '') + '</p>' +
+        (s.src ? '<span class="d-fig-src">' + esc(s.src) + '</span>' : '') +
+        '</figcaption></figure>'
+      )
+    case 'dtable':
+      return (
+        run(s) +
+        '<div class="d-pad">' +
+        '<div class="d-kicker">' + esc(s.kicker || '') + '</div>' +
+        '<h2 class="d-h2">' + esc(s.title) + '</h2>' +
+        (s.lead ? '<p class="d-lead d-lead-sm">' + esc(s.lead) + '</p>' : '') +
+        '<table class="d-table"><thead><tr>' +
+        s.head.map((h, i) => '<th' + (i ? ' class="num"' : '') + '>' + esc(h) + '</th>').join('') +
+        '</tr></thead><tbody>' +
+        s.rows.map((r) => '<tr>' + r.map((c, i) =>
+          '<td' + (i ? ' class="num"' : '') + '>' + esc(c) + '</td>').join('') + '</tr>').join('') +
+        '</tbody></table>' +
+        (s.read ? '<p class="d-read">' + esc(s.read) + '</p>' : '') +
+        dnote(s.note) +
+        '</div>'
+      )
+    case 'dlist':
+      return (
+        run(s) +
+        '<div class="d-pad">' +
+        '<div class="d-kicker">' + esc(s.kicker || '') + '</div>' +
+        '<h2 class="d-h2">' + esc(s.title) + '</h2>' +
+        (s.lead ? '<p class="d-lead d-lead-sm">' + esc(s.lead) + '</p>' : '') +
+        '<ol class="d-list">' + s.items.map(([n, t, d]) =>
+          '<li><span class="n">' + esc(n) + '</span><div><h3 class="d-h3">' + esc(t) + '</h3>' +
+          (d ? '<p>' + esc(d) + '</p>' : '') + '</div></li>').join('') + '</ol>' +
+        dnote(s.note) +
+        '</div>'
+      )
+    case 'dquote':
+      return (
+        '<div class="d-quote"><p>' + esc(s.text) + '</p>' +
+        (s.by ? '<span>' + esc(s.by) + '</span>' : '') + '</div>'
+      )
+    case 'dend':
+      return (
+        '<div class="d-end">' +
+        '<div class="d-end-txt">' +
+        '<div class="d-kicker">' + esc(s.kicker || '') + '</div>' +
+        '<h2 class="d-h2 d-end-t">' + esc(s.title) + '</h2>' +
+        '<div class="d-end-rows">' + (s.rows || []).map(([k, v]) =>
+          '<div class="d-end-row"><span>' + esc(k) + '</span><span>' + esc(v) + '</span></div>').join('') + '</div>' +
+        '</div>' +
+        '<div class="d-end-img">' + imgTag(deck, s.img) + '</div>' +
+        '</div>'
+      )
     case 'cover':
       return (
         '<div class="sd-cover">' +
@@ -2494,7 +2885,7 @@ export function slideHTML(deck, s, index) {
     ? '<div class="sd-folio"><span>' + esc(deck.footLeft || deck.name) + '</span>' +
       '<span>' + esc(String((index || 0) + 1).padStart(2, '0')) + '</span></div>'
     : ''
-  return '<div class="sld k-' + deck.id + (deck.imgLine ? ' sld-line' : '') + '" data-k="' + s.k + '" style="' + slideTheme(deck) + '">' +
+  return '<div class="sld k-' + deck.id + (deck.fmt === 'doc' ? ' doc' : '') + (deck.imgLine ? ' sld-line' : '') + '" data-k="' + s.k + '" style="' + slideTheme(deck) + '">' +
     slideInner(deck, s) + folio + '</div>'
 }
 
