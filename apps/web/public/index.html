@@ -709,6 +709,80 @@
   .sld.k-heatline .d-end-txt{padding:100px 84px 0 128px}
   .sld.k-heatline .d-end-row{border-top-color:var(--rule);letter-spacing:.18em}
 
+  /* ── 文档家族 C：Harborline（图纸边框 · 等宽标题 · 双栏正文） ── */
+  .sld.k-harborline::after{content:"";position:absolute;inset:44px;border:1px solid var(--rule);
+    pointer-events:none;z-index:0}
+  .sld.k-harborline .d-pad{padding:100px 92px 104px 104px}
+  .sld.k-harborline .d-run{left:104px;right:92px;top:74px;padding-bottom:8px;border-bottom:1px solid var(--ink);
+    font-size:8px;letter-spacing:.22em}
+  .sld.k-harborline .sd-folio{left:104px;right:92px;bottom:58px;font-size:8px;letter-spacing:.2em}
+  .sld.k-harborline .d-kicker{font-size:8px;letter-spacing:.26em}
+  .sld.k-harborline .d-h1,
+  .sld.k-harborline .d-h2,
+  .sld.k-harborline .d-sec-t,
+  .sld.k-harborline .d-end-t,
+  .sld.k-harborline .d-quote p{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:500;letter-spacing:-.028em}
+  .sld.k-harborline .d-h2{margin-top:12px;font-size:29px;line-height:1.3}
+  .sld.k-harborline .d-cols{grid-template-columns:minmax(0,1fr);gap:0;margin-top:26px}
+  .sld.k-harborline .d-main{column-count:2;column-gap:38px;column-rule:1px solid var(--rule)}
+  .sld.k-harborline .d-main p{font-size:13px;line-height:1.84;text-align:justify;break-inside:avoid-column}
+  .sld.k-harborline .d-main p + p{margin-top:13px}
+  .sld.k-harborline .d-side{margin-top:24px;padding:12px 0 0;border-top:1px solid var(--ink);
+    display:grid;grid-template-columns:1fr 1fr;gap:26px}
+  .sld.k-harborline .d-side p{font-size:10.5px;line-height:1.8;color:var(--muted)}
+  .sld.k-harborline .d-side p + p{margin-top:0}
+  .sld.k-harborline .d-lead{font-size:14px;line-height:1.85}
+  .sld.k-harborline .d-pull{font-size:19px;line-height:1.62;border-left:3px solid var(--accent);padding-left:20px}
+  .sld.k-harborline .d-points{border-top:1px solid var(--ink)}
+  .sld.k-harborline .d-points span{letter-spacing:.22em}
+  .sld.k-harborline .d-points b{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:16px;font-weight:500}
+  .sld.k-harborline .d-facts{border-top:1px solid var(--ink)}
+  .sld.k-harborline .d-fact{grid-template-columns:180px 1fr;padding:12px 0;border-bottom:1px solid var(--rule)}
+  .sld.k-harborline .d-fact b{font-size:14px}
+  .sld.k-harborline .d-toc li{grid-template-columns:52px minmax(0,1fr) 210px;padding:20px 0}
+  .sld.k-harborline .d-toc .t{font-size:17px;letter-spacing:-.01em}
+  .sld.k-harborline .d-toc .n{font-size:8.5px;letter-spacing:.22em}
+  .sld.k-harborline .d-toc-figs ul{gap:8px 36px}
+  .sld.k-harborline .d-cover{padding:100px 92px 96px 104px}
+  .sld.k-harborline .d-cover .d-h1{margin-top:26px;font-size:54px;line-height:1.08}
+  .sld.k-harborline .d-cover .d-lead{max-width:600px;font-size:13.5px;line-height:1.85}
+  .sld.k-harborline .d-cover-top{font-size:8px;letter-spacing:.24em;padding-bottom:8px}
+  .sld.k-harborline .d-cover-img{margin:30px 0 24px;border:1px solid var(--ink)}
+  .sld.k-harborline .d-cover-foot{border-top:1px solid var(--ink);padding-top:12px}
+  .sld.k-harborline .d-cover-foot b{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:8px;
+    font-weight:400;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+  .sld.k-harborline .d-cover-foot span{font-size:12.5px;letter-spacing:0;text-transform:none;color:var(--ink);
+    font-family:inherit;margin-top:6px}
+  .sld.k-harborline .d-sec-txt{padding:100px 92px 0 104px}
+  .sld.k-harborline .d-sec-num{font-size:10px;letter-spacing:.26em}
+  .sld.k-harborline .d-sec-t{margin-top:14px;font-size:44px;line-height:1.14}
+  .sld.k-harborline .d-sec-lead{max-width:560px;font-size:13.5px;line-height:1.85}
+  .sld.k-harborline .d-sec-img{flex:1;min-height:0;margin:30px 92px 98px 104px;border:1px solid var(--ink)}
+  .sld.k-harborline .d-fig{padding:100px 92px 98px 104px}
+  .sld.k-harborline .d-fig-img{border:1px solid var(--ink);background:var(--paper)}
+  .sld.k-harborline .d-fig-cap{grid-template-columns:1fr;gap:7px;margin-top:16px;padding-top:10px;border-top:1px solid var(--ink)}
+  .sld.k-harborline .d-fig-no{font-size:8px;letter-spacing:.24em}
+  .sld.k-harborline .d-fig-cap p{max-width:620px;font-size:12px;line-height:1.72}
+  .sld.k-harborline .d-fig-src{grid-column:1;margin-top:1px;font-size:8px}
+  .sld.k-harborline .d-table{margin-top:22px}
+  .sld.k-harborline .d-table th{padding:8px 8px 8px 0;border-top:1px solid var(--ink);
+    border-bottom:1px solid var(--ink);background:rgba(92,111,121,.10);font-size:8px;letter-spacing:.18em}
+  .sld.k-harborline .d-table td{padding:9px 8px 9px 0;border-bottom:1px dotted var(--rule);font-size:12px}
+  .sld.k-harborline .d-table td.num{font-size:11.5px}
+  .sld.k-harborline[data-k="dmeta"] .d-facts{margin-top:auto}
+  .sld.k-harborline[data-k="dtable"] .d-note,
+  .sld.k-harborline[data-k="dlist"] .d-note{margin-top:auto}
+  .sld.k-harborline .d-list li{grid-template-columns:64px 1fr;padding:15px 0;border-top:1px solid var(--rule)}
+  .sld.k-harborline .d-list .n{font-size:9px;letter-spacing:.2em}
+  .sld.k-harborline .d-h3{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px;font-weight:500;letter-spacing:-.01em}
+  .sld.k-harborline .d-list p{font-size:12px;line-height:1.78}
+  .sld.k-harborline .d-quote{padding:104px 92px 104px 104px}
+  .sld.k-harborline .d-quote p{max-width:760px;font-size:32px;line-height:1.42}
+  .sld.k-harborline .d-end-txt{padding:100px 92px 0 104px}
+  .sld.k-harborline .d-end-t{margin-top:16px;font-size:36px;line-height:1.22}
+  .sld.k-harborline .d-end-img{flex:1;min-height:0;margin:30px 92px 98px 104px;border:1px solid var(--ink)}
+  .sld.k-harborline .d-end-row{border-top:1px solid var(--rule);font-size:8.5px;letter-spacing:.16em}
+
   /* 对比页 / 三联图版 */
   .sld .cmp-cols{display:grid;grid-template-columns:1fr 1fr;gap:38px;margin-top:26px}
   .sld .cmp-col{padding-top:12px;border-top:1px solid var(--rule)}
