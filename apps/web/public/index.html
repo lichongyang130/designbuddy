@@ -817,8 +817,6 @@
   .tv-row-v{margin-left:auto;font-size:12.5px;color:#6d7178}
   .tv-dots{display:flex;align-items:center;gap:7px;margin-left:auto}
   .tv-dots i{display:block;width:15px;height:15px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.16)}
-  .tv-chev{display:grid;place-items:center;width:22px;height:22px;border-radius:5px;color:#5c6169}
-  .tv-chev:hover{background:#f4f5f7}
   .tv-use{flex:none;margin:12px 20px 16px;height:42px;border-radius:8px;background:#1a5cff;color:#fff;font-size:14.5px;font-weight:500}
   .tv-use:hover{background:#1450e6}
   @media (max-width:1100px){
@@ -872,10 +870,6 @@
   .th-new:hover{background:#0b44c2}
   .th-new svg{flex:none}
   .th-bar{display:flex;align-items:center;gap:6px;margin-top:16px}
-  .th-tab{display:inline-flex;align-items:center;gap:7px;height:29px;padding:0 13px;border-radius:15px;font-size:13px;color:#313233}
-  .th-tab:hover{background:#f2f6fc}
-  .th-tab.on{background:#e2eefc;color:#12325c;font-weight:500}
-  .th-tab svg{flex:none;color:currentColor}
   .th-search{display:flex;align-items:center;gap:8px;width:598px;max-width:100%;height:32px;margin-left:auto;padding:0 11px;border:1px solid #c3c3c4;border-radius:8px;background:#fff;color:#8d9196}
   .th-search:focus-within{border-color:#9db6e8;box-shadow:0 0 0 3px rgba(42,92,240,.10)}
   .th-search input{flex:1;min-width:0;border:0;outline:0;background:none;font-size:12.5px;color:#313233}
@@ -883,6 +877,7 @@
 
   .th-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));column-gap:24px;row-gap:25px;margin-top:24px}
   .th-card{display:block;min-width:0;text-align:left;border:1px solid #dadadb;border-radius:10px;overflow:hidden;background:#fff;transition:box-shadow var(--d2) var(--ease),transform var(--d2) var(--ease)}
+  .th-card.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent) inset}
   .th-card:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(18,30,60,.14)}
   .th-card:focus-visible{box-shadow:0 0 0 3px rgba(39,125,246,.35)}
   .th-stage{position:relative;height:130px;padding:15px 16px 3px;overflow:hidden;container-type:inline-size}
@@ -1067,6 +1062,7 @@
   .ex-chip.on{background:var(--line);color:var(--fg);font-weight:500}
   .ex-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:6px}
   .ex-grid-wide{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .ex-card.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-line) inset}
   .ex-card{border:1px solid var(--line);border-radius:var(--r-lg);padding:14px;text-align:left;background:var(--surface)}
   .ex-card:hover{border-color:var(--line-strong);box-shadow:var(--e1)}
   .ex-top{display:flex;gap:10px;align-items:flex-start}
@@ -1140,6 +1136,9 @@
   .cn-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;padding-top:2px}
   .cn-card{border:1px solid var(--line);border-radius:var(--r-lg);padding:14px;background:var(--surface);position:relative;text-align:left;display:flex;gap:10px;align-items:flex-start}
   .cn-card:hover{border-color:var(--line-strong);box-shadow:var(--e2)}
+  .cn-hint{margin:0 0 4px;font-size:12.5px;line-height:1.6;color:#6b7075}
+  .cn-go{margin-left:auto;color:#9aa0a6;flex:none}
+  .cn-card{width:100%;text-align:left;cursor:pointer}
   .cn-ico{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none;
     background:#fff;border:1px solid var(--line);color:var(--fg);overflow:hidden}
   .cn-ico svg{width:23px;height:23px;display:block}
@@ -1492,11 +1491,6 @@
       <span data-i18n-key="rail.home">首页</span>
     </button>
 
-    <button class="rbtn" title="资料库">
-      <i class="ric"><svg class="ic" width="19" height="19" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-library"></use></svg></i>
-      <span data-i18n-key="rail.library">资料库</span>
-    </button>
-
     <button class="rbtn" id="navTemplates" data-nav="templates" title="模版">
       <i class="ric"><svg class="ic" width="19" height="19" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-templates"></use></svg></i>
       <span data-i18n-key="rail.templates">模版</span>
@@ -1519,12 +1513,6 @@
 
     <div class="grow"></div>
 
-    <button class="rbtn mini" title="邀请成员">
-      <i class="ric"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-user-plus"></use></svg></i>
-    </button>
-    <button class="rbtn mini" title="帮助与反馈">
-      <i class="ric"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-feedback"></use></svg></i>
-    </button>
     <div class="me" title="星W">星W<i></i></div>
   </nav>
 
@@ -1541,11 +1529,6 @@
         最近的对话记录
       </button>
       <div class="sesslist" id="sessList"></div>
-
-      <button class="row" id="recentDocs">
-        <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-folder"></use></svg>
-        最近的 gammas
-      </button>
     </div>
 
     <div class="sep"></div>
@@ -1556,41 +1539,8 @@
           <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-search"></use></svg>
           搜索<span class="kbd">⌘K</span>
         </button>
-        <button class="row">
-          <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-panel"></use></svg>
-          全部
-        </button>
-        <button class="row">
-          <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-users"></use></svg>
-          <span data-i18n-key="nav.shared">与您共享</span>
-        </button>
-        <button class="row">
-          <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-globe"></use></svg>
-          网站
-        </button>
       </div>
 
-      <div class="label">文件夹</div>
-      <div class="folders">
-        <div class="fld">
-          <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-folder"></use></svg>
-          <i></i>
-        </div>
-        <div class="fld">
-          <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-folder"></use></svg>
-          <i class="s"></i>
-        </div>
-        <p>将相关的 gammas 分组，并一次性全部分享。</p>
-        <a href="#" id="newFolder">创建文件夹</a>
-      </div>
-
-      <div class="sep"></div>
-      <div class="nav">
-        <button class="row">
-          <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-trash"></use></svg>
-          垃圾箱
-        </button>
-      </div>
     </div>
 
   </aside>
@@ -1598,38 +1548,6 @@
   <!-- 模版页侧栏 -->
   <aside class="tplside" id="sideTemplates" hidden>
     <div class="tss">
-      <div class="ts-label navy">工作区</div>
-      <div class="ts-nav">
-        <button class="ts-row">
-          <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"></use></svg>
-          工作区模板
-        </button>
-        <button class="ts-row">
-          <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-clock"></use></svg>
-          最近
-        </button>
-        <button class="ts-row">
-          <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-user"></use></svg>
-          由您创建
-        </button>
-        <button class="ts-row">
-          <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-archive"></use></svg>
-          已归档
-        </button>
-      </div>
-
-      <div class="ts-sep"></div>
-
-      <div class="ts-label navy">探索</div>
-      <div class="ts-nav">
-        <button class="ts-row on">
-          <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-compass"></use></svg>
-          探索模板
-        </button>
-      </div>
-
-      <div class="ts-sep"></div>
-
       <div class="ts-label ts-filter">筛选器</div>
 
       <div class="ts-group">
@@ -1693,43 +1611,12 @@
         </div>
         <button class="ts-more" id="tsMore">显示更多<i class="ts-count">11</i></button>
       </div>
-
-      <div class="ts-sep"></div>
-
-      <button class="ts-ghead" data-fold="theme" aria-expanded="false">
-        主题
-        <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-up"></use></svg>
-      </button>
-      <div class="ts-opts" id="tsTheme" hidden>
-        <label class="ts-opt"><input type="radio" name="tplTheme" value="light" checked /><span class="ts-dot"></span><span class="ts-txt">浅色</span></label>
-        <label class="ts-opt"><input type="radio" name="tplTheme" value="warm" /><span class="ts-dot"></span><span class="ts-txt">暖色</span></label>
-        <label class="ts-opt"><input type="radio" name="tplTheme" value="mono" /><span class="ts-dot"></span><span class="ts-txt">黑白</span></label>
-      </div>
     </div>
   </aside>
 
   <!-- 自定义侧栏 -->
   <aside class="cus-side" id="sideCustom" hidden>
     <div class="cus-t">自定义</div>
-    <div class="cus-nav">
-      <button class="cus-row on">
-        <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-theme"></use></svg>
-        主题
-      </button>
-      <button class="cus-row">
-        <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-font"></use></svg>
-        自定义字体
-      </button>
-      <button class="cus-row">
-        <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-command"></use></svg>
-        自定义指令
-        <span class="cus-beta">测试版</span>
-      </button>
-      <button class="cus-row">
-        <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-icons"></use></svg>
-        图标库
-      </button>
-    </div>
   </aside>
 
   <!-- 主区 -->
@@ -1739,10 +1626,6 @@
       <button class="pill backpill" id="modeBack" hidden>
         <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-left"></use></svg>
         返回
-      </button>
-      <button class="pill" id="upgrade">
-        <svg class="spark ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sparkle"></use></svg>
-        升级获得更多 AI 功能
       </button>
       </div>
     </div>
@@ -1783,17 +1666,11 @@
                 <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"></use></svg>
               </button>
               <div class="grow"></div>
-              <button class="icobtn" title="文本设置">
-                <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-text"></use></svg>
-              </button>
               <button class="icobtn" id="imagePickHome" title="图片">
                 <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-image"></use></svg>
               </button>
               <button class="model" id="modelPick"><i>✦</i><span class="mlabel">标准</span>
                 <svg class="ic ic-xs" width="11" height="11" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
-              </button>
-              <button class="icobtn" id="mic" title="语音">
-                <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-microphone"></use></svg>
               </button>
               <button class="send" id="homeSend" title="发送">
                 <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-send"></use></svg>
@@ -1822,10 +1699,6 @@
           <button class="chip" data-kind="美化">
             <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wand"></use></svg>
             美化
-          </button>
-          <button class="chip" data-kind="导入">
-            <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-import"></use></svg>
-            导入
           </button>
         </div>
       </div>
@@ -1889,17 +1762,11 @@
                 </button>
               </div>
               <div class="grow"></div>
-              <button class="icobtn" title="文本设置">
-                <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-text"></use></svg>
-              </button>
               <button class="icobtn" id="imagePickMode" title="图片">
                 <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-image"></use></svg>
               </button>
               <button class="model" id="modeModel"><i>✦</i><span class="mlabel">标准</span>
                 <svg class="ic ic-xs" width="11" height="11" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
-              </button>
-              <button class="icobtn" id="micMode" title="语音">
-                <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-microphone"></use></svg>
               </button>
               <button class="send blue" id="modeSend" title="发送">
                 <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-send"></use></svg>
@@ -1911,11 +1778,6 @@
         <div class="examples" id="modeExamples">
           <div class="exhead">
             <span>示例指令</span>
-            <button class="exfilter" id="exFilter">
-              <svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-square"></use></svg>
-              常规
-              <svg class="ic ic-xs" width="11" height="11" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
-            </button>
           </div>
           <div class="exgrid" id="exGridHome"></div>
         </div>
@@ -1925,40 +1787,8 @@
             <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"></use></svg>
             浏览模板
           </button>
-          <button class="tplbtn" id="uploadTpl">
-            <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-upload"></use></svg>
-            上传模板
-          </button>
         </div>
 
-        <div class="gallery" id="modeGallery">
-          <div class="gtabs">
-            <button class="gtab on">工作区</button>
-            <button class="gtab">探索</button>
-          </div>
-          <div class="ggrid" id="gGrid"></div>
-        </div>
-
-        <div class="beautify" id="importBox" hidden>
-          <div class="bhead">更多选择</div>
-          <div class="bgrid">
-            <button class="bcard" id="importTemplate">
-              <span class="bico">
-                <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-presentation"></use></svg>
-              </span>
-              <span class="btxt"><b>导入模板</b><small>创建可复用的工作区模板</small></span>
-            </button>
-          </div>
-          <div class="ihint">
-            提示：使用连接器从您喜爱的工具中导入。
-            <span class="ibrands">
-              <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-font"></use></svg>
-              <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-shapes"></use></svg>
-              <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-dots-vertical"></use></svg>
-              <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-circle"></use></svg>
-            </span>
-          </div>
-        </div>
 
         <div class="beautify" id="beautifyBox" hidden>
           <div class="bhead">美化方式</div>
@@ -2028,26 +1858,9 @@
           <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-theme"></use></svg>
           主题
         </h1>
-        <p class="th-sub" data-i18n-key="theme.sub">主题可控制 gammas 的颜色、字体、徽标和设计。创建自己的主题、导入 PPT 或自定义标准主题。</p>
-
-        <button class="th-new" id="thNew">
-          <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"></use></svg>
-          新建主题
-        </button>
+        <p class="th-sub" data-i18n-key="theme.sub">选一个主题，界面的强调色会立刻换成它，并记在本地偏好里。</p>
 
         <div class="th-bar">
-          <button class="th-tab" data-thtab="mine">
-            <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sliders"></use></svg>
-            自定义
-          </button>
-          <button class="th-tab on" data-thtab="std">
-            <span style="width:14px;height:14px;border-radius:4px;background:#0c1f3f;color:#fff;font:600 9px/14px ui-sans-serif;text-align:center">G</span>
-            标准
-          </button>
-          <button class="th-tab" data-thtab="arch">
-            <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-archive"></use></svg>
-            已归档
-          </button>
           <label class="th-search">
             <svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-search"></use></svg>
             <input id="thSearch" placeholder="按标题、关键字、作者姓名等搜索" />
@@ -2113,39 +1926,16 @@
             <svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-search"></use></svg>
             <input id="exSearch" placeholder="搜索专家" />
           </label>
-          <button class="ex-mine" id="exMine">
-            <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-user"></use></svg>
-            我的专家
-          </button>
-          <button class="ex-mine" id="skInstalled" hidden>
-            <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"></use></svg>
-            已安装(<span id="skInstalledCount">0</span>)
-          </button>
-          <button class="sk-add" id="cnCustom" hidden>
-            <svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"></use></svg>
-            自定义连接器
-          </button>
-          <button class="sk-add" id="skAdd" hidden>
-            <svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"></use></svg>
-            添加技能
-          </button>
         </div>
       </div>
 
       <div class="ex-pane" id="paneExperts">
-        <div class="ex-cats" id="exCats"></div>
         <div class="ex-row">
-          <div class="ex-subtabs" id="exSubtabs">
-            <button class="on" data-sub="experts">专家</button>
-            <button data-sub="teams">专家团</button>
-          </div>
           <div class="ex-sort" id="exSort">
-            <button class="on" data-sort="综合">综合</button>
-            <button data-sort="最热">最热</button>
-            <button data-sort="最新">最新</button>
+            <button class="on" data-sort="name">按名称</button>
+            <button data-sort="steps">按步数</button>
           </div>
         </div>
-        <div class="ex-chips" id="exChips"></div>
         <div class="ex-grid" id="exGrid"></div>
       </div>
 
@@ -2159,35 +1949,15 @@
         </div>
         <div class="sk-sec">
           <div class="sk-sechead">
-            <b>精选技能</b>
-            <button class="sk-refresh" id="skRefresh">
-              <svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-refresh"></use></svg>
-              换一批
-            </button>
+            <b>已装载工具</b>
+            <span class="sk-sechint">来自本地插件 · 点卡片把 @工具名 写进输入框</span>
           </div>
-          <div class="sk-row" id="skFeatured"></div>
-        </div>
-
-        <div class="sk-sec">
-          <div class="sk-row2">
-            <div class="sk-tabs" id="skTabs">
-              <button class="on" data-sk="推荐">推荐</button>
-              <button data-sk="SkillHub">SkillHub</button>
-              <button data-sk="套件">套件</button>
-            </div>
-            <div class="ex-sort" id="skSort">
-              <button class="on" data-sksort="综合">综合</button>
-              <button data-sksort="使用量">使用量</button>
-              <button data-sksort="安装量">安装量</button>
-              <button data-sksort="最新">最新</button>
-            </div>
-          </div>
-          <div class="ex-chips" id="skChips"></div>
           <div class="sk-grid" id="skGrid"></div>
         </div>
       </div>
 
       <div class="ex-pane" id="paneConnectors" hidden>
+        <p class="cn-hint">连接器目录。授权与装载由本地插件完成，点任意一项查看「设置 · 设备连接」。</p>
         <div class="cn-grid" id="cnGrid"></div>
       </div>
     </section>
@@ -2234,7 +2004,7 @@
 <div class="effort" id="effortMenu" hidden>
   <div class="eff-head">努力</div>
   <div id="effList"></div>
-  <div class="eff-foot">越多的需求将消耗更多的使用额度</div>
+  <div class="eff-foot">档位会写进这次的提示词，随消息一起发出去。</div>
 </div>
 <div class="imgmenu" id="imageMenu" hidden>
   <div class="im-head">图片</div>
@@ -2289,17 +2059,6 @@
             <div class="sp-ctl sp-slider">
               <input type="range" id="setFontSize" min="0" max="2" step="1" value="1" />
               <div class="sp-scale"><span>小</span><span>默认</span><span>大</span></div>
-            </div>
-          </div>
-          <div class="sp-row">
-            <div class="sp-main">
-              <div class="sp-title">默认打开方式</div>
-              <div class="sp-desc">设置用 WorkBuddy 独立文件浏览器打开本地文件的默认方式。</div>
-            </div>
-            <div class="sp-ctl">
-              <button class="sp-link" id="setDefaultOpen">未设置
-                <svg class="ic ic-xs" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-right"></use></svg>
-              </button>
             </div>
           </div>
         </div>
@@ -2428,7 +2187,7 @@
 <div class="toast" id="toast"></div>
 
 <script type="module">
-import { EX_CATEGORIES, EX_DEMO, EX_CHIPS, SKILL_FEATURED, SKILL_GRID, SK_CHIPS, CN_CONNECTORS } from './demo-data.js'
+import { CN_CONNECTORS } from './demo-data.js'
 import { CASE_DECKS, slideHTML } from './cases.js'
 import { applyLanguage, resolveLanguage, startAutoTranslate, t } from './i18n.js'
 const tplState = { fmt: 'all', cats: new Set(), q: '', sort: 'date', more: false }
@@ -2546,15 +2305,20 @@ function renderCaseSide(deck) {
       '<div class="tv-prov" data-no-i18n><span class="tv-badge">' + badge + '</span>由 ' + deck.by + ' 提供</div>' +
       '<p class="tv-desc" data-no-i18n>' + deck.desc + '</p>' +
       '<h3>最适合</h3><ul class="tv-best" data-no-i18n>' + deck.bestFor.map((x) => '<li>' + x + '</li>').join('') + '</ul>' +
-      '<div class="tv-row"><span class="tv-row-k">样式</span>' +
+      '<div class="tv-row" title="' + deck.colorway + '"><span class="tv-row-k">样式</span>' +
         '<div class="tv-dots">' + deck.styles.map((c) => '<i style="background:' + c + '"></i>').join('') + '</div>' +
-        '<button class="tv-chev" id="tvStyle" title="' + deck.colorway + '">' + iconSVG('chevron-down', 14) + '</button></div>' +
+        '<span class="tv-row-v">' + deck.colorway.split(' · ')[0] + '</span></div>' +
       '<div class="tv-row"><span class="tv-row-k">分类</span><span class="tv-row-v" data-no-i18n>' + deck.kind + '</span></div>' +
     '</div>' +
     '<button class="tv-use" id="tvUse">使用模板</button>'
   $('tvUse').onclick = () => useTemplate(deck.name)
-  $('tvCopy').onclick = () => toast('已复制「' + deck.name + '」的模板链接')
-  $('tvStyle').onclick = () => toast('这套模板的配色：' + deck.colorway)
+  $('tvCopy').onclick = () => {
+    const url = location.origin + location.pathname + '#case/' + deck.id
+    copyText(url).then(
+      () => toast('已复制模板链接：' + url, 'ok'),
+      () => toast('复制失败，请手动复制地址栏链接', 'err'),
+    )
+  }
 }
 
 function wireCaseView() {
@@ -2610,9 +2374,6 @@ function paintTplSidebar() {
       paintTplGallery()
     }
   })
-  document.querySelectorAll('#tsTheme input').forEach((input) => {
-    input.onchange = () => toast('示范版：主题只在生成时生效。')
-  })
   document.querySelectorAll('.ts-ghead').forEach((head) => {
     head.onclick = () => {
       const box = head.nextElementSibling
@@ -2661,12 +2422,38 @@ const THEMES = [
   { name: 'Marine', stage: 'radial-gradient(ellipse at 84% 12%,#2b3b8f 0%,rgba(43,59,143,0) 62%),linear-gradient(160deg,#12193a,#080c1e)', slide: '#0c1022', ink: '#ffffff', body: '#b9c4e6', link: '#8aa6ff' },
 ]
 
-const thState = { tab: 'std', q: '' }
+const thState = { q: '' }
 
 function thHits() {
-  if (thState.tab !== 'std') return []
   const q = thState.q.trim().toLowerCase()
   return THEMES.filter((item) => q === '' || item.name.toLowerCase().includes(q))
+}
+
+function hexToRgb(hex) {
+  const n = parseInt(String(hex).replace('#', ''), 16)
+  return [(n >> 16) & 255, (n >> 8) & 255, n & 255]
+}
+
+function shadeHex(hex, delta) {
+  const rgb = hexToRgb(hex).map((v) => Math.max(0, Math.min(255, v + delta)))
+  return '#' + rgb.map((v) => v.toString(16).padStart(2, '0')).join('')
+}
+
+function rgbaHex(hex, alpha) {
+  const [r, g, b] = hexToRgb(hex)
+  return 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')'
+}
+
+/* 选主题 = 真的把界面强调色换掉，并记在本地偏好里 */
+function applyThemePreset(theme) {
+  if (!theme) return
+  const root = document.documentElement
+  root.style.setProperty('--accent', theme.link)
+  root.style.setProperty('--accent-hover', shadeHex(theme.link, -18))
+  root.style.setProperty('--accent-soft', rgbaHex(theme.link, 0.12))
+  root.style.setProperty('--accent-line', rgbaHex(theme.link, 0.34))
+  state.prefs.theme = theme.name
+  savePrefs()
 }
 
 function paintThemes() {
@@ -2684,28 +2471,18 @@ function paintThemes() {
         '</div>' +
       '</div>' +
       '<div class="th-foot"><span class="th-name">' + theme.name + '</span><span class="th-more" data-more="1">···</span></div>'
-    card.onclick = () => toast('已选用「' + theme.name + '」主题')
+    const active = state.prefs.theme === theme.name
+    card.classList.toggle('on', active)
+    card.onclick = () => {
+      applyThemePreset(theme)
+      paintThemes()
+      toast('已选用「' + theme.name + '」主题', 'ok')
+    }
     grid.appendChild(card)
   }
   const empty = $('thEmpty')
   empty.hidden = hits.length > 0
-  empty.innerHTML = thState.tab === 'mine'
-    ? '<b>还没有自定义主题</b>点「新建主题」开始创建。'
-    : thState.tab === 'arch'
-      ? '<b>没有已归档的主题</b>归档后的主题会出现在这里。'
-      : '<b>没有找到匹配的主题</b>换个关键字试试。'
-  if (thState.tab !== 'std') empty.hidden = false
-}
-
-function paintThemeTabs() {
-  document.querySelectorAll('.th-tab').forEach((tab) => {
-    tab.classList.toggle('on', tab.dataset.thtab === thState.tab)
-    tab.onclick = () => {
-      thState.tab = tab.dataset.thtab
-      paintThemeTabs()
-      paintThemes()
-    }
-  })
+  empty.innerHTML = '<b>没有找到匹配的主题</b>换个关键字试试。'
 }
 
 /* ── 偏好：本地保存并即时生效 ───────────────────────── */
@@ -2754,13 +2531,8 @@ const state = {
   settingsPanel: 'general',
   exTab: 'experts',
   exQuery: '',
-  exChip: '全部',
-  exSort: '综合',
-  skTab: '推荐',
-  skSort: '综合',
-  skChip: '全部',
+  exSort: 'name',
   skQuery: '',
-  skOffset: 0,
   prefs: loadPrefs(),
 }
 const $ = (id) => document.getElementById(id)
@@ -2979,6 +2751,14 @@ async function openSession(id, title) {
 async function send(prompt, kind) {
   const text = String(prompt || '').trim()
   if (text === '' || state.busy) return
+  const prefs = []
+  if (state.effort === 'lite') prefs.push('档位 Lite：步骤精简、优先给结果')
+  if (state.imageOption && state.imageOption !== 'auto') {
+    const option = IMAGE_OPTIONS.find((item) => item.id === state.imageOption)
+    if (option) prefs.push('配图方式：' + option.name + (option.desc ? '（' + option.desc + '）' : ''))
+  }
+  if (state.prefs.theme) prefs.push('视觉主题：' + state.prefs.theme)
+  const withPrefs = prefs.length ? text + '\n\n[生成偏好] ' + prefs.join('；') : text
   state.busy = true
   const tag = kind || state.mode
   paintActivity()
@@ -2999,7 +2779,7 @@ async function send(prompt, kind) {
       : tone === 'detailed'
         ? t('请详细说明。') + ' '
         : ''
-    await rpc('agent.run', { sessionId: state.sessionId, presetId: state.presetId, prompt: tonePrefix + (tag ? '【' + tag + '】' + text : text) })
+    await rpc('agent.run', { sessionId: state.sessionId, presetId: state.presetId, prompt: tonePrefix + (tag ? '【' + tag + '】' + withPrefs : withPrefs) })
   } catch (error) {
     toast(error.message, 'err')
   } finally {
@@ -3039,6 +2819,22 @@ async function unmount(rowId, cascade) {
     toast(error.message, 'err')
   }
   void loadPlugins()
+}
+
+async function copyText(text) {
+  if (navigator.clipboard && window.isSecureContext) {
+    await navigator.clipboard.writeText(text)
+    return
+  }
+  const area = document.createElement('textarea')
+  area.value = text
+  area.style.position = 'fixed'
+  area.style.opacity = '0'
+  document.body.appendChild(area)
+  area.select()
+  const ok = document.execCommand('copy')
+  area.remove()
+  if (!ok) throw new Error('copy failed')
 }
 
 function toast(message, kind) {
@@ -3131,7 +2927,7 @@ $('backHome').onclick = () => setView('home')
 $('openDrawer').onclick = () => openSettings('general')
 $('openPalette2').onclick = openPalette
 $('paletteInput').addEventListener('input', (e) => paintPalette(e.target.value))
-$('help').onclick = () => toast('演示环境：输入需求会真实驱动本地 Agent Runtime。')
+$('help').onclick = () => openSettings('shortcuts')
 $('newBlank').onclick = () => { exitMode(); setView('home'); $('homePrompt').value = ''; $('homePrompt').focus() }
 $('setFontSize').oninput = () => {
   state.prefs.fontSize = FONT_STEPS[Number($('setFontSize').value)] || DEFAULT_PREFS.fontSize
@@ -3202,7 +2998,6 @@ $('modeBack').onclick = exitMode
 $('modeClear').onclick = exitMode
 $('attachMode').onclick = (event) => { event.stopPropagation(); openPlusMenu($('attachMode')) }
 $('modeModel').onclick = (event) => { event.stopPropagation(); openEffort($('modeModel')) }
-$('uploadTpl').onclick = () => $('fileInput').click()
 $('attachChat').onclick = (event) => { event.stopPropagation(); openPlusMenu($('attachChat')) }
 $('modelPick').onclick = (event) => { event.stopPropagation(); openEffort($('modelPick')) }
 document.querySelectorAll('.chip').forEach((chip) => {
@@ -3212,20 +3007,6 @@ document.querySelectorAll('.chip').forEach((chip) => {
   }
 })
 /* 未接入入口：统一徽标或隐藏，不再点击后弹提示 */
-markSoon($('exSubtabs').querySelector('[data-sub="teams"]'))
-markSoon($('exMine'))
-markSoon($('skAdd'))
-markSoon($('cnCustom'))
-markSoon($('browseTpl'))
-$('mic').hidden = true
-$('micMode').hidden = true
-$('exFilter').hidden = true
-$('newFolder').hidden = true
-document.querySelector('.gtabs').hidden = true
-$('setDefaultOpen').closest('.sp-row').hidden = true
-document.querySelector('#importBox .bgrid').hidden = true
-document.querySelectorAll('.rail .rbtn[title="媒体"], .rail .rbtn[title="邀请成员"]').forEach((btn) => { btn.hidden = true })
-document.querySelectorAll('.bar .icobtn[title="文本设置"]').forEach((btn) => { btn.hidden = true })
 
 document.addEventListener('keydown', (e) => {
   if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); openPalette() }
@@ -3289,11 +3070,18 @@ function subIcoApp(icon, color) {
 
 function subItems(act) {
   if (act === 'mode') {
-    return [
-      { label: '标准', desc: '当前路由：mock-planner → mock-designer', on: true, ico: subIcoApp('wand', 'var(--accent)'), run: () => toast('已是标准模式', 'ok') },
-      { label: '深度思考', desc: '需要真实推理模型', soon: true, ico: subIcoApp('brain', '#6D5BD0') },
-      { label: '经典版', desc: '旧版生成工具', soon: true, ico: subIcoApp('clock', '#8A93A5') },
-    ]
+    return EFFORTS.map((item) => ({
+      label: item.name,
+      desc: item.desc,
+      on: state.effort === item.id,
+      ico: subIcoApp(item.id === 'lite' ? 'bolt' : 'wand', item.color),
+      run: () => {
+        state.effort = item.id
+        document.querySelectorAll('.mlabel').forEach((label) => { label.textContent = item.name })
+        toast('已切换档位：' + item.name, 'ok')
+        closePlusMenu()
+      },
+    }))
   }
   if (act === 'expert') {
     const used = new Set()
@@ -3335,7 +3123,7 @@ function subItems(act) {
         hue: 265,
         run: () => { closePlusMenu(); openSettings('devices') },
       }))
-    const demo = CN_CONNECTORS.map((item) => ({ label: item.name, desc: item.desc || '', hue: item.hue }))
+    const demo = CN_CONNECTORS.map((item) => ({ label: item.name, desc: item.desc || '', hue: item.hue, settings: true }))
     const all = real.concat(demo)
     const shown = all.slice(0, 12)
     const rows = shown.map((item) => ({
@@ -3344,7 +3132,7 @@ function subItems(act) {
       ico: '<span class="smi-ico smi-brand">' + brandTile(item.label, item.hue) + '</span>',
       run: item.run || (() => {
         closePlusMenu()
-        toast('已请求连接「' + item.label + '」（演示环境不执行授权）', 'ok')
+        openSettings('devices')
       }),
     }))
     if (all.length > shown.length) {
@@ -3486,45 +3274,21 @@ const MODE_CONTENT = {
     title: '今天我们要做点什么呢？',
     placeholder: '描述您的演示主题',
     examples: ['房地产投资指南', '[name] 组合演示文稿', '毕业论文答辩', '课程大纲'],
-    gallery: [
-      { name: 'Fright Night Market', cls: 'g-fright', html: '<div class="gt">FRIGHT<br>NIGHT<br>MARKET</div>' },
-      { name: 'Tumble', cls: 'g-tumble', html: '<div class="fruit"></div><div class="gt">TUMBLE</div>' },
-      { name: 'Mastering Your Difference', cls: 'g-master', html: '<div class="photo"></div><div class="gt">MASTERING YOUR DIFFERENCE</div>' },
-      { name: 'Your First Thirty', cls: 'g-thirty', html: '<div class="win"></div><div class="gt">YOUR<br>FIRST<br>THIRTY</div>' },
-    ],
   },
   '文档': {
     title: '今天想写哪份文档？',
     placeholder: '描述您的文档主题',
     examples: ['产品需求文档', '竞品分析报告', '项目周报', '用户使用手册'],
-    gallery: [
-      { name: '产品需求文档', cls: 'g-doc', html: '<div class="gt">产品需求<br>文档</div>' },
-      { name: '竞品分析报告', cls: 'g-doc warm', html: '<div class="gt">竞品分析<br>报告</div>' },
-      { name: '项目周报', cls: 'g-doc cool', html: '<div class="gt">项目<br>周报</div>' },
-      { name: '用户使用手册', cls: 'g-doc dark', html: '<div class="gt">用户<br>手册</div>' },
-    ],
   },
   '轮播图': {
     title: '今天想做什么样的轮播？',
     placeholder: '描述您的轮播主题',
     examples: ['小红书九宫格', 'Instagram 新品发布', '知识科普 6 屏', '活动倒计时'],
-    gallery: [
-      { name: '九宫格笔记', cls: 'g-car', html: '<div class="gt">九宫格<br>笔记</div>' },
-      { name: '新品发布', cls: 'g-car mint', html: '<div class="gt">新品<br>发布</div>' },
-      { name: '知识科普', cls: 'g-car lavender', html: '<div class="gt">知识<br>科普</div>' },
-      { name: '活动倒计时', cls: 'g-car amber', html: '<div class="gt">倒计时<br>3 天</div>' },
-    ],
   },
   '图片': {
     title: '今天想生成什么图？',
     placeholder: '描述您想要的画面',
     examples: ['品牌主视觉', '产品场景图', '插画风海报', '社交头像'],
-    gallery: [
-      { name: '品牌主视觉', cls: 'g-img', html: '<div class="gt">主视觉</div>' },
-      { name: '产品场景图', cls: 'g-img mint', html: '<div class="gt">场景图</div>' },
-      { name: '插画风海报', cls: 'g-img lavender', html: '<div class="gt">插画<br>海报</div>' },
-      { name: '社交头像', cls: 'g-img amber', html: '<div class="gt">头像</div>' },
-    ],
   },
 }
 
@@ -3534,7 +3298,6 @@ const CHIP_ICONS = {
   '轮播图': '<svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-carousel"></use></svg>',
   '图片': '<svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-image"></use></svg>',
   '美化': '<svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sparkle-solid"></use></svg>',
-  '导入': '<svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-import"></use></svg>',
 }
 
 function paintExamples(labels) {
@@ -3554,19 +3317,6 @@ function paintExamples(labels) {
   }
 }
 
-function paintGallery(items) {
-  const grid = $('gGrid')
-  grid.innerHTML = ''
-  for (const item of items) {
-    const card = document.createElement('button')
-    card.className = 'gcover ' + item.cls
-    card.innerHTML = item.html
-    card.title = item.name
-    card.onclick = () => toast('模板「' + item.name + '」未接入。')
-    grid.appendChild(card)
-  }
-}
-
 function setHidden(el, hidden) {
   // SVGElement 没有 hidden 这个 IDL 属性：必须走 attribute，CSS 的 [hidden] 才生效。
   if (!el) return
@@ -3577,8 +3327,7 @@ function setHidden(el, hidden) {
 function enterMode(kind) {
   state.mode = kind
   const beautify = kind === '美化'
-  const importing = kind === '导入'
-  const fileMode = beautify || importing
+  const fileMode = beautify
   const content = MODE_CONTENT[kind] || MODE_CONTENT['演示文稿']
 
   setHidden($('heroHome'), true)
@@ -3594,20 +3343,11 @@ function enterMode(kind) {
   $('modeTitle').textContent = fileMode ? '今天您想要创作什么？' : content.title
   setHidden($('dropzone'), !fileMode)
   setHidden($('beautifyBox'), !beautify)
-  setHidden($('importBox'), !importing)
   setHidden($('modeExamples'), fileMode)
   setHidden($('modeTplActions'), fileMode)
-  setHidden($('modeGallery'), fileMode)
 
-  if (!fileMode) {
-    paintExamples(content.examples)
-    paintGallery(content.gallery)
-  }
-  $('modePrompt').placeholder = beautify
-    ? '描述您希望更改或改进的内容'
-    : importing
-      ? '添加要导入的文件，或从下方选择任务'
-      : content.placeholder
+  if (!fileMode) paintExamples(content.examples)
+  $('modePrompt').placeholder = beautify ? '描述您希望更改或改进的内容' : content.placeholder
 
   setView('home')
   requestAnimationFrame(() => $('modePrompt').focus())
@@ -3761,161 +3501,79 @@ function iconMark(icon, size) {
     '" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-' + icon + '"></use></svg>'
 }
 
-function renderExCategories() {
-  const box = $('exCats')
-  box.innerHTML = ''
-  for (const cat of EX_CATEGORIES) {
-    const card = document.createElement('div')
-    card.className = 'ex-cat'
-    const head = document.createElement('div')
-    head.className = 'hd ' + cat.tone
-    head.innerHTML = '<svg class="ic" width="34" height="34" viewBox="0 0 24 24" aria-hidden="true">' +
-        '<use href="#i-' + (cat.icon || 'face') + '"></use></svg>' +
-      '<b>' + cat.name + '</b>'
-    const body = document.createElement('div')
-    body.className = 'bd'
-    for (const item of cat.items) {
-      const row = document.createElement('button')
-      row.className = 'li'
-      row.innerHTML = '<span>' + item + '</span><svg class="ic ic-xs" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-right"></use></svg>'
-      row.onclick = () => toast('示例入口：' + item)
-      body.appendChild(row)
-    }
-    card.append(head, body)
-    box.appendChild(card)
-  }
-}
-
-function renderExChips() {
-  const box = $('exChips')
-  box.innerHTML = ''
-  for (const chip of EX_CHIPS) {
-    const btn = document.createElement('button')
-    btn.className = 'ex-chip' + (state.exChip === chip ? ' on' : '')
-    btn.textContent = chip
-    btn.onclick = () => { state.exChip = chip; renderExChips(); paintExperts() }
-    box.appendChild(btn)
-  }
-}
-
 function paintExperts() {
   const grid = $('exGrid')
   grid.innerHTML = ''
   const usedFaces = new Set()
   const query = state.exQuery.trim().toLowerCase()
-  const cards = []
-  for (const preset of state.presets) {
-    cards.push({
-      kind: 'real', id: preset.id, name: preset.name, desc: preset.role || '',
-      tags: [preset.kind, preset.tools ? preset.tools.length + ' 个工具' : '全部工具', preset.maxSteps ? preset.maxSteps + ' 步' : '默认步数'],
-      stat: '已接入', weight: 1e9, cats: ['产品设计', '技术工程'],
-    })
-  }
-  for (const demo of EX_DEMO) cards.push(Object.assign({ kind: 'demo' }, demo))
+  let list = state.presets.slice()
+  if (query) list = list.filter((preset) => (preset.name + ' ' + (preset.role || '')).toLowerCase().indexOf(query) >= 0)
+  if (state.exSort === 'steps') list.sort((a, b) => (b.maxSteps || 0) - (a.maxSteps || 0))
+  else list.sort((a, b) => a.name.localeCompare(b.name, 'zh-Hans-CN'))
 
-  let list = cards.filter((card) => state.exChip === '全部' || (card.cats || []).indexOf(state.exChip) >= 0)
-  if (query) list = list.filter((card) => (card.name + card.desc).toLowerCase().indexOf(query) >= 0)
-  if (state.exSort === '最热') list = list.slice().sort((a, b) => b.weight - a.weight)
-  if (state.exSort === '最新') list = list.slice().reverse()
-
-  for (const card of list) {
+  for (const preset of list) {
+    const current = preset.id === state.presetId
     const btn = document.createElement('button')
-    btn.className = 'ex-card'
+    btn.className = 'ex-card' + (current ? ' on' : '')
     btn.innerHTML =
       '<div class="ex-top">' +
-        '<span class="ex-ava"><img src="' + expertFace(card.name, usedFaces) + '" alt="" loading="lazy" /></span>' +
-        '<span class="ex-nm">' + card.name +
-          (card.kind === 'real' ? '<span class="ex-badge real">已接入</span>' : card.badge ? '<span class="ex-badge">' + card.badge + '</span>' : '') +
-        '</span>' +
+        '<span class="ex-ava"><img src="' + expertFace(preset.name, usedFaces) + '" alt="" loading="lazy" /></span>' +
+        '<span class="ex-nm">' + preset.name + (current ? '<span class="ex-badge real">当前默认</span>' : '') + '</span>' +
       '</div>' +
-      '<div class="ex-desc">' + card.desc + '</div>' +
-      '<div class="ex-tags">' + card.tags.map((tag) => '<span class="ex-tag">' + tag + '</span>').join('') + '</div>' +
-      '<div class="ex-foot">' + iconMark('bolt', 12) + '<span>' + card.stat + '</span></div>'
+      '<div class="ex-desc">' + (preset.role || preset.kind || '') + '</div>' +
+      '<div class="ex-tags">' + [
+        preset.kind || '通用',
+        preset.tools ? preset.tools.length + ' 个工具' : '全部工具',
+        (preset.maxSteps ? preset.maxSteps + ' 步' : '默认步数'),
+      ].map((tag) => '<span class="ex-tag">' + tag + '</span>').join('') + '</div>' +
+      '<div class="ex-foot">' + iconMark('bolt', 12) + '<span>' + (current ? '发消息将使用这位专家' : '点击设为默认专家') + '</span></div>'
     btn.onclick = () => {
-      if (card.kind === 'real') {
-        state.presetId = card.id
-        toast('默认专家已切换为 ' + card.name, 'ok')
-        paintExperts()
-      } else {
-        toast('示例专家「' + card.name + '」，尚未接入执行引擎。')
-      }
+      state.presetId = preset.id
+      toast('默认专家已切换为 ' + preset.name, 'ok')
+      paintExperts()
     }
     grid.appendChild(btn)
   }
   if (list.length === 0) {
     const empty = document.createElement('div')
     empty.className = 'ex-empty'
-    empty.textContent = '该筛选下暂无专家，试试「全部」。'
+    empty.textContent = state.presets.length === 0 ? '后端还没有返回专家预设。' : '没有匹配的专家，换个关键词试试。'
     grid.appendChild(empty)
   }
 }
 
-function statWeight(text) {
-  const raw = String(text || '').replace(/,/g, '')
-  const value = parseFloat(raw)
-  if (isNaN(value)) return 0
-  if (/w$/i.test(raw)) return value * 10000
-  if (/亿/.test(raw)) return value * 100000000
-  return value
-}
-
-function skillCard(skill, options) {
+function toolCard(tool) {
   const card = document.createElement('button')
   card.className = 'sk-card'
+  const label = toolLabel(tool.name)
   card.innerHTML =
     '<div class="sk-top">' +
-      '<span class="sk-ico" style="background:' + skillTone(skill.name) + '">' + iconMark(pickIcon('skill', skill.name, 'tool'), 18) + '</span>' +
-      '<span class="sk-nm">' + skill.name + '</span>' +
+      '<span class="sk-ico" style="background:' + skillTone(tool.name) + '">' + iconMark(pickIcon('skill', tool.name, 'tool'), 18) + '</span>' +
+      '<span class="sk-nm">' + label + '</span>' +
     '</div>' +
-    '<div class="sk-desc">' + (skill.desc || '') + '</div>' +
-    '<div class="sk-foot"><span>' + iconMark('bolt', 12) + skill.use + '</span><span>' + iconMark('download', 12) + skill.install + '</span></div>' +
-    '<span class="sk-addbtn"><svg class="ic ic-xs" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"></use></svg></span>'
-  card.onclick = (event) => {
-    if (event.target.closest('.sk-addbtn')) {
-      toast('已请求安装「' + skill.name + '」（演示环境不执行安装）', 'ok')
-      return
-    }
-    toast('技能「' + skill.name + '」：' + (options && options.real ? '来自当前插件' : '示例数据，未接入安装'))
+    '<div class="sk-desc">' + (tool.description || tool.name) + '</div>' +
+    '<div class="sk-foot"><span>' + iconMark('terminal', 12) + tool.name + '</span></div>'
+  card.onclick = () => {
+    const target = $('viewChat').classList.contains('on') ? $('chatPrompt') : $('homePrompt')
+    target.value = (target.value ? target.value.replace(/\s*$/, ' ') : '') + '@' + tool.name + ' '
+    target.focus()
+    toast('已插入 @' + tool.name, 'ok')
   }
   return card
 }
 
 function paintSkills() {
-  const featured = $('skFeatured')
-  featured.innerHTML = ''
-  const pool = SKILL_FEATURED.concat(SKILL_GRID.slice(0, 10))
-  const offset = state.skOffset % pool.length
-  for (let index = 0; index < 5; index += 1) {
-    featured.appendChild(skillCard(pool[(offset + index) % pool.length]))
-  }
-
-  const chips = $('skChips')
-  chips.innerHTML = ''
-  for (const chip of SK_CHIPS) {
-    const btn = document.createElement('button')
-    btn.className = 'ex-chip' + (state.skChip === chip ? ' on' : '')
-    btn.textContent = chip
-    btn.onclick = () => { state.skChip = chip; paintSkills() }
-    chips.appendChild(btn)
-  }
-
   const grid = $('skGrid')
   grid.innerHTML = ''
-  let list = SKILL_GRID.slice()
-  if (state.skTab === 'SkillHub') list = list.slice(0, 10)
-  if (state.skTab === '套件') list = list.filter((item) => item.name.indexOf('套件') >= 0)
-  if (state.skChip !== '全部') list = list.filter((item) => (item.cats || []).indexOf(state.skChip) >= 0)
   const query = state.skQuery.trim().toLowerCase()
-  if (query) list = list.filter((item) => (item.name + item.desc).toLowerCase().indexOf(query) >= 0)
-  if (state.skSort === '使用量') list.sort((a, b) => statWeight(b.use) - statWeight(a.use))
-  if (state.skSort === '安装量') list.sort((a, b) => statWeight(b.install) - statWeight(a.install))
-  if (state.skSort === '最新') list.reverse()
-
-  for (const skill of list) grid.appendChild(skillCard(skill))
+  let list = state.tools.slice()
+  if (query) list = list.filter((tool) => (tool.name + ' ' + (tool.description || '') + ' ' + toolLabel(tool.name)).toLowerCase().indexOf(query) >= 0)
+  list.sort((a, b) => a.name.localeCompare(b.name))
+  for (const tool of list) grid.appendChild(toolCard(tool))
   if (list.length === 0) {
     const empty = document.createElement('div')
     empty.className = 'ex-empty'
-    empty.textContent = '该筛选下暂无技能，试试「全部」。'
+    empty.textContent = state.tools.length === 0 ? '还没有装载带工具的插件。' : '没有匹配的工具，换个关键词试试。'
     grid.appendChild(empty)
   }
 }
@@ -4136,7 +3794,7 @@ async function paintConnectors() {
     : list
 
   for (const item of filtered) {
-    const card = document.createElement('div')
+    const card = document.createElement('button')
     card.className = 'cn-card'
     card.innerHTML =
       brandTile(item.name, item.hue) +
@@ -4144,15 +3802,8 @@ async function paintConnectors() {
         '<span class="cn-nm">' + item.name + (item.connected ? '<span class="ex-badge real">已连接</span>' : '') + '</span>' +
         '<span class="cn-desc">' + item.desc + '</span>' +
       '</span>' +
-      '<span class="cn-add"><svg class="ic ic-xs" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"></use></svg></span>'
-    card.onclick = (event) => {
-      if (event.target.closest('.cn-add')) {
-        toast('已请求连接「' + item.name + '」（演示环境不执行授权）', 'ok')
-        return
-      }
-      if (item.row) { closeSettings(); openSettings('devices'); return }
-      toast('示例连接器「' + item.name + '」，尚未接入。')
-    }
+      '<span class="cn-go">' + iconMark('chevron-right', 12) + '</span>'
+    card.onclick = () => openSettings('devices')
     grid.appendChild(card)
   }
 
@@ -4170,13 +3821,7 @@ function switchExTab(tab) {
   $('paneExperts').hidden = tab !== 'experts'
   $('paneSkills').hidden = tab !== 'skills'
   $('paneConnectors').hidden = tab !== 'connectors'
-  const isSkills = tab === 'skills'
-  $('exMine').hidden = tab !== 'experts'
-  $('skInstalled').hidden = !isSkills
-  $('skAdd').hidden = !isSkills
-  $('cnCustom').hidden = tab !== 'connectors'
-  $('exSearch').placeholder = isSkills ? '搜索技能' : tab === 'connectors' ? '搜索连接器' : '搜索专家'
-  if (isSkills) $('skInstalledCount').textContent = String(state.tools.length)
+  $('exSearch').placeholder = tab === 'skills' ? '搜索工具' : tab === 'connectors' ? '搜索连接器' : '搜索专家'
   if (tab === 'experts') paintExperts()
   if (tab === 'skills') paintSkills()
   if (tab === 'connectors') void paintConnectors()
@@ -4190,8 +3835,6 @@ function openExperts(tab) {
   $('viewHome').classList.add('off')
   $('viewChat').classList.remove('on')
   state.view = 'experts'
-  renderExCategories()
-  renderExChips()
   switchExTab(tab || 'experts')
 }
 
@@ -4203,6 +3846,7 @@ $('navTemplates').onclick = () => {
   setView('templates')
 }
 $('allTemplates').onclick = () => setView('templates')
+$('browseTpl').onclick = () => { exitMode(); setView('templates') }
 $('tpSearch').addEventListener('input', (event) => {
   tplState.q = event.target.value
   paintTplGallery()
@@ -4251,7 +3895,6 @@ document.addEventListener('click', (event) => {
   closeMoreMenu()
 })
 window.addEventListener('resize', closeMoreMenu)
-$('thNew').addEventListener('click', () => toast('示范版：可在这里创建自定义主题。'))
 $('thSearch').addEventListener('input', (event) => {
   thState.q = event.target.value
   paintThemes()
@@ -4275,28 +3918,6 @@ $('exSort').addEventListener('click', (event) => {
   document.querySelectorAll('#exSort button').forEach((el) => el.classList.toggle('on', el === btn))
   paintExperts()
 })
-$('exSubtabs').addEventListener('click', (event) => {
-  const btn = event.target.closest('button')
-  if (!btn || btn.dataset.sub === 'teams') return
-  document.querySelectorAll('#exSubtabs button').forEach((el) => el.classList.toggle('on', el === btn))
-  paintExperts()
-})
-$('skRefresh').onclick = () => { state.skOffset += 5; paintSkills() }
-$('skTabs').addEventListener('click', (event) => {
-  const btn = event.target.closest('button')
-  if (!btn) return
-  state.skTab = btn.dataset.sk
-  document.querySelectorAll('#skTabs button').forEach((el) => el.classList.toggle('on', el === btn))
-  paintSkills()
-})
-$('skSort').addEventListener('click', (event) => {
-  const btn = event.target.closest('button')
-  if (!btn) return
-  state.skSort = btn.dataset.sksort
-  document.querySelectorAll('#skSort button').forEach((el) => el.classList.toggle('on', el === btn))
-  paintSkills()
-})
-$('skInstalled').onclick = () => toast('已安装技能来自插件，可在设置 → 应用管理中查看。')
 document.querySelector('.rail [data-nav="home"]').onclick = () => {
   closeSettings(); exitMode(); setView('home')
 }
@@ -4322,7 +3943,6 @@ const SETTINGS_NAV = [
   { group: '设置', items: [
     { id: 'general', name: '通用', icon: 'gear' },
     { id: 'profile', name: '个人主页', icon: 'user' },
-    { id: 'plan', name: '套餐与积分', icon: 'card' },
     { id: 'appearance', name: '外观', icon: 'palette' },
     { id: 'shortcuts', name: '快捷键', icon: 'keyboard' },
   ]},
@@ -4492,36 +4112,25 @@ async function openPanel(id) {
 /* ── 各栏目 ─────────────────────────────────────────── */
 async function buildProfilePanel(box) {
   const sessions = await rpc('session.list')
-  const card = spCard()
-  card.append(
-    spRow('工作区', '当前工作区名称', spValue('DesignBuddy Workspace')),
-    spRow('计划', null, spValue('Free')),
-    spRow('会话数', '本进程内创建过的会话', spValue(String(sessions.length))),
-    spRow('成员', null, spValue('1（本地）')),
-  )
-  box.append(spSection('身份'), card)
-  const actions = spCard()
-  actions.append(spRow('打开工作区', '关闭设置并回到首页', spButton('打开', () => { closeSettings(); setView('home') })))
-  box.append(actions)
-}
-
-async function buildPlanPanel(box) {
-  const sessions = await rpc('session.list')
   const messages = sessions.reduce((total, item) => total + (item.messages || 0), 0)
+  const events = sessions.reduce((total, item) => total + (item.events || 0), 0)
+  const presets = await rpc('presets.list')
+  const current = presets.find((preset) => preset.id === state.presetId)
+
   const card = spCard()
   card.append(
-    spRow('当前计划', null, spValue('Free')),
-    spRow('剩余额度', '演示值，不接计费', spValue('173')),
-    spRow('已产生会话', null, spValue(String(sessions.length))),
-    spRow('已产生消息', null, spValue(String(messages))),
+    spRow('会话数', '本进程内创建过的会话', spValue(String(sessions.length))),
+    spRow('消息数', '这些会话里的消息总数', spValue(String(messages))),
+    spRow('事件数', '工具调用与步骤事件', spValue(String(events))),
   )
-  box.append(spSection('套餐与积分'), card)
-  const cta = spCard()
-  const upgradeBtn = spButton('升级', () => {})
-  upgradeBtn.disabled = true
-  upgradeBtn.insertAdjacentHTML('beforeend', '<span class="soon">未接入</span>')
-  cta.append(spRow('升级到 Pro', '解锁 Max 档位与更高额度', upgradeBtn))
-  box.append(cta)
+  box.append(spSection('使用情况'), card)
+
+  const settingsCard = spCard()
+  settingsCard.append(
+    spRow('默认专家', '发消息时使用的 preset', spValue(current ? current.name : '—')),
+    spRow('视觉主题', '在「主题」页可切换', spValue(state.prefs.theme || '默认')),
+  )
+  box.append(spSection('当前配置'), settingsCard)
 }
 
 function buildAppearancePanel(box) {
@@ -4774,7 +4383,6 @@ async function buildDataPanel(box) {
 
 const PANEL_BUILDERS = {
   profile: buildProfilePanel,
-  plan: buildPlanPanel,
   appearance: buildAppearancePanel,
   shortcuts: buildShortcutsPanel,
   personal: buildPersonalPanel,
@@ -4843,10 +4451,10 @@ async function paintSettingsApps() {
 
 /* ── 图片选项面板 ─────────────────────────────────────── */
 const IMAGE_OPTIONS = [
-  { id: 'auto', name: '自动', desc: '根据主题智能匹配', art: 'slide' },
+  { id: 'auto', name: '自动', desc: '不额外指定，交给模型判断', art: 'slide' },
   { id: 'add', name: '添加图片', desc: '图文并茂', art: 'slide' },
-  { id: 'slides', name: '图片幻灯片', desc: '每张幻灯片对应一张图片，文字保持可编辑状态。', art: 'slide' },
-  { id: 'none', name: '不添加图片', desc: '保留您附加的所有图片', art: 'chart' },
+  { id: 'slides', name: '图片幻灯片', desc: '每张幻灯片一张图，文字保持可编辑', art: 'slide' },
+  { id: 'none', name: '不添加图片', desc: '只用文字排版', art: 'chart' },
 ]
 
 function imageThumb(art) {
@@ -4924,9 +4532,8 @@ window.addEventListener('scroll', closeImageMenu, true)
 
 /* ── 努力档位面板 ─────────────────────────────────────── */
 const EFFORTS = [
-  { id: 'lite', name: 'Lite', desc: '适用于简单任务的基础模式', color: '#1f4fff' },
-  { id: 'standard', name: '标准', desc: '适合日常工作的均衡效能', color: '#1f4fff' },
-  { id: 'max', name: 'Max', desc: '对重要工作全力以赴', color: '#1f4fff', soon: true },
+  { id: 'lite', name: 'Lite', desc: '步骤更少、更快，适合简单任务', color: '#1f4fff' },
+  { id: 'standard', name: '标准', desc: '日常工作的均衡档', color: '#1f4fff' },
 ]
 
 function effortIcon(color) {
@@ -5007,8 +4614,11 @@ paintTemplates()
 paintTplSidebar()
 syncTplCounts()
 paintTplGallery()
-paintThemeTabs()
 paintThemes()
+{
+  const savedTheme = THEMES.find((item) => item.name === state.prefs.theme)
+  if (savedTheme) applyThemePreset(savedTheme)
+}
 wireCaseView()
 paintSessions()
 paintActivity()
