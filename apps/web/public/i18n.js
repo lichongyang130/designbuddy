@@ -155,6 +155,7 @@ const ROWS = {
   '等宽字体': ['Monospace', '等寬字型', '等幅フォント', '고정폭 글꼴', 'Monospace', 'Monospace', 'Monoespaciada'],
   // ── 会员中心 ──
   '会员': ['Member', '會員', 'メンバー', '멤버', 'Mitglied', 'Membre', 'Miembro'],
+  '今日额度': ['Today\u2019s quota', '今日額度', '本日の割当', '오늘의 한도', 'Tageskontingent', 'Quota du jour', 'Cuota de hoy'],
   '运行次数': ['Runs', '執行次數', '実行回数', '실행 횟수', 'Läufe', 'Exécutions', 'Ejecuciones'],
   '会话': ['Chats', '工作階段', 'セッション', '세션', 'Chats', 'Sessions', 'Chats'],
   '会话列表': ['Chat list', '工作階段列表', 'セッション一覧', '세션 목록', 'Chat-Liste', 'Liste des sessions', 'Lista de chats'],
@@ -171,6 +172,7 @@ const ROWS = {
   '免费版': ['Free', '免費版', '無料版', '무료', 'Kostenlos', 'Gratuit', 'Gratis'],
   '本地工作区': ['Local workspace', '本機工作區', 'ローカルワークスペース', '로컬 워크스페이스', 'Lokaler Arbeitsbereich', 'Espace local', 'Espacio local'],
   '字号': ['Font size', '字級', '文字サイズ', '글자 크기', 'Schriftgröße', 'Taille du texte', 'Tamaño de letra'],
+  '本机运行，无订阅费用；每天 20 万 tokens 免费额度': ['Runs locally, no subscription; 200k free tokens a day', '本機執行，不產生訂閱費用；每天 20 萬 tokens 免費額度', 'この端末で動作し、購読料なし。1 日 20 万トークンまで無料', '이 기기에서 실행되며 구독료가 없습니다. 하루 20만 토큰까지 무료', 'Läuft lokal, kein Abo; 200k Token pro Tag gratis', 'Tourne en local, sans abonnement ; 200 k tokens gratuits par jour', 'Se ejecuta en local, sin suscripción; 200 k tokens gratis al día'],
   '全部功能在本机运行，无订阅费用': ['Every feature runs locally, no subscription fee', '全部功能在本機執行，不產生訂閱費用', 'すべての機能はこの端末で動作し、購読料はかかりません', '모든 기능이 이 기기에서 실행되며 구독료가 없습니다', 'Alle Funktionen laufen lokal, ohne Abo-Gebühr', 'Toutes les fonctions tournent en local, sans abonnement', 'Todo funciona en tu equipo, sin suscripción'],
   '数据保存在本机浏览器': ['Data stays in this browser', '資料儲存在本機瀏覽器', 'データはこのブラウザーに保存されます', '데이터는 이 브라우저에 저장됩니다', 'Daten bleiben in diesem Browser', 'Les données restent dans ce navigateur', 'Los datos se quedan en este navegador'],
   '聊天气泡与工具输出使用等宽字体': ['Use monospace for chat and tool output', '聊天泡泡與工具輸出使用等寬字型', 'チャットとツール出力を等幅フォントにする', '채팅과 도구 출력에 고정폭 글꼴 사용', 'Monospace für Chat und Tool-Ausgabe', 'Police monospace pour le chat et les outils', 'Monoespaciada en el chat y las herramientas'],

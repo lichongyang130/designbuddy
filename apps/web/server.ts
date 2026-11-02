@@ -21,6 +21,7 @@ import { createServer } from 'node:http'
 import type { IncomingMessage, ServerResponse } from 'node:http'
 
 import { App } from '../../src/boot/app.ts'
+import { applyDefaultDataPaths } from '../../src/boot/paths.ts'
 import { defaultModules, desktopProfile } from '../../src/boot/profiles.ts'
 import { Logger } from '../../src/kernel/index.ts'
 import { HostServer } from '../../src/sdk/host.ts'
@@ -31,6 +32,8 @@ const BIND = process.env.HOST ?? '127.0.0.1'
 const PING_MS = 15_000
 
 const logger = new Logger(process.env.DSH_DEBUG ? 'debug' : 'warn')
+// 预览与桌面版共用同一份数据目录：会话与用量都落在 .designbuddy/。
+applyDefaultDataPaths()
 const app = await App.create({ profile: desktopProfile, modules: defaultModules, logger })
 
 const PUBLIC_DIR = new URL('./public/', import.meta.url)

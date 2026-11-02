@@ -3175,12 +3175,12 @@
   </div>
   <div class="acct-plan">
     <span class="acct-tag">免费版</span>
-    <span class="acct-note">全部功能在本机运行，无订阅费用</span>
+    <span class="acct-note">本机运行，无订阅费用；每天 20 万 tokens 免费额度</span>
   </div>
   <div class="acct-grid">
     <div><span>语言</span><b id="acctLang">简体中文</b></div>
     <div><span>字号</span><b id="acctFont">16px</b></div>
-    <div><span>运行次数</span><b id="acctRuns">0</b></div>
+    <div><span>今日额度</span><b id="acctQuota">—</b></div>
   </div>
   <div class="acct-list">
     <button data-panel="profile">
@@ -5395,9 +5395,26 @@ function acctLangLabel() {
   const opt = sel && sel.selectedOptions && sel.selectedOptions[0]
   return opt ? opt.textContent.trim() : '简体中文'
 }
+/* 会员中心的额度来自后端 usage.summary（真记账、真限额）；后端不在时退回本机次数 */
+let usageCache = null
+function fmtTokens(n) {
+  if (!Number.isFinite(n)) return '—'
+  return n >= 10000 ? (n / 10000).toFixed(1).replace(/\.0$/, '') + ' 万' : String(n)
+}
+async function refreshUsage() {
+  try {
+    usageCache = await rpc('usage.summary', {})
+  } catch {
+    usageCache = null
+  }
+  paintAcct()
+}
 function paintAcct() {
-  const usage = state.prefs.usage || { runs: 0 }
-  $('acctRuns').textContent = String(usage.runs || 0)
+  const quota = usageCache && usageCache.quota
+  $('acctQuota').textContent = quota
+    ? fmtTokens(quota.remaining) + ' / ' + fmtTokens(quota.limit)
+    : (state.prefs.usage || { runs: 0 }).runs + ' 次'
+  $('acctQuota').title = quota ? '今日剩余 / 每日额度（tokens）' : '后端未连接，显示本机运行次数'
   $('acctLang').textContent = acctLangLabel()
   $('acctFont').textContent = state.prefs.fontSize + 'px'
 }
@@ -5405,6 +5422,7 @@ function openAcct() {
   const pop = $('acctPop')
   const btn = $('meBtn')
   paintAcct()
+  refreshUsage()
   pop.hidden = false
   const rail = document.querySelector('.rail').getBoundingClientRect()
   const rect = btn.getBoundingClientRect()

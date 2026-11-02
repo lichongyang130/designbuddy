@@ -18,6 +18,7 @@ import type { Bundle, Profile } from './loader.ts'
 import * as coreTools from '../plugins/core-tools.ts'
 import * as coreLlm from '../plugins/core-llm.ts'
 import * as coreSession from '../plugins/core-session.ts'
+import * as coreUsage from '../plugins/core-usage.ts'
 import * as corePrompt from '../plugins/core-prompt.ts'
 import * as coreAgent from '../plugins/core-agent.ts'
 import * as coreAgentLoop from '../plugins/core-agent-loop.ts'
@@ -39,6 +40,7 @@ export const coreBundle: Bundle = {
     { id: 'core.tools', plugin: 'core-tools' },
     { id: 'core.llm', plugin: 'core-llm', config: { logRouting: false } },
     { id: 'core.sessions', plugin: 'core-session' },
+    { id: 'core.usage', plugin: 'core-usage' },
     { id: 'core.prompt', plugin: 'core-prompt' },
     { id: 'core.agents', plugin: 'core-agent' },
     { id: 'core.agentLoop', plugin: 'core-agent-loop' },
@@ -92,6 +94,7 @@ export const defaultModules: PluginModules = {
   'core-tools': coreTools,
   'core-llm': coreLlm,
   'core-session': coreSession,
+  'core-usage': coreUsage,
   'core-prompt': corePrompt,
   'core-agent': coreAgent,
   'core-agent-loop': coreAgentLoop,

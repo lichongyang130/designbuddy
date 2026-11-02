@@ -18,6 +18,8 @@ import type { AgentLoop } from '../core/agent.ts'
 import { AgentPresetRegistry } from '../core/agent.ts'
 import { ModelRouter } from '../core/router.ts'
 import type { SessionService } from '../core/session.ts'
+import type { UsageService } from '../core/usage.ts'
+import { estimateTokens } from '../core/usage.ts'
 import { errorMessage } from '../core/tools.ts'
 import type { ToolRegistry } from '../core/tools.ts'
 import type { ClientFrame, HostFrame, Transport } from './protocol.ts'
@@ -146,6 +148,14 @@ export class HostServer {
           attempts: router.attempts,
         }
       }
+      case 'usage.summary': {
+        const usage = this.#ctx.require<UsageService>('usage')
+        return usage.summary()
+      }
+      case 'usage.recent': {
+        const usage = this.#ctx.require<UsageService>('usage')
+        return usage.summary().recent.slice(0, Number(params.limit ?? 8))
+      }
       case 'office.run': {
         const tools = this.#ctx.require<ToolRegistry>('tools')
         const toolName = String(params.tool ?? '')
@@ -162,6 +172,15 @@ export class HostServer {
         const prompt = String(params.prompt ?? '')
         const loop = this.#ctx.require<AgentLoop>('agentLoop')
         const sessions = this.#ctx.require<SessionService>('sessions')
+        const usage = this.#ctx.require<UsageService>('usage')
+
+        // 免费额度是本机真实生效的门槛：用完了当天就不再开跑，而不是跑完再提示。
+        const gate = usage.canRun()
+        if (!gate.ok) {
+          throw new Error(
+            `今天的免费额度已用完（${gate.quota.limit} tokens），明天 0 点恢复；本地运行不扣费，但请先清空用量或调高 DB_USAGE_DAILY_TOKENS。`,
+          )
+        }
 
         // Durable facts are forwarded as they land, including the ones the loop
         // writes between steps, so a client can rebuild the transcript after a
@@ -172,10 +191,24 @@ export class HostServer {
 
         try {
           let final: { status: string; text: string } = { status: 'failed', text: '' }
+          const startedAt = Date.now()
+          let output = ''
           for await (const event of loop.run({ sessionId, presetId, prompt })) {
             reply({ type: 'agent-event', sessionId, event })
             if (event.type === 'agent/end') final = { status: event.status, text: event.text }
+            if (event.type === 'agent/text') output += event.text
           }
+          const router = this.#ctx.require<ModelRouter>('llm')
+          usage.record({
+            at: Date.now(),
+            sessionId,
+            presetId,
+            model: router.adapters()[0]?.id ?? 'unknown',
+            inputTokens: estimateTokens(prompt),
+            outputTokens: final.text ? estimateTokens(final.text) : estimateTokens(output),
+            ms: Date.now() - startedAt,
+            status: final.status,
+          })
           return final
         } finally {
           unsubscribe()
