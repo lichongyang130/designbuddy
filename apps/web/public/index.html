@@ -1089,6 +1089,164 @@
   .sld.k-upshaft .d-end-row:first-child{border-top:3px solid var(--ink)}
   .sld.k-upshaft .d-end-img{margin:26px -88px 0}
 
+  /* ── 文档家族：Routegrid（四栏基线网格 · 双色套印 · 分数页码） ── */
+  .sld.k-routegrid{
+    background-color:var(--paper);
+    background-image:
+      linear-gradient(var(--rule),var(--rule)),linear-gradient(var(--rule),var(--rule)),
+      linear-gradient(var(--rule),var(--rule)),linear-gradient(var(--rule),var(--rule));
+    background-size:1px 100%;
+    background-position:0 0,25.82% 0,51.64% 0,100% 0;
+    background-origin:content-box;background-clip:content-box;background-repeat:no-repeat;
+    padding:0 92px;
+  }
+  .sld.k-routegrid .d-pad{inset:0;padding:88px 92px 96px}
+  .sld.k-routegrid .d-run{
+    left:92px;right:92px;top:48px;padding-bottom:8px;border-bottom:1px solid var(--rule);
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:8.5px;letter-spacing:.2em;color:var(--muted);
+  }
+  .sld.k-routegrid .sd-folio{
+    left:92px;right:92px;bottom:36px;align-items:flex-end;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  .sld.k-routegrid .sd-folio span:first-child{font-size:8.5px;letter-spacing:.18em;color:var(--muted)}
+  .sld.k-routegrid .sd-folio span:last-child{
+    font-size:13px;letter-spacing:.12em;color:var(--ink);font-weight:600;
+  }
+  .sld.k-routegrid .sd-folio span:last-child::before{content:"/ ";color:var(--muted);font-weight:400}
+  .sld.k-routegrid .d-kicker{
+    align-self:flex-start;padding:0 0 4px;border-bottom:2px solid var(--accent);
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9px;letter-spacing:.18em;color:var(--accent);
+  }
+  .sld.k-routegrid .d-h1{margin:0;font-size:96px;line-height:1;font-weight:600;letter-spacing:-.03em}
+  .sld.k-routegrid .d-h2{margin-top:18px;font-size:38px;line-height:1.22;font-weight:600;letter-spacing:-.02em}
+  .sld.k-routegrid .d-lead{margin-top:22px;font-size:16.5px;line-height:1.95;color:var(--body);max-width:620px}
+  .sld.k-routegrid .d-lead + .d-lead{margin-top:12px}
+  /* 四栏正文：文字挂在网格上 */
+  .sld.k-routegrid .d-cols{display:flex;flex-direction:column;flex:1;margin-top:34px}
+  .sld.k-routegrid .d-main{flex:0 0 auto;column-count:2;column-gap:26px;column-rule:1px solid var(--rule)}
+  .sld.k-routegrid .d-main p{font-size:17.5px;line-height:2.02;text-align:justify;color:var(--body);break-inside:avoid}
+  .sld.k-routegrid .d-main p + p{margin-top:18px}
+  .sld.k-routegrid .d-main p:first-child::first-letter{font-size:1em;font-weight:inherit}
+  .sld.k-routegrid .d-paras{margin-top:28px}
+  .sld.k-routegrid .d-paras p{font-size:15.5px;line-height:2}
+  .sld.k-routegrid .d-facts{margin-top:36px}
+  .sld.k-routegrid .d-fact{padding:16px 0}
+  .sld.k-routegrid .d-fact b{font-size:16.5px;font-weight:600}
+  .sld.k-routegrid .d-side{
+    display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 26px;
+    margin-top:auto;padding-top:12px;border-top:2px solid var(--accent);border-bottom:1px solid var(--rule);
+    padding-bottom:14px;
+  }
+  .sld.k-routegrid .d-side p{
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;line-height:1.9;
+    color:var(--muted);letter-spacing:.01em;
+  }
+  .sld.k-routegrid .d-side p + p{margin-top:0;padding-top:0;border-top:0}
+  .sld.k-routegrid .d-note{
+    margin-top:auto;padding-top:12px;border-top:1px solid var(--rule);
+    font-size:9px;letter-spacing:.1em;line-height:1.7;
+  }
+  .sld.k-routegrid .d-read{
+    padding:18px 0 0;border-top:2px solid var(--second);
+    font-size:13.5px;line-height:1.95;color:var(--body);
+  }
+  .sld.k-routegrid .d-points{
+    grid-template-columns:repeat(3,minmax(0,1fr));gap:0 26px;margin-top:auto;padding-top:0;border-top:0;
+  }
+  .sld.k-routegrid .d-points > div{padding-top:12px;border-top:2px solid var(--second)}
+  .sld.k-routegrid .d-points span{font-family:inherit;font-size:9px;letter-spacing:.14em;color:var(--second);font-weight:600}
+  .sld.k-routegrid .d-points b{display:block;margin-top:8px;font-size:18px;font-weight:600;letter-spacing:-.015em}
+  .sld.k-routegrid .d-points i{display:block;margin-top:6px;font-size:10.5px;line-height:1.7;color:var(--muted);font-style:normal}
+  .sld.k-routegrid .d-pull{
+    margin:22px 0 0;padding:20px 24px;border-left:0;background:var(--accent);color:var(--paper);
+    font-size:21px;line-height:1.55;font-weight:500;letter-spacing:-.01em;
+  }
+  .sld.k-routegrid .d-pull span{display:block;margin-top:11px;font-family:var(--font-sans,inherit);
+    font-size:11px;letter-spacing:.02em;color:rgba(239,241,238,.72)}
+  .sld.k-routegrid .d-pull ~ .d-note{margin-top:14px}
+  /* 封面 */
+  .sld.k-routegrid .d-cover{padding:88px 92px 76px}
+  .sld.k-routegrid .d-cover-top{
+    border-bottom:2px solid var(--accent);padding-bottom:8px;color:var(--accent);
+    font-size:8.5px;letter-spacing:.2em;font-weight:600;
+  }
+  .sld.k-routegrid .d-cover .d-h1{margin-top:44px;font-size:104px}
+  .sld.k-routegrid .d-cover .d-lead{max-width:600px;font-size:15.5px;line-height:1.95}
+  .sld.k-routegrid .d-cover-img{margin:34px 0 24px}
+  .sld.k-routegrid .d-cover-foot{padding-top:12px;border-top:1px solid var(--ink);gap:24px}
+  .sld.k-routegrid .d-cover-foot b{font-size:11px;font-weight:600}
+  .sld.k-routegrid .d-cover-foot span{font-size:8.5px;letter-spacing:.12em;color:var(--muted)}
+  /* 目录 */
+  .sld.k-routegrid .d-toc{margin-top:26px}
+  .sld.k-routegrid .d-toc li{
+    grid-template-columns:44px minmax(0,1fr) 236px;padding:56px 0;border-top:1px solid var(--rule);
+  }
+  .sld.k-routegrid .d-toc .n{font-size:11px;letter-spacing:.08em;color:var(--accent);font-weight:600}
+  .sld.k-routegrid .d-toc .t{font-size:25px;font-weight:600;letter-spacing:-.015em}
+  .sld.k-routegrid .d-toc .d{font-size:9.5px;letter-spacing:.02em;color:var(--muted);text-align:right;line-height:1.5}
+  .sld.k-routegrid .d-toc-figs{margin-top:auto;border-top:2px solid var(--ink);padding-top:12px}
+  .sld.k-routegrid .d-toc-figs ~ .d-note{margin-top:18px}
+  .sld.k-routegrid .d-toc-figs ul{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px 26px}
+  .sld.k-routegrid .d-toc-figs b{font-size:8.5px;letter-spacing:.12em;color:var(--accent)}
+  .sld.k-routegrid .d-toc-figs li{font-size:11px}
+  /* 章节页：整幅图 + 左上压字 */
+  .sld.k-routegrid .d-sec{justify-content:flex-end}
+  .sld.k-routegrid .d-sec-img{position:absolute;inset:0;margin:0;z-index:0}
+  .sld.k-routegrid .d-sec-img .sd-img{width:100%;height:100%;object-fit:cover}
+  .sld.k-routegrid .d-sec::after{
+    content:"";position:absolute;inset:0;z-index:1;
+    background:linear-gradient(180deg, rgba(20,32,28,.86) 0%, rgba(20,32,28,.42) 44%, rgba(20,32,28,.72) 100%);
+  }
+  .sld.k-routegrid .d-sec-txt{position:relative;z-index:2;padding:0 92px 92px}
+  .sld.k-routegrid .d-sec-num{
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;letter-spacing:.2em;color:var(--paper);
+    padding-bottom:6px;border-bottom:2px solid var(--second);display:inline-block;
+  }
+  .sld.k-routegrid .d-sec-t{margin:18px 0 0;font-size:66px;line-height:1.06;font-weight:600;letter-spacing:-.03em;color:#fff}
+  .sld.k-routegrid .d-sec-lead{margin-top:18px;max-width:560px;font-size:15px;line-height:1.9;color:rgba(255,255,255,.8)}
+  /* 图版页：三栏图 + 第四栏竖排图注 */
+  .sld.k-routegrid .d-fig{padding:76px 92px 72px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0 26px}
+  .sld.k-routegrid .d-fig-img{grid-column:1 / span 3;min-height:0;overflow:hidden;background:var(--ink)}
+  .sld.k-routegrid .d-fig-cap{
+    grid-column:4;display:block;margin:0;padding:0;border-top:0;
+  }
+  .sld.k-routegrid .d-fig-no{
+    display:inline-block;padding:2px 0 3px;border-bottom:2px solid var(--second);
+    font-size:9px;letter-spacing:.16em;color:var(--second);font-weight:600;
+  }
+  .sld.k-routegrid .d-fig-cap p{
+    margin-top:12px;font-size:11.5px;line-height:1.95;color:var(--body);text-align:justify;
+  }
+  .sld.k-routegrid .d-fig-src{
+    display:block;margin-top:12px;padding-top:10px;border-top:1px solid var(--rule);
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:8px;letter-spacing:.1em;color:var(--muted);
+  }
+  /* 表格：无框、数字贴栏线 */
+  .sld.k-routegrid .d-table{margin-top:28px;border-top:2px solid var(--ink)}
+  .sld.k-routegrid .d-table th{
+    padding:10px 8px 9px;border-bottom:1px solid var(--ink);color:var(--accent);
+    font-size:9px;letter-spacing:.14em;font-weight:600;
+  }
+  .sld.k-routegrid .d-table th:first-child,.sld.k-routegrid .d-table td:first-child{padding-left:0}
+  .sld.k-routegrid .d-table td{padding:44px 8px;font-size:15px;border-bottom:1px solid var(--rule);color:var(--ink)}
+  .sld.k-routegrid .d-table th:first-child,.sld.k-routegrid .d-table td:first-child{width:30%;font-weight:500}
+  .sld.k-routegrid .d-table td + td{color:var(--body);font-variant-numeric:tabular-nums}
+  .sld.k-routegrid .d-table td.num{font-size:13.5px;color:var(--body)}
+  .sld.k-routegrid .d-table tbody tr:last-child td{border-bottom:2px solid var(--ink);font-weight:600}
+  .sld.k-routegrid .d-read{margin-top:auto}
+  .sld.k-routegrid .d-read ~ .d-note{margin-top:18px}
+  /* 尾声 */
+  .sld.k-routegrid .d-end{padding:88px 92px 0}
+  .sld.k-routegrid .d-end-txt{padding:0}
+  .sld.k-routegrid .d-end-t{margin-top:16px;font-size:48px;line-height:1.12;font-weight:600;letter-spacing:-.025em}
+  .sld.k-routegrid .d-end-rows{margin-top:26px}
+  .sld.k-routegrid .d-end-row{
+    padding:10px 0;border-top:1px solid var(--rule);font-size:10.5px;letter-spacing:.04em;
+  }
+  .sld.k-routegrid .d-end-row:first-child{border-top:2px solid var(--ink)}
+  .sld.k-routegrid .d-end-img{margin:24px -92px 0}
+
   /* ── 文档家族 B：Heatline（无衬线 · 非对称版心 · 左侧发丝线） ── */
   .sld.k-heatline .d-pad{padding:100px 84px 96px 128px}
   .sld.k-heatline .d-pad::before{content:"";position:absolute;left:84px;top:100px;bottom:96px;width:1px;background:var(--rule)}
