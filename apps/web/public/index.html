@@ -1247,6 +1247,153 @@
   .sld.k-routegrid .d-end-row:first-child{border-top:2px solid var(--ink)}
   .sld.k-routegrid .d-end-img{margin:24px -92px 0}
 
+  /* ── 文档家族：Coldline（左侧温度刻度竖尺 · 单栏正文 + 右栏数字 · 冷蓝/琥珀） ── */
+  .sld.k-coldline{background-color:var(--paper)}
+  .sld.k-coldline::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:68px;z-index:0;
+    border-right:1px solid var(--rule);
+    background-image:
+      repeating-linear-gradient(to bottom, var(--rule) 0 1px, transparent 1px 30px),
+      repeating-linear-gradient(to bottom, rgba(28,110,140,.45) 0 1px, transparent 1px 150px),
+      linear-gradient(to bottom, var(--accent) 0%, var(--accent) 58%, var(--second) 100%);
+    background-size:16px 30px,68px 150px,1px 100%;
+    background-position:48px 0,0 0,20px 0;
+    background-repeat:repeat-y,repeat-y,no-repeat;
+  }
+  .sld.k-coldline .d-pad{padding:96px 88px 92px 112px}
+  .sld.k-coldline .d-run{
+    left:112px;right:88px;top:44px;padding-bottom:9px;border-bottom:1px solid var(--ink);
+    font-size:8.5px;letter-spacing:.18em;color:var(--ink);
+  }
+  .sld.k-coldline .d-run span:last-child{color:var(--accent)}
+  .sld.k-coldline .sd-folio{
+    left:112px;right:88px;bottom:44px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-size:8.5px;letter-spacing:.16em;color:var(--muted);
+  }
+  .sld.k-coldline .sd-folio span:last-child{color:var(--ink)}
+  .sld.k-coldline .d-kicker{
+    font-size:8.5px;letter-spacing:.24em;color:var(--second);font-weight:600;
+  }
+  .sld.k-coldline .d-h1{margin:0;font-size:124px;line-height:1;font-weight:600;letter-spacing:-.05em}
+  .sld.k-coldline .d-h2{
+    margin:16px 0 0;font-size:42px;line-height:1.2;font-weight:600;letter-spacing:-.03em;color:var(--ink);
+  }
+  .sld.k-coldline .d-lead{margin-top:20px;font-size:15px;line-height:2;color:var(--body)}
+  .sld.k-coldline .d-main p{font-size:16.5px;line-height:2.02;text-align:justify;color:var(--body)}
+  .sld.k-coldline .d-main p + p{margin-top:16px}
+  .sld.k-coldline .d-main p:first-child::first-letter{font-size:1em;font-weight:inherit}
+  .sld.k-coldline .d-cols{grid-template-columns:minmax(0,1fr) 172px;gap:34px;margin-top:30px}
+  .sld.k-coldline .d-side{
+    display:block;padding-top:0;border-top:0;
+  }
+  .sld.k-coldline .d-side p{
+    padding:11px 0 0;border-top:1px solid var(--rule);
+    font-family:inherit;font-size:10.5px;line-height:1.8;color:var(--muted);letter-spacing:.01em;
+  }
+  .sld.k-coldline .d-side p:first-child{border-top:2px solid var(--accent);padding-top:12px}
+  .sld.k-coldline .d-side p + p{margin-top:12px}
+  .sld.k-coldline .d-note{
+    margin-top:auto;padding-top:11px;border-top:1px solid var(--rule);
+    font-size:8.5px;letter-spacing:.06em;line-height:1.75;
+  }
+  .sld.k-coldline .d-pull{
+    margin:auto 0 0;padding:20px 0 20px 26px;border-left:4px solid var(--second);
+    font-size:23px;line-height:1.55;font-weight:600;letter-spacing:-.02em;color:var(--ink);
+  }
+  .sld.k-coldline .d-pull span{
+    display:block;margin-top:12px;font-family:inherit;font-size:10px;letter-spacing:.02em;
+    text-transform:none;font-weight:400;color:var(--muted);
+  }
+  .sld.k-coldline .d-pull ~ .d-note{margin-top:20px}
+  .sld.k-coldline .d-points{
+    grid-template-columns:repeat(3,minmax(0,1fr));gap:0 30px;padding-top:0;border-top:0;
+  }
+  .sld.k-coldline .d-points > div{padding-top:13px;border-top:2px solid var(--second)}
+  .sld.k-coldline .d-points span{font-family:inherit;font-size:9px;letter-spacing:.1em;color:var(--second);font-weight:600}
+  .sld.k-coldline .d-points b{font-size:19px;font-weight:600;letter-spacing:-.01em}
+  .sld.k-coldline .d-points i{font-size:10.5px;line-height:1.75}
+  /* 表格：交替冷灰条，数字右对齐到栏线 */
+  .sld.k-coldline[data-k="dtable"] .d-table{margin-top:26px}
+  .sld.k-coldline .d-table th{
+    padding:0 10px 11px;font-family:inherit;font-size:9px;letter-spacing:.14em;color:var(--accent);font-weight:600;
+  }
+  .sld.k-coldline .d-table th:first-child{padding-left:12px}
+  .sld.k-coldline .d-table th:last-child,.sld.k-coldline .d-table td:last-child{padding-right:12px}
+  .sld.k-coldline .d-table td{
+    padding:34px 10px;font-size:15px;line-height:1.6;border-bottom:1px solid var(--rule);
+  }
+  .sld.k-coldline .d-table td:first-child{padding-left:12px;font-weight:500}
+  .sld.k-coldline .d-table td.num{font-family:inherit;font-size:14.5px;letter-spacing:0;color:var(--body)}
+  .sld.k-coldline .d-table tbody tr:nth-child(odd) td{background:rgba(28,110,140,.05)}
+  .sld.k-coldline .d-table tbody tr:last-child td{
+    border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);font-weight:600;background:none;
+  }
+  .sld.k-coldline .d-table td:nth-child(4){color:var(--second);font-weight:600}
+  .sld.k-coldline .d-read{margin-top:auto;padding-top:16px;border-top:1px solid var(--rule);font-size:13px;line-height:1.95}
+  .sld.k-coldline .d-read ~ .d-note{margin-top:16px}
+  /* 封面 */
+  .sld.k-coldline .d-cover{padding:96px 88px 84px 112px}
+  .sld.k-coldline .d-cover-top{
+    border-bottom:1px solid var(--ink);padding-bottom:9px;color:var(--muted);font-size:8.5px;letter-spacing:.18em;
+  }
+  .sld.k-coldline .d-cover .d-h1{margin-top:56px}
+  .sld.k-coldline .d-cover .d-lead{max-width:600px;font-size:15px;line-height:2}
+  .sld.k-coldline .d-cover-img{margin:36px 0 26px}
+  .sld.k-coldline .d-cover-foot{gap:26px;border-top:2px solid var(--ink);padding-top:13px}
+  .sld.k-coldline .d-cover-foot b{font-size:11.5px;font-weight:600}
+  .sld.k-coldline .d-cover-foot span{font-family:inherit;font-size:10px;letter-spacing:.01em;text-transform:none;color:var(--muted)}
+  /* 摘要 */
+  .sld.k-coldline[data-k="dmeta"] .d-facts{margin-top:34px;border-top:2px solid var(--ink)}
+  .sld.k-coldline[data-k="dmeta"] .d-lead{font-size:16px;line-height:2.05}
+  .sld.k-coldline .d-fact{grid-template-columns:200px 1fr;padding:19px 0}
+  .sld.k-coldline .d-fact span{font-family:inherit;font-size:10.5px;letter-spacing:.01em;text-transform:none}
+  .sld.k-coldline .d-fact b{font-size:15px;font-weight:600;color:var(--accent)}
+  /* 目录 */
+  .sld.k-coldline .d-toc li{grid-template-columns:48px minmax(0,1fr) 216px;padding:62px 0;border-top:1px solid var(--rule)}
+  .sld.k-coldline .d-toc .n{font-size:10px;letter-spacing:.14em;color:var(--second)}
+  .sld.k-coldline .d-toc .t{font-size:27px;font-weight:600;letter-spacing:-.02em}
+  .sld.k-coldline .d-toc .d{font-size:10.5px;line-height:1.6;color:var(--muted)}
+  .sld.k-coldline .d-toc-figs{margin-top:auto;border-top:2px solid var(--ink);padding-top:13px}
+  .sld.k-coldline .d-toc-figs ul{gap:8px 40px}
+  .sld.k-coldline .d-toc-figs b{font-family:inherit;font-size:9px;letter-spacing:.06em;color:var(--second);font-weight:600}
+  .sld.k-coldline .d-toc-figs li{font-size:11px}
+  .sld.k-coldline .d-toc-figs ~ .d-note{margin-top:16px}
+  /* 章节页：整幅图 + 左侧冷色渐层 */
+  .sld.k-coldline .d-sec{justify-content:flex-end}
+  .sld.k-coldline .d-sec-img{position:absolute;inset:0;margin:0;z-index:0}
+  .sld.k-coldline .d-sec-img .sd-img{width:100%;height:100%;object-fit:cover}
+  .sld.k-coldline .d-sec::after{
+    content:"";position:absolute;inset:0;z-index:1;
+    background:linear-gradient(100deg, rgba(9,32,42,.9) 0%, rgba(9,32,42,.62) 46%, rgba(9,32,42,.12) 100%);
+  }
+  .sld.k-coldline .d-sec-txt{position:relative;z-index:2;padding:0 88px 92px 112px}
+  .sld.k-coldline .d-sec-num{
+    font-family:inherit;font-size:10px;letter-spacing:.2em;color:#fff;
+    padding-bottom:7px;border-bottom:2px solid var(--second);display:inline-block;
+  }
+  .sld.k-coldline .d-sec-t{margin:20px 0 0;font-size:74px;line-height:1.06;font-weight:600;letter-spacing:-.04em;color:#fff}
+  .sld.k-coldline .d-sec-lead{margin-top:20px;max-width:520px;font-size:14.5px;line-height:1.9;color:rgba(255,255,255,.82)}
+  /* 图版页：上图下注，图注两栏 */
+  .sld.k-coldline .d-fig{padding:92px 88px 88px 112px}
+  .sld.k-coldline .d-fig-img{background:var(--ink)}
+  .sld.k-coldline .d-fig-no{font-family:inherit;font-size:9px;letter-spacing:.14em;color:var(--second);font-weight:600}
+  .sld.k-coldline .d-fig-cap{
+    grid-template-columns:90px minmax(0,1fr);gap:0 26px;margin-top:18px;padding-top:13px;border-top:2px solid var(--ink);
+  }
+  .sld.k-coldline .d-fig-cap p{font-size:12.5px;line-height:1.9;max-width:620px}
+  .sld.k-coldline .d-fig-src{
+    grid-column:2;font-family:inherit;font-size:9px;letter-spacing:.02em;text-transform:none;margin-top:11px;
+  }
+  /* 尾声 */
+  .sld.k-coldline .d-end-txt{padding:96px 88px 0 112px}
+  .sld.k-coldline .d-end-t{margin:18px 0 0;font-size:52px;line-height:1.18;font-weight:600;letter-spacing:-.03em}
+  .sld.k-coldline .d-end-rows{margin-top:30px}
+  .sld.k-coldline .d-end-row{
+    padding:12px 0;border-top:1px solid var(--rule);font-family:inherit;font-size:11px;letter-spacing:.02em;color:var(--body);
+  }
+  .sld.k-coldline .d-end-row span:first-child{color:var(--second);font-weight:600;min-width:96px}
+  .sld.k-coldline .d-end-img{margin:30px 0 0 -112px}
+
   /* ── 文档家族 B：Heatline（无衬线 · 非对称版心 · 左侧发丝线） ── */
   .sld.k-heatline .d-pad{padding:100px 84px 96px 128px}
   .sld.k-heatline .d-pad::before{content:"";position:absolute;left:84px;top:100px;bottom:96px;width:1px;background:var(--rule)}
