@@ -365,9 +365,9 @@ const ROWS = {
 
   // ── 图标条与侧栏的短写法（位置窄，单独取更短的词） ──
   'rail.home': ['Home', '首頁', 'ホーム', '홈', 'Start', 'Accueil', 'Inicio'],
-  'rail.media': ['Media', '媒體', 'メディア', '미디어', 'Medien', 'Médias', 'Medios'],
+  'rail.library': ['Library', '資料庫', 'ライブラリ', '라이브러리', 'Bibliothek', 'Bibliothèque', 'Biblioteca'],
   'rail.templates': ['Templates', '範本', 'テンプレート', '템플릿', 'Vorlagen', 'Modèles', 'Plantillas'],
-  'rail.custom': ['Custom', '自訂', 'カスタム', '사용자 지정', 'Eigene', 'Perso', 'Propio'],
+  'rail.theme': ['Theme', '主題', 'テーマ', '테마', 'Design', 'Thème', 'Tema'],
   'rail.settings': ['Settings', '設定', '設定', '설정', 'Optionen', 'Options', 'Ajustes'],
   'rail.more': ['More', '更多', 'その他', '더보기', 'Mehr', 'Plus', 'Más'],
   'nav.shared': ['Shared', '與您共用', '共有', '공유 항목', 'Geteilt', 'Partagé', 'Compartido'],

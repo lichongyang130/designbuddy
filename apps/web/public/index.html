@@ -769,6 +769,16 @@
 
   .sp-soon{font-size:13px;color:var(--fg-subtle);border:1px dashed var(--line-strong);border-radius:var(--r-md);padding:18px;background:var(--surface-2)}
 
+  /* ── 更多：右侧悬浮菜单 ───────────────────── */
+  .moremenu{
+    position:fixed;z-index:74;width:236px;background:var(--surface);border:1px solid var(--line);border-radius:12px;
+    box-shadow:var(--e2);padding:6px;display:flex;flex-direction:column;gap:2px;
+  }
+  .moremenu[hidden]{display:none}
+  .mm-item{display:flex;align-items:center;gap:10px;height:36px;padding:0 10px;border-radius:8px;font-size:13.5px;color:var(--fg);text-align:left}
+  .mm-item:hover{background:var(--surface-2)}
+  .mm-ico{width:24px;height:24px;border-radius:7px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;flex:none}
+
   /* ── 命令面板 ─────────────────────────────── */
   .palette{
     position:fixed;left:50%;top:14%;transform:translate(-50%,-8px);width:min(520px,92vw);background:var(--surface);
@@ -981,9 +991,9 @@
       <span data-i18n-key="rail.home">首页</span>
     </button>
 
-    <button class="rbtn" title="媒体">
-      <i class="ric"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="14" rx="2.6"/><circle cx="9" cy="10" r="1.6"/><path d="m4.6 16.6 4.4-4a2 2 0 0 1 2.7 0l3 2.7 1.9-1.7a2 2 0 0 1 2.5 0l.8.7"/></svg></i>
-      <span data-i18n-key="rail.media">媒体</span>
+    <button class="rbtn" title="资料库">
+      <i class="ric"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.6" y="4.4" width="4.4" height="15.2" rx="1.2"/><rect x="9.4" y="4.4" width="4.4" height="15.2" rx="1.2"/><path d="m15.6 5.4 3.5-.9a1.2 1.2 0 0 1 1.5.9l2.1 12.6"/><path d="M3.6 20h16.8"/></svg></i>
+      <span data-i18n-key="rail.library">资料库</span>
     </button>
 
     <button class="rbtn" id="navTemplates" data-nav="templates" title="模版">
@@ -991,14 +1001,19 @@
       <span data-i18n-key="rail.templates">模版</span>
     </button>
 
-    <button class="rbtn" id="navCustom" data-nav="custom" title="自定义">
+    <button class="rbtn" id="navCustom" data-nav="custom" title="主题">
       <i class="ric"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.4c-4.8 0-8.6 3.8-8.6 8.6s3.8 8.6 8.6 8.6c1.2 0 2.1-.9 2.1-2.1 0-.5-.2-1-.5-1.3-.3-.4-.5-.8-.5-1.3 0-1.2 1-2.1 2.1-2.1h2.1c2.1 0 3.7-1.6 3.7-3.7 0-3.8-4-6.7-8.9-6.7z"/><circle cx="8.6" cy="10.4" r="1.05" fill="currentColor" stroke="none"/><circle cx="12" cy="8.2" r="1.05" fill="currentColor" stroke="none"/><circle cx="15.4" cy="10.4" r="1.05" fill="currentColor" stroke="none"/><circle cx="9.4" cy="14.2" r="1.05" fill="currentColor" stroke="none"/></svg></i>
-      <span data-i18n-key="rail.custom">自定义</span>
+      <span data-i18n-key="rail.theme">主题</span>
     </button>
 
     <button class="rbtn" id="openDrawer" title="设置">
       <i class="ric"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.1"/><path d="M19.1 14.6a1.5 1.5 0 0 0 .3 1.7l.1.1a1.9 1.9 0 1 1-2.7 2.7l-.1-.1a1.5 1.5 0 0 0-1.7-.3 1.5 1.5 0 0 0-.9 1.4v.3a1.9 1.9 0 1 1-3.8 0v-.2a1.5 1.5 0 0 0-1-1.4 1.5 1.5 0 0 0-1.7.3l-.1.1a1.9 1.9 0 1 1-2.7-2.7l.1-.1a1.5 1.5 0 0 0 .3-1.7 1.5 1.5 0 0 0-1.4-.9H3.3a1.9 1.9 0 1 1 0-3.8h.2a1.5 1.5 0 0 0 1.4-1 1.5 1.5 0 0 0-.3-1.7l-.1-.1a1.9 1.9 0 1 1 2.7-2.7l.1.1a1.5 1.5 0 0 0 1.7.3h.1a1.5 1.5 0 0 0 .9-1.4V3.3a1.9 1.9 0 1 1 3.8 0v.2a1.5 1.5 0 0 0 .9 1.4 1.5 1.5 0 0 0 1.7-.3l.1-.1a1.9 1.9 0 1 1 2.7 2.7l-.1.1a1.5 1.5 0 0 0-.3 1.7v.1a1.5 1.5 0 0 0 1.4.9h.3a1.9 1.9 0 1 1 0 3.8h-.2a1.5 1.5 0 0 0-1.4.9z"/></svg></i>
       <span data-i18n-key="rail.settings">设置</span>
+    </button>
+
+    <button class="rbtn" id="moreMenuBtn" title="更多">
+      <i class="ric"><svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><circle cx="5.5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="18.5" cy="12" r="1.7"/></svg></i>
+      <span data-i18n-key="rail.more">更多</span>
     </button>
 
     <div class="grow"></div>
@@ -1860,6 +1875,20 @@
       <div class="sp-page" id="pageCustom" hidden></div>
     </section>
   </div>
+</div>
+<div class="moremenu" id="moreMenu" hidden>
+  <button class="mm-item" data-ex="experts">
+    <span class="mm-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.2"/><circle cx="9.2" cy="10.4" r=".95" fill="currentColor" stroke="none"/><circle cx="14.8" cy="10.4" r=".95" fill="currentColor" stroke="none"/><path d="M8.7 14.1c.9 1.5 2.1 2.2 3.3 2.2s2.4-.7 3.3-2.2"/></svg></span>
+    专家
+  </button>
+  <button class="mm-item" data-ex="skills">
+    <span class="mm-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.6 14.4 4.9 19.1"/><path d="M14.8 4.9a2 2 0 0 1 2.8 0l1.5 1.5a2 2 0 0 1 0 2.9l-7.1 7.1-4.4-4.4z"/></svg></span>
+    技能
+  </button>
+  <button class="mm-item" data-ex="connectors">
+    <span class="mm-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10.4 13.6a3.6 3.6 0 0 0 5.1 0l2.3-2.3a3.6 3.6 0 0 0-5.1-5.1l-1.2 1.2"/><path d="M13.6 10.4a3.6 3.6 0 0 0-5.1 0l-2.3 2.3a3.6 3.6 0 0 0 5.1 5.1l1.2-1.2"/></svg></span>
+    连接器
+  </button>
 </div>
 <button class="help" id="help" title="帮助">?</button>
 <div class="op" id="officePanel" hidden>
@@ -2881,7 +2910,7 @@ document.querySelectorAll('.bar .icobtn[title="文本设置"]').forEach((btn) =>
 
 document.addEventListener('keydown', (e) => {
   if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); openPalette() }
-  if (e.key === 'Escape') { closePalette(); closePlusMenu(); closeEffort(); closeImageMenu(); closeSettings() }
+  if (e.key === 'Escape') { closePalette(); closePlusMenu(); closeEffort(); closeImageMenu(); closeSettings(); closeMoreMenu() }
 })
 
 /* ── 输入框 "+" 菜单 ─────────────────────────────────── */
@@ -3607,6 +3636,46 @@ $('navCustom').addEventListener('click', () => {
   exitMode()
   setView('themes')
 })
+
+/* 更多：鼠标指向浮出「专家 / 技能 / 连接器」 */
+let moreTimer = null
+function openMoreMenu() {
+  const menu = $('moreMenu')
+  if (!menu.hidden) return
+  menu.hidden = false
+  const rect = $('moreMenuBtn').getBoundingClientRect()
+  const rail = document.querySelector('.rail').getBoundingClientRect()
+  const width = menu.offsetWidth || 236
+  const height = menu.offsetHeight || 126
+  menu.style.left = Math.min(rail.right + 4, window.innerWidth - width - 12) + 'px'
+  menu.style.top = Math.max(12, Math.min(rect.top - 6, window.innerHeight - height - 12)) + 'px'
+}
+function closeMoreMenu() {
+  $('moreMenu').hidden = true
+}
+const scheduleCloseMore = () => {
+  clearTimeout(moreTimer)
+  moreTimer = setTimeout(closeMoreMenu, 160)
+}
+const cancelCloseMore = () => clearTimeout(moreTimer)
+$('moreMenuBtn').addEventListener('mouseenter', () => { cancelCloseMore(); openMoreMenu() })
+$('moreMenuBtn').addEventListener('mouseleave', scheduleCloseMore)
+$('moreMenuBtn').addEventListener('click', () => { cancelCloseMore(); openMoreMenu() })
+$('moreMenu').addEventListener('mouseenter', cancelCloseMore)
+$('moreMenu').addEventListener('mouseleave', scheduleCloseMore)
+document.querySelectorAll('#moreMenu .mm-item').forEach((item) => {
+  item.onclick = () => {
+    closeMoreMenu()
+    openExperts(item.dataset.ex)
+  }
+})
+document.addEventListener('click', (event) => {
+  const menu = $('moreMenu')
+  if (menu.hidden) return
+  if (menu.contains(event.target) || (event.target.closest && event.target.closest('#moreMenuBtn'))) return
+  closeMoreMenu()
+})
+window.addEventListener('resize', closeMoreMenu)
 $('thNew').addEventListener('click', () => toast('示范版：可在这里创建自定义主题。'))
 $('thSearch').addEventListener('input', (event) => {
   thState.q = event.target.value
