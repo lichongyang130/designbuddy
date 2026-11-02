@@ -99,6 +99,16 @@ export const CASE_DECKS = [
         ],
       },
       {
+        k: 'fullimg', label: '拱廊',
+        img: '07',
+        cap: '首层拱廊 · 三跨连续拱，净高 4.2m，铺地为 1928 年原色水磨石',
+      },
+      {
+        k: 'fullimg', label: '细部',
+        img: '08',
+        cap: '外立面细部 · 铜制雨水口为 1872 年原构件，只修不换',
+      },
+      {
         k: 'fullimg', label: '图纸',
         img: '02',
         cap: '原状立面测绘图 · 1:200 · 2026.09 现场复核',
@@ -115,6 +125,16 @@ export const CASE_DECKS = [
         text: '新建部分只用三种材料：耐候钢、再生骨料混凝土、与原砖墙同窑复烧的补配砖。旧与新用颜色区分，不做仿旧。',
         img: '06',
         swatches: [['#a8342a', '朱砂红 · 耐候钢'], ['#31507e', '石板蓝 · 铜锈'], ['#b9a487', '旧砖 · 补配'], ['#efe7d4', '石灰浆']],
+      },
+      {
+        k: 'fullimg', label: '中庭',
+        img: '09',
+        cap: '中轴剖透视 · 钢骨与原结构完全脱开，楼板荷载不回到砖墙',
+      },
+      {
+        k: 'fullimg', label: '天窗',
+        img: '10',
+        cap: '屋顶采光棚 · 1,200㎡ 钢构天窗，只向广场一侧开',
       },
       {
         k: 'timeline', label: '工期',
@@ -139,6 +159,16 @@ export const CASE_DECKS = [
         ],
         sum: ['合计', '100%', '19,000'],
         note: '口径：含税建安造价，不含设计与前期费用',
+      },
+      {
+        k: 'fullimg', label: '广场',
+        img: '11',
+        cap: '改造后广场 · 摊位、树与咖啡座，先有人来，再谈租金',
+      },
+      {
+        k: 'fullimg', label: '平面',
+        img: '12',
+        cap: '首层平面 · 珊瑚红为新增钢骨，蓝色为保留墙体',
       },
       {
         k: 'fullimg', label: '效果',
@@ -239,6 +269,7 @@ export const CASE_DECKS = [
         ],
       },
       { k: 'fullimg', label: '电力', img: '10', cap: '自建 62MW 变电站 · 电价锁到 2032 年，容量本身就是门槛' },
+      { k: 'fullimg', label: '柴发', img: '12', cap: '柴发 · 12 台 2MW 机组，市电失压 12 秒接管' },
       {
         k: 'metric', label: '单柜毛利',
         kicker: 'UNIT MARGIN · 2026 Q3',
@@ -288,6 +319,7 @@ export const CASE_DECKS = [
         ],
         bullets: ['按任务计费的 GPU 池', '故障 15 分钟内迁移', '月度运行台账与对账单'],
       },
+      { k: 'fullimg', label: '网络', img: '13', cap: '光纤 · 双路入楼，单柜 200G 上行，交叉不共沟' },
       {
         k: 'timeline', label: '里程碑',
         title: '2027 – 2029',
@@ -309,11 +341,13 @@ export const CASE_DECKS = [
           ['年均 PUE', '1.14'],
         ],
       },
+      { k: 'fullimg', label: '三期', img: '15', cap: '三期交付前 · 空柜列等上电，签约客户先到先铺' },
       {
         k: 'quote', label: '一句话',
         text: '我们卖的不是机柜，是一份可以写进合同的确定性。',
         by: '创始人 · 2026.10 路演版本',
       },
+      { k: 'fullimg', label: '地平线', img: '14', cap: '傍晚 · 园区右侧还有 24MW 的位置，路一眼能看到头' },
       {
         k: 'end', label: '封底',
         title: '谢谢',
