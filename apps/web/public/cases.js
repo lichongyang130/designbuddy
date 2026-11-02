@@ -961,6 +961,230 @@ export const CASE_DECKS = [
       },
     ],
   },
+  {
+    id: 'saltwater',
+    name: 'Saltwater Transit',
+    en: 'BUSINESS PLAN · 2027',
+    by: 'Gamma',
+    cat: '演示文稿',
+    fmt: 'deck',
+    ratio: '16:9',
+    date: 20261104,
+    kind: 'Business plan',
+    category: '商业规划',
+    tags: ['transit', 'ferry', 'climate', 'operations'],
+    desc: 'An electric river ferry business plan in indigo and coral: a left rail of section numbers, serif headlines against mono data rows, and photographic pages that keep the water in frame. Numbers are set as ledgers, not as cards.',
+    bestFor: ['Transit and ferry business plans', 'Infrastructure proposals', 'Series A investor decks', 'Operations and network reviews'],
+    styles: ['#1B2A5C', '#FF7A59', '#F2F1EA'],
+    colorway: 'Indigo · Bone · Coral',
+    folio: true,
+    footLeft: 'SALTWATER TRANSIT · CONFIDENTIAL',
+    paper: '#1B2A5C',
+    ink: '#F2F1EA',
+    accent: '#FF7A59',
+    second: '#8FA6C9',
+    muted: '#7C8CB2',
+    rule: '#2E4076',
+    body: '#DCE2EE',
+    display: 'serif',
+    slides: [
+      {
+        k: 'cover', label: 'Cover',
+        kicker: 'BUSINESS PLAN · SERIES A',
+        title: 'Saltwater Transit',
+        meta: 'RIVER CROSSINGS · 2027',
+        img: '01',
+      },
+      {
+        k: 'toc', label: 'Contents',
+        title: 'Contents',
+        note: 'SIX PARTS',
+        items: [
+          ['01', 'The gap', '26 minutes lost, every morning'],
+          ['02', 'The fleet', 'Four vessels, all electric'],
+          ['03', 'The network', 'Three routes, 14 piers'],
+          ['04', 'Unit economics', 'One boat, one month'],
+          ['05', 'The plan', 'Two years to three routes'],
+          ['06', 'The ask', '12M for four hulls'],
+        ],
+      },
+      {
+        k: 'statement', label: 'Thesis',
+        text: 'The river is the fastest road in this city. Nobody ever built a bus for it.',
+        foot: 'FOUNDER NOTE · 2026.11',
+      },
+      {
+        k: 'stats', label: 'The commute',
+        title: 'The commute today',
+        items: [
+          ['41', 'min · door to door', 'Bridge, 07:30 departure'],
+          ['2', 'crossings · 1.2M people', 'One bridge, one tunnel'],
+          ['9%', 'commuters on the water', 'Four piers in the centre'],
+        ],
+        note: 'Source: city transport survey, 2025',
+      },
+      { k: 'fullimg', label: 'Harbour', img: '10', cap: 'HARBOUR · 06:40 · TWO CROSSINGS ALREADY RUNNING' },
+      { k: 'section', label: 'Part 01', num: '01', title: 'The gap', note: 'WHY THE WATER IS EMPTY', img: '03' },
+      {
+        k: 'columns', label: 'Diagnosis',
+        title: 'Why nobody takes the boat',
+        note: 'THREE REASONS',
+        cols: [
+          { t: 'The timetable is a rumour', d: 'Boats leave every 40 minutes and the last one is at 19:20. Miss it, and the bridge is your only way home.' },
+          { t: 'The piers are in the wrong place', d: 'Two of the four piers sit 900 m from the nearest office cluster. The walk eats the time the boat saved.' },
+          { t: 'You cannot pay with a phone', d: 'Tickets are paper, sold at one window, cash only before 08:00. The bridge takes a tap.' },
+        ],
+      },
+      {
+        k: 'compare', label: 'Before / after',
+        title: 'Same trip, two mornings',
+        left: {
+          h: 'TODAY · BRIDGE',
+          rows: [['Door to door', '41 min'], ['Predictability', '+/- 14 min'], ['Cost per trip', '3.20'], ['A seat', 'Standing'], ['Emissions', '1.9 kg']],
+        },
+        right: {
+          h: 'WITH SALTWATER',
+          rows: [['Door to door', '19 min'], ['Predictability', '+/- 2 min'], ['Cost per trip', '2.80'], ['A seat', 'Always'], ['Emissions', '0.0 kg']],
+        },
+        note: 'Northbank to Old Quay, 07:30 departure, weekday average',
+      },
+      {
+        k: 'bars', label: 'Peak times',
+        title: 'Morning peak, minutes door to door',
+        items: [['Bridge · 07:30', 41], ['Tunnel · 07:30', 37], ['Bus, then bridge', 52], ['Saltwater · 07:30', 19]],
+        unit: ' min',
+        note: 'Own survey, 240 trips, October 2026',
+      },
+      { k: 'fullimg', label: 'Night', img: '06', cap: 'LAST CROSSING · 22:40 · THE CITY FROM THE WATER' },
+      { k: 'section', label: 'Part 02', num: '02', title: 'The fleet', note: 'FOUR VESSELS · ALL ELECTRIC', img: '02' },
+      {
+        k: 'split', label: 'Vessel',
+        img: '04',
+        title: 'A cabin built for\neighteen minutes',
+        paras: [
+          'Sixteen metres, 84 seats, no car deck. Everything is arranged so a passenger can board, sit down and leave without a queue.',
+          'Heating and lighting run off the same battery that drives the hull. A full charge takes 40 minutes at the pier, and we charge while people walk on.',
+        ],
+        bullets: ['84 passengers · 2 crew', '16 m hull · 6.4 m beam', '40 min charge · 9 h service', 'Silent below 8 knots'],
+      },
+      {
+        k: 'gallery', label: 'Detail',
+        title: 'Built for weather, not for show',
+        items: [
+          { img: '07', cap: 'Mooring · every landing is a 40 second stop' },
+          { img: '08', cap: 'Charging · 400 kWh at the pier, no shore crew' },
+          { img: '09', cap: 'Terminal · shelter, not a shed' },
+        ],
+        note: 'NORTHBANK PIER · NOVEMBER 2026',
+      },
+      {
+        k: 'table', label: 'Spec',
+        title: 'Fleet specification',
+        head: ['Item', 'Value', 'Note'],
+        rows: [
+          ['Length overall', '16.0 m', '7 mm steel hull'],
+          ['Passengers', '84', '16 tables of four'],
+          ['Battery', '400 kWh', 'LFP, two packs'],
+          ['Range per charge', '62 km', 'Nine hours of service'],
+          ['Charge time', '40 min', '400 kW at the pier'],
+          ['Service speed', '8 knots', '14 knots top'],
+        ],
+        sum: ['Crew per vessel', '2', 'One master, one deck'],
+        note: 'Class: passenger vessel, sheltered waters',
+      },
+      {
+        k: 'metric', label: 'One number',
+        kicker: 'TIME SAVED · NORTHBANK TO OLD QUAY',
+        big: '19',
+        label: 'minutes back, every one way trip',
+        note: 'Against the 07:30 bridge crossing · 2026 survey',
+      },
+      {
+        k: 'statement', label: 'Positioning',
+        text: 'We are not selling a boat ride. We are selling the twenty minutes you get back before nine.',
+        foot: 'POSITIONING · 2026.10',
+      },
+      { k: 'section', label: 'Part 03', num: '03', title: 'The network', note: 'THREE ROUTES · 14 PIERS', img: '05' },
+      {
+        k: 'timeline', label: 'Plan',
+        title: 'Two years to three routes',
+        items: [
+          ['2027 Q1', 'Two hulls ordered', 'Yard slot held for January'],
+          ['2027 Q3', 'Northbank rebuilt', '40 second berth, charging'],
+          ['2028 Q1', 'Route A live', 'Six minute headway at peak'],
+          ['2028 Q4', 'Three routes', '14 piers, four vessels'],
+        ],
+      },
+      {
+        k: 'bars', label: 'Demand',
+        title: 'Projected weekday passengers',
+        items: [['2028 · Route A', 4800], ['2029 · A and B', 11200], ['2030 · all three', 18600]],
+        note: 'Base case: 62% load at peak, 34% off peak',
+      },
+      {
+        k: 'columns', label: 'Routes',
+        title: 'Where the boats go',
+        note: 'THREE ROUTES',
+        cols: [
+          { t: 'Route A · 6 min', d: 'Northbank to Old Quay. 2.4 km, two piers, six minute headway at peak.' },
+          { t: 'Route B · 14 min', d: 'Old Quay to the shipyard. 5.1 km, four piers, connects to the eastern tram at both ends.' },
+          { t: 'Route C · 22 min', d: 'Shipyard to the wetlands. 9.6 km, six piers, weekend heavy, no peak service.' },
+        ],
+      },
+      {
+        k: 'table', label: 'Unit economics',
+        title: 'One vessel, one month at full service',
+        head: ['Item', 'Amount', 'Share'],
+        rows: [
+          ['Fares · 84 seats at 62%', '148,000', '100%'],
+          ['Energy', '9,400', '6%'],
+          ['Crew', '41,000', '28%'],
+          ['Maintenance and berth', '16,800', '11%'],
+          ['Contribution', '80,800', '55%'],
+        ],
+        sum: ['Net after overhead', '52,300', '35%'],
+        note: '2028 fares, per vessel; excludes ticketing and marketing',
+      },
+      {
+        k: 'stats', label: 'The ask',
+        title: 'Series A at a glance',
+        items: [
+          ['12.0M', 'USD · total round', 'Four hulls and two piers'],
+          ['4', 'vessels in the plan', 'Two ordered, two optioned'],
+          ['31%', 'year three margin', 'At 18,600 weekday riders'],
+        ],
+        note: 'Use of funds on the next page',
+      },
+      {
+        k: 'compare', label: 'Fare',
+        title: 'Fare against the bridge',
+        left: { h: 'BRIDGE + PARKING', rows: [['Single trip', '3.20'], ['Monthly pass', '96.00'], ['Wait, in traffic', '14 min']] },
+        right: { h: 'SALTWATER', rows: [['Single trip', '2.80'], ['Monthly pass', '72.00'], ['Wait, on the pier', '2 min']] },
+        note: 'Local currency; bridge figure includes the daily parking rate',
+      },
+      {
+        k: 'columns', label: 'Use of funds',
+        title: 'Where the 12M goes',
+        note: 'USE OF FUNDS',
+        cols: [
+          { t: '7.2M · Hulls', d: 'Two vessels ordered, two on option. The yard slot is held until March 2027.' },
+          { t: '3.1M · Piers', d: 'Two new berths, four charging points, and the Northbank rebuild.' },
+          { t: '1.7M · Operations', d: 'Crew training, ticketing, and eighteen months of runway before fares cover the schedule.' },
+        ],
+      },
+      {
+        k: 'statement', label: 'Test',
+        text: 'If the boat is not faster than the bridge on a wet Tuesday, we have built the wrong boat.',
+        foot: 'WHAT WE TEST · EVERY QUARTER',
+      },
+      {
+        k: 'end', label: 'End',
+        title: 'Thank you',
+        lines: ['SALTWATER TRANSIT · BUSINESS PLAN 2027', 'hello@saltwatertransit.example'],
+        mark: 'S',
+      },
+    ],
+  },
 ]
 
 /* ── 渲染 ─────────────────────────────────────────────
@@ -1164,6 +1388,32 @@ export function slideInner(deck, s) {
         '<div class="tk">' +
         '<div class="tk-band"><div class="tk-run">' + new Array(4).fill(esc(s.text)).join('<span>·</span>') + '</div></div>' +
         '<div class="tk-body"><div class="tk-big">' + esc(s.big || '').replace(/\n/g, '<br>') + '</div></div>' +
+        '</div>'
+      )
+    case 'compare':
+      return (
+        '<div class="sd-pad sd-comp">' +
+        '<h2 class="sd-h2">' + esc(s.title) + '</h2>' +
+        '<div class="cmp-cols">' +
+        [s.left, s.right].map((c, i) =>
+          '<div class="cmp-col' + (i ? ' cmp-col-on' : '') + '">' +
+          '<div class="sd-mono cmp-h">' + esc(c.h) + '</div>' +
+          c.rows.map(([a, b]) => '<div class="cmp-row"><span>' + esc(a) + '</span><b>' + esc(b) + '</b></div>').join('') +
+          '</div>'
+        ).join('') +
+        '</div>' +
+        (s.note ? '<div class="sd-mono sd-foot">' + esc(s.note) + '</div>' : '') +
+        '</div>'
+      )
+    case 'gallery':
+      return (
+        '<div class="sd-pad sd-gal">' +
+        '<h2 class="sd-h2">' + esc(s.title) + '</h2>' +
+        '<div class="gal-row">' + s.items.map((it) =>
+          '<figure class="gal-fig"><div class="gal-img">' + imgTag(deck, it.img, 'sd-fill') + '</div>' +
+          '<figcaption>' + esc(it.cap || '') + '</figcaption></figure>'
+        ).join('') + '</div>' +
+        (s.note ? '<div class="sd-mono sd-foot">' + esc(s.note) + '</div>' : '') +
         '</div>'
       )
     case 'quote':

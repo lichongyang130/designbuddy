@@ -512,6 +512,21 @@
   @keyframes tk-run{from{transform:translateX(0)}to{transform:translateX(-50%)}}
   .tv-th .tk-run,.tpl-card .tk-run{animation:none}
 
+  /* 对比页 / 三联图版 */
+  .sld .cmp-cols{display:grid;grid-template-columns:1fr 1fr;gap:38px;margin-top:26px}
+  .sld .cmp-col{padding-top:12px;border-top:1px solid var(--rule)}
+  .sld .cmp-col-on{border-top-color:var(--accent)}
+  .sld .cmp-h{margin-bottom:6px}
+  .sld .cmp-row{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:9px 0;border-bottom:1px solid var(--rule)}
+  .sld .cmp-row span{font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif;font-size:11px;color:var(--body)}
+  .sld .cmp-row b{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;font-weight:500;color:var(--ink);white-space:nowrap}
+  .sld .cmp-col-on .cmp-row b{color:var(--accent)}
+
+  .sld .gal-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px}
+  .sld .gal-fig{margin:0}
+  .sld .gal-img{position:relative;height:236px;overflow:hidden}
+  .sld .gal-fig figcaption{margin-top:9px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:8px;line-height:1.65;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+
   /* 引用页也各有姿态：竖排/居中/超小号/贴底 */
   .sld.k-arcade .sd-statement{justify-content:flex-start;padding-top:96px}
   .sld.k-arcade .sd-quote{font-size:34px;line-height:1.5;max-width:660px;border-left:2px solid var(--accent);padding-left:28px}
@@ -635,6 +650,36 @@
   .sld.k-acid .sd-col-t{grid-area:2/1;margin:0;font-size:20px}
   .sld.k-acid .sd-col-d{grid-area:1/2/3/3;margin:0;font-size:11.5px}
   .sld.k-acid .sd-folio{left:40px;right:40px}
+
+  /* 08 盐渡通勤：编辑体 —— 左侧章节标尺、珊瑚切线、衬线标题配等宽数据 */
+  .sld.k-saltwater .sd-pad{padding:52px 56px 54px 108px}
+  .sld.k-saltwater .sd-pad::before{content:"";position:absolute;left:74px;top:52px;bottom:54px;width:1px;background:var(--rule)}
+  .sld.k-saltwater .sd-pad::after{content:"";position:absolute;left:73px;top:52px;width:3px;height:46px;background:var(--accent)}
+  .sld.k-saltwater .sd-h1{font-size:74px;letter-spacing:-.01em}
+  .sld.k-saltwater .sd-h2{font-size:35px;line-height:1.2}
+  .sld.k-saltwater .sd-hair{background:var(--accent)}
+  .sld.k-saltwater .sd-cols-head{padding-bottom:14px;border-bottom:1px solid var(--accent)}
+  .sld.k-saltwater .sd-col-row{gap:26px}
+  .sld.k-saltwater .sd-col{padding-top:14px;border-top:1px solid var(--rule)}
+  .sld.k-saltwater .sd-col-i{color:var(--accent)}
+  .sld.k-saltwater .sd-stat-row{display:block;border-top:1px solid var(--accent)}
+  .sld.k-saltwater .sd-stat{
+    display:grid;grid-template-columns:124px auto 1fr;align-items:baseline;gap:4px 22px;
+    padding:15px 0;border-right:0;border-bottom:1px solid var(--rule);
+  }
+  .sld.k-saltwater .sd-stat-v{font-family:inherit;font-size:40px;font-weight:400;line-height:1}
+  .sld.k-saltwater .sd-stat-t{margin:0;font-size:12px;color:var(--ink)}
+  .sld.k-saltwater .sd-stat-d{margin:0;font-size:10.5px;color:var(--muted);text-align:right}
+  .sld.k-saltwater .sd-toc-list li{padding:9px 0;border-bottom:1px solid var(--rule);grid-template-columns:56px 1fr auto}
+  .sld.k-saltwater .sd-toc-list li:last-child{border-bottom:0}
+  .sld.k-saltwater .sd-bars-row{padding:9px 0;border-bottom:1px solid var(--rule)}
+  .sld.k-saltwater table th{border-bottom:1px solid var(--accent)}
+  .sld.k-saltwater table td{border-bottom:1px solid var(--rule)}
+  .sld.k-saltwater .sd-tl-row{border-top:1px solid var(--accent)}
+  .sld.k-saltwater .sd-metric-v{font-family:inherit;font-weight:400}
+  .sld.k-saltwater .sd-quote{font-size:36px;line-height:1.42;max-width:700px}
+  .sld.k-saltwater .sd-folio{left:108px;right:56px}
+
 
   /* ── 案例详情页（1:1 复刻参考截图） ─────────────── */
   .tplview{position:fixed;inset:0;z-index:80;display:flex;flex-direction:column;background:#fff}
