@@ -241,36 +241,8 @@
     transition:transform var(--d2) var(--ease),box-shadow var(--d2) var(--ease);
   }
   .tpl:hover .cover{transform:translateY(-2px);box-shadow:var(--e2)}
+  .tpl .cover{aspect-ratio:16/9;display:block;container-type:inline-size}
   .tpl span{font-size:12.5px;color:#5e6266;text-align:center;line-height:1.3}
-
-  /* 六张封面：用 CSS 近似原稿风格，避免外链图片 */
-  .c-garden{background:#f3efe4}
-  .c-garden .t{font:600 7px/1.3 Georgia,serif;color:#4a463c;position:absolute;left:8%;bottom:14%;letter-spacing:.02em}
-  .c-garden .bloom{
-    width:52%;aspect-ratio:1;border-radius:50% 50% 46% 54%/54% 46% 54% 46%;
-    background:radial-gradient(circle at 35% 32%,#b23a52 0 32%,#8e2740 33% 58%,#6d1f33 59% 100%);
-    position:absolute;right:8%;top:16%;
-  }
-  .c-mesa{background:linear-gradient(160deg,#2c3138 0%,#3d444d 45%,#20242a 100%)}
-  .c-mesa .t{font:700 9px/1.15 ui-sans-serif,system-ui;color:var(--surface);text-align:center;letter-spacing:.14em}
-  .c-mesa .ridge{position:absolute;inset:auto 0 0 0;height:44%;background:linear-gradient(180deg,transparent,#151a1f 72%)}
-  .c-wood{background:#33513f}
-  .c-wood .t{font:500 7.5px/1.4 Georgia,serif;color:#eaf2ec;text-align:center;max-width:74%}
-  .c-wood .leaf{
-    position:absolute;left:-8%;bottom:-16%;width:52%;aspect-ratio:1;border-radius:64% 36% 58% 42%;
-    background:rgba(163,196,166,.22);
-  }
-  .c-wood .leaf.b{left:auto;right:-10%;top:-18%;bottom:auto;width:46%}
-  .c-letter{background:#141414}
-  .c-letter .t{color:var(--surface);text-align:center}
-  .c-letter .t b{display:block;font:600 8.5px/1.2 Georgia,serif;letter-spacing:.06em}
-  .c-letter .t i{display:block;margin-top:4px;font:400 5.5px/1.2 ui-sans-serif;color:#b9b9b9;font-style:normal}
-  .c-editorial{background:#fdfdfb;border-color:var(--line)}
-  .c-editorial .t{font:400 6.5px/1.35 Georgia,serif;color:#2f2f2c;text-align:left;max-width:74%}
-  .c-feedback{background:#f6c945}
-  .c-feedback .t{font:800 10px/1 ui-sans-serif,system-ui;color:var(--fg);letter-spacing:-.3px;text-align:center}
-  .c-feedback .t u{display:block;text-decoration:none;font-size:5.5px;letter-spacing:.06em;margin-top:3px;font-weight:600}
-  .c-feedback .blob{position:absolute;right:8%;top:12%;width:22%;aspect-ratio:1;border-radius:50% 50% 50% 20%;background:#e0592a}
 
   .tplwrap.flash{animation:flash 1.4s ease}
   @keyframes flash{
@@ -349,16 +321,176 @@
   .tpl-empty{padding:78px 0;text-align:center;font-size:13.5px;color:#8d9196;line-height:1.8}
   .tpl-empty b{display:block;margin-bottom:5px;font-size:15px;font-weight:600;color:#313233}
 
-  /* 封面：纯 CSS 绘制，统一 16:9 画布 */
-  /* 封面按 238×134 绘制，再等比缩放到卡片宽度，保证任何窗口下都与参考图同比例 */
-  .cv{
-    position:absolute;left:0;top:0;width:238px;height:133.875px;overflow:hidden;transform-origin:0 0;
-    transform:scale(calc(100cqw / 238px));
-    font-family:ui-sans-serif,system-ui,-apple-system,"PingFang SC",sans-serif;
+  /* ── 案例画布：960×540 的 16:9 幻灯片，按容器宽度等比缩放 ── */
+  .sdbox{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;container-type:inline-size;background:#f6f1e4}
+  .sld{
+    position:absolute;left:0;top:0;width:960px;height:540px;transform-origin:0 0;
+    transform:scale(calc(100cqw / 960px));
+    background:var(--paper);color:var(--ink);overflow:hidden;
+    font-family:Georgia,"Songti SC","Noto Serif SC",serif;
   }
-  .cv .sr{font-family:Georgia,"Songti SC","Songti TC",serif}
-  .cv .v{writing-mode:vertical-rl}
-  .cv .ln{background-image:repeating-linear-gradient(currentColor 0 1px,transparent 1px 4px)}
+  .sld .sd-pad{position:absolute;inset:0;padding:54px 64px 46px}
+  .sld .sd-mono{
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;letter-spacing:.17em;
+    text-transform:uppercase;color:var(--muted);line-height:1.65;
+  }
+  .sld .sd-mono.light{color:rgba(255,255,255,.74)}
+  .sld .sd-h1{margin:0;font-size:72px;line-height:1.04;font-weight:400;letter-spacing:-.005em;color:var(--accent)}
+  .sld .sd-h2{margin:0;font-size:35px;line-height:1.22;font-weight:400}
+  .sld .sd-h2.light{color:#fff}
+  .sld .sd-h3{margin:0;font-size:22px;line-height:1.4;font-weight:400}
+  .sld .sd-hair{height:1px;background:var(--accent);opacity:.5;margin:18px 0 11px}
+  .sld .sd-img{display:block;width:100%;height:100%;object-fit:cover}
+  .sld .sd-img.sd-fill{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+
+  .sld .sd-cover{position:absolute;inset:0}
+  .sld .sd-cover-top{position:absolute;left:64px;right:64px;top:42px}
+  .sld .sd-kicker{margin-bottom:13px}
+  .sld .sd-cover .sd-hair{max-width:560px}
+  .sld .sd-cover-meta{font-size:9.5px;letter-spacing:.14em}
+  .sld .sd-cover-img{position:absolute;left:0;right:0;bottom:0;width:100%;height:55%;object-fit:cover;object-position:center 42%}
+
+  .sld .sd-section{position:absolute;inset:0}
+  .sld .sd-section .sd-img{position:absolute;inset:0}
+  .sld .sd-shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(18,15,12,.76),rgba(18,15,12,.2) 58%,rgba(18,15,12,0))}
+  .sld .sd-section-in{position:absolute;left:64px;bottom:50px;right:64px}
+  .sld .sd-bignum{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;letter-spacing:.3em;color:rgba(255,255,255,.8);margin-bottom:14px}
+  .sld .sd-section-in .sd-h2{font-size:58px;color:#fff}
+
+  .sld .sd-toc{display:grid;grid-template-columns:36% 64%;gap:44px;align-items:start}
+  .sld .sd-toc-head{display:flex;flex-direction:column}
+  .sld .sd-toc-head .sd-h2{margin-top:11px;font-size:44px}
+  .sld .sd-note{margin-top:13px;font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif;font-size:11.5px;line-height:1.8;color:var(--muted)}
+  .sld .sd-toc-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--accent)}
+  .sld .sd-toc-list li{display:grid;grid-template-columns:38px minmax(0,1fr) auto;align-items:baseline;gap:12px;padding:11px 0;border-bottom:1px solid var(--rule)}
+  .sld .sd-num{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:.16em;color:var(--accent)}
+  .sld .sd-toc-t{font-size:17px}
+  .sld .sd-toc-d{font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif;font-size:10.5px;color:var(--muted)}
+
+  .sld .sd-statement{display:flex;flex-direction:column;justify-content:center}
+  .sld .sd-quote-mark{height:44px;font-size:96px;line-height:.72;color:var(--accent);opacity:.3}
+  .sld .sd-quote{margin:6px 0 0;max-width:740px;font-size:37px;line-height:1.52}
+  .sld .sd-foot{position:absolute;left:64px;bottom:46px}
+
+  .sld .sd-stats{display:flex;flex-direction:column}
+  .sld .sd-stats .sd-h3{max-width:520px}
+  .sld .sd-stat-row{display:grid;grid-template-columns:repeat(3,1fr);margin:auto 0;padding-top:36px;border-top:1px solid var(--rule)}
+  .sld .sd-stat{padding:26px 30px 0 0;border-right:1px solid var(--rule)}
+  .sld .sd-stat:last-child{border-right:0;padding-right:0}
+  .sld .sd-stat-v{font-size:62px;line-height:1;color:var(--accent)}
+  .sld .sd-stat-t{margin-top:16px;font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif;font-size:12.5px;font-weight:600}
+  .sld .sd-stat-d{margin-top:7px;font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif;font-size:11px;line-height:1.65;color:var(--muted)}
+
+  .sld .sd-split{position:absolute;inset:0;display:grid;grid-template-columns:43% 57%;grid-template-rows:100%}
+  .sld .sd-split-media{position:relative;overflow:hidden}
+  .sld .sd-split-media .sd-img{position:absolute;inset:0}
+  .sld .sd-split-body{padding:56px 60px 44px 52px;display:flex;flex-direction:column}
+  .sld .sd-split-body .sd-h2{font-size:30px;margin-bottom:20px}
+  .sld .sd-paras p{font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif;font-size:12px;line-height:1.9;color:#4a463d;margin:0 0 10px}
+  .sld .sd-ul{list-style:none;margin:auto 0 0;padding:0;border-top:1px solid var(--rule)}
+  .sld .sd-ul li{position:relative;padding:7px 0 7px 15px;border-bottom:1px solid var(--rule);font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif;font-size:11px;line-height:1.6;color:#4a463d}
+  .sld .sd-ul li::before{content:"";position:absolute;left:0;top:13px;width:5px;height:5px;background:var(--accent)}
+
+  .sld .sd-columns{display:flex;flex-direction:column}
+  .sld .sd-cols-head{margin-bottom:auto}
+  .sld .sd-cols-head .sd-mono{margin-bottom:11px}
+  .sld .sd-col-row{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin:54px 0 auto}
+  .sld .sd-col{border-top:1px solid var(--accent);padding-top:13px}
+  .sld .sd-col-i{font-size:9.5px;color:var(--accent);letter-spacing:.22em}
+  .sld .sd-col-t{margin-top:9px;font-size:20px}
+  .sld .sd-col-d{margin:9px 0 0;font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif;font-size:11px;line-height:1.9;color:#4a463d}
+
+  .sld .sd-full{position:absolute;inset:0}
+  .sld .sd-full .sd-img{position:absolute;inset:0}
+  .sld .sd-full-cap{position:absolute;left:0;right:0;bottom:0;padding:9px 64px;background:var(--paper)}
+  .sld .sd-full-cap .sd-mono{font-size:9.5px}
+
+  .sld .sd-board{display:grid;grid-template-columns:51% 49%;gap:34px;grid-template-rows:100%}
+  .sld .sd-board-media{position:relative;overflow:hidden}
+  .sld .sd-board-media .sd-img{position:absolute;inset:0}
+  .sld .sd-board-body{display:flex;flex-direction:column;padding-top:5px}
+  .sld .sd-board-body .sd-h2{font-size:29px;margin-bottom:14px}
+  .sld .sd-body{margin:0;font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif;font-size:11.5px;line-height:1.9;color:#4a463d}
+  .sld .sd-sw-row{display:grid;grid-template-columns:1fr 1fr;gap:16px 16px;margin-top:auto}
+  .sld .sd-sw i{display:block;height:44px;border:1px solid rgba(0,0,0,.09)}
+  .sld .sd-sw span{display:block;margin-top:5px;font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif;font-size:9.5px;color:var(--muted)}
+
+  .sld .sd-tl{display:flex;flex-direction:column}
+  .sld .sd-tl-row{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin:auto 0}
+  .sld .sd-tl-row::before{content:"";position:absolute;left:0;right:0;top:47px;height:1px;background:var(--rule)}
+  .sld .sd-tl-w{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;letter-spacing:.1em;color:var(--accent)}
+  .sld .sd-tl-dot{position:relative;z-index:1;width:8px;height:8px;border-radius:50%;background:var(--accent);margin:15px 0 13px}
+  .sld .sd-tl-t{font-size:18px}
+  .sld .sd-tl-d{margin:8px 0 0;font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif;font-size:10.5px;line-height:1.75;color:var(--muted)}
+
+  .sld .sd-table table{width:100%;border-collapse:collapse;margin-top:20px}
+  .sld .sd-table th{padding:0 0 8px;text-align:left;border-bottom:1px solid var(--ink);font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif;font-size:10px;font-weight:500;letter-spacing:.05em;color:var(--muted)}
+  .sld .sd-table th:not(:first-child),.sld .sd-table td.num{text-align:right}
+  .sld .sd-table td{padding:8.5px 0;border-bottom:1px solid var(--rule);font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif;font-size:11.5px;font-variant-numeric:tabular-nums}
+  .sld .sd-table tfoot td{border-bottom:0;border-top:1px solid var(--ink);padding-top:9px;font-weight:600}
+
+  .sld .sd-end{display:flex;flex-direction:column;justify-content:center}
+  .sld .sd-end-mark{width:38px;height:38px;border-radius:9px;background:var(--ink);color:var(--paper);display:grid;place-items:center;margin-bottom:20px;font-family:ui-sans-serif,system-ui,sans-serif;font-size:16px;font-weight:600}
+  .sld .sd-end-t{font-size:58px}
+  .sld .sd-end .sd-hair{max-width:420px}
+  .sld .sd-end-lines{margin-top:auto;display:flex;flex-direction:column;gap:4px}
+
+  /* ── 案例详情页（1:1 复刻参考截图） ─────────────── */
+  .tplview{position:fixed;inset:0;z-index:80;display:flex;flex-direction:column;background:#fff}
+  .tplview[hidden]{display:none}
+  .tv-bar{flex:none;display:flex;align-items:center;height:57px;padding:0 20px 0 22px;border-bottom:1px solid #ececec;background:#fff}
+  .tv-back{display:flex;align-items:center;gap:9px;height:32px;padding:0 8px 0 2px;border-radius:7px;font-size:13.5px;color:#20242a}
+  .tv-back:hover{background:#f4f5f7}
+  .tv-back svg{color:#20242a}
+  .tv-close{margin-left:auto;display:grid;place-items:center;width:30px;height:30px;border-radius:7px;color:#33373d}
+  .tv-close:hover{background:#f4f5f7}
+  .tv-main{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 348px}
+  .tv-left{min-width:0;display:flex;flex-direction:column;background:#e9e9e7}
+  .tv-stage{flex:1;min-height:0;display:grid;place-items:center;padding:24px 66px 16px;overflow:hidden}
+  .tv-stage .sdbox{width:100%;max-width:1120px;box-shadow:0 14px 34px rgba(18,22,30,.18),0 2px 6px rgba(18,22,30,.08)}
+  .tv-strip{flex:none;display:flex;align-items:center;gap:2px;padding:9px 4px 13px;background:#fff;border-top:1px solid #e8e8e8}
+  .tv-nav{flex:none;display:grid;place-items:center;width:34px;height:66px;border-radius:7px;color:#43474d}
+  .tv-nav:hover{background:#f4f5f7}
+  .tv-nav:disabled{color:#cfd2d6;background:none}
+  .tv-thumbs{flex:1;min-width:0;display:flex;gap:13px;overflow-x:auto;scrollbar-width:none;padding:2px 8px 0}
+  .tv-thumbs::-webkit-scrollbar{display:none}
+  .tv-th{flex:none;width:96px;text-align:center}
+  .tv-th .sdbox{border-radius:3px;box-shadow:0 0 0 1px #e2e2e2;transition:box-shadow var(--d1)}
+  .tv-th span{display:block;margin-top:6px;font-size:11px;line-height:1.3;color:#8b8f95;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .tv-th:hover .sdbox{box-shadow:0 0 0 1px #b9c6dd}
+  .tv-th.on .sdbox{box-shadow:0 0 0 2px #1f5cf5}
+  .tv-th.on span{color:#1f242b;font-weight:500}
+  .tv-side{display:flex;flex-direction:column;min-height:0;border-left:1px solid #ececec;background:#fff}
+  .tv-side-scroll{flex:1;min-height:0;overflow-y:auto;padding:20px 22px 8px}
+  .tv-ttl{display:flex;align-items:flex-start;gap:8px}
+  .tv-ttl h2{flex:1;margin:0;font-size:20px;line-height:1.35;font-weight:600;color:#20242a;letter-spacing:-.01em}
+  .tv-link{flex:none;display:grid;place-items:center;width:26px;height:26px;border-radius:6px;color:#5c6169}
+  .tv-link:hover{background:#f4f5f7}
+  .tv-meta{margin-top:3px;font-size:12.5px;color:#6d7178}
+  .tv-prov{display:flex;align-items:center;gap:8px;margin-top:14px;font-size:13px;color:#20242a}
+  .tv-badge{flex:none;display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#0b0f16;color:#fff;font-size:12px;font-weight:600}
+  .tv-desc{margin:12px 0 0;font-size:13px;line-height:1.75;color:#3d4249}
+  .tv-side h3{margin:18px 0 6px;font-size:13px;font-weight:600;color:#20242a}
+  .tv-best{margin:0;padding:0;list-style:none}
+  .tv-best li{position:relative;padding-left:13px;font-size:13px;line-height:1.7;color:#3d4249}
+  .tv-best li::before{content:"";position:absolute;left:3px;top:8.5px;width:4px;height:4px;border-radius:50%;background:#7c828a}
+  .tv-row{display:flex;align-items:center;gap:10px;min-height:38px;margin-top:14px;padding-top:12px;border-top:1px solid #f0f0f0}
+  .tv-row-k{font-size:13px;color:#20242a}
+  .tv-row-v{margin-left:auto;font-size:12.5px;color:#6d7178}
+  .tv-dots{display:flex;align-items:center;gap:7px;margin-left:auto}
+  .tv-dots i{display:block;width:15px;height:15px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+  .tv-chev{display:grid;place-items:center;width:22px;height:22px;border-radius:5px;color:#5c6169}
+  .tv-chev:hover{background:#f4f5f7}
+  .tv-use{flex:none;margin:12px 20px 16px;height:42px;border-radius:8px;background:#1a5cff;color:#fff;font-size:14.5px;font-weight:500}
+  .tv-use:hover{background:#1450e6}
+  @media (max-width:1100px){
+    .tv-main{grid-template-columns:minmax(0,1fr) 300px}
+    .tv-stage{padding:18px 26px 12px}
+  }
+  @media (max-width:860px){
+    .tv-main{grid-template-columns:minmax(0,1fr)}
+    .tv-side{display:none}
+  }
 
   @media (max-width:1200px){
     .tpls-grid{grid-template-columns:repeat(5,minmax(0,1fr))}
@@ -1524,7 +1656,7 @@
 
       <div class="tplwrap" id="tplwrap">
         <div class="tpl-title">推荐模板</div>
-        <div class="tpl-grid" id="tplGrid"></div>
+        <div class="tpl-grid" id="tplGrid" data-no-i18n></div>
         <button class="alltpl" id="allTemplates">查看所有模板</button>
       </div>
     </section>
@@ -1550,7 +1682,7 @@
           </button>
         </div>
 
-        <div class="tpls-grid" id="tpGrid"></div>
+        <div class="tpls-grid" id="tpGrid" data-no-i18n></div>
         <div class="tpl-empty" id="tpEmpty" hidden>
           <b>没有找到匹配的模板</b>
           换个关键词或筛选条件试试。
@@ -1936,325 +2068,42 @@
     </div>
   </div>
 </div>
+<div class="tplview" id="tplView" hidden>
+  <div class="tv-bar">
+    <button class="tv-back" id="tvBack">
+      <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-left"></use></svg>
+      返回模板
+    </button>
+    <button class="tv-close" id="tvClose" aria-label="关闭">
+      <svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-close"></use></svg>
+    </button>
+  </div>
+  <div class="tv-main">
+    <div class="tv-left">
+      <div class="tv-stage" id="tvStage" data-no-i18n></div>
+      <div class="tv-strip">
+        <button class="tv-nav" id="tvPrev" aria-label="上一页">
+          <svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-left"></use></svg>
+        </button>
+        <div class="tv-thumbs" id="tvThumbs" data-no-i18n></div>
+        <button class="tv-nav" id="tvNext" aria-label="下一页">
+          <svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-right"></use></svg>
+        </button>
+      </div>
+    </div>
+    <aside class="tv-side" id="tvSide"></aside>
+  </div>
+</div>
 <div class="toast" id="toast"></div>
 
 <script type="module">
 import { EX_CATEGORIES, EX_DEMO, EX_CHIPS, SKILL_FEATURED, SKILL_GRID, SK_CHIPS, CN_CONNECTORS } from './demo-data.js'
+import { CASE_DECKS, slideHTML } from './cases.js'
 import { applyLanguage, resolveLanguage, startAutoTranslate, t } from './i18n.js'
-const TEMPLATES = [
-  { name: 'Paper Garden', cls: 'c-garden', cat: '演示文稿', by: 'Rootwell Studio', html: '<div class="bloom"></div><div class="t">Rootwell</div>' },
-  { name: 'Mesa', cls: 'c-mesa', cat: '演示文稿', by: 'Mesa Type Co.', html: '<div class="ridge"></div><div class="t">FIELD<br>CONDITIONS</div>' },
-  { name: 'Woodcut Primer', cls: 'c-wood', cat: '文档', by: 'Field Notes', html: '<div class="leaf"></div><div class="leaf b"></div><div class="t">Learning through<br>the world</div>' },
-  { name: 'Letterpress', cls: 'c-letter', cat: '文档', by: 'Annual LP', html: '<div class="t"><b>ANNUAL LETTER</b><i>2025 Annual LP letter</i></div>' },
-  { name: 'Classic Editorial', cls: 'c-editorial', cat: '文档', by: 'Editorial Kit', html: '<div class="t">What four years of four-day workweeks taught us about output, hours, and who stays.</div>' },
-  { name: 'Feedback', cls: 'c-feedback', cat: '图片', by: 'Turn It Up', html: '<div class="blob"></div><div class="t">TURN<br>IT UP<u>WORK · 2025</u></div>' },
-]
-
-/* ── 模版库（探索模板）：24 张，1:1 对齐参考截图 ───────── */
-const TPL_LIBRARY = [
-  {
-    name: '渔港日记', by: 'Rootwell Studio', cat: '营销材料', fmt: 'deck', date: 20261031,
-    art: `<div style="position:absolute;inset:0;background:#f7f3e6"></div>
-      <div style="position:absolute;left:0;top:0;width:56%;height:100%;background-image:linear-gradient(#e7e0cc 1px,transparent 1px),linear-gradient(90deg,#e7e0cc 1px,transparent 1px);background-size:9px 9px"></div>
-      <div style="position:absolute;right:0;top:0;width:44%;height:54%;background:linear-gradient(205deg,#93a4a6,#5b6f72 55%,#3d5356)"></div>
-      <div style="position:absolute;right:3%;top:8%;width:14%;height:3px;background:rgba(255,255,255,.35)"></div>
-      <div style="position:absolute;left:12%;top:1%;font:700 32px/1 Georgia,'Songti SC',serif;color:#e0322a">石</div>
-      <div style="position:absolute;left:40%;top:13%;font:700 32px/1 Georgia,'Songti SC',serif;color:#f0c040">浦</div>
-      <div style="position:absolute;left:5%;top:44%;width:24px;height:24px;background:#f4cd46;color:#232323;font:700 6.5px/1.15 ui-sans-serif;display:grid;place-items:center;text-align:center">9/16</div>
-      <div style="position:absolute;right:5%;top:57%;width:36%;background:#fff;padding:3px 4px;font:600 5.5px/1.35 ui-sans-serif;color:#2b2b2b">石浦渔港日记</div>
-      <div style="position:absolute;left:5%;bottom:7%;font:600 8px/1 ui-sans-serif;letter-spacing:.5em;color:#1b1b1b">SHIPU</div>`,
-  },
-  {
-    name: '水墨亭', by: 'Field Notes', cat: '营销材料', fmt: 'deck', date: 20261028,
-    art: `<div style="position:absolute;inset:0;background:#e7e7e4"></div>
-      <div style="position:absolute;inset:7% 6%;background:#f9f5ea;border:1px solid #ded9ca"></div>
-      <div style="position:absolute;left:12%;top:13%;writing-mode:vertical-rl;font:400 10px/1.4 Georgia,'Songti SC',serif;color:#3a3a36">澄湖</div>
-      <div style="position:absolute;left:12%;top:56%;writing-mode:vertical-rl;font:400 4px/1.7 ui-sans-serif;color:#96968e">二〇二六 · 山水志</div>
-      <div style="position:absolute;left:13%;bottom:15%;width:6px;height:6px;background:#b5352c"></div>
-      <div style="position:absolute;right:26%;top:13%;width:6px;height:6px;border-radius:50%;background:#fff;box-shadow:0 0 7px rgba(255,255,255,.9)"></div>
-      <div style="position:absolute;left:34%;right:10%;top:26%;bottom:22%;background:radial-gradient(ellipse at 55% 46%,rgba(126,134,128,.4),rgba(150,158,152,.16) 62%,transparent 78%)"></div>
-      <div style="position:absolute;right:24%;top:29%;width:26%;height:3.5px;background:#8d938d;clip-path:polygon(0 100%,50% 0,100% 100%)"></div>
-      <div style="position:absolute;right:25%;top:33%;width:24%;height:1.6px;background:#7f857f"></div>
-      <div style="position:absolute;right:28.5%;top:35%;width:1.4px;height:12%;background:#8b918b"></div>
-      <div style="position:absolute;right:44%;top:35%;width:1.4px;height:12%;background:#8b918b"></div>
-      <div style="position:absolute;right:27%;top:47%;width:20%;height:1px;background:#a2a8a2"></div>
-      <div style="position:absolute;right:12%;top:49%;width:42%;height:13%;background:linear-gradient(180deg,rgba(140,148,142,.3),transparent)"></div>
-      <div style="position:absolute;right:16%;top:52%;width:3px;height:9%;background:rgba(140,148,142,.35)"></div>
-      <div style="position:absolute;right:8%;bottom:13%;font:400 3.6px/1.6 ui-sans-serif;color:#9a9a92">澄湖 · 亭</div>`,
-  },
-  {
-    name: 'Overtime', by: 'Turn It Up', cat: '活动', fmt: 'card', date: 20261025,
-    art: `<div style="position:absolute;inset:0;background:#f1f0ea"></div>
-      <div style="position:absolute;inset:0;background-image:linear-gradient(#e2e0d6 1px,transparent 1px),linear-gradient(90deg,#e2e0d6 1px,transparent 1px);background-size:8px 8px"></div>
-      <div style="position:absolute;left:9%;top:9%;font:700 19px/1 ui-sans-serif;letter-spacing:-.02em;color:#d9d4c2">年终大盘盘!</div>
-      <div style="position:absolute;left:16%;top:34%;font:700 10px/1.1 ui-sans-serif;color:#141414;transform:rotate(-1.5deg)">Phew, I'm still cooking</div>
-      <div style="position:absolute;left:24%;top:50%;width:16px;height:6px;background:#151515"></div>
-      <div style="position:absolute;left:25%;top:55%;width:7px;height:20px;background:#2b4bd8;border-radius:2px;transform:rotate(3deg)"></div>
-      <div style="position:absolute;right:8%;top:22%;width:24%;height:40%;background:#faf9f4;border:1px solid #d9d6cc;padding:3px;font:500 3.6px/1.6 ui-sans-serif;color:#7a7568">12月 · 地球上没有新鲜事</div>
-      <div style="position:absolute;right:6%;top:8%;width:9px;height:9px;background:#f6cf3f;border-radius:50%"></div>
-      <div style="position:absolute;left:6%;top:66%;width:11px;height:11px;background:#59cfe6;clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)"></div>
-      <div style="position:absolute;left:16%;bottom:8%;font:5px/1.4 ui-sans-serif;color:#6f6a5e">Overtime · 2026 年度特刊</div>`,
-  },
-  {
-    name: '朱砂册页', by: 'Editorial Kit', cat: '营销材料', fmt: 'card', date: 20261022,
-    art: `<div style="position:absolute;inset:0;background:#f7f0e0"></div>
-      <div style="position:absolute;left:34%;top:0;bottom:0;width:24%;background:#a8352b"></div>
-      <div style="position:absolute;right:0;top:0;bottom:0;width:42%;background:#faf5e8"></div>
-      <div style="position:absolute;left:5%;top:12%;width:44%;height:40%;border-radius:50% 50% 48% 52%/58% 58% 42% 42%;background:radial-gradient(circle at 50% 48%,#fdf7ee 0 18%,#d64a3c 20% 56%,#f0b0a4 58% 100%)"></div>
-      <div style="position:absolute;left:8%;top:54%;width:22%;height:1.5px;background:#6b7a52;transform:rotate(-16deg)"></div>
-      <div style="position:absolute;left:15%;top:62%;width:12%;height:1.5px;background:#8d9a6e;transform:rotate(12deg)"></div>
-      <div style="position:absolute;left:38%;top:12%;writing-mode:vertical-rl;font:400 6px/1.9 Georgia,'Songti SC',serif;color:#fdf3e6;letter-spacing:.12em">朱砂册页 · 贰零贰陆</div>
-      <div style="position:absolute;right:16%;top:18%;width:26%;height:28%;border-radius:50% 50% 0 0;background:#efe6d4;border:1px solid #d8cbb2"></div>
-      <div style="position:absolute;right:20%;top:50%;writing-mode:vertical-rl;font:400 5px/1.7 Georgia,'Songti SC',serif;color:#6c5a48">画里寻芳</div>
-      <div style="position:absolute;right:6%;bottom:10%;width:5px;height:5px;background:#b5352c"></div>`,
-  },
-  {
-    name: '讲堂', by: 'Civic Course', cat: '培训', fmt: 'deck', date: 20261019,
-    art: `<div style="position:absolute;inset:0;background:#16241f"></div>
-      <div style="position:absolute;right:0;top:0;width:47%;height:100%;background:linear-gradient(160deg,#33463b,#1d2f26 58%,#142019)"></div>
-      <div style="position:absolute;right:3%;top:8%;width:30%;height:34%;border-radius:50%;background:radial-gradient(circle at 42% 40%,#54735d,#26382d 72%,transparent);filter:blur(.6px)"></div>
-      <div style="position:absolute;right:-4%;top:40%;width:38%;height:40%;border-radius:50%;background:radial-gradient(circle at 46% 40%,#44604e,#1b2b22 74%,transparent);filter:blur(1px)"></div>
-      <div style="position:absolute;right:26%;top:4%;width:1.6px;height:52%;background:#4a6252;transform:rotate(7deg)"></div>
-      <div style="position:absolute;right:34%;top:26%;width:1.2px;height:34%;background:#3d5346;transform:rotate(-9deg)"></div>
-      <div style="position:absolute;left:7%;top:13%;font:600 10px/1.45 ui-sans-serif;color:#f3f7f3">城市生态：<br>六周观察课</div>
-      <div style="position:absolute;left:7%;top:50%;width:34%;font:400 4.2px/1.7 ui-sans-serif;color:#9fb0a5">一个从阳台到街区的自然观察计划，六周，六次复访。</div>
-      <div style="position:absolute;left:7%;bottom:13%;font:500 3.8px/1.4 ui-sans-serif;color:#7c8e82;letter-spacing:.1em">观察 · 记录 · 复访</div>
-      <div style="position:absolute;left:7%;bottom:8%;width:16%;height:2px;background:#5c8f6d"></div>`,
-  },
-  {
-    name: '国潮商务路演', by: 'Blackline', cat: '融资演讲稿', fmt: 'deck', date: 20261016,
-    art: `<div style="position:absolute;inset:0;background:#141414"></div>
-      <div style="position:absolute;left:6%;top:8%;font:500 3.8px/1.4 ui-sans-serif;color:#c8a24a;letter-spacing:.16em">智算中心 · 二〇二六</div>
-      <div style="position:absolute;left:6%;top:22%;width:60%;font:600 9px/1.4 ui-sans-serif;color:#f4f4f4">用调度效率<br>提升每一块算力的产出</div>
-      <div style="position:absolute;left:6%;top:52%;width:22%;height:2px;background:#c33a2c"></div>
-      <div style="position:absolute;left:6%;top:60%;right:6%;height:1px;background:#2e2e2e"></div>
-      <div style="position:absolute;left:6%;top:68%;font:600 8px/1 ui-sans-serif;color:#f0cf5a">52<span style="font-size:3.6px;color:#8d8d8d">家</span></div>
-      <div style="position:absolute;left:36%;top:68%;font:600 8px/1 ui-sans-serif;color:#f0cf5a">860<span style="font-size:3.6px;color:#8d8d8d">万元</span></div>
-      <div style="position:absolute;left:70%;top:68%;font:600 8px/1 ui-sans-serif;color:#f0cf5a">71%</div>
-      <div style="position:absolute;left:6%;top:82%;font:3.2px/1.5 ui-sans-serif;color:#6f6f6f">核心客户 · 平均合同额 · 续约率</div>`,
-  },
-  {
-    name: 'Lake Survey', by: 'Field Notes', cat: '报告', fmt: 'doc', date: 20261013,
-    art: `<div style="position:absolute;inset:0;background:linear-gradient(105deg,#b8b3ac,#a09a93 55%,#8d8781)"></div>
-      <div style="position:absolute;left:25%;top:5%;width:50%;height:90%;background:#fff;box-shadow:0 3px 9px rgba(0,0,0,.22);padding:0"></div>
-      <div style="position:absolute;left:25%;top:5%;width:50%;height:32%;background:linear-gradient(180deg,#8ba49d,#5f7c75 55%,#3f5a55)"></div>
-      <div style="position:absolute;left:27%;top:27%;width:22%;height:8%;background:rgba(255,255,255,.25);border-radius:50% 50% 0 0"></div>
-      <div style="position:absolute;left:43%;top:8%;width:4px;height:4px;background:#f2d24a"></div>
-      <div style="position:absolute;left:28%;top:40%;width:44%;font:600 5px/1.35 ui-sans-serif;color:#161616">How healthy is the water at Ulsoor Lake, Bengaluru?</div>
-      <div class="ln" style="position:absolute;left:28%;top:55%;width:20%;height:22%;color:#dcdcdc"></div>
-      <div class="ln" style="position:absolute;left:52%;top:55%;width:20%;height:26%;color:#e4e4e4"></div>
-      <div style="position:absolute;left:28%;bottom:8%;display:flex;gap:2.5px"><i style="width:7px;height:5px;background:#1b5fa8"></i><i style="width:7px;height:5px;background:#c8442f"></i><i style="width:7px;height:5px;background:#e0b83a"></i><i style="width:7px;height:5px;background:#3a6b3f"></i></div>
-      <div style="position:absolute;left:28%;top:36%;width:16%;height:1px;background:#e2e2e2"></div>`,
-  },
-  {
-    name: 'Write-Up', by: 'Paper Works', cat: '课程', fmt: 'doc', date: 20261010,
-    art: `<div style="position:absolute;inset:0;background:linear-gradient(105deg,#a9a7a4,#93918e 60%,#82807d)"></div>
-      <div style="position:absolute;left:25%;top:5%;width:50%;height:90%;background:#fff;box-shadow:0 3px 9px rgba(0,0,0,.22)"></div>
-      <div style="position:absolute;left:25%;top:5%;width:50%;height:30%;background:linear-gradient(180deg,#b9c9d2,#8fa5b0)"></div>
-      <div style="position:absolute;left:29%;top:19%;width:42%;height:9%;background:#4b7bb8;border-radius:1px"></div>
-      <div style="position:absolute;left:31%;top:12%;width:3px;height:12%;background:#c8452f"></div>
-      <div style="position:absolute;left:41%;top:11%;width:3px;height:13%;background:#c8452f"></div>
-      <div style="position:absolute;left:51%;top:12%;width:3px;height:12%;background:#c8452f"></div>
-      <div style="position:absolute;left:28%;top:38%;width:42%;font:600 5px/1.35 ui-sans-serif;color:#161616">Does temperature change how fast bread dough rises?</div>
-      <div class="ln" style="position:absolute;left:28%;top:53%;width:20%;height:22%;color:#dcdcdc"></div>
-      <div class="ln" style="position:absolute;left:52%;top:53%;width:20%;height:26%;color:#e4e4e4"></div>
-      <div style="position:absolute;left:28%;bottom:8%;display:flex;gap:2.5px"><i style="width:7px;height:5px;background:#c8442f"></i><i style="width:7px;height:5px;background:#1b5fa8"></i><i style="width:7px;height:5px;background:#e0b83a"></i><i style="width:7px;height:5px;background:#3a6b3f"></i></div>`,
-  },
-  {
-    name: 'Minutes & Actions', by: 'Quiet Ops', cat: '商业规划', fmt: 'doc', date: 20261007,
-    art: `<div style="position:absolute;inset:0;background:linear-gradient(110deg,#a8a29a,#918b83 55%,#7d7770)"></div>
-      <div style="position:absolute;left:22%;top:4%;width:56%;height:92%;background:#fff;box-shadow:0 3px 9px rgba(0,0,0,.22)"></div>
-      <div style="position:absolute;left:22%;top:4%;width:56%;height:3.5%;background:linear-gradient(90deg,#2f6b4f 0 22%,#c9a13c 22% 40%,#b3452f 40% 58%,#3c63a8 58% 76%,#7a4f8a 76%)"></div>
-      <div style="position:absolute;left:25%;top:11%;font:600 6px/1.3 ui-sans-serif;color:#141414">October board<br>meeting pack</div>
-      <div style="position:absolute;left:25%;top:30%;width:52%;height:1px;background:#e6e6e6"></div>
-      <div style="position:absolute;left:25%;top:34%;width:34%;height:26%;background:linear-gradient(160deg,#b9a37f,#8a7350)"></div>
-      <div style="position:absolute;left:62%;top:34%;width:15%;height:26%"></div>
-      <div class="ln" style="position:absolute;left:25%;top:64%;width:26%;height:14%;color:#dedede"></div>
-      <div class="ln" style="position:absolute;left:55%;top:64%;width:22%;height:18%;color:#e6e6e6"></div>`,
-  },
-  {
-    name: 'Cited', by: 'Long Form', cat: '报告', fmt: 'doc', date: 20261004,
-    art: `<div style="position:absolute;inset:0;background:linear-gradient(90deg,#e9e5e9 0 46%,#f0a23c 46% 62%,#a8876c 62% 100%)"></div>
-      <div style="position:absolute;left:0;top:0;bottom:0;width:46%;background:#e6e2e6"></div>
-      <div style="position:absolute;left:12%;top:8%;width:26%;background:#f4f1f6;height:84%;padding:5px 6px">
-        <div style="font:italic 400 6.5px/1.3 Georgia,serif;color:#2b2b2b">Freedom<br>Machines</div>
-        <div style="margin-top:3px;font:3.2px/1.6 ui-sans-serif;color:#6b6b6b">A field study of the bicycle and the city it made possible.</div>
-        <div class="ln" style="margin-top:4px;width:100%;height:16px;color:#dedade"></div>
-      </div>
-      <div style="position:absolute;right:34%;top:26%;width:14px;height:14px;border:1.4px solid #7c6a58;border-radius:50%"></div>
-      <div style="position:absolute;right:22%;top:28%;width:13px;height:13px;border:1.4px solid #7c6a58;border-radius:50%"></div>
-      <div style="position:absolute;right:24%;top:18%;width:9px;height:10%;border-left:1.4px solid #7c6a58;transform:rotate(16deg)"></div>
-      <div style="position:absolute;right:28%;top:19%;width:4px;height:4px;border-radius:50%;background:#7c6a58"></div>`,
-  },
-  {
-    name: 'Exploded View', by: 'Ledger', cat: '提案', fmt: 'deck', date: 20261001,
-    art: `<div style="position:absolute;inset:0;background:#f8f5ec;border-radius:4px"></div>
-      <div style="position:absolute;left:7%;top:12%;font:600 8px/1.2 ui-sans-serif;color:#2148d8">FX-4 edge<br>gateway</div>
-      <div style="position:absolute;left:7%;top:38%;font:3.4px/1.5 ui-sans-serif;color:#6d6d6d">Launch review for general availability</div>
-      <div style="position:absolute;left:47%;top:9%;width:34%;height:9%;background:#eef1f6;border:1px solid #d3dae6;transform:skewX(-14deg)"></div>
-      <div style="position:absolute;left:47%;top:24%;width:34%;height:9%;background:#e8edf5;border:1px solid #ccd5e3;transform:skewX(-14deg)"></div>
-      <div style="position:absolute;left:47%;top:39%;width:34%;height:9%;background:#e4eaf3;border:1px solid #c7d1e0;transform:skewX(-14deg)"></div>
-      <div style="position:absolute;left:47%;top:54%;width:34%;height:11%;background:#dde6f2;border:1px solid #c2cddd;transform:skewX(-14deg)"></div>
-      <div style="position:absolute;left:84%;top:12%;width:9%;height:1px;background:#cfd6e0"></div>
-      <div style="position:absolute;left:84%;top:27%;width:9%;height:1px;background:#cfd6e0"></div>
-      <div style="position:absolute;left:84%;top:42%;width:9%;height:1px;background:#cfd6e0"></div>
-      <div style="position:absolute;left:84%;top:58%;width:9%;height:1px;background:#cfd6e0"></div>
-      <div style="position:absolute;left:7%;bottom:10%;font:3.2px/1.6 ui-sans-serif;color:#8a8a8a;letter-spacing:.06em">BUILDING A BETTER ISP BACKBONE<br>VERDANT SYSTEMS · FEB 2026</div>`,
-  },
-  {
-    name: 'Quire', by: 'Backline', cat: '报告', fmt: 'doc', date: 20260928,
-    art: `<div style="position:absolute;inset:0;background:#1c2a48"></div>
-      <div style="position:absolute;right:-18%;bottom:-42%;width:96%;aspect-ratio:1;border-radius:50%;background:repeating-radial-gradient(circle at 50% 50%,rgba(240,205,90,.55) 0 1px,transparent 1px 7px)"></div>
-      <div style="position:absolute;left:8%;top:11%;font:600 3.6px/1 ui-sans-serif;color:#f0cd5a;letter-spacing:.16em">BACK OF HOUSE</div>
-      <div style="position:absolute;left:8%;top:24%;font:400 13px/1.15 Georgia,serif;color:#fff">Back of House<br>2026</div>
-      <div style="position:absolute;left:8%;top:62%;width:44%;font:4px/1.6 ui-sans-serif;color:#c9d3e4">The Independent Restaurant<br>Operators Survey</div>
-      <div style="position:absolute;left:8%;bottom:10%;font:3px/1.4 ui-sans-serif;color:#8f9cb4;letter-spacing:.1em">EDITION 04 · MARCH 2026 · 1,214 OPERATORS SURVEYED</div>`,
-  },
-  {
-    name: 'Full Record', by: 'Civic Archive', cat: '提案', fmt: 'doc', date: 20260925,
-    art: `<div style="position:absolute;inset:0;background:linear-gradient(100deg,#d4d4d2,#bcbcba)"></div>
-      <div style="position:absolute;left:20%;top:4%;width:62%;height:92%;background:#fff;box-shadow:0 3px 10px rgba(0,0,0,.24)"></div>
-      <div style="position:absolute;left:20%;top:4%;width:20%;height:92%;background:#1e3b37"></div>
-      <div style="position:absolute;left:24%;top:10%;width:12%;aspect-ratio:1;border-radius:50%;background:#c9b26a"></div>
-      <div style="position:absolute;left:24%;top:36%;width:12%;height:22%;background-image:repeating-linear-gradient(rgba(255,255,255,.35) 0 1px,transparent 1px 3px)"></div>
-      <div style="position:absolute;left:44%;top:9%;width:32%;height:22%;background:linear-gradient(150deg,#8d8f86,#6b6f66)"></div>
-      <div style="position:absolute;left:44%;top:34%;font:600 6px/1.2 Georgia,serif;color:#1a1a1a">Amara Osei</div>
-      <div style="position:absolute;left:44%;top:43%;font:3px/1.6 ui-sans-serif;color:#8a8a8a;letter-spacing:.1em">FIELD RECORD · 2026</div>
-      <div class="ln" style="position:absolute;left:44%;top:52%;width:34%;height:22%;color:#ececec"></div>
-      <div class="ln" style="position:absolute;left:44%;bottom:9%;width:26%;height:9%;color:#f0f0f0"></div>`,
-  },
-  {
-    name: 'Fit Check', by: 'Homeroom', cat: '活动', fmt: 'card', date: 20260922,
-    art: `<div style="position:absolute;inset:0;background:#a9e7cd"></div>
-      <div style="position:absolute;inset:4px;border:2px dashed #f08fb4"></div>
-      <div style="position:absolute;left:6%;top:6%;width:34%;height:88%;background:linear-gradient(150deg,#dfe3e8,#b9c2cc)"></div>
-      <div style="position:absolute;left:10%;top:16%;width:9px;height:9px;border-radius:50%;background:#8a6f60"></div>
-      <div style="position:absolute;left:8%;top:26%;width:13px;height:34%;background:#f1d9c8;border-radius:6px 6px 2px 2px"></div>
-      <div style="position:absolute;left:22%;top:22%;width:9px;height:9px;border-radius:50%;background:#8a6f60"></div>
-      <div style="position:absolute;left:20%;top:32%;width:13px;height:30%;background:#e6c9b6;border-radius:6px 6px 2px 2px"></div>
-      <div style="position:absolute;left:42%;top:14%;font:700 15px/1 ui-sans-serif;letter-spacing:-.03em;color:#141414">HOMEROOM</div>
-      <div style="position:absolute;left:42%;top:30%;width:38%;background:#f06fa0;color:#fff;font:600 3.4px/1.4 ui-sans-serif;padding:2px 3px">A TRUE ART AND TRADITION</div>
-      <div style="position:absolute;left:42%;top:44%;width:44%;font:6px/1.35 ui-sans-serif;color:#141414">School uniform samples, on display for the whole school.</div>
-      <div style="position:absolute;left:42%;bottom:8%;width:46%;font:3.4px/1.5 ui-sans-serif;color:#1c1c1c">FRI NOV 07 · 6:30 – 8:00 PM · ROOM 104<br>HOMEROOM SHOW AND TELL · LOCATION 132 · 08.26.24</div>`,
-  },
-  {
-    name: 'First Edition', by: 'Annual LP', cat: '营销材料', fmt: 'doc', date: 20260919,
-    art: `<div style="position:absolute;inset:0;background:linear-gradient(105deg,#b3b1ae,#9a9895 60%,#8a8885)"></div>
-      <div style="position:absolute;left:25%;top:4%;width:50%;height:92%;background:#f8f1de;box-shadow:0 3px 9px rgba(0,0,0,.24)"></div>
-      <div style="position:absolute;left:30%;top:10%;font:400 7px/1.2 Georgia,serif;color:#2a2721">Salt and Lemon</div>
-      <div style="position:absolute;left:30%;top:22%;width:40%;font:3.2px/1.6 ui-sans-serif;color:#7d776c">Recipes and notes from a kitchen in the south.</div>
-      <div style="position:absolute;left:30%;top:36%;width:40%;height:48%;background:linear-gradient(160deg,#c9b79a,#9c8a6e 60%,#6f6250)"></div>
-      <div style="position:absolute;left:30%;bottom:6%;font:3px/1.4 ui-sans-serif;color:#8a8478">FIRST EDITION · 2026</div>`,
-  },
-  {
-    name: 'The Web Between Us', by: 'Cited Studio', cat: '营销材料', fmt: 'card', date: 20260916,
-    art: `<div style="position:absolute;inset:0;background:radial-gradient(circle at 70% 30%,#2fc7df,#12b3d4 60%,#0ea5c6)"></div>
-      <div style="position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.18) 1px,transparent 1px);background-size:5px 5px;opacity:.5"></div>
-      <div style="position:absolute;left:8%;top:12%;font:700 12px/1.05 ui-sans-serif;letter-spacing:-.02em;color:#2331a8">THE WEB<br>BETWEEN US</div>
-      <div style="position:absolute;left:8%;top:60%;width:40%;font:3.6px/1.6 ui-sans-serif;color:#2331a8">A community health study of spiders, silk and the city.</div>
-      <div style="position:absolute;left:8%;bottom:7%;font:3px/1.4 ui-sans-serif;color:#1d4ba8;letter-spacing:.1em">AARON LEE · ISSUE 04 · 2026</div>
-      <div style="position:absolute;right:9%;bottom:9%;width:13px;height:9px;border-radius:50%;background:#2331a8"></div>
-      <div style="position:absolute;right:17%;bottom:15%;width:8px;height:6px;border-radius:50%;background:#2331a8"></div>
-      <div style="position:absolute;right:14%;bottom:13%;width:1.6px;height:16%;background:#2331a8;transform:rotate(28deg)"></div>
-      <div style="position:absolute;right:20%;bottom:12%;width:1.6px;height:15%;background:#2331a8;transform:rotate(52deg)"></div>
-      <div style="position:absolute;right:27%;bottom:10%;width:1.6px;height:14%;background:#2331a8;transform:rotate(74deg)"></div>
-      <div style="position:absolute;right:23%;bottom:14%;width:1.6px;height:14%;background:#2331a8;transform:rotate(-30deg)"></div>
-      <div style="position:absolute;right:29%;bottom:16%;width:1.6px;height:13%;background:#2331a8;transform:rotate(-56deg)"></div>
-      <div style="position:absolute;right:34%;bottom:20%;width:1.6px;height:11%;background:#2331a8;transform:rotate(-80deg)"></div>`,
-  },
-  {
-    name: 'Soft Current', by: 'Northlight', cat: '报告', fmt: 'card', date: 20260913,
-    art: `<div style="position:absolute;inset:0;background:#faf4e4"></div>
-      <div style="position:absolute;right:6%;top:6%;width:44%;height:88%;border-radius:50%;background:#1f3a33"></div>
-      <div style="position:absolute;right:16%;top:26%;width:18%;height:36%;background:#c98a63;border-radius:50% 44% 40% 46%"></div>
-      <div style="position:absolute;right:13%;top:30%;width:12%;height:20%;background:#e0a1a2;border-radius:50% 50% 46% 54%"></div>
-      <div style="position:absolute;left:8%;top:22%;width:40%;font:400 8px/1.25 Georgia,serif;color:#1c1c1c">Migraine is more than a headache</div>
-      <div style="position:absolute;left:8%;top:56%;width:38%;font:3.4px/1.7 ui-sans-serif;color:#6f6a5e">A community health report on what we still don't know.</div>
-      <div style="position:absolute;left:8%;bottom:8%;font:3px/1.4 ui-sans-serif;color:#9a9384;letter-spacing:.1em">SOFT CURRENT · VOL 3</div>`,
-  },
-  {
-    name: 'Spark and Fire', by: 'Year Two', cat: '活动', fmt: 'card', date: 20260910,
-    art: `<div style="position:absolute;inset:0;background:#2b46e8"></div>
-      <div style="position:absolute;left:7%;top:9%;font:600 3.8px/1 ui-sans-serif;color:#fff;letter-spacing:.22em">YEAR TWO</div>
-      <div style="position:absolute;left:26%;top:24%;width:8%;height:34%;background:radial-gradient(ellipse at 50% 80%,#fff 0 30%,rgba(255,255,255,.35) 34%,transparent 66%)"></div>
-      <div style="position:absolute;left:63%;top:20%;width:10%;height:40%;background:radial-gradient(ellipse at 50% 80%,#fff 0 26%,rgba(255,255,255,.3) 32%,transparent 64%)"></div>
-      <div style="position:absolute;left:24%;top:58%;width:12%;height:1.2px;background:rgba(255,255,255,.7)"></div>
-      <div style="position:absolute;left:61%;top:60%;width:14%;height:1.2px;background:rgba(255,255,255,.7)"></div>
-      <div style="position:absolute;left:6%;bottom:14%;width:24%;font:2.8px/1.5 ui-sans-serif;color:rgba(255,255,255,.75)">A YEAR OF SMALL<br>FIRES, KEPT ALIGHT</div>
-      <div style="position:absolute;right:6%;top:14%;width:20%;font:2.8px/1.5 ui-sans-serif;color:rgba(255,255,255,.7);text-align:right">SPARK<br>AND FIRE</div>`,
-  },
-  {
-    name: 'Scintilla', by: 'Pollinator Lab', cat: '课程', fmt: 'card', date: 20260907,
-    art: `<div style="position:absolute;inset:0;background:#5b25d6"></div>
-      <div style="position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.14) 1px,transparent 1px);background-size:6px 6px;opacity:.5"></div>
-      <div style="position:absolute;left:7%;top:20%;width:52%;font:700 9px/1.15 ui-sans-serif;letter-spacing:-.02em;color:#fff">The secret life<br><span style="color:#f6e35a">of pollinators</span></div>
-      <div style="position:absolute;left:7%;top:56%;width:44%;font:3.4px/1.7 ui-sans-serif;color:rgba(255,255,255,.85)">Why a third of bites depend on insects at work.</div>
-      <div style="position:absolute;right:8%;top:10%;width:14px;height:14px;border-radius:50%;background:radial-gradient(circle,#f6e35a 0 30%,#f06fa0 32% 100%)"></div>
-      <div style="position:absolute;right:26%;top:6%;width:9px;height:9px;border-radius:50%;background:radial-gradient(circle,#fff 0 28%,#f079b0 30% 100%)"></div>
-      <div style="position:absolute;right:10%;bottom:14%;width:16px;height:9px;border-radius:50%;background:repeating-linear-gradient(90deg,#f6e35a 0 2px,#241048 2px 4px);border:1px solid #f6e35a"></div>
-      <div style="position:absolute;left:5%;bottom:8%;font:2.8px/1.4 ui-sans-serif;color:rgba(255,255,255,.7);letter-spacing:.1em">SCINTILLA · ISSUE 01</div>`,
-  },
-  {
-    name: 'Sisyphus Riso', by: 'Riso Club', cat: '营销材料', fmt: 'card', date: 20260904,
-    art: `<div style="position:absolute;inset:0;background:#fbdcdb"></div>
-      <div style="position:absolute;left:-10%;bottom:-24%;width:120%;height:52%;border-radius:50%;background:#2f7f74;transform:rotate(-6deg)"></div>
-      <div style="position:absolute;left:38%;top:18%;width:34%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f5833c,#dd5a22 60%,#b8410f)"></div>
-      <div style="position:absolute;left:40%;top:26%;width:5px;height:14%;background:#2f5bd0;transform:rotate(-18deg)"></div>
-      <div style="position:absolute;left:56%;top:24%;width:5px;height:15%;background:#2f5bd0;transform:rotate(12deg)"></div>
-      <div style="position:absolute;left:46%;top:34%;width:6px;height:12%;background:#1d3f8f;border-radius:2px"></div>
-      <div style="position:absolute;left:44%;top:44%;width:5px;height:5px;border-radius:50%;background:#1d3f8f"></div>
-      <div style="position:absolute;left:8%;top:66%;width:84%;font:700 7px/1.25 ui-sans-serif;letter-spacing:-.01em;color:#1a1a1a;text-align:center">FIND DELIGHT IN PUSHING<br>YOUR ROCK UP YOUR HILL</div>
-      <div style="position:absolute;left:0;right:0;bottom:6%;text-align:center;font:2.8px/1.4 ui-sans-serif;color:#7a5a58">SISYPHUS RISO · PRINT CLUB</div>`,
-  },
-  {
-    name: 'Rebuilding the Past', by: 'Redline', cat: '课程', fmt: 'deck', date: 20260901,
-    art: `<div style="position:absolute;inset:0;background:#f5f0e4"></div>
-      <div style="position:absolute;left:8%;top:12%;width:74%;font:400 10px/1.15 Georgia,serif;color:#a8342a">Rebuilding the Past</div>
-      <div style="position:absolute;left:8%;top:32%;width:70%;font:3px/1.6 ui-sans-serif;color:#7d7566">THE PERSIAN WINTER MEMORIAL ARCHIVE · OLIVIA WATERS · WINTER 2026</div>
-      <div style="position:absolute;left:8%;bottom:8%;width:44%;height:44%;background-image:linear-gradient(#c8442f 0 0),repeating-linear-gradient(90deg,#c8442f 0 2px,transparent 2px 5px);opacity:.85"></div>
-      <div style="position:absolute;left:10%;bottom:10%;width:26%;height:34%;background-image:repeating-linear-gradient(90deg,#c8442f 0 2px,transparent 2px 5px)"></div>
-      <div style="position:absolute;right:8%;bottom:10%;width:34%;height:30%;background-image:repeating-linear-gradient(90deg,#2f4f8f 0 2px,transparent 2px 6px)"></div>
-      <div style="position:absolute;right:6%;bottom:6%;width:40%;height:1px;background:#c9c0ae"></div>`,
-  },
-  {
-    name: 'Metamorphosis', by: 'Yellow Field', cat: '报告', fmt: 'deck', date: 20260829,
-    art: `<div style="position:absolute;inset:0;background:#f2b100"></div>
-      <div style="position:absolute;left:20%;top:32%;width:22%;height:30%;background:repeating-linear-gradient(45deg,#1a1a1a 0 2px,#f7f7f4 2px 5px);border-radius:50% 10% 50% 10%;transform:rotate(-12deg)"></div>
-      <div style="position:absolute;left:58%;top:22%;width:26%;height:38%;background:repeating-linear-gradient(45deg,#1a1a1a 0 2px,#f7f7f4 2px 5px);border-radius:12% 50% 12% 50%;transform:rotate(8deg)"></div>
-      <div style="position:absolute;left:44%;top:40%;width:2px;height:22%;background:#1a1a1a"></div>
-      <div style="position:absolute;left:44%;top:34%;width:2px;height:2px;border-radius:50%;background:#1a1a1a"></div>
-      <div style="position:absolute;left:8%;bottom:8%;font:3px/1.4 ui-sans-serif;color:#4a3a00;letter-spacing:.14em">METAMORPHOSIS · FIELD GUIDE 02</div>`,
-  },
-  {
-    name: 'Luminal', by: 'Quiet Cascade', cat: '提案', fmt: 'deck', date: 20260826,
-    art: `<div style="position:absolute;inset:0;background:#0b0a09"></div>
-      <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 72% 58%,rgba(224,150,66,.55),rgba(120,70,30,.28) 38%,transparent 66%)"></div>
-      <div style="position:absolute;left:0;top:0;right:0;height:100%;background:linear-gradient(90deg,rgba(0,0,0,.72),transparent 60%)"></div>
-      <div style="position:absolute;left:8%;top:34%;width:56%;font:400 11px/1.15 Georgia,serif;color:#f6f1e8">The quiet<br>cascade</div>
-      <div style="position:absolute;left:8%;top:64%;width:56%;font:3.4px/1.7 ui-sans-serif;color:#cfc6b8">A long-patient fall, and the light it finds on the way down.</div>
-      <div style="position:absolute;left:8%;bottom:10%;font:2.8px/1.4 ui-sans-serif;color:#9d9384;letter-spacing:.12em">LUMINAL · VOL 04 · 2026</div>`,
-  },
-  {
-    name: 'Inner Weather', by: 'Still Room', cat: '报告', fmt: 'card', date: 20260823,
-    art: `<div style="position:absolute;inset:0;background:linear-gradient(150deg,#e6e9eb,#cfd5d8 60%,#bfc6ca)"></div>
-      <div style="position:absolute;left:38%;top:26%;width:22%;height:26%;border-radius:50% 50% 46% 54%;background:#e8d3c4"></div>
-      <div style="position:absolute;left:34%;top:46%;width:30%;height:44%;background:#f2f4f5;border-radius:14px 14px 4px 4px"></div>
-      <div style="position:absolute;left:2%;top:8%;width:26%;height:1px;background:#e0483c"></div>
-      <div style="position:absolute;left:2%;top:14%;width:22%;height:1px;background:#e0483c"></div>
-      <div style="position:absolute;left:2%;top:20%;width:26%;height:1px;background:#e0483c"></div>
-      <div style="position:absolute;left:2%;bottom:20%;width:24%;height:1px;background:#e0483c"></div>
-      <div style="position:absolute;left:2%;bottom:14%;width:20%;height:1px;background:#e0483c"></div>
-      <div style="position:absolute;right:2%;top:10%;width:26%;height:1px;background:#e0483c"></div>
-      <div style="position:absolute;right:2%;top:16%;width:22%;height:1px;background:#e0483c"></div>
-      <div style="position:absolute;right:2%;bottom:24%;width:26%;height:1px;background:#e0483c"></div>
-      <div style="position:absolute;right:2%;bottom:18%;width:22%;height:1px;background:#e0483c"></div>
-      <div style="position:absolute;left:0;right:0;bottom:5%;text-align:center;font:2.8px/1.4 ui-sans-serif;color:#5a6066;letter-spacing:.12em">INNER WEATHER · 2026</div>`,
-  },
-]
-
 const tplState = { fmt: 'all', cats: new Set(), q: '', sort: 'date', more: false }
 
 function useTemplate(name) {
+  closeCase()
   exitMode()
   setView('home')
   const box = $('homePrompt')
@@ -2265,10 +2114,10 @@ function useTemplate(name) {
 
 function tplHits() {
   const q = tplState.q.trim().toLowerCase()
-  const hits = TPL_LIBRARY.filter((tpl) => {
-    if (tplState.fmt !== 'all' && tpl.fmt !== tplState.fmt) return false
-    if (tplState.cats.size > 0 && !tplState.cats.has(tpl.cat)) return false
-    if (q !== '' && !(tpl.name + ' ' + tpl.by + ' ' + tpl.cat).toLowerCase().includes(q)) return false
+  const hits = CASE_DECKS.filter((deck) => {
+    if (tplState.fmt !== 'all' && deck.fmt !== tplState.fmt) return false
+    if (tplState.cats.size > 0 && !(tplState.cats.has(deck.category) || tplState.cats.has(deck.kind))) return false
+    if (q !== '' && !(deck.name + ' ' + deck.en + ' ' + deck.by + ' ' + deck.kind + ' ' + deck.tags.join(' ')).toLowerCase().includes(q)) return false
     return true
   })
   if (tplState.sort === 'name') hits.sort((a, b) => a.name.localeCompare(b.name, 'zh-Hans-CN'))
@@ -2279,21 +2128,115 @@ function tplHits() {
 const TPL_CAP_ICON =
   '<svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"></use></svg>'
 
+/* ── 案例封面：直接用第 1 页幻灯片渲染，卡片与详情页共用一套画布 ── */
+function deckCoverHTML(deck) {
+  return '<div class="sdbox">' + slideHTML(deck, deck.slides[0]) + '</div>'
+}
+
 function paintTplGallery() {
   const grid = $('tpGrid')
   const hits = tplHits()
   grid.innerHTML = ''
-  for (const tpl of hits) {
+  for (const deck of hits) {
     const card = document.createElement('button')
     card.className = 'tpl-card'
-    card.dataset.cat = tpl.cat
+    card.dataset.cat = deck.kind
     card.innerHTML =
-      '<div class="cover"><div class="cv">' + tpl.art + '</div></div>' +
-      '<div class="tpl-cap">' + TPL_CAP_ICON + '<span>' + tpl.name + '</span></div>'
-    card.onclick = () => useTemplate(tpl.name)
+      '<div class="cover">' + deckCoverHTML(deck) + '</div>' +
+      '<div class="tpl-cap">' + TPL_CAP_ICON + '<span>' + deck.name + '</span></div>'
+    card.onclick = () => openCase(deck)
     grid.appendChild(card)
   }
   $('tpEmpty').hidden = hits.length > 0
+}
+
+/* ── 案例详情页 ───────────────────────────────────── */
+const caseState = { deck: null, i: 0 }
+
+function iconSVG(name, size) {
+  const n = size || 15
+  return '<svg class="ic" width="' + n + '" height="' + n + '" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-' + name + '"></use></svg>'
+}
+
+function openCase(deck) {
+  caseState.deck = deck
+  caseState.i = 0
+  $('tvThumbs').dataset.deck = ''
+  renderCaseSide(deck)
+  renderCase()
+  $('tplView').hidden = false
+}
+
+function closeCase() {
+  if ($('tplView').hidden) return
+  $('tplView').hidden = true
+  caseState.deck = null
+  $('tvStage').innerHTML = ''
+}
+
+function gotoCasePage(i) {
+  const deck = caseState.deck
+  if (!deck) return
+  caseState.i = Math.max(0, Math.min(deck.slides.length - 1, i))
+  renderCase()
+}
+
+function renderCase() {
+  const deck = caseState.deck
+  if (!deck) return
+  const slide = deck.slides[caseState.i]
+  $('tvStage').innerHTML = '<div class="sdbox">' + slideHTML(deck, slide) + '</div>'
+  const thumbs = $('tvThumbs')
+  if (thumbs.dataset.deck !== deck.id) {
+    thumbs.dataset.deck = deck.id
+    thumbs.innerHTML = deck.slides.map((sl, i) =>
+      '<button class="tv-th" data-i="' + i + '" title="' + sl.label + '">' +
+      '<div class="sdbox">' + slideHTML(deck, sl) + '</div><span>' + sl.label + '</span></button>'
+    ).join('')
+    thumbs.querySelectorAll('.tv-th').forEach((el) => {
+      el.onclick = () => gotoCasePage(Number(el.dataset.i))
+    })
+  }
+  const all = thumbs.querySelectorAll('.tv-th')
+  all.forEach((el, i) => el.classList.toggle('on', i === caseState.i))
+  const active = all[caseState.i]
+  if (active) active.scrollIntoView({ block: 'nearest', inline: 'center' })
+  $('tvPrev').disabled = caseState.i === 0
+  $('tvNext').disabled = caseState.i === all.length - 1
+}
+
+function renderCaseSide(deck) {
+  const badge = deck.by === 'Gamma' ? 'G' : deck.by.slice(0, 1).toUpperCase()
+  $('tvSide').innerHTML =
+    '<div class="tv-side-scroll">' +
+      '<div class="tv-ttl" data-no-i18n><h2>' + deck.name + '</h2>' +
+        '<button class="tv-link" id="tvCopy" title="复制模板链接">' + iconSVG('link') + '</button></div>' +
+      '<div class="tv-meta" data-no-i18n>' + deck.cat + ' · ' + deck.ratio + ' · ' + deck.slides.length + ' 个界面</div>' +
+      '<div class="tv-prov" data-no-i18n><span class="tv-badge">' + badge + '</span>由 ' + deck.by + ' 提供</div>' +
+      '<p class="tv-desc" data-no-i18n>' + deck.desc + '</p>' +
+      '<h3>最适合</h3><ul class="tv-best" data-no-i18n>' + deck.bestFor.map((x) => '<li>' + x + '</li>').join('') + '</ul>' +
+      '<div class="tv-row"><span class="tv-row-k">样式</span>' +
+        '<div class="tv-dots">' + deck.styles.map((c) => '<i style="background:' + c + '"></i>').join('') + '</div>' +
+        '<button class="tv-chev" id="tvStyle" title="' + deck.colorway + '">' + iconSVG('chevron-down', 14) + '</button></div>' +
+      '<div class="tv-row"><span class="tv-row-k">分类</span><span class="tv-row-v" data-no-i18n>' + deck.kind + '</span></div>' +
+    '</div>' +
+    '<button class="tv-use" id="tvUse">使用模板</button>'
+  $('tvUse').onclick = () => useTemplate(deck.name)
+  $('tvCopy').onclick = () => toast('已复制「' + deck.name + '」的模板链接')
+  $('tvStyle').onclick = () => toast('这套模板的配色：' + deck.colorway)
+}
+
+function wireCaseView() {
+  $('tvBack').onclick = closeCase
+  $('tvClose').onclick = closeCase
+  $('tvPrev').onclick = () => gotoCasePage(caseState.i - 1)
+  $('tvNext').onclick = () => gotoCasePage(caseState.i + 1)
+  document.addEventListener('keydown', (ev) => {
+    if ($('tplView').hidden) return
+    if (ev.key === 'Escape') closeCase()
+    else if (ev.key === 'ArrowLeft') gotoCasePage(caseState.i - 1)
+    else if (ev.key === 'ArrowRight') gotoCasePage(caseState.i + 1)
+  })
 }
 
 function paintTplSidebar() {
@@ -2567,12 +2510,13 @@ function setView(view) {
 /* ── 渲染 ────────────────────────────────────────────── */
 function paintTemplates() {
   const grid = $('tplGrid')
+  if (!grid) return
   grid.innerHTML = ''
-  for (const tpl of TEMPLATES) {
+  for (const deck of CASE_DECKS.slice(0, 6)) {
     const item = document.createElement('button')
     item.className = 'tpl'
-    item.innerHTML = '<div class="cover ' + tpl.cls + '">' + tpl.html + '</div><span>' + tpl.name + '</span>'
-    item.onclick = () => useTemplate(tpl.name)
+    item.innerHTML = '<div class="cover">' + deckCoverHTML(deck) + '</div><span>' + deck.name + '</span>'
+    item.onclick = () => openCase(deck)
     grid.appendChild(item)
   }
 }
@@ -4626,6 +4570,7 @@ paintTplSidebar()
 paintTplGallery()
 paintThemeTabs()
 paintThemes()
+wireCaseView()
 paintSessions()
 paintActivity()
 renderOfficeCards()
