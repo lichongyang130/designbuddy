@@ -509,7 +509,7 @@ rail 72 │ 自定义侧栏 278px（#f5f8fd，右描边 #d6e1ef）│ 主区纯�
 | 盐渡通勤 / Saltwater Transit | `#1B2A5C` 靛蓝 | 商业规划 | 29 | 15 | 编辑体 | 珊瑚橘 + 米白；左侧章节标尺、衬线大标题配等宽数据；对比页、两组三联图版、行式数字 |
 | 糖与盐 / Sugar & Salt | `#F2D3CE` 雾粉 | 培训 | 30 | 15 | 印刷讲义 | 可可字 + 牛血红；页顶双线、衬线标题、虚线分隔、超大序号；步骤页 + 两组图版 |
 
-十套案例不再共用一套版式：`slideHTML` 给 `.sld` 挂 `k-<deckId>` 家族类，每套在 `index.html` 里有自己的一组覆盖——页边距、标题字号、分栏结构、分隔线、引用页姿态、页码页脚（`folio` / `footLeft`）都不同；7 个主题变量（`paper/ink/accent/second/muted/rule/body`）只是最底层。
+九套案例不再共用一套版式：`slideHTML` 给 `.sld` 挂 `k-<deckId>` 家族类，每套在 `index.html` 里有自己的一组覆盖——页边距、标题字号、分栏结构、分隔线、引用页姿态、页码页脚（`folio` / `footLeft`）都不同；7 个主题变量（`paper/ink/accent/second/muted/rule/body`）只是最底层。
 
 **新增的 7 个专属页面类型**（每套至少一页，别人家没有）：
 
@@ -547,7 +547,7 @@ rail 72 │ 自定义侧栏 278px（#f5f8fd，右描边 #d6e1ef）│ 主区纯�
 
 ### 17.5 校验
 
-`node --check cases.js` 通过；lightningcss 0 warning；`npm test` 55/55；smoke2 `cards:7 errors:none`；1024/1440 两档详情页无横向溢出，键盘与 Esc 正常，中英文切换无报错。十套案例合计 182 个界面（中文 7 套 13–15 页、英文 2 套 29/30 页；每套 11–15 种页面类型）、68 张本地配图（统一压到 1280px / q82，共约 11MB）。
+`node --check cases.js` 通过；lightningcss 0 warning；`npm test` 55/55；smoke2 `cards:9 errors:none`；1024/1440 两档详情页无横向溢出，键盘与 Esc 正常，中英文切换无报错。九套案例合计 156 个界面（中文 7 套 13–15 页、英文 2 套 29/30 页；每套 11–15 种页面类型）、68 张本地配图（统一压到 1280px / q82，共约 11MB）。
 
 ### 17.6 顺带修掉的
 
