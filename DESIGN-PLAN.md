@@ -453,3 +453,34 @@ rail 72 │ 自定义侧栏 278px（#f5f8fd，右描边 #d6e1ef）│ 主区纯�
 - 瓦片配色函数 `softTile()`：`hsl(h 66% 95%)` 底 + `hsl(h 50% 40%)` 图标 + 1px 内描边；专家/技能取蓝青色温（198–272），连接器沿用各自品牌色相，但一律降到浅底深图标，不再出现高饱和渐变。
 - 语义映射集中在 `ICON_RULES`（expert / skill / connector 三组正则），需要调整时只改这一处。
 - 图标语义抽成 `iconMark(name, size)`，≤13px 自动套 `.ic-xs`（2.2 描边）。
+
+## 16. 专家 / 技能 / 连接器二次重做：真头像 + 真 logo（2026-11-02）
+
+§15 的「柔和瓦片 + 单色语义图标」被判死刑（"太难看"）。问题不在图标本身，而是三处共用同一套浅底小图，看起来像占位符。这一版换成三种**不同性质**的图形语言。
+
+### 16.1 专家：真人卡通头像
+
+- `apps/web/public/avatars/expert-01…10.jpg`：10 张欧美动画/卡通风人像，1024px 生成后统一压到 320×320、q88 progressive，单张 13–22KB，目录合计 188K。
+- 角色对应：男工程师 / 女设计师 / 女分析师 / 女投资顾问 / 男法务 / 女电商运营 / 男创业者 / 女职业教练 / 男嵌入式老工程师 / 女内容作者。
+- 头像槽 `.ex-ava` 38×38、`border-radius: 11px`、`overflow: hidden`，`<img>` 走 `object-fit: cover`；不再有首字、不再有渐变。
+- `EXPERT_FACES`（正则 → 头像序号）按角色语义分配：开发/架构→01、小程序→01、设计/视觉→02、数据/报表→03、投资/金融→04、法律/合规→05、电商/运营→06、创业/销售→07、求职/教练→08、嵌入/硬件→09、内容/写作→10，兜底按名字哈希。
+- **同屏去重**：`expertFace(name, usedFaces)` 命中角色后若该头像已被本屏占用，就顺延到下一张空闲头像，避免一屏出现四个同一张脸（4 张"全栈开发"卡曾全是同一个人）。
+
+### 16.2 技能 / 办公能力：纯色 app icon
+
+- 弃用浅底单色，改成 **饱和品牌色底 + 白色字形**，视觉上等同 iOS/macOS 应用图标：内高光 `inset 0 1px 0 rgba(255,255,255,.28)` + 1px 投影 + 11px 圆角。
+- `skillTone(name)` 按文种/场景取色：Word/文档 `#2D6AE3`、Excel/表格 `#0F7A57`、PPT/演示 `#CF5230`、PDF `#BE3E58`、浏览器/Web `#0E7490`、代码/CLI `#5B4BE0`、金融/行情 `#0B7C6E`、内容/视觉 `#B8486A`、数据/分析 `#7448CE`、IM/会议 `#17719E`、兜底石板灰 `#4C5A6B`。**同一种颜色只对应一个语义**，不再随机。
+- 办公能力卡 `OFFICE_ITEMS` 的 `hue` 全部换成 `color`：docx `#2D6AE3`、formula `#5B4BE0`、xlsx `#12805C`、pptx `#D9542E`、pdf `#C9435B`。
+
+### 16.3 连接器：官方 logo + 品牌色字形牌
+
+- 新增 `apps/web/public/brand-logos.js`（`window.DB_BRANDS`，UMD 形式，14.5KB，无外部请求）：key → `{ v: viewBox, color: 品牌色, body: 单色 path }`，渲染时用品牌色 fill。
+- 已覆盖 16 个：企业微信 `#0082EF`、腾讯会议 `#006EFF`、TAPD `#0052D9`、CNB `#0F62FE`、微信 `#07C160`、QQ `#12B7F5`、钉钉 `#0089FF`、WPS `#FF6A00`、微云 `#2D8CF0`、天眼查 `#FF6C00`、百度网盘 `#06A7FF`、Figma `#F24E1E`、GitHub `#181717`、GitLab `#FC6D26`、Notion `#111111`、Slack `#4A154B`。
+- 来源：TDesign Icons(MIT)、Simple Icons(CC0)、Ant Design(MIT)、Arcticons(CC BY-SA 4.0)，头部注释里写明了新增一个 logo 的方法。
+- 渲染：`BRAND_KEYS` 正则 → `brandKey()` → `brandTile(name, hue)`；有 logo 的出 **白底 + 1px 边框 + 23px 品牌色 logo**（`.cn-ico`），没有的兜底成 **品牌色 app icon + 中文前两字/英文前三字母**（`.cn-ico-mono`，颜色取 demo 数据里的 `hue`，保证同一产品色相稳定），**不再回落到通用插头**。
+- `QQ邮箱` 不能借用 QQ 的 logo（`/^QQ$/` 精确匹配），否则品牌错误；这类"同族但不同产品"的项一律走兜底牌。
+
+### 16.4 校验
+
+- `node --check`（icons.js / brand-logos.js）通过；lightningcss 0 warning；`npm test` 55/55；smoke2 `themes:18 formats:4 cats:19 cards:24 settings:14 errors:none`；1024 宽三个页签均无横向溢出。
+- 顺带清掉 §15 遗留的死代码：`softTile()` / `nameHue()`（`ICON_RULES` 独立保留）。
