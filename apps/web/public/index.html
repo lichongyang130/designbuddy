@@ -159,8 +159,6 @@
   .pill:hover{background:#f7faff;border-color:#cbd9ef}
   .pill .spark{color:var(--fg)}
   .top-right{display:flex;align-items:center;gap:10px}
-  .ghost{font-size:13.5px;color:var(--fg);height:32px;padding:0 10px;border-radius:var(--r-sm);display:inline-flex;align-items:center}
-  .ghost:hover{background:#eef3fb}
 
   .home{
     flex:1;min-height:0;overflow:auto;padding:8px 24px 56px;
@@ -902,7 +900,6 @@
     .app{grid-template-columns:72px 210px minmax(0,1fr)}
     .ex-grid,.sk-row,.sk-grid,.cn-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
     .hero h1{font-size:24px}
-    .ghost{display:none}
     .sp{width:96vw}
     .sp-nav{width:180px}
   }
@@ -1170,17 +1167,6 @@
         <svg class="spark" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l1.8 5.2L19 9.6l-5.2 1.8L12 16.6l-1.8-5.2L5 9.6l5.2-1.8z"/><path d="M18.4 15.2l.8 2.3 2.3.8-2.3.8-.8 2.3-.8-2.3-2.3-.8 2.3-.8z"/></svg>
         升级获得更多 AI 功能
       </button>
-      </div>
-      <div class="top-right">
-        <button class="ghost" id="classicMode">使用经典版生成工具</button>
-        <button class="pill" id="blankNew">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-          从空白新建
-        </button>
-        <button class="pill" id="credits">
-          <svg class="spark" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l1.8 5.2L19 9.6l-5.2 1.8L12 16.6l-1.8-5.2L5 9.6l5.2-1.8z"/></svg>
-          173
-        </button>
       </div>
     </div>
 
@@ -2607,7 +2593,6 @@ $('openDrawer').onclick = () => openSettings('general')
 $('openPalette2').onclick = openPalette
 $('paletteInput').addEventListener('input', (e) => paintPalette(e.target.value))
 $('help').onclick = () => toast('演示环境：输入需求会真实驱动本地 Agent Runtime。')
-$('blankNew').onclick = () => { exitMode(); setView('home'); $('homePrompt').value = ''; $('homePrompt').focus() }
 $('newBlank').onclick = () => { exitMode(); setView('home'); $('homePrompt').value = ''; $('homePrompt').focus() }
 $('setFontSize').oninput = () => {
   state.prefs.fontSize = FONT_STEPS[Number($('setFontSize').value)] || DEFAULT_PREFS.fontSize
@@ -2692,9 +2677,6 @@ markSoon($('exSubtabs').querySelector('[data-sub="teams"]'))
 markSoon($('exMine'))
 markSoon($('skAdd'))
 markSoon($('cnCustom'))
-markSoon($('upgrade'), '演示')
-markSoon($('credits'), '演示')
-markSoon($('classicMode'))
 markSoon($('recentDocs'))
 markSoon($('browseTpl'))
 $('mic').hidden = true
