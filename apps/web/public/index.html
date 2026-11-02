@@ -2132,7 +2132,7 @@
 <div class="app">
   <!-- 图标栏 -->
   <nav class="rail">
-    <div class="logo">G<i></i></div>
+    <div class="logo">D<i></i></div>
 
     <button class="rbtn on" data-nav="home" title="首页">
       <i class="ric"><svg class="ic" width="19" height="19" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-home"></use></svg></i>
@@ -2697,7 +2697,7 @@
           <div class="sp-row">
             <div class="sp-main">
               <div class="sp-title">链接打开方式</div>
-              <div class="sp-desc">设置 WorkBuddy 对话中链接的默认打开策略。</div>
+              <div class="sp-desc">设置 DesignBuddy 对话中链接的默认打开策略。</div>
             </div>
             <div class="sp-ctl">
               <select class="sp-select" id="setLinkOpen">
@@ -2730,14 +2730,14 @@
           <div class="sp-row">
             <div class="sp-main">
               <div class="sp-title">运行时防止系统休眠</div>
-              <div class="sp-desc">在 WorkBuddy 运行任务时，让电脑保持唤醒状态。</div>
+              <div class="sp-desc">在 DesignBuddy 运行任务时，让电脑保持唤醒状态。</div>
             </div>
             <div class="sp-ctl"><button class="sp-toggle on" data-on="true" data-key="sleep"><span></span></button></div>
           </div>
           <div class="sp-row">
             <div class="sp-main">
               <div class="sp-title">开机自动启动</div>
-              <div class="sp-desc">开启后 WorkBuddy 会在你登录电脑后自动启动。</div>
+              <div class="sp-desc">开启后 DesignBuddy 会在你登录电脑后自动启动。</div>
             </div>
             <div class="sp-ctl"><button class="sp-toggle" data-on="false" data-key="autostart"><span></span></button></div>
           </div>
@@ -2879,7 +2879,7 @@
 <div class="docview" id="docView" hidden>
   <div class="dv-top">
     <button class="dv-crumb" id="dvBack" title="返回模板库">
-      <span class="dv-g">G</span>
+      <span class="dv-g">D</span>
       <svg class="ic ic-xs" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-right"></use></svg>
       <span class="dv-crumb-t" id="dvName" data-no-i18n></span>
     </button>
@@ -2949,7 +2949,7 @@
       <div class="dv-pages" id="dvPages" data-no-i18n></div>
       <div class="dv-rail idle" id="dvRail" aria-hidden="true"><i class="dv-thumb" id="dvThumb"></i></div>
       <div class="dv-pager"><span id="dvCount">01 / 19</span></div>
-      <div class="dv-made"><span class="dv-g">G</span>由 GAMMA 制作</div>
+      <div class="dv-made"><span class="dv-g">D</span>由 DESIGNBUDDY 制作</div>
     </div>
   </div>
 </div>
@@ -3075,7 +3075,7 @@ function renderCase() {
 }
 
 function renderCaseSide(deck) {
-  const badge = deck.by === 'Gamma' ? 'G' : deck.by.slice(0, 1).toUpperCase()
+  const badge = deck.by.slice(0, 1).toUpperCase()
   $('tvSide').innerHTML =
     '<div class="tv-side-scroll">' +
       '<div class="tv-ttl" data-no-i18n><h2>' + deck.name + '</h2>' +
