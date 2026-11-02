@@ -975,18 +975,27 @@
   .dv-imgs img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:6px;background:#f1f1ef}
   .dv-imgs figcaption{margin-top:5px;font-size:10.5px;line-height:1.5;color:#8a9097;
     overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
-  .dv-canvas{position:relative;min-width:0;display:flex;align-items:center;justify-content:center;
-    background:#d9d8d3;padding:24px 40px 46px;overflow:hidden}
-  .dv-stage{height:100%;min-height:0;display:flex;align-items:center;justify-content:center}
-  .dv-stage .sdbox.doc{width:auto;height:100%;max-width:none;max-height:100%;aspect-ratio:960/1358;
+  .dv-canvas{position:relative;min-width:0;background:#d9d8d3;overflow:hidden}
+  .dv-pages{height:100%;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;
+    display:flex;flex-direction:column;align-items:center;gap:26px;padding:26px 44px 58px;
+    scrollbar-width:none;-ms-overflow-style:none}
+  .dv-pages::-webkit-scrollbar{width:0;height:0}
+  .dv-rail{position:absolute;z-index:3;top:12px;bottom:12px;right:7px;width:9px;border-radius:99px;
+    background:rgba(35,35,30,.13);opacity:1;transition:opacity .2s var(--ease),background .2s var(--ease)}
+  .dv-rail:hover{background:rgba(35,35,30,.22)}
+  .dv-rail.idle{opacity:0;pointer-events:none}
+  .dv-thumb{position:absolute;left:0;top:0;width:100%;border-radius:99px;background:rgba(45,43,38,.52);
+    cursor:grab;transition:background .16s var(--ease)}
+  .dv-thumb:active{cursor:grabbing}
+  .dv-rail:hover .dv-thumb,.dv-thumb:active{background:rgba(48,46,40,.64)}
+  .docview.present .dv-rail{display:none}
+  .dv-pages .sdbox.doc{flex:none;width:min(780px,100%);height:auto;aspect-ratio:960/1358;
     box-shadow:0 12px 34px rgba(24,26,22,.22),0 2px 6px rgba(24,26,22,.14)}
-  .dv-pager{position:absolute;left:50%;bottom:13px;transform:translateX(-50%);display:flex;align-items:center;gap:10px;
-    height:30px;padding:0 4px;border-radius:999px;background:rgba(255,255,255,.94);border:1px solid #e4e4e0;
+  .dv-pager{position:absolute;left:50%;bottom:13px;transform:translateX(-50%);pointer-events:none;
+    display:flex;align-items:center;height:26px;padding:0 13px;border-radius:999px;
+    background:rgba(255,255,255,.9);border:1px solid #e4e4e0;
     box-shadow:0 2px 8px rgba(20,24,20,.08);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
     font-size:10px;letter-spacing:.12em;color:#4c5157}
-  .dv-pg{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;color:#33383e}
-  .dv-pg:hover{background:#f2f3f5}
-  .dv-pg:disabled{color:#c8cacd}
   .dv-made{position:absolute;right:16px;bottom:13px;display:flex;align-items:center;gap:7px;height:30px;padding:0 12px 0 5px;
     border-radius:999px;background:rgba(255,255,255,.94);border:1px solid #e4e4e0;
     box-shadow:0 2px 8px rgba(20,24,20,.08);font-size:10.5px;letter-spacing:.1em;color:#3d4249}
@@ -994,11 +1003,12 @@
   .docview.present{background:#15161a}
   .docview.present .dv-top,.docview.present .dv-sharebar,.docview.present .dv-panel{display:none}
   .docview.present .dv-body{grid-template-columns:minmax(0,1fr)}
-  .docview.present .dv-canvas{background:#15161a;padding:22px 60px 54px}
+  .docview.present .dv-canvas{background:#15161a}
   .docview.present .dv-made{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.16);color:#e8e6e1}
   .docview.present .dv-pager{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.18);color:#e8e6e1}
-  .docview.present .dv-pg{color:#e8e6e1}
-  .docview.present .dv-pg:hover{background:rgba(255,255,255,.14)}
+  .docview.present .dv-pages{overflow:hidden;gap:0;padding:22px 60px 54px;justify-content:center}
+  .docview.present .dv-pages .sdbox.doc{display:none}
+  .docview.present .dv-pages .sdbox.doc.cur{display:block;width:auto;height:100%;max-height:100%}
 
   /* ── 案例详情页（1:1 复刻参考截图） ─────────────── */
   .tplview{position:fixed;inset:0;z-index:80;display:flex;flex-direction:column;background:#fff}
@@ -2487,16 +2497,9 @@
     </aside>
 
     <div class="dv-canvas" id="dvCanvas">
-      <div class="dv-stage" id="dvStage" data-no-i18n></div>
-      <div class="dv-pager">
-        <button class="dv-pg" id="dvPrev" aria-label="上一页">
-          <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-left"></use></svg>
-        </button>
-        <span id="dvCount">01 / 19</span>
-        <button class="dv-pg" id="dvNext" aria-label="下一页">
-          <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-right"></use></svg>
-        </button>
-      </div>
+      <div class="dv-pages" id="dvPages" data-no-i18n></div>
+      <div class="dv-rail idle" id="dvRail" aria-hidden="true"><i class="dv-thumb" id="dvThumb"></i></div>
+      <div class="dv-pager"><span id="dvCount">01 / 19</span></div>
       <div class="dv-made"><span class="dv-g">G</span>由 GAMMA 制作</div>
     </div>
   </div>
@@ -2649,7 +2652,7 @@ function renderCaseSide(deck) {
 }
 
 /* ── 文档查看器 ───────────────────────────────────── */
-const docState = { deck: null, i: 0, tab: 'text' }
+const docState = { deck: null, i: 0, tab: 'text', lock: 0 }
 
 function openDocView(deck) {
   docState.deck = deck
@@ -2659,12 +2662,12 @@ function openDocView(deck) {
   const view = $('docView')
   view.classList.remove('present', 'nopanel')
   document.querySelectorAll('.dv-tab').forEach((b) => b.classList.toggle('on', b.dataset.tab === 'text'))
-  $('dvCount').textContent = '01 / ' + String(deck.slides.length).padStart(2, '0')
   paintDocPanel()
   paintDocPage()
   syncDocSaved()
   closeCaseKeepDoc()
   view.hidden = false
+  requestAnimationFrame(syncDocRail)
 }
 
 function closeCaseKeepDoc() {
@@ -2678,22 +2681,68 @@ function closeDocView() {
   docState.deck = null
 }
 
+function docPages() {
+  return [...document.querySelectorAll('#dvPages .dv-item')]
+}
+
+function syncDocRail() {
+  const wrap = $('dvPages')
+  const rail = $('dvRail')
+  const thumb = $('dvThumb')
+  if (!wrap || !rail || !thumb) return
+  const total = wrap.scrollHeight
+  const view = wrap.clientHeight
+  const track = rail.clientHeight
+  const max = total - view
+  if (max <= 0 || track <= 0) { rail.classList.add('idle'); return }
+  rail.classList.remove('idle')
+  const h = Math.max(54, Math.round((track * view) / total))
+  const top = Math.round((track - h) * Math.min(1, Math.max(0, wrap.scrollTop / max)))
+  thumb.style.height = h + 'px'
+  thumb.style.transform = 'translateY(' + top + 'px)'
+}
+
+function markDocCurrent() {
+  const deck = docState.deck
+  if (!deck) return
+  docPages().forEach((el, idx) => el.classList.toggle('cur', idx === docState.i))
+  $('dvCount').textContent =
+    String(docState.i + 1).padStart(2, '0') + ' / ' + String(deck.slides.length).padStart(2, '0')
+}
+
 function paintDocPage() {
   const deck = docState.deck
   if (!deck) return
-  const s = deck.slides[docState.i]
-  $('dvStage').innerHTML = '<div class="' + boxClass(deck) + '">' + slideHTML(deck, s, docState.i) + '</div>'
-  $('dvCount').textContent =
-    String(docState.i + 1).padStart(2, '0') + ' / ' + String(deck.slides.length).padStart(2, '0')
-  $('dvPrev').disabled = docState.i === 0
-  $('dvNext').disabled = docState.i === deck.slides.length - 1
+  const wrap = $('dvPages')
+  wrap.innerHTML = deck.slides
+    .map(
+      (s, idx) =>
+        '<div class="' + boxClass(deck) + ' dv-item" data-i="' + idx + '">' +
+        slideHTML(deck, s, idx) +
+        '</div>'
+    )
+    .join('')
+  wrap.scrollTop = 0
+  docState.i = 0
+  markDocCurrent()
+  syncDocRail()
 }
 
 function docGo(i) {
   const deck = docState.deck
   if (!deck) return
   docState.i = Math.max(0, Math.min(deck.slides.length - 1, i))
-  paintDocPage()
+  markDocCurrent()
+  if ($('docView').classList.contains('present')) return
+  const el = document.querySelector('#dvPages .dv-item.cur')
+  const wrap = $('dvPages')
+  if (!el) return
+  docState.lock = Date.now() + 260
+  wrap.scrollTo({
+    top: el.getBoundingClientRect().top - wrap.getBoundingClientRect().top + wrap.scrollTop - 26,
+    behavior: 'auto'
+  })
+  syncDocRail()
 }
 
 function paintDocPanel() {
@@ -2742,12 +2791,54 @@ function syncDocSaved() {
   $('dvAddTxt').textContent = on ? '已添加到我的工作区' : '添加到我的工作区'
 }
 
+function wireDocRail() {
+  if (wireDocRail.done) return
+  wireDocRail.done = true
+  const wrap = $('dvPages')
+  const rail = $('dvRail')
+  const thumb = $('dvThumb')
+  let drag = null
+  thumb.addEventListener('pointerdown', (ev) => {
+    ev.preventDefault()
+    drag = { y: ev.clientY, top: wrap.scrollTop }
+    docState.lock = 0
+    thumb.setPointerCapture(ev.pointerId)
+  })
+  thumb.addEventListener('pointermove', (ev) => {
+    if (!drag) return
+    const track = rail.clientHeight
+    const h = thumb.offsetHeight
+    const max = wrap.scrollHeight - wrap.clientHeight
+    const ratio = max / Math.max(1, track - h)
+    wrap.scrollTop = drag.top + (ev.clientY - drag.y) * ratio
+    syncDocRail()
+  })
+  const stop = () => { drag = null }
+  thumb.addEventListener('pointerup', stop)
+  thumb.addEventListener('pointercancel', stop)
+  rail.addEventListener('pointerdown', (ev) => {
+    if (ev.target === thumb) return
+    const r = rail.getBoundingClientRect()
+    const h = thumb.offsetHeight
+    const max = wrap.scrollHeight - wrap.clientHeight
+    const t = Math.min(Math.max(0, ev.clientY - r.top - h / 2), r.height - h)
+    wrap.scrollTop = (t / Math.max(1, r.height - h)) * max
+    syncDocRail()
+  })
+  window.addEventListener('resize', syncDocRail)
+}
+
 function wireDocView() {
   $('dvBack').onclick = closeDocView
   $('dvPanelBtn').onclick = () => $('docView').classList.toggle('nopanel')
   $('dvSet').onclick = () => $('docView').classList.toggle('nopanel')
   $('dvX').onclick = () => $('docView').classList.add('nopanel')
-  $('dvPresent').onclick = () => $('docView').classList.toggle('present')
+  $('dvPresent').onclick = () => {
+    const on = $('docView').classList.toggle('present')
+    const keep = docState.i
+    markDocCurrent()
+    if (!on) requestAnimationFrame(() => docGo(keep))
+  }
   $('dvShare').onclick = () => {
     const deck = docState.deck
     if (!deck) return
@@ -2793,8 +2884,21 @@ function wireDocView() {
     if ($('dvUseMenu').hidden) return
     if (!ev.target.closest('.dv-usesplit')) $('dvUseMenu').hidden = true
   })
-  $('dvPrev').onclick = () => docGo(docState.i - 1)
-  $('dvNext').onclick = () => docGo(docState.i + 1)
+  $('dvPages').addEventListener('scroll', () => {
+    if ($('docView').hidden || $('docView').classList.contains('present')) return
+    if (Date.now() < docState.lock) return
+    const wrap = $('dvPages')
+    const base = wrap.getBoundingClientRect().top
+    let best = 0
+    let bestD = Infinity
+    docPages().forEach((el, idx) => {
+      const d = Math.abs(el.getBoundingClientRect().top - base)
+      if (d < bestD) { bestD = d; best = idx }
+    })
+    if (best !== docState.i) { docState.i = best; markDocCurrent() }
+    syncDocRail()
+  })
+  wireDocRail()
   document.querySelectorAll('.dv-tab').forEach((b) => {
     b.onclick = () => {
       docState.tab = b.dataset.tab
@@ -2805,10 +2909,16 @@ function wireDocView() {
   document.addEventListener('keydown', (ev) => {
     if ($('docView').hidden) return
     if (ev.key === 'Escape') {
-      if ($('docView').classList.contains('present')) $('docView').classList.remove('present')
-      else closeDocView()
-    } else if (ev.key === 'ArrowLeft') docGo(docState.i - 1)
-    else if (ev.key === 'ArrowRight') docGo(docState.i + 1)
+      if ($('docView').classList.contains('present')) {
+        const keep = docState.i
+        $('docView').classList.remove('present')
+        markDocCurrent()
+        requestAnimationFrame(() => docGo(keep))
+      } else closeDocView()
+    } else if (ev.key === 'ArrowLeft' || ev.key === 'ArrowRight') {
+      if (!$('docView').classList.contains('present') && docState.i === (ev.key === 'ArrowLeft' ? 0 : docState.deck.slides.length - 1)) return
+      docGo(docState.i + (ev.key === 'ArrowRight' ? 1 : -1))
+    }
   })
 }
 
