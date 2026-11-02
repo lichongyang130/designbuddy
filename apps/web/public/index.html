@@ -84,13 +84,62 @@
   .rail .rbtn.mini{padding:6px 0}
   .rail .grow{flex:1}
   .rail .me{
+    width:52px;display:flex;flex-direction:column;align-items:center;gap:3px;margin-top:8px;
+    color:var(--fg-muted);transition:color var(--d1) var(--ease);
+  }
+  .rail .me-av{
     position:relative;width:32px;height:32px;border-radius:50%;color:#fff;font-size:11px;font-weight:600;
-    display:grid;place-items:center;background:#4a2d55;margin-top:8px;
+    display:grid;place-items:center;background:#4a2d55;
+    box-shadow:0 0 0 0 rgba(74,45,85,0);
+    transition:box-shadow var(--d1) var(--ease),transform var(--d1) var(--ease);
   }
-  .rail .me i{
-    position:absolute;right:-2px;bottom:-2px;width:12px;height:12px;border-radius:50%;
-    background:#e879a6;border:2px solid var(--rail);
+  .rail .me-tag{font-size:10.5px;line-height:1.1;color:var(--fg-subtle);letter-spacing:.01em}
+  .rail .me:hover{color:var(--fg)}
+  .rail .me:hover .me-tag{color:var(--fg)}
+  .rail .me:hover .me-av{box-shadow:0 0 0 3px var(--rail-active);transform:translateY(-1px)}
+  .rail .me:focus{outline:none}
+  .rail .me:focus-visible .me-av{box-shadow:0 0 0 3px var(--accent-soft)}
+  .rail .me[aria-expanded="true"] .me-av{box-shadow:0 0 0 3px var(--accent-soft)}
+  .rail .me[aria-expanded="true"] .me-tag{color:var(--accent);font-weight:500}
+
+  /* 会员中心浮层 */
+  .acct{
+    position:fixed;z-index:76;width:286px;background:var(--surface);border:1px solid var(--line);
+    border-radius:14px;box-shadow:var(--e2);padding:8px;display:flex;flex-direction:column;gap:6px;
+    transform-origin:12% 100%;animation:acctIn .12s var(--ease);
   }
+  .acct[hidden]{display:none}
+  @keyframes acctIn{from{opacity:0;transform:translateY(4px) scale(.985)}to{opacity:1;transform:none}}
+  .acct-head{display:flex;align-items:center;gap:10px;padding:6px 8px 8px}
+  .acct-av{
+    width:34px;height:34px;border-radius:50%;background:#4a2d55;color:#fff;font-size:12px;font-weight:600;
+    display:grid;place-items:center;flex:none;
+  }
+  .acct-id{display:flex;flex-direction:column;gap:2px;min-width:0}
+  .acct-id b{font-size:13.5px;font-weight:600;color:var(--fg);letter-spacing:-.01em}
+  .acct-id em{font-style:normal;font-size:11.5px;color:var(--fg-subtle)}
+  .acct-plan{
+    display:flex;align-items:flex-start;gap:8px;padding:8px 9px;border-radius:10px;
+    background:var(--accent-soft);border:1px solid var(--rail-active);
+  }
+  .acct-tag{
+    flex:none;font-size:11px;font-weight:600;color:var(--accent);background:var(--surface);
+    border-radius:999px;padding:2px 8px;line-height:1.5;
+  }
+  .acct-note{font-size:11.5px;line-height:1.5;color:var(--fg-muted)}
+  .acct-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;padding:8px 9px;border-radius:10px;background:var(--surface-2)}
+  .acct-grid > div{min-width:0}
+  .acct-grid span{display:block;font-size:10.5px;color:var(--fg-subtle)}
+  .acct-grid b{display:block;margin-top:2px;font-size:11.5px;font-weight:600;color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .acct-list{display:flex;flex-direction:column;gap:1px;padding-top:2px}
+  .acct-list button{
+    display:flex;align-items:center;gap:9px;height:32px;padding:0 8px;border-radius:8px;
+    font-size:13px;color:var(--fg);text-align:left;
+  }
+  .acct-list button:hover{background:var(--surface-2)}
+  .acct-list button svg{color:var(--fg-muted);flex:none}
+  .acct-list button:hover svg{color:var(--accent)}
+  .acct-foot{padding:4px 8px 3px;font-size:10.5px;color:var(--fg-subtle)}
 
   /* ── 工作区侧栏 ───────────────────────────── */
   .side{
@@ -2112,7 +2161,10 @@
 
     <div class="grow"></div>
 
-    <div class="me" title="星W">星W<i></i></div>
+    <button class="me" id="meBtn" title="会员中心" aria-haspopup="dialog" aria-expanded="false" aria-label="会员中心">
+      <span class="me-av">星W</span>
+      <span class="me-tag">会员</span>
+    </button>
   </nav>
 
   <!-- 工作区侧栏 -->
@@ -2735,6 +2787,45 @@
     <span class="mm-ico"><svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-link"></use></svg></span>
     连接器
   </button>
+</div>
+
+<!-- 会员中心：图标栏底部头像弹出 -->
+<div class="acct" id="acctPop" role="dialog" aria-label="会员中心" hidden>
+  <div class="acct-head">
+    <span class="acct-av">星W</span>
+    <span class="acct-id">
+      <b>星W</b>
+      <em>本地工作区</em>
+    </span>
+  </div>
+  <div class="acct-plan">
+    <span class="acct-tag">免费版</span>
+    <span class="acct-note">全部功能在本机运行，无订阅费用</span>
+  </div>
+  <div class="acct-grid">
+    <div><span>语言</span><b id="acctLang">简体中文</b></div>
+    <div><span>字号</span><b id="acctFont">16px</b></div>
+    <div><span>成员</span><b>1（本地）</b></div>
+  </div>
+  <div class="acct-list">
+    <button data-panel="profile">
+      <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-user"></use></svg>
+      <span>个人主页</span>
+    </button>
+    <button data-panel="appearance">
+      <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-theme"></use></svg>
+      <span>外观</span>
+    </button>
+    <button data-panel="shortcuts">
+      <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-keyboard"></use></svg>
+      <span>快捷键</span>
+    </button>
+    <button data-panel="general">
+      <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-settings"></use></svg>
+      <span>设置</span>
+    </button>
+  </div>
+  <div class="acct-foot">数据保存在本机浏览器</div>
 </div>
 <button class="help" id="help" title="帮助" aria-label="帮助"><svg class="ic" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-help"></use></svg></button>
 <div class="op" id="officePanel" hidden>
@@ -4854,6 +4945,54 @@ document.addEventListener('click', (event) => {
   closeMoreMenu()
 })
 window.addEventListener('resize', closeMoreMenu)
+
+/* 会员中心：图标栏底部头像，点开显示账号、当前偏好与设置入口 */
+function acctLangLabel() {
+  const sel = $('setLanguage')
+  const opt = sel && sel.selectedOptions && sel.selectedOptions[0]
+  return opt ? opt.textContent.trim() : '简体中文'
+}
+function paintAcct() {
+  $('acctLang').textContent = acctLangLabel()
+  $('acctFont').textContent = state.prefs.fontSize + 'px'
+}
+function openAcct() {
+  const pop = $('acctPop')
+  const btn = $('meBtn')
+  paintAcct()
+  pop.hidden = false
+  const rail = document.querySelector('.rail').getBoundingClientRect()
+  const rect = btn.getBoundingClientRect()
+  const width = pop.offsetWidth || 286
+  const height = pop.offsetHeight || 300
+  pop.style.left = Math.min(rail.right + 8, window.innerWidth - width - 12) + 'px'
+  pop.style.top = Math.max(12, Math.min(rect.bottom - height + 6, window.innerHeight - height - 12)) + 'px'
+  btn.setAttribute('aria-expanded', 'true')
+}
+function closeAcct() {
+  $('acctPop').hidden = true
+  $('meBtn').setAttribute('aria-expanded', 'false')
+}
+$('meBtn').onclick = () => ($('acctPop').hidden ? openAcct() : closeAcct())
+document.querySelectorAll('#acctPop .acct-list button').forEach((item) => {
+  item.onclick = () => {
+    closeAcct()
+    openSettings(item.dataset.panel)
+  }
+})
+document.addEventListener('click', (event) => {
+  const pop = $('acctPop')
+  if (pop.hidden) return
+  if (pop.contains(event.target) || (event.target.closest && event.target.closest('#meBtn'))) return
+  closeAcct()
+})
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && !$('acctPop').hidden) {
+    closeAcct()
+    $('meBtn').focus()
+  }
+})
+window.addEventListener('resize', closeAcct)
 $('thSearch').addEventListener('input', (event) => {
   thState.q = event.target.value
   paintThemes()

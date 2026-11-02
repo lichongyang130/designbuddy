@@ -153,6 +153,13 @@ const ROWS = {
   '舒适': ['Comfortable', '舒適', 'ゆったり', '여유롭게', 'Komfortabel', 'Confortable', 'Cómoda'],
   '紧凑': ['Compact', '緊湊', 'コンパクト', '촘촘하게', 'Kompakt', 'Compact', 'Compacta'],
   '等宽字体': ['Monospace', '等寬字型', '等幅フォント', '고정폭 글꼴', 'Monospace', 'Monospace', 'Monoespaciada'],
+  // ── 会员中心 ──
+  '会员': ['Member', '會員', 'メンバー', '멤버', 'Mitglied', 'Membre', 'Miembro'],
+  '免费版': ['Free', '免費版', '無料版', '무료', 'Kostenlos', 'Gratuit', 'Gratis'],
+  '本地工作区': ['Local workspace', '本機工作區', 'ローカルワークスペース', '로컬 워크스페이스', 'Lokaler Arbeitsbereich', 'Espace local', 'Espacio local'],
+  '字号': ['Font size', '字級', '文字サイズ', '글자 크기', 'Schriftgröße', 'Taille du texte', 'Tamaño de letra'],
+  '全部功能在本机运行，无订阅费用': ['Every feature runs locally, no subscription fee', '全部功能在本機執行，不產生訂閱費用', 'すべての機能はこの端末で動作し、購読料はかかりません', '모든 기능이 이 기기에서 실행되며 구독료가 없습니다', 'Alle Funktionen laufen lokal, ohne Abo-Gebühr', 'Toutes les fonctions tournent en local, sans abonnement', 'Todo funciona en tu equipo, sin suscripción'],
+  '数据保存在本机浏览器': ['Data stays in this browser', '資料儲存在本機瀏覽器', 'データはこのブラウザーに保存されます', '데이터는 이 브라우저에 저장됩니다', 'Daten bleiben in diesem Browser', 'Les données restent dans ce navigateur', 'Los datos se quedan en este navegador'],
   '聊天气泡与工具输出使用等宽字体': ['Use monospace for chat and tool output', '聊天泡泡與工具輸出使用等寬字型', 'チャットとツール出力を等幅フォントにする', '채팅과 도구 출력에 고정폭 글꼴 사용', 'Monospace für Chat und Tool-Ausgabe', 'Police monospace pour le chat et les outils', 'Monoespaciada en el chat y las herramientas'],
   '打开命令面板': ['Command palette', '開啟命令面板', 'コマンドパレットを開く', '명령 팔레트 열기', 'Befehlspalette öffnen', 'Ouvrir la palette de commandes', 'Abrir la paleta de comandos'],
   '搜索会话、专家与工具': ['Search sessions, experts and tools', '搜尋工作階段、專家與工具', 'セッション・エキスパート・ツールを検索', '세션, 전문가, 도구 검색', 'Sitzungen, Experten und Tools durchsuchen', 'Rechercher sessions, experts et outils', 'Buscar sesiones, expertos y herramientas'],
