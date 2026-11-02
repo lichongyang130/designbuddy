@@ -126,6 +126,7 @@ export const CASE_DECKS = [
         img: '06',
         swatches: [['#a8342a', '朱砂红 · 耐候钢'], ['#31507e', '石板蓝 · 铜锈'], ['#b9a487', '旧砖 · 补配'], ['#efe7d4', '石灰浆']],
       },
+      { k: 'fullimg', label: '样板', img: '13', cap: '三块样板 · 旧砖、耐候钢、再生骨料，颜色分开但不做仿旧' },
       {
         k: 'fullimg', label: '中庭',
         img: '09',
@@ -161,6 +162,13 @@ export const CASE_DECKS = [
         note: '口径：含税建安造价，不含设计与前期费用',
       },
       {
+        k: 'metric', label: '保留率',
+        kicker: 'SALVAGE RATE · 结构构件',
+        big: '62%',
+        label: '原结构构件保留率 / 同类旧改均值 35%',
+        note: '口径：按结构构件数量计，含砖墙、楼板与钢窗',
+      },
+      {
         k: 'fullimg', label: '广场',
         img: '11',
         cap: '改造后广场 · 摊位、树与咖啡座，先有人来，再谈租金',
@@ -175,6 +183,13 @@ export const CASE_DECKS = [
         img: '05',
         cap: '改造后首层透视 · 拱廊重新向广场打开',
       },
+      { k: 'fullimg', label: '沿街', img: '14', cap: '黄昏沿街立面 · 招牌只做一块，灯只在拱下' },
+      {
+        k: 'quote', label: '说明',
+        text: '我们把能留下的都留下了，剩下的用颜色说清楚。',
+        by: '方案说明 · 2026.11',
+      },
+      { k: 'fullimg', label: '收尾', img: '15', cap: '最后一眼 · 从广场回看第一个拱，里面还亮着灯' },
       {
         k: 'end', label: '封底',
         title: '谢谢',
