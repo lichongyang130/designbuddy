@@ -376,6 +376,79 @@
     .tpls-grid{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:12px}
   }
 
+  /* ── 主题页（自定义，1:1 复刻参考截图） ───── */
+  .app.app-custom{grid-template-columns:72px 278px minmax(0,1fr)}
+  .app>.cus-side{grid-column:2}
+  .cus-side{background:#f5f8fd;border-right:1px solid #d6e1ef;min-height:0;display:flex;flex-direction:column}
+  .cus-side .cus-t{font-size:16px;font-weight:500;color:#011f49;padding:9px 18px 0}
+  .cus-nav{display:flex;flex-direction:column;gap:2px;padding:9px 12px 0}
+  .cus-row{display:flex;align-items:center;gap:10px;height:37px;padding:0 14px;border-radius:8px;font-size:13.5px;color:#313233;text-align:left;white-space:nowrap}
+  .cus-row svg{flex:none;color:#4b5057}
+  .cus-row:hover{background:#e9f0fa}
+  .cus-row.on{background:#d4e3f8;color:#011f49;font-weight:500}
+  .cus-row.on svg{color:#011f49}
+  .cus-beta{margin-left:2px;font-size:9.5px;line-height:1.5;padding:1px 5px;border-radius:5px;background:#e5edfd;color:#2a5cf0;font-weight:500}
+
+  .thpage{flex:1;min-height:0;overflow:auto;background:#fff}
+  .main.tpl-mode .topbar,.main.theme-mode .topbar{display:none}
+  .th-inner{padding:14px 25px 44px 24px}
+  .th-h1{display:flex;align-items:center;gap:9px;margin:0;font-size:18px;line-height:1.35;font-weight:600;letter-spacing:-.01em;color:#011f49}
+  .th-h1 svg{flex:none;color:#011f49}
+  .th-sub{margin:7px 0 0;font-size:13px;line-height:1.6;color:#5b5b60}
+  .th-new{display:inline-flex;align-items:center;gap:7px;height:40px;margin-top:21px;padding:0 18px;border-radius:20px;background:#0938a3;color:#fff;font-size:13.5px;font-weight:500}
+  .th-new:hover{background:#0b44c2}
+  .th-new svg{flex:none}
+  .th-bar{display:flex;align-items:center;gap:6px;margin-top:16px}
+  .th-tab{display:inline-flex;align-items:center;gap:7px;height:29px;padding:0 13px;border-radius:15px;font-size:13px;color:#313233}
+  .th-tab:hover{background:#f2f6fc}
+  .th-tab.on{background:#e2eefc;color:#12325c;font-weight:500}
+  .th-tab svg{flex:none;color:currentColor}
+  .th-search{display:flex;align-items:center;gap:8px;width:598px;max-width:100%;height:32px;margin-left:auto;padding:0 11px;border:1px solid #c3c3c4;border-radius:8px;background:#fff;color:#8d9196}
+  .th-search:focus-within{border-color:#9db6e8;box-shadow:0 0 0 3px rgba(42,92,240,.10)}
+  .th-search input{flex:1;min-width:0;border:0;outline:0;background:none;font-size:12.5px;color:#313233}
+  .th-search input::placeholder{color:#a9adb2}
+
+  .th-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));column-gap:24px;row-gap:25px;margin-top:24px}
+  .th-card{display:block;min-width:0;text-align:left;border:1px solid #dadadb;border-radius:10px;overflow:hidden;background:#fff;transition:box-shadow var(--d2) var(--ease),transform var(--d2) var(--ease)}
+  .th-card:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(18,30,60,.14)}
+  .th-card:focus-visible{box-shadow:0 0 0 3px rgba(39,125,246,.35)}
+  .th-stage{position:relative;height:130px;padding:15px 16px 3px;overflow:hidden;container-type:inline-size}
+  .th-slide{position:relative;height:100%;border-radius:5px;padding:19px 18px;overflow:hidden;box-shadow:0 0 0 .5px rgba(20,30,60,.06)}
+  .th-slide b{display:block;font-size:21px;line-height:1.2;font-weight:600;letter-spacing:-.01em}
+  .th-slide i{display:block;margin-top:11px;font-size:12px;line-height:1.4;font-style:normal}
+  .th-slide u{text-decoration:underline;text-underline-offset:2px}
+  .th-foot{display:flex;align-items:center;height:50px;padding:0 14px 0 16px;background:#fff}
+  .th-name{font-size:13px;color:#313233;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .th-more{margin-left:auto;width:26px;height:26px;display:grid;place-items:center;border-radius:6px;color:#8d9196;font-size:15px;line-height:1}
+  .th-more:hover{background:#f2f5fa;color:#313233}
+  .th-empty{padding:70px 0;text-align:center;font-size:13.5px;color:#8d9196;line-height:1.8}
+  .th-empty b{display:block;margin-bottom:5px;font-size:15px;font-weight:600;color:#313233}
+
+  @media (max-width:1500px){
+    .th-grid{grid-template-columns:repeat(5,minmax(0,1fr))}
+    .th-search{width:420px}
+  }
+  @media (max-width:1240px){
+    .th-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .app.app-custom{grid-template-columns:72px 236px minmax(0,1fr)}
+    .th-inner{padding-left:22px;padding-right:22px}
+  }
+  @media (max-width:1120px){
+    .th-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  }
+  @media (max-width:1000px){
+    .th-grid{grid-template-columns:repeat(3,minmax(0,1fr));column-gap:18px}
+    .app.app-custom{grid-template-columns:64px 210px minmax(0,1fr)}
+    .th-search{width:100%;max-width:none;margin-left:0}
+    .th-bar{flex-wrap:wrap}
+  }
+  @media (max-width:780px){
+    .app.app-custom{grid-template-columns:60px minmax(0,1fr)}
+    .cus-side{display:none !important}
+    .th-grid{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:14px}
+    .th-inner{padding:14px 16px 40px}
+  }
+
   .alltpl{
     margin:22px auto 0;height:36px;padding:0 18px;border-radius:var(--r-pill);border:1px solid #dbe7fb;
     font-size:13.5px;color:var(--fg);background:var(--surface);display:block;
@@ -936,7 +1009,7 @@
       <span data-i18n-key="rail.templates">模版</span>
     </button>
 
-    <button class="rbtn" title="自定义">
+    <button class="rbtn" id="navCustom" data-nav="custom" title="自定义">
       <i class="ric"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.4c-4.8 0-8.6 3.8-8.6 8.6s3.8 8.6 8.6 8.6c1.2 0 2.1-.9 2.1-2.1 0-.5-.2-1-.5-1.3-.3-.4-.5-.8-.5-1.3 0-1.2 1-2.1 2.1-2.1h2.1c2.1 0 3.7-1.6 3.7-3.7 0-3.8-4-6.7-8.9-6.7z"/><circle cx="8.6" cy="10.4" r="1.05" fill="currentColor" stroke="none"/><circle cx="12" cy="8.2" r="1.05" fill="currentColor" stroke="none"/><circle cx="15.4" cy="10.4" r="1.05" fill="currentColor" stroke="none"/><circle cx="9.4" cy="14.2" r="1.05" fill="currentColor" stroke="none"/></svg></i>
       <span data-i18n-key="rail.custom">自定义</span>
     </button>
@@ -1152,6 +1225,30 @@
         <label class="ts-opt"><input type="radio" name="tplTheme" value="warm" /><span class="ts-dot"></span><span class="ts-txt">暖色</span></label>
         <label class="ts-opt"><input type="radio" name="tplTheme" value="mono" /><span class="ts-dot"></span><span class="ts-txt">黑白</span></label>
       </div>
+    </div>
+  </aside>
+
+  <!-- 自定义侧栏 -->
+  <aside class="cus-side" id="sideCustom" hidden>
+    <div class="cus-t">自定义</div>
+    <div class="cus-nav">
+      <button class="cus-row on">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.4a8.6 8.6 0 1 0 0 17.2c1.2 0 1.9-.8 1.9-1.8 0-.5-.2-.9-.5-1.2-.3-.3-.4-.7-.4-1.1 0-1 .8-1.8 1.8-1.8h1.6a3.8 3.8 0 0 0 3.8-3.8c0-4.2-3.9-7.5-8.2-7.5z"/><circle cx="8.6" cy="9.6" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="7.6" r="1" fill="currentColor" stroke="none"/><circle cx="15.4" cy="9.6" r="1" fill="currentColor" stroke="none"/><circle cx="9.4" cy="13" r="1" fill="currentColor" stroke="none"/></svg>
+        主题
+      </button>
+      <button class="cus-row">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.6 18.4 9 6.2l4.4 12.2"/><path d="M6.2 14.4h5.6"/><path d="M16.4 6.6v11.8"/><path d="M16.4 12h4"/></svg>
+        自定义字体
+      </button>
+      <button class="cus-row">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.4 5.4h15.2v10.2H12l-4.4 3.4v-3.4H4.4z"/><path d="M8 9h8M8 12.2h5"/></svg>
+        自定义指令
+        <span class="cus-beta">测试版</span>
+      </button>
+      <button class="cus-row">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6.6" height="6.6" rx="1.6"/><rect x="13.4" y="4" width="6.6" height="6.6" rx="1.6"/><rect x="4" y="13.4" width="6.6" height="6.6" rx="1.6"/><circle cx="16.7" cy="16.7" r="3.3"/></svg>
+        图标库
+      </button>
     </div>
   </aside>
 
@@ -1440,6 +1537,47 @@
         <div class="tpl-empty" id="tpEmpty" hidden>
           <b>没有找到匹配的模板</b>
           换个关键词或筛选条件试试。
+        </div>
+      </div>
+    </section>
+
+    <!-- 主题（自定义） -->
+    <section class="thpage" id="viewThemes" hidden>
+      <div class="th-inner">
+        <h1 class="th-h1">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.4a8.6 8.6 0 1 0 0 17.2c1.2 0 1.9-.8 1.9-1.8 0-.5-.2-.9-.5-1.2-.3-.3-.4-.7-.4-1.1 0-1 .8-1.8 1.8-1.8h1.6a3.8 3.8 0 0 0 3.8-3.8c0-4.2-3.9-7.5-8.2-7.5z"/><circle cx="8.6" cy="9.6" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="7.6" r="1" fill="currentColor" stroke="none"/><circle cx="15.4" cy="9.6" r="1" fill="currentColor" stroke="none"/><circle cx="9.4" cy="13" r="1" fill="currentColor" stroke="none"/></svg>
+          主题
+        </h1>
+        <p class="th-sub" data-i18n-key="theme.sub">主题可控制 gammas 的颜色、字体、徽标和设计。创建自己的主题、导入 PPT 或自定义标准主题。</p>
+
+        <button class="th-new" id="thNew">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5.5v13M5.5 12h13"/></svg>
+          新建主题
+        </button>
+
+        <div class="th-bar">
+          <button class="th-tab" data-thtab="mine">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.4 19.6l1-4.2 9.4-9.4a2 2 0 0 1 2.8 0l1 1a2 2 0 0 1 0 2.8l-9.4 9.4z"/><path d="M13.4 6.6l2.8 2.8"/></svg>
+            自定义
+          </button>
+          <button class="th-tab on" data-thtab="std">
+            <span style="width:14px;height:14px;border-radius:4px;background:#0c1f3f;color:#fff;font:600 9px/14px ui-sans-serif;text-align:center">G</span>
+            标准
+          </button>
+          <button class="th-tab" data-thtab="arch">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.6" y="4.6" width="16.8" height="4.2" rx="1.4"/><path d="M5.4 8.8v9.1a1.5 1.5 0 0 0 1.5 1.5h10.2a1.5 1.5 0 0 0 1.5-1.5V8.8"/><path d="M10 12.4h4"/></svg>
+            已归档
+          </button>
+          <label class="th-search">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="11" cy="11" r="6.2"/><path d="m15.8 15.8 4.2 4.2"/></svg>
+            <input id="thSearch" placeholder="按标题、关键字、作者姓名等搜索" />
+          </label>
+        </div>
+
+        <div class="th-grid" id="thGrid"></div>
+        <div class="th-empty" id="thEmpty" hidden>
+          <b>没有找到匹配的主题</b>
+          换个关键字试试。
         </div>
       </div>
     </section>
@@ -2175,6 +2313,75 @@ function paintTplSidebar() {
   }
 }
 
+/* ── 主题页（自定义）：18 个标准主题，纯 CSS 预览 ───────── */
+const THEMES = [
+  { name: 'Pearl', stage: '#e9e9f1', slide: '#f9f9fd', ink: '#1a1a23', body: '#33333d', link: '#2b4bd8' },
+  { name: 'Vortex', stage: '#181819', slide: '#090909', ink: '#ededee', body: '#b7b7bd', link: '#8fb0ff' },
+  { name: 'Clementa', stage: '#d9c1a1', slide: '#f9efd7', ink: '#492117', body: '#5a4630', link: '#c2622a' },
+  { name: 'Stratos', stage: 'radial-gradient(ellipse at 26% 96%,#3a2b6d 0%,rgba(58,43,109,0) 62%),linear-gradient(160deg,#14141c,#08080d)', slide: '#11141f', ink: '#f0f3f9', body: '#a9b4cc', link: '#7ea6ff' },
+  { name: 'Nova', stage: 'linear-gradient(150deg,#e2eefc 0%,#a8ccf2 34%,#7fb0e6 58%,#d6e6fa 100%)', slide: '#ffffff', ink: '#16365c', body: '#3c5578', link: '#2b6fd8' },
+  { name: 'Twilight', stage: 'linear-gradient(150deg,#f2cfdc 0%,#d9b8e6 52%,#b9cbe6 100%)', slide: '#fff9f5', ink: '#425e76', body: '#5c7186', link: '#c76a9a' },
+  { name: 'Coral Glow', stage: '#e7b2bd', slide: '#ffffff', ink: '#914a56', body: '#7d4a52', link: '#c04a68' },
+  { name: 'Mercury', stage: 'linear-gradient(150deg,#c3d5e6,#7d8fa9 62%,#9fb2c6)', slide: '#ffffff', ink: '#414348', body: '#5c5f66', link: '#2b5bd8' },
+  { name: 'Ashrose', stage: 'linear-gradient(150deg,#d3c8cd,#a9a4ae 58%,#e7dfe2)', slide: '#ffffff', ink: '#6d6d6d', body: '#7b7377', link: '#a86b86' },
+  { name: 'Spectrum', stage: 'linear-gradient(115deg,#ffd9e8 0%,#e6e4ff 26%,#d6f4ff 52%,#dcffe9 74%,#fff3d0 100%)', slide: '#eaf2f8', ink: '#3764f1', body: '#2f3f60', link: '#3764f1' },
+  { name: 'Chisel', stage: '#f6f1ee', slide: '#ffffff', ink: '#1d1a17', body: '#46403a', link: '#8a6a3a' },
+  { name: 'Stardust', stage: '#050505', slide: '#0a0a0a', ink: '#ffffff', body: '#f0a35e', link: '#f0a35e' },
+  { name: 'Seafoam', stage: '#d0f3eb', slide: '#ffffff', ink: '#2d3765', body: '#46527f', link: '#2d6fb8' },
+  { name: 'Nebulae', stage: 'radial-gradient(ellipse at 74% 24%,#241551 0%,rgba(36,21,81,0) 62%),linear-gradient(160deg,#0d0a16,#05050a)', slide: '#0b0b0f', ink: '#ffffff', body: '#cdd6ff', link: '#70edff' },
+  { name: 'Creme', stage: '#d8c8b3', slide: '#f8f5ee', ink: '#3f3a30', body: '#55503f', link: '#8a6a3a' },
+  { name: 'Lux', stage: '#1a3a39', slide: '#132d2c', ink: '#ffffff', body: '#ffd4b6', link: '#ffd4b6' },
+  { name: 'Consultant', stage: '#eeeeef', slide: '#ffffff', ink: '#15283e', body: '#3c4a5c', link: '#2b4bd8' },
+  { name: 'Marine', stage: 'radial-gradient(ellipse at 84% 12%,#2b3b8f 0%,rgba(43,59,143,0) 62%),linear-gradient(160deg,#12193a,#080c1e)', slide: '#0c1022', ink: '#ffffff', body: '#b9c4e6', link: '#8aa6ff' },
+]
+
+const thState = { tab: 'std', q: '' }
+
+function thHits() {
+  if (thState.tab !== 'std') return []
+  const q = thState.q.trim().toLowerCase()
+  return THEMES.filter((item) => q === '' || item.name.toLowerCase().includes(q))
+}
+
+function paintThemes() {
+  const grid = $('thGrid')
+  const hits = thHits()
+  grid.innerHTML = ''
+  for (const theme of hits) {
+    const card = document.createElement('button')
+    card.className = 'th-card'
+    card.innerHTML =
+      '<div class="th-stage" style="background:' + theme.stage + '">' +
+        '<div class="th-slide" style="background:' + theme.slide + ';color:' + theme.ink + '">' +
+          '<b style="color:' + theme.ink + '">标题</b>' +
+          '<i style="color:' + theme.body + '">正文和<u style="color:' + theme.link + '">链接</u></i>' +
+        '</div>' +
+      '</div>' +
+      '<div class="th-foot"><span class="th-name">' + theme.name + '</span><span class="th-more" data-more="1">···</span></div>'
+    card.onclick = () => toast('已选用「' + theme.name + '」主题')
+    grid.appendChild(card)
+  }
+  const empty = $('thEmpty')
+  empty.hidden = hits.length > 0
+  empty.innerHTML = thState.tab === 'mine'
+    ? '<b>还没有自定义主题</b>点「新建主题」开始创建。'
+    : thState.tab === 'arch'
+      ? '<b>没有已归档的主题</b>归档后的主题会出现在这里。'
+      : '<b>没有找到匹配的主题</b>换个关键字试试。'
+  if (thState.tab !== 'std') empty.hidden = false
+}
+
+function paintThemeTabs() {
+  document.querySelectorAll('.th-tab').forEach((tab) => {
+    tab.classList.toggle('on', tab.dataset.thtab === thState.tab)
+    tab.onclick = () => {
+      thState.tab = tab.dataset.thtab
+      paintThemeTabs()
+      paintThemes()
+    }
+  })
+}
+
 /* ── 偏好：本地保存并即时生效 ───────────────────────── */
 const PREFS_KEY = 'dsh-web-prefs'
 const DEFAULT_PREFS = {
@@ -2316,10 +2523,15 @@ function setView(view) {
   main.classList.toggle('experts-mode', view === 'experts')
   main.classList.toggle('tpl-mode', view === 'templates')
   const isTpl = view === 'templates'
+  const isCus = view === 'themes'
   document.querySelector('.app').classList.toggle('app-tpl', isTpl)
-  document.querySelector('.side').hidden = isTpl
+  document.querySelector('.app').classList.toggle('app-custom', isCus)
+  document.querySelector('.side').hidden = isTpl || isCus
   $('sideTemplates').hidden = !isTpl
-  const activeNav = view === 'templates' ? 'templates' : view === 'home' ? 'home' : null
+  $('sideCustom').hidden = !isCus
+  $('viewThemes').hidden = !isCus
+  main.classList.toggle('theme-mode', isCus)
+  const activeNav = view === 'templates' ? 'templates' : view === 'themes' ? 'custom' : view === 'home' ? 'home' : null
   document.querySelectorAll('.rail .rbtn').forEach((btn) => btn.classList.toggle('on', btn.dataset.nav === activeNav))
   if (view === 'chat') $('chatPrompt').focus()
 }
@@ -3485,6 +3697,16 @@ $('tpSearch').addEventListener('input', (event) => {
   tplState.q = event.target.value
   paintTplGallery()
 })
+$('navCustom').addEventListener('click', () => {
+  closeMoreMenu()
+  exitMode()
+  setView('themes')
+})
+$('thNew').addEventListener('click', () => toast('示范版：可在这里创建自定义主题。'))
+$('thSearch').addEventListener('input', (event) => {
+  thState.q = event.target.value
+  paintThemes()
+})
 $('exTabs').addEventListener('click', (event) => {
   const tab = event.target.closest('.ex-tab')
   if (tab) switchExTab(tab.dataset.extab)
@@ -4243,6 +4465,8 @@ startAutoTranslate()
 paintTemplates()
 paintTplSidebar()
 paintTplGallery()
+paintThemeTabs()
+paintThemes()
 paintSessions()
 paintActivity()
 renderOfficeCards()
