@@ -95,17 +95,8 @@
   /* ── 工作区侧栏 ───────────────────────────── */
   .side{
     background:var(--surface-2);border-right:1px solid var(--line);
-    display:flex;flex-direction:column;min-height:0;padding:14px 10px 12px;
+    display:flex;flex-direction:column;min-height:0;padding:24px 10px 12px;
   }
-  .ws{display:flex;align-items:center;gap:10px;padding:2px 6px 16px}
-  .ws .ava{
-    width:32px;height:32px;border-radius:50%;display:grid;place-items:center;color:#fff;
-    font-size:11px;font-weight:600;background:#4a2d55;flex:none;
-  }
-  .ws .meta{flex:1;min-width:0}
-  .ws .name{font-size:14.5px;font-weight:600;color:var(--ink-strong);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.01em}
-  .ws .plan{font-size:12px;color:var(--fg-subtle);margin-top:1px}
-  .ws .chev{color:var(--fg-subtle)}
 
   .create{
     display:flex;align-items:center;gap:8px;height:42px;padding:0 12px;
@@ -1320,13 +1311,23 @@
   .pmi .chev{margin-left:auto;color:var(--fg-subtle);display:flex}
   .pmsep{height:1px;background:var(--line);margin:6px 8px}
   .submenu{
-    position:fixed;z-index:71;width:214px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);
-    box-shadow:var(--e2);padding:7px;max-height:302px;overflow:auto;
+    position:fixed;z-index:71;width:252px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);
+    box-shadow:var(--e2);padding:7px;max-height:330px;overflow:auto;
   }
-  .smi{display:block;width:100%;text-align:left;padding:8px 10px;border-radius:var(--r-md);font-size:13px;color:var(--fg)}
+  .smi{display:flex;align-items:center;gap:9px;width:100%;text-align:left;padding:7px 8px;border-radius:var(--r-md);font-size:13px;color:var(--fg)}
   .smi:hover{background:var(--surface-2)}
   .smi.on{background:var(--accent-soft)}
-  .smi .d{display:block;font-size:11px;color:var(--fg-subtle);margin-top:1px;line-height:1.35}
+  .smi-tx{flex:1;min-width:0}
+  .smi-lb{display:flex;align-items:center;gap:6px;font-size:13px;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .smi .d{display:block;font-size:11px;color:var(--fg-subtle);margin-top:1px;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .smi-ico{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;flex:none;overflow:hidden;color:#fff}
+  .smi-face{background:#eef2f8;box-shadow:inset 0 0 0 1px rgba(16,24,40,.06)}
+  .smi-face img{width:100%;height:100%;object-fit:cover;display:block}
+  .smi-brand .cn-ico{width:26px;height:26px;border-radius:8px}
+  .smi-brand .cn-ico svg{width:16px;height:16px}
+  .smi-brand .cn-ico-mono{font-size:9.5px}
+  .smi-all{margin-top:5px;border-top:1px solid var(--line);border-radius:0 0 var(--r-md) var(--r-md);color:var(--fg-muted);font-size:12.5px}
+  .smi-arrow{margin-left:auto;color:var(--fg-subtle);font-size:12px}
 
   /* ── 类型模式（演示文稿） ─────────────────────── */
   .top-left{display:flex;align-items:center;gap:10px}
@@ -1529,15 +1530,6 @@
 
   <!-- 工作区侧栏 -->
   <aside class="side">
-    <div class="ws">
-      <div class="ava">星W</div>
-      <div class="meta">
-        <div class="name">重阳李's Workspace</div>
-        <div class="plan">Free</div>
-      </div>
-      <svg class="chev ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
-    </div>
-
     <button class="create" id="newBlank">
       <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"></use></svg>
       创建
@@ -1575,10 +1567,6 @@
         <button class="row">
           <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-globe"></use></svg>
           网站
-        </button>
-        <button class="row">
-          <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-code"></use></svg>
-          <span data-i18n-key="nav.api">API 生成</span>
         </button>
       </div>
 
@@ -3228,7 +3216,6 @@ markSoon($('exSubtabs').querySelector('[data-sub="teams"]'))
 markSoon($('exMine'))
 markSoon($('skAdd'))
 markSoon($('cnCustom'))
-markSoon($('recentDocs'))
 markSoon($('browseTpl'))
 $('mic').hidden = true
 $('micMode').hidden = true
@@ -3237,10 +3224,6 @@ $('newFolder').hidden = true
 document.querySelector('.gtabs').hidden = true
 $('setDefaultOpen').closest('.sp-row').hidden = true
 document.querySelector('#importBox .bgrid').hidden = true
-document.querySelectorAll('.side .row').forEach((row) => {
-  const label = row.textContent.trim()
-  if (['全部', '与您共享', '网站', 'API 生成', '垃圾箱'].includes(label)) markSoon(row)
-})
 document.querySelectorAll('.rail .rbtn[title="媒体"], .rail .rbtn[title="邀请成员"]').forEach((btn) => { btn.hidden = true })
 document.querySelectorAll('.bar .icobtn[title="文本设置"]').forEach((btn) => { btn.hidden = true })
 
@@ -3282,30 +3265,57 @@ function openPlusMenu(anchor) {
   }
 }
 
+const TOOL_LABELS = {
+  'memory.recall': '召回记忆',
+  'memory.save': '写入记忆',
+  'expert.consult': '咨询专家',
+  'figma.inspect_frame': 'Figma 检查画框',
+  'figma.export_frame': 'Figma 导出画框',
+  'web.fetch': '抓取网页',
+  'web.search': '网页搜索',
+}
+
+function toolLabel(id) {
+  if (TOOL_LABELS[id]) return TOOL_LABELS[id]
+  for (const item of OFFICE_ITEMS) {
+    for (const [tid, label] of item.tools) if (tid === id) return label
+  }
+  return id
+}
+
+function subIcoApp(icon, color) {
+  return '<span class="smi-ico smi-app" style="background:' + color + '">' + iconMark(icon, 15) + '</span>'
+}
+
 function subItems(act) {
   if (act === 'mode') {
     return [
-      { label: '标准', desc: '当前路由：mock-planner → mock-designer', on: true, run: () => toast('已是标准模式', 'ok') },
-      { label: '深度思考', desc: '需要真实推理模型', soon: true },
-      { label: '经典版', desc: '旧版生成工具', soon: true },
+      { label: '标准', desc: '当前路由：mock-planner → mock-designer', on: true, ico: subIcoApp('wand', 'var(--accent)'), run: () => toast('已是标准模式', 'ok') },
+      { label: '深度思考', desc: '需要真实推理模型', soon: true, ico: subIcoApp('brain', '#6D5BD0') },
+      { label: '经典版', desc: '旧版生成工具', soon: true, ico: subIcoApp('clock', '#8A93A5') },
     ]
   }
   if (act === 'expert') {
-    return state.presets.map((preset) => ({
+    const used = new Set()
+    const rows = state.presets.map((preset) => ({
       label: preset.name,
       desc: preset.role || preset.id,
       on: preset.id === state.presetId,
+      ico: '<span class="smi-ico smi-face"><img src="' + expertFace(preset.name, used) + '" alt="" loading="lazy" /></span>',
       run: () => {
         state.presetId = preset.id
         toast('已切换专家：' + preset.name, 'ok')
         closePlusMenu()
       },
     }))
+    rows.push({ foot: '查看全部专家', run: () => { closePlusMenu(); openExperts('experts') } })
+    return rows
   }
   if (act === 'skill') {
-    return state.tools.map((tool) => ({
-      label: tool.name,
-      desc: tool.description || '',
+    const rows = state.tools.map((tool) => ({
+      label: toolLabel(tool.name),
+      desc: tool.description || tool.name,
+      ico: subIcoApp(pickIcon('skill', tool.name, 'tool'), skillTone(tool.name)),
       run: () => {
         const target = $('viewChat').classList.contains('on') ? $('chatPrompt') : $('homePrompt')
         target.value = (target.value ? target.value.replace(/\s*$/, ' ') : '') + '@' + tool.name + ' '
@@ -3313,18 +3323,34 @@ function subItems(act) {
         closePlusMenu()
       },
     }))
+    rows.push({ foot: '查看全部技能', run: () => { closePlusMenu(); openExperts('skills') } })
+    return rows
   }
   if (act === 'connector') {
-    const connectors = state.rows.filter((row) => /figma|connector|web|mcp|ssh/i.test(row.plugin))
-    if (connectors.length === 0) return [{ label: '暂无连接器', desc: '在设置 · 设备连接中查看', run: () => { closePlusMenu(); openSettings('devices') } }]
-    return connectors.map((row) => ({
-      label: row.plugin,
-      desc: row.id + (row.mounted ? ' · 已装载' : ' · 未装载'),
-      run: () => {
+    const real = state.rows
+      .filter((row) => /figma|connector|web|mcp|ssh/i.test(row.plugin))
+      .map((row) => ({
+        label: row.plugin,
+        desc: (row.mounted ? '已连接' : '未装载') + ' · ' + row.id,
+        hue: 265,
+        run: () => { closePlusMenu(); openSettings('devices') },
+      }))
+    const demo = CN_CONNECTORS.map((item) => ({ label: item.name, desc: item.desc || '', hue: item.hue }))
+    const all = real.concat(demo)
+    const shown = all.slice(0, 12)
+    const rows = shown.map((item) => ({
+      label: item.label,
+      desc: item.desc,
+      ico: '<span class="smi-ico smi-brand">' + brandTile(item.label, item.hue) + '</span>',
+      run: item.run || (() => {
         closePlusMenu()
-        openSettings('devices')
-      },
+        toast('已请求连接「' + item.label + '」（演示环境不执行授权）', 'ok')
+      }),
     }))
+    if (all.length > shown.length) {
+      rows.push({ foot: '查看全部 ' + all.length + ' 个连接器', run: () => { closePlusMenu(); openExperts('connectors') } })
+    }
+    return rows
   }
   return []
 }
@@ -3334,23 +3360,43 @@ function openSub(act, anchorBtn) {
   if (items.length === 0) { toast('暂无可用项'); return }
   plusSub.innerHTML = ''
   for (const item of items) {
+    if (item.foot) {
+      const foot = document.createElement('button')
+      foot.className = 'smi smi-all'
+      const label = document.createElement('span')
+      label.className = 'smi-tx'
+      label.textContent = item.foot
+      foot.appendChild(label)
+      const arrow = document.createElement('span')
+      arrow.className = 'smi-arrow'
+      arrow.textContent = '→'
+      foot.appendChild(arrow)
+      foot.onclick = (event) => { event.stopPropagation(); item.run() }
+      plusSub.appendChild(foot)
+      continue
+    }
     const btn = document.createElement('button')
     btn.className = 'smi' + (item.on ? ' on' : '')
+    if (item.ico) btn.insertAdjacentHTML('beforeend', item.ico)
+    const tx = document.createElement('span')
+    tx.className = 'smi-tx'
     const label = document.createElement('span')
+    label.className = 'smi-lb'
     label.textContent = item.label
-    btn.appendChild(label)
     if (item.soon) {
       const tag = document.createElement('span')
       tag.className = 'soon'
       tag.textContent = '未接入'
       label.appendChild(tag)
     }
+    tx.appendChild(label)
     if (item.desc) {
       const desc = document.createElement('small')
       desc.className = 'd'
       desc.textContent = item.desc
-      btn.appendChild(desc)
+      tx.appendChild(desc)
     }
+    btn.appendChild(tx)
     if (item.soon) { btn.disabled = true; btn.style.cursor = 'default' }
     btn.onclick = (event) => { event.stopPropagation(); if (item.soon) return; item.run() }
     plusSub.appendChild(btn)
@@ -3359,7 +3405,7 @@ function openSub(act, anchorBtn) {
 
   const menuRect = plusMenu.getBoundingClientRect()
   const btnRect = anchorBtn.getBoundingClientRect()
-  const width = plusSub.offsetWidth || 214
+  const width = plusSub.offsetWidth || 252
   const height = plusSub.offsetHeight || 200
   let left = menuRect.right + 6
   if (left + width > window.innerWidth - 12) left = menuRect.left - width - 6
@@ -3369,10 +3415,26 @@ function openSub(act, anchorBtn) {
   plusSub.style.bottom = bottom + 'px'
 }
 
+let plusSubTimer = null
+
+function scheduleClosePlusSub(delay) {
+  clearTimeout(plusSubTimer)
+  plusSubTimer = setTimeout(() => { closePlusSub() }, delay == null ? 200 : delay)
+}
+
 plusMenu.querySelectorAll('.pmi').forEach((btn) => {
+  const act = btn.dataset.act
+  // 鼠标指向即弹出右侧浮层（触屏仍用点击）
+  btn.addEventListener('mouseenter', () => {
+    if (plusMenu.hidden) return
+    clearTimeout(plusSubTimer)
+    if (act === 'files') { scheduleClosePlusSub(160); return }
+    if (!plusSub.hidden && plusSub.dataset.act === act) return
+    plusSub.dataset.act = act
+    openSub(act, btn)
+  })
   btn.onclick = (event) => {
     event.stopPropagation()
-    const act = btn.dataset.act
     if (act === 'files') {
       $('fileInput').click()
       return
@@ -3382,6 +3444,10 @@ plusMenu.querySelectorAll('.pmi').forEach((btn) => {
     openSub(act, btn)
   }
 })
+
+plusSub.addEventListener('mouseenter', () => clearTimeout(plusSubTimer))
+plusSub.addEventListener('mouseleave', () => scheduleClosePlusSub(220))
+plusMenu.addEventListener('mouseleave', () => scheduleClosePlusSub(220))
 
 let pendingOfficeFile = null
 $('fileInput').onchange = (event) => {
@@ -3407,7 +3473,12 @@ document.addEventListener('click', (event) => {
   closePlusMenu()
 })
 window.addEventListener('resize', closePlusMenu)
-window.addEventListener('scroll', closePlusMenu, true)
+window.addEventListener('scroll', (event) => {
+  const target = event.target
+  if (target === plusSub || target === plusMenu) return
+  if (target instanceof Element && (plusSub.contains(target) || plusMenu.contains(target))) return
+  closePlusMenu()
+}, true)
 
 /* ── 类型模式：每种类型有自己的标题、示例与模板 ───────── */
 const MODE_CONTENT = {
