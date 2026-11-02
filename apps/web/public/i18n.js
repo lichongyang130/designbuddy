@@ -155,6 +155,7 @@ const ROWS = {
   '等宽字体': ['Monospace', '等寬字型', '等幅フォント', '고정폭 글꼴', 'Monospace', 'Monospace', 'Monoespaciada'],
   // ── 会员中心 ──
   '会员': ['Member', '會員', 'メンバー', '멤버', 'Mitglied', 'Membre', 'Miembro'],
+  '运行次数': ['Runs', '執行次數', '実行回数', '실행 횟수', 'Läufe', 'Exécutions', 'Ejecuciones'],
   '会话': ['Chats', '工作階段', 'セッション', '세션', 'Chats', 'Sessions', 'Chats'],
   '会话列表': ['Chat list', '工作階段列表', 'セッション一覧', '세션 목록', 'Chat-Liste', 'Liste des sessions', 'Lista de chats'],
   '恢复默认': ['Reset', '恢復預設', '既定に戻す', '기본값으로', 'Zurücksetzen', 'Réinitialiser', 'Restablecer'],

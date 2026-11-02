@@ -2960,7 +2960,7 @@
   <div class="acct-grid">
     <div><span>语言</span><b id="acctLang">简体中文</b></div>
     <div><span>字号</span><b id="acctFont">16px</b></div>
-    <div><span>成员</span><b>1（本地）</b></div>
+    <div><span>运行次数</span><b id="acctRuns">0</b></div>
   </div>
   <div class="acct-list">
     <button data-panel="profile">
@@ -4008,6 +4008,13 @@ async function send(prompt, kind) {
   paintActivity()
   syncWakeLock()
   try {
+    try {
+      const usage = Object.assign({ runs: 0, lastAt: 0 }, state.prefs.usage || {})
+      usage.runs += 1
+      usage.lastAt = Date.now()
+      state.prefs.usage = usage
+      savePrefs()
+    } catch { /* 隐私模式下忽略 */ }
     if (!state.sessionId) {
       const session = await rpc('session.create', { title: tag ? tag + ' · ' + text.slice(0, 16) : text.slice(0, 20) })
       state.sessionId = session.id
@@ -4998,6 +5005,8 @@ const BRAND_KEYS = [
   [/百度网盘/, 'baidunetdisk'],
   [/微信/, 'wechat'],
   [/^QQ$/, 'qq'],
+  [/QQ\s*邮箱/, 'qqmail'],
+  [/CloudBase|腾讯云/, 'tencentcloud'],
 ]
 
 const MONO_COLORS = ['#C0392B', '#B4641E', '#0F7B6C', '#2D6AE3', '#5B4BE0', '#B0487A', '#43536B', '#0E7490']
@@ -5167,6 +5176,8 @@ function acctLangLabel() {
   return opt ? opt.textContent.trim() : '简体中文'
 }
 function paintAcct() {
+  const usage = state.prefs.usage || { runs: 0 }
+  $('acctRuns').textContent = String(usage.runs || 0)
   $('acctLang').textContent = acctLangLabel()
   $('acctFont').textContent = state.prefs.fontSize + 'px'
 }
