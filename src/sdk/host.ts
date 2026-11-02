@@ -19,6 +19,7 @@ import { AgentPresetRegistry } from '../core/agent.ts'
 import { ModelRouter } from '../core/router.ts'
 import type { SessionService } from '../core/session.ts'
 import type { UsageService } from '../core/usage.ts'
+import type { Library } from '../core/library.ts'
 import { estimateTokens } from '../core/usage.ts'
 import { errorMessage } from '../core/tools.ts'
 import type { ToolRegistry } from '../core/tools.ts'
@@ -147,6 +148,42 @@ export class HostServer {
           policies: router.candidateKinds(),
           attempts: router.attempts,
         }
+      }
+      case 'library.cases': {
+        const library = this.#ctx.require<Library>('library')
+        return library.list({
+          q: typeof params.q === 'string' ? params.q : '',
+          fmt: typeof params.fmt === 'string' ? params.fmt : 'all',
+          cats: Array.isArray(params.cats) ? (params.cats as string[]) : [],
+          sort: params.sort === 'name' ? 'name' : 'date',
+          limit: Number(params.limit ?? 0),
+        })
+      }
+      case 'library.catalog': {
+        const library = this.#ctx.require<Library>('library')
+        return library.decks()
+      }
+      case 'library.case': {
+        const library = this.#ctx.require<Library>('library')
+        const deck = library.get(String(params.id ?? ''))
+        if (!deck) throw new Error(`unknown case: ${String(params.id ?? '')}`)
+        return deck
+      }
+      case 'library.facets': {
+        const library = this.#ctx.require<Library>('library')
+        return library.facets({
+          q: typeof params.q === 'string' ? params.q : '',
+          fmt: typeof params.fmt === 'string' ? params.fmt : 'all',
+          cats: Array.isArray(params.cats) ? (params.cats as string[]) : [],
+        })
+      }
+      case 'library.themes': {
+        const library = this.#ctx.require<Library>('library')
+        return library.themes()
+      }
+      case 'library.summary': {
+        const library = this.#ctx.require<Library>('library')
+        return library.summary()
       }
       case 'usage.summary': {
         const usage = this.#ctx.require<UsageService>('usage')

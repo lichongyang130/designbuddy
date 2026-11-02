@@ -830,3 +830,11 @@ rail 72 │ 自定义侧栏 278px（#f5f8fd，右描边 #d6e1ef）│ 主区纯�
 - 现在改成和真 logo 同一套底：白底 tile + 品牌色简称，颜色逐个按真实品牌色指定（文档 `#2B7BFF`、问卷 `#0AA1F5`、小鹅通 `#FF6A00`、Tushare `#2C3E50`…），不再用名字哈希；三个字自动降到 9.5px；子菜单 26px 尺寸同步。
 - 顺带修了一个渲染 bug：连点两次入口会并发跑两遍 `paintConnectors()`，异步的 `plugins.rows` 让第二次清空后第一次又追加，40 条渲染成 47 条。加了 `cnPaintSeq` 序号保护。
 - 新增企查查真 logo（Arcticons，CC BY-SA）。品牌图标 19 个。
+
+## 28. 案例库与主题目录搬到后端（2026-11-03）
+
+- **问题**：19 套案例和 18 套主题都是前端常量——搜索、侧栏每个分类的条数全在浏览器里现算。要加案例、按标签检索、做服务端推荐，都得改前端代码再发版。
+- **做法**：新增 `core.library`（第 13 个插件），数据仍以 `apps/web/public/cases.js` 与新的 `apps/web/public/themes.js` 为唯一来源——两个都是纯数据模块、没有 DOM 依赖，前后端直接 import，不做第二份拷贝。`src/core/library.ts` 只负责投影与查询：`list()` 出列表卡片（不带 slides）、`cards()` 出全量卡片、`facets()` 出侧栏分组与条数、`get()` 出单套全量、`themes()` 出配色。
+- **RPC**：`library.catalog`（全量 deck，启动时拉一次，封面要用 slides）、`library.cases`（筛选 + 排序 + limit）、`library.case`（按 id）、`library.facets`、`library.themes`、`library.summary`。
+- **前端**：`CASE_DECKS` / `THEMES` 两个裸用法全部换成 `LIB.decks` / `LIB.themes`，打包数据降级为「首屏与离线回落」。启动后 `refreshLibrary()` 换成后端那份，成功时在 `<html data-library="server">` 上留一个可测的记号；失败静默退回 bundle，界面完全一样。侧栏计数改读 `library.facets`（勾了分类不会让格式那一列跳数），搜索框 180ms 防抖后走 `library.cases`，拿到 id 再和本地结果取交集——输入过程中不会闪空。
+- **验证**：`data-library = server`、模板库 19 张卡、分类计数 1/4/3/1/1…、搜索「电梯」命中 1 套、控制台无报错；新增 `test/library.test.ts` 7 例（目录与打包数据同源、卡片是投影且页数/配图数正确、格式/分类/全文筛选可组合、排序与 limit、facets 忽略自身维度、`get()` 带回 slides、前端不再直接读常量），`npm test` 85/85。

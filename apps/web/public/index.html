@@ -3476,7 +3476,13 @@
 
 <script type="module">
 import { CN_CONNECTORS } from './demo-data.js'
-import { CASE_DECKS, slideHTML } from './cases.js'
+import { CASE_DECKS as BUNDLED_CASES, slideHTML } from './cases.js'
+import { THEMES as BUNDLED_THEMES } from './themes.js'
+
+/* 案例库与主题目录的真实来源是后端（core.library）。前端这两份 import 只是
+ * 首屏与离线回落：启动后 `refreshLibrary()` 会把目录换成后端那份，换不到就
+ * 继续用打包的这份——两边是同一种对象，渲染代码不需要知道数据从哪来。 */
+const LIB = { decks: BUNDLED_CASES, themes: BUNDLED_THEMES, source: 'bundle' }
 import { applyLanguage, resolveLanguage, startAutoTranslate, t } from './i18n.js'
 const tplState = { fmt: 'all', cats: new Set(), q: '', sort: 'date', more: false }
 
@@ -3493,7 +3499,7 @@ function useTemplate(name) {
 
 function tplHits() {
   const q = tplState.q.trim().toLowerCase()
-  const hits = CASE_DECKS.filter((deck) => {
+  const hits = LIB.decks.filter((deck) => {
     if (tplState.fmt !== 'all' && deck.fmt !== tplState.fmt) return false
     if (tplState.cats.size > 0 && !(tplState.cats.has(deck.category) || tplState.cats.has(deck.kind))) return false
     if (q !== '' && !(deck.name + ' ' + deck.en + ' ' + deck.by + ' ' + deck.kind + ' ' + deck.tags.join(' ')).toLowerCase().includes(q)) return false
@@ -3501,6 +3507,11 @@ function tplHits() {
   })
   if (tplState.sort === 'name') hits.sort((a, b) => a.name.localeCompare(b.name, 'zh-Hans-CN'))
   else hits.sort((a, b) => b.date - a.date)
+  /* 服务端已经算过一遍检索：只认它给出的 id（两边数据同源时结果一致，
+   * 将来目录搬到远端也只有这一处需要改）。 */
+  if (libState.ids && libState.q === tplState.q.trim()) {
+    return hits.filter((deck) => libState.ids.has(deck.id))
+  }
   return hits
 }
 
@@ -3903,11 +3914,71 @@ function wireCaseView() {
   })
 }
 
+/* 目录来源：后端优先。`library.catalog` 给全量 deck（含 slides，封面要用），
+ * `library.themes` 给配色；拿不到就继续用打包进前端的那两份。 */
+const libState = { facets: null, ids: null, q: '' }
+
+async function refreshLibrary() {
+  try {
+    const [decks, themes] = await Promise.all([rpc('library.catalog'), rpc('library.themes')])
+    if (Array.isArray(decks) && decks.length > 0 && decks.every((deck) => Array.isArray(deck.slides))) {
+      LIB.decks = decks
+      LIB.source = 'server'
+    }
+    if (Array.isArray(themes) && themes.length > 0) LIB.themes = themes
+    document.documentElement.dataset.library = LIB.source
+    if (LIB.source === 'server') {
+      paintTemplates()
+      syncTplCounts()
+      paintTplGallery()
+      paintThemes()
+    }
+  } catch (error) {
+    /* 后端没起来（离线预览、单文件打开）：静默退回打包数据 */
+    document.documentElement.dataset.library = 'bundle'
+  }
+  void refreshFacets()
+}
+
+async function refreshFacets() {
+  try {
+    libState.facets = await rpc('library.facets', { q: tplState.q.trim(), fmt: tplState.fmt, cats: [...tplState.cats] })
+    syncTplCounts()
+  } catch (error) {
+    libState.facets = null
+  }
+}
+
+/* 检索：非空查询交给后端匹配（`library.cases` 只回卡片 id），前端只做交集，
+ * 拿到 id 之前仍按本地规则过滤，输入过程中不会闪空。 */
+let tplQueryTimer = null
+function scheduleServerQuery() {
+  if (tplQueryTimer) clearTimeout(tplQueryTimer)
+  tplQueryTimer = setTimeout(async () => {
+    const q = tplState.q.trim()
+    if (q === '') {
+      libState.ids = null
+      libState.q = ''
+      return
+    }
+    try {
+      const rows = await rpc('library.cases', { q, fmt: tplState.fmt, cats: [...tplState.cats], sort: tplState.sort })
+      if (q !== tplState.q.trim()) return
+      libState.ids = new Set(rows.map((row) => row.id))
+      libState.q = q
+      paintTplGallery()
+    } catch (error) {
+      libState.ids = null
+    }
+  }, 180)
+}
+
 function syncTplCounts() {
   let extras = 0
   document.querySelectorAll('#tsCat input').forEach((input) => {
     const row = input.closest('.ts-opt')
-    const n = CASE_DECKS.filter((deck) => deck.category === input.value).length
+    const facet = libState.facets ? libState.facets.categories.find((row) => row.value === input.value) : null
+    const n = facet ? facet.count : LIB.decks.filter((deck) => deck.category === input.value).length
     const count = row.querySelector('.ts-count')
     if (count) count.textContent = String(n)
     if (row.classList.contains('extra')) {
@@ -3924,7 +3995,7 @@ function syncTplCounts() {
   }
   // 已勾选但当前没有案例的类别，清掉，免得筛出空列表
   for (const cat of [...tplState.cats]) {
-    if (!CASE_DECKS.some((deck) => deck.category === cat)) tplState.cats.delete(cat)
+    if (!LIB.decks.some((deck) => deck.category === cat)) tplState.cats.delete(cat)
   }
 }
 
@@ -3970,32 +4041,11 @@ function paintTplSidebar() {
 }
 
 /* ── 主题页（自定义）：18 个标准主题，纯 CSS 预览 ───────── */
-const THEMES = [
-  { name: 'Pearl', stage: '#e9e9f1', slide: '#f9f9fd', ink: '#1a1a23', body: '#33333d', link: '#2b4bd8' },
-  { name: 'Vortex', stage: '#181819', slide: '#090909', ink: '#ededee', body: '#b7b7bd', link: '#8fb0ff' },
-  { name: 'Clementa', stage: '#d9c1a1', slide: '#f9efd7', ink: '#492117', body: '#5a4630', link: '#c2622a' },
-  { name: 'Stratos', stage: 'radial-gradient(ellipse at 26% 96%,#3a2b6d 0%,rgba(58,43,109,0) 62%),linear-gradient(160deg,#14141c,#08080d)', slide: '#11141f', ink: '#f0f3f9', body: '#a9b4cc', link: '#7ea6ff' },
-  { name: 'Nova', stage: 'linear-gradient(150deg,#e2eefc 0%,#a8ccf2 34%,#7fb0e6 58%,#d6e6fa 100%)', slide: '#ffffff', ink: '#16365c', body: '#3c5578', link: '#2b6fd8' },
-  { name: 'Twilight', stage: 'linear-gradient(150deg,#f2cfdc 0%,#d9b8e6 52%,#b9cbe6 100%)', slide: '#fff9f5', ink: '#425e76', body: '#5c7186', link: '#c76a9a' },
-  { name: 'Coral Glow', stage: '#e7b2bd', slide: '#ffffff', ink: '#914a56', body: '#7d4a52', link: '#c04a68' },
-  { name: 'Mercury', stage: 'linear-gradient(150deg,#c3d5e6,#7d8fa9 62%,#9fb2c6)', slide: '#ffffff', ink: '#414348', body: '#5c5f66', link: '#2b5bd8' },
-  { name: 'Ashrose', stage: 'linear-gradient(150deg,#d3c8cd,#a9a4ae 58%,#e7dfe2)', slide: '#ffffff', ink: '#6d6d6d', body: '#7b7377', link: '#a86b86' },
-  { name: 'Spectrum', stage: 'linear-gradient(115deg,#ffd9e8 0%,#e6e4ff 26%,#d6f4ff 52%,#dcffe9 74%,#fff3d0 100%)', slide: '#eaf2f8', ink: '#3764f1', body: '#2f3f60', link: '#3764f1' },
-  { name: 'Chisel', stage: '#f6f1ee', slide: '#ffffff', ink: '#1d1a17', body: '#46403a', link: '#8a6a3a' },
-  { name: 'Stardust', stage: '#050505', slide: '#0a0a0a', ink: '#ffffff', body: '#f0a35e', link: '#f0a35e' },
-  { name: 'Seafoam', stage: '#d0f3eb', slide: '#ffffff', ink: '#2d3765', body: '#46527f', link: '#2d6fb8' },
-  { name: 'Nebulae', stage: 'radial-gradient(ellipse at 74% 24%,#241551 0%,rgba(36,21,81,0) 62%),linear-gradient(160deg,#0d0a16,#05050a)', slide: '#0b0b0f', ink: '#ffffff', body: '#cdd6ff', link: '#70edff' },
-  { name: 'Creme', stage: '#d8c8b3', slide: '#f8f5ee', ink: '#3f3a30', body: '#55503f', link: '#8a6a3a' },
-  { name: 'Lux', stage: '#1a3a39', slide: '#132d2c', ink: '#ffffff', body: '#ffd4b6', link: '#ffd4b6' },
-  { name: 'Consultant', stage: '#eeeeef', slide: '#ffffff', ink: '#15283e', body: '#3c4a5c', link: '#2b4bd8' },
-  { name: 'Marine', stage: 'radial-gradient(ellipse at 84% 12%,#2b3b8f 0%,rgba(43,59,143,0) 62%),linear-gradient(160deg,#12193a,#080c1e)', slide: '#0c1022', ink: '#ffffff', body: '#b9c4e6', link: '#8aa6ff' },
-]
-
 const thState = { q: '' }
 
 function thHits() {
   const q = thState.q.trim().toLowerCase()
-  return THEMES.filter((item) => q === '' || item.name.toLowerCase().includes(q))
+  return LIB.themes.filter((item) => q === '' || item.name.toLowerCase().includes(q))
 }
 
 function hexToRgb(hex) {
@@ -4225,7 +4275,7 @@ function paintTemplates() {
   const grid = $('tplGrid')
   if (!grid) return
   grid.innerHTML = ''
-  for (const deck of CASE_DECKS.slice(0, 6)) {
+  for (const deck of LIB.decks.slice(0, 6)) {
     const item = document.createElement('button')
     item.className = 'tpl'
     item.innerHTML = '<div class="cover">' + deckCoverHTML(deck) + '</div><span>' + deck.name + '</span>'
@@ -5543,6 +5593,8 @@ $('browseTpl').onclick = () => { exitMode(); setView('templates') }
 $('tpSearch').addEventListener('input', (event) => {
   tplState.q = event.target.value
   paintTplGallery()
+  scheduleServerQuery()
+  if (tplState.q.trim() === '') void refreshFacets()
 })
 $('navCustom').addEventListener('click', () => {
   exitMode()
@@ -6409,7 +6461,7 @@ syncTplCounts()
 paintTplGallery()
 paintThemes()
 {
-  const savedTheme = THEMES.find((item) => item.name === state.prefs.theme)
+  const savedTheme = LIB.themes.find((item) => item.name === state.prefs.theme)
   if (savedTheme) applyThemePreset(savedTheme)
 }
 wireCaseView()
@@ -6422,6 +6474,7 @@ syncNickname()
 await connected
 try {
   const [presets] = await Promise.all([rpc('presets.list'), loadPlugins()])
+  void refreshLibrary()
   state.presets = presets
   const preferred = presets.find((preset) => preset.id === 'manager') || presets[0]
   if (preferred) state.presetId = preferred.id
