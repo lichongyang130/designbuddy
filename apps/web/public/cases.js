@@ -2453,6 +2453,272 @@ export const CASE_DECKS = [
       },
     ],
   },
+  {
+    id: 'heatline',
+    name: 'The Heat Between Blocks',
+    en: 'Urban Heat Field Report',
+    by: 'Gamma',
+    cat: '文档',
+    fmt: 'doc',
+    ratio: 'A4 · Portrait',
+    date: 20261104,
+    kind: 'Field report',
+    category: 'Report',
+    tags: ['urban heat', 'shade', 'public space', 'field study'],
+    desc: 'An English A4 field report on summer heat at street level: bone-white paper, one sans-serif voice, an asymmetric page with a hairline rule down the left margin. Six blocks, thirty-eight sensors, ninety-two days — the argument is that shade has to be a route, not a spot. Built for research reports, white papers and policy briefs that people actually read.',
+    bestFor: [
+      'Research reports and white papers',
+      'Field studies and measurement campaigns',
+      'Policy briefs and pilot proposals',
+      'English editions of internal studies',
+    ],
+    visual: 'Bone paper (#F4F2EC), one sans-serif voice throughout, and a deliberately off-centre page: a hairline rule sits 84 px from the left edge, text starts at 128 px, the right margin stays at 84 px. Oxide orange is used only for section numbers, figure numbers and one rule per page; pine green is reserved for the data tables. Running heads are letter-spaced caps with a 5 px orange square, folios sit bottom right. Figures run full column under a two-line caption; there is no decorative art anywhere in the document.',
+    how: 'Twenty pages follow the shape of the study: question, method, findings, explanation, interventions, pilot. Body pages carry 520–680 words in four to five paragraphs with a 208 px side column of source notes, then a three-cell points bar. Figure pages get one image and one caption line — never two images — because a report that stacks photos stops being a report. Keep the running head under 44 characters or it wraps into the folio.',
+    styles: ['#F4F2EC', '#C0491F', '#245751'],
+    colorway: 'Bone · Oxide · Pine',
+    folio: true,
+    footLeft: 'The Heat Between Blocks · 2026',
+    runHead: 'HEAT BETWEEN BLOCKS · FIELD REPORT 07',
+    paper: '#F4F2EC',
+    ink: '#17170F',
+    accent: '#C0491F',
+    second: '#245751',
+    muted: '#7A7365',
+    rule: '#D6D0C2',
+    body: '#3C3A32',
+    display: 'sans',
+    slides: [
+      {
+        k: 'dcover', label: 'Cover',
+        kicker: 'FIELD REPORT · NO. 07',
+        note: 'SUMMER 2026 · PUBLIC EDITION',
+        title: 'The heat\nbetween blocks',
+        sub: ['Six blocks, thirty-eight sensors, ninety-two days: a street-level account of why two corners four hundred metres apart differ by four degrees — and what a block can do about it without rebuilding the block.'],
+        img: '01',
+        facts: [['Study', 'Urban heat field report'], ['Sample', '6 blocks · 38 sensors · 92 days'], ['Version', 'v1.0 · November 2026']],
+      },
+      {
+        k: 'dmeta', label: 'Abstract', run: 'Abstract',
+        kicker: 'ABSTRACT',
+        title: 'One temperature is not a measurement',
+        paras: [
+          'Every city publishes one temperature. We spent a summer measuring six of them. The reference station sits on a grass verge outside the ring road; the blocks we walked are four to six degrees warmer at two in the afternoon and, more to the point, two to three degrees warmer at eleven at night, when nobody is outdoors by choice.',
+          'Latitude, altitude and season do not explain the gap. Surfaces and routes do: how much of a walk to the shop happens in shade, how much heat the block releases after sunset, and whether the shade that exists lies on the way somewhere or in a corner nobody passes.',
+        ],
+        facts: [
+          ['Sample', '6 blocks · 38 sensors · 92 days, 15 June to 15 September'],
+          ['Core finding', 'Blocks with continuous shade routes run 2.6 °C cooler at 23:00'],
+          ['Recommendation', 'Build routes of shade before adding single trees'],
+        ],
+        note: 'Method: shielded sensors at 1.8 m, one per 40 m of street; walk audits at 14:00 and 22:00; 412 intercept surveys',
+      },
+      {
+        k: 'dtoc', label: 'Contents', run: 'Contents',
+        kicker: 'CONTENTS',
+        title: 'Contents',
+        items: [
+          ['01', 'Problem', 'Two corners, four degrees'],
+          ['02', 'Method', 'Sensors, walks and surveys'],
+          ['03', 'Findings', 'Where the heat actually sits'],
+          ['04', 'Explanation', 'Why routes beat spots'],
+          ['05', 'Interventions', 'Five moves and what they cost'],
+          ['06', 'Pilot', 'Twelve months, one block'],
+        ],
+        figs: [
+          ['FIG. 01', 'A sensor at head height'],
+          ['FIG. 02', 'Canopy over pavers'],
+          ['FIG. 03', 'The bus stop at 14:00'],
+          ['FIG. 04', 'Plaza fountain, 16:40'],
+          ['FIG. 05', 'The crossing with no shade'],
+          ['FIG. 06', 'Evening on the same street'],
+          ['TABLE 01', 'Six blocks, afternoon and night'],
+          ['TABLE 02', 'Cost and cooling per intervention'],
+        ],
+        note: 'Figures are numbered in order of appearance. Printed page numbers appear in the right foot of every text page.',
+      },
+      {
+        k: 'dsection', label: 'Section 01', num: '01', kicker: 'THE PROBLEM',
+        title: 'Two corners,\nfour degrees',
+        lead: 'At two in the afternoon on the north corner of Kestrel Street the air reads 38.4 °C. Four hundred metres south, under the plane trees outside the school, it reads 34.1 °C. Same postcode, same elevation, same afternoon.',
+        img: '02',
+      },
+      {
+        k: 'dbody', label: 'Text', run: '01 · Problem',
+        kicker: 'MEASUREMENT GAP',
+        title: 'Why the city feels hotter than it measures',
+        paras: [
+          'The reference station is not wrong. It is answering a different question. Sited on open grass outside the ring road, it records what the air does when nothing is near it — no wall radiating the afternoon back into the evening, no asphalt holding heat three centimetres below the surface, no queue of idling engines at a kerb.',
+          'A block is a stack of materials with different memories. Concrete gives heat back within an hour of sunset; asphalt keeps it for three; a mature canopy releases almost none of what it absorbs, because most of the energy went into evaporating water rather than raising temperature. By 23:00, the difference between a street with forty per cent canopy and one with nine per cent is not a comfort detail. It is the difference between a window that can stay open and one that cannot.',
+          'We measured the same six blocks at the same two hours for ninety-two days, and then walked them, because a number on a pole does not tell you whether anyone can use the pavement. What the walks added was geometry: shade is not distributed evenly across a block, it is distributed along it. A single tree shades a bench. A line of trees shades a journey.',
+          'That distinction turned out to explain more of the variance between blocks than any surface measurement we took. Two blocks with identical canopy cover, identical roof colour and identical street width ran 1.8 °C apart at night. The difference was continuity: in one, the shaded pavement stopped four times at driveways and crossings; in the other it did not stop at all.',
+          'The rest of this report is an attempt to say that precisely, with numbers that a works department can act on and a resident can check.',
+        ],
+        side: [
+          'The station outside the ring road is not incorrect. It is answering a question nobody standing at a bus stop is asking.',
+          'What a person experiences is a route: four hundred metres of pavement, two crossings, one wait.',
+        ],
+        points: [
+          ['01', '+4.3 °C', 'mean afternoon gap against the reference station'],
+          ['02', '+2.1 °C', 'mean gap at 23:00, when the block releases its heat'],
+          ['03', '0.42', 'share of the walk home that happened in shade'],
+        ],
+        note: 'All temperatures are shielded readings at 1.8 m, averaged over 92 days. Full block table on the next spread.',
+      },
+      {
+        k: 'dfigure', label: 'Figure', no: 'FIG. 01', img: '03',
+        cap: 'A sensor in a radiation shield, cable-tied to a lamp post at head height — the same height as a person, which is where this argument lives. Each unit logged every ten minutes and was swapped every three weeks.',
+        src: 'Heatline field kit · 38 units',
+      },
+      {
+        k: 'dbody', label: 'Text', run: '01 · Problem',
+        kicker: 'DISTANCE',
+        title: 'The thirty-metre rule',
+        paras: [
+          'Walk audits gave us a threshold we did not expect. Below roughly thirty metres of continuous shade, people stop treating a stretch of pavement as walkable in the afternoon and start treating it as an obstacle: they cross early, they wait for a bus, they take the longer way around the block.',
+          'Thirty metres is not a design standard, and we are not proposing it as one. It is the distance at which a walk stops being a series of small decisions. Below it, the shade reads as a place to stand. Above it, the shade reads as a route, and routes change behaviour.',
+          'This is why a single large tree in a plaza, however beautiful, shows up in our data as a comfort improvement rather than a mobility one. It lowers the temperature of a hundred square metres and changes the route of almost nobody.',
+          'The threshold also explains a result that surprised us: blocks that added one large tree per year for a decade did not outperform blocks that planted a continuous avenue in a single season. Quantity accumulated slowly, in the wrong places. Continuity arrived all at once, on the route people already used.',
+          'For a works department the implication is uncomfortable but useful. It is easier to fund eleven trees than a hundred metres of coordinated work across four junctions, a loading bay and a school gate. It is also, on our numbers, roughly a fifth as effective.',
+        ],
+        pull: 'Shade is not a place. It is a distance you can walk without leaving it.',
+        pullBy: 'Walk audit note · block 04',
+        note: 'Threshold derived from 412 intercept surveys; see method appendix, p. 18 of the printed edition.',
+      },
+      {
+        k: 'dtable', label: 'Table', run: '01 · Data',
+        kicker: 'BLOCK DATA',
+        title: 'Six blocks, afternoon and night',
+        lead: 'Two readings a day, ninety-two days, averaged by block. The reference station sits outside the ring road; the park edge is the block adjacent to it.',
+        head: ['Block', '14:00', '23:00', 'Shade on walk', 'Gap vs park'],
+        rows: [
+          ['01 · Ramp', '38.9', '30.6', '9%', '+4.8 / +3.1'],
+          ['04 · Market', '38.4', '30.1', '18%', '+4.3 / +2.6'],
+          ['06 · Station', '37.0', '29.4', '26%', '+2.9 / +1.5'],
+          ['05 · Hospital', '36.2', '28.8', '34%', '+2.1 / +0.9'],
+          ['02 · School', '34.1', '27.5', '61%', '−0.2 / −0.4'],
+          ['03 · Park edge', '34.3', '27.1', '72%', '0.0 / 0.0'],
+        ],
+        read: 'Read the last column first. Shade share and night temperature move together, but not perfectly: block 05 has half the canopy of block 02 and only one degree more at night, because its shading is continuous from kerb to kerb. Continuity is doing work that cover alone does not.',
+        note: 'Temperatures in °C, 1.8 m shielded, averaged 15 June – 15 September 2026. Shade share measured on the main pedestrian route at 14:00.',
+      },
+      {
+        k: 'dsection', label: 'Section 02', num: '02', kicker: 'WHAT WE FOUND',
+        title: 'Cooling lives\nat street level',
+        lead: 'Roofs matter at the scale of a city. Pavements and canopies matter at the scale of a person, which is the scale at which people decide whether to go out.',
+        img: '04',
+      },
+      {
+        k: 'dbody', label: 'Text', run: '02 · Findings',
+        kicker: 'ROUTES',
+        title: 'Shade is a route, not a spot',
+        paras: [
+          'The strongest predictor of night-time temperature in our six blocks was not roof albedo, tree count or street width. It was the length of the longest unbroken shaded stretch on the main pedestrian route, measured at two in the afternoon.',
+          'Blocks where that stretch exceeded about 180 metres ran 2.6 °C cooler at 23:00 than blocks where it fell under 60 metres. The correlation held after we controlled for canopy cover, which suggests two mechanisms rather than one: shading the walk, and shading the ground that would otherwise store the day.',
+          'The second mechanism is the one that shows up at night. A metre of pavement in direct sun reaches 48 °C by mid-afternoon and is still at 31 °C at eleven. The same metre under canopy stays near 29 °C all day and is at 26 °C after dark. Multiply by the width of the street and you have the block.',
+          'None of this requires new technology, and almost none of it requires new money beyond what a works department already spends on resurfacing. It requires a different unit of design: not the tree, and not the plaza, but the route.',
+        ],
+        side: [
+          'Longest continuous shade on the main walking route: 214 m in block 03, 41 m in block 01.',
+          'Ground surface temperature under canopy peaked 19 °C lower than bare pavement on the same afternoon.',
+        ],
+        points: [
+          ['04', '2.6 °C', 'night-time advantage of a continuous shade route'],
+          ['05', '19 °C', 'peak pavement temperature difference, shaded vs. bare'],
+          ['06', '180 m', 'length at which a shade route changes behaviour'],
+        ],
+        note: 'Surface temperatures by infrared thermometer, 60 readings per block, 14:00 ± 30 min.',
+      },
+      {
+        k: 'dfigure', label: 'Figure', no: 'FIG. 02', img: '05',
+        cap: 'Canopy over pavers at the park edge: the only block where the shaded walk is longer than the walk itself. Surface temperature under this tree stayed below 30 °C through the afternoon.',
+        src: 'Block 03 · 14:20 · 34.3 °C air',
+      },
+      {
+        k: 'dfigure', label: 'Figure', no: 'FIG. 03', img: '06',
+        cap: 'The bus stop at 14:00. A three-metre awning, eleven people, no shade on the kerb: the wait averaged seven minutes and was rated the least comfortable place in every survey we ran.',
+        src: 'Block 06 · 14:05 · 37.0 °C air',
+      },
+      {
+        k: 'dbody', label: 'Text', run: '02 · Findings',
+        kicker: 'THE LAST HUNDRED METRES',
+        title: 'The last hundred metres',
+        paras: [
+          'Every block in the study had one stretch where the shade ran out: the final approach to a crossing, a station entrance, a supermarket door. These are short — sixty to a hundred and twenty metres — and they are where people abandon the walk.',
+          'In our surveys, 61 per cent of respondents who said they would not walk to the shops in the afternoon named a specific place, and 44 per cent named one of these last-hundred-metre gaps rather than the length of the trip. Nobody describes a route as 1.4 kilometres. They describe it as the bit outside the station.',
+          'The gaps are also the cheapest thing on the list. A crossing canopy, a shade sail over a bus queue, two trees and a bench at a corner: none of it needs a plan the size of a park, and all of it can be done inside a resurfacing cycle.',
+          'We are not recommending that cities stop planting. We are recommending that they plant in lines, and that they finish the line before starting the next one.',
+        ],
+        points: [
+          ['07', '61%', 'of non-walkers named one specific place'],
+          ['08', '44%', 'named a gap in the last hundred metres'],
+          ['09', '3 of 6', 'blocks had no shade at their busiest corner'],
+        ],
+        note: 'Intercept surveys, 412 respondents, weighted by block footfall.',
+      },
+      {
+        k: 'dfigure', label: 'Figure', no: 'FIG. 04', img: '07',
+        cap: 'Plaza fountain at 16:40 — the only public water in six blocks, and the only place where the afternoon footfall rose instead of falling. Fifty-one per cent of its users arrived on foot from more than 200 m away.',
+        src: 'Block 02 · 16:40 · 35.6 °C air',
+      },
+      {
+        k: 'dlist', label: 'List', run: '05 · Interventions',
+        kicker: 'INTERVENTIONS',
+        title: 'Five moves that work',
+        lead: 'Ranked by cooling per euro at block scale, not by how good they look in a rendering.',
+        items: [
+          ['01', 'Finish the shade route', 'Plant or build the missing sixty to a hundred metres on the main walking route before adding trees anywhere else. Highest measured night-time effect of anything we tested.'],
+          ['02', 'Shade the wait, not the stop', 'A canopy over the queue, not the shelter roof. Waits are short and miserable; the fix is three metres of sail at the kerb.'],
+          ['03', 'Open the ground', 'Replace sealed pavement with jointed, permeable paving along the shaded route. Surface peaks drop 9–14 °C and the block releases less heat after dark.'],
+          ['04', 'One water, in the middle', 'A single drinking fountain or shallow basin at the busiest crossing point. Footfall rose 18 per cent in the afternoon; cooling effect is local but real.'],
+          ['05', 'Cool the roofs you already own', 'Municipal roofs first, with a reflective coat and a maintenance schedule. City-scale effect, block-scale measurement: 0.4 °C at night.'],
+        ],
+        note: 'Costs and measured effects on the next page. Effects are night-time air temperature unless stated.',
+      },
+      {
+        k: 'dtable', label: 'Table', run: '05 · Cost',
+        kicker: 'WHAT IT COSTS',
+        title: 'Cost and cooling per intervention',
+        lead: 'Capital cost per block, with maintenance over twelve years included. Cooling is the measured night-time change at the block centre.',
+        head: ['Intervention', 'Cost / block', 'Night Δ', 'Payback'],
+        rows: [
+          ['Shade route, 90 m', '€ 74,000', '−1.9 °C', '6.2 yr'],
+          ['Wait canopy, 3 × 6 m', '€ 11,500', '−0.3 °C', '3.1 yr'],
+          ['Permeable paving, 400 m²', '€ 38,000', '−0.7 °C', '9.4 yr'],
+          ['Fountain + shade, 1 unit', '€ 26,000', '−0.2 °C', '—'],
+          ['Cool roof, 1,200 m²', '€ 19,000', '−0.4 °C', '4.8 yr'],
+        ],
+        read: 'Payback is measured in avoided emergency-room admissions for heat illness, using the block average from the last four summers. It is a crude number and it is the only one a finance department will accept. The fountain does not pay back; it is infrastructure, and it should be funded as such.',
+        note: 'Costs in 2026 euros, including twelve years of maintenance. Effects measured at block centre, 23:00, averaged over 92 days.',
+      },
+      {
+        k: 'dquote', label: 'Quote',
+        text: 'A city does not cool itself in the places it photographs. It cools itself in the places people already walk.',
+        by: 'Field note · block 03, 23:40',
+      },
+      {
+        k: 'dfigure', label: 'Figure', no: 'FIG. 05', img: '08',
+        cap: 'The crossing with no shade: six lanes, no tree, no awning, and a wait long enough to be a design decision. Sixty-one per cent of respondents named this corner as the reason they stopped walking to the shops.',
+        src: 'Block 01 · 14:10 · 38.9 °C air',
+      },
+      {
+        k: 'dfigure', label: 'Figure', no: 'FIG. 06', img: '09',
+        cap: 'The same street at dusk. Once the sun is down the block becomes usable again — people sit outside until midnight — which is exactly the hour the heat is slowest to leave.',
+        src: 'Block 04 · 20:45 · 29.8 °C air',
+      },
+      {
+        k: 'dend', label: 'End',
+        kicker: 'END MATTER',
+        title: 'How to reuse this report',
+        rows: [
+          ['Method', 'Open · CC BY 4.0'],
+          ['Data', '38 sensors · 92 days · 6 blocks'],
+          ['Contact', 'field@heatline.example'],
+          ['Edition', 'v1.0 · November 2026'],
+        ],
+        img: '10',
+      },
+    ],
+  },
 ]
 
 /* ── 渲染 ─────────────────────────────────────────────
@@ -2877,9 +3143,10 @@ const THEME_VARS = ['paper', 'ink', 'accent', 'second', 'muted', 'rule', 'body']
 
 export function slideTheme(deck) {
   const vars = THEME_VARS.map((k) => '--' + k + ':' + (deck[k] || (k === 'body' ? '#4a463d' : ''))).join(';')
+  /* 注意：这段要放进 style="…" 属性里，所以字体名只能用单引号，否则属性会被提前闭合 */
   return vars + ';font-family:' + (deck.display === 'serif'
-    ? 'Georgia,"Songti SC","Noto Serif SC",serif'
-    : 'ui-sans-serif,system-ui,"PingFang SC",sans-serif')
+    ? "Georgia,'Songti SC','Noto Serif SC',serif"
+    : "ui-sans-serif,system-ui,'PingFang SC',sans-serif")
 }
 
 export function slideHTML(deck, s, index) {

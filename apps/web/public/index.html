@@ -660,6 +660,55 @@
   .sld.doc .d-end-img{flex:1;min-height:0;margin-top:34px;overflow:hidden}
   .sld.doc .d-end-img .sd-img{width:100%;height:100%;object-fit:cover}
 
+  /* ── 文档家族 B：Heatline（无衬线 · 非对称版心 · 左侧发丝线） ── */
+  .sld.k-heatline .d-pad{padding:100px 84px 96px 128px}
+  .sld.k-heatline .d-pad::before{content:"";position:absolute;left:84px;top:100px;bottom:96px;width:1px;background:var(--rule)}
+  .sld.k-heatline .d-run{left:128px;right:84px;top:56px;padding-bottom:10px;border-bottom:1px solid var(--rule);
+    font-size:8px;letter-spacing:.26em}
+  .sld.k-heatline .d-run::before{content:"";position:absolute;left:-15px;top:2px;width:5px;height:5px;background:var(--accent)}
+  .sld.k-heatline .sd-folio{left:128px;right:84px}
+  .sld.k-heatline .d-kicker{font-size:8.5px;letter-spacing:.3em}
+  .sld.k-heatline .d-h2{margin-top:12px;font-size:33px;line-height:1.28;letter-spacing:-.022em}
+  .sld.k-heatline .d-lead{font-size:16px;line-height:1.82;letter-spacing:-.004em}
+  .sld.k-heatline .d-main p{font-size:16.5px;line-height:1.92;letter-spacing:-.003em}
+  .sld.k-heatline .d-main p:first-child::first-letter{font-size:1em}
+  .sld.k-heatline .d-side{border-top:2px solid var(--accent);padding-top:14px}
+  .sld.k-heatline .d-side p{font-size:10.5px;line-height:1.85}
+  .sld.k-heatline .d-pull{font-size:22px;line-height:1.6;letter-spacing:-.01em;border-left-color:var(--accent)}
+  .sld.k-heatline .d-points span{letter-spacing:.24em}
+  .sld.k-heatline .d-points b{font-size:18px;letter-spacing:-.02em}
+  .sld.k-heatline .d-facts{border-top:2px solid var(--ink)}
+  .sld.k-heatline[data-k="dmeta"] .d-facts{margin-top:auto}
+  .sld.k-heatline .d-fact{grid-template-columns:200px 1fr}
+  .sld.k-heatline .d-toc li{grid-template-columns:44px minmax(0,1fr) 220px;padding:24px 0;border-top-color:var(--rule)}
+  .sld.k-heatline .d-toc .t{font-size:20px;letter-spacing:-.012em}
+  .sld.k-heatline .d-toc .n{letter-spacing:.2em}
+  .sld.k-heatline .d-cover{padding:96px 84px 84px 128px}
+  .sld.k-heatline .d-cover .d-h1{margin-top:34px;font-size:64px;line-height:1.05;letter-spacing:-.032em;max-width:780px}
+  .sld.k-heatline .d-cover .d-lead{max-width:560px;font-size:15.5px;line-height:1.85}
+  .sld.k-heatline .d-cover-top{padding-bottom:9px;font-size:8.5px;letter-spacing:.26em}
+  .sld.k-heatline .d-cover-img{margin:34px 0 26px}
+  .sld.k-heatline .d-cover-foot{border-top:2px solid var(--ink)}
+  .sld.k-heatline .d-sec-txt{padding:104px 84px 0 128px}
+  .sld.k-heatline .d-sec-num{font-size:12px;letter-spacing:.26em}
+  .sld.k-heatline .d-sec-t{margin-top:16px;font-size:50px;line-height:1.1;letter-spacing:-.03em}
+  .sld.k-heatline .d-sec-lead{max-width:540px;font-size:15px;line-height:1.86}
+  .sld.k-heatline .d-fig{padding:96px 84px 80px 128px}
+  .sld.k-heatline .d-fig-cap{grid-template-columns:1fr;gap:9px;margin-top:18px;border-top:2px solid var(--ink)}
+  .sld.k-heatline .d-fig-cap p{max-width:660px;font-size:13px;line-height:1.78}
+  .sld.k-heatline .d-fig-src{grid-column:1;margin-top:2px}
+  .sld.k-heatline .d-table th{border-bottom:2px solid var(--ink);letter-spacing:.2em}
+  .sld.k-heatline .d-table td{padding:12px 0;font-size:13px}
+  .sld.k-heatline .d-table tbody tr:last-child td{border-bottom:1px solid var(--ink)}
+  .sld.k-heatline .d-list li{grid-template-columns:44px 1fr;padding:18px 0}
+  .sld.k-heatline .d-list .n{letter-spacing:.16em}
+  .sld.k-heatline .d-h3{font-size:16px;letter-spacing:-.012em}
+  .sld.k-heatline .d-list p{font-size:12.5px;line-height:1.85}
+  .sld.k-heatline .d-quote{padding:104px 84px 96px 128px}
+  .sld.k-heatline .d-quote p{max-width:800px;font-size:38px;line-height:1.4;letter-spacing:-.026em}
+  .sld.k-heatline .d-end-txt{padding:100px 84px 0 128px}
+  .sld.k-heatline .d-end-row{border-top-color:var(--rule);letter-spacing:.18em}
+
   /* 对比页 / 三联图版 */
   .sld .cmp-cols{display:grid;grid-template-columns:1fr 1fr;gap:38px;margin-top:26px}
   .sld .cmp-col{padding-top:12px;border-top:1px solid var(--rule)}
