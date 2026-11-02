@@ -783,6 +783,81 @@
   .sld.k-harborline .d-end-img{flex:1;min-height:0;margin:30px 92px 98px 104px;border:1px solid var(--ink)}
   .sld.k-harborline .d-end-row{border-top:1px solid var(--rule);font-size:8.5px;letter-spacing:.16em}
 
+  /* ── 文档家族 D：Salt & Smoke（左侧实色书脊 · 衬线标题 · 勾选清单） ── */
+  .sld.k-saltsmoke::before{content:"";position:absolute;left:0;top:0;bottom:0;width:44px;
+    background:var(--accent);z-index:0}
+  .sld.k-saltsmoke .d-pad{padding:104px 90px 100px 132px}
+  .sld.k-saltsmoke .d-run{left:132px;right:90px;top:66px;padding-bottom:8px;border-bottom:1px solid var(--rule);
+    font-size:8px;letter-spacing:.24em}
+  .sld.k-saltsmoke .sd-folio{left:132px;right:90px;bottom:52px}
+  .sld.k-saltsmoke .d-kicker{font-size:8.5px;letter-spacing:.24em}
+  .sld.k-saltsmoke .d-h1,
+  .sld.k-saltsmoke .d-h2,
+  .sld.k-saltsmoke .d-sec-t,
+  .sld.k-saltsmoke .d-end-t,
+  .sld.k-saltsmoke .d-h3,
+  .sld.k-saltsmoke .d-quote p,
+  .sld.k-saltsmoke .d-pull,
+  .sld.k-saltsmoke .d-toc .t{font-family:Georgia,'Songti SC','Noto Serif SC',serif;font-weight:400}
+  .sld.k-saltsmoke .d-h2{margin-top:10px;font-size:35px;line-height:1.22;letter-spacing:-.012em}
+  .sld.k-saltsmoke .d-lead{font-size:14.5px;line-height:1.82}
+  .sld.k-saltsmoke .d-main p{font-size:14px;line-height:1.9}
+  .sld.k-saltsmoke .d-cols{gap:38px}
+  .sld.k-saltsmoke .d-side{counter-reset:saltnote;border-top:2px solid var(--accent);padding-top:14px}
+  .sld.k-saltsmoke .d-side p{counter-increment:saltnote;position:relative;padding-left:27px;
+    font-size:10.5px;line-height:1.82}
+  .sld.k-saltsmoke .d-side p::before{content:counter(saltnote,decimal-leading-zero);position:absolute;left:0;top:1px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:8.5px;letter-spacing:.08em;color:var(--accent)}
+  .sld.k-saltsmoke .d-pull{font-size:21px;line-height:1.62;border-left:3px solid var(--accent)}
+  .sld.k-saltsmoke .d-points{border-top:2px solid var(--ink)}
+  .sld.k-saltsmoke .d-points span{color:var(--accent);letter-spacing:.22em}
+  .sld.k-saltsmoke .d-points b{font-family:Georgia,serif;font-size:19px;letter-spacing:-.01em}
+  .sld.k-saltsmoke .d-facts{border-top:2px solid var(--ink)}
+  .sld.k-saltsmoke .d-fact b{font-family:Georgia,serif;font-size:15px}
+  .sld.k-saltsmoke .d-toc li{grid-template-columns:48px minmax(0,1fr) 214px;padding:22px 0}
+  .sld.k-saltsmoke .d-toc .t{font-size:21px}
+  .sld.k-saltsmoke .d-toc .n{color:var(--accent)}
+  .sld.k-saltsmoke .d-cover{padding:104px 90px 92px 132px}
+  .sld.k-saltsmoke .d-cover .d-h1{margin-top:22px;font-size:66px;line-height:1.04;letter-spacing:-.022em}
+  .sld.k-saltsmoke .d-cover .d-lead{max-width:580px;font-size:14px;line-height:1.86}
+  .sld.k-saltsmoke .d-cover-top{font-size:8px;letter-spacing:.22em;padding-bottom:8px}
+  .sld.k-saltsmoke .d-cover-img{margin:30px 0 24px;overflow:hidden}
+  .sld.k-saltsmoke .d-cover-img .sd-img{filter:saturate(.96)}
+  .sld.k-saltsmoke .d-cover-foot{border-top:2px solid var(--ink);padding-top:12px}
+  .sld.k-saltsmoke .d-cover-foot b{font-family:Georgia,serif;font-size:12px}
+  .sld.k-saltsmoke .d-sec-txt{padding:104px 90px 0 132px}
+  .sld.k-saltsmoke .d-sec-num{font-family:Georgia,serif;font-size:15px;letter-spacing:.08em}
+  .sld.k-saltsmoke .d-sec-t{margin-top:14px;font-size:50px;line-height:1.12;letter-spacing:-.02em}
+  .sld.k-saltsmoke .d-sec-lead{max-width:540px;font-size:13.5px;line-height:1.84}
+  .sld.k-saltsmoke .d-sec-img{flex:1;min-height:0;margin:30px 90px 92px 132px}
+  .sld.k-saltsmoke .d-fig{padding:100px 90px 92px 132px}
+  .sld.k-saltsmoke .d-fig-cap{grid-template-columns:1fr;gap:7px;margin-top:16px;padding:12px 15px;
+    border-top:0;border-left:3px solid var(--accent);background:rgba(180,81,43,.07)}
+  .sld.k-saltsmoke .d-fig-no{color:var(--accent);font-size:8px;letter-spacing:.22em}
+  .sld.k-saltsmoke .d-fig-cap p{font-size:12px;line-height:1.75}
+  .sld.k-saltsmoke .d-fig-src{grid-column:1;margin-top:2px}
+  .sld.k-saltsmoke .d-table{margin-top:22px}
+  .sld.k-saltsmoke .d-table th{padding:9px 10px;border:0;background:var(--accent);color:#FBF6EC;
+    font-size:8px;letter-spacing:.18em}
+  .sld.k-saltsmoke .d-table td{padding:10px;border-bottom:1px solid var(--rule);font-size:12.5px}
+  .sld.k-saltsmoke .d-table td.num{font-size:12px;color:var(--ink)}
+  .sld.k-saltsmoke .d-table tbody tr:last-child td{border-bottom:2px solid var(--ink);font-weight:500}
+  .sld.k-saltsmoke[data-k="dmeta"] .d-facts{margin-top:auto}
+  .sld.k-saltsmoke[data-k="dtable"] .d-note,
+  .sld.k-saltsmoke[data-k="dlist"] .d-note{margin-top:auto}
+  .sld.k-saltsmoke .d-list li{grid-template-columns:36px 1fr;gap:18px;padding:15px 0;border-top:1px dashed var(--rule)}
+  .sld.k-saltsmoke .d-list .n{display:grid;place-items:center;width:22px;height:22px;margin-top:2px;
+    border:1px solid var(--accent);color:var(--accent);font-size:8.5px;letter-spacing:.04em}
+  .sld.k-saltsmoke .d-h3{font-size:17px;letter-spacing:-.005em}
+  .sld.k-saltsmoke .d-list p{font-size:12.5px;line-height:1.82}
+  .sld.k-saltsmoke .d-quote{padding:104px 90px 96px 132px}
+  .sld.k-saltsmoke .d-quote p{max-width:760px;font-size:36px;line-height:1.46;letter-spacing:-.018em}
+  .sld.k-saltsmoke .d-end-txt{padding:100px 90px 0 132px}
+  .sld.k-saltsmoke .d-end-t{margin-top:14px;font-size:40px;line-height:1.24}
+  .sld.k-saltsmoke .d-end-img{flex:1;min-height:0;margin:28px 90px 92px 132px}
+  .sld.k-saltsmoke .d-end-row{border-top:1px solid var(--rule);font-size:9px;letter-spacing:.14em}
+  .sld.k-saltsmoke[data-k="dend"] .d-end-img .sd-img{object-position:center 74%}
+
   /* 对比页 / 三联图版 */
   .sld .cmp-cols{display:grid;grid-template-columns:1fr 1fr;gap:38px;margin-top:26px}
   .sld .cmp-col{padding-top:12px;border-top:1px solid var(--rule)}
