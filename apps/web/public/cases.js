@@ -1104,6 +1104,7 @@ export const CASE_DECKS = [
         text: 'We are not selling a boat ride. We are selling the twenty minutes you get back before nine.',
         foot: 'POSITIONING · 2026.10',
       },
+      { k: 'fullimg', label: 'Crew', img: '14', cap: '05:55 · BRIEFING · TWO CREW, EIGHTY FOUR PASSENGERS' },
       { k: 'section', label: 'Part 03', num: '03', title: 'The network', note: 'THREE ROUTES · 14 PIERS', img: '05' },
       {
         k: 'timeline', label: 'Plan',
@@ -1132,6 +1133,16 @@ export const CASE_DECKS = [
         ],
       },
       {
+        k: 'gallery', label: 'Crossing',
+        title: 'A crossing, minute by minute',
+        items: [
+          { img: '11', cap: 'Tap in · one card, no queue at the gate' },
+          { img: '12', cap: 'Rain · the cabin is the point on a wet Tuesday' },
+          { img: '13', cap: 'Bikes · eight per crossing, strapped on deck' },
+        ],
+        note: 'ROUTE A · 07:30 DEPARTURE',
+      },
+      {
         k: 'table', label: 'Unit economics',
         title: 'One vessel, one month at full service',
         head: ['Item', 'Amount', 'Share'],
@@ -1144,6 +1155,16 @@ export const CASE_DECKS = [
         ],
         sum: ['Net after overhead', '52,300', '35%'],
         note: '2028 fares, per vessel; excludes ticketing and marketing',
+      },
+      {
+        k: 'split', label: 'Refit',
+        img: '15',
+        title: 'Every eighteen months,\nthe boat comes out',
+        paras: [
+          'Hulls are lifted every eighteen months for paint, anodes and a full electrical check. We plan the refit in January, when the fleet runs at 61% of peak capacity.',
+          'Two vessels out of four is the limit. The schedule is built so that Route A keeps a six minute headway even during a refit, at the cost of Route C dropping to twenty minutes.',
+        ],
+        bullets: ['14 days in dock, per hull', 'Scheduled in the low season', 'Route A headway held at 6 min'],
       },
       {
         k: 'stats', label: 'The ask',
@@ -1181,6 +1202,244 @@ export const CASE_DECKS = [
         k: 'end', label: 'End',
         title: 'Thank you',
         lines: ['SALTWATER TRANSIT · BUSINESS PLAN 2027', 'hello@saltwatertransit.example'],
+        mark: 'S',
+      },
+    ],
+  },
+  {
+    id: 'sugar',
+    name: 'Sugar & Salt',
+    en: 'ACADEMY · INTAKE 12',
+    by: 'Gamma',
+    cat: '演示文稿',
+    fmt: 'deck',
+    ratio: '16:9',
+    date: 20261105,
+    kind: 'Training deck',
+    category: '培训',
+    tags: ['bakery', 'training', 'food', 'operations'],
+    desc: 'A pastry academy training deck printed on dusty pink: double hairline across the top, serif headlines, dotted rules between rows, and oversized serial numbers for every process step. Reads like a course handout, not a pitch.',
+    bestFor: ['Academy and onboarding decks', 'SOP and process training', 'Kitchen and retail operations', 'Cohort and curriculum reviews'],
+    styles: ['#F2D3CE', '#8E2F26', '#3A1F1C'],
+    colorway: 'Dusty pink · Cocoa · Oxblood',
+    folio: true,
+    footLeft: 'SUGAR & SALT · ACADEMY',
+    paper: '#F2D3CE',
+    ink: '#3A1F1C',
+    accent: '#8E2F26',
+    second: '#C97F72',
+    muted: '#A8837C',
+    rule: '#DFB3AC',
+    body: '#4A2B26',
+    display: 'serif',
+    slides: [
+      {
+        k: 'cover', label: 'Cover',
+        kicker: 'PASTRY ACADEMY · INTAKE 12',
+        title: 'Sugar & Salt',
+        meta: 'FOUR WEEKS · TWO OVENS · ONE COUNTER',
+        img: '01',
+      },
+      {
+        k: 'toc', label: 'Contents',
+        title: 'The course',
+        note: 'FOUR PARTS',
+        items: [
+          ['01', 'Lamination', 'Butter, folds, and the cold'],
+          ['02', 'The counter', 'Service, speed, waste'],
+          ['03', 'The test', 'What a pass looks like'],
+          ['04', 'The numbers', 'Fees, cost, and outcomes'],
+        ],
+      },
+      {
+        k: 'statement', label: 'Thesis',
+        text: 'A croissant is a hundred small decisions, and most of them are about temperature.',
+        foot: 'HEAD OF ACADEMY · 2026.09',
+      },
+      {
+        k: 'stats', label: 'Cohort',
+        title: 'Intake twelve, at a glance',
+        items: [
+          ['12', 'students · each intake', 'Six weeks, four days a week'],
+          ['1:6', 'instructor ratio', 'Two chefs on the bench'],
+          ['38%', 'finish in a bakery', 'Within six months of the test'],
+        ],
+        note: 'Cohorts 2019 to 2025, 214 students',
+      },
+      { k: 'fullimg', label: 'Counter', img: '03', cap: 'COUNTER · 06:10 · BEFORE THE FIRST CUSTOMER' },
+      { k: 'section', label: 'Part 01', num: '01', title: 'Lamination', note: 'BUTTER, FOLDS, COLD', img: '02' },
+      {
+        k: 'columns', label: 'Rules',
+        title: 'What decides the crumb',
+        note: 'THREE RULES',
+        cols: [
+          { t: 'The butter block', d: 'Butter and dough must sit at the same temperature, 16°C. Two degrees warmer and the layers weld together in the oven.' },
+          { t: 'The rest', d: 'Thirty minutes in the cold between folds. Skip it and the gluten fights back on the next pass, and the block tears.' },
+          { t: 'The final proof', d: '26°C and 75% humidity for ninety minutes. Warm and fast gives you a pale shell and a tight crumb.' },
+        ],
+      },
+      {
+        k: 'steps', label: 'Process',
+        kicker: 'THE PROCESS',
+        title: 'Four folds, ninety minutes',
+        items: [
+          { n: '01', t: 'Mix and chill', d: 'Dough to 24°C, then 40 minutes in the cold room.' },
+          { n: '02', t: 'Butter block', d: 'Pounded to 16°C, same firmness as the dough.' },
+          { n: '03', t: 'Four folds', d: 'Single, single, double, single. Rest 30 minutes between each.' },
+          { n: '04', t: 'Shape and proof', d: '90 minutes at 26°C, then 18 minutes at 210°C.' },
+        ],
+        note: 'FULL LAMINATION · 27 LAYERS BEFORE THE FINAL FOLD',
+      },
+      {
+        k: 'table', label: 'Bake',
+        title: 'Bake schedule, one morning',
+        head: ['Item', 'In', 'Out'],
+        rows: [
+          ['Croissant', '05:20', '05:38'],
+          ['Pain au chocolat', '05:45', '06:03'],
+          ['Cardamom bun', '06:10', '06:26'],
+          ['Baguette', '06:30', '06:52'],
+          ['Tart shells', '07:00', '07:12'],
+        ],
+        sum: ['First customer', '06:00', ''],
+        note: 'Deck oven at 210°C, steam for the first six minutes',
+      },
+      {
+        k: 'split', label: 'Crumb',
+        img: '04',
+        title: 'What we look for\nin the crumb',
+        paras: [
+          'Cut it warm and the crumb collapses. Cut it cold and the layers read as cardboard. We cut at 22°C, ten minutes out of the oven.',
+          'A pass has an open, even honeycomb from edge to centre, no dense ring at the base, and a shell that shatters instead of bending.',
+        ],
+        bullets: ['Open honeycomb, edge to edge', 'No dense ring at the base', 'Shell shatters, not bends', 'Butter smell, not yeast'],
+      },
+      { k: 'section', label: 'Part 02', num: '02', title: 'The counter', note: 'SERVICE, SPEED, WASTE', img: '05' },
+      {
+        k: 'columns', label: 'Service',
+        title: 'Three things the counter must do',
+        note: 'SERVICE',
+        cols: [
+          { t: 'Say the time', d: 'Four minutes beats just a moment. Every customer hears a number, even when the number is long.' },
+          { t: 'Sell the old first', d: 'The tray closest to the till is the tray that sells. Refill from the back, never the front.' },
+          { t: 'One bag, two hands', d: 'Boxes are packed with two hands and a flat base. One hand means a crushed corner at the door.' },
+        ],
+      },
+      {
+        k: 'steps', label: 'Opening',
+        kicker: 'OPENING',
+        title: '05:40 to 07:00',
+        items: [
+          { n: '05:40', t: 'Ovens on', d: 'Deck to 210°C, steam tank filled, trays lined.' },
+          { n: '06:00', t: 'First bake out', d: 'Croissants on the rack, case wiped, float counted.' },
+          { n: '06:20', t: 'Case dressed', d: 'Three rows, gaps closed, no tray more than half full.' },
+          { n: '07:00', t: 'Doors', d: 'Lights on, music at 45 dB, one person on the floor.' },
+        ],
+        note: 'EVERY DAY, INCLUDING WEEKENDS',
+      },
+      {
+        k: 'table', label: 'Waste',
+        title: 'Waste log, one week',
+        head: ['Item', 'Baked', 'Sold'],
+        rows: [
+          ['Croissant', '420', '391'],
+          ['Pain au chocolat', '240', '228'],
+          ['Cardamom bun', '180', '162'],
+          ['Baguette', '150', '149'],
+          ['Tart shells', '96', '96'],
+        ],
+        sum: ['Total', '1,086', '1,026'],
+        note: 'Five day week; 5.5% waste, the target is 4%',
+      },
+      {
+        k: 'metric', label: 'Layers',
+        kicker: 'ONE CROISSANT · BEFORE THE FINAL FOLD',
+        big: '27',
+        label: 'butter layers, and none of them visible',
+        note: 'Three folds of three, then the final single',
+      },
+      {
+        k: 'statement', label: 'Counter rule',
+        text: 'If the tray is empty at four in the afternoon we baked too little. If it is full, we baked too much.',
+        foot: 'COUNTER RULE · 2026',
+      },
+      {
+        k: 'timeline', label: 'Weeks',
+        title: 'Four weeks, week by week',
+        items: [
+          ['WEEK 1', 'Dough and butter', 'Mix, chill, first lamination'],
+          ['WEEK 2', 'Shaping', 'Croissant, pain, bun, all by hand'],
+          ['WEEK 3', 'The counter', 'Two shifts behind the till'],
+          ['WEEK 4', 'Test', 'Blind tasting, timed service'],
+        ],
+      },
+      {
+        k: 'bars', label: 'Pass rates',
+        title: 'Cohort pass rate, by skill',
+        items: [['Lamination', 92], ['Shaping', 88], ['Bake and colour', 81], ['Counter service', 76], ['Waste control', 64]],
+        unit: '%',
+        note: 'Cohorts 2023 to 2025, 96 students',
+      },
+      {
+        k: 'steps', label: 'Exam',
+        kicker: 'EXAM',
+        title: 'What a pass looks like',
+        items: [
+          { n: '40%', t: 'Crumb and colour', d: 'Blind cut, judged on honeycomb and shell.' },
+          { n: '30%', t: 'Speed', d: 'Twelve croissants shaped in twenty minutes.' },
+          { n: '20%', t: 'Service', d: 'One hour on the till, timed and observed.' },
+          { n: '10%', t: 'Waste', d: 'The week log has to land under 5%.' },
+        ],
+        note: 'FAIL ANY OF THE FIRST THREE AND THE WEEK IS REPEATED',
+      },
+      {
+        k: 'stats', label: 'Fees',
+        title: 'What a place costs',
+        items: [
+          ['9,400', 'USD · six week course', 'Tools and ingredients included'],
+          ['3', 'days a week in the kitchen', 'Two days on theory'],
+          ['12', 'students · one bench', 'Never more than six per instructor'],
+        ],
+        note: 'Fees for 2027; two scholarships per cohort',
+      },
+      {
+        k: 'table', label: 'Tray cost',
+        title: 'Cost of one tray of 24',
+        head: ['Item', 'Cost', 'Share'],
+        rows: [
+          ['Flour and butter', '6.40', '41%'],
+          ['Labour', '5.10', '33%'],
+          ['Energy', '1.20', '8%'],
+          ['Packaging', '0.90', '6%'],
+          ['Margin', '1.90', '12%'],
+        ],
+        sum: ['Sell price', '15.50', '100%'],
+        note: 'One tray of croissants, 2027 prices',
+      },
+      {
+        k: 'columns', label: 'Shift',
+        title: 'Who does what on shift',
+        note: 'THE SHIFT',
+        cols: [
+          { t: 'Head baker', d: 'Owns the oven and the schedule. Calls every bake time out loud, every tray, all morning.' },
+          { t: 'Bench', d: 'Shapes, proofs, and keeps the fridge log. Never leaves a tray unlabelled, never leaves a door open.' },
+          { t: 'Counter', d: 'Talks to people, packs, and keeps the case dressed. Owns the waste log and the four o clock call.' },
+        ],
+      },
+      {
+        k: 'quote', label: 'Alumna',
+        text: 'I came in able to bake at home. I left able to bake forty kilos a day, on time, without shouting.',
+        by: 'ALUMNA · COHORT 2024',
+      },
+      {
+        k: 'statement', label: 'On teaching',
+        text: 'We do not teach recipes. We teach the three temperatures that decide whether a recipe works.',
+        foot: 'ACADEMY NOTE',
+      },
+      {
+        k: 'end', label: 'End',
+        title: 'See you at 05:40',
+        lines: ['SUGAR & SALT · PASTRY ACADEMY', 'academy@sugarandsalt.example'],
         mark: 'S',
       },
     ],
@@ -1412,6 +1671,19 @@ export function slideInner(deck, s) {
         '<div class="gal-row">' + s.items.map((it) =>
           '<figure class="gal-fig"><div class="gal-img">' + imgTag(deck, it.img, 'sd-fill') + '</div>' +
           '<figcaption>' + esc(it.cap || '') + '</figcaption></figure>'
+        ).join('') + '</div>' +
+        (s.note ? '<div class="sd-mono sd-foot">' + esc(s.note) + '</div>' : '') +
+        '</div>'
+      )
+    case 'steps':
+      return (
+        '<div class="sd-pad sd-steps">' +
+        '<div class="sd-cols-head">' + (s.kicker ? '<div class="sd-mono">' + esc(s.kicker) + '</div>' : '') +
+        '<h2 class="sd-h2">' + esc(s.title) + '</h2></div>' +
+        '<div class="stp-row">' + s.items.map((it) =>
+          '<div class="stp"><div class="stp-n">' + esc(it.n) + '</div>' +
+          '<div class="stp-t">' + esc(it.t) + '</div>' +
+          '<p class="stp-d">' + esc(it.d) + '</p></div>'
         ).join('') + '</div>' +
         (s.note ? '<div class="sd-mono sd-foot">' + esc(s.note) + '</div>' : '') +
         '</div>'

@@ -512,6 +512,15 @@
   @keyframes tk-run{from{transform:translateX(0)}to{transform:translateX(-50%)}}
   .tv-th .tk-run,.tpl-card .tk-run{animation:none}
 
+  /* 步骤页（大序号 + 说明） */
+  .sld .sd-steps{display:flex;flex-direction:column}
+  .sld .sd-steps .sd-cols-head{margin-bottom:26px}
+  .sld .stp-row{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:auto}
+  .sld .stp{padding-top:12px;border-top:1px solid var(--rule)}
+  .sld .stp-n{font-size:30px;line-height:1;color:var(--accent)}
+  .sld .stp-t{margin-top:9px;font-size:13px;line-height:1.5}
+  .sld .stp-d{margin:7px 0 0;font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif;font-size:10.5px;line-height:1.75;color:var(--body)}
+
   /* 对比页 / 三联图版 */
   .sld .cmp-cols{display:grid;grid-template-columns:1fr 1fr;gap:38px;margin-top:26px}
   .sld .cmp-col{padding-top:12px;border-top:1px solid var(--rule)}
@@ -679,6 +688,43 @@
   .sld.k-saltwater .sd-metric-v{font-family:inherit;font-weight:400}
   .sld.k-saltwater .sd-quote{font-size:36px;line-height:1.42;max-width:700px}
   .sld.k-saltwater .sd-folio{left:108px;right:56px}
+
+  /* 09 糖与盐：印刷讲义 —— 双线页眉、衬线标题、虚线分隔、超大序号 */
+  .sld.k-sugar .sd-pad{padding:60px 58px 56px}
+  .sld.k-sugar .sd-pad::before{content:"";position:absolute;left:58px;right:58px;top:34px;height:3px;background:var(--ink)}
+  .sld.k-sugar .sd-pad::after{content:"";position:absolute;left:58px;right:58px;top:41px;height:1px;background:var(--ink);opacity:.5}
+  .sld.k-sugar .sd-h1{font-size:80px;letter-spacing:-.02em}
+  .sld.k-sugar .sd-h2{font-size:42px;line-height:1.14;letter-spacing:-.01em}
+  .sld.k-sugar .sd-h3{font-size:15px}
+  .sld.k-sugar .sd-cols-head{padding-bottom:14px;border-bottom:1px dotted var(--ink)}
+  .sld.k-sugar .sd-col-row{gap:30px;padding-top:16px;border-top:1px dotted var(--rule)}
+  .sld.k-sugar .sd-col{padding:0;border-top:0}
+  .sld.k-sugar .sd-col-i{font-family:inherit;font-size:26px;line-height:1;color:var(--accent);opacity:.75}
+  .sld.k-sugar .sd-col-t{margin-top:9px;font-size:16px;line-height:1.4}
+  .sld.k-sugar .sd-col-d{font-size:11px;line-height:1.85}
+  .sld.k-sugar .stp-row{margin-top:auto;margin-bottom:34px}
+  .sld.k-sugar .stp{border-top:1px dotted var(--ink);padding-top:14px}
+  .sld.k-sugar .stp-n{font-family:inherit;font-size:36px;color:var(--ink);opacity:.45}
+  .sld.k-sugar .stp-t{margin-top:10px;font-size:15px}
+  .sld.k-sugar .stp-d{font-size:11px;line-height:1.85}
+  .sld.k-sugar .sd-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:0 30px;padding-top:16px;border-top:1px dotted var(--ink)}
+  .sld.k-sugar .sd-stat{padding-right:24px;border-right:1px dotted var(--rule)}
+  .sld.k-sugar .sd-stat:last-child{padding-right:0;border-right:0}
+  .sld.k-sugar .sd-stat-v{font-size:46px;font-weight:400;line-height:1}
+  .sld.k-sugar .sd-stat-t{margin-top:10px;font-size:12.5px}
+  .sld.k-sugar .sd-toc-list{padding-top:14px;border-top:1px dotted var(--ink)}
+  .sld.k-sugar .sd-toc-list li{padding:10px 0;border-bottom:1px dotted var(--rule);grid-template-columns:62px 1fr auto}
+  .sld.k-sugar .sd-toc-list li:last-child{border-bottom:0}
+  .sld.k-sugar .sd-table th{border-bottom:1px solid var(--ink)}
+  .sld.k-sugar .sd-table td{border-bottom:1px dotted var(--rule)}
+  .sld.k-sugar .sd-statement{justify-content:center}
+  .sld.k-sugar .sd-quote{font-size:34px;line-height:1.55;max-width:640px}
+  .sld.k-sugar .sd-quote-mark{height:30px;font-size:62px;opacity:.5}
+  .sld.k-sugar .sd-bars-row{padding:9px 0;border-bottom:1px dotted var(--rule)}
+  .sld.k-sugar .sd-tl-row{border-top:1px dotted var(--ink)}
+  .sld.k-sugar .sd-metric-v{font-family:inherit;font-weight:400;font-size:190px}
+  .sld.k-sugar .sd-folio{left:58px;right:58px}
+
 
 
   /* ── 案例详情页（1:1 复刻参考截图） ─────────────── */
