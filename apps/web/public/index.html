@@ -698,7 +698,7 @@
 
   /* ── 更多：右侧悬浮菜单 ───────────────────── */
   .moremenu{
-    position:fixed;z-index:74;width:220px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);
+    position:fixed;z-index:74;width:234px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);
     box-shadow:var(--e2);padding:7px;
     display:flex;flex-direction:column;gap:2px;
   }
@@ -3413,10 +3413,6 @@ const MORE_ITEMS = [
     icon: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.6 14.4 4.9 19.1"/><path d="M14.8 4.9a2 2 0 0 1 2.8 0l1.5 1.5a2 2 0 0 1 0 2.9l-7.1 7.1-4.4-4.4z"/></svg>',
   },
   {
-    key: 'office', name: '办公', desc: 'PPTX · DOCX · XLSX · PDF', view: 'skills',
-    icon: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5h7l5 5v12H6z"/><path d="M13 3.5v5h5"/></svg>',
-  },
-  {
     key: 'experts', name: '专家', desc: 'Agent 预设与分工', view: 'experts',
     icon: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.2"/><circle cx="9.2" cy="10.4" r=".95" fill="currentColor" stroke="none"/><circle cx="14.8" cy="10.4" r=".95" fill="currentColor" stroke="none"/><path d="M8.7 14.1c.9 1.5 2.1 2.2 3.3 2.2s2.4-.7 3.3-2.2"/></svg>',
   },
@@ -3448,12 +3444,6 @@ async function renderMoreMenu() {
     btn.onclick = () => {
       closeMoreMenu()
       openExperts(item.view)
-      if (item.key === 'office') {
-        const box = $('skOffice')
-        box.scrollIntoView({ behavior: 'smooth', block: 'center' })
-        box.classList.add('flash')
-        setTimeout(() => box.classList.remove('flash'), 1200)
-      }
     }
     box.appendChild(btn)
   }
