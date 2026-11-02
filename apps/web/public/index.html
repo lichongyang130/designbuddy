@@ -905,6 +905,101 @@
 
 
 
+  /* ── 文档查看器（Gamma 式：顶栏 + 共享条 + 说明面板 + A4 画布） ── */
+  .docview{position:fixed;inset:0;z-index:82;display:flex;flex-direction:column;background:#fff;
+    font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif}
+  .docview[hidden]{display:none}
+  .dv-top{flex:none;display:flex;align-items:center;gap:14px;height:57px;padding:0 18px 0 14px;background:#fff;border-bottom:1px solid #ededed}
+  .dv-crumb{display:flex;align-items:center;gap:9px;height:34px;padding:0 10px 0 4px;border-radius:8px;color:#20242a}
+  .dv-crumb:hover{background:#f4f5f7}
+  .dv-g{display:grid;place-items:center;width:23px;height:23px;border-radius:7px;background:#111;color:#fff;
+    font-family:Georgia,serif;font-size:14px;line-height:1;letter-spacing:-.02em;flex:none}
+  .dv-crumb-t{font-size:13.5px;font-weight:600;letter-spacing:-.01em;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .dv-crumb svg{color:#9aa0a6;flex:none}
+  .dv-acts{margin-left:auto;display:flex;align-items:center;gap:8px}
+  .dv-btn{display:flex;align-items:center;gap:7px;height:32px;padding:0 13px;border-radius:8px;font-size:13px;
+    color:#20242a;border:1px solid #e3e4e6;background:#fff}
+  .dv-btn:hover{background:#f5f6f8}
+  .dv-present{background:#f3f0fb;border-color:#e3dcf7;color:#3c2f6b}
+  .dv-present:hover{background:#eae4fa}
+  .dv-icobtn{display:grid;place-items:center;width:32px;height:32px;border-radius:8px;color:#3f444a}
+  .dv-icobtn:hover{background:#f4f5f7}
+  .dv-ava{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#2f6b5e;color:#fff;
+    font-size:11.5px;font-weight:600;margin-left:2px}
+  .dv-sharebar{flex:none;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;height:41px;
+    padding:0 14px;background:linear-gradient(90deg,#fdefe6,#fdf1ea 46%,#f6f1fb);border-bottom:1px solid #f0e6e0}
+  .dv-set{display:flex;align-items:center;gap:7px;height:27px;padding:0 12px;border-radius:999px;background:#fff;
+    border:1px solid #e7ddd5;font-size:12.5px;color:#3a3f45;justify-self:start}
+  .dv-set:hover{background:#fffaf6}
+  .dv-sharemid{display:flex;align-items:center;gap:14px;font-size:12.5px;color:#5b5f66}
+  .dv-addbtn{display:flex;align-items:center;gap:7px;height:27px;padding:0 12px;border-radius:999px;background:#2f2b4a;
+    color:#fff;font-size:12.5px}
+  .dv-addbtn:hover{background:#3a3560}
+  .dv-addbtn.done{background:#e8f3ee;color:#2f6b4e;border:1px solid #cfe6db}
+  .dv-usesplit{position:relative;display:flex;align-items:center;justify-self:end;background:#fff;border:1px solid #e3e4e6;
+    border-radius:999px}
+  .dv-use{height:27px;padding:0 14px;border-radius:999px 0 0 999px;font-size:12.5px;font-weight:600;color:#20242a}
+  .dv-use:hover{background:#f6f7f9}
+  .dv-caret{display:grid;place-items:center;width:27px;height:27px;border-left:1px solid #eceef1;border-radius:0 999px 999px 0;color:#4a4f55}
+  .dv-caret:hover{background:#f6f7f9}
+  .dv-menu{position:absolute;right:0;top:33px;min-width:172px;padding:5px;background:#fff;border:1px solid #e6e7ea;
+    border-radius:10px;box-shadow:0 14px 30px rgba(20,26,40,.16);z-index:5}
+  .dv-menu[hidden]{display:none}
+  .dv-menu button{display:block;width:100%;text-align:left;padding:8px 10px;border-radius:7px;font-size:12.5px;color:#2b2f35}
+  .dv-menu button:hover{background:#f4f5f7}
+  .dv-body{flex:1;min-height:0;display:grid;grid-template-columns:296px minmax(0,1fr)}
+  .docview.nopanel .dv-body{grid-template-columns:minmax(0,1fr)}
+  .docview.nopanel .dv-panel{display:none}
+  .dv-panel{display:flex;flex-direction:column;min-height:0;background:#fff;border-right:1px solid #ececec}
+  .dv-panel-head{flex:none;display:flex;align-items:center;gap:9px;padding:14px 14px 10px 18px}
+  .dv-panel-head b{font-size:13.5px;font-weight:600;color:#1f242a}
+  .dv-beta{display:inline-grid;place-items:center;height:18px;padding:0 7px;border-radius:5px;background:#efe9fb;
+    color:#6c4bb6;font-size:10.5px;letter-spacing:.02em}
+  .dv-x{margin-left:auto;display:grid;place-items:center;width:26px;height:26px;border-radius:7px;color:#4a4f55}
+  .dv-x:hover{background:#f3f4f6}
+  .dv-note{flex:none;display:flex;gap:9px;margin:0 14px 12px;padding:10px 11px;border-radius:9px;
+    background:#eaf2fd;color:#2b5fa8;font-size:11.5px;line-height:1.6}
+  .dv-note svg{flex:none;margin-top:1px;color:#2b7ad4}
+  .dv-tabs{flex:none;display:flex;gap:18px;padding:0 18px;border-bottom:1px solid #ededed}
+  .dv-tab{position:relative;padding:9px 0 10px;font-size:12.5px;color:#6c7177}
+  .dv-tab.on{color:#16191d;font-weight:600}
+  .dv-tab.on::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:#16191d;border-radius:2px}
+  .dv-scroll{flex:1;min-height:0;overflow-y:auto;padding:16px 18px 26px}
+  .dv-h3{margin:0 0 8px;font-size:13.5px;font-weight:700;color:#1c2025;letter-spacing:-.01em}
+  .dv-p{margin:0 0 16px;font-size:12.5px;line-height:1.85;color:#4b5057}
+  .dv-kv{display:grid;grid-template-columns:76px 1fr;gap:8px 12px;margin:2px 0 18px;font-size:12px;line-height:1.7}
+  .dv-kv span{color:#8a9097}
+  .dv-kv b{font-weight:500;color:#2f343a}
+  .dv-imgs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .dv-imgs figure{margin:0}
+  .dv-imgs img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:6px;background:#f1f1ef}
+  .dv-imgs figcaption{margin-top:5px;font-size:10.5px;line-height:1.5;color:#8a9097;
+    overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+  .dv-canvas{position:relative;min-width:0;display:flex;align-items:center;justify-content:center;
+    background:#d9d8d3;padding:24px 40px 46px;overflow:hidden}
+  .dv-stage{height:100%;min-height:0;display:flex;align-items:center;justify-content:center}
+  .dv-stage .sdbox.doc{width:auto;height:100%;max-width:none;max-height:100%;aspect-ratio:960/1358;
+    box-shadow:0 12px 34px rgba(24,26,22,.22),0 2px 6px rgba(24,26,22,.14)}
+  .dv-pager{position:absolute;left:50%;bottom:13px;transform:translateX(-50%);display:flex;align-items:center;gap:10px;
+    height:30px;padding:0 4px;border-radius:999px;background:rgba(255,255,255,.94);border:1px solid #e4e4e0;
+    box-shadow:0 2px 8px rgba(20,24,20,.08);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-size:10px;letter-spacing:.12em;color:#4c5157}
+  .dv-pg{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;color:#33383e}
+  .dv-pg:hover{background:#f2f3f5}
+  .dv-pg:disabled{color:#c8cacd}
+  .dv-made{position:absolute;right:16px;bottom:13px;display:flex;align-items:center;gap:7px;height:30px;padding:0 12px 0 5px;
+    border-radius:999px;background:rgba(255,255,255,.94);border:1px solid #e4e4e0;
+    box-shadow:0 2px 8px rgba(20,24,20,.08);font-size:10.5px;letter-spacing:.1em;color:#3d4249}
+  .dv-made .dv-g{width:20px;height:20px;border-radius:6px;font-size:12px}
+  .docview.present{background:#15161a}
+  .docview.present .dv-top,.docview.present .dv-sharebar,.docview.present .dv-panel{display:none}
+  .docview.present .dv-body{grid-template-columns:minmax(0,1fr)}
+  .docview.present .dv-canvas{background:#15161a;padding:22px 60px 54px}
+  .docview.present .dv-made{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.16);color:#e8e6e1}
+  .docview.present .dv-pager{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.18);color:#e8e6e1}
+  .docview.present .dv-pg{color:#e8e6e1}
+  .docview.present .dv-pg:hover{background:rgba(255,255,255,.14)}
+
   /* ── 案例详情页（1:1 复刻参考截图） ─────────────── */
   .tplview{position:fixed;inset:0;z-index:80;display:flex;flex-direction:column;background:#fff}
   .tplview[hidden]{display:none}
@@ -2320,6 +2415,92 @@
     <aside class="tv-side" id="tvSide"></aside>
   </div>
 </div>
+
+<!-- 文档模板：Gamma 式三栏查看器（顶栏 + 共享条 + 说明面板 + A4 画布） -->
+<div class="docview" id="docView" hidden>
+  <div class="dv-top">
+    <button class="dv-crumb" id="dvBack" title="返回模板库">
+      <span class="dv-g">G</span>
+      <svg class="ic ic-xs" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-right"></use></svg>
+      <span class="dv-crumb-t" id="dvName" data-no-i18n></span>
+    </button>
+    <div class="dv-acts">
+      <button class="dv-btn dv-present" id="dvPresent">
+        <svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-presentation"></use></svg>
+        演示
+      </button>
+      <button class="dv-icobtn" id="dvPanelBtn" title="显示 / 隐藏模板设置" aria-label="模板设置">
+        <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pen"></use></svg>
+      </button>
+      <button class="dv-btn dv-share" id="dvShare">
+        <svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-link"></use></svg>
+        分享
+      </button>
+      <span class="dv-ava" aria-hidden="true">陈</span>
+    </div>
+  </div>
+
+  <div class="dv-sharebar">
+    <button class="dv-set" id="dvSet">
+      <svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-settings"></use></svg>
+      设置
+    </button>
+    <div class="dv-sharemid">
+      <span class="dv-sharetext">此模板已与您共享</span>
+      <button class="dv-addbtn" id="dvAdd">
+        <svg class="ic ic-xs" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"></use></svg>
+        <span id="dvAddTxt">添加到我的工作区</span>
+      </button>
+    </div>
+    <div class="dv-usesplit">
+      <button class="dv-use" id="dvUse">使用模板</button>
+      <button class="dv-caret" id="dvUseMore" aria-label="更多操作" aria-expanded="false">
+        <svg class="ic ic-xs" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
+      </button>
+      <div class="dv-menu" id="dvUseMenu" hidden>
+        <button data-act="copy">复制模板链接</button>
+        <button data-act="open">在画廊中查看</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="dv-body">
+    <aside class="dv-panel" id="dvPanel">
+      <div class="dv-panel-head">
+        <b>模板设置</b>
+        <span class="dv-beta">测试版</span>
+        <button class="dv-x" id="dvX" aria-label="关闭面板">
+          <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-close"></use></svg>
+        </button>
+      </div>
+      <div class="dv-note">
+        <svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round">
+          <circle cx="12" cy="12" r="8.6"/><path d="M12 11v5.4"/><circle cx="12" cy="8.1" r="1.05" fill="currentColor" stroke="none"/>
+        </svg>
+        <span>您正在查看此模板。只有编辑者才能编辑此模板的说明。</span>
+      </div>
+      <div class="dv-tabs">
+        <button class="dv-tab on" data-tab="text">说明</button>
+        <button class="dv-tab" data-tab="image">图片</button>
+      </div>
+      <div class="dv-scroll" id="dvPanelBody" data-no-i18n></div>
+    </aside>
+
+    <div class="dv-canvas" id="dvCanvas">
+      <div class="dv-stage" id="dvStage" data-no-i18n></div>
+      <div class="dv-pager">
+        <button class="dv-pg" id="dvPrev" aria-label="上一页">
+          <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-left"></use></svg>
+        </button>
+        <span id="dvCount">01 / 19</span>
+        <button class="dv-pg" id="dvNext" aria-label="下一页">
+          <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-right"></use></svg>
+        </button>
+      </div>
+      <div class="dv-made"><span class="dv-g">G</span>由 GAMMA 制作</div>
+    </div>
+  </div>
+</div>
 <div class="toast" id="toast"></div>
 
 <script type="module">
@@ -2329,6 +2510,7 @@ import { applyLanguage, resolveLanguage, startAutoTranslate, t } from './i18n.js
 const tplState = { fmt: 'all', cats: new Set(), q: '', sort: 'date', more: false }
 
 function useTemplate(name) {
+  closeDocView()
   closeCase()
   exitMode()
   setView('home')
@@ -2389,6 +2571,10 @@ function iconSVG(name, size) {
 }
 
 function openCase(deck) {
+  if (deck && deck.fmt === 'doc') {
+    openDocView(deck)
+    return
+  }
   caseState.deck = deck
   caseState.i = 0
   $('tvThumbs').dataset.deck = ''
@@ -2398,6 +2584,7 @@ function openCase(deck) {
 }
 
 function closeCase() {
+  closeDocView()
   if ($('tplView').hidden) return
   $('tplView').hidden = true
   caseState.deck = null
@@ -2459,6 +2646,170 @@ function renderCaseSide(deck) {
       () => toast('复制失败，请手动复制地址栏链接', 'err'),
     )
   }
+}
+
+/* ── 文档查看器 ───────────────────────────────────── */
+const docState = { deck: null, i: 0, tab: 'text' }
+
+function openDocView(deck) {
+  docState.deck = deck
+  docState.i = 0
+  docState.tab = 'text'
+  $('dvName').textContent = deck.name
+  const view = $('docView')
+  view.classList.remove('present', 'nopanel')
+  document.querySelectorAll('.dv-tab').forEach((b) => b.classList.toggle('on', b.dataset.tab === 'text'))
+  $('dvCount').textContent = '01 / ' + String(deck.slides.length).padStart(2, '0')
+  paintDocPanel()
+  paintDocPage()
+  syncDocSaved()
+  closeCaseKeepDoc()
+  view.hidden = false
+}
+
+function closeCaseKeepDoc() {
+  if (!$('tplView').hidden) $('tplView').hidden = true
+}
+
+function closeDocView() {
+  if ($('docView').hidden) return
+  $('docView').hidden = true
+  $('docView').classList.remove('present')
+  docState.deck = null
+}
+
+function paintDocPage() {
+  const deck = docState.deck
+  if (!deck) return
+  const s = deck.slides[docState.i]
+  $('dvStage').innerHTML = '<div class="' + boxClass(deck) + '">' + slideHTML(deck, s, docState.i) + '</div>'
+  $('dvCount').textContent =
+    String(docState.i + 1).padStart(2, '0') + ' / ' + String(deck.slides.length).padStart(2, '0')
+  $('dvPrev').disabled = docState.i === 0
+  $('dvNext').disabled = docState.i === deck.slides.length - 1
+}
+
+function docGo(i) {
+  const deck = docState.deck
+  if (!deck) return
+  docState.i = Math.max(0, Math.min(deck.slides.length - 1, i))
+  paintDocPage()
+}
+
+function paintDocPanel() {
+  const deck = docState.deck
+  if (!deck) return
+  const body = $('dvPanelBody')
+  if (docState.tab === 'image') {
+    const figs = deck.slides.filter((s) => s.img)
+    body.innerHTML =
+      '<div class="dv-imgs">' +
+      figs.map((s) => {
+        const fig = document.createElement('figure')
+        const img = document.createElement('img')
+        img.src = 'cases/' + deck.id + '/' + s.img + '.jpg'
+        img.alt = ''
+        img.loading = 'lazy'
+        const cap = document.createElement('figcaption')
+        const pageNo = 'P' + String(deck.slides.indexOf(s) + 1).padStart(2, '0')
+        cap.textContent = s.no ? s.no + ' · ' + (s.cap || '') : pageNo + ' · ' + (s.cap || s.label)
+        fig.appendChild(img)
+        fig.appendChild(cap)
+        return fig.outerHTML
+      }).join('') +
+      '</div>' +
+      '<p class="dv-p" style="margin-top:14px">共 ' + figs.length + ' 张配图，全部为本地文件（cases/' + deck.id + '/），无外链。</p>'
+    return
+  }
+  const rows = [
+    ['格式', deck.cat + ' · ' + (deck.ratio || '16:9')],
+    ['页面', deck.slides.length + ' 页'],
+    ['配图', deck.slides.filter((s) => s.img).length + ' 张'],
+    ['分类', deck.kind],
+    ['样式', deck.colorway],
+  ]
+  body.innerHTML =
+    '<h3 class="dv-h3">视觉特征</h3><p class="dv-p">' + (deck.visual || deck.desc) + '</p>' +
+    '<h3 class="dv-h3">页面怎么用</h3><p class="dv-p">' + (deck.how || '') + '</p>' +
+    '<div class="dv-kv">' + rows.map(([k, v]) => '<span>' + k + '</span><b>' + v + '</b>').join('') + '</div>'
+}
+
+function syncDocSaved() {
+  const deck = docState.deck
+  const on = !!(deck && (state.prefs.workspace || []).includes(deck.id))
+  const btn = $('dvAdd')
+  btn.classList.toggle('done', on)
+  $('dvAddTxt').textContent = on ? '已添加到我的工作区' : '添加到我的工作区'
+}
+
+function wireDocView() {
+  $('dvBack').onclick = closeDocView
+  $('dvPanelBtn').onclick = () => $('docView').classList.toggle('nopanel')
+  $('dvSet').onclick = () => $('docView').classList.toggle('nopanel')
+  $('dvX').onclick = () => $('docView').classList.add('nopanel')
+  $('dvPresent').onclick = () => $('docView').classList.toggle('present')
+  $('dvShare').onclick = () => {
+    const deck = docState.deck
+    if (!deck) return
+    const url = location.origin + location.pathname + '#case/' + deck.id
+    copyText(url).then(
+      () => toast('已复制模板链接：' + url, 'ok'),
+      () => toast('复制失败，请手动复制地址栏链接', 'err'),
+    )
+  }
+  $('dvAdd').onclick = () => {
+    const deck = docState.deck
+    if (!deck) return
+    const list = state.prefs.workspace || []
+    const i = list.indexOf(deck.id)
+    if (i >= 0) list.splice(i, 1)
+    else list.unshift(deck.id)
+    state.prefs.workspace = list
+    savePrefs()
+    syncDocSaved()
+    toast(i >= 0 ? '已从我的工作区移除' : '已添加到我的工作区', 'ok')
+  }
+  $('dvUse').onclick = () => docState.deck && useTemplate(docState.deck.name)
+  $('dvUseMore').onclick = (ev) => {
+    ev.stopPropagation()
+    const menu = $('dvUseMenu')
+    menu.hidden = !menu.hidden
+    $('dvUseMore').setAttribute('aria-expanded', String(!menu.hidden))
+  }
+  $('dvUseMenu').onclick = (ev) => {
+    const act = ev.target.closest('button') && ev.target.closest('button').dataset.act
+    const deck = docState.deck
+    $('dvUseMenu').hidden = true
+    if (!deck) return
+    if (act === 'copy') {
+      const url = location.origin + location.pathname + '#case/' + deck.id
+      copyText(url).then(() => toast('已复制模板链接', 'ok'), () => toast('复制失败', 'err'))
+    } else if (act === 'open') {
+      closeDocView()
+      document.getElementById('navTemplates').click()
+    }
+  }
+  document.addEventListener('click', (ev) => {
+    if ($('dvUseMenu').hidden) return
+    if (!ev.target.closest('.dv-usesplit')) $('dvUseMenu').hidden = true
+  })
+  $('dvPrev').onclick = () => docGo(docState.i - 1)
+  $('dvNext').onclick = () => docGo(docState.i + 1)
+  document.querySelectorAll('.dv-tab').forEach((b) => {
+    b.onclick = () => {
+      docState.tab = b.dataset.tab
+      document.querySelectorAll('.dv-tab').forEach((x) => x.classList.toggle('on', x === b))
+      paintDocPanel()
+    }
+  })
+  document.addEventListener('keydown', (ev) => {
+    if ($('docView').hidden) return
+    if (ev.key === 'Escape') {
+      if ($('docView').classList.contains('present')) $('docView').classList.remove('present')
+      else closeDocView()
+    } else if (ev.key === 'ArrowLeft') docGo(docState.i - 1)
+    else if (ev.key === 'ArrowRight') docGo(docState.i + 1)
+  })
 }
 
 function wireCaseView() {
@@ -2631,7 +2982,7 @@ const DEFAULT_PREFS = {
   fontSize: 14, density: 'comfortable', mono: false,
   tone: 'balanced', nickname: '',
   autoScroll: true, showTools: true, autoHome: false,
-  controls: {}, toggles: {},
+  controls: {}, toggles: {}, workspace: [],
 }
 
 function loadPrefs() {
@@ -4760,6 +5111,7 @@ paintThemes()
   if (savedTheme) applyThemePreset(savedTheme)
 }
 wireCaseView()
+wireDocView()
 paintSessions()
 paintActivity()
 renderOfficeCards()
