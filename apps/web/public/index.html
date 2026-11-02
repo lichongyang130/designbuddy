@@ -727,6 +727,103 @@
   .sld.doc .d-end-img{flex:1;min-height:0;margin-top:34px;overflow:hidden}
   .sld.doc .d-end-img .sd-img{width:100%;height:100%;object-fit:cover}
 
+  /* ── 文档家族：Market（竖排书眉 + 竖排页码 · 宋体宽字距 · 首行缩进） ── */
+  .sld.k-market .d-pad{padding:104px 148px 104px 96px}
+  .sld.k-market .d-run{
+    left:96px;right:156px;top:52px;padding-bottom:8px;border-bottom:3px double var(--rule);
+    font-family:inherit;font-size:10px;letter-spacing:.24em;text-transform:none;color:var(--muted);
+  }
+  .sld.k-market .sd-folio{
+    left:auto;right:44px;top:96px;bottom:auto;width:58px;
+    display:flex;flex-direction:column;align-items:flex-end;gap:16px;
+    font-family:inherit;letter-spacing:.34em;text-transform:none;color:var(--muted);
+  }
+  .sld.k-market .sd-folio span{flex:0 0 auto;align-self:flex-end;display:block;line-height:1.35}
+  .sld.k-market .sd-folio span:first-child{writing-mode:vertical-rl;text-orientation:upright;font-size:10px}
+  .sld.k-market .sd-folio span:last-child{writing-mode:horizontal-tb;font-family:Georgia,'Songti SC',serif;
+    font-size:26px;line-height:1;letter-spacing:.02em;color:var(--ink)}
+  .sld.k-market .d-kicker{font-family:inherit;font-size:10px;letter-spacing:.3em;text-transform:none;color:var(--accent)}
+  .sld.k-market .d-kicker::before{content:"";display:inline-block;width:6px;height:6px;margin-right:10px;
+    vertical-align:middle;background:var(--accent)}
+  .sld.k-market .d-h1{font-size:88px;line-height:1.04;letter-spacing:.08em;font-weight:400}
+  .sld.k-market .d-h2{margin-top:16px;font-size:34px;line-height:1.36;letter-spacing:.06em;font-weight:400}
+  .sld.k-market .d-lead{font-size:17px;line-height:2.05;letter-spacing:.012em}
+  .sld.k-market .d-paras p{font-size:15px;line-height:2.05}
+  .sld.k-market .d-main p{font-size:18px;line-height:2.12;text-indent:2em;text-align:justify}
+  .sld.k-market .d-main p + p{margin-top:0}
+  .sld.k-market[data-k="dmeta"] .d-facts{margin-top:56px}
+  .sld.k-market[data-k="dmeta"] .d-note{margin-top:auto}
+  .sld.k-market[data-k="dbody"]:not(:has(.d-points)) .d-note{margin-top:auto}
+  .sld.k-market[data-k="dtable"] .d-note{margin-top:auto}
+  .sld.k-market .d-read{margin-top:30px}
+  .sld.k-market .d-main p:first-child::first-letter{font-size:1em}
+  .sld.k-market .d-cols{grid-template-columns:minmax(0,1fr) 168px;gap:34px;margin-top:28px}
+  .sld.k-market .d-side{padding-top:12px;border-top:2px solid var(--accent)}
+  .sld.k-market .d-side p{font-family:inherit;font-size:11.5px;line-height:2;color:var(--muted);text-indent:1.6em}
+  .sld.k-market .d-points{padding-top:13px;border-top:1px solid var(--rule)}
+  .sld.k-market .d-points span{font-family:inherit;letter-spacing:.2em}
+  .sld.k-market .d-points b{font-size:16px;letter-spacing:.05em}
+  .sld.k-market .d-points i{font-size:10.5px;line-height:1.75}
+  .sld.k-market .d-facts{margin-top:30px;border-top:2px solid var(--accent)}
+  .sld.k-market .d-fact{grid-template-columns:180px 1fr;padding:13px 0}
+  .sld.k-market[data-k="dmeta"] .d-facts{display:grid;grid-template-columns:1fr 1fr;gap:0 48px}
+  .sld.k-market[data-k="dmeta"] .d-fact{display:block;padding:14px 0;border-bottom:1px solid var(--rule)}
+  .sld.k-market[data-k="dmeta"] .d-fact b{display:block;margin-top:8px;font-size:19px;letter-spacing:.02em}
+  .sld.k-market[data-k="dmeta"] .d-fact:nth-child(3),.sld.k-market[data-k="dmeta"] .d-fact:nth-child(4){border-bottom:0}
+  .sld.k-market .d-fact span{font-family:inherit;letter-spacing:.18em;text-transform:none;font-size:10px}
+  .sld.k-market .d-fact b{letter-spacing:.02em}
+  .sld.k-market .d-note{margin-top:22px;font-family:inherit;letter-spacing:.12em;text-transform:none;font-size:10px}
+  .sld.k-market .d-read{font-size:13px;line-height:2;letter-spacing:.01em;padding-top:16px;border-top:1px solid var(--rule)}
+  .sld.k-market .d-pull{font-size:20px;line-height:1.8;border-left-color:var(--accent)}
+  /* 目录 */
+  .sld.k-market .d-toc li{grid-template-columns:48px minmax(0,1fr) 214px;padding:22px 0;border-top-color:var(--rule)}
+  .sld.k-market .d-toc .n{font-family:inherit;font-size:10px;letter-spacing:.16em}
+  .sld.k-market .d-toc .t{font-size:21px;letter-spacing:.05em}
+  .sld.k-market .d-toc .d{font-size:10.5px;letter-spacing:.02em}
+  .sld.k-market .d-toc-figs{border-top:2px solid var(--accent)}
+  .sld.k-market .d-toc-figs b{font-family:inherit;letter-spacing:.14em}
+  /* 封面 */
+  .sld.k-market .d-cover{padding:100px 96px 84px}
+  .sld.k-market .d-cover-top{padding-bottom:9px;border-bottom:3px double var(--rule);
+    font-family:inherit;font-size:10px;letter-spacing:.26em;text-transform:none;color:var(--muted)}
+  .sld.k-market .d-cover .d-h1{margin-top:52px;font-size:92px;letter-spacing:.1em;line-height:1.02}
+  .sld.k-market .d-cover .d-lead{max-width:600px;font-size:16px;line-height:2.05}
+  .sld.k-market .d-cover .d-lead:first-of-type{margin-top:30px}
+  .sld.k-market .d-cover-img{margin:34px 0 24px}
+  .sld.k-market .d-cover-foot{padding-top:12px;border-top:1px solid var(--ink);gap:24px}
+  .sld.k-market .d-cover-foot b{font-size:12px;letter-spacing:.04em}
+  .sld.k-market .d-cover-foot span{font-family:inherit;letter-spacing:.14em;text-transform:none;font-size:9.5px}
+  /* 章节页 */
+  .sld.k-market .d-sec-txt{padding:118px 96px 0}
+  .sld.k-market .d-sec-num{font-family:inherit;font-size:13px;letter-spacing:.3em;color:var(--accent)}
+  .sld.k-market .d-sec-t{margin-top:14px;font-size:58px;line-height:1.2;letter-spacing:.09em}
+  .sld.k-market .d-sec-lead{max-width:640px;font-size:16px;line-height:2.05;text-indent:2em}
+  .sld.k-market .d-sec-img{margin:36px 148px 0 96px}
+  /* 图版 */
+  .sld.k-market .d-fig{padding:88px 96px 84px}
+  .sld.k-market .d-fig-cap{grid-template-columns:66px 1fr;border-top:2px solid var(--accent)}
+  .sld.k-market .d-fig-no{font-family:inherit;font-size:10px;letter-spacing:.16em}
+  .sld.k-market .d-fig-cap p{font-size:12.5px;line-height:1.95}
+  .sld.k-market .d-fig-src{font-family:inherit;letter-spacing:.14em;text-transform:none}
+  /* 表格 */
+  .sld.k-market .d-table{margin-top:30px}
+  .sld.k-market .d-table td{vertical-align:middle}
+  .sld.k-market .d-table thead th{vertical-align:bottom}
+  .sld.k-market .d-table th{padding-bottom:9px;border-bottom:2px solid var(--accent);
+    font-family:inherit;font-size:10.5px;letter-spacing:.14em;text-transform:none;color:var(--ink)}
+  .sld.k-market .d-table td{padding:30px 0;font-size:14px;letter-spacing:.01em}
+  .sld.k-market .d-table tbody tr:last-child td{border-bottom:0}
+  .sld.k-market .d-table td:first-child{color:var(--second);letter-spacing:.05em}
+  .sld.k-market .d-table td.num{font-size:12.5px}
+  /* 引文与尾声 */
+  .sld.k-market .d-quote{padding:0 148px 0 96px}
+  .sld.k-market .d-quote p{font-size:38px;line-height:1.85;letter-spacing:.06em;padding-left:36px;border-left:2px solid var(--accent)}
+  .sld.k-market .d-quote span{margin-top:34px;margin-left:38px;font-family:inherit;letter-spacing:.2em;text-transform:none;font-size:10px}
+  .sld.k-market .d-end-txt{padding:104px 96px 0}
+  .sld.k-market .d-end-t{font-size:48px;letter-spacing:.08em}
+  .sld.k-market .d-end-row{padding:10px 0;font-family:inherit;font-size:10.5px;letter-spacing:.1em}
+  .sld.k-market .d-end-img{margin:30px 148px 84px 96px}
+
   /* ── 文档家族 B：Heatline（无衬线 · 非对称版心 · 左侧发丝线） ── */
   .sld.k-heatline .d-pad{padding:100px 84px 96px 128px}
   .sld.k-heatline .d-pad::before{content:"";position:absolute;left:84px;top:100px;bottom:96px;width:1px;background:var(--rule)}
