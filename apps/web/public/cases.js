@@ -1278,6 +1278,7 @@ export const CASE_DECKS = [
           { t: 'The final proof', d: '26°C and 75% humidity for ninety minutes. Warm and fast gives you a pale shell and a tight crumb.' },
         ],
       },
+      { k: 'fullimg', label: 'Bench', img: '08', cap: 'BENCH · 05:50 · FLOUR, SCRAPER, ONE DOUGH' },
       {
         k: 'steps', label: 'Process',
         kicker: 'THE PROCESS',
@@ -1289,6 +1290,16 @@ export const CASE_DECKS = [
           { n: '04', t: 'Shape and proof', d: '90 minutes at 26°C, then 18 minutes at 210°C.' },
         ],
         note: 'FULL LAMINATION · 27 LAYERS BEFORE THE FINAL FOLD',
+      },
+      {
+        k: 'split', label: 'Butter',
+        img: '07',
+        title: 'Butter at sixteen\ndegrees',
+        paras: [
+          'The block is pounded between parchment until it bends without cracking. Too cold and it shatters inside the dough; too warm and it disappears into it.',
+          'We check with a probe, not with a thumb. Every student carries one, and the number goes into the log next to the time.',
+        ],
+        bullets: ['16C · butter and dough', 'Probe, never a thumb', 'Log the time and the number'],
       },
       {
         k: 'table', label: 'Bake',
@@ -1305,6 +1316,16 @@ export const CASE_DECKS = [
         note: 'Deck oven at 210°C, steam for the first six minutes',
       },
       {
+        k: 'gallery', label: 'Bench',
+        title: 'The bench, from five',
+        items: [
+          { img: '12', cap: '05:10 · two on the bench, nothing said out loud' },
+          { img: '14', cap: 'Portioning · one cut, no sawing' },
+          { img: '15', cap: 'Tart shells · rings lined, never greased' },
+        ],
+        note: 'INTAKE 12 · WEEK 2',
+      },
+      {
         k: 'split', label: 'Crumb',
         img: '04',
         title: 'What we look for\nin the crumb',
@@ -1314,7 +1335,18 @@ export const CASE_DECKS = [
         ],
         bullets: ['Open honeycomb, edge to edge', 'No dense ring at the base', 'Shell shatters, not bends', 'Butter smell, not yeast'],
       },
+      { k: 'fullimg', label: 'Street', img: '09', cap: 'STREET · 18:20 · THE ONLY LIGHT LEFT ON' },
       { k: 'section', label: 'Part 02', num: '02', title: 'The counter', note: 'SERVICE, SPEED, WASTE', img: '05' },
+      {
+        k: 'gallery', label: 'Counter',
+        title: 'What leaves the counter',
+        items: [
+          { img: '06', cap: 'The order we sell most · coffee and a croissant' },
+          { img: '10', cap: 'One bag, two hands, flat base' },
+          { img: '11', cap: 'Kouign-amann · sold out by eleven' },
+        ],
+        note: 'COUNTER · WEEK 3',
+      },
       {
         k: 'columns', label: 'Service',
         title: 'Three things the counter must do',
@@ -1380,6 +1412,7 @@ export const CASE_DECKS = [
         unit: '%',
         note: 'Cohorts 2023 to 2025, 96 students',
       },
+      { k: 'fullimg', label: 'Probe', img: '13', cap: 'PROBE · 16.0C · THE NUMBER WE CHECK MOST' },
       {
         k: 'steps', label: 'Exam',
         kicker: 'EXAM',
@@ -1430,11 +1463,6 @@ export const CASE_DECKS = [
         k: 'quote', label: 'Alumna',
         text: 'I came in able to bake at home. I left able to bake forty kilos a day, on time, without shouting.',
         by: 'ALUMNA · COHORT 2024',
-      },
-      {
-        k: 'statement', label: 'On teaching',
-        text: 'We do not teach recipes. We teach the three temperatures that decide whether a recipe works.',
-        foot: 'ACADEMY NOTE',
       },
       {
         k: 'end', label: 'End',
