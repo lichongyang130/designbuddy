@@ -1539,6 +1539,161 @@
   .sld.k-dayline .d-end-img{margin:26px 0 0;height:430px;overflow:hidden;background:var(--ink)}
   .sld.k-dayline .d-end-img .sd-img{width:100%;height:100%;object-fit:cover}
 
+  /* ── 文档家族：Blueprint（图框 + 方格纸 + 左下标注栏 + 右下标题栏） ── */
+  .sld.k-blueprint{
+    background-color:var(--paper);
+    background-image:
+      repeating-linear-gradient(to right, rgba(31,74,92,.055) 0 1px, transparent 1px 24px),
+      repeating-linear-gradient(to bottom, rgba(31,74,92,.055) 0 1px, transparent 1px 24px);
+  }
+  .sld.k-blueprint::before{
+    content:"";position:absolute;inset:24px;border:1.5px solid var(--ink);z-index:3;pointer-events:none;
+    box-shadow:inset 0 0 0 3px var(--paper),inset 0 0 0 3.75px rgba(31,74,92,.35);
+  }
+  .sld.k-blueprint .d-pad{padding:92px 62px 116px 56px}
+  .sld.k-blueprint .d-run{
+    left:56px;right:62px;top:40px;padding-bottom:8px;border-bottom:1px solid var(--ink);
+    font-size:8.5px;letter-spacing:.18em;color:var(--ink);
+  }
+  .sld.k-blueprint .d-run span:last-child{color:var(--accent)}
+  .sld.k-blueprint .sd-folio{
+    left:auto;right:40px;bottom:40px;width:248px;
+    border:1px solid var(--ink);padding:7px 10px 8px;background:var(--paper);
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:7.5px;letter-spacing:.12em;color:var(--muted);
+  }
+  .sld.k-blueprint .sd-folio::before{
+    content:"SHEET / 图号";display:block;margin-bottom:3px;font-size:7px;letter-spacing:.2em;color:var(--accent);
+  }
+  .sld.k-blueprint .sd-folio span{display:block}
+  .sld.k-blueprint .sd-folio span:first-child{line-height:1.4}
+  .sld.k-blueprint .sd-folio span:last-child{font-size:22px;letter-spacing:.02em;color:var(--ink);line-height:1.15}
+  .sld.k-blueprint .d-kicker{font-size:8.5px;letter-spacing:.22em;color:var(--accent);font-weight:600}
+  .sld.k-blueprint .d-h1{margin:0;font-size:88px;line-height:1.04;font-weight:600;letter-spacing:-.045em}
+  .sld.k-blueprint .d-h2{margin:14px 0 0;font-size:36px;line-height:1.26;font-weight:600;letter-spacing:-.03em;color:var(--ink)}
+  .sld.k-blueprint .d-lead{margin-top:18px;font-size:14.5px;line-height:1.95;color:var(--body)}
+  .sld.k-blueprint .d-main p{font-size:15px;line-height:1.98;text-align:justify;color:var(--body)}
+  .sld.k-blueprint .d-main p + p{margin-top:15px}
+  .sld.k-blueprint .d-main p:first-child::first-letter{font-size:1em;font-weight:inherit}
+  /* 左栏：图纸标注 */
+  .sld.k-blueprint .d-cols{grid-template-columns:186px minmax(0,1fr);gap:34px;margin-top:28px;align-items:start}
+  .sld.k-blueprint .d-side{grid-column:1;grid-row:1;display:block;padding:0;border-top:0}
+  .sld.k-blueprint .d-side p{
+    position:relative;padding:7px 0 7px 15px;border-bottom:1px dotted var(--rule);
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9px;line-height:1.75;
+    letter-spacing:.01em;color:var(--muted);
+  }
+  .sld.k-blueprint .d-side p::before{
+    content:"";position:absolute;left:0;top:12px;width:5px;height:5px;border:1px solid var(--accent);
+  }
+  .sld.k-blueprint .d-side p:first-child{border-top:1.5px solid var(--ink);padding-top:9px}
+  .sld.k-blueprint .d-side p + p{margin-top:0}
+  .sld.k-blueprint .d-main{grid-column:2}
+  .sld.k-blueprint .d-note{
+    margin-top:auto;padding-top:10px;border-top:1px solid var(--rule);
+    font-size:8.5px;letter-spacing:.06em;line-height:1.7;
+  }
+  .sld.k-blueprint .d-pull{
+    margin:auto 0 0;padding:16px 0 0;border-left:0;border-top:1.5px solid var(--ink);
+    font-size:22px;line-height:1.5;font-weight:500;letter-spacing:-.02em;color:var(--ink);
+  }
+  .sld.k-blueprint .d-pull span{
+    display:block;margin-top:9px;font-family:inherit;font-size:9.5px;letter-spacing:.02em;
+    text-transform:none;font-weight:400;color:var(--muted);
+  }
+  .sld.k-blueprint .d-pull ~ .d-note{margin-top:18px}
+  /* 要点：三列，带图纸式标号 */
+  .sld.k-blueprint .d-points{
+    grid-template-columns:repeat(3,minmax(0,1fr));gap:0 26px;padding-top:0;border-top:0;
+  }
+  .sld.k-blueprint .d-points > div{padding-top:10px;border-top:1.5px solid var(--ink)}
+  .sld.k-blueprint .d-points span{
+    font-family:inherit;font-size:9px;letter-spacing:.14em;color:var(--accent);font-weight:600;
+  }
+  .sld.k-blueprint .d-points b{font-size:16px;font-weight:600;letter-spacing:-.01em}
+  .sld.k-blueprint .d-points i{font-size:10px;line-height:1.7}
+  /* 表格：图纸式细线 */
+  .sld.k-blueprint .d-table{margin-top:24px}
+  .sld.k-blueprint .d-table th{
+    padding:0 0 8px;font-family:inherit;font-size:8.5px;letter-spacing:.14em;color:var(--accent);
+    font-weight:600;text-transform:none;border-bottom:1.5px solid var(--ink);
+  }
+  .sld.k-blueprint .d-table td{padding:40px 0;font-size:13.5px;line-height:1.6;border-bottom:1px dotted var(--rule)}
+  .sld.k-blueprint .d-table th:first-child,.sld.k-blueprint .d-table td:first-child{width:26%}
+  .sld.k-blueprint .d-table td.num{font-family:inherit;font-size:12.5px;color:var(--body);font-variant-numeric:tabular-nums}
+  .sld.k-blueprint .d-table tbody tr:last-child td{
+    border-top:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink);font-weight:600;
+  }
+  .sld.k-blueprint .d-list{margin:24px 0 0;padding:0}
+  .sld.k-blueprint .d-list li{grid-template-columns:40px minmax(0,1fr);gap:16px;padding:52px 0;border-top:1px dotted var(--rule);align-items:baseline}
+  .sld.k-blueprint .d-list li:first-child{border-top:1.5px solid var(--ink)}
+  .sld.k-blueprint .d-list .n{font-size:9px;color:var(--accent);font-weight:600}
+  .sld.k-blueprint .d-list .d-h3{font-size:15px;font-weight:600;letter-spacing:-.01em}
+  .sld.k-blueprint .d-list p{margin:5px 0 0;font-size:11.5px;line-height:1.8;color:var(--body)}
+  .sld.k-blueprint .d-read{margin-top:auto;padding-top:14px;border-top:1px solid var(--rule);font-size:12.5px;line-height:1.9}
+  .sld.k-blueprint .d-read ~ .d-note{margin-top:14px}
+  /* 封面 */
+  .sld.k-blueprint .d-cover{padding:92px 62px 116px 56px}
+  .sld.k-blueprint .d-cover-top{
+    border-bottom:1.5px solid var(--ink);padding-bottom:8px;color:var(--muted);font-size:8.5px;letter-spacing:.16em;
+  }
+  .sld.k-blueprint .d-cover .d-h1{margin-top:34px}
+  .sld.k-blueprint .d-cover .d-lead{max-width:540px;font-size:14.5px;line-height:1.95}
+  .sld.k-blueprint .d-cover-img{margin:26px 0 20px;border:1px solid var(--ink)}
+  .sld.k-blueprint .d-cover-foot{gap:20px;border-top:1.5px solid var(--ink);padding-top:10px}
+  .sld.k-blueprint .d-cover-foot b{font-size:10.5px;font-weight:600}
+  .sld.k-blueprint .d-cover-foot span{font-family:inherit;font-size:9px;letter-spacing:.01em;text-transform:none;color:var(--muted)}
+  /* 摘要 */
+  .sld.k-blueprint[data-k="dmeta"] .d-facts{margin-top:28px;border-top:1.5px solid var(--ink)}
+  .sld.k-blueprint .d-fact{grid-template-columns:172px minmax(0,1fr);gap:18px;padding:15px 0;border-bottom:1px dotted var(--rule)}
+  .sld.k-blueprint .d-fact span{font-family:inherit;font-size:9.5px;letter-spacing:.02em;text-transform:none}
+  .sld.k-blueprint .d-fact b{font-size:14px;font-weight:600;color:var(--accent)}
+  /* 目录 */
+  .sld.k-blueprint .d-toc li{grid-template-columns:52px minmax(0,1fr) 196px;gap:18px;padding:44px 0;border-top:1px dotted var(--rule)}
+  .sld.k-blueprint .d-toc li:first-child{border-top:1.5px solid var(--ink)}
+  .sld.k-blueprint .d-toc .n{font-size:9px;letter-spacing:.14em;color:var(--accent)}
+  .sld.k-blueprint .d-toc .t{font-size:23px;font-weight:600;letter-spacing:-.02em}
+  .sld.k-blueprint .d-toc .d{font-size:10px;line-height:1.6;color:var(--muted)}
+  .sld.k-blueprint .d-toc-figs{margin-top:auto;border-top:1.5px solid var(--ink);padding-top:10px}
+  .sld.k-blueprint .d-toc-figs ul{gap:7px 36px}
+  .sld.k-blueprint .d-toc-figs b{font-family:inherit;font-size:8.5px;letter-spacing:.06em;color:var(--accent);font-weight:600}
+  .sld.k-blueprint .d-toc-figs li{font-size:10px}
+  .sld.k-blueprint .d-toc-figs ~ .d-note{margin-top:14px}
+  /* 章节页：编号方框 + 图带 */
+  .sld.k-blueprint .d-sec{position:absolute;inset:0;display:flex;flex-direction:column;padding:0}
+  .sld.k-blueprint .d-sec-txt{position:relative;z-index:2;padding:92px 62px 0 56px}
+  .sld.k-blueprint .d-sec-num{
+    display:inline-block;padding:6px 14px 7px;border:1.5px solid var(--ink);
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;letter-spacing:.18em;color:var(--ink);
+  }
+  .sld.k-blueprint .d-sec-t{margin:22px 0 0;font-size:54px;line-height:1.14;font-weight:600;letter-spacing:-.035em;color:var(--ink)}
+  .sld.k-blueprint .d-sec-lead{margin-top:18px;max-width:600px;font-size:14px;line-height:1.95;color:var(--body)}
+  .sld.k-blueprint .d-sec-img{margin:30px 56px 92px 56px;overflow:hidden;border:1px solid var(--ink)}
+  .sld.k-blueprint .d-sec-img .sd-img{width:100%;height:100%;object-fit:cover}
+  /* 图版页：左标注 + 右带框图 */
+  .sld.k-blueprint .d-fig{
+    position:absolute;inset:0;margin:0;padding:92px 62px 116px 56px;
+    display:grid;grid-template-columns:212px minmax(0,1fr);grid-template-rows:1fr;gap:26px;align-items:stretch;
+  }
+  .sld.k-blueprint .d-fig-img{grid-column:2;min-height:0;overflow:hidden;border:1px solid var(--ink);background:var(--ink)}
+  .sld.k-blueprint .d-fig-img .sd-img{width:100%;height:100%;object-fit:cover}
+  .sld.k-blueprint .d-fig-cap{grid-column:1;grid-row:1;align-self:start;display:block;margin:0;padding-top:10px;border-top:1.5px solid var(--ink)}
+  .sld.k-blueprint .d-fig-no{font-family:inherit;font-size:9px;letter-spacing:.16em;color:var(--accent);font-weight:600}
+  .sld.k-blueprint .d-fig-cap p{margin:10px 0 0;font-size:11.5px;line-height:1.85;color:var(--body)}
+  .sld.k-blueprint .d-fig-src{
+    grid-column:auto;display:block;margin-top:12px;font-family:inherit;font-size:8.5px;
+    letter-spacing:.02em;text-transform:none;color:var(--muted);line-height:1.6;
+  }
+  /* 尾声 */
+  .sld.k-blueprint .d-end-txt{padding:92px 62px 0 56px}
+  .sld.k-blueprint .d-end-t{margin:16px 0 0;font-size:46px;line-height:1.2;font-weight:600;letter-spacing:-.03em}
+  .sld.k-blueprint .d-end-rows{margin-top:24px}
+  .sld.k-blueprint .d-end-row{
+    padding:10px 0;border-top:1px dotted var(--rule);font-family:inherit;font-size:10px;letter-spacing:.02em;color:var(--body);
+  }
+  .sld.k-blueprint .d-end-row span:first-child{color:var(--accent);font-weight:600;min-width:104px}
+  .sld.k-blueprint .d-end-img{margin:22px 62px 96px 56px;height:400px;overflow:hidden;border:1px solid var(--ink)}
+  .sld.k-blueprint .d-end-img .sd-img{width:100%;height:100%;object-fit:cover}
+
   /* ── 文档家族 B：Heatline（无衬线 · 非对称版心 · 左侧发丝线） ── */
   .sld.k-heatline .d-pad{padding:100px 84px 96px 128px}
   .sld.k-heatline .d-pad::before{content:"";position:absolute;left:84px;top:100px;bottom:96px;width:1px;background:var(--rule)}
