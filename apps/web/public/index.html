@@ -604,7 +604,8 @@
   .ex-card{border:1px solid var(--line);border-radius:var(--r-lg);padding:14px;text-align:left;background:var(--surface)}
   .ex-card:hover{border-color:var(--line-strong);box-shadow:var(--e1)}
   .ex-top{display:flex;gap:10px;align-items:flex-start}
-  .ex-ava{width:38px;height:38px;border-radius:var(--r-md);display:grid;place-items:center;flex:none}
+  .ex-ava{width:38px;height:38px;border-radius:11px;overflow:hidden;flex:none;background:#eef2f8;box-shadow:inset 0 0 0 1px rgba(16,24,40,.06)}
+  .ex-ava img{width:100%;height:100%;object-fit:cover;display:block}
   .ex-nm{font-size:13px;font-weight:600;color:var(--fg);display:flex;align-items:center;gap:6px;line-height:1.3}
   .ex-badge{font-size:11px;padding:2px 6px;border-radius:var(--r-sm);background:var(--accent-soft);color:var(--accent);flex:none;font-weight:500}
   .ex-badge.real{background:var(--ok-soft);color:var(--ok)}
@@ -630,7 +631,8 @@
   .sk-card{border:1px solid var(--line);border-radius:var(--r-lg);padding:14px;background:var(--surface);position:relative;text-align:left}
   .sk-card:hover{border-color:var(--line-strong);box-shadow:var(--e2)}
   .sk-top{display:flex;gap:10px;align-items:flex-start;padding-right:24px}
-  .sk-ico{width:36px;height:36px;border-radius:var(--r-md);display:grid;place-items:center;flex:none}
+  .sk-ico{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;flex:none;color:#fff;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.28), 0 1px 2px rgba(16,24,40,.10)}
   .sk-nm{font-size:13px;font-weight:600;color:var(--fg);line-height:1.35;padding-top:2px}
   .sk-addbtn{position:absolute;right:10px;top:10px;width:22px;height:22px;border:1px solid var(--line-strong);border-radius:var(--r-sm);color:var(--fg-muted);display:grid;place-items:center}
   .sk-addbtn:hover{background:var(--surface-2);color:var(--fg)}
@@ -672,7 +674,11 @@
   .cn-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;padding-top:2px}
   .cn-card{border:1px solid var(--line);border-radius:var(--r-lg);padding:14px;background:var(--surface);position:relative;text-align:left;display:flex;gap:10px;align-items:flex-start}
   .cn-card:hover{border-color:var(--line-strong);box-shadow:var(--e2)}
-  .cn-ico{width:40px;height:40px;border-radius:var(--r-md);display:grid;place-items:center;flex:none}
+  .cn-ico{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none;
+    background:#fff;border:1px solid var(--line);color:var(--fg);overflow:hidden}
+  .cn-ico svg{width:23px;height:23px;display:block}
+  .cn-ico-mono{color:#fff;border-color:transparent;font-size:12.5px;font-weight:600;letter-spacing:.02em;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.22), 0 1px 2px rgba(16,24,40,.10)}
   .cn-main{flex:1;min-width:0;padding-right:20px}
   .cn-nm{font-size:13px;font-weight:600;color:var(--fg);line-height:1.35;display:flex;align-items:center;gap:6px}
   .cn-desc{font-size:12px;color:var(--fg-subtle);margin-top:5px;line-height:1.45;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -999,6 +1005,7 @@
 </head>
 <body>
 <script src="icons.js"></script>
+<script src="brand-logos.js"></script>
 <div class="app">
   <!-- 图标栏 -->
   <nav class="rail">
@@ -3247,20 +3254,6 @@ function sendFromMode() {
 
 
 
-function nameHue(text, base) {
-  const b = base == null ? 198 : Number(base)
-  let hash = 0
-  for (const ch of String(text || '')) hash = (hash * 31 + ch.codePointAt(0)) % 74
-  return b + ((hash % 74) + 74) % 74
-}
-
-/* 图标瓦片：柔和同色系底 + 深一档的同色图标（原先是高饱和渐变 + 首字，像随机色块） */
-function softTile(seed) {
-  const h = typeof seed === 'number' ? ((seed % 360) + 360) % 360 : nameHue(seed)
-  return 'background:hsl(' + h + ' 66% 95%);color:hsl(' + h + ' 50% 40%);' +
-    'box-shadow:inset 0 0 0 1px hsl(' + h + ' 44% 88%)'
-}
-
 const ICON_RULES = {
   expert: [
     [/开发|工程|架构|代码|程序|脚本|全栈|后端|前端/, 'code'],
@@ -3285,7 +3278,7 @@ const ICON_RULES = {
     [/Excel|XLSX|xlsx|表格|工作表/, 'grid'],
     [/PPT|演示|幻灯片/, 'presentation'],
     [/PDF|pdf/, 'book'],
-    [/浏览器|Web|浏览器|爬/, 'globe'],
+    [/浏览器|Web|爬/, 'globe'],
     [/搜索|查询|检索/, 'search'],
     [/自检|检查|质检|审核/, 'check'],
     [/会议|日程|日历/, 'video'],
@@ -3306,7 +3299,7 @@ const ICON_RULES = {
     [/问卷/, 'form'],
     [/知识|ima|乐享/, 'book'],
     [/自选股|股票|行情|通达信|金融/, 'trend'],
-    [/微信|飞书|钉钉/, 'message'],
+    [/微信|飞书|钉钉|消息/, 'message'],
     [/TAPD|需求|缺陷/, 'task'],
     [/figma/i, 'icons'],
     [/web|browser|浏览器|chrome/i, 'globe'],
@@ -3321,6 +3314,58 @@ const ICON_RULES = {
     [/问卷|表单/, 'form'],
     [/mcp|ssh|cli|插件|连接器/i, 'plug'],
   ],
+}
+
+/* 专家头像：欧美卡通风（apps/web/public/avatars），按角色语义分配，兜底按名字哈希 */
+const EXPERT_FACES = [
+  [/开发|工程|架构|代码|程序|脚本|全栈|后端|前端|Godot|Python/, 1],
+  [/设计|视觉|产品|工作台|网页|界面|交互|排版|主题/, 2],
+  [/数据|分析|报表|统计/, 3],
+  [/投资|股票|金融|交易|行情|基金|财报|自选股/, 4],
+  [/法律|合同|合规|财税|法务|律/, 5],
+  [/电商|商家|运营|营销|增长|投放|客服/, 6],
+  [/创业|销售|商务|客户|GTM|伙伴|顾问/, 7],
+  [/求职|职业|招聘|人岗|简历|教育|学习|教练/, 8],
+  [/嵌入|单片机|RTOS|硬件|游戏|引擎/, 9],
+  [/内容|写作|文案|公众号|创作|编辑/, 10],
+]
+
+function faceFile(index) {
+  return 'avatars/expert-' + String(index).padStart(2, '0') + '.jpg'
+}
+
+/* 同一屏里优先不复用同一张脸：角色命中后若已被占用，就顺延到下一张空闲头像 */
+function expertFace(name, used) {
+  let preferred = 0
+  for (const [re, index] of EXPERT_FACES) if (re.test(String(name || ''))) { preferred = index; break }
+  if (!preferred) {
+    let hash = 0
+    for (const ch of String(name || '')) hash = (hash * 31 + ch.codePointAt(0)) % 10
+    preferred = hash + 1
+  }
+  const taken = used || null
+  if (!taken) return faceFile(preferred)
+  for (let step = 0; step < 10; step += 1) {
+    const index = ((preferred - 1 + step) % 10) + 1
+    if (!taken.has(index)) { taken.add(index); return faceFile(index) }
+  }
+  return faceFile(preferred)
+}
+
+/* 技能/办公能力瓦片：纯色 app icon + 白色描边字形 */
+function skillTone(name) {
+  const text = String(name || '')
+  if (/Excel|XLSX|xlsx|表格|工作表/.test(text)) return '#0F7A57'
+  if (/PPT|演示|幻灯片/.test(text)) return '#CF5230'
+  if (/PDF|pdf/.test(text)) return '#BE3E58'
+  if (/Word|DOCX|docx|文档|公式|套件|办公/.test(text)) return '#2D6AE3'
+  if (/浏览器|Web|爬|搜索|查询/.test(text)) return '#0E7490'
+  if (/代码|开发|CLI|终端|命令|Git|自检|检查|质检/.test(text)) return '#5B4BE0'
+  if (/金融|股票|基金|投资|行情|财报|NeoData/.test(text)) return '#0B7C6E'
+  if (/内容|写作|文案|图片|视觉|设计|美化|封面|海报/.test(text)) return '#B8486A'
+  if (/数据|分析|报表|统计|洞察/.test(text)) return '#7448CE'
+  if (/企业微信|飞书|钉钉|消息|群|会议|日程|邮件|邮箱/.test(text)) return '#17719E'
+  return '#4C5A6B'
 }
 
 function pickIcon(kind, name, fallback) {
@@ -3374,6 +3419,7 @@ function renderExChips() {
 function paintExperts() {
   const grid = $('exGrid')
   grid.innerHTML = ''
+  const usedFaces = new Set()
   const query = state.exQuery.trim().toLowerCase()
   const cards = []
   for (const preset of state.presets) {
@@ -3395,7 +3441,7 @@ function paintExperts() {
     btn.className = 'ex-card'
     btn.innerHTML =
       '<div class="ex-top">' +
-        '<span class="ex-ava" style="' + softTile(card.name) + '">' + iconMark(pickIcon('expert', card.name, 'brain'), 18) + '</span>' +
+        '<span class="ex-ava"><img src="' + expertFace(card.name, usedFaces) + '" alt="" loading="lazy" /></span>' +
         '<span class="ex-nm">' + card.name +
           (card.kind === 'real' ? '<span class="ex-badge real">已接入</span>' : card.badge ? '<span class="ex-badge">' + card.badge + '</span>' : '') +
         '</span>' +
@@ -3436,7 +3482,7 @@ function skillCard(skill, options) {
   card.className = 'sk-card'
   card.innerHTML =
     '<div class="sk-top">' +
-      '<span class="sk-ico" style="' + softTile(skill.hue) + '">' + iconMark(pickIcon('skill', skill.name, 'tool'), 17) + '</span>' +
+      '<span class="sk-ico" style="background:' + skillTone(skill.name) + '">' + iconMark(pickIcon('skill', skill.name, 'tool'), 18) + '</span>' +
       '<span class="sk-nm">' + skill.name + '</span>' +
     '</div>' +
     '<div class="sk-desc">' + (skill.desc || '') + '</div>' +
@@ -3494,11 +3540,11 @@ function paintSkills() {
 
 /* ── 办公能力：技能卡 + 本地处理面板 ─────────────────── */
 const OFFICE_ITEMS = [
-  { key: 'pptx', name: 'PPTX 阅读器', desc: '逐页提取标题与正文', icon: 'presentation', hue: 14, tools: [['office.read_pptx', '读取 PPTX']] },
-  { key: 'docx', name: 'Word 文档处理', desc: '读取段落与表格，或生成新文档', icon: 'doc', hue: 214, tools: [['office.read_docx', '读取 DOCX'], ['office.write_docx', '生成 DOCX']] },
-  { key: 'formula', name: 'Word 公式处理', desc: 'OMML → LaTeX，显示公式编号', icon: 'font', hue: 232, tools: [['office.docx_formulas', '公式处理']] },
-  { key: 'xlsx', name: 'Excel 表格', desc: '读取工作表，或按行生成表格', icon: 'grid', hue: 148, tools: [['office.read_xlsx', '读取 XLSX'], ['office.write_xlsx', '生成 XLSX']] },
-  { key: 'pdf', name: 'PDF 文本提取', desc: '抽取可复制文本', icon: 'book', hue: 348, tools: [['office.read_pdf', '读取 PDF']] },
+  { key: 'pptx', name: 'PPTX 阅读器', desc: '逐页提取标题与正文', icon: 'presentation', color: '#D9542E', tools: [['office.read_pptx', '读取 PPTX']] },
+  { key: 'docx', name: 'Word 文档处理', desc: '读取段落与表格，或生成新文档', icon: 'doc', color: '#2D6AE3', tools: [['office.read_docx', '读取 DOCX'], ['office.write_docx', '生成 DOCX']] },
+  { key: 'formula', name: 'Word 公式处理', desc: 'OMML → LaTeX，显示公式编号', icon: 'font', color: '#5B4BE0', tools: [['office.docx_formulas', '公式处理']] },
+  { key: 'xlsx', name: 'Excel 表格', desc: '读取工作表，或按行生成表格', icon: 'grid', color: '#12805C', tools: [['office.read_xlsx', '读取 XLSX'], ['office.write_xlsx', '生成 XLSX']] },
+  { key: 'pdf', name: 'PDF 文本提取', desc: '抽取可复制文本', icon: 'book', color: '#C9435B', tools: [['office.read_pdf', '读取 PDF']] },
 ]
 let officeSrc = 'upload'
 
@@ -3510,7 +3556,7 @@ function renderOfficeCards() {
     const card = document.createElement('button')
     card.className = 'sk-card'
     card.innerHTML =
-      '<div class="sk-top"><span class="sk-ico" style="' + softTile(item.hue) + '">' + iconMark(item.icon, 17) + '</span>' +
+      '<div class="sk-top"><span class="sk-ico" style="background:' + item.color + '">' + iconMark(item.icon, 18) + '</span>' +
       '<span class="sk-nm">' + item.name + '<span class="ex-badge real">已接入</span></span></div>' +
       '<div class="sk-desc">' + item.desc + '</div>' +
       '<div class="sk-foot"><span>' + iconMark('bolt', 12) + '本地处理</span><span>' + iconMark('check', 12) + '无需联网</span></div>'
@@ -3627,6 +3673,61 @@ $('opSrcPath').onclick = () => {
 $('opRun').onclick = runOffice
 document.addEventListener('keydown', (event) => { if (event.key === 'Escape') $('officePanel').hidden = true })
 
+/* ── 连接器品牌标识 ────────────────────────────────────
+ * 有官方矢量 logo 的走真 logo（brand-logos.js），没有的用品牌色 app icon +
+ * 中文简称，避免又回到「首字 + 渐变」的随机色块。
+ */
+const BRAND_KEYS = [
+  [/企业微信/, 'wecom'],
+  [/腾讯会议/, 'tencentmeeting'],
+  [/\bTAPD\b/i, 'tapd'],
+  [/\bCNB\b/i, 'cnb'],
+  [/GitHub/i, 'github'],
+  [/GitLab/i, 'gitlab'],
+  [/Notion/i, 'notion'],
+  [/Figma/i, 'figma'],
+  [/Slack/i, 'slack'],
+  [/钉钉/, 'dingtalk'],
+  [/WPS|金山文档/, 'wps'],
+  [/微云/, 'weiyun'],
+  [/天眼查/, 'tianyancha'],
+  [/百度网盘/, 'baidunetdisk'],
+  [/微信/, 'wechat'],
+  [/^QQ$/, 'qq'],
+]
+
+const MONO_COLORS = ['#C0392B', '#B4641E', '#0F7B6C', '#2D6AE3', '#5B4BE0', '#B0487A', '#43536B', '#0E7490']
+
+function brandKey(name) {
+  for (const [re, key] of BRAND_KEYS) if (re.test(String(name || ''))) return key
+  return null
+}
+
+function shortBrand(name) {
+  const text = String(name || '').replace(/^(connector-|plugin-)/i, '').replace(/[（(].*?[)）]/g, '').trim()
+  const cn = text.match(/[\u4e00-\u9fa5]{2}/)
+  if (cn) return cn[0]
+  const en = text.match(/[A-Za-z][A-Za-z0-9]{0,2}/)
+  return en ? en[0].toUpperCase() : text.slice(0, 2)
+}
+
+function monoColor(name, hue) {
+  if (typeof hue === 'number') return 'hsl(' + (((hue % 360) + 360) % 360) + ' 52% 40%)'
+  let hash = 0
+  for (const ch of String(name || '')) hash = (hash * 31 + ch.codePointAt(0)) % MONO_COLORS.length
+  return MONO_COLORS[hash]
+}
+
+function brandTile(name, hue) {
+  const key = brandKey(name)
+  const brand = key && typeof window !== 'undefined' && window.DB_BRANDS ? window.DB_BRANDS[key] : null
+  if (brand) {
+    return '<span class="cn-ico" style="color:' + brand.color + '" title="' + (brand.label || '') + '">' +
+      '<svg viewBox="' + brand.v + '" aria-hidden="true">' + brand.body + '</svg></span>'
+  }
+  return '<span class="cn-ico cn-ico-mono" style="background:' + monoColor(name, hue) + '">' + shortBrand(name) + '</span>'
+}
+
 async function paintConnectors() {
   const grid = $('cnGrid')
   grid.innerHTML = ''
@@ -3656,7 +3757,7 @@ async function paintConnectors() {
     const card = document.createElement('div')
     card.className = 'cn-card'
     card.innerHTML =
-      '<span class="cn-ico" style="' + softTile(item.hue) + '">' + iconMark(pickIcon('connector', item.name, 'plug'), 18) + '</span>' +
+      brandTile(item.name, item.hue) +
       '<span class="cn-main">' +
         '<span class="cn-nm">' + item.name + (item.connected ? '<span class="ex-badge real">已连接</span>' : '') + '</span>' +
         '<span class="cn-desc">' + item.desc + '</span>' +
