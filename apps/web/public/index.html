@@ -37,6 +37,24 @@
     --d1:120ms; --d2:180ms; --d3:240ms; --ease:cubic-bezier(.2,.8,.2,1);
   }
 
+  /* ── 深色主题：同一套语义变量换值，组件不需要各写一份 ───────── */
+  html[data-theme="dark"]{
+    --bg:#0d1016; --surface:#141821; --surface-2:#191e28; --surface-3:#202734;
+    --rail:#10141c; --rail-active:#25314a;
+    --line:#242b38; --line-strong:#333c4d;
+    --ink-strong:#eef2fb;
+    --fg:#e4e8f0; --fg-muted:#a5aebb; --fg-subtle:#7c8595;
+    --accent:#7098ff; --accent-hover:#8aacff; --on-accent:#0b1220;
+    --accent-soft:#1b2440; --accent-line:#2b3a5f;
+    --violet:#a78bfa;
+    --composer-border:linear-gradient(118deg,#3b2b5e 0%,#4a2d48 45%,#25324f 100%);
+    --ok:#3fbf90; --ok-soft:#122b21; --err:#ff8b7f; --err-line:#4a2a26; --err-soft:#2a1815;
+    --e1:0 1px 2px rgba(0,0,0,.4);
+    --e2:0 4px 16px rgba(0,0,0,.45);
+    --e3:0 20px 48px rgba(0,0,0,.55);
+    --ring:0 0 0 3px rgba(112,152,255,.28);
+  }
+
   *{box-sizing:border-box}
   [hidden]{display:none !important}
   html,body{height:100%}
@@ -1719,7 +1737,6 @@
   .ex-nm{font-size:13px;font-weight:600;color:var(--fg);display:flex;align-items:center;gap:6px;line-height:1.3}
   .ex-badge{font-size:11px;padding:2px 6px;border-radius:var(--r-sm);background:var(--accent-soft);color:var(--accent);flex:none;font-weight:500}
   .ex-badge.real{background:var(--ok-soft);color:var(--ok)}
-  .soon{font-size:10px;padding:1px 5px;border-radius:var(--r-sm);background:var(--line);color:var(--fg-subtle);border:1px solid var(--line);margin-left:auto;white-space:nowrap;flex:none;line-height:1.6;letter-spacing:0;max-width:84px;overflow:hidden;text-overflow:ellipsis}
   .hello{font-size:13px;color:var(--fg-subtle);margin:-6px 0 14px}
   .flash{box-shadow:0 0 0 2px rgba(31,79,255,.35);border-radius:var(--r-lg);transition:box-shadow var(--d2) var(--ease)}
   .sp-select:disabled,.sp-toggle:disabled{opacity:.5;cursor:default}
@@ -1881,6 +1898,11 @@
     font-size:12px;color:var(--fg-muted);background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-sm);
     padding:2px 7px;white-space:nowrap;
   }
+  .sp-kbd-edit{cursor:pointer;transition:border-color var(--d1) var(--ease),color var(--d1) var(--ease)}
+  .sp-kbd-edit:hover{border-color:var(--accent-line);color:var(--accent)}
+  .sp-kbd-edit.capturing{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+  .sp-hint{font-size:12px;line-height:1.6;color:var(--fg-subtle);margin-top:12px}
+  .sp-actions{display:flex;gap:8px;margin-top:14px}
   .sp-input{
     height:30px;border:1px solid var(--line-strong);border-radius:var(--r-md);padding:0 10px;font-size:13px;
     min-width:168px;outline:0;color:var(--fg);background:var(--surface);
@@ -2094,6 +2116,169 @@
   ::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:var(--r-pill);border:3px solid transparent;background-clip:content-box}
   ::-webkit-scrollbar-thumb:hover{background:var(--fg-subtle);border:3px solid transparent;background-clip:content-box}
   *{scrollbar-width:thin;scrollbar-color:var(--line-strong) transparent}
+
+
+  /* ── 窄屏（≤760px）：侧栏改抽屉，其余按单列收 ─────────────── */
+  .only-mobile{display:none !important}
+  .side-scrim{
+    position:fixed;inset:0;z-index:77;background:rgba(10,14,22,.42);
+    backdrop-filter:blur(2px);border:0;padding:0;margin:0;
+  }
+  .side-scrim[hidden]{display:none}
+
+  @media (max-width:760px){
+    .app{grid-template-columns:56px minmax(0,1fr) !important}
+    .rail{padding:10px 0 8px;gap:2px}
+    .rail .logo{width:30px;height:30px;border-radius:9px;font-size:14px;margin-bottom:10px}
+    .rail .rbtn{width:46px;padding:4px 0 3px}
+    .rail .rbtn .ric{width:32px;height:29px;border-radius:9px}
+    .rail .rbtn > span{font-size:9.5px}
+    .rail .me{width:46px}
+    .rail .me-tag{font-size:9.5px}
+    .only-mobile{display:flex !important}
+
+    /* 侧栏变抽屉 */
+    .app > .side{
+      display:flex;flex-direction:column;
+      position:fixed;top:0;bottom:0;left:56px;width:min(84vw,320px);z-index:78;
+      transform:translateX(-110%);transition:transform .22s var(--ease);
+      box-shadow:var(--e3);pointer-events:none;
+    }
+    body.side-open .app > .side{transform:none;pointer-events:auto}
+    body.side-open .side-scrim{display:block}
+
+    /* 首页与对话：小一号的留白 */
+    .home{padding:0 16px 24px}
+    .home .hero{margin-top:8vh}
+    .home h1{font-size:24px}
+    .prompt{padding:12px}
+    .thread{padding:16px 16px 8px}
+    .composer{padding:8px 16px 16px}
+    .chips{gap:6px}
+    .chip{padding:0 10px;height:32px;font-size:12.5px}
+    .cards{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:12px}
+    .tpl-grid, .th-grid, .ex-grid, .sk-grid, .cn-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important}
+    .tpl-inner, .th-inner{padding:16px}
+
+    /* 抽屉与查看器占满宽度 */
+    .sp{inset:0;border-radius:0;width:100%;max-width:none}
+    .sp-nav{display:none}
+    .docview .dv-panel{display:none}
+    .docview .dv-body{grid-template-columns:minmax(0,1fr)}
+    .tv-main{grid-template-columns:minmax(0,1fr)}
+    .tv-side{display:none}
+    .acct{left:64px !important;right:12px;width:auto;max-width:320px}
+  }
+
+  /* ── 深色主题：页面级覆盖（原始设计里少数写死的浅色） ───────── */
+  html[data-theme="dark"] body{background:var(--bg);color:var(--fg)}
+  html[data-theme="dark"] .create{background:#1d2740;color:#b9c8e6;border-color:transparent}
+  html[data-theme="dark"] .create:hover{background:#243050}
+  html[data-theme="dark"] .create svg{color:#c9d6ef}
+  html[data-theme="dark"] .row:hover,
+  html[data-theme="dark"] .sess:hover,
+  html[data-theme="dark"] .model:hover,
+  html[data-theme="dark"] .chip:hover,
+  html[data-theme="dark"] .icobtn:hover{background:var(--surface-3)}
+  html[data-theme="dark"] .row svg,
+  html[data-theme="dark"] .chip svg{color:#98a4b6}
+  html[data-theme="dark"] .pill{background:#1d2740;border-color:#2b3a5f;color:#c3d2ec}
+  html[data-theme="dark"] .pill:hover{background:#243050;border-color:#37507d}
+  html[data-theme="dark"] .chip{background:#1b2436;border-color:#28344c;color:#c9d6ef}
+  html[data-theme="dark"] .icobtn{background:var(--surface-2);border-color:var(--line-strong);color:#98a4b6}
+  html[data-theme="dark"] .send:disabled{background:#2a313d;color:#7a828f}
+  html[data-theme="dark"] .prompt textarea::placeholder{color:#6f7887}
+  html[data-theme="dark"] .cover{background:#1b2130}
+  html[data-theme="dark"] .folders{color:#5d6779}
+  html[data-theme="dark"] .folders p{color:#7c8595}
+
+  /* 模版库 */
+  html[data-theme="dark"] .tplpage{background:var(--bg)}
+  html[data-theme="dark"] .tplside{background:var(--surface-2);border-right-color:var(--line)}
+  html[data-theme="dark"] .ts-label{color:#8d96a6}
+  html[data-theme="dark"] .ts-label.navy,
+  html[data-theme="dark"] .ts-ghead,
+  html[data-theme="dark"] .tpl-h1{color:#e6ecf8}
+  html[data-theme="dark"] .ts-ghead:hover{color:#fff}
+  html[data-theme="dark"] .ts-row{color:#c3cad7}
+  html[data-theme="dark"] .ts-row svg,
+  html[data-theme="dark"] .ts-ico{color:#8d96a6}
+  html[data-theme="dark"] .ts-row:hover{background:#212a3a}
+  html[data-theme="dark"] .ts-row.on{background:#22304a;color:#dbe6ff}
+  html[data-theme="dark"] .ts-row.on svg{color:#dbe6ff}
+  html[data-theme="dark"] .ts-sep{background:var(--line)}
+  html[data-theme="dark"] .ts-opt{color:#c3cad7}
+  html[data-theme="dark"] .ts-dot,
+  html[data-theme="dark"] .ts-box{border-color:#3a4557;background:#141821}
+  html[data-theme="dark"] .tpl-sub,
+  html[data-theme="dark"] .tpl-sort{color:#98a4b6}
+  html[data-theme="dark"] .tpl-search{background:var(--surface-2);border-color:var(--line-strong);color:#98a4b6}
+  html[data-theme="dark"] .tpl-search input{color:#e4e8f0}
+  html[data-theme="dark"] .tpl-search input::placeholder{color:#6f7887}
+  html[data-theme="dark"] .tpl-sort:hover{background:var(--surface-2);color:#e4e8f0}
+  html[data-theme="dark"] .tpl-title{color:#c3cad7}
+  html[data-theme="dark"] .tpl span{color:#98a4b6}
+  html[data-theme="dark"] .tpl-card .cover{box-shadow:0 1px 3px rgba(0,0,0,.5)}
+
+  /* 主题页 */
+  html[data-theme="dark"] .app.app-custom .cus-side{background:var(--surface-2);border-right-color:var(--line)}
+  html[data-theme="dark"] .cus-side .cus-t,
+  html[data-theme="dark"] .cus-row{color:#dbe3f0}
+  html[data-theme="dark"] .cus-row svg{color:#95a1b3}
+  html[data-theme="dark"] .cus-row:hover{background:#212a3a}
+  html[data-theme="dark"] .th-h1,
+  html[data-theme="dark"] .th-h1 svg{color:#e6ecf8}
+  html[data-theme="dark"] .th-sub{color:#98a4b6}
+  html[data-theme="dark"] .th-search{background:var(--surface-2);border-color:var(--line-strong);color:#98a4b6}
+  html[data-theme="dark"] .th-search input{color:#e4e8f0}
+  html[data-theme="dark"] .th-search input::placeholder{color:#6f7887}
+  html[data-theme="dark"] .th-card{color:#c3cad7}
+  html[data-theme="dark"] .th-card:hover{background:var(--surface-2)}
+  html[data-theme="dark"] .th-sort,
+  html[data-theme="dark"] .th-count{color:#8d96a6}
+
+  /* 专家 / 技能 / 连接器 */
+  html[data-theme="dark"] .ex-h1,
+  html[data-theme="dark"] .ex-sub{color:#e4e8f0}
+  html[data-theme="dark"] .ex-card,
+  html[data-theme="dark"] .sk-card,
+  html[data-theme="dark"] .cn-card{background:var(--surface);border-color:var(--line)}
+  html[data-theme="dark"] .ex-card:hover,
+  html[data-theme="dark"] .sk-card:hover,
+  html[data-theme="dark"] .cn-card:hover{border-color:var(--line-strong);background:var(--surface-2)}
+  html[data-theme="dark"] .ex-seg{background:var(--surface-2);border-color:var(--line)}
+  html[data-theme="dark"] .ex-chip{background:var(--surface-2);border-color:var(--line);color:#c3cad7}
+  html[data-theme="dark"] .ex-chip.on{background:var(--accent-soft);color:#cfdcff;border-color:var(--accent-line)}
+
+  /* 设置抽屉与弹层（token 之外还有几处写死的浅灰） */
+  html[data-theme="dark"] .sp{background:var(--surface);border-color:var(--line)}
+  html[data-theme="dark"] .sp-nav{background:var(--surface-2);border-right-color:var(--line)}
+  html[data-theme="dark"] .sp-soon{background:var(--surface-2);border-color:var(--line-strong);color:#98a4b6}
+  html[data-theme="dark"] .moremenu,
+  html[data-theme="dark"] .acct,
+  html[data-theme="dark"] .eff,
+  html[data-theme="dark"] .plussub{background:var(--surface);border-color:var(--line)}
+  html[data-theme="dark"] .mm-item:hover{background:var(--surface-2)}
+  html[data-theme="dark"] .acct-plan{background:var(--accent-soft);border-color:var(--accent-line)}
+  html[data-theme="dark"] .acct-tag{background:var(--surface);color:#9fbdff}
+  html[data-theme="dark"] .acct-grid{background:var(--surface-2)}
+
+  html[data-theme="dark"] .thpage{background:var(--bg)}
+  html[data-theme="dark"] .th-card{background:var(--surface);border-color:var(--line)}
+  html[data-theme="dark"] .th-foot{background:var(--surface)}
+  html[data-theme="dark"] .th-name{color:#d7deea}
+  html[data-theme="dark"] .th-page,
+  html[data-theme="dark"] .th-inner{background:var(--bg)}
+  html[data-theme="dark"] .rail .logo{background:#e8eefc;color:#0b1220}
+  html[data-theme="dark"] .rail .logo i{background:var(--accent)}
+  html[data-theme="dark"] .side-search{background:var(--surface-2);border-color:var(--line)}
+
+  /* 文档查看器的画布是“纸”，深浅都保持浅色，但外壳跟主题走 */
+  html[data-theme="dark"] .docview{background:#0b0d12}
+  html[data-theme="dark"] .docview .dv-top{background:var(--surface);border-bottom-color:var(--line)}
+  html[data-theme="dark"] .docview .dv-sharebar{background:var(--surface-2);border-bottom-color:var(--line)}
+  html[data-theme="dark"] .docview .dv-panel{background:var(--surface);border-right-color:var(--line)}
+
   @media (prefers-reduced-motion:reduce){
     *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;
       transition-duration:.001ms !important;scroll-behavior:auto !important}
@@ -2116,7 +2301,6 @@
   }
   @media (max-width:768px){
     .app{grid-template-columns:72px minmax(0,1fr)}
-    .side{display:none}
     .tpl-grid{grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:12px}
     .ex-grid,.sk-row,.sk-grid,.cn-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
     .topbar,.chatbar,.thread,.composer,.activity,.home{padding-left:16px;padding-right:16px}
@@ -2161,14 +2345,21 @@
 
     <div class="grow"></div>
 
+    <button class="rbtn only-mobile" id="sideToggle" title="会话列表" aria-controls="sidePanel" aria-expanded="false">
+      <i class="ric"><svg class="ic" width="19" height="19" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-list"></use></svg></i>
+      <span>会话</span>
+    </button>
+
     <button class="me" id="meBtn" title="会员中心" aria-haspopup="dialog" aria-expanded="false" aria-label="会员中心">
       <span class="me-av">星W</span>
       <span class="me-tag">会员</span>
     </button>
   </nav>
 
+  <div class="side-scrim" id="sideScrim" hidden></div>
+
   <!-- 工作区侧栏 -->
-  <aside class="side">
+  <aside class="side" id="sidePanel">
     <button class="create" id="newBlank">
       <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"></use></svg>
       创建
@@ -2718,46 +2909,10 @@
         <div class="sp-card">
           <div class="sp-row">
             <div class="sp-main">
-              <div class="sp-title">允许锁屏运行</div>
-              <div class="sp-desc">选择锁屏后的运行方式，保障远程控制与后台 Agent 任务持续执行。</div>
+              <div class="sp-title">运行时防止休眠</div>
+              <div class="sp-desc">任务运行期间向浏览器申请屏幕唤醒锁，任务结束后自动释放；浏览器不支持时会自动跳过。</div>
             </div>
-            <div class="sp-ctl">
-              <select class="sp-select" id="setLockRun">
-                <option value="off">关闭</option><option value="allow">允许</option><option value="background">仅后台任务</option>
-              </select>
-            </div>
-          </div>
-          <div class="sp-row">
-            <div class="sp-main">
-              <div class="sp-title">运行时防止系统休眠</div>
-              <div class="sp-desc">在 DesignBuddy 运行任务时，让电脑保持唤醒状态。</div>
-            </div>
-            <div class="sp-ctl"><button class="sp-toggle on" data-on="true" data-key="sleep"><span></span></button></div>
-          </div>
-          <div class="sp-row">
-            <div class="sp-main">
-              <div class="sp-title">开机自动启动</div>
-              <div class="sp-desc">开启后 DesignBuddy 会在你登录电脑后自动启动。</div>
-            </div>
-            <div class="sp-ctl"><button class="sp-toggle" data-on="false" data-key="autostart"><span></span></button></div>
-          </div>
-          <div class="sp-row">
-            <div class="sp-main">
-              <div class="sp-title">网络代理</div>
-              <div class="sp-desc">网络异常时可切换连接方式，修改后立即生效</div>
-            </div>
-            <div class="sp-ctl">
-              <select class="sp-select" id="setProxy">
-                <option value="direct">直接连接</option><option value="system">系统代理</option><option value="custom">自定义代理</option>
-              </select>
-            </div>
-          </div>
-          <div class="sp-row">
-            <div class="sp-main">
-              <div class="sp-title">自动安装可信技能</div>
-              <div class="sp-desc">自动安装来自可信来源的技能，扩展 Agent 能力。</div>
-            </div>
-            <div class="sp-ctl"><button class="sp-toggle" data-on="false" data-key="skills"><span></span></button></div>
+            <div class="sp-ctl"><button class="sp-toggle on" data-on="true" data-key="wake"><span></span></button></div>
           </div>
         </div>
       </div>
@@ -3558,7 +3713,24 @@ function savePrefs() {
 
 const FONT_STEPS = [12, 14, 16]
 
+/* ── 界面主题：跟随系统 / 浅色 / 深色 ───────────────── */
+const darkQuery = typeof matchMedia === 'function' ? matchMedia('(prefers-color-scheme: dark)') : null
+function resolvedThemeMode() {
+  const mode = state.prefs.themeMode || 'auto'
+  if (mode === 'dark' || mode === 'light') return mode
+  return darkQuery && darkQuery.matches ? 'dark' : 'light'
+}
+function applyThemeMode() {
+  document.documentElement.dataset.theme = resolvedThemeMode()
+}
+if (darkQuery) {
+  const onChange = () => { if ((state.prefs.themeMode || 'auto') === 'auto') applyThemeMode() }
+  if (darkQuery.addEventListener) darkQuery.addEventListener('change', onChange)
+  else if (darkQuery.addListener) darkQuery.addListener(onChange)
+}
+
 function applyPrefs() {
+  applyThemeMode()
   document.documentElement.style.fontSize = state.prefs.fontSize + 'px'
   document.body.classList.toggle('compact', state.prefs.density === 'compact')
   document.body.classList.toggle('mono', !!state.prefs.mono)
@@ -3741,6 +3913,28 @@ function paintThread() {
   if (state.prefs.autoScroll !== false) thread.scrollTop = thread.scrollHeight
 }
 
+/* 屏幕唤醒锁：任务运行时申请，结束后释放（浏览器不支持则静默跳过） */
+let wakeLock = null
+async function syncWakeLock() {
+  if (typeof navigator === 'undefined' || !navigator.wakeLock) return
+  const want = state.busy && state.prefs.toggles.wake !== false
+  try {
+    if (want && (!wakeLock || wakeLock.released)) {
+      wakeLock = await navigator.wakeLock.request('screen')
+      wakeLock.addEventListener('release', () => { wakeLock = null })
+    } else if (!want && wakeLock) {
+      const held = wakeLock
+      wakeLock = null
+      await held.release()
+    }
+  } catch {
+    wakeLock = null
+  }
+}
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && state.busy) syncWakeLock()
+})
+
 function paintActivity() {
   const bar = $('activity')
   bar.innerHTML = ''
@@ -3812,6 +4006,7 @@ async function send(prompt, kind) {
   state.busy = true
   const tag = kind || state.mode
   paintActivity()
+  syncWakeLock()
   try {
     if (!state.sessionId) {
       const session = await rpc('session.create', { title: tag ? tag + ' · ' + text.slice(0, 16) : text.slice(0, 20) })
@@ -3835,6 +4030,7 @@ async function send(prompt, kind) {
   } finally {
     state.busy = false
     paintActivity()
+    syncWakeLock()
     refreshSessions()
   }
 }
@@ -3893,22 +4089,6 @@ function toast(message, kind) {
   node.textContent = t(message)
   $('toast').appendChild(node)
   setTimeout(() => node.remove(), 4600)
-}
-
-function markSoon(el, label) {
-  if (!el || el.dataset.soon) return
-  el.dataset.soon = '1'
-  el.insertAdjacentHTML('beforeend', '<span class="soon">' + (label || '未接入') + '</span>')
-  el.style.cursor = 'default'
-  el.onclick = (event) => event.preventDefault()
-}
-
-function markDesktop(el) {
-  if (!el || el.dataset.desktop) return
-  el.dataset.desktop = '1'
-  el.disabled = true
-  const host = el.closest('.sp-ctl') || el.parentElement
-  if (host) host.insertAdjacentHTML('beforeend', '<span class="soon">仅桌面版</span>')
 }
 
 function syncNickname() {
@@ -3971,8 +4151,8 @@ for (const id of ['homePrompt', 'chatPrompt', 'modePrompt']) {
 }
 $('homeSend').onclick = sendFromHome
 $('chatSend').onclick = sendFromChat
-$('homePrompt').addEventListener('keydown', (e) => { if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') sendFromHome() })
-$('chatPrompt').addEventListener('keydown', (e) => { if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') sendFromChat() })
+$('homePrompt').addEventListener('keydown', (e) => { if (matchesKey('send', e)) sendFromHome() })
+$('chatPrompt').addEventListener('keydown', (e) => { if (matchesKey('send', e)) sendFromChat() })
 $('backHome').onclick = () => setView('home')
 $('openDrawer').onclick = () => openSettings('general')
 $('openPalette2').onclick = openPalette
@@ -4027,9 +4207,6 @@ $('setLanguage').addEventListener('change', () => {
   applyLanguage($('setLanguage').value)
   syncNickname()
 })
-markDesktop($('setLockRun'))
-markDesktop($('setProxy'))
-document.querySelectorAll('.sp-toggle[data-key="sleep"], .sp-toggle[data-key="autostart"], .sp-toggle[data-key="skills"]').forEach(markDesktop)
 document.addEventListener('click', (event) => {
   const link = event.target.closest && event.target.closest('a[href]')
   if (!link) return
@@ -4043,7 +4220,7 @@ document.addEventListener('click', (event) => {
 $('imagePickHome').onclick = (event) => { event.stopPropagation(); openImageMenu($('imagePickHome')) }
 $('imagePickMode').onclick = (event) => { event.stopPropagation(); openImageMenu($('imagePickMode')) }
 $('modeSend').onclick = sendFromMode
-$('modePrompt').addEventListener('keydown', (e) => { if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') sendFromMode() })
+$('modePrompt').addEventListener('keydown', (e) => { if (matchesKey('send', e)) sendFromMode() })
 $('modeBack').onclick = exitMode
 $('modeClear').onclick = exitMode
 $('attachMode').onclick = (event) => { event.stopPropagation(); openPlusMenu($('attachMode')) }
@@ -4058,7 +4235,51 @@ document.querySelectorAll('.chip').forEach((chip) => {
 })
 /* 未接入入口：统一徽标或隐藏，不再点击后弹提示 */
 
+/* ── 快捷键：可自定义，存 prefs.keys ───────────────── */
+const DEFAULT_KEYS = { palette: 'mod+k', send: 'mod+enter' }
+const KEY_ACTIONS = [
+  { id: 'palette', name: '打开命令面板', desc: '搜索会话、专家与工具' },
+  { id: 'send', name: '发送消息', desc: '在任一输入框中发送' },
+]
+const isMac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent || '')
+function keySpecOf(ev) {
+  const parts = []
+  if (ev.metaKey || ev.ctrlKey) parts.push('mod')
+  if (ev.altKey) parts.push('alt')
+  if (ev.shiftKey) parts.push('shift')
+  const key = String(ev.key || '').toLowerCase()
+  if (['control', 'meta', 'alt', 'shift'].includes(key)) return ''
+  parts.push(key === ' ' ? 'space' : key)
+  return parts.join('+')
+}
+function keyLabel(spec) {
+  const map = { mod: isMac ? '⌘' : 'Ctrl', alt: isMac ? '⌥' : 'Alt', shift: isMac ? '⇧' : 'Shift', enter: '↵', space: 'Space', escape: 'Esc' }
+  return String(spec || '').split('+').map((part) => map[part] || part.toUpperCase()).join(isMac ? '' : '+')
+}
+function keyOf(action) {
+  const custom = (state.prefs.keys || {})[action]
+  return typeof custom === 'string' && custom !== '' ? custom : DEFAULT_KEYS[action]
+}
+function matchesKey(action, ev) {
+  return keySpecOf(ev) === keyOf(action)
+}
+let keyCapture = null
+
 document.addEventListener('keydown', (e) => {
+  if (keyCapture) {
+    e.preventDefault()
+    e.stopPropagation()
+    if (e.key === 'Escape') { keyCapture = null; openSettings('shortcuts'); return }
+    const spec = keySpecOf(e)
+    if (spec === '' || spec === 'mod') return
+    state.prefs.keys = Object.assign({}, state.prefs.keys, { [keyCapture]: spec })
+    savePrefs()
+    keyCapture = null
+    openSettings('shortcuts')
+    toast('已保存快捷键：' + keyLabel(spec), 'ok')
+    return
+  }
+  if (matchesKey('palette', e)) { e.preventDefault(); openPalette() }
   if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); openPalette() }
   if (e.key === 'Escape') { closePalette(); closePlusMenu(); closeEffort(); closeImageMenu(); closeSettings(); closeMoreMenu() }
 })
@@ -4221,12 +4442,6 @@ function openSub(act, anchorBtn) {
     const label = document.createElement('span')
     label.className = 'smi-lb'
     label.textContent = item.label
-    if (item.soon) {
-      const tag = document.createElement('span')
-      tag.className = 'soon'
-      tag.textContent = '未接入'
-      label.appendChild(tag)
-    }
     tx.appendChild(label)
     if (item.desc) {
       const desc = document.createElement('small')
@@ -4235,8 +4450,7 @@ function openSub(act, anchorBtn) {
       tx.appendChild(desc)
     }
     btn.appendChild(tx)
-    if (item.soon) { btn.disabled = true; btn.style.cursor = 'default' }
-    btn.onclick = (event) => { event.stopPropagation(); if (item.soon) return; item.run() }
+    btn.onclick = (event) => { event.stopPropagation(); item.run() }
     plusSub.appendChild(btn)
   }
   plusSub.hidden = false
@@ -4973,6 +5187,19 @@ function closeAcct() {
   $('acctPop').hidden = true
   $('meBtn').setAttribute('aria-expanded', 'false')
 }
+/* 窄屏抽屉：会话列表 */
+function setSideOpen(open) {
+  document.body.classList.toggle('side-open', open)
+  $('sideScrim').hidden = !open
+  $('sideToggle').setAttribute('aria-expanded', String(open))
+}
+$('sideToggle').onclick = () => setSideOpen(!document.body.classList.contains('side-open'))
+$('sideScrim').onclick = () => setSideOpen(false)
+document.querySelectorAll('#sidePanel .row, #sidePanel .sess, #sidePanel .create').forEach((el) => {
+  el.addEventListener('click', () => setSideOpen(false))
+})
+window.addEventListener('resize', () => { if (window.innerWidth > 760) setSideOpen(false) })
+
 $('meBtn').onclick = () => ($('acctPop').hidden ? openAcct() : closeAcct())
 document.querySelectorAll('#acctPop .acct-list button').forEach((item) => {
   item.onclick = () => {
@@ -5190,13 +5417,7 @@ async function openPanel(id) {
   head.textContent = meta ? meta.name : id
   box.appendChild(head)
   const builder = PANEL_BUILDERS[id]
-  if (!builder) {
-    const soon = document.createElement('div')
-    soon.className = 'sp-soon'
-    soon.textContent = '该设置项尚未接入。'
-    box.appendChild(soon)
-    return
-  }
+  if (!builder) return
   try {
     await builder(box)
   } catch (error) {
@@ -5253,6 +5474,12 @@ function buildAppearancePanel(box) {
 
   const card = spCard()
   card.append(
+    spRow('界面主题', '跟随系统时，系统切换深色会自动跟随', spSelect(['跟随系统', '浅色', '深色'],
+      state.prefs.themeMode === 'dark' ? '深色' : state.prefs.themeMode === 'light' ? '浅色' : '跟随系统',
+      (value) => {
+        state.prefs.themeMode = value === '深色' ? 'dark' : value === '浅色' ? 'light' : 'auto'
+        applyThemeMode(); savePrefs()
+      })),
     spRow('字体大小', '即时生效，保存在本地', slider),
     spRow('界面密度', null, spSelect(['舒适', '紧凑'], state.prefs.density === 'compact' ? '紧凑' : '舒适', (value) => {
       state.prefs.density = value === '紧凑' ? 'compact' : 'comfortable'
@@ -5267,18 +5494,39 @@ function buildAppearancePanel(box) {
 
 function buildShortcutsPanel(box) {
   const card = spCard()
-  card.append(
-    spRow('打开命令面板', '搜索会话、专家与工具', spKbd('⌘K / Ctrl+K')),
-    spRow('发送消息', '在任一输入框中发送', spKbd('⌘↵ / Ctrl+Enter')),
-    spRow('关闭弹层', '菜单、抽屉与设置', spKbd('Esc')),
-  )
+  for (const action of KEY_ACTIONS) {
+    const button = document.createElement('button')
+    button.className = 'sp-kbd sp-kbd-edit'
+    button.dataset.action = action.id
+    button.textContent = keyLabel(keyOf(action.id))
+    button.onclick = () => {
+      keyCapture = action.id
+      button.textContent = '按下组合键…'
+      button.classList.add('capturing')
+    }
+    card.append(spRow(action.name, action.desc, button))
+  }
+  card.append(spRow('关闭弹层', '菜单、抽屉与设置', spKbd('Esc')))
   box.append(spSection('快捷键'), card)
-  const note = document.createElement('div')
-  note.className = 'sp-soon'
-  note.textContent = '快捷键当前固定，暂不支持自定义。'
-  box.append(note)
-}
 
+  const note = document.createElement('div')
+  note.className = 'sp-hint'
+  note.textContent = '点右侧按键即可重新录制（需带 Ctrl / ⌘）；录制中按 Esc 取消。快捷键保存在本机。'
+  box.append(note)
+
+  if (Object.keys(state.prefs.keys || {}).length > 0) {
+    const reset = spButton('恢复默认', () => {
+      state.prefs.keys = {}
+      savePrefs()
+      openSettings('shortcuts')
+      toast('快捷键已恢复默认', 'ok')
+    })
+    const wrap = document.createElement('div')
+    wrap.className = 'sp-actions'
+    wrap.append(reset)
+    box.append(wrap)
+  }
+}
 function buildPersonalPanel(box) {
   const nickname = document.createElement('input')
   nickname.className = 'sp-input'
@@ -5656,13 +5904,11 @@ function renderEffort() {
     btn.innerHTML =
       '<span class="eff-ico">' + effortIcon(item.color) + '</span>' +
       '<span class="eff-body">' +
-        '<span class="eff-name">' + item.name + (item.soon ? '<span class="soon">未接入</span>' : '') + '</span>' +
+        '<span class="eff-name">' + item.name + '</span>' +
         '<span class="eff-desc">' + item.desc + '</span>' +
       '</span>'
-    btn.disabled = !!item.soon
     btn.onclick = (event) => {
       event.stopPropagation()
-      if (item.soon) return
       state.effort = item.id
       document.querySelectorAll('.mlabel').forEach((label) => { label.textContent = item.name })
       renderEffort()

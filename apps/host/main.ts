@@ -12,6 +12,7 @@
  */
 
 import { createInterface } from 'node:readline'
+import { join } from 'node:path'
 
 import { App } from '../../src/boot/app.ts'
 import { defaultModules, desktopProfile } from '../../src/boot/profiles.ts'
@@ -20,6 +21,9 @@ import { HostServer } from '../../src/sdk/host.ts'
 import type { Transport } from '../../src/sdk/protocol.ts'
 
 const logger = new Logger(process.env.DSH_DEBUG ? 'debug' : 'warn')
+
+// 会话日志默认落在 .designbuddy/sessions，重启后历史仍在；可用环境变量改到别处。
+process.env.DB_SESSION_DIR ??= join(process.cwd(), '.designbuddy', 'sessions')
 const app = await App.create({ profile: desktopProfile, modules: defaultModules, logger })
 
 const transport: Transport = {

@@ -36,9 +36,28 @@ export interface SessionState {
 
 export type SessionSubscriber = (event: SessionEvent) => void
 
+/**
+ * Durable sink for session facts. The service only knows this tiny seam, so a
+ * JSONL file, SQLite or a remote log can all sit behind it.
+ */
+export interface SessionPersister {
+  append(event: SessionEvent): void
+}
+
+export interface SessionServiceOptions {
+  persister?: SessionPersister
+}
+
 export class SessionService {
   #sessions = new Map<string, SessionState>()
   #subscribers = new Map<string, Set<SessionSubscriber>>()
+  #persister?: SessionPersister
+  /** 回放历史时不写盘、不追加「session」事件，避免二次落盘。 */
+  #replaying = false
+
+  constructor(options: SessionServiceOptions = {}) {
+    this.#persister = options.persister
+  }
 
   create(options: { id?: string; title?: string } = {}): SessionState {
     const id = options.id ?? nextId('sess')
@@ -51,6 +70,8 @@ export class SessionService {
       messages: [],
     }
     this.#sessions.set(id, state)
+    // 标题也要落盘，否则重启后会话列表全是「未命名会话」。
+    if (!this.#replaying) this.append(state.id, 'session', { title: state.title, createdAt: state.createdAt })
     return state
   }
 
@@ -84,6 +105,13 @@ export class SessionService {
       payload,
     }
     session.events.push(event)
+    if (this.#persister && !this.#replaying) {
+      try {
+        this.#persister.append(event)
+      } catch {
+        // 落盘失败不能拖垮对话：内存里的记录仍然有效。
+      }
+    }
     for (const subscriber of this.#subscribers.get(session.id) ?? []) {
       try {
         subscriber(event)
@@ -140,6 +168,15 @@ export class SessionService {
 
   /** Rebuild a session from a JSONL log. Corrupt lines are reported, not fatal. */
   loadJsonl(jsonl: string): { session: SessionState; skipped: number } {
+    this.#replaying = true
+    try {
+      return this.#loadJsonl(jsonl)
+    } finally {
+      this.#replaying = false
+    }
+  }
+
+  #loadJsonl(jsonl: string): { session: SessionState; skipped: number } {
     const events: SessionEvent[] = []
     let skipped = 0
     for (const line of jsonl.split('\n')) {
@@ -151,8 +188,11 @@ export class SessionService {
       }
     }
     const first = events[0]
-    const session = this.create({ id: first?.sessionId ?? nextId('sess') })
+    const titleEvent = events.find((event) => event.type === 'session')
+    const title = (titleEvent?.payload as { title?: string } | undefined)?.title
+    const session = this.create({ id: first?.sessionId ?? nextId('sess'), title })
     for (const event of events) {
+      if (event.type === 'session') continue
       session.events.push(event)
       if (event.type === 'message') {
         const payload = event.payload as Message

@@ -22,6 +22,7 @@ import * as corePrompt from '../plugins/core-prompt.ts'
 import * as coreAgent from '../plugins/core-agent.ts'
 import * as coreAgentLoop from '../plugins/core-agent-loop.ts'
 import * as mockLlm from '../plugins/mock-llm.ts'
+import * as openaiLlm from '../plugins/openai-llm.ts'
 import * as designMemory from '../plugins/design-memory.ts'
 import * as designExperts from '../plugins/design-experts.ts'
 import * as connectorFigma from '../plugins/connector-figma.ts'
@@ -44,10 +45,15 @@ export const coreBundle: Bundle = {
   ],
 }
 
-/** Model adapters. Swap `mock-llm` for `deepseek` and nothing else changes. */
+/**
+ * Model adapters. 配了 `DB_LLM_API_KEY` 就接真实模型（OpenAI 兼容协议，DeepSeek
+ * 默认），没配就退回 `mock-llm`——下游一行都不用改，这正是适配器层存在的意义。
+ */
 export const modelBundle: Bundle = {
   name: 'models',
-  rows: [{ id: 'models.mock', plugin: 'mock-llm' }],
+  rows: process.env.DB_LLM_API_KEY
+    ? [{ id: 'models.openai', plugin: 'openai-llm' }]
+    : [{ id: 'models.mock', plugin: 'mock-llm' }],
 }
 
 /** The DesignBuddy product layer. */
@@ -90,6 +96,7 @@ export const defaultModules: PluginModules = {
   'core-agent': coreAgent,
   'core-agent-loop': coreAgentLoop,
   'mock-llm': mockLlm,
+  'openai-llm': openaiLlm,
   'design-memory': designMemory,
   'design-experts': designExperts,
   'connector-figma': connectorFigma,
