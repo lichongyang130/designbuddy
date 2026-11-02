@@ -769,24 +769,6 @@
 
   .sp-soon{font-size:13px;color:var(--fg-subtle);border:1px dashed var(--line-strong);border-radius:var(--r-md);padding:18px;background:var(--surface-2)}
 
-  /* ── 更多：右侧悬浮菜单 ───────────────────── */
-  .moremenu{
-    position:fixed;z-index:74;width:234px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);
-    box-shadow:var(--e2);padding:7px;
-    display:flex;flex-direction:column;gap:2px;
-  }
-  .moremenu[hidden]{display:none}
-  .mm-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--r-md);width:100%;text-align:left}
-  .mm-item:hover{background:var(--surface-2)}
-  .mm-ico{
-    width:27px;height:27px;border-radius:var(--r-md);background:var(--accent-soft);color:var(--accent);
-    display:grid;place-items:center;flex:none;
-  }
-  .mm-txt{display:flex;flex-direction:column;min-width:0}
-  .mm-txt b{font-size:13px;font-weight:600;color:var(--fg)}
-  .mm-txt small{font-size:11px;color:var(--fg-subtle)}
-  .mm-count{margin-left:auto;font-size:12px;color:var(--fg-subtle);flex:none}
-
   /* ── 命令面板 ─────────────────────────────── */
   .palette{
     position:fixed;left:50%;top:14%;transform:translate(-50%,-8px);width:min(520px,92vw);background:var(--surface);
@@ -1017,11 +999,6 @@
     <button class="rbtn" id="openDrawer" title="设置">
       <i class="ric"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.1"/><path d="M19.1 14.6a1.5 1.5 0 0 0 .3 1.7l.1.1a1.9 1.9 0 1 1-2.7 2.7l-.1-.1a1.5 1.5 0 0 0-1.7-.3 1.5 1.5 0 0 0-.9 1.4v.3a1.9 1.9 0 1 1-3.8 0v-.2a1.5 1.5 0 0 0-1-1.4 1.5 1.5 0 0 0-1.7.3l-.1.1a1.9 1.9 0 1 1-2.7-2.7l.1-.1a1.5 1.5 0 0 0 .3-1.7 1.5 1.5 0 0 0-1.4-.9H3.3a1.9 1.9 0 1 1 0-3.8h.2a1.5 1.5 0 0 0 1.4-1 1.5 1.5 0 0 0-.3-1.7l-.1-.1a1.9 1.9 0 1 1 2.7-2.7l.1.1a1.5 1.5 0 0 0 1.7.3h.1a1.5 1.5 0 0 0 .9-1.4V3.3a1.9 1.9 0 1 1 3.8 0v.2a1.5 1.5 0 0 0 .9 1.4 1.5 1.5 0 0 0 1.7-.3l.1-.1a1.9 1.9 0 1 1 2.7 2.7l-.1.1a1.5 1.5 0 0 0-.3 1.7v.1a1.5 1.5 0 0 0 1.4.9h.3a1.9 1.9 0 1 1 0 3.8h-.2a1.5 1.5 0 0 0-1.4.9z"/></svg></i>
       <span data-i18n-key="rail.settings">设置</span>
-    </button>
-
-    <button class="rbtn" id="moreMenuBtn" title="更多">
-      <i class="ric"><svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><circle cx="5.5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="18.5" cy="12" r="1.7"/></svg></i>
-      <span data-i18n-key="rail.more">更多</span>
     </button>
 
     <div class="grow"></div>
@@ -1883,9 +1860,6 @@
       <div class="sp-page" id="pageCustom" hidden></div>
     </section>
   </div>
-</div>
-<div class="moremenu" id="moreMenu" hidden>
-  <div id="moreList"></div>
 </div>
 <button class="help" id="help" title="帮助">?</button>
 <div class="op" id="officePanel" hidden>
@@ -2858,10 +2832,6 @@ markDesktop($('setLockRun'))
 markDesktop($('setProxy'))
 document.querySelectorAll('.sp-toggle[data-key="sleep"], .sp-toggle[data-key="autostart"], .sp-toggle[data-key="skills"]').forEach(markDesktop)
 document.addEventListener('click', (event) => {
-  const menu = $('moreMenu')
-  if (!menu.hidden && !menu.contains(event.target) && !(event.target.closest && event.target.closest('#moreMenuBtn'))) {
-    closeMoreMenu()
-  }
   const link = event.target.closest && event.target.closest('a[href]')
   if (!link) return
   const href = link.getAttribute('href') || ''
@@ -2911,7 +2881,7 @@ document.querySelectorAll('.bar .icobtn[title="文本设置"]').forEach((btn) =>
 
 document.addEventListener('keydown', (e) => {
   if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); openPalette() }
-  if (e.key === 'Escape') { closePalette(); closePlusMenu(); closeEffort(); closeImageMenu(); closeSettings(); closeMoreMenu() }
+  if (e.key === 'Escape') { closePalette(); closePlusMenu(); closeEffort(); closeImageMenu(); closeSettings() }
 })
 
 /* ── 输入框 "+" 菜单 ─────────────────────────────────── */
@@ -3610,7 +3580,6 @@ function switchExTab(tab) {
 
 function openExperts(tab) {
   closeSettings()
-  closeMoreMenu()
   exitMode()
   document.querySelector('.main').classList.add('experts-mode')
   $('viewExperts').hidden = false
@@ -3623,69 +3592,9 @@ function openExperts(tab) {
 }
 
 /* ── 更多：技能 / 专家 / 连接器 ───────────────────────── */
-const MORE_ITEMS = [
-  {
-    key: 'skills', name: '技能', desc: '已装载的工具能力', view: 'skills',
-    icon: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.6 14.4 4.9 19.1"/><path d="M14.8 4.9a2 2 0 0 1 2.8 0l1.5 1.5a2 2 0 0 1 0 2.9l-7.1 7.1-4.4-4.4z"/></svg>',
-  },
-  {
-    key: 'experts', name: '专家', desc: 'Agent 预设与分工', view: 'experts',
-    icon: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.2"/><circle cx="9.2" cy="10.4" r=".95" fill="currentColor" stroke="none"/><circle cx="14.8" cy="10.4" r=".95" fill="currentColor" stroke="none"/><path d="M8.7 14.1c.9 1.5 2.1 2.2 3.3 2.2s2.4-.7 3.3-2.2"/></svg>',
-  },
-  {
-    key: 'connectors', name: '连接器', desc: '外部工具接入', view: 'connectors',
-    icon: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10.4 13.6a3.6 3.6 0 0 0 5.1 0l2.3-2.3a3.6 3.6 0 0 0-5.1-5.1l-1.2 1.2"/><path d="M13.6 10.4a3.6 3.6 0 0 0-5.1 0l-2.3 2.3a3.6 3.6 0 0 0 5.1 5.1l1.2-1.2"/></svg>',
-  },
-]
-
-async function renderMoreMenu() {
-  const box = $('moreList')
-  box.innerHTML = ''
-  const counts = { skills: '·', experts: '·', connectors: '·' }
-  try {
-    const [tools, presets, rows] = await Promise.all([rpc('tools.list'), rpc('presets.list'), rpc('plugins.rows')])
-    counts.skills = tools.length
-    counts.experts = presets.length
-    counts.connectors = rows.filter((row) => /figma|connector|web|mcp|ssh/i.test(row.plugin) && row.mounted).length
-  } catch (error) {
-    toast(error.message, 'err')
-  }
-  for (const item of MORE_ITEMS) {
-    const btn = document.createElement('button')
-    btn.className = 'mm-item'
-    btn.innerHTML =
-      '<span class="mm-ico">' + item.icon + '</span>' +
-      '<span class="mm-txt"><b>' + item.name + '</b><small>' + item.desc + '</small></span>' +
-      '<span class="mm-count">' + (counts[item.key] ?? '') + '</span>'
-    btn.onclick = () => {
-      closeMoreMenu()
-      openExperts(item.view)
-    }
-    box.appendChild(btn)
-  }
-}
-
-function openMoreMenu() {
-  const menu = $('moreMenu')
-  if (!menu.hidden) return
-  menu.hidden = false
-  void renderMoreMenu()
-  const rect = $('moreMenuBtn').getBoundingClientRect()
-  const width = menu.offsetWidth || 220
-  const height = menu.offsetHeight || 168
-  const left = Math.min(rect.right + 10, window.innerWidth - width - 12)
-  const top = Math.max(12, Math.min(rect.top - 6, window.innerHeight - height - 12))
-  menu.style.left = left + 'px'
-  menu.style.top = top + 'px'
-}
-
-function closeMoreMenu() {
-  $('moreMenu').hidden = true
-}
 
 $('navTemplates').onclick = () => {
   closeSettings()
-  closeMoreMenu()
   exitMode()
   setView('templates')
 }
@@ -3695,7 +3604,6 @@ $('tpSearch').addEventListener('input', (event) => {
   paintTplGallery()
 })
 $('navCustom').addEventListener('click', () => {
-  closeMoreMenu()
   exitMode()
   setView('themes')
 })
@@ -3746,15 +3654,8 @@ $('skSort').addEventListener('click', (event) => {
 })
 $('skInstalled').onclick = () => toast('已安装技能来自插件，可在设置 → 应用管理中查看。')
 document.querySelector('.rail [data-nav="home"]').onclick = () => {
-  closeSettings(); closeMoreMenu(); exitMode(); setView('home')
+  closeSettings(); exitMode(); setView('home')
 }
-$('moreMenuBtn').addEventListener('click', () => {
-  if ($('moreMenu').hidden) openMoreMenu()
-  else closeMoreMenu()
-})
-window.addEventListener('resize', closeMoreMenu)
-window.addEventListener('scroll', closeMoreMenu, true)
-
 /* ── 设置窗口 ─────────────────────────────────────────── */
 const SP_ICONS = {
   gear: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 3.5v2.2M12 18.3v2.2M3.5 12h2.2M18.3 12h2.2M6 6l1.6 1.6M16.4 16.4 18 18M18 6l-1.6 1.6M7.6 16.4 6 18"/></svg>',
