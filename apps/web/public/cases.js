@@ -1742,6 +1742,259 @@ export const CASE_DECKS = [
       },
     ],
   },
+  {
+    id: 'cooling',
+    name: 'Cooling the Block',
+    en: 'URBAN HEAT STUDY · 2026',
+    by: 'Gamma',
+    cat: '演示文稿',
+    fmt: 'deck',
+    ratio: '16:9',
+    date: 20261106,
+    kind: 'Research report',
+    category: '研究',
+    tags: ['climate', 'urban', 'research', 'heat'],
+    desc: 'An urban heat study in cool grey and ink: sans headlines, monospace figures, hairline rules and figure captions that name their source. Every number is tabular, every claim has a caveat, and the photographs are evidence rather than decoration.',
+    bestFor: ['Urban heat and climate studies', 'Research and evidence reports', 'Planning submissions', 'Infrastructure cost cases'],
+    styles: ['#D9DEE2', '#1B2026', '#0C6B5A'],
+    colorway: 'Cool grey · Ink · Teal',
+    folio: true,
+    footLeft: 'COOLING THE BLOCK · HEAT STUDY 2026',
+    paper: '#D9DEE2',
+    ink: '#1B2026',
+    accent: '#0C6B5A',
+    second: '#7C8F94',
+    muted: '#63757B',
+    rule: '#B9C3C8',
+    body: '#2B3438',
+    display: 'sans',
+    slides: [
+      {
+        k: 'cover', label: 'Cover',
+        kicker: 'URBAN HEAT STUDY · 2026',
+        title: 'Cooling the Block',
+        meta: 'SIX BLOCKS · 14 SENSORS · SIX WEEKS',
+        img: '01',
+      },
+      {
+        k: 'toc', label: 'Contents',
+        title: 'Contents',
+        note: 'FOUR PARTS',
+        items: [
+          ['01', 'Measurement', '14 sensors, six weeks'],
+          ['02', 'The finding', '4.2°C between two streets'],
+          ['03', 'The proposal', 'Trees, water, shade'],
+          ['04', 'Cost and caveats', 'What we can and cannot claim'],
+        ],
+      },
+      {
+        k: 'statement', label: 'Summary',
+        text: 'Two streets four hundred metres apart run 4.2°C apart at three in the afternoon. Nothing about the buildings explains it.',
+        foot: 'SUMMARY · 2026.09',
+      },
+      {
+        k: 'stats', label: 'Three numbers',
+        title: 'The study in three numbers',
+        items: [
+          ['14', 'sensors · six blocks', 'One per 200 m of street'],
+          ['6', 'weeks · July to August', '1.2M readings in total'],
+          ['4.2', '°C · peak difference', 'Between the two hottest blocks'],
+        ],
+        note: 'Sensors at 2.5 m, shielded, one minute interval',
+      },
+      { k: 'fullimg', label: 'Street', img: '05', cap: 'STREET 04 · 14:20 · THE SHADED SIDE IS TWENTY PEOPLE DEEP' },
+      { k: 'section', label: 'Part 01', num: '01', title: 'The measurement', note: '14 SENSORS · SIX WEEKS · 1.2M READINGS', img: '07' },
+      {
+        k: 'columns', label: 'Method',
+        title: 'What we measured, and where',
+        note: 'METHOD',
+        cols: [
+          { t: 'Air temperature', d: 'Fourteen shielded sensors at 2.5 m, one every 200 m of street, logging every minute from 1 July to 15 August.' },
+          { t: 'Surface temperature', d: 'Handheld readings on asphalt, paving and painted roof, three times a day, at the same eleven points.' },
+          { t: 'People', d: 'Two hour counts of who stands still, and where. Shade is only useful if people stop in it.' },
+        ],
+      },
+      {
+        k: 'table', label: 'Network',
+        title: 'Sensor network',
+        head: ['Block', 'Sensors', 'Trees', 'Paving'],
+        rows: [
+          ['01 · Market', '2', '6', 'Asphalt'],
+          ['02 · Quay', '3', '11', 'Granite setts'],
+          ['03 · Mill', '2', '4', 'Asphalt'],
+          ['04 · Garden', '3', '23', 'Paving slabs'],
+          ['05 · Depot', '2', '2', 'Concrete'],
+          ['06 · Square', '2', '17', 'Paving slabs'],
+        ],
+        note: 'Trees counted within 12 m of the sensor line',
+      },
+      {
+        k: 'figure', label: 'Figure 1',
+        img: '03',
+        no: 'FIG. 1',
+        cap: 'Reference station, 3 km outside the district. It separates district heat from the regional heatwave.',
+        src: 'STATION LOG · JULY 2026',
+      },
+      {
+        k: 'bars', label: 'Surfaces',
+        title: 'Peak surface temperature, by material',
+        items: [['Grass', 34], ['Paving slabs', 49], ['Granite setts', 54], ['Concrete', 58], ['Asphalt', 63]],
+        unit: '°C',
+        note: 'Handheld at 14:00, ten readings averaged per surface',
+      },
+      {
+        k: 'split', label: 'Surface',
+        img: '04',
+        title: 'Sixty three degrees,\nat two in the afternoon',
+        paras: [
+          'The asphalt in block 05 reads 63°C at 14:00 while the air above it is 32°C. The gap is the surface, and the surface is what people touch through their shoes.',
+          'Dark asphalt and granite setts hold heat into the evening. Grass in block 04 is 34°C at the same hour, and the air above it runs 2°C cooler.',
+        ],
+        bullets: ['63°C · asphalt at 14:00', '34°C · grass, same hour', 'Surface heat outlasts sunset'],
+      },
+      {
+        k: 'figure', label: 'Figure 2',
+        img: '02',
+        no: 'FIG. 2',
+        cap: 'Six blocks from 200 m. Shade is concentrated on two streets, both lined with mature trees.',
+        src: 'SURVEY · JULY 2026',
+      },
+      { k: 'section', label: 'Part 02', num: '02', title: 'The finding', note: '4.2°C BETWEEN TWO STREETS', img: '06' },
+      {
+        k: 'split', label: 'Shade',
+        img: '09',
+        title: 'Shade is\ninfrastructure',
+        paras: [
+          'Block 04 has 23 trees and runs 4.2°C cooler than block 01 on the same afternoon. The difference is not the buildings and not the traffic: it is the canopy.',
+          'Where trees were removed for a 2019 resurfacing, surface temperature at 14:00 rose 7°C in one season and has not come back down.',
+        ],
+        bullets: ['23 trees against 6 · 4.2°C apart', 'Canopy 18% against 4%', 'Same street width, same traffic'],
+      },
+      {
+        k: 'table', label: 'Results',
+        title: 'Block results, July average',
+        head: ['Block', 'Air °C', 'Peak °C', 'Canopy'],
+        rows: [
+          ['01 · Market', '31.4', '46', '4%'],
+          ['02 · Quay', '30.1', '43', '9%'],
+          ['03 · Mill', '31.8', '47', '3%'],
+          ['04 · Garden', '28.6', '38', '18%'],
+          ['05 · Depot', '32.2', '48', '2%'],
+          ['06 · Square', '29.4', '41', '14%'],
+        ],
+        note: 'Air: 24 hour mean at 2.5 m · Peak: surface at 14:00',
+      },
+      {
+        k: 'metric', label: 'One number',
+        kicker: 'BLOCK 01 AGAINST BLOCK 04 · 15:00',
+        big: '4.2',
+        label: 'degrees between two streets on the same afternoon',
+        note: 'Air temperature, fourteen sensors, July average',
+      },
+      {
+        k: 'compare', label: 'Section',
+        title: 'One street, two sections',
+        left: {
+          h: 'TODAY · BLOCK 01',
+          rows: [['Trees', '6'], ['Canopy', '4%'], ['Peak surface', '46°C'], ['People in shade', '11']],
+        },
+        right: {
+          h: 'AFTER THE PROPOSAL',
+          rows: [['Trees', '19'], ['Canopy', '16%'], ['Peak surface', '38°C'], ['People in shade', 'about 60']],
+        },
+        note: 'Modelled from block 04, same width and same traffic count',
+      },
+      { k: 'section', label: 'Part 03', num: '03', title: 'The proposal', note: 'TREES · WATER · SHADE', img: '10' },
+      {
+        k: 'figure', label: 'Figure 3',
+        img: '08',
+        no: 'FIG. 3',
+        cap: 'Block 06, cool roof trial. 200 m² of white coating took the roof surface from 71°C to 42°C, and the rooms below it by 1.9°C.',
+        src: 'THERMAL SURVEY · AUGUST 2026',
+      },
+      {
+        k: 'timeline', label: 'Plan',
+        title: 'Three summers',
+        items: [
+          ['2027 · July', 'Six blocks planted', '19 trees per block, 1.2 m pits'],
+          ['2028 · July', 'Water and benches', 'Two shallow channels, 40 benches'],
+          ['2029 · July', 'Measure again', 'Same sensors, same eleven points'],
+        ],
+      },
+      {
+        k: 'columns', label: 'Interventions',
+        title: 'Three things that work',
+        note: 'INTERVENTIONS',
+        cols: [
+          { t: 'Plant for canopy, not for tidiness', d: 'Large species in 1.2 m pits, no annual pruning. The canopy is the product; the street looks worse for two years.' },
+          { t: 'Water in the open', d: 'A 15 cm channel in shade drops the air beside it by 2°C. Fountains do not: nobody stands in them.' },
+          { t: 'Shade where people stop', d: 'Benches under trees, not trees along the kerb. The point is to make standing still comfortable.' },
+        ],
+      },
+      {
+        k: 'table', label: 'Cost',
+        title: 'Cost per block',
+        head: ['Item', 'Cost', 'Life'],
+        rows: [
+          ['19 trees and pits', '182,000', '40 years'],
+          ['Irrigation, first 3 years', '41,000', '3 years'],
+          ['Water channel, 60 m', '96,000', '30 years'],
+          ['Benches, 40', '28,000', '10 years'],
+          ['Total, per block', '347,000', '—'],
+        ],
+        sum: ['Six blocks', '2.08M', '—'],
+        note: 'Local currency; excludes street resurfacing',
+      },
+      {
+        k: 'stats', label: 'Impact',
+        title: 'What it buys',
+        items: [
+          ['-3.4', '°C · modelled peak', 'Surface temperature, block 01'],
+          ['+12', '% · canopy at year 10', 'From 4% to 16%'],
+          ['1:9', 'cost to avoided cooling', 'Against 2026 household tariffs'],
+        ],
+        note: 'Modelled, not measured; see caveats',
+      },
+      {
+        k: 'quote', label: 'Quote',
+        text: 'You cannot air condition a street. You can only decide who stands in the sun.',
+        by: 'LEAD AUTHOR',
+      },
+      {
+        k: 'columns', label: 'Caveats',
+        title: 'What we cannot claim',
+        note: 'CAVEATS',
+        cols: [
+          { t: 'One summer', d: 'Six weeks is one season. We do not know how much of the 4.2°C survives a wet July.' },
+          { t: 'Surface is not air', d: 'Surface readings predict comfort, not health outcomes. Nothing here is clinical.' },
+          { t: 'Cost is not benefit', d: 'The 1:9 figure is a tariff comparison, not a valuation of shade. People use shade for reasons we cannot price.' },
+        ],
+      },
+      {
+        k: 'table', label: 'Appendix',
+        title: 'Appendix · readings',
+        head: ['Series', 'Readings', 'Gaps'],
+        rows: [
+          ['Air temperature', '1,209,600', '0.4%'],
+          ['Surface, handheld', '1,980', '—'],
+          ['People counts', '336', '2 hours missed'],
+          ['Sensor failures', '3 of 14', 'Replaced within 48 h'],
+        ],
+        note: 'Raw data on request; all sensors calibrated in June',
+      },
+      {
+        k: 'statement', label: 'The ask',
+        text: 'We are asking for one summer of planting in six blocks, and the sensors to prove that it worked.',
+        foot: 'THE ASK · 2027 BUDGET',
+      },
+      {
+        k: 'end', label: 'End',
+        title: 'Thank you',
+        lines: ['COOLING THE BLOCK · URBAN HEAT STUDY 2026', 'study@coolingtheblock.example'],
+        mark: 'C',
+      },
+    ],
+  },
 ]
 
 /* ── 渲染 ─────────────────────────────────────────────
@@ -1834,7 +2087,13 @@ export function slideInner(deck, s) {
     case 'fullimg':
       return (
         '<div class="sd-full">' + imgTag(deck, s.img, 'sd-fill') +
-        (s.cap ? '<div class="sd-full-cap"><span class="sd-mono">' + esc(s.cap) + '</span></div>' : '') +
+        (s.text
+          ? '<div class="sd-full-os">' +
+            (s.kicker ? '<div class="sd-mono sd-full-k">' + esc(s.kicker) + '</div>' : '') +
+            '<p class="sd-full-t">' + esc(s.text) + '</p>' +
+            (s.foot ? '<div class="sd-mono sd-full-f">' + esc(s.foot) + '</div>' : '') +
+            '</div>'
+          : (s.cap ? '<div class="sd-full-cap"><span class="sd-mono">' + esc(s.cap) + '</span></div>' : '')) +
         '</div>'
       )
     case 'board':
@@ -1986,6 +2245,24 @@ export function slideInner(deck, s) {
         (s.note ? '<div class="sd-mono sd-foot">' + esc(s.note) + '</div>' : '') +
         '</div>'
       )
+    case 'figure':
+      return (
+        '<div class="fig">' + imgTag(deck, s.img, 'sd-fill') +
+        '<div class="fig-bar">' +
+        '<span class="sd-mono fig-no">' + esc(s.no || 'FIG.') + '</span>' +
+        '<span class="fig-cap">' + esc(s.cap || '') + '</span>' +
+        '<span class="sd-mono fig-src">' + esc(s.src || '') + '</span>' +
+        '</div></div>'
+      )
+    case 'figpair': {
+      const cell = (n, no, cap) =>
+        '<figure class="fig-cell">' + imgTag(deck, n, 'sd-fill') +
+        '<figcaption class="fig-cell-bar">' +
+        '<span class="sd-mono fig-no">' + esc(no) + '</span>' +
+        '<span class="fig-cap">' + esc(cap) + '</span>' +
+        '</figcaption></figure>'
+      return '<div class="fig-pair">' + cell(s.a, s.aNo, s.aCap) + cell(s.b, s.bNo, s.bCap) + '</div>'
+    }
     case 'quote':
       return (
         '<div class="sd-pad sd-statement">' +
