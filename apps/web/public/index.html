@@ -2052,6 +2052,147 @@
   .sld.k-slowyear[data-k="dtable"] .d-note,
   .sld.k-slowyear[data-k="dlist"] .d-note{margin-top:auto}
 
+  /* ── 文档家族 G：Decibel（报头 + 双栏栏线 + 首字下沉 · 半调照片 · 居中页码） ── */
+  .sld.k-decibel .sd-img{filter:grayscale(1) contrast(1.07) brightness(1.01)}
+  .sld.k-decibel .d-pad{padding:100px 92px 104px}
+  .sld.k-decibel .d-run{
+    left:92px;right:92px;top:50px;padding-bottom:8px;border-bottom:2px solid var(--ink);
+    box-shadow:0 4px 0 -3px var(--rule);
+    font-family:Georgia,'Songti SC',serif;font-size:8.5px;letter-spacing:.2em;color:var(--ink);
+  }
+  .sld.k-decibel .sd-folio{
+    left:92px;right:92px;bottom:44px;display:grid;grid-template-columns:1fr auto 1fr;align-items:baseline;
+    font-family:Georgia,'Songti SC',serif;font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
+  }
+  .sld.k-decibel .sd-folio::after{content:""}
+  .sld.k-decibel .sd-folio span:first-child{justify-self:start}
+  .sld.k-decibel .sd-folio span:last-child{justify-self:center;font-size:11px;letter-spacing:.08em;color:var(--ink)}
+  .sld.k-decibel .sd-folio span:last-child::before{content:"— "}
+  .sld.k-decibel .sd-folio span:last-child::after{content:" —"}
+  .sld.k-decibel .d-kicker{
+    font-family:Georgia,'Songti SC',serif;font-size:8.5px;letter-spacing:.26em;color:var(--accent);
+  }
+  .sld.k-decibel .d-kicker::before{
+    content:"";display:inline-block;width:20px;height:2px;margin-right:10px;vertical-align:middle;background:var(--accent);
+  }
+  .sld.k-decibel .d-h1{font-size:92px;line-height:.9;letter-spacing:-.045em;font-weight:700}
+  .sld.k-decibel .d-h2{margin-top:10px;font-size:38px;line-height:1.14;letter-spacing:-.028em;font-weight:700}
+  .sld.k-decibel .d-h3{font-size:17px;line-height:1.4;font-weight:700;letter-spacing:-.012em}
+  .sld.k-decibel .d-lead{font-size:16.5px;line-height:1.82;color:var(--body)}
+  .sld.k-decibel .d-lead + .d-lead{margin-top:12px}
+  .sld.k-decibel .d-lead-sm{font-size:13px;line-height:1.75}
+  .sld.k-decibel .d-cols{grid-template-columns:minmax(0,1fr) 194px;gap:36px;margin-top:24px}
+  .sld.k-decibel .d-main{column-count:2;column-gap:26px;column-rule:1px solid var(--rule)}
+  .sld.k-decibel .d-main p{font-size:14.4px;line-height:1.74;text-align:left;hyphens:auto}
+  .sld.k-decibel .d-main p + p{margin-top:0;text-indent:1.15em}
+  .sld.k-decibel .d-main p:first-child::first-letter{
+    float:left;font-size:50px;line-height:.78;padding:5px 7px 0 0;font-weight:700;color:var(--ink);
+  }
+  .sld.k-decibel .d-side{padding-top:10px;border-top:3px solid var(--ink)}
+  .sld.k-decibel .d-side::before{
+    content:"FACT FILE";display:block;margin-bottom:9px;
+    font-family:Georgia,'Songti SC',serif;font-size:8px;letter-spacing:.24em;color:var(--muted);
+  }
+  .sld.k-decibel .d-side p{
+    font-family:inherit;font-size:10.5px;line-height:1.65;color:var(--body);
+    padding-bottom:8px;border-bottom:1px solid var(--rule);
+  }
+  .sld.k-decibel .d-side p + p{margin-top:8px}
+  .sld.k-decibel .d-side p:last-child{padding-bottom:0;border-bottom:0}
+  .sld.k-decibel .d-pull{
+    margin:22px 0 0;padding:14px 0 12px;border:0;border-top:4px double var(--ink);border-bottom:1px solid var(--ink);
+    font-size:24px;line-height:1.44;font-style:italic;letter-spacing:-.012em;
+  }
+  .sld.k-decibel .d-pull span{margin-top:8px;font-family:Georgia,'Songti SC',serif;font-size:8px;letter-spacing:.22em;font-style:normal}
+  .sld.k-decibel .d-points{padding-top:11px;border-top:2px solid var(--ink);gap:24px}
+  .sld.k-decibel .d-points span{font-family:Georgia,'Songti SC',serif;font-size:8px;letter-spacing:.22em}
+  .sld.k-decibel .d-points b{font-size:20px;letter-spacing:-.02em}
+  .sld.k-decibel .d-points i{font-size:10.5px;line-height:1.6}
+  .sld.k-decibel .d-note{
+    margin-top:16px;padding-top:9px;border-top:1px solid var(--rule);
+    font-family:Georgia,'Songti SC',serif;font-size:8.5px;line-height:1.7;letter-spacing:.1em;
+  }
+  .sld.k-decibel .d-read{
+    margin-top:22px;padding-top:12px;border-top:1px solid var(--rule);
+    font-size:13.4px;line-height:1.8;color:var(--body);
+  }
+  /* 摘要：整页二栏流 + 底部横条 */
+  .sld.k-decibel[data-k="dmeta"] .d-pad{display:block;column-count:2;column-gap:36px;column-rule:1px solid var(--rule)}
+  .sld.k-decibel[data-k="dmeta"] .d-h2{column-span:all;margin-top:12px;font-size:44px;max-width:760px}
+  .sld.k-decibel[data-k="dmeta"] .d-lead{font-size:14.5px;line-height:1.8;margin-top:0}
+  .sld.k-decibel[data-k="dmeta"] .d-lead + .d-lead{margin-top:12px}
+  .sld.k-decibel[data-k="dmeta"] .d-facts{
+    column-span:all;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 32px;
+    margin-top:24px;border-top:2px solid var(--ink);padding-top:0;
+  }
+  .sld.k-decibel[data-k="dmeta"] .d-fact{display:block;padding:10px 0;border-bottom:1px solid var(--rule)}
+  .sld.k-decibel[data-k="dmeta"] .d-fact span{font-size:8px;letter-spacing:.18em}
+  .sld.k-decibel[data-k="dmeta"] .d-fact b{display:block;margin-top:5px;font-size:17px;letter-spacing:-.012em}
+  .sld.k-decibel[data-k="dmeta"] .d-note{column-span:all;margin-top:14px}
+  /* 目录 */
+  .sld.k-decibel .d-toc{margin-top:24px;flex:1;display:flex;flex-direction:column;justify-content:space-between}
+  .sld.k-decibel .d-toc li{grid-template-columns:72px minmax(0,1fr) 158px;gap:18px;padding:24px 0;align-items:center;flex:1;border-top:1px solid var(--rule)}
+  .sld.k-decibel .d-toc li:last-child{border-bottom:2px solid var(--ink)}
+  .sld.k-decibel .d-toc .n{font-family:Georgia,'Songti SC',serif;font-size:30px;line-height:1;letter-spacing:-.03em;color:var(--accent)}
+  .sld.k-decibel .d-toc .t{font-size:29px;letter-spacing:-.024em}
+  .sld.k-decibel .d-toc .d{font-family:Georgia,'Songti SC',serif;font-size:8.5px;letter-spacing:.14em;text-transform:uppercase}
+  .sld.k-decibel .d-toc-figs{margin-top:auto;padding-top:12px;border-top:3px solid var(--ink)}
+  .sld.k-decibel .d-toc-figs li{font-size:10.5px;line-height:1.7}
+  .sld.k-decibel .d-toc-figs b{font-family:Georgia,'Songti SC',serif;font-size:8px;letter-spacing:.16em}
+  /* 封面 */
+  .sld.k-decibel .d-cover{padding:88px 92px 80px}
+  .sld.k-decibel .d-cover-top{padding-bottom:9px;border-bottom:1px solid var(--ink);
+    font-family:Georgia,'Songti SC',serif;font-size:8.5px;letter-spacing:.24em;color:var(--ink)}
+  .sld.k-decibel .d-cover .d-h1{margin-top:22px;padding-bottom:14px;border-bottom:4px double var(--ink);font-size:104px;line-height:.88;letter-spacing:-.05em}
+  .sld.k-decibel .d-cover .d-lead{max-width:648px;font-size:13.6px;line-height:1.74}
+  .sld.k-decibel .d-cover .d-lead:first-of-type{margin-top:18px;font-size:17px;line-height:1.66;color:var(--ink)}
+  .sld.k-decibel .d-cover-img{margin:22px 0 20px}
+  .sld.k-decibel .d-cover-foot{padding-top:11px;border-top:2px solid var(--ink);gap:20px}
+  .sld.k-decibel .d-cover-foot b{font-size:11px;letter-spacing:.02em;text-transform:uppercase}
+  .sld.k-decibel .d-cover-foot span{font-family:Georgia,'Songti SC',serif;font-size:8px;letter-spacing:.16em}
+  /* 章节页：文字在上，照片贴底三边出血 */
+  .sld.k-decibel .d-sec{padding:0}
+  .sld.k-decibel .d-sec-txt{padding:96px 92px 0}
+  .sld.k-decibel .d-sec-num{font-family:Georgia,'Songti SC',serif;font-size:9px;letter-spacing:.28em;text-transform:uppercase}
+  .sld.k-decibel .d-sec-t{margin-top:16px;font-size:72px;line-height:1.03;letter-spacing:-.038em;font-weight:700;max-width:700px}
+  .sld.k-decibel .d-sec-lead{margin-top:22px;max-width:660px;font-size:16.5px;line-height:1.8;color:var(--body)}
+  .sld.k-decibel .d-sec-img{position:absolute;left:0;right:0;bottom:0;height:872px;margin:0;border-top:4px double var(--ink)}
+  /* 图版页：上出血切图 + 报章图注 */
+  .sld.k-decibel .d-fig{padding:0}
+  .sld.k-decibel .d-fig-img{position:absolute;left:0;right:0;top:0;height:1088px}
+  .sld.k-decibel .d-fig-cap{
+    position:absolute;left:92px;right:92px;top:1128px;margin:0;padding-top:12px;
+    display:grid;grid-template-columns:92px minmax(0,1fr);gap:22px;
+    border-top:4px double var(--ink);
+  }
+  .sld.k-decibel .d-fig-no{font-family:Georgia,'Songti SC',serif;font-size:9px;letter-spacing:.2em;color:var(--accent)}
+  .sld.k-decibel .d-fig-cap p{font-size:14.4px;line-height:1.74;color:var(--body)}
+  .sld.k-decibel .d-fig-src{grid-column:2;margin-top:2px;font-family:Georgia,'Songti SC',serif;font-size:8px;letter-spacing:.18em}
+  /* 表格：粗顶线 + 细行线 + 末行压墨 */
+  .sld.k-decibel .d-table{margin-top:20px}
+  .sld.k-decibel .d-table th{
+    font-family:Georgia,'Songti SC',serif;font-size:8px;letter-spacing:.18em;color:var(--ink);
+    padding-bottom:8px;border-bottom:2px solid var(--ink);
+  }
+  .sld.k-decibel .d-table td{padding:21px 0;font-size:13.2px;line-height:1.55;border-bottom:1px solid var(--rule)}
+  .sld.k-decibel .d-table td.num{font-size:12.4px;letter-spacing:.01em}
+  .sld.k-decibel .d-table tbody tr:last-child td{border-bottom:2px solid var(--ink);font-weight:700}
+  /* 清单 */
+  .sld.k-decibel .d-list{margin-top:18px}
+  .sld.k-decibel .d-list li{grid-template-columns:46px 1fr;gap:18px;padding:38px 0;border-top:1px solid var(--rule)}
+  .sld.k-decibel .d-list .n{font-family:Georgia,'Songti SC',serif;font-size:19px;line-height:1;letter-spacing:-.02em;color:var(--accent)}
+  .sld.k-decibel .d-list p{margin-top:7px;font-size:13.2px;line-height:1.78}
+  /* 尾声 */
+  .sld.k-decibel .d-end-txt{padding:96px 92px 0}
+  .sld.k-decibel .d-end-t{margin-top:16px;font-size:50px;line-height:1.08;letter-spacing:-.032em;font-weight:700}
+  .sld.k-decibel .d-end-rows{margin-top:26px}
+  .sld.k-decibel .d-end-row{padding:9px 0;font-family:Georgia,'Songti SC',serif;font-size:9px;letter-spacing:.14em}
+  .sld.k-decibel .d-end-row span:first-child{color:var(--accent)}
+  .sld.k-decibel .d-end-img{margin:24px 0 0}
+  .sld.k-decibel[data-k="dbody"]:not(:has(.d-points)) .d-note,
+  .sld.k-decibel[data-k="dtable"] .d-note,
+  .sld.k-decibel[data-k="dlist"] .d-note{margin-top:auto}
+
   /* 对比页 / 三联图版 */
   .sld .cmp-cols{display:grid;grid-template-columns:1fr 1fr;gap:38px;margin-top:26px}
   .sld .cmp-col{padding-top:12px;border-top:1px solid var(--rule)}

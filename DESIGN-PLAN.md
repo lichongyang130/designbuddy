@@ -887,3 +887,19 @@ rail 72 │ 自定义侧栏 278px（#f5f8fd，右描边 #d6e1ef）│ 主区纯�
 - **配图**：`cases/blueprint/01–10.jpg` 十张本套真图——老楼外墙、锈管与表箱、水表井、泵房、泵与控制柜、立管井、换下来的锈管、屋顶水箱、水箱内部、单元门洞。
 - **踩坑**：图版页一开始用 `height:900px`，页底空 250px；改成 `grid-template-rows:1fr` + `align-items:stretch` + 图 `min-height:0` 才填满。章节图带想固定 `height:520px` 不生效——基类给了 `flex:1`，flex-basis 会盖掉 height，最后只调 margin。
 - 校验：`fill` 全页 91–100%（正文页剩 80–110px 是页脚带）、`shots` 逐页目检、`lib-ui.mjs` 23 张卡且「报告」7 套、`npm test` 85/85。
+
+## 33. 收尾两件小事 + 英文文档第一套 Decibel：报章网格（2026-11-03）
+
+- **两件小事**：(1) logo `G→D` 其实早已全部落地——`.rail .logo`（L3288）、文档查看器 `.dv-g`（L4006）、「由 DESIGNBUDDY 制作」（L4076）都是 `D`，案例侧栏徽标取 `deck.by` 首字母、23 套全是 `DesignBuddy`，全仓 `grep '>G<'` 零命中，本轮只做了截图复核。(2) `index.html` 里两行「Gamma 式」注释（CSS L2300 / HTML L4002）改成中性说法，`grep -rni gamma` 现在只剩 `test/web-public.test.ts:90` 那条品牌守护测试本身。
+- **沙箱回滚**：这一回合开工时本地仓库被退回到 `fe805c5` 且缺了约 300 个文件（`probe/` 工具目录也没了）。`git fetch` 后 `git reset --hard origin/arena/2ed6d8e6-designbuddy` 回到 `97cc15f`，再重建探针（`@sparticuz/chromium` + `al2023.tar.br` 解出 `lib/lib` + `doc.mjs`/`one.mjs`/`ui.mjs`）。**教训**：探针目录不在 git 里，环境重置后就没了，重要结论要写进本节。
+- **探针环境的一个假象**：`@sparticuz/chromium` 131 不支持 `transform:scale(calc(100cqw / 960px))`（`CSS.supports` 返回 false），所以 `.sdbox` 里的画布在这个浏览器里**不缩放**、看起来被裁掉。真浏览器正常。截图前用 `shim.mjs` 按容器宽度手写 `scale()` 覆盖即可，别把它当成 app 的 bug。
+- **新家族 G（第八个文档家族）**：Decibel——报章网格。纸是新闻纸米白 `#F2EFE6`，墨 `#17150F`，印红 `#A32B18` 只给栏目、图号、日期，石板灰 `#3D4A50` 做第二色。所有照片 `filter:grayscale(1) contrast(1.07)` 压成半调；页眉是 2px 墨线 + 一条 4px 下方的淡线（`box-shadow:0 4px 0 -3px`）组成的双线；页码 `.sd-folio` 改成 `grid-template-columns:1fr auto 1fr`（`::after` 占第三格）居中，前后各加一个 `—`。
+- **正文是两栏 + 首字下沉**：`.d-cols` 仍是「正文 + 194px 右栏」，`.d-main` 用 `column-count:2` + `column-rule:1px` 造出栏线，`::first-letter` 下沉 50px；段落之间不留间距，改 `text-indent:1.15em`（报纸习惯）。**正文左对齐不两端对齐**——14.4px 的窄栏一旦 justify，空格被拉成河，`hyphens:auto` 在 `lang="zh-CN"` 的文档里对英文不生效。
+- **摘要页用整页二栏流**：`.d-pad` 改成 `display:block;column-count:2`，`d-h2` 和 `d-facts` / `d-note` 用 `column-span:all`——标题横跨，正文分两栏，底部一条 3×2 的数字横条收口。这是这套唯一「一页就是一张报纸版面」的页型。
+- **章节页照片贴底三边出血**：`d-sec-img` 绝对定位 `left/right/bottom:0; height:872px`，上沿压 4px 双线；文字在纸上（标题 72px）。和 coldline 的整幅出血、blueprint 的带框图版都不同——这里只有一条底部的照片带。
+- **图版页是「报章切图」**：照片 `top:0` 三边出血、高 1088px；图注绝对定位在 1128px 处，上压 4px 双线，左侧 92px 放红色图号、右侧单栏正文 + 一行 mono 来源。图注**不能分栏**（试过两栏，会在分号处断成两截，看起来像两段）。
+- **表格**：表头压 2px 墨线、行线 1px、合计行上下都收墨线并加粗，`td` 行距 21px；一张 10 行的表正好填满版心。
+- **内容**：20 页 / 10 图，英文，四章（读数、声源、投诉、改法）。数字互相咬合：基线 47 dB(A)、峰值 78（准则 55）、室内 63（准则 30）、夜间 LAFmax 61（准则 45）、525 小时超标、214 条投诉 / 31 户（9 户占 108 条）、四项措施 59 500 英镑 = 工程额 0.45%、改完立面 71 / 室内 41。
+- **配图**：`cases/decibel/01–10.jpg` 十张本套真图——夜里挡住工地的围挡、连排砖房外立面、人行道上的声级计三脚架、打桩机与工人、卧室窗台与声级计、教堂里的居民会议、墙角的裂缝、加高围挡、装第二层玻璃、清晨的空街。
+- **踩坑**：`dmeta` 一开始只有 68% 填充、`dtable`/`dlist` 页底空 300–500px（`d-note` 的 `margin-top:auto` 把它钉在页脚，中间就成了洞）。解法不是缩字号，而是**加内容**：摘要补三段、清单每条补一句话并把 `li` 内边距提到 38px、表格拆成七行（围挡、内衬、两批玻璃、监测、托管、联络）并把 `td` 提到 21px。`d-meta` 补完一度到 104%，压到 14.5px 才把注脚从页脚线上挪开。
+- 校验：`fill` 正文/表格/清单页 100%（章节与图版页走绝对定位，不参与该指标）、`shots` 逐页目检（01/02/03/04/05/06/07/10/14/16/18/20）、`npm test` 85/85、`ui.mjs` 24 张卡 / 文档查看器 20 页 / `errs []`。
