@@ -4,6 +4,7 @@ import { mkdtempSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
+import { resetIds } from '../src/core/schema.ts'
 import { SessionService } from '../src/core/session.ts'
 import { createSessionStore } from '../src/core/session-store.ts'
 
@@ -70,4 +71,27 @@ test('sessions without a persister behave exactly as before', () => {
   service.appendMessage(session.id, userMessage('m1', 'x'))
   assert.equal(service.list().length, 1)
   assert.equal(service.events(session.id).filter((event) => event.type === 'message').length, 1)
+})
+
+test('restart must not reuse a session id that is already on disk', () => {
+  const dir = tempDir()
+  const store = createSessionStore(dir)
+
+  resetIds()
+  const first = new SessionService({ persister: store })
+  const ids = [first.create({ title: 'a' }).id, first.create({ title: 'b' }).id, first.create({ title: 'c' }).id]
+
+  // 新进程：模块计数器回到 0，旧会话先从磁盘回放进内存
+  resetIds()
+  const second = new SessionService({ persister: store })
+  for (const jsonl of store.readAll()) second.loadJsonl(jsonl)
+  assert.deepEqual(second.list().map((session) => session.id).sort(), ids.slice().sort())
+
+  // 计数器会从 sess-1 重新开始，必须跳过已被占用的 id
+  const seen = new Set(ids)
+  for (let step = 0; step < 4; step += 1) {
+    const created = second.create({ title: 'new ' + step })
+    assert.ok(!seen.has(created.id), `新会话 id 与磁盘上的 ${created.id} 撞车`)
+    seen.add(created.id)
+  }
 })

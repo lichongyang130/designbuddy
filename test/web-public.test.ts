@@ -363,6 +363,21 @@ test('专家卡片每张都带一个召唤按钮', () => {
   assert.match(indexHtml, /\.ex-summon:hover\{/, '召唤按钮缺少悬停反馈')
 })
 
+test('专家预设按需重取：有读取中、超时与重试，不会把空态钉死', () => {
+  assert.match(indexHtml, /async function loadPresets\(force\)/, '缺少 loadPresets()')
+  // 传输是 SSE 帧，帧丢掉时 Promise 不会落地，必须带超时
+  assert.match(indexHtml, /Promise\.race\(\[rpc\('presets\.list'\), withTimeout\]\)/, '读取预设缺少超时兜底')
+  assert.match(indexHtml, /正在读取专家预设/, '缺少读取中的状态文案')
+  assert.match(indexHtml, /专家预设读取失败/, '缺少读取失败的文案')
+  assert.match(indexHtml, /class="ex-retry">重新读取</, '失败态要有重新读取按钮')
+  assert.match(indexHtml, /empty\.querySelector\('\.ex-retry'\)\.onclick/, '重新读取按钮要真的重新拉取')
+  // 打开专家页、切回专家页、后端一次性没给全，都会再取一次
+  assert.match(indexHtml, /if \(state\.presets\.length === 0\) void loadPresets\(\)/)
+  assert.match(indexHtml, /setTimeout\(\(\) => \{ void loadPresets\(true\) \}, 1200\)/, '启动后应有一次重试')
+  // 旧的那句「后端还没有返回专家预设」不能再出现在界面上
+  assert.doesNotMatch(indexHtml.replace(/\/\*[\s\S]*?\*\//g, ''), /后端还没有返回专家预设/)
+})
+
 test('深色主题与窄屏断点都还在', () => {
   assert.match(indexHtml, /html\[data-theme="dark"\]\{/, '缺少深色主题 token')
   assert.match(indexHtml, /html\[data-theme="dark"\] \.tplpage\{/, '缺少深色主题的页面覆盖')

@@ -4879,7 +4879,21 @@
   .ex-summon:active{transform:translateY(.5px)}
   .ex-card.on .ex-summon{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
   .ex-card.on .ex-summon:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
-  .ex-empty{grid-column:1/-1;font-size:13px;color:var(--fg-subtle);padding:30px;text-align:center;border:1px dashed var(--line);border-radius:var(--r-md)}
+  .ex-empty{
+    grid-column:1/-1;display:flex;flex-direction:column;align-items:center;gap:6px;
+    font-size:13px;color:var(--fg-subtle);padding:30px;text-align:center;
+    border:1px dashed var(--line);border-radius:var(--r-md);
+  }
+  .ex-empty b{font-size:13.5px;font-weight:600;color:var(--fg)}
+  .ex-empty span{font-size:12.5px;line-height:1.5;color:var(--fg-subtle)}
+  .ex-spin{width:18px;height:18px;border-radius:50%;border:2px solid var(--line-strong);border-top-color:var(--accent);animation:smspin .9s linear infinite}
+  .ex-retry{
+    margin-top:8px;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;
+    color:var(--accent);background:var(--accent-soft);border:1px solid var(--accent-line);
+    border-radius:var(--r-pill);padding:5px 14px;
+    transition:background var(--d1) var(--ease),color var(--d1) var(--ease),border-color var(--d1) var(--ease);
+  }
+  .ex-retry:hover{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
 
   /* ── 技能页 ───────────────────────────────── */
   .sk-sec{margin-bottom:22px}
@@ -7769,6 +7783,8 @@ const state = {
   busy: false,
   sessions: [],
   presets: [],
+  presetsLoading: false,
+  presetsError: '',
   tools: [],
   rows: [],
   presetId: 'manager',
@@ -8414,6 +8430,7 @@ function subItems(act) {
     }))
   }
   if (act === 'expert') {
+    if (state.presets.length === 0) void loadPresets()
     const used = new Set()
     const rows = state.presets.map((preset) => {
       const face = expertFace(preset.name, used)
@@ -8428,6 +8445,13 @@ function subItems(act) {
         },
       }
     })
+    if (state.presets.length === 0) {
+      rows.push({
+        label: state.presetsLoading ? '正在读取专家…' : '还没有读到专家',
+        desc: state.presetsLoading ? '稍等一下' : '点这里重新读取',
+        run: () => { void loadPresets(true) },
+      })
+    }
     rows.push({ foot: '查看全部专家', run: () => { closePlusMenu(); openExperts('experts') } })
     return rows
   }
@@ -9559,6 +9583,34 @@ function iconMark(icon, size) {
     '" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-' + icon + '"></use></svg>'
 }
 
+/* 预设是后端插件注册的：页面可能比后端先就绪，所以要能按需重取。
+   之前一次取空就写死一句空态文案，页面比后端快时专家页会永久空白。 */
+async function loadPresets(force) {
+  if (state.presetsLoading) return
+  if (!force && state.presets.length > 0) return
+  state.presetsLoading = true
+  state.presetsError = ''
+  if (state.view === 'experts') paintExperts()
+  // 传输层是 SSE 帧，帧丢了 Promise 就永远不落地：读取预设必须有超时兜底
+  const withTimeout = new Promise((_, reject) => {
+    setTimeout(() => reject(new Error('后端 8 秒没有响应')), 8000)
+  })
+  try {
+    const presets = await Promise.race([rpc('presets.list'), withTimeout])
+    state.presets = Array.isArray(presets) ? presets : []
+    if (state.presets.length === 0) state.presetsError = ''
+    if (!state.presets.some((preset) => preset.id === state.presetId)) {
+      const preferred = state.presets.find((preset) => preset.id === 'manager') || state.presets[0]
+      if (preferred) state.presetId = preferred.id
+    }
+  } catch (error) {
+    state.presetsError = error.message || '与后端断开连接'
+  } finally {
+    state.presetsLoading = false
+    if (state.view === 'experts') paintExperts()
+  }
+}
+
 function paintExperts() {
   const grid = $('exGrid')
   grid.innerHTML = ''
@@ -9612,7 +9664,17 @@ function paintExperts() {
   if (list.length === 0) {
     const empty = document.createElement('div')
     empty.className = 'ex-empty'
-    empty.textContent = state.presets.length === 0 ? '后端还没有返回专家预设。' : '没有匹配的专家，换个关键词试试。'
+    if (state.presetsLoading && state.presets.length === 0) {
+      empty.classList.add('busy')
+      empty.innerHTML = '<span class="ex-spin"></span><b>正在读取专家预设…</b><span>第一次打开会慢一点</span>'
+    } else if (state.presets.length === 0) {
+      empty.innerHTML = '<b>' + (state.presetsError ? '专家预设读取失败' : '暂时没有专家预设') + '</b>' +
+        '<span>' + (state.presetsError || '本地插件没有给出可用的专家') + '</span>' +
+        '<button type="button" class="ex-retry">重新读取</button>'
+      empty.querySelector('.ex-retry').onclick = () => { void loadPresets(true) }
+    } else {
+      empty.innerHTML = '<b>没有匹配的专家</b><span>换个关键词试试</span>'
+    }
     grid.appendChild(empty)
   }
 }
@@ -9958,7 +10020,7 @@ function switchExTab(tab) {
   $('paneSkills').hidden = tab !== 'skills'
   $('paneConnectors').hidden = tab !== 'connectors'
   $('exSearch').placeholder = tab === 'skills' ? '搜索工具' : tab === 'connectors' ? '搜索连接器' : '搜索专家'
-  if (tab === 'experts') paintExperts()
+  if (tab === 'experts') { paintExperts(); if (state.presets.length === 0) void loadPresets() }
   if (tab === 'skills') paintSkills()
   if (tab === 'connectors') void paintConnectors()
 }
@@ -9972,6 +10034,7 @@ function openExperts(tab) {
   $('viewChat').classList.remove('on')
   state.view = 'experts'
   switchExTab(tab || 'experts')
+  if (state.presets.length === 0) void loadPresets()
 }
 
 /* ── 更多：技能 / 专家 / 连接器 ───────────────────────── */
@@ -11416,11 +11479,9 @@ paintXpertChip()
 
 await connected
 try {
-  const [presets] = await Promise.all([rpc('presets.list'), loadPlugins()])
+  await Promise.all([loadPresets(true), loadPlugins()])
   void refreshLibrary()
-  state.presets = presets
-  const preferred = presets.find((preset) => preset.id === 'manager') || presets[0]
-  if (preferred) state.presetId = preferred.id
+  if (state.presets.length === 0) setTimeout(() => { void loadPresets(true) }, 1200)
   await refreshSessions()
 } catch (error) {
   toast('初始化失败：' + error.message, 'err')

@@ -59,8 +59,21 @@ export class SessionService {
     this.#persister = options.persister
   }
 
+  /**
+   * 自动分配 id。
+   *
+   * 计数器是进程内的，重启后从 0 开始，而磁盘上已经有 sess-1…；直接取 nextId()
+   * 就会和回放进来的会话撞车（`session "sess-3" already exists`），发第一条消息
+   * 就失败。这里只保证「没被占用」，跨重启也能继续往后排。
+   */
+  #freshId(): string {
+    let id = nextId('sess')
+    while (this.#sessions.has(id)) id = nextId('sess')
+    return id
+  }
+
   create(options: { id?: string; title?: string } = {}): SessionState {
-    const id = options.id ?? nextId('sess')
+    const id = options.id ?? this.#freshId()
     if (this.#sessions.has(id)) throw new Error(`session "${id}" already exists`)
     const state: SessionState = {
       id,
@@ -190,7 +203,7 @@ export class SessionService {
     const first = events[0]
     const titleEvent = events.find((event) => event.type === 'session')
     const title = (titleEvent?.payload as { title?: string } | undefined)?.title
-    const session = this.create({ id: first?.sessionId ?? nextId('sess'), title })
+    const session = this.create({ id: first?.sessionId ?? this.#freshId(), title })
     for (const event of events) {
       if (event.type === 'session') continue
       session.events.push(event)

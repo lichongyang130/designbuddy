@@ -187,7 +187,14 @@ async function route(req: IncomingMessage, res: ServerResponse): Promise<void> {
   }
 
   if (url.pathname === '/health') {
-    sendJson(res, 200, { ok: true, rows: app.rows.length, clients: connections.size })
+    // presets 数量进健康检查：空着的时候能一眼看出是插件没挂上还是前端没取到
+    let presets = 0
+    try {
+      presets = app.ctx.require<{ list: () => unknown[] }>('agents').list().length
+    } catch {
+      presets = 0
+    }
+    sendJson(res, 200, { ok: true, rows: app.rows.length, presets, clients: connections.size })
     return
   }
 
