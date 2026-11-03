@@ -111,6 +111,35 @@ test('every image a deck points at exists on disk', () => {
   }
 })
 
+test('幻灯片里引用的媒体文件都在，且没有外链', () => {
+  /* 视频 / 音频套是真文件：`<video src>` 写错一个字母，播放器只会静静地黑着，
+   * 而画廊照常显示海报。所以把每页渲染出来的 src 全抓出来对磁盘。 */
+  for (const deck of CASE_DECKS) {
+    const dir = join(publicDir, 'cases', deck.id)
+    const files = new Set(readdirSync(dir))
+    for (const [i, slide] of deck.slides.entries()) {
+      const html = slideHTML(deck as never, slide as never, i)
+      for (const m of html.matchAll(/src="([^"]+)"/g)) {
+        const src = m[1]
+        assert.ok(!/^[a-z]+:/i.test(src), `${deck.name} 第 ${i + 1} 页引用外链 ${src}`)
+        const name = src.startsWith(`cases/${deck.id}/`) ? src.slice(`cases/${deck.id}/`.length) : null
+        assert.ok(name, `${deck.name} 第 ${i + 1} 页的媒体路径不在本套目录里：${src}`)
+        assert.ok(files.has(name), `${deck.name} 第 ${i + 1} 页缺少媒体文件 ${src}`)
+      }
+    }
+  }
+})
+
+test('封底字标是一位大写字母', () => {
+  for (const deck of CASE_DECKS) {
+    for (const slide of deck.slides) {
+      const mark = (slide as { mark?: string }).mark
+      if (mark === undefined) continue
+      assert.match(mark, /^[A-Z]$/, `${deck.name}: 封底字标 ${mark} 应为单个大写字母`)
+    }
+  }
+})
+
 test('每个 deck 都声明了完整的品牌与版式元数据', () => {
   for (const deck of CASE_DECKS) {
     for (const key of ['id', 'name', 'cat', 'fmt', 'ratio', 'desc', 'by', 'slides'] as const) {
