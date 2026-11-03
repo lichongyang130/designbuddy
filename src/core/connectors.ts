@@ -52,6 +52,8 @@ export interface ConnectorToolSpec {
 
 export interface ConnectorEndpoint {
   baseUrl?: string
+  /** MCP 服务器地址（Streamable HTTP）。用户也可以在详情页里填，填了就覆盖这里。 */
+  url?: string
   /** 认证头的模板，`{token}` 会被替换成凭据值。 */
   headers?: Record<string, string>
   /** 连上之前用来验证凭据的那次请求。 */
@@ -78,7 +80,8 @@ export interface ConnectorManifest {
 }
 
 export interface ConnectorRecord {
-  state: 'connected' | 'error'
+  /** `idle` 只在断开后短暂存在，用来记住上次填的服务器地址。 */
+  state: 'connected' | 'error' | 'idle'
   since?: number
   lastOkAt?: number
   account?: string
@@ -86,6 +89,12 @@ export interface ConnectorRecord {
   at?: number
   /** 连接时是否允许了写操作。 */
   allowWrite?: boolean
+  /**
+   * 用户填的服务器地址（不是密钥，可以存状态文件）。两种写法：
+   *   - `https://mcp.example.com/mcp`：Streamable HTTP
+   *   - `stdio: node tools/mcp-echo.mjs`：本地子进程
+   */
+  url?: string
 }
 
 /**

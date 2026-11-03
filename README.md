@@ -5,7 +5,7 @@
 设计原则和 DSH 一致：**没有特权的核心，一切皆插件**。连 `tools`、`sessions`、`llm`、`agentLoop` 本身都是插件，都能单独卸载替换。
 
 - 零运行时依赖（用 Node 24 原生 TypeScript 类型擦除直接跑 `.ts`）
-- 133 个测试全部通过
+- 143 个测试全部通过
 - `tsc --noEmit` 类型检查通过
 - 完整 demo：Manager → 专家分派 → 记忆写回 → 插件热卸载
 
@@ -14,7 +14,7 @@
 ```bash
 node demo/run.ts                              # 看完整链路（不需要装任何依赖）
 node apps/client/main.ts                      # 跨进程版：客户端 spawn 宿主进程
-npm test                                      # 133 个用例
+npm test                                      # 143 个用例
 npx tsc -p tsconfig.json --noEmit             # 类型检查（需先 npm install）
 ```
 
@@ -39,7 +39,8 @@ src/
 │   └── schema.ts            #   JSON Schema 子集与参数校验
 ├── connectors/              # 连接器：目录 → 适配器 → 工具
 │   ├── catalog.ts           #   40 条 manifest（名称/权限/鉴权/工具）
-│   ├── adapters.ts          #   rest（真请求）与 demo（结构化样例）
+│   ├── adapters.ts          #   rest（真请求）、mcp（真握手）与 demo（结构化样例）
+│   ├── mcp.ts               #   MCP：JSON-RPC + Streamable HTTP + stdio 两种传输
 │   └── hub.ts               #   连接状态机、工具注册/注销、JSONL 审计
 ├── plugins/                 # 每个能力都是一个插件（export name/inject/apply）
 │   ├── core-*.ts            #   把 core/ 的服务挂成 ctx.<key>
@@ -57,6 +58,9 @@ src/
     ├── loader.ts            #   profile / bundle / patch
     ├── app.ts               #   挂载、卸载、依赖检查
     └── profiles.ts          #   DesignBuddy 的 core / models / design 三个 bundle
+
+tools/
+└── mcp-echo.mjs             # 最小 MCP 服务器（stdio），测试与手动联调都用它
 
 apps/
 ├── host/main.ts             # 宿主进程：JSONL over stdio，持有内核

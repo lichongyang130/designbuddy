@@ -52,8 +52,12 @@ export interface ConnectorSummary {
   since?: number
   error?: string
   allowWrite: boolean
-  /** 当前真正注册进工具表的工具名。 */
+  /** 用户填过的 MCP 服务器地址：详情页要能回填，不然重连一次就得重新输。 */
+  url?: string
+  /** 当前真正注册进工具表的工具名（MCP 连上后以服务器返回的为准）。 */
   activeTools: string[]
+  /** `activeTools` 里哪些是写操作。 */
+  writeTools: string[]
 }
 
 export interface ConnectResult {
@@ -85,6 +89,20 @@ interface Live {
   adapter: AdapterRuntime
   disposers: Disposer[]
   manifest: ConnectorManifest
+}
+
+/**
+ * 用户填的「服务器」有两种写法，统一在这里拆开，别让下层判断字符串前缀。
+ *
+ *   `https://…/mcp`            → HTTP 传输
+ *   `stdio: node foo.mjs --x`  → 子进程传输
+ */
+export function parseServerTarget(raw: string): { url: string; command: string[] } {
+  const text = raw.trim()
+  if (text.toLowerCase().startsWith('stdio:')) {
+    return { url: '', command: text.slice(6).trim().split(/\s+/).filter((part) => part !== '') }
+  }
+  return { url: text, command: [] }
 }
 
 export class ConnectorHub {
@@ -132,7 +150,9 @@ export class ConnectorHub {
         since: record?.since,
         error: live ? undefined : record?.error,
         allowWrite: record?.allowWrite === true,
+        url: record?.url,
         activeTools: live ? live.adapter.tools.map((tool) => tool.name) : [],
+        writeTools: live ? (live.adapter.writeTools ?? []) : [],
       }
     })
   }
@@ -180,18 +200,25 @@ export class ConnectorHub {
     return undefined
   }
 
-  async test(id: string, provided?: Record<string, string>): Promise<TestResult> {
+  async test(
+    id: string,
+    provided?: Record<string, string>,
+    options: { url?: string } = {},
+  ): Promise<TestResult> {
     const manifest = findConnector(id)
     if (!manifest) throw new Error('没有这个连接器：' + id)
     const startedAt = this.#now()
     try {
-      if (manifest.demo) {
+      const server = (options.url ?? this.#store.get(id)?.url ?? '').trim()
+      const target = parseServerTarget(server)
+      const hasMcp = server !== '' || (manifest.endpoint?.command ?? []).length > 0
+      if (manifest.demo && !hasMcp) {
         return { ok: true, account: '演示数据', ms: Math.max(1, this.#now() - startedAt) }
       }
       const secrets = this.#secretsFor(id, provided)
       const missing = this.#missingAuth(manifest, secrets)
       if (missing.length > 0) return { ok: false, error: '还缺：' + missing.join('、'), ms: this.#now() - startedAt }
-      const adapter = await createAdapter({ manifest, secrets, fetchImpl: this.#fetchImpl, allowWrite: false })
+      const adapter = await createAdapter({ manifest, secrets, ...target, fetchImpl: this.#fetchImpl, allowWrite: false })
       try {
         const probe = await adapter.probe()
         return { ok: true, account: probe.account, ms: Math.max(1, this.#now() - startedAt) }
@@ -203,20 +230,29 @@ export class ConnectorHub {
     }
   }
 
-  async connect(id: string, provided?: Record<string, string>, options: { allowWrite?: boolean } = {}): Promise<ConnectResult> {
+  async connect(
+    id: string,
+    provided?: Record<string, string>,
+    options: { allowWrite?: boolean; url?: string } = {},
+  ): Promise<ConnectResult> {
     const manifest = findConnector(id)
     if (!manifest) throw new Error('没有这个连接器：' + id)
     if (this.#live.has(id)) this.disconnect(id)
 
     const allowWrite = options.allowWrite === true
+    // 地址的优先级：这次填的 > 上次存的 > manifest 里的默认值。
+    const server = (options.url ?? this.#store.get(id)?.url ?? '').trim()
+    const target = parseServerTarget(server)
     const secrets = this.#secretsFor(id, provided)
     const missing = this.#missingAuth(manifest, secrets)
     if (missing.length > 0) throw new Error('还缺：' + missing.join('、'))
 
     let account: string | undefined
-    if (!manifest.demo) {
+    const liveTarget = target.url !== '' || target.command.length > 0
+    if (!manifest.demo || liveTarget) {
       // 先探测再落盘：连不上就不该在磁盘上留下半连接状态。
-      const probeAdapter = await createAdapter({ manifest, secrets, fetchImpl: this.#fetchImpl, allowWrite: false })
+      // 标着演示但用户给了真地址的条目也走这一步——他们要的是真连接，不是样例。
+      const probeAdapter = await createAdapter({ manifest, secrets, ...target, fetchImpl: this.#fetchImpl, allowWrite: false })
       try {
         const probe = await probeAdapter.probe()
         account = probe.account
@@ -229,6 +265,7 @@ export class ConnectorHub {
     const adapter = await createAdapter({
       manifest,
       secrets,
+      ...target,
       allowWrite,
       fetchImpl: this.#fetchImpl,
     })
@@ -238,8 +275,11 @@ export class ConnectorHub {
       state: 'connected',
       since: this.#now(),
       lastOkAt: this.#now(),
-      account: account ?? (manifest.demo ? '演示数据' : undefined),
+      account:
+        account ??
+        (manifest.demo === true && server === '' && (manifest.endpoint?.command ?? []).length === 0 ? '演示数据' : undefined),
       allowWrite,
+      ...(server === '' ? {} : { url: server }),
     })
     return { id, state: 'connected', account, tools: adapter.tools.map((tool) => tool.name), allowWrite }
   }
@@ -252,7 +292,10 @@ export class ConnectorHub {
       void live.adapter.close?.()
     }
     this.#credentials.remove(id)
-    this.#store.remove(id)
+    // 记住用户填过的服务器地址：断开是为了换一个连，不是为了让他重新输一遍。
+    const server = this.#store.get(id)?.url
+    if (server) this.#store.set(id, { state: 'idle', url: server })
+    else this.#store.remove(id)
     return { id, state: 'idle' }
   }
 

@@ -1230,3 +1230,72 @@ rail 72 │ 自定义侧栏 278px（#f5f8fd，右描边 #d6e1ef）│ 主区纯�
 - 浏览器实测（1440×900 与 390×844）：卡片宽度分别 820 / 302，`scrollWidth` 不溢出，`errs []`；点「允许」后
   `.designbuddy/connectors.log.jsonl` 多一行 `notion.create_page ok`；点「拒绝」则**一行都不多**——工具确实没执行。
 - 切 en 后卡片为 `Deny / Allow` + 英文提示，除连接器名与工具描述（目录数据，和卡片上显示的中文描述同源）外无中文残留。
+
+---
+
+## 54. MCP 两种传输：39 个连接器终于有一条真通道（2026-11-04）
+
+目录里 33 个 `mcp-http` + 6 个 `local-cli` 之前一条都连不上——`createAdapter` 只认 `demo` 和 `rest`，
+其余一律抛「还没有对应的运行时适配器」。这一轮把这条总闸接通：**一套 JSON-RPC 语义，两种传输**。
+
+### 54.1 为什么先做 MCP 而不是逐个接 REST
+
+39 个条目里有 33 个自己就是 MCP 服务。给每个厂商写一套端点表，等于把 OpenAPI 解析器和 39 份适配代码
+一起背进来；而 MCP 只要接通一次，`tools/list` 返回什么就注册什么——**工具表由服务器决定，不由我们的代码决定**。
+唯一要写死的只有「怎么连上它」。
+
+### 54.2 `src/connectors/mcp.ts`
+
+- `McpConnection`：id 分配、超时、错误码、服务器主动发来的请求（一律回 `-32601`，别让它一直等）、
+  `notifications/*` 分发给订阅者。握手是强制步骤：没 `initialize` 就 `tools/list`，很多服务器直接断。
+- `createHttpWire`：Streamable HTTP。一条 POST 出去，回来可能是 `application/json`，也可能是
+  `text/event-stream`（按行读 `data:`）；`initialize` 响应头里的 `Mcp-Session-Id` 之后每个请求都带上；
+  关闭时尽量发一次 `DELETE` 收会话，服务器不支持就算了。
+- `createStdioWire`：`spawn` 子进程，一行一条消息。stderr 收最后 4KB，进程退出时拼进错误里——
+  「MCP 子进程已退出（code 1）：Cannot find module …」比「连接失败」有用得多。关闭走 `SIGTERM`，
+  3 秒不退再 `SIGKILL`，`close()` 会等 `exit`，不会留僵尸。
+- 超时一律报错、不重试：工具调用重试可能把「创建」执行两遍。
+
+### 54.3 地址是用户说了算
+
+39 个条目都没有官方 MCP 地址可写死——**编一个假的比留空更糟**。所以详情页给一个输入框，两种写法：
+
+| 写法 | 传输 |
+|---|---|
+| `https://…/mcp` | HTTP |
+| `stdio: node tools/mcp-echo.mjs` | 子进程 |
+
+`parseServerTarget()` 在 Hub 里拆前缀，下层只认 `{ url, command }`，不用判断字符串。填了地址就走真 MCP，
+哪怕目录里标着「演示」——地址是用户给的，他知道自己连的是什么；不填才回落演示数据。
+地址存进 `connectors.json`，断开后仍然回填（断开是为了换一个连，不是为了让他重新输一遍）。
+
+### 54.4 工具清单不许撒谎
+
+连上真服务器之后，`tools/list` 返回的工具和目录里写的那几条很可能不是一套。详情页原来的「连接后可用（2）」
+列的是目录预览，用户会以为 `edgeone.deploy` 能用，实际注册的是 `edgeone.echo`。
+现在连接后直接列**服务器实际返回的**工具，标题也换成「服务器实际返回（N 个）」；横幅从「演示数据」
+变成「已连上真服务器：…」。
+
+读写判定取两路里更保守的：目录标了 `write: true`，或服务器的 `annotations.readOnlyHint === false`。
+两者都说只读才当读工具。写工具仍然要连接时勾「允许写操作」，注册之后每次调用还要过 §53 的审批。
+
+### 54.5 仓库里带一个能真连的样例
+
+`tools/mcp-echo.mjs`：最小 MCP 服务器（stdio），实现 `initialize / tools/list / tools/call / ping`，
+给三个工具——`echo`（读）、`now`（读）、`add_note`（写）。测试 `spawn` 它跑真握手，用户也能在界面上
+填 `stdio: node tools/mcp-echo.mjs` 手动联调。**没有它，这套代码就只是「写了但从没和真服务器握过手」。**
+
+### 54.6 验收
+
+- `test/mcp.test.ts` 10 条：stdio 真子进程握手/列工具/调工具/关进程、HTTP session id 贯穿、SSE 回包解析、
+  连不上说清是谁、未知方法回错误码、适配器读写过滤与 schema 透传、连接器层连上/断开/错地址、`parseServerTarget`。
+- `npm test` **143/143**。
+- 浏览器实测（1440×900）：EdgeOne 详情填 `stdio: node tools/mcp-echo.mjs` → 连上 →
+  横幅「已连上真服务器」、工具清单变成 `edgeone.echo / edgeone.now`、技能页同步出现这两个工具 →
+  断开 → 回到未连接态且地址仍回填，`errs []`，**没有残留子进程**。
+
+### 54.7 还没做的
+
+- 老式「HTTP+SSE」传输（`GET /sse` 拿端点再 POST `/messages`）没实现，遇到只支持那套的老服务器会握手失败。
+- 33 个 `mcp-http` 条目仍然没有预置地址：要么等厂商给官方 MCP 端点，要么用户自己填。
+- `tools/list` 变化（`notifications/tools/list_changed`）现在只到连接层，没有触发重新注册工具表。

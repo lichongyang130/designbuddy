@@ -162,6 +162,7 @@ export class HostServer {
         return hub.test(
           String(params.id ?? ''),
           (params.secrets ?? {}) as Record<string, string>,
+          { url: typeof params.url === 'string' ? params.url : undefined },
         )
       }
       case 'connectors.connect': {
@@ -169,7 +170,10 @@ export class HostServer {
         return hub.connect(
           String(params.id ?? ''),
           (params.secrets ?? {}) as Record<string, string>,
-          { allowWrite: params.allowWrite === true },
+          {
+            allowWrite: params.allowWrite === true,
+            url: typeof params.url === 'string' ? params.url : undefined,
+          },
         )
       }
       case 'connectors.disconnect': {

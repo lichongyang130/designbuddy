@@ -10519,12 +10519,23 @@ function renderConnectorBody(item, log) {
   desc.textContent = item.desc
   body.appendChild(desc)
 
-  if (item.demo) {
+  const isMcp = item.kind === 'mcp-http' || item.kind === 'mcp-stdio' || item.kind === 'local-cli'
+  if (item.state === 'connected' && item.url) {
+    const banner = document.createElement('div')
+    banner.className = 'cnx-banner ok'
+    banner.innerHTML = iconMark('check', 13) + '<span>' + tf('已连上真服务器：%s', item.url) + '</span>'
+    body.appendChild(banner)
+  } else if (item.demo && isMcp) {
+    const banner = document.createElement('div')
+    banner.className = 'cnx-banner'
+    banner.innerHTML = iconMark('plug', 13) + '<span>' + t('目录里这一项没有预置服务器。填了 MCP 地址就连真服务器，不填走演示数据（每条结果都会标注）。') + '</span>'
+    body.appendChild(banner)
+  } else if (item.demo) {
     const banner = document.createElement('div')
     banner.className = 'cnx-banner'
     banner.innerHTML = iconMark('plug', 13) + '<span>' + (item.note || '该连接器暂未接入真实服务，连接后返回演示数据') + '。连上后工具会真的注册进技能表，调用返回结构化样例。</span>'
     body.appendChild(banner)
-  } else if (item.kind !== 'rest') {
+  } else if (item.kind !== 'rest' && !isMcp) {
     const banner = document.createElement('div')
     banner.className = 'cnx-banner'
     banner.innerHTML = iconMark('plug', 13) + '<span>' + tf('该类型（%s）的运行时适配器还没接，连接会明确报错而不是静默成功。', item.kind) + '</span>'
@@ -10540,6 +10551,30 @@ function renderConnectorBody(item, log) {
 
   const hasWrite = item.tools.some((tool) => tool.write)
   const fields = {}
+  if (isMcp && item.state !== 'connected') {
+    const sec = document.createElement('div')
+    sec.className = 'cnx-sec'
+    sec.innerHTML = '<b>' + t('服务器') + '</b>'
+    const wrap = document.createElement('div')
+    wrap.className = 'mfm-field'
+    const label = document.createElement('label')
+    label.textContent = t('MCP 服务器地址')
+    const input = document.createElement('input')
+    input.className = 'mfm-input'
+    input.type = 'text'
+    input.autocomplete = 'off'
+    input.spellcheck = false
+    input.placeholder = item.kind === 'local-cli' ? 'stdio: node tools/mcp-echo.mjs' : 'https://…/mcp'
+    input.value = item.url || ''
+    fields.__url = input
+    const help = document.createElement('div')
+    help.className = 'cnx-msg'
+    help.style.color = 'var(--fg-subtle)'
+    help.textContent = t('填了就能连真服务器；留空走演示数据。本地服务用 stdio: 开头，例如 stdio: node tools/mcp-echo.mjs')
+    wrap.append(label, input, help)
+    sec.appendChild(wrap)
+    body.appendChild(sec)
+  }
   if (item.state !== 'connected' && item.auth.length > 0) {
     const sec = document.createElement('div')
     sec.className = 'cnx-sec'
@@ -10595,13 +10630,18 @@ function renderConnectorBody(item, log) {
 
   const toolsSec = document.createElement('div')
   toolsSec.className = 'cnx-sec'
-  toolsSec.innerHTML = '<b>' + tf('连接后可用（%s）', item.tools.length) + '</b>' +
-    '<div class="cnx-tools">' + item.tools.map((tool) => {
-      const active = item.activeTools.includes(item.id + '.' + tool.name)
+  // 连上真服务器之后，能用的工具由服务器决定，和目录里写的可能不是一套：
+  // 这时列实际注册的那些，别拿预览糊弄人。
+  const live = item.state === 'connected' && item.activeTools.length > 0
+  const rows = live
+    ? item.activeTools.map((name) => ({ name, desc: '', write: item.writeTools.includes(name) }))
+    : item.tools.map((tool) => ({ name: item.id + '.' + tool.name, desc: tool.desc, write: tool.write }))
+  toolsSec.innerHTML =
+    '<b>' + (live ? tf('服务器实际返回（%s 个）', rows.length) : tf('连接后可用（%s）', rows.length)) + '</b>' +
+    '<div class="cnx-tools">' + rows.map((tool) => {
       return '<div class="cnx-tool">' +
-        '<div class="cnx-tool-main"><code>' + item.id + '.' + tool.name + '</code><small>' + tool.desc + '</small></div>' +
-        '<span class="cnx-tag ' + (tool.write ? 'write' : 'read') + '">' + t(tool.write ? '写' : '读') + '</span>' +
-        (item.state === 'connected' && !active ? '<span class="cnx-tag">未注册</span>' : '') +
+        '<div class="cnx-tool-main"><code>' + tool.name + '</code>' + (tool.desc ? '<small>' + tool.desc + '</small>' : '') + '</div>' +
+        (tool.desc || live ? '<span class="cnx-tag ' + (tool.write ? 'write' : 'read') + '">' + t(tool.write ? '写' : '读') + '</span>' : '') +
       '</div>'
     }).join('') + '</div>'
   body.appendChild(toolsSec)
@@ -10630,7 +10670,7 @@ function renderConnectorBody(item, log) {
     msg.className = 'cnx-msg'
     msg.textContent = '正在测试…'
     try {
-      const result = await rpc('connectors.test', { id: item.id, secrets: collectSecrets() })
+      const result = await rpc('connectors.test', { id: item.id, secrets: collectSecrets(), url: collectUrl() })
       msg.className = 'cnx-msg ' + (result.ok ? 'ok' : 'err')
       msg.textContent = result.ok
         ? tf('通了 · %s（%s ms）', result.account || '—', result.ms)
@@ -10646,10 +10686,17 @@ function renderConnectorBody(item, log) {
   function collectSecrets() {
     const out = {}
     for (const [key, node] of Object.entries(fields)) {
-      if (key === '__allowWrite') continue
+      if (key === '__allowWrite' || key === '__url') continue
       out[key] = node.value
     }
     return out
+  }
+
+  /** 服务器地址不是密钥：单独传，后端会存进状态文件好回填。 */
+  function collectUrl() {
+    const node = fields.__url
+    const value = node ? String(node.value || '').trim() : ''
+    return value === '' ? undefined : value
   }
 
   if (item.state === 'connected') {
@@ -10685,6 +10732,7 @@ function renderConnectorBody(item, log) {
           id: item.id,
           secrets: collectSecrets(),
           allowWrite: Boolean(fields.__allowWrite && fields.__allowWrite.checked),
+          url: collectUrl(),
         })
         toast(tf('已连接 %s，新增 %s 个工具', item.name, result.tools.length), 'ok')
         await loadConnectors(true)

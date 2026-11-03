@@ -5,8 +5,9 @@
  * 只管注册与注销，不需要知道对面是 REST、MCP 还是本地进程。这也是后面接
  * `mcp-stdio` 时唯一要新增的地方。
  *
- * 当前落地两种：
+ * 当前落地三种：
  *   - `rest`：按 manifest 里的端点表发 HTTP（GitHub 走这条）
+ *   - `mcp`：MCP 服务器（HTTP 或 stdio），工具表以服务器 `tools/list` 为准
  *   - `demo`：没有真实后端的目录项，返回结构化演示数据，且**每条结果都带标注**
  *
  * @module designbuddy/connectors/adapters
@@ -16,9 +17,12 @@ import type { ConnectorManifest, ConnectorToolSpec } from '../core/connectors.ts
 import type { JsonSchema } from '../core/schema.ts'
 import type { ToolDefinition } from '../core/tools.ts'
 import { DEMO_NOTE } from './catalog.ts'
+import { openMcp } from './mcp.ts'
 
 export interface AdapterRuntime {
   tools: ToolDefinition[]
+  /** 这些工具里哪些是写操作（详情页要标出来，审批也靠它解释「为什么要问你」）。 */
+  writeTools?: string[]
   /** 验证凭据并取回账号名，供详情页显示。 */
   probe(): Promise<{ account?: string }>
   close(): Promise<void> | void
@@ -29,6 +33,10 @@ export interface AdapterOptions {
   secrets: Record<string, string>
   /** 是否注册写操作工具；默认 false。 */
   allowWrite?: boolean
+  /** 用户填的 MCP 服务器地址，优先于 manifest 里的默认值。 */
+  url?: string
+  /** 用户给的 stdio 启动命令，优先于 manifest 里的 `endpoint.command`。 */
+  command?: string[]
   fetchImpl?: typeof fetch
   timeoutMs?: number
 }
@@ -47,6 +55,11 @@ function schemaOf(spec: ConnectorToolSpec): JsonSchema {
 
 function fullName(manifest: ConnectorManifest, spec: ConnectorToolSpec): string {
   return manifest.id + '.' + spec.name
+}
+
+/** 只拿到工具名（MCP 服务器返回的名字）时用这个，别为了调用它去伪造一个 spec。 */
+function fullNameOf(manifest: ConnectorManifest, name: string): string {
+  return manifest.id + '.' + name
 }
 
 /* ── REST ─────────────────────────────────────────────────── */
@@ -161,6 +174,7 @@ function createRestAdapter(options: AdapterOptions): AdapterRuntime {
 
   return {
     tools,
+    writeTools: tools.filter((item) => manifest.tools.find((spec) => fullName(manifest, spec) === item.name)?.write === true).map((item) => item.name),
     probe: async () => {
       const probe = endpoint.probe
       if (!probe) {
@@ -174,6 +188,96 @@ function createRestAdapter(options: AdapterOptions): AdapterRuntime {
       return { account: account === undefined ? undefined : String(account) }
     },
     close: () => undefined,
+  }
+}
+
+/* ── MCP ──────────────────────────────────────────────────── */
+
+/** manifest 里声明的工具名 → 写标记；服务器多出来的工具不在表里。 */
+function writeHint(manifest: ConnectorManifest, toolName: string): boolean {
+  return manifest.tools.find((spec) => spec.name === toolName)?.write === true
+}
+
+/**
+ * 把 MCP 服务器的 `tools/list` 变成一组 `ToolDefinition`。
+ *
+ * 判断读写有两路，取「更保守」的那一路：
+ *   1. manifest 里同名的 spec 标了 `write: true`；
+ *   2. 服务器自己的 `annotations.readOnlyHint === false`（或 `destructiveHint`）。
+ * 两者都说只读才当读工具——多拦一次只是多点一下，漏拦一次是改坏线上数据。
+ */
+export async function createMcpAdapter(options: AdapterOptions): Promise<AdapterRuntime> {
+  const { manifest, secrets } = options
+  const endpoint = manifest.endpoint ?? {}
+  const url = (options.url ?? endpoint.url ?? '').trim()
+  const command = options.command ?? endpoint.command ?? []
+  const timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT
+  const transport = url !== '' ? 'http' : 'stdio'
+
+  if (transport === 'stdio' && command.length === 0) {
+    throw new Error(manifest.name + ' 还没有配置 MCP 服务器地址或启动命令')
+  }
+
+  const headers: Record<string, string> = {}
+  for (const [key, value] of Object.entries(endpoint.headers ?? {})) {
+    headers[key] = value.replace(/\{(\w+)\}/g, (_, name: string) => secrets[name] ?? '')
+  }
+
+  const handle = await openMcp({
+    transport,
+    url,
+    command,
+    headers,
+    timeoutMs,
+    fetchImpl: options.fetchImpl,
+  })
+  const { connection, server } = handle
+
+  let tools: ToolDefinition[] = []
+  const writeTools: string[] = []
+  try {
+    const listed = await connection.listTools()
+    for (const info of listed) {
+      const readOnly =
+        info.annotations?.readOnlyHint === true &&
+        info.annotations?.destructiveHint !== true
+      const write = writeHint(manifest, info.name) || !readOnly
+      if (write && options.allowWrite !== true) continue
+      const properties = info.inputSchema?.properties ?? {}
+      if (write) writeTools.push(fullNameOf(manifest, info.name))
+      tools.push({
+        name: fullNameOf(manifest, info.name),
+        description: (info.description ?? info.name) + (write ? '（写操作）' : ''),
+        parameters: {
+          type: 'object',
+          properties,
+          ...(info.inputSchema?.required ? { required: info.inputSchema.required } : {}),
+        },
+        timeoutMs,
+        execute: async (args) => {
+          try {
+            const result = await connection.callTool(info.name, args)
+            if (result.isError) throw new Error(result.text || 'MCP 工具返回失败')
+            return result.text
+          } catch (error) {
+            const message = error instanceof Error ? error.message : String(error)
+            throw new Error(manifest.name + ' · ' + info.name + ' 失败：' + message)
+          }
+        },
+      })
+    }
+  } catch (error) {
+    await connection.close()
+    throw error
+  }
+
+  return {
+    tools,
+    writeTools,
+    probe: async () => ({
+      account: [server.name, server.version].filter(Boolean).join(' ') || undefined,
+    }),
+    close: () => connection.close(),
   }
 }
 
@@ -266,6 +370,10 @@ function createDemoAdapter(options: AdapterOptions): AdapterRuntime {
 
 export async function createAdapter(options: AdapterOptions): Promise<AdapterRuntime> {
   const { manifest } = options
+  const mcp = manifest.kind === 'mcp-http' || manifest.kind === 'mcp-stdio' || manifest.kind === 'local-cli'
+  // 填了真实的服务器地址就走真 MCP，哪怕目录里标着演示——地址是用户给的，他知道自己连的是什么。
+  if (mcp && (options.url ?? manifest.endpoint?.url ?? '').trim() !== '') return createMcpAdapter(options)
+  if (mcp && (options.command ?? manifest.endpoint?.command ?? []).length > 0) return createMcpAdapter(options)
   if (manifest.demo) return createDemoAdapter(options)
   if (manifest.kind === 'rest') return createRestAdapter(options)
   throw new Error(manifest.name + ' 还没有对应的运行时适配器（' + manifest.kind + '）')

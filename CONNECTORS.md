@@ -143,19 +143,47 @@ remove(id: string): void
 | 方法 | 入参 | 返回 |
 |---|---|---|
 | `connectors.list` | — | 目录 40 项 + 每项 `state / hasKey / account / toolCount` |
-| `connectors.test` | `{ id, secrets? }` | `{ ok, account?, error?, ms }`，**不落盘** |
-| `connectors.connect` | `{ id, secrets }` | `{ state: 'connected', tools: [...] }` |
+| `connectors.test` | `{ id, secrets?, url? }` | `{ ok, account?, error?, ms }`，**不落盘** |
+| `connectors.connect` | `{ id, secrets, url?, allowWrite? }` | `{ state: 'connected', tools: [...] }` |
 | `connectors.disconnect` | `{ id }` | `{ state: 'idle' }` |
 | `connectors.tools` | `{ id }` | 该连接器已注册的工具名与入参 schema 摘要 |
 | `connectors.log` | `{ id, limit }` | 最近调用（工具名 / 耗时 / 成功失败） |
 
-### 适配器怎么实现（三选一，按目录声明的 kind）
+### 适配器怎么实现（按目录声明的 kind 分派）
 
-- **`mcp-stdio` / `mcp-http`（战略主线）**：讲 MCP 的 JSON-RPC：`initialize` → `tools/list` → 包装成
-  `ToolDefinition`，`tools/call` 转发。40 项里一大半描述就是「XXX MCP」，这条通道一次接通一片。
+- **`mcp-http` / `mcp-stdio` / `local-cli`（战略主线，已实现）**：`src/connectors/mcp.ts` 一个 JSON-RPC 客户端，
+  两种传输共用一套语义：`initialize` → `notifications/initialized` → `tools/list`（按 cursor 翻页）→ `tools/call`。
+  工具表**以服务器 `tools/list` 返回为准**，不是目录里写的那几条。
 - **`rest`**：manifest 里给一个极小的端点表（`{ tool, method, path, bodyFrom }`），不引入 OpenAPI 解析器。
   GitHub 用它起步最省事。
-- **`builtin`**：就是现在的 figma 那种，凭据由插件自己管；用来做「无需配置、开箱可用」的样本。
+- **`demo`**：没配服务器、也没填地址的条目，返回结构化演示数据，每条结果都带 `demo: true`。
+
+### MCP：一条通道覆盖 39 个条目
+
+目录里 33 个 `mcp-http` + 6 个 `local-cli` 都走这条通道。**连哪台服务器是用户说了算**——
+详情页有一个「MCP 服务器地址」输入框，两种写法：
+
+| 写法 | 传输 | 例子 |
+|---|---|---|
+| `https://…/mcp` | Streamable HTTP（POST，响应可为 JSON 或 SSE，`Mcp-Session-Id` 原样带回） | `https://mcp.example.com/mcp` |
+| `stdio: <命令> <参数…>` | 本地子进程，一行一条 JSON-RPC | `stdio: node tools/mcp-echo.mjs` |
+
+不填就走演示数据，详情里的横幅会写明当前是哪种状态；连上之后横幅变成「已连上真服务器：…」，
+工具清单换成服务器实际返回的那几个。地址会存进 `connectors.json`，断开后仍然回填。
+
+**读写怎么判定**：取两路里更保守的那个——
+
+1. 目录里同名工具标了 `write: true`；
+2. 服务器 `annotations.readOnlyHint === false`（或有 `destructiveHint`）。
+
+两者都说只读才当读工具。写工具仍然要在连接时勾「允许写操作」才注册，注册之后每次调用还要过审批（见下方 §安全边界）。
+
+**仓库里带了一个可以真连的样例**：`tools/mcp-echo.mjs`，实现 `initialize / tools/list / tools/call`，
+提供 `echo`（读）、`now`（读）、`add_note`（写）三个工具。`npm test` 会 `spawn` 它跑真握手，
+你也可以在界面上填 `stdio: node tools/mcp-echo.mjs` 手动试。
+
+**已知限制**：只实现了 Streamable HTTP（2025-03-26 起的标准）。更早的「HTTP+SSE」（`GET /sse` 拿端点、
+再 POST 到 `/messages`）没有做——遇到只支持那套的老服务器会连不上，错误信息里会写明是握手阶段失败。
 
 ### 安全边界（写进代码注释，也写进详情页）
 
@@ -248,7 +276,8 @@ remove(id: string): void
 
 ### P1 · 战略通道与授权（3–5 天）
 
-1. `mcp-stdio` 适配器 + 一个本地 MCP 服务样例（`tools/mcp-echo.mjs`），跑通握手与 `tools/call`。
+1. ~~`mcp-stdio` 适配器 + 一个本地 MCP 服务样例（`tools/mcp-echo.mjs`），跑通握手与 `tools/call`~~
+   （已完成：`src/connectors/mcp.ts`，两种传输；样例在 `tools/mcp-echo.mjs`）。
 2. OAuth 设备码流（GitHub / 飞书），凭据自动续期。
 3. ~~`ToolGuard` 写操作确认~~（已完成：`approvals` 插件 + `ApprovalBroker`）+ 审计日志 + 详情页「最近调用」。
 4. 40 项全部可达：没有真实后端的走 `demo`，标注清晰。
