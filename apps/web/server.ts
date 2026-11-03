@@ -194,7 +194,22 @@ async function route(req: IncomingMessage, res: ServerResponse): Promise<void> {
     } catch {
       presets = 0
     }
-    sendJson(res, 200, { ok: true, rows: app.rows.length, presets, clients: connections.size })
+    // 连接器计数：连上/断开之后一眼能看出来，也方便写验收脚本
+    let connectors = { total: 0, connected: 0, tools: 0 }
+    try {
+      const hub = app.ctx.require<{
+        list: () => { id: string; state: string; activeTools: string[] }[]
+      }>('connectors')
+      const items = hub.list()
+      connectors = {
+        total: items.length,
+        connected: items.filter((item) => item.state === 'connected').length,
+        tools: items.reduce((sum, item) => sum + item.activeTools.length, 0),
+      }
+    } catch {
+      connectors = { total: 0, connected: 0, tools: 0 }
+    }
+    sendJson(res, 200, { ok: true, rows: app.rows.length, presets, clients: connections.size, connectors })
     return
   }
 
