@@ -5370,6 +5370,7 @@
 
   /* ── 演示文稿首页（对齐参考截图） ─────────────── */
   .hero.mode{max-width:620px}
+  .hero.mode.has-expert{max-width:752px}
   .hero.mode .art.wide{
     width:104px;height:72px;margin-top:16px;border-radius:12px;object-fit:cover;
     transform:rotate(-6deg);box-shadow:0 10px 24px rgba(24,36,64,.18);
@@ -5473,6 +5474,51 @@
   .mm-tx b{font-size:14px;font-weight:600;color:var(--fg);line-height:1.35}
   .mm-tx small{font-size:12.5px;color:var(--fg-subtle);line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   @media (max-width:900px){.mm-grid{grid-template-columns:1fr}}
+
+  /* ── 专家召唤：整页加载 + 输入框旁的专家胶囊 ─────────────── */
+  .bar{flex-wrap:wrap;row-gap:6px}
+  .bar .grow{flex:1 1 0;min-width:10px}
+  .xpertchip{display:flex;align-items:center;flex:none;margin-left:6px}
+  .mchip.xchip{padding:0 8px 0 5px;gap:7px}
+  .prompt:not(.mode-prompt) .mchip.xchip{height:30px}
+  .mode-prompt .mchip.xchip{height:30px;padding:0 8px 0 5px;gap:7px}
+  .chat .mchip.xchip{height:26px;font-size:12.5px}
+  .xchip .xface{width:20px;height:20px;border-radius:50%;object-fit:cover;flex:none;background:var(--surface-2)}
+  .chat .xchip .xface{width:18px;height:18px}
+  .xchip .xname{max-width:132px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .summon{
+    position:fixed;inset:0;z-index:220;display:grid;place-items:center;
+    background:radial-gradient(120% 90% at 50% -10%,var(--accent-soft) 0%,var(--bg) 62%);
+    opacity:0;transition:opacity var(--d3) var(--ease);
+  }
+  .summon.on{opacity:1}
+  .summon.leaving{opacity:0}
+  html[data-theme="dark"] .summon{background:radial-gradient(120% 90% at 50% -10%,#182242 0%,var(--bg) 64%)}
+  .sm-card{display:flex;flex-direction:column;align-items:center;text-align:center;width:min(420px,86vw)}
+  .sm-ava{position:relative;width:104px;height:104px;display:grid;place-items:center}
+  .sm-ava img{position:relative;z-index:1;width:104px;height:104px;border-radius:50%;object-fit:cover;border:3px solid var(--surface);box-shadow:0 12px 32px rgba(42,92,240,.20)}
+  .sm-halo{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle,rgba(42,92,240,.26),transparent 70%);animation:smpulse 1.9s var(--ease) infinite}
+  .sm-ring{position:absolute;inset:-13px;border-radius:50%;border:2px solid transparent;border-top-color:var(--accent);border-right-color:var(--accent-line);animation:smspin 1.15s linear infinite}
+  @keyframes smspin{to{transform:rotate(360deg)}}
+  @keyframes smpulse{0%{transform:scale(.94);opacity:.85}70%{transform:scale(1.45);opacity:0}100%{opacity:0}}
+  .sm-kicker{margin-top:26px;font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--accent);font-weight:600}
+  .sm-name{margin-top:9px;font-size:25px;font-weight:700;letter-spacing:-.02em;color:var(--ink-strong)}
+  .sm-role{margin-top:7px;font-size:13.5px;line-height:1.6;color:var(--fg-muted);max-width:330px}
+  .sm-steps{margin:24px auto 0;display:flex;flex-direction:column;gap:10px;align-items:flex-start;min-width:196px}
+  .sm-step{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--fg-subtle);opacity:.5;transition:opacity var(--d2) var(--ease),color var(--d2) var(--ease)}
+  .sm-step .sm-dot{width:15px;height:15px;border-radius:50%;border:1.5px solid var(--line-strong);display:grid;place-items:center;flex:none;color:transparent}
+  .sm-step.on{opacity:1;color:var(--fg)}
+  .sm-step.on .sm-dot{border-color:var(--accent);background:var(--accent);color:var(--on-accent);animation:smdot .3s var(--ease)}
+  .sm-step.done{opacity:1;color:var(--fg-muted)}
+  .sm-step.done .sm-dot{border-color:var(--accent-line);background:var(--accent-soft);color:var(--accent)}
+  @keyframes smdot{from{transform:scale(.6)}to{transform:scale(1)}}
+  .sm-bar{margin-top:24px;width:190px;height:3px;border-radius:999px;background:var(--surface-3);overflow:hidden}
+  .sm-bar i{display:block;height:100%;width:0;border-radius:999px;background:var(--accent);animation:smfill 1.56s linear forwards}
+  @keyframes smfill{from{width:0}to{width:100%}}
+  @media (prefers-reduced-motion:reduce){
+    .sm-halo,.sm-ring,.sm-step.on .sm-dot{animation:none}
+    .sm-bar i{animation:none;width:100%}
+  }
 
   /* 示例预设菜单 / 生成设置菜单 */
   .exmenu,.tunemenu{width:auto;min-width:168px}
@@ -5987,6 +6033,15 @@
               <button class="icobtn" id="attach" title="添加文件">
                 <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"></use></svg>
               </button>
+              <div class="xpertchip" id="xpertChipHome" hidden>
+                <span class="mchip xchip">
+                  <img class="xface" id="xpertFaceHome" alt="" />
+                  <span class="xname" id="xpertNameHome">专家</span>
+                  <button class="mclear" id="xpertClearHome" title="结束召唤">
+                    <svg class="ic ic-xs" width="11" height="11" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-close"></use></svg>
+                  </button>
+                </span>
+              </div>
               <div class="grow"></div>
               <button class="icobtn" id="imagePickHome" title="图片">
                 <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-image"></use></svg>
@@ -6058,6 +6113,15 @@
               <button class="icobtn" id="attachMode" title="添加文件或连接">
                 <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"></use></svg>
               </button>
+              <div class="xpertchip" id="xpertChip" hidden>
+                <span class="mchip xchip">
+                  <img class="xface" id="xpertFace" alt="" />
+                  <span class="xname" id="xpertName">专家</span>
+                  <button class="mclear" id="xpertClear" title="结束召唤">
+                    <svg class="ic ic-xs" width="11" height="11" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-close"></use></svg>
+                  </button>
+                </span>
+              </div>
               <div class="modechip">
                 <span class="mchip">
                   <span class="mico" id="modeChipIcon"></span>
@@ -6247,6 +6311,15 @@
               <button class="icobtn" id="attachChat" title="更多">
                 <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"></use></svg>
               </button>
+              <div class="xpertchip" id="xpertChipChat" hidden>
+                <span class="mchip xchip">
+                  <img class="xface" id="xpertFaceChat" alt="" />
+                  <span class="xname" id="xpertNameChat">专家</span>
+                  <button class="mclear" id="xpertClearChat" title="结束召唤">
+                    <svg class="ic ic-xs" width="11" height="11" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-close"></use></svg>
+                  </button>
+                </span>
+              </div>
               <div class="grow"></div>
               <button class="model" id="chatModel"><i>✦</i><span class="mlabel">标准</span></button>
               <button class="send" id="chatSend" title="发送">
@@ -6315,6 +6388,22 @@
       </div>
     </section>
   </main>
+</div>
+
+<!-- 专家召唤：整页加载 -->
+<div class="summon" id="summonPage" role="status" aria-live="polite" hidden>
+  <div class="sm-card">
+    <div class="sm-ava">
+      <span class="sm-halo"></span>
+      <span class="sm-ring"></span>
+      <img id="summonFace" alt="" />
+    </div>
+    <div class="sm-kicker">正在召唤专家</div>
+    <div class="sm-name" id="summonName">专家</div>
+    <div class="sm-role" id="summonRole"></div>
+    <div class="sm-steps" id="summonSteps"></div>
+    <div class="sm-bar"><i id="summonBar"></i></div>
+  </div>
 </div>
 
 <!-- 命令面板 -->
@@ -7666,6 +7755,7 @@ const state = {
   tools: [],
   rows: [],
   presetId: 'manager',
+  summoned: null,
   effort: 'standard',
   imageOption: 'auto',
   settingsPanel: 'general',
@@ -8034,7 +8124,7 @@ function paletteItems() {
     items.push({ label: session.title || session.id, hint: '会话', run: () => openSession(session.id, session.title) })
   }
   for (const preset of state.presets) {
-    items.push({ label: preset.name, hint: '专家', run: () => { state.presetId = preset.id; setView('home'); $('homePrompt').focus(); toast('已选择专家：' + preset.name, 'ok') } })
+    items.push({ label: preset.name, hint: '召唤专家', run: () => summonExpert(preset) })
   }
   for (const tool of state.tools) {
     items.push({ label: tool.name, hint: '工具', run: () => toast(tool.name + '：' + (tool.description || '')) })
@@ -8308,17 +8398,19 @@ function subItems(act) {
   }
   if (act === 'expert') {
     const used = new Set()
-    const rows = state.presets.map((preset) => ({
-      label: preset.name,
-      desc: preset.role || preset.id,
-      on: preset.id === state.presetId,
-      ico: '<span class="smi-ico smi-face"><img src="' + expertFace(preset.name, used) + '" alt="" loading="lazy" /></span>',
-      run: () => {
-        state.presetId = preset.id
-        toast('已切换专家：' + preset.name, 'ok')
-        closePlusMenu()
-      },
-    }))
+    const rows = state.presets.map((preset) => {
+      const face = expertFace(preset.name, used)
+      return {
+        label: preset.name,
+        desc: preset.role || preset.id,
+        on: preset.id === state.presetId,
+        ico: '<span class="smi-ico smi-face"><img src="' + face + '" alt="" loading="lazy" /></span>',
+        run: () => {
+          closePlusMenu()
+          summonExpert(preset, face)
+        },
+      }
+    })
     rows.push({ foot: '查看全部专家', run: () => { closePlusMenu(); openExperts('experts') } })
     return rows
   }
@@ -8823,6 +8915,108 @@ function paintMakeMore() {
     }
     grid.append(card)
   }
+}
+
+/* ── 专家召唤：整页加载 → 输入框里 + 号右侧的专家胶囊 ─────── */
+const SUMMON_STEPS = ['读取专家人格', '装载技能与工具', '载入项目记忆与偏好']
+const SUMMON_TICKS = [420, 900, 1360]
+const SUMMON_TOTAL = 1560
+const XPERT_CHIPS = [
+  ['xpertChipHome', 'xpertFaceHome', 'xpertNameHome'],
+  ['xpertChip', 'xpertFace', 'xpertName'],
+  ['xpertChipChat', 'xpertFaceChat', 'xpertNameChat'],
+]
+let summonTimers = []
+
+function paintXpertChip() {
+  const expert = state.summoned
+  const hero = document.querySelector('.hero.mode')
+  if (hero) hero.classList.toggle('has-expert', Boolean(expert))
+  for (const [chipId, faceId, nameId] of XPERT_CHIPS) {
+    const chip = $(chipId)
+    if (!chip) continue
+    chip.hidden = !expert
+    if (!expert) continue
+    const face = $(faceId)
+    if (face.getAttribute('src') !== expert.face) face.src = expert.face
+    $(nameId).textContent = expert.name
+    chip.title = '当前专家：' + expert.name + (expert.role ? '（' + expert.role + '）' : '')
+  }
+}
+
+function endSummon(silent) {
+  if (!state.summoned) return
+  state.presetId = state.summoned.prev || state.presetId
+  state.summoned = null
+  paintXpertChip()
+  if (state.presets.length) paintExperts()
+  if (!silent) toast('已结束召唤，回到默认专家', 'ok')
+}
+
+function hideSummonPage() {
+  const page = $('summonPage')
+  page.classList.remove('on')
+  page.hidden = true
+  page.classList.remove('leaving')
+}
+
+function summonExpert(preset, faceHint) {
+  if (!preset) return
+  const page = $('summonPage')
+  if (!page) return
+  const face = faceHint || expertFace(preset.name)
+  summonTimers.forEach((timer) => clearTimeout(timer))
+  summonTimers = []
+
+  $('summonFace').src = face
+  $('summonName').textContent = preset.name
+  $('summonRole').textContent = preset.role || '随时待命的设计专家'
+  const steps = $('summonSteps')
+  steps.innerHTML = ''
+  for (const text of SUMMON_STEPS) {
+    const row = document.createElement('div')
+    row.className = 'sm-step'
+    row.innerHTML = '<span class="sm-dot">' + iconMark('check', 9) + '</span><span></span>'
+    row.lastElementChild.textContent = text
+    steps.append(row)
+  }
+  const rows = [...steps.children]
+  if (rows[0]) rows[0].classList.add('on')
+
+  const bar = $('summonBar')
+  bar.style.animation = 'none'
+  page.hidden = false
+  page.classList.remove('leaving')
+  requestAnimationFrame(() => {
+    page.classList.add('on')
+    bar.style.animation = ''
+  })
+
+  SUMMON_TICKS.forEach((ms, index) => {
+    summonTimers.push(setTimeout(() => {
+      rows[index].classList.remove('on')
+      rows[index].classList.add('done')
+      if (rows[index + 1]) rows[index + 1].classList.add('on')
+    }, ms))
+  })
+
+  summonTimers.push(setTimeout(() => {
+    page.classList.add('leaving')
+    page.classList.remove('on')
+    summonTimers.push(setTimeout(hideSummonPage, 280))
+    const previous = state.summoned ? state.summoned.prev : state.presetId
+    state.summoned = { id: preset.id, name: preset.name, role: preset.role || '', face, prev: previous }
+    state.presetId = preset.id
+    paintXpertChip()
+    setView('home')
+    paintExperts()
+    toast('已召唤 ' + preset.name + '，发消息时会用它', 'ok')
+  }, SUMMON_TOTAL))
+}
+
+for (const id of ['xpertClearHome', 'xpertClear', 'xpertClearChat']) {
+  const btn = $(id)
+  if (btn) btn.onclick = () => endSummon()
 }
 
 /* 生成设置：语气写进 state.prefs，发送时会前缀到提示词里 */
@@ -9362,9 +9556,11 @@ function paintExperts() {
     const current = preset.id === state.presetId
     const btn = document.createElement('button')
     btn.className = 'ex-card' + (current ? ' on' : '')
+    const face = expertFace(preset.name, usedFaces)
+    btn.dataset.face = face
     btn.innerHTML =
       '<div class="ex-top">' +
-        '<span class="ex-ava"><img src="' + expertFace(preset.name, usedFaces) + '" alt="" loading="lazy" /></span>' +
+        '<span class="ex-ava"><img src="' + face + '" alt="" loading="lazy" /></span>' +
         '<span class="ex-nm">' + preset.name + (current ? '<span class="ex-badge real">当前默认</span>' : '') + '</span>' +
       '</div>' +
       '<div class="ex-desc">' + (preset.role || preset.kind || '') + '</div>' +
@@ -9373,12 +9569,10 @@ function paintExperts() {
         preset.tools ? preset.tools.length + ' 个工具' : '全部工具',
         (preset.maxSteps ? preset.maxSteps + ' 步' : '默认步数'),
       ].map((tag) => '<span class="ex-tag">' + tag + '</span>').join('') + '</div>' +
-      '<div class="ex-foot">' + iconMark('bolt', 12) + '<span>' + (current ? '发消息将使用这位专家' : '点击设为默认专家') + '</span></div>'
-    btn.onclick = () => {
-      state.presetId = preset.id
-      toast('默认专家已切换为 ' + preset.name, 'ok')
-      paintExperts()
-    }
+      '<div class="ex-foot">' + iconMark('bolt', 12) + '<span>' +
+        (current && state.summoned ? '已召唤，发消息时使用' : current ? '当前默认专家' : '点击召唤') +
+      '</span></div>'
+    btn.onclick = () => summonExpert(preset, btn.dataset.face)
     grid.appendChild(btn)
   }
   if (list.length === 0) {
@@ -11184,6 +11378,7 @@ syncNickname()
 paintModeGallery()
 paintMakeMore()
 paintImgOpts()
+paintXpertChip()
 
 await connected
 try {

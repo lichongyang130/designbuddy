@@ -244,7 +244,7 @@ test('演示文稿首页按参考截图：头图、标题、格式胶囊、示�
   // 标题与格式胶囊：胶囊单独一行，下面才是工具条
   assert.match(indexHtml, /让您的创意焕发生机/)
   assert.match(indexHtml, /class="prompt mode-prompt"/)
-  assert.match(indexHtml, /<div class="bar">[\s\S]{0,400}id="attachMode"[\s\S]{0,400}class="modechip"/)
+  assert.match(indexHtml, /<div class="bar">[\s\S]{0,400}id="attachMode"[\s\S]{0,1000}class="modechip"/)
   assert.match(indexHtml, /id="modeChipLabel">演示文稿</)
 
   // 工具条：加号、设置、图片、档位、语音、发送
@@ -310,6 +310,40 @@ test('图片首页按参考截图：参数胶囊、示例指令与「您还可�
   // 参考截图里的外来品牌词不能混进图片界面
   assert.doesNotMatch(indexHtml, /WorkBuddy/i)
   assert.doesNotMatch(indexHtml, /gammas/i)
+})
+
+test('专家召唤：整页加载页 + 输入框加号右侧的专家胶囊', () => {
+  // 整页加载：头像、名称、职责、三步进度与进度条
+  assert.match(indexHtml, /<div class="summon" id="summonPage"/)
+  for (const id of ['summonFace', 'summonName', 'summonRole', 'summonSteps', 'summonBar']) {
+    assert.match(indexHtml, new RegExp('id="' + id + '"'), `召唤加载页缺少 #${id}`)
+  }
+  assert.match(indexHtml, /const SUMMON_STEPS\s*=\s*\[/, '缺少召唤步骤文案')
+  assert.match(indexHtml, /function summonExpert\(preset, faceHint\)/, '缺少 summonExpert()')
+
+  // 三个输入框（普通首页、模式首页、会话）都把专家胶囊放在加号右侧
+  const pairs = [
+    ['attach', 'xpertChipHome'],
+    ['attachMode', 'xpertChip'],
+    ['attachChat', 'xpertChipChat'],
+  ]
+  for (const [attach, chip] of pairs) {
+    const at = indexHtml.indexOf('id="' + attach + '"')
+    const chipAt = indexHtml.indexOf('id="' + chip + '"')
+    assert.ok(at > 0, `缺少 #${attach}`)
+    assert.ok(chipAt > at, `#${chip} 应排在 #${attach} 之后（加号右侧）`)
+    assert.ok(chipAt - at < 700, `#${chip} 离加号太远，像是换了行`)
+  }
+
+  // 样式与「演示文稿」胶囊同一套
+  assert.equal((indexHtml.match(/class="mchip xchip"/g) || []).length, 3, '三个输入框的专家胶囊样式应一致')
+  assert.match(indexHtml, /\.mchip\.xchip\{/, '缺少专家胶囊样式')
+
+  // 点专家卡片即召唤，胶囊上的 × 结束召唤并还原默认专家
+  assert.match(indexHtml, /btn\.onclick = \(\) => summonExpert\(preset, btn\.dataset\.face\)/)
+  assert.match(indexHtml, /function endSummon\(/, '缺少 endSummon()')
+  assert.match(indexHtml, /state\.presetId = state\.summoned\.prev/, '结束召唤要还原默认专家')
+  assert.match(indexHtml, /paintXpertChip\(\)/, '启动时应刷新专家胶囊')
 })
 
 test('深色主题与窄屏断点都还在', () => {
