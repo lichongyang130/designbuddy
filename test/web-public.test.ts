@@ -276,6 +276,42 @@ test('演示文稿首页按参考截图：头图、标题、格式胶囊、示�
   assert.doesNotMatch(indexHtml, /gammas/i)
 })
 
+test('图片首页按参考截图：参数胶囊、示例指令与「您还可以制作」八卡', () => {
+  // 格式胶囊后面紧跟三个参数胶囊，同一行里还有加号与右侧控件
+  assert.match(indexHtml, /id=\"modeChipLabel\">演示文稿/)
+  assert.match(indexHtml, /class=\"imgopts\" id=\"imgOpts\"[^>]*hidden/)
+  for (const id of ['imgRatio', 'imgCount', 'imgRef', 'imgRefFile']) {
+    assert.match(indexHtml, new RegExp('id=\"' + id + '\"'), `图片参数缺少 #${id}`)
+  }
+  // 参数胶囊在格式胶囊之后、发送按钮之前
+  const bar = indexHtml.slice(indexHtml.indexOf('<div class="bar">'), indexHtml.indexOf('id="modeSend"'))
+  assert.ok(bar.indexOf('class="modechip"') > 0, '.bar 里缺少格式胶囊')
+  assert.ok(bar.indexOf('id="imgOpts"') > bar.indexOf('class="modechip"'), '参数胶囊应在格式胶囊右侧')
+  // 参考图选择器是本地文件输入，不上传
+  assert.match(indexHtml, /<input type="file" id="imgRefFile"[^>]*hidden/)
+
+  // 图片模式的占位文案与预设，四张示例卡来自长提示词池
+  assert.ok(indexHtml.includes('描述您想要创建的图像'), '缺少图片模式占位文案')
+  assert.match(indexHtml, /PRESET_BOOK\s*=\s*\{[\s\S]*?'图片':\s*\{\s*'给我个惊喜'/, '图片预设首项应为「给我个惊喜」')
+  assert.match(indexHtml, /function shuffled\(/, '示例指令应从提示词池随机抽取')
+  assert.match(indexHtml, /function withImageParams\(/, '发送时应带上画面比例与数量')
+
+  // 「您还可以制作」在探索画廊之后，八张卡都有标题与三条子项
+  const more = indexHtml.slice(indexHtml.indexOf('<div class="mgal"'), indexHtml.indexOf('id="modeMakeMore"'))
+  assert.ok(more.length > 0 && more.includes('id="mgGrid"'), '#modeMakeMore 应排在 .mgal 之后')
+  assert.match(indexHtml, /const MAKE_MORE\s*=/, '缺少 MAKE_MORE 数据')
+  for (const title of ['信息图', '海报', '社交媒体帖子', '图表', '标志', '团队架构', '邀请', '日历与日程']) {
+    assert.ok(indexHtml.includes("name: '" + title + "'"), '「您还可以制作」缺少：' + title)
+  }
+  // 每张卡都能真正切换模式并填入提示词
+  assert.match(indexHtml, /function paintMakeMore\(/, '缺少 paintMakeMore()')
+  assert.match(indexHtml, /card\.onclick = \(\) => \{[\s\S]{0,200}enterMode\(item\.mode\)/, '点击卡片应进入对应模式')
+
+  // 参考截图里的外来品牌词不能混进图片界面
+  assert.doesNotMatch(indexHtml, /WorkBuddy/i)
+  assert.doesNotMatch(indexHtml, /gammas/i)
+})
+
 test('深色主题与窄屏断点都还在', () => {
   assert.match(indexHtml, /html\[data-theme="dark"\]\{/, '缺少深色主题 token')
   assert.match(indexHtml, /html\[data-theme="dark"\] \.tplpage\{/, '缺少深色主题的页面覆盖')

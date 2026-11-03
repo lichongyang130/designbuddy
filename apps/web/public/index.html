@@ -5369,25 +5369,31 @@
   .tplbtn:not(.primary):hover{background:var(--surface-2)}
 
   /* ── 演示文稿首页（对齐参考截图） ─────────────── */
-  .hero.mode{max-width:700px}
+  .hero.mode{max-width:620px}
   .hero.mode .art.wide{
     width:104px;height:72px;margin-top:16px;border-radius:12px;object-fit:cover;
     transform:rotate(-6deg);box-shadow:0 10px 24px rgba(24,36,64,.18);
   }
   .hero.mode h1{font-size:clamp(26px,2.3vw,33px);margin:18px 0 20px}
-  .mode-prompt{max-width:620px;border-radius:20px}
+  .mode-prompt{max-width:100%;border-radius:20px}
   .mode-prompt .inner{padding:12px 15px 11px;gap:7px}
   .mode-prompt textarea{height:44px;font-size:15px;line-height:1.5}
-  .mode-prompt .modechip{display:flex;align-items:center;gap:4px;margin-left:2px}
+  .mode-prompt .modechip{display:flex;align-items:center;margin-left:2px;flex:none}
   .mode-prompt .mchip{
-    height:30px;padding:0 11px;border-radius:var(--r-pill);font-size:13.5px;font-weight:500;border:0;
-    background:var(--accent-soft);color:var(--accent);
+    height:30px;padding:0 8px 0 12px;border-radius:var(--r-pill);font-size:13.5px;font-weight:500;border:0;
+    background:var(--accent-soft);color:var(--accent);flex:none;white-space:nowrap;gap:7px;
   }
   .mode-prompt .mchip svg{color:var(--accent)}
-  .mode-prompt .mclear{width:16px;height:16px;color:var(--accent);opacity:.75}
+  .mode-prompt .mchip > span{flex:none;white-space:nowrap}
+  .mode-prompt .mico{flex:none}
+  .mode-prompt .mclear{width:15px;height:15px;color:var(--accent);opacity:.8;flex:none;margin:0 -1px 0 0}
   .mode-prompt .mclear:hover{background:var(--accent-soft);color:var(--accent);opacity:1}
   .mode-prompt .bar{gap:7px;margin-top:1px}
   .mode-prompt .icobtn{width:30px;height:30px;border-color:var(--line-strong)}
+  .mode-prompt #modeTune,.mode-prompt #imagePickMode{
+    border-color:transparent;background:transparent;color:var(--fg-muted);
+  }
+  .mode-prompt #modeTune:hover,.mode-prompt #imagePickMode:hover{background:var(--surface-2);color:var(--fg)}
   .mode-prompt .model{font-size:13.5px;color:var(--violet)}
   .mode-prompt .model i{color:var(--violet)}
   .mode-prompt .send{width:36px;height:36px}
@@ -5407,6 +5413,7 @@
     display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;
   }
   .excard:hover{border-color:var(--accent-line);box-shadow:var(--e1);background:var(--surface)}
+  .excard{overflow:hidden}
   .excard .go{right:10px;bottom:7px;color:var(--fg-subtle);font-size:13px}
 
   .mgal{width:100%;margin-top:24px}
@@ -5435,6 +5442,37 @@
   }
   .mgcard.add:hover .mg-add{border-color:var(--accent-line);color:var(--accent);background:var(--surface-2)}
   .mgcard.off .cover{opacity:.55}
+
+  /* 图片模式：比例 / 数量 / 参考图 */
+  .imgopts{display:flex;align-items:center;gap:8px;margin-left:9px;flex:none}
+  .optchip{
+    display:inline-flex;align-items:center;gap:5px;height:30px;padding:0 9px;flex:none;white-space:nowrap;
+    border:1px solid var(--line-strong);border-radius:var(--r-pill);background:var(--surface);
+    font-size:13px;color:var(--fg);transition:background var(--d1) var(--ease),border-color var(--d1) var(--ease);
+  }
+  .optchip:hover{background:var(--surface-2);border-color:var(--accent-line)}
+  .optchip[aria-expanded="true"]{border-color:var(--accent-line);background:var(--accent-soft)}
+  .optchip .ic{color:var(--fg-muted)}
+  .optchip .chev{color:var(--fg-subtle);flex:none}
+  .optchip .ref-ico{display:flex;align-items:center}
+  .optchip .ref-ico img{width:16px;height:16px;border-radius:4px;object-fit:cover;display:block}
+  .optchip .ref-ico.has-ref .ic{display:none}
+
+  /* 您还可以制作 */
+  .makemore{width:100%;margin-top:24px;text-align:left}
+  .mm-head{font-size:13px;color:var(--fg-muted);margin-bottom:10px}
+  .mm-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .mmcard{
+    display:flex;align-items:center;gap:12px;padding:12px 14px;min-height:72px;text-align:left;
+    border:1px solid var(--line);border-radius:14px;background:var(--surface);
+    transition:border-color var(--d1) var(--ease),box-shadow var(--d1) var(--ease);
+  }
+  .mmcard:hover{border-color:var(--accent-line);box-shadow:var(--e1)}
+  .mm-ico{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;flex:none}
+  .mm-tx{display:flex;flex-direction:column;gap:2px;min-width:0}
+  .mm-tx b{font-size:14px;font-weight:600;color:var(--fg);line-height:1.35}
+  .mm-tx small{font-size:12.5px;color:var(--fg-subtle);line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  @media (max-width:900px){.mm-grid{grid-template-columns:1fr}}
 
   /* 示例预设菜单 / 生成设置菜单 */
   .exmenu,.tunemenu{width:auto;min-width:168px}
@@ -6024,10 +6062,28 @@
                 <span class="mchip">
                   <span class="mico" id="modeChipIcon"></span>
                   <span id="modeChipLabel">演示文稿</span>
+                  <button class="mclear" id="modeClear" title="移除类型">
+                    <svg class="ic ic-xs" width="11" height="11" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-close"></use></svg>
+                  </button>
                 </span>
-                <button class="mclear" id="modeClear" title="移除类型">
-                  <svg class="ic ic-xs" width="11" height="11" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-close"></use></svg>
+              </div>
+              <div class="imgopts" id="imgOpts" hidden>
+                <button class="optchip" id="imgRatio" aria-haspopup="menu" aria-expanded="false" title="画面比例">
+                  <svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-square"></use></svg>
+                  <span id="imgRatioLabel">1:1</span>
+                  <svg class="chev" width="11" height="11" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
                 </button>
+                <button class="optchip" id="imgCount" aria-haspopup="menu" aria-expanded="false" title="生成数量">
+                  <svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"></use></svg>
+                  <span id="imgCountLabel">3</span>
+                  <svg class="chev" width="11" height="11" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
+                </button>
+                <button class="optchip" id="imgRef" aria-haspopup="menu" aria-expanded="false" title="参考图">
+                  <span class="ref-ico" id="imgRefIco"><svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-image"></use></svg></span>
+                  <span id="imgRefLabel">参考图</span>
+                  <svg class="chev" width="11" height="11" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
+                </button>
+                <input type="file" id="imgRefFile" accept="image/*" hidden />
               </div>
               <div class="grow"></div>
               <button class="icobtn" id="modeTune" title="生成设置">
@@ -6053,7 +6109,7 @@
           <div class="exhead">
             <span>示例指令</span>
             <button class="exfilter" id="exPresetBtn" aria-haspopup="menu" aria-expanded="false">
-              <svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-filter"></use></svg>
+              <svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use id="exPresetIcon" href="#i-filter"></use></svg>
               <span id="exPresetLabel">常规</span>
               <svg class="ic ic-xs" width="11" height="11" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
             </button>
@@ -6079,6 +6135,11 @@
             <button class="mgtab" id="mgTabExplore" role="tab" aria-selected="false">探索</button>
           </div>
           <div class="mggrid" id="mgGrid" data-no-i18n></div>
+        </div>
+
+        <div class="makemore" id="modeMakeMore" hidden>
+          <div class="mm-head">您还可以制作</div>
+          <div class="mm-grid" id="mmGrid" data-no-i18n></div>
         </div>
 
 
@@ -7810,7 +7871,8 @@ function syncSendState() {
     const input = $(inputId)
     const btn = $(btnId)
     if (!input || !btn) continue
-    btn.disabled = state.busy || input.value.trim().length === 0
+    // 空输入交给点击时的提示，不在视觉上把按钮变灰（参考图里按钮始终是实的）
+    btn.disabled = state.busy
   }
 }
 
@@ -7873,7 +7935,8 @@ async function send(prompt, kind) {
       savePrefs()
     } catch { /* 隐私模式下忽略 */ }
     if (!state.sessionId) {
-      const session = await rpc('session.create', { title: tag ? tag + ' · ' + text.slice(0, 16) : text.slice(0, 20) })
+      const head = text.split('\n')[0].trim()
+      const session = await rpc('session.create', { title: tag ? tag + ' · ' + head.slice(0, 16) : head.slice(0, 20) })
       state.sessionId = session.id
       state.sessionTitle = session.title
       state.transcript = []
@@ -8119,10 +8182,8 @@ $('modeModel').onclick = (event) => { event.stopPropagation(); openEffort($('mod
 $('attachChat').onclick = (event) => { event.stopPropagation(); openPlusMenu($('attachChat')) }
 $('modelPick').onclick = (event) => { event.stopPropagation(); openEffort($('modelPick')) }
 document.querySelectorAll('.chip').forEach((chip) => {
-  chip.onclick = () => {
-    if (chip.dataset.kind === '图片') { openImageMenu(chip); return }
-    enterMode(chip.dataset.kind)
-  }
+  // 五个类型都进同一个创建页；图片的风格/尺寸选择留在输入区右侧的图片按钮里
+  chip.onclick = () => enterMode(chip.dataset.kind)
 })
 /* 未接入入口：统一徽标或隐藏，不再点击后弹提示 */
 
@@ -8453,6 +8514,43 @@ const EX_PRESETS = {
 }
 let exPresetName = '常规'
 
+/** 图片模式：默认「给我个惊喜」从这组里随机抽四条，另外还有三种风格可选。 */
+const IMAGE_POOL = [
+  '一幅大胆的扁平化矢量插图，描绘了一座灯塔向海面扫过一道彩虹般的光束，风格现代，构图留白充足',
+  '一张早日康复的贺卡，画中是一只小熊，盖着毯子，手里端着一杯热茶，暖色调，手绘质感',
+  '墨水在水中晕染开来，深黑色背景下，青绿色和洋红色缓缓晕开，微距摄影，质感细腻',
+  '一张特写照片，一只赤狐在飘落的雪花中，直视着镜头，光线柔和，背景虚化',
+  '一张极简的产品静物照：磨砂玻璃瓶摆在米色台面上，侧逆光，投影柔和',
+  '一组扁平几何插画：城市天际线由色块拼成，配色克制，适合做年度报告封面',
+  '一张水彩植物图谱：三株不同的蕨类并排，笔触轻盈，纸纹清晰可见',
+  '3D 渲染的小场景：黏土质感的房子与云朵，渐变天空，柔和的环境光',
+]
+const IMAGE_STYLES = {
+  '写实': [
+    '晨光里的咖啡馆吧台，木纹与蒸汽都清晰可见，浅景深',
+    '雪山徒步纪实封面：逆光下的剪影，颗粒感胶片质感',
+    '城市夜景长曝光：车流光轨穿过老街，冷暖对比',
+    '产品质感特写：金属边缘的高光与布料的纹理形成对比',
+  ],
+  '插画': [
+    '复古旅行海报风插画：海边小镇，配色像 60 年代的印刷品',
+    '扁平几何品牌插画：三个色块拼出的抽象人物',
+    '水彩植物图谱：一枝山茶，笔触湿润',
+    '线稿风人物头像：单色线条，留白干净',
+  ],
+  '3D': [
+    '磨砂玻璃质感的图标：柔和透光，边缘有一圈高光',
+    '黏土风小场景：一只小狗坐在纸箱里，柔软的材质',
+    '等距视角的小房子：三层剖面，能看到家具',
+    '金属与布料混搭的产品渲染：悬浮在浅灰背景上',
+  ],
+}
+const PRESET_BOOK = {
+  '演示文稿': EX_PRESETS,
+  '图片': { '给我个惊喜': IMAGE_POOL, ...IMAGE_STYLES },
+}
+const IMAGE_MODE_HINT = '描述您想要创建的图像'
+
 const MODE_CONTENT = {
   '演示文稿': {
     title: '让您的创意焕发生机',
@@ -8470,9 +8568,9 @@ const MODE_CONTENT = {
     examples: ['小红书九宫格', 'Instagram 新品发布', '知识科普 6 屏', '活动倒计时'],
   },
   '图片': {
-    title: '今天想生成什么图？',
-    placeholder: '描述您想要的画面',
-    examples: ['品牌主视觉', '产品场景图', '插画风海报', '社交头像'],
+    title: '让您的创意焕发生机',
+    placeholder: '描述您想要创建的图像',
+    examples: IMAGE_POOL.slice(0, 4),
   },
 }
 
@@ -8502,9 +8600,28 @@ function paintExamples(labels) {
 }
 
 /* ── 演示文稿首页：示例预设 / 语音 / 生成设置 ─────────── */
+function presetBook() {
+  return PRESET_BOOK[state.mode] || EX_PRESETS
+}
+function shuffled(list) {
+  const copy = list.slice()
+  for (let i = copy.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1))
+    const tmp = copy[i]; copy[i] = copy[j]; copy[j] = tmp
+  }
+  return copy
+}
 function paintExPreset() {
+  const book = presetBook()
+  const keys = Object.keys(book)
+  if (!keys.includes(exPresetName)) exPresetName = keys[0]
   $('exPresetLabel').textContent = exPresetName
-  paintExamples(EX_PRESETS[exPresetName])
+  if (state.mode === '图片') {
+    const pool = book[exPresetName] || IMAGE_POOL
+    paintExamples(shuffled(pool).slice(0, 4))
+    return
+  }
+  paintExamples(book[exPresetName] || [])
 }
 
 let exMenuEl = null
@@ -8519,7 +8636,7 @@ function openExMenu() {
   const menu = document.createElement('div')
   menu.className = 'moremenu exmenu'
   menu.setAttribute('role', 'menu')
-  for (const name of Object.keys(EX_PRESETS)) {
+  for (const name of Object.keys(presetBook())) {
     const item = document.createElement('button')
     item.className = 'mm-item'
     item.setAttribute('role', 'menuitemradio')
@@ -8555,6 +8672,158 @@ document.addEventListener('click', (event) => {
   closeExMenu()
 }, true)
 document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeExMenu() })
+
+/* ── 图片模式：画面比例 / 数量 / 参考图 ───────────────── */
+const imgOpt = { ratio: '1:1', count: 3, ref: null }
+const IMG_RATIOS = ['1:1', '16:9', '9:16', '4:3', '3:4']
+const IMG_COUNTS = [1, 2, 3, 4]
+
+let chipMenuEl = null
+function closeChipMenu() {
+  if (chipMenuEl) { chipMenuEl.remove(); chipMenuEl = null }
+  document.querySelectorAll('.optchip[aria-expanded="true"]').forEach((btn) => btn.setAttribute('aria-expanded', 'false'))
+}
+function openChipMenu(anchor, items) {
+  closeChipMenu()
+  const menu = document.createElement('div')
+  menu.className = 'moremenu chipmenu'
+  menu.setAttribute('role', 'menu')
+  for (const item of items) {
+    const btn = document.createElement('button')
+    btn.className = 'mm-item'
+    btn.setAttribute('role', 'menuitem')
+    btn.setAttribute('aria-checked', String(!!item.on))
+    const label = document.createElement('span')
+    label.textContent = item.label
+    btn.append(label)
+    if (item.on) {
+      const tick = document.createElement('span')
+      tick.className = 'mm-tick'
+      tick.textContent = '✓'
+      btn.append(tick)
+    }
+    btn.onclick = () => { closeChipMenu(); item.run() }
+    menu.append(btn)
+  }
+  document.body.append(menu)
+  const rect = anchor.getBoundingClientRect()
+  const width = menu.offsetWidth || 176
+  menu.style.left = Math.max(12, Math.min(rect.left, window.innerWidth - width - 12)) + 'px'
+  const height = menu.offsetHeight || 200
+  if (rect.top > height + 16) menu.style.bottom = (window.innerHeight - rect.top + 8) + 'px'
+  else menu.style.top = (rect.bottom + 8) + 'px'
+  anchor.setAttribute('aria-expanded', 'true')
+  chipMenuEl = menu
+}
+document.addEventListener('click', (event) => {
+  if (!chipMenuEl) return
+  if (chipMenuEl.contains(event.target) || event.target.closest('.optchip')) return
+  closeChipMenu()
+}, true)
+document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeChipMenu() })
+
+function paintImgOpts() {
+  const ratio = $('imgRatioLabel')
+  if (!ratio) return
+  ratio.textContent = imgOpt.ratio
+  $('imgCountLabel').textContent = String(imgOpt.count)
+  const ico = $('imgRefIco')
+  ico.innerHTML = imgOpt.ref
+    ? '<img src="' + imgOpt.ref.url + '" alt="">'
+    : '<svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-image"></use></svg>'
+  ico.classList.toggle('has-ref', !!imgOpt.ref)
+  $('imgRefLabel').textContent = '参考图'
+  $('imgRef').title = imgOpt.ref ? '参考图：' + imgOpt.ref.name : '参考图'
+}
+
+function setRefImage(ref) {
+  imgOpt.ref = ref
+  paintImgOpts()
+  toast(ref ? '已选择参考图：' + ref.name : '已清除参考图', 'ok')
+}
+
+$('imgRatio').onclick = (event) => {
+  event.stopPropagation()
+  openChipMenu($('imgRatio'), IMG_RATIOS.map((value) => ({
+    label: value,
+    on: imgOpt.ratio === value,
+    run: () => { imgOpt.ratio = value; paintImgOpts(); toast('画面比例：' + value, 'ok') },
+  })))
+}
+$('imgCount').onclick = (event) => {
+  event.stopPropagation()
+  openChipMenu($('imgCount'), IMG_COUNTS.map((value) => ({
+    label: value + ' 张',
+    on: imgOpt.count === value,
+    run: () => { imgOpt.count = value; paintImgOpts(); toast('一次生成 ' + value + ' 张', 'ok') },
+  })))
+}
+$('imgRef').onclick = (event) => {
+  event.stopPropagation()
+  const items = [
+    { label: '从本机选择图片', run: () => $('imgRefFile').click() },
+    {
+      label: '用一张案例配图',
+      run: () => {
+        const deck = (typeof LIB !== 'undefined' && LIB.decks && LIB.decks[0]) || null
+        if (!deck) { toast('案例库还没加载完，稍后再试', 'err'); return }
+        setRefImage({ name: deck.name + ' · 案例配图', url: 'cases/' + deck.id + '/01.jpg' })
+      },
+    },
+  ]
+  if (imgOpt.ref) items.push({ label: '清除参考图', run: () => setRefImage(null) })
+  openChipMenu($('imgRef'), items)
+}
+$('imgRefFile').onchange = (event) => {
+  const input = event.target
+  const file = input.files && input.files[0]
+  input.value = ''
+  if (!file) return
+  const reader = new FileReader()
+  reader.onload = () => setRefImage({ name: file.name, url: String(reader.result || '') })
+  reader.onerror = () => toast('这张图读不出来', 'err')
+  reader.readAsDataURL(file)
+}
+
+/* ── 您还可以制作：八种成品，点一下切到对应类型并预填提示 ── */
+const MAKE_MORE = [
+  { name: '信息图', desc: '流程、时间线、对比', icon: 'barchart', tint: '#dbe9fd', color: '#2a5cf0', mode: '图片', prompt: '一张信息图：用流程、时间线和前后对比，讲清「产品从想法到上线」的关键步骤' },
+  { name: '海报', desc: '活动、促销、公告', icon: 'image', tint: '#fce1ef', color: '#c2185b', mode: '图片', prompt: '一张活动海报：主题「秋日市集」，主标题醒目，留出时间、地点和二维码的位置' },
+  { name: '社交媒体帖子', desc: '公告、促销活动、语录卡片', icon: 'carousel', tint: '#e3eefc', color: '#2a5cf0', mode: '轮播图', prompt: '一组 6 屏社交媒体帖子：新品发布，每屏一句话，最后一屏带行动号召' },
+  { name: '图表', desc: '流程图、循环图、思维导图', icon: 'trend', tint: '#e6e2fb', color: '#6b4ce0', mode: '图片', prompt: '一张流程图：把「从需求到上线」的五个环节画成带箭头的循环图，配色克制' },
+  { name: '标志', desc: '文字标志、符号、徽章', icon: 'shapes', tint: '#e6e2fb', color: '#6b4ce0', mode: '图片', prompt: '一个文字标志：品牌名「静水」，符号简洁，黑白为主，能用在门头和名片上' },
+  { name: '团队架构', desc: '组织架构图、职位角色、层级关系', icon: 'users', tint: '#dbe9fd', color: '#2a5cf0', mode: '文档', prompt: '一份团队架构文档：三层组织，每个角色的职责与汇报关系，用树状图和表格呈现' },
+  { name: '邀请', desc: '派对、婚礼、预留日期', icon: 'mail', tint: '#efe6fb', color: '#7c4dff', mode: '轮播图', prompt: '一张派对邀请卡：主题「屋顶夏夜」，写清时间、地点、着装要求与回复方式' },
+  { name: '日历与日程', desc: '周计划、议程、时间线', icon: 'clock', tint: '#dbe9fd', color: '#2a5cf0', mode: '文档', prompt: '一份周计划日历：按天列出议程、负责人与时间线，给临时事项留出缓冲' },
+]
+
+function paintMakeMore() {
+  const grid = $('mmGrid')
+  if (!grid) return
+  grid.innerHTML = ''
+  for (const item of MAKE_MORE) {
+    const card = document.createElement('button')
+    card.className = 'mmcard'
+    card.type = 'button'
+    card.innerHTML =
+      '<span class="mm-ico"><svg class="ic" width="19" height="19" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-' + item.icon + '"></use></svg></span>' +
+      '<span class="mm-tx"><b></b><small></small></span>'
+    const ico = card.querySelector('.mm-ico')
+    ico.style.background = item.tint
+    ico.style.color = item.color
+    card.querySelector('b').textContent = item.name
+    card.querySelector('small').textContent = item.desc
+    card.onclick = () => {
+      if (state.mode !== item.mode) enterMode(item.mode)
+      const input = $('modePrompt')
+      input.value = item.prompt
+      syncSendState()
+      input.focus()
+      toast('已填入「' + item.name + '」的提示词，改完直接发送', 'ok')
+    }
+    grid.append(card)
+  }
+}
 
 /* 生成设置：语气写进 state.prefs，发送时会前缀到提示词里 */
 function openTune(anchor) {
@@ -8894,18 +9163,29 @@ function enterMode(kind) {
   setHidden($('dropzone'), !fileMode)
   setHidden($('beautifyBox'), !beautify)
   setHidden($('modeExamples'), fileMode)
-  setHidden($('modeTplActions'), fileMode)
 
-  const preset = $('exPresetBtn')
-  if (preset) preset.hidden = kind !== '演示文稿'
+  // 图片模式有自己的三个参数胶囊 + 「您还可以制作」，不显示模板区与封面墙
+  const isImage = kind === '图片'
+  setHidden($('imgOpts'), !isImage)
+  setHidden($('modeMakeMore'), !isImage)
+  setHidden($('modeTplActions'), fileMode || isImage)
   const gallery = document.querySelector('.mgal')
-  if (gallery) setHidden(gallery, fileMode)
+  if (gallery) setHidden(gallery, fileMode || isImage)
+
+  exPresetName = isImage ? '给我个惊喜' : '常规'
+  const preset = $('exPresetBtn')
+  if (preset) preset.hidden = !isImage && kind !== '演示文稿'
+  const presetIcon = $('exPresetIcon')
+  if (presetIcon) presetIcon.setAttribute('href', isImage ? '#i-refresh' : '#i-filter')
+  if (isImage) paintImgOpts()
   if (!fileMode) {
-    if (kind === '演示文稿') paintExPreset()
+    if (isImage || kind === '演示文稿') paintExPreset()
     else paintExamples(content.examples)
     paintModeGallery()
   }
-  $('modePrompt').placeholder = beautify ? '描述您希望更改或改进的内容' : content.placeholder
+  $('modePrompt').placeholder = beautify
+    ? '描述您希望更改或改进的内容'
+    : isImage ? IMAGE_MODE_HINT : content.placeholder
 
   setView('home')
   requestAnimationFrame(() => $('modePrompt').focus())
@@ -8920,12 +9200,21 @@ function exitMode() {
   document.querySelectorAll('.bcard').forEach((card) => card.classList.remove('on'))
 }
 
+/** 图片模式把比例 / 数量 / 参考图一并写进提示词，后端和记录里都看得到。 */
+function withImageParams(text) {
+  if (state.mode !== '图片') return text
+  const bits = ['画面比例 ' + imgOpt.ratio, '一次 ' + imgOpt.count + ' 张']
+  if (imgOpt.ref) bits.push('参考图：' + imgOpt.ref.name)
+  return text + '\n\n【图片参数】' + bits.join(' · ')
+}
+
 function sendFromMode() {
   const input = $('modePrompt')
   const text = input.value
   if (text.trim() === '') { input.focus(); toast('先描述一下' + (state.mode || '') + '主题。'); return }
   input.value = ''
-  send(text, state.mode)
+  syncSendState()
+  send(withImageParams(text), state.mode)
 }
 
 /* ── 专家页 ─────────────────────────────────────────── */
@@ -10893,6 +11182,8 @@ paintActivity()
 renderOfficeCards()
 syncNickname()
 paintModeGallery()
+paintMakeMore()
+paintImgOpts()
 
 await connected
 try {
