@@ -346,6 +346,23 @@ test('专家召唤：整页加载页 + 输入框加号右侧的专家胶囊', ()
   assert.match(indexHtml, /paintXpertChip\(\)/, '启动时应刷新专家胶囊')
 })
 
+test('专家卡片每张都带一个召唤按钮', () => {
+  // 卡片本身是可点击容器（div role=button），里面才能放真正的 button，避免按钮套按钮
+  assert.match(indexHtml, /btn\.setAttribute\('role', 'button'\)/, '专家卡片应是可点击容器')
+  assert.match(indexHtml, /<button type="button" class="ex-summon">/, '每张卡片缺少召唤按钮')
+  assert.match(indexHtml, /'<span>' \+\s*\n?\s*\(current && state\.summoned \? '重新召唤' : '召唤'\)/, '召唤按钮文案缺失')
+
+  // 点按钮只触发一次召唤（阻止冒泡到卡片），点卡片与回车同样能召唤
+  assert.match(indexHtml, /summon\.onclick = \(event\) => \{\s*event\.stopPropagation\(\)/)
+  assert.match(indexHtml, /btn\.onkeydown = \(event\) => \{/)
+  assert.match(indexHtml, /btn\.onclick = \(\) => summonExpert\(preset, btn\.dataset\.face\)/)
+
+  // 按钮样式：胶囊 + 主色，默认态与当前专家态都有
+  assert.match(indexHtml, /\.ex-summon\{/, '缺少 .ex-summon 样式')
+  assert.match(indexHtml, /\.ex-card\.on \.ex-summon\{/, '当前专家的召唤按钮应有选中态')
+  assert.match(indexHtml, /\.ex-summon:hover\{/, '召唤按钮缺少悬停反馈')
+})
+
 test('深色主题与窄屏断点都还在', () => {
   assert.match(indexHtml, /html\[data-theme="dark"\]\{/, '缺少深色主题 token')
   assert.match(indexHtml, /html\[data-theme="dark"\] \.tplpage\{/, '缺少深色主题的页面覆盖')
