@@ -6370,6 +6370,305 @@ export const CASE_DECKS = [
       },
     ],
   },
+  {
+    id: 'index',
+    name: 'The Card Index',
+    en: 'Calder Street Library · Usage and Closure Review',
+    by: 'DesignBuddy',
+    cat: '文档',
+    fmt: 'doc',
+    ratio: 'A4 · 竖版',
+    date: 20261021,
+    kind: 'Branch review',
+    category: 'Report',
+    tags: ['public library', 'closure', 'consultation', 'civic'],
+    desc: 'An English A4 report built like a set of library index cards: a mustard call-number spine down the left edge, a rubber-stamped page header set slightly crooked, photographs handed to the page as if taped on, and every fact filed in a ruled catalogue card. Twelve years of use, four ways out of a £180,000 gap, and a consultation that was answered by 1,240 people — 46 per cent of whom had not been through the door in a year.',
+    bestFor: ['Service reviews and closure consultations', 'Civic and cultural reports', 'Public consultation summaries', 'Asset and building condition cases'],
+    visual: 'Pale sage paper #E7E9E1, ink #182019, one ochre #A9741C for the spine, stamps and section numbers, teal #375852 as the second colour. The ninth document family and the only one that treats the page as a filing system: a 32px call-number spine runs the full height, the running head is stamped at an angle, photographs get a ruled border and a hard offset shadow, and the facts panel is a punched catalogue card.',
+    how: 'Four chapters over 20 pages: the building, who comes in, the money, the decision. Three ledger tables — twelve years of visits and loans, six cost lines adding to £412,000, five options side by side; four figure pages with the cutline filed under a double rule; four section openers where the photograph is a bordered card on the page rather than a bleed.',
+    styles: ['#E7E9E1', '#A9741C', '#375852'],
+    colorway: 'Sage stock · Ochre spine · Teal',
+    folio: true,
+    footLeft: 'The Card Index · Calder Street Library',
+    runHead: 'CALDER STREET BRANCH REVIEW · FILE 025.1',
+    paper: '#E7E9E1',
+    ink: '#182019',
+    accent: '#A9741C',
+    second: '#375852',
+    muted: '#6B7367',
+    rule: '#C3C7B8',
+    body: '#29302A',
+    display: 'sans',
+    slides: [
+      {
+        k: 'dcover', label: '封面',
+        kicker: 'Brackenhill Borough Council · 21 October 2026',
+        note: 'Branch review Nº 03 · Draft for consultation',
+        title: 'The Card Index',
+        sub: [
+          'Calder Street opened in 1904 with 4,000 books, a lecture hall and a rule that nobody under fourteen could enter without a note from a teacher. Twelve decades later it is one of nine branches in the borough, and the council has put it on a list of three.',
+          'This is what twelve years of returns say: visits down 39 per cent, loans down 41 per cent, hours down from 62 to 48, and a building that needs £212,000 of work before it can be called wind- and watertight.',
+        ],
+        img: '01',
+        facts: [
+          ['Branch', 'Calder Street · 612 m² · 1904'],
+          ['Hours', '48 a week · six days'],
+          ['Cost', '£412,000 a year · £3.48 a visit'],
+          ['Decision', 'Cabinet 2 December 2026'],
+        ],
+      },
+      {
+        k: 'dmeta', label: '摘要', run: 'P.02 / Summary',
+        kicker: 'Summary',
+        title: 'The building is not the problem, and it is not the excuse',
+        paras: [
+          'In 2025–26 the branch was visited 118,400 times, issued 96,400 items and cost £412,000 to run. That is a visit every 78 seconds it was open, and £3.48 for each of them.',
+          'Those numbers look survivable until they are set against 2014–15, when the same building was visited 194,000 times and issued 163,000 items with nine full-time staff. Visits have fallen 39 per cent in twelve years, loans 41, and opening hours from 62 to 48.',
+          'The council’s case for closure rests on a comparison. Central, 2.9 kilometres away, issues four times as many items per open hour and costs £1.61 a visit. On that arithmetic, Calder Street is the expensive branch in the borough.',
+          'The arithmetic is correct and it is also a trap. Calder Street carries the twenty-minute visit: on foot, on the way home from a shift, to use a computer rather than to borrow a book. Sixty-two per cent of its computer sessions are job searches, benefit claims and forms that cannot be completed on a phone, in a ward where 18 per cent of adults have no broadband at home.',
+          'The building compounds the difficulty. Water has entered the reference room since 2018, the 1994 boiler is being nursed through one more winter, and the electrical certificate keeps the first floor capped at forty people. The backlog is £212,000 and grows by roughly £9,000 a year in consequential damage.',
+          'The consultation ran from 8 September to 6 October and drew 1,240 responses, the largest of any branch review in the borough. Seventy-one per cent opposed closure; eighteen per cent use the branch weekly; forty-six per cent had not used it in the past year, which is either an argument about feeling or an argument about sample.',
+          'This document does not recommend an option. It sets out what the branch does, what it costs, and what each of five choices would mean in hours, staff and money, so that the cabinet decision on 2 December is taken against the same numbers everyone else can see. Nothing here is modelled; where a number is an estimate it is marked as one.',
+        ],
+        facts: [
+          ['Visits, 2025–26', '118,400'],
+          ['Items issued', '96,400'],
+          ['Cost per visit', '£3.48'],
+          ['Responses', '1,240 · 71% opposed'],
+        ],
+        note: 'Source: library management system extract, 1 April 2025 – 31 March 2026; revenue outturn 2025–26; consultation returns, 8 September – 6 October 2026.',
+      },
+      {
+        k: 'dtoc', label: '目录', run: 'P.03 / Contents',
+        kicker: 'Contents',
+        title: 'What is in this file',
+        items: [
+          ['01', 'The building', 'One hundred and twenty-two years of use, and a ceiling that has been dripping since 2018.'],
+          ['02', 'Who comes in', 'Four kinds of visit, and why the counter cannot see three of them.'],
+          ['03', 'The money', '£412,000, six lines, and the difference between a visit and a loan.'],
+          ['04', 'The decision', 'Five options, their hours, their savings and what each one costs in access.'],
+        ],
+        figs: [
+          ['FIG. 01', 'The issue counter, Tuesday morning'],
+          ['FIG. 02', 'Study seats at the east window'],
+          ['FIG. 03', 'The building at dusk, six o’clock'],
+          ['FIG. 04', 'The 18-minute bus to Central'],
+          ['TAB. 01', 'Twelve years of visits, loans and hours'],
+          ['TAB. 02', 'Running cost by line, 2025–26'],
+          ['TAB. 03', 'Five options compared'],
+          ['TAB. —', 'Consultation responses by ward'],
+        ],
+        note: 'Pages 4–19. Figures are numbered in the order they appear; tables carry the section they belong to.',
+      },
+      {
+        k: 'dsection', label: '章节 01', num: '01',
+        kicker: 'Chapter one',
+        title: 'The building was designed for a different century',
+        lead: 'A Carnegie branch with 14 steps to the reference room, no lift, and a roof that has been failing for eight of its 122 years. The building is not why people come. It is increasingly why they turn round at the door.',
+        img: '02',
+      },
+      {
+        k: 'dbody', label: '正文', run: 'P.05 / The building',
+        kicker: '01 · The building',
+        title: '122 years, 6.4 staff, 14 steps',
+        paras: [
+          'The branch was built with money from the Carnegie fund and opened on 14 March 1904. The ground floor was a lending library; the first floor was a reference room and a lecture hall that seated 180. There were 4,000 books and one librarian, and the building was designed on the assumption that a reader would walk up a flight of stairs to be somewhere quiet.',
+          'That assumption still shapes everything the branch can do. The reference room is on the first floor, up fourteen steps with no lift. So is the only public toilet. The lecture hall has been closed to the public since 2016 because the electrical installation no longer meets the standard required for a room the council lets to others.',
+          'Six and a half full-time staff run the branch across nine people — four full-time, five part-time. Nobody is employed after 17:00. The desk closes at 17:00 on four days and at 19:00 on two, which means that from Monday to Thursday the building is shut before most of the ward gets home.',
+          'The fabric is the part of the case that both sides agree on. Water has been entering the reference room through the parapet since 2018; the staining now covers four bays of ceiling and the plaster above the newspaper shelves is soft to the touch. The 1994 gas boiler was condemned for parts availability in 2024 and is being nursed through one more winter. The rolling backlog is £212,000, and it grows by roughly £9,000 a year in consequential damage.',
+          'None of this is unusual for a 1904 branch, and none of it is invisible to the people who use the building. In the consultation, 214 of the 512 written comments mentioned the stairs, the toilet, the smell in the reference room, or all three. One said: “I love this library. I cannot get upstairs in it.”',
+        ],
+        side: [
+          'LISTED: grade II, 1994. External alterations need consent; internal works do not.',
+          'AREA: 612 m² over two floors. Public space on the ground floor is 268 m².',
+          'ACCESS: 14 steps to the first floor, no lift. Step-free entrance to the ground floor only.',
+          'CONDITION: roof £64,000 · boiler £38,000 · electrical £110,000. Total £212,000.',
+        ],
+        note: 'Condition survey, Building Services, March 2026. Costs are at Q2 2026 prices, excluding fees and contingency.',
+      },
+      {
+        k: 'dfigure', label: '图版',
+        no: 'FIG. 01',
+        img: '03',
+        cap: 'The issue counter on a Tuesday morning: returns waiting to be discharged, a date stamp still in use because the self-service units were removed in 2021 and never replaced, and the reservation slips that 21,400 people a year queue for.',
+        src: 'Photograph · Calder Street, 09:40, 6 October 2026',
+      },
+      {
+        k: 'dtable', label: '表格', run: 'P.07 / Table 01',
+        kicker: 'Table 01',
+        title: 'Twelve years, one direction',
+        lead: 'Visits and issues have fallen every year except the two after the pandemic, when the branch reopened into a borough that had learned to use the Central library online. Hours and staff have been cut to match the fall, which is the second half of the problem: the branch now has fewer hours in which to be discovered.',
+        head: ['Year', 'Visits', 'Items issued', 'Open hours', 'Staff, FTE'],
+        rows: [
+          ['2014–15', '194,000', '163,000', '62', '9.0'],
+          ['2016–17', '181,500', '152,400', '62', '8.6'],
+          ['2018–19', '168,900', '138,200', '56', '8.0'],
+          ['2020–21', '61,400', '78,900', '34', '6.8'],
+          ['2022–23', '104,700', '92,600', '44', '6.6'],
+          ['2024–25', '113,200', '94,100', '48', '6.5'],
+          ['2025–26', '118,400', '96,400', '48', '6.4'],
+        ],
+        read: 'Read the last two rows together. The branch has added 5,200 visits and 2,300 issues since 2024–25 on the same 48 hours and half a full-time post fewer. The decline stopped in 2023 and has not resumed; what has not happened is a recovery to anything like the 2014 baseline, and no option on the table assumes one.',
+        note: 'Library management system extract; staff FTE from the establishment list. 2020–21 and 2021–22 include pandemic closures totalling 31 weeks.',
+      },
+      {
+        k: 'dsection', label: '章节 02', num: '02',
+        kicker: 'Chapter two',
+        title: 'Four kinds of visit, one kind of counter',
+        lead: 'The turnstile counts everyone the same way. The desk knows better: a family at half past three, a jobseeker at eleven, a reader who has borrowed the same three authors for a decade, and a room full of chairs on a Tuesday night.',
+        img: '04',
+      },
+      {
+        k: 'dbody', label: '正文', run: 'P.09 / Who comes in',
+        kicker: '02 · Who comes in',
+        title: 'The counter only counts what it was built to count',
+        paras: [
+          'The library management system records two things well: items issued and items returned. Visits arrive through a beam at the door, and sessions exist because they are booked through a login. Everything else — the hour spent reading a newspaper, the parent who comes in out of the rain, the eleven people at a residents’ meeting — is only a number on a counter. So the useful question is not how many visits, but what each one is for, and cross-referencing the door count with the bookings gives four kinds that behave nothing like each other.',
+          'The first is the after-school hour. Between 15:00 and 17:30 on school days the branch takes 27 per cent of its weekday visits, almost all of them children under sixteen with an adult. It is the only part of the day when the building is full — and the part a 34-hour timetable would cut.',
+          'The second is the form. Twelve computers, 18,600 sessions, a median of 42 minutes, and 62 per cent of them for a job application, a benefit claim or a document no phone will accept. Eighteen per cent of adults here have no broadband at home.',
+          'The third is the reader. Twenty-six per cent of visits are made by people over 65, who account for 38 per cent of issues and were three times more likely to have walked. For them the alternative is not Central. It is 2.9 kilometres and two buses, or nothing.',
+          'The fourth is the room: 480 bookings a year, 243 of them residents’ associations, ESOL classes and a stroke group that has met on the first Tuesday of the month since 2011. The room is free; the electrical certificate is why it is now capped at forty.',
+        ],
+        side: [
+          'WEEKDAY PEAK: 15:00–17:30, 27% of visits, 71% under 16.',
+          'COMPUTERS: 12 terminals · 18,600 sessions · median 42 min.',
+          'ROOM: 480 bookings a year · capacity capped at 40.',
+          'WALKED IN: 61% of all visits; 78% for the over-75s.',
+        ],
+        note: 'Door counts are beam-based and include staff and deliveries (approximately 3 per cent). Exit survey, n=402, weighted by age and ward.',
+      },
+      {
+        k: 'dfigure', label: '图版',
+        no: 'FIG. 02',
+        img: '05',
+        cap: 'The study seats at the east window, the only table in the building with a working power socket within reach of every chair. In May and June — exam season — every seat here is taken within ten minutes of opening.',
+        src: 'Photograph · Calder Street, 11:15, 8 October 2026',
+      },
+      {
+        k: 'dlist', label: '清单', run: 'P.11 / Users',
+        kicker: 'The four groups',
+        title: 'What each group would lose',
+        lead: 'The consultation asked people what they would do if the branch closed. The answers have been grouped by the kind of visit they described, not by postcode, because the same postcode contains a family and a reader with very different alternatives.',
+        items: [
+          ['01', 'Families, 15:00 to 17:30', '27 per cent of weekday visits. Central is a 34-minute round trip on two buses, which is longer than the visit itself. The nearest alternative with a children’s section is seven stops away.'],
+          ['02', 'Jobseekers and form-fillers', '62 per cent of the 18,600 computer sessions. The council’s own digital inclusion plan assumes a walk-in site in this ward; closing the branch would leave the ward with none, and 18 per cent of adults here have no broadband at home.'],
+          ['03', 'Older readers', '26 per cent of visits, 38 per cent of issues, 78 per cent arrive on foot. The exit survey found that half of this group had never used Central, and that a third would stop borrowing altogether rather than take two buses.'],
+          ['04', 'Community groups', '243 meetings a year in a free room capped at forty people. The stroke group has met here since 2011. Of the eleven groups that responded to the consultation, nine said they would have no room within walking distance.'],
+          ['05', 'The council itself', 'A walk-in customer service point for council tax, housing benefit and blue badges, used 2,100 times last year. Those visits would go to Central or to the telephone line, which has a median wait of 14 minutes.'],
+        ],
+        note: 'Groups as described in 512 written consultation responses and 402 exit-survey interviews; percentages are of all visits, not of respondents.',
+      },
+      {
+        k: 'dsection', label: '章节 03', num: '03',
+        kicker: 'Chapter three',
+        title: 'Four hundred and twelve thousand pounds',
+        lead: 'Six lines, one of which is the staff. The rest is the price of keeping a 1904 building open — and the reason a cost-per-visit comparison between branches never quite settles anything.',
+        img: '06',
+      },
+      {
+        k: 'dbody', label: '正文', run: 'P.13 / The money',
+        kicker: '03 · The money',
+        title: '£3.48 a visit, £4.27 a loan, £165 an hour',
+        paras: [
+          'The branch cost £412,000 to run in 2025–26. Sixty-five per cent of that is people; twenty per cent is the building. The remaining £60,000 buys the stock, the computers and the licences.',
+          'Divided by 118,400 visits, that is £3.48 each. Divided by 96,400 issues, £4.27. Divided by 2,496 open hours, £165 an hour — the last of which is the figure the council quotes when it argues that a branch open in the evening costs more per visit than one open in the afternoon, because the evening hours are the quiet ones.',
+          'That is true and it is a choice, not a fact. The branch is quiet after 17:00 for the same reason it is busy at 15:30: the timetable was set when the ward worked shifts that ended at five. The two evening openings, on Tuesday and Thursday, take 9 per cent of visits in 4 per cent of the hours.',
+          'Against Central, the comparison is stark. Central issues 4.1 items per open hour against Calder Street’s 0.62, and costs £1.61 a visit. But Central also has the tram, a lift, a café and a children’s floor, and it is the only branch in the borough open on a Sunday. Comparing the two is comparing a library to a shop.',
+          'What the money does not show is the £212,000 of backlog, which is a capital cost sitting behind the revenue line. Whichever option is chosen, the roof has to be done: the difference is whether the council spends £64,000 on a building it will keep open or on one it will close.',
+        ],
+        side: [
+          'PER VISIT: £3.48 · per issue £4.27 · per open hour £165.',
+          'PEERS: Central £1.61 · Eastgate £2.74 · Marsh Lane £3.02.',
+          'BACKLOG: £212,000, growing about £9,000 a year.',
+          'GRANT: £0. The branch has no external funding.',
+        ],
+        note: 'Revenue outturn 2025–26, excluding central support recharges. Peer figures use the same basis; Central is open 62 hours a week.',
+      },
+      {
+        k: 'dtable', label: '表格', run: 'P.15 / Table 02',
+        kicker: 'Table 02',
+        title: 'Where the £412,000 goes',
+        lead: 'Six lines for one branch. The staff line is nine people on 6.4 full-time equivalents, and it is the only line a closure can actually remove: the building costs do not disappear while the building stands.',
+        head: ['Line', '2025–26', 'Share', 'Note'], left: [3],
+        rows: [
+          ['Staff', '£268,000', '65.0%', '6.4 FTE · 4 full-time, 5 part-time'],
+          ['Building & utilities', '£84,000', '20.4%', 'Rates, heat, light, cleaning, repairs'],
+          ['Stock and rentals', '£31,000', '7.5%', 'Purchases £22,000 · inter-library £9,000'],
+          ['IT and licences', '£19,000', '4.6%', '12 terminals, network, catalogue share'],
+          ['Other', '£10,000', '2.4%', 'Postage, stationery, staff training'],
+          ['Total', '£412,000', '100%', 'Per visit £3.48 · per issue £4.27'],
+        ],
+        read: 'Closing the branch saves the staff line and most of the stock and IT lines — about £318,000 — but leaves the £94,000 of building costs standing, because the council would keep the building empty while it decides what to do with a grade II listed asset. The net saving in the closure business case is £180,000, which assumes the building is disposed of within two years.',
+        note: 'Revenue outturn 2025–26. The net saving of £180,000 also assumes £42,000 of displaced visits are absorbed by Central at marginal cost.',
+      },
+      {
+        k: 'dfigure', label: '图版',
+        no: 'FIG. 03',
+        img: '07',
+        cap: 'Six o’clock on a Tuesday: the reading room lit, the desk closed, and eleven people inside a building that is officially shut. The library has been closing at five on four days a week since 2019, and the ward has not adjusted.',
+        src: 'Photograph · Calder Street from the north side, 18:05, 13 October 2026',
+      },
+      {
+        k: 'dfigure', label: '图版',
+        no: 'FIG. 04',
+        img: '09',
+        cap: 'The bus stop outside the branch: 18 minutes to Central, every 20 minutes, last service 19:00. For the 61 per cent of visitors who walk to Calder Street, this is the alternative a closure would put in front of them.',
+        src: 'Photograph · Calder Street, 16:20, 9 October 2026',
+      },
+      {
+        k: 'dsection', label: '章节 04', num: '04',
+        kicker: 'Chapter four',
+        title: 'Five options, and only one of them is free',
+        lead: 'Doing nothing costs nothing this year and £212,000 in capital before the decade is out. The other four choices trade hours against staff, and each one moves the cost per visit in a direction the council will have to defend.',
+        img: '08',
+      },
+      {
+        k: 'dbody', label: '正文', run: 'P.18 / The decision',
+        kicker: '04 · The decision',
+        title: 'What each option actually changes',
+        paras: [
+          'Option A closes the branch in March 2027 and moves the stock to Central. Option B keeps the building open 34 hours a week with four full-time posts, which removes every evening and Saturday afternoon. Option C holds the 48-hour week by handing two desk shifts a week to trained volunteers. Option D gives the building to a community trust on a 25-year lease and keeps the stock and the catalogue with the council.',
+          'The differences are not about money in the first instance. A saves £180,000 a year and takes 2,100 visits a month out of the ward. B saves £142,000 and keeps the building, but the 34-hour week ends at 17:00 on five days, which removes the after-school hour that produces 27 per cent of weekday visits. C saves £61,000 and keeps the hours, at the cost of leaving 62 per cent of desk hours without a paid librarian.',
+          'Option D is the only one that spends money to make the building work. It needs the £212,000 backlog settled first, because no trust will take on a leaking roof, and it needs the electrical certificate before the room can hold more than forty people. In exchange it keeps 42 hours, saves £96,000, and puts the building in the hands of the nine groups that already meet in it.',
+          'The recommendation in this file is deliberately absent. What is not absent is the arithmetic: every option has been costed on the same 2025–26 base, the same 48-hour week and the same £212,000 backlog, so that a decision taken on 2 December can be compared with the one taken in 2024 for Eastgate, which was to do nothing and is now the most expensive branch in the borough per visit.',
+        ],
+        points: [
+          ['A · Close', '£180,000 saved', '2,100 visits a month displaced; 34 minutes added each way'],
+          ['B · Trim', '£142,000 saved', '34 hours · no evenings · after-school hour lost'],
+          ['C · Volunteers', '£61,000 saved', '48 hours kept · 62% of desk hours unsupervised'],
+        ],
+        note: 'All savings are annual, against the 2025–26 outturn, and are net of the cost of absorbing displaced visits at Central.',
+      },
+      {
+        k: 'dtable', label: '表格', run: 'P.19 / Table 03',
+        kicker: 'Table 03',
+        title: 'Five options on the same base',
+        lead: 'Hours are the public offer, not the staffing rota. Savings are net of displaced-visit costs and exclude the £212,000 capital backlog, which is required under every option except A.',
+        head: ['Option', 'Hours', 'FTE', 'Saving', 'Principal risk'], left: [4],
+        rows: [
+          ['A · Close, March 2027', '0', '0', '£180,000', '2,100 visits a month displaced'],
+          ['B · 34-hour week', '34', '4.0', '£142,000', 'After-school hour and Saturdays end early'],
+          ['C · Two volunteer shifts', '48', '5.2', '£61,000', '62% of desk hours unsupervised'],
+          ['D · Community trust', '42', '3.6', '£96,000', 'Needs £212,000 backlog settled first'],
+          ['E · Do nothing', '48', '6.4', '£0', 'Roof and boiler bills still land'],
+        ],
+        read: 'The four-hour gap between C and D is the price of supervision. Under C the building is open the same 48 hours; under D it is open 42 and every one of them has a paid librarian on the desk. On the consultation returns, supervision was the second most common concern after access, mentioned by 31 per cent of respondents.',
+        note: 'Savings are annual and net. Options B–D assume the £212,000 capital programme proceeds in 2027–28; option A assumes disposal within two years.',
+      },
+      {
+        k: 'dend', label: '收尾',
+        kicker: 'Closing',
+        title: 'A branch is a habit before it is a building',
+        rows: [
+          ['Prepared for', 'Brackenhill Borough Council · Communities Committee'],
+          ['Version', 'v1.0 · 21 October 2026'],
+          ['Evidence', 'Returns 2014–26 · outturn 2025–26 · 1,240 responses'],
+          ['Decision', 'Cabinet · 2 December 2026 · 18:00'],
+        ],
+        img: '10',
+      },
+    ],
+  },
 ]
 
 /* ── 渲染 ─────────────────────────────────────────────
@@ -6490,7 +6789,10 @@ export function slideInner(deck, s, index) {
         (s.src ? '<span class="d-fig-src">' + esc(s.src) + '</span>' : '') +
         '</figcaption></figure>'
       )
-    case 'dtable':
+    case 'dtable': {
+      /* 数字列右对齐；s.left 里列的编号保持左对齐（说明列） */
+      const leftCols = Array.isArray(s.left) ? s.left : []
+      const numCls = (i) => (i && !leftCols.includes(i) ? ' class="num"' : '')
       return (
         run(s) +
         '<div class="d-pad">' +
@@ -6498,15 +6800,16 @@ export function slideInner(deck, s, index) {
         '<h2 class="d-h2">' + esc(s.title) + '</h2>' +
         (s.lead ? '<p class="d-lead d-lead-sm">' + esc(s.lead) + '</p>' : '') +
         '<table class="d-table"><thead><tr>' +
-        s.head.map((h, i) => '<th' + (i ? ' class="num"' : '') + '>' + esc(h) + '</th>').join('') +
+        s.head.map((h, i) => '<th' + numCls(i) + '>' + esc(h) + '</th>').join('') +
         '</tr></thead><tbody>' +
         s.rows.map((r) => '<tr>' + r.map((c, i) =>
-          '<td' + (i ? ' class="num"' : '') + '>' + esc(c) + '</td>').join('') + '</tr>').join('') +
+          '<td' + numCls(i) + '>' + esc(c) + '</td>').join('') + '</tr>').join('') +
         '</tbody></table>' +
         (s.read ? '<p class="d-read">' + esc(s.read) + '</p>' : '') +
         dnote(s.note) +
         '</div>'
       )
+    }
     case 'dlist':
       return (
         run(s) +

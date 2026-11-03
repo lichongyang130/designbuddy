@@ -2196,6 +2196,163 @@
   .sld.k-decibel[data-k="dtable"] .d-note,
   .sld.k-decibel[data-k="dlist"] .d-note{margin-top:auto}
 
+  /* ── 文档家族 H：Index（左侧索书号书脊 · 旋转钢印页眉 · 分类卡事实条 · 索引行表格） ── */
+  .sld.k-index .sd-img{filter:saturate(.9) contrast(1.04)}
+  .sld.k-index::before{
+    content:"CALDER STREET LIBRARY · 025.1 REF · USAGE & CLOSURE REVIEW";position:absolute;z-index:6;
+    left:0;top:0;width:32px;height:100%;background:var(--accent);color:#F4EFE2;
+    font-size:7.5px;letter-spacing:.3em;text-transform:uppercase;
+    writing-mode:vertical-rl;transform:rotate(180deg);
+    display:flex;align-items:center;justify-content:center;padding:20px 0;
+  }
+  .sld.k-index .d-pad{padding:116px 92px 104px 128px}
+  /* 页眉：一枚歪着的钢印 */
+  .sld.k-index .d-run{
+    left:auto;right:90px;top:56px;display:block;padding:9px 14px 8px;
+    border:1.5px solid var(--accent);transform:rotate(-2.4deg);
+    font-family:inherit;font-size:8px;line-height:1.5;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--accent);box-shadow:0 0 0 3px rgba(169,116,28,.16);
+  }
+  .sld.k-index .d-run span{display:block}
+  .sld.k-index .d-run span:last-child{margin-top:5px;padding-top:5px;border-top:1px solid rgba(169,116,28,.4);opacity:.85}
+  .sld.k-index .sd-folio{
+    left:128px;right:92px;bottom:46px;align-items:center;
+    font-family:inherit;font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
+  }
+  .sld.k-index .sd-folio span:last-child{
+    display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;
+    border:1px solid var(--ink);color:var(--ink);font-size:10px;letter-spacing:.04em;
+  }
+  .sld.k-index .d-kicker{
+    display:flex;align-items:center;gap:9px;
+    font-family:inherit;font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--accent);
+  }
+  .sld.k-index .d-kicker::before{content:"";flex:none;width:7px;height:7px;background:var(--accent);transform:rotate(45deg)}
+  .sld.k-index .d-h1{font-size:88px;line-height:.94;letter-spacing:-.035em;font-weight:600}
+  .sld.k-index .d-h2{margin-top:14px;max-width:648px;font-size:40px;line-height:1.12;letter-spacing:-.028em;font-weight:600}
+  .sld.k-index .d-h3{font-size:18px;line-height:1.36;font-weight:600;letter-spacing:-.014em}
+  .sld.k-index .d-lead{max-width:612px;font-size:15.6px;line-height:1.86;color:var(--body)}
+  .sld.k-index .d-lead + .d-lead{margin-top:12px}
+  .sld.k-index .d-lead-sm{font-size:13.4px;line-height:1.8}
+  .sld.k-index .d-cols{grid-template-columns:minmax(0,1fr) 198px;gap:42px;margin-top:24px}
+  .sld.k-index .d-main{max-width:562px}
+  .sld.k-index .d-main p{font-size:15.6px;line-height:1.98;text-align:left;color:var(--body)}
+  .sld.k-index .d-main p + p{margin-top:15px}
+  .sld.k-index .d-main p:first-child::first-letter{font-size:1em}
+  /* 右栏：一张贴在页边的分类卡 */
+  .sld.k-index .d-side{
+    padding:18px 16px 14px;border:1px solid var(--rule);background:rgba(255,255,255,.44);
+    box-shadow:3px 3px 0 rgba(24,32,25,.07);
+  }
+  .sld.k-index .d-side::before{
+    content:"CATALOGUE";display:block;margin-bottom:10px;padding-bottom:7px;border-bottom:1px solid var(--rule);
+    font-size:8px;letter-spacing:.24em;text-transform:uppercase;color:var(--accent);
+  }
+  .sld.k-index .d-side p{font-family:inherit;font-size:10.4px;line-height:1.76;color:var(--body)}
+  .sld.k-index .d-side p + p{margin-top:9px;padding-top:9px;border-top:1px dotted var(--rule)}
+  .sld.k-index .d-pull{
+    margin:26px 0 0;padding:22px 24px 20px;border:1px solid var(--ink);background:#F4F1E4;
+    font-size:21px;line-height:1.62;letter-spacing:-.012em;box-shadow:4px 4px 0 rgba(24,32,25,.07);
+  }
+  .sld.k-index .d-pull span{margin-top:10px;font-family:inherit;font-size:8.5px;letter-spacing:.2em;color:var(--muted)}
+  .sld.k-index .d-points{padding-top:13px;border-top:2px solid var(--ink);gap:26px}
+  .sld.k-index .d-points span{font-family:inherit;font-size:8.5px;letter-spacing:.2em}
+  .sld.k-index .d-points b{font-size:19px;letter-spacing:-.02em}
+  .sld.k-index .d-points i{font-size:10.4px;line-height:1.62}
+  .sld.k-index .d-note{
+    margin-top:16px;padding-top:9px;border-top:1px solid var(--rule);
+    font-family:inherit;font-size:8.6px;line-height:1.75;letter-spacing:.12em;
+  }
+  .sld.k-index .d-read{margin-top:20px;padding-top:12px;border-top:1px solid var(--rule);font-size:13px;line-height:1.86}
+  /* 表格：索引行的账本做法 */
+  .sld.k-index .d-table{margin-top:20px;border-top:2px solid var(--ink)}
+  .sld.k-index .d-table th{
+    padding:13px 8px 12px;border-bottom:1px solid var(--ink);font-weight:400;
+    font-family:inherit;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
+  }
+  .sld.k-index .d-table th:first-child{padding-left:0}
+  .sld.k-index .d-table th + th,.sld.k-index .d-table td + td{border-left:1px solid var(--rule)}
+  .sld.k-index .d-table td{padding:30px 8px;border-bottom:1px solid var(--rule);font-size:12.8px;line-height:1.5}
+  .sld.k-index .d-table:has(tbody tr:nth-child(6):last-child) td{padding:38px 8px}
+  .sld.k-index .d-table:has(tbody tr:nth-child(5):last-child) td{padding:46px 8px}
+  .sld.k-index .d-table td:first-child{padding-left:0}
+  .sld.k-index .d-table td.num{font-size:12.4px;color:var(--ink)}
+  .sld.k-index .d-table tbody tr:nth-child(odd){background:rgba(55,88,82,.05)}
+  .sld.k-index .d-table tbody tr:last-child td{border-bottom:1px solid var(--ink)}
+  /* 清单 */
+  .sld.k-index .d-list{margin-top:20px;border-top:2px solid var(--ink);flex:1;display:flex;flex-direction:column;justify-content:space-between}
+  .sld.k-index .d-list li{grid-template-columns:70px minmax(0,1fr);gap:18px;padding:16px 0;border-bottom:1px solid var(--rule)}
+  .sld.k-index .d-list .n{
+    margin-top:3px;font-family:inherit;font-size:21px;line-height:1;letter-spacing:-.02em;font-weight:600;color:var(--accent);
+  }
+  .sld.k-index .d-list p{font-size:12.4px;line-height:1.8}
+  /* 封面 */
+  .sld.k-index .d-cover{padding:98px 92px 82px 128px}
+  .sld.k-index .d-cover-top{
+    padding-bottom:9px;border-bottom:1px solid var(--ink);
+    font-family:inherit;font-size:8.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink);
+  }
+  .sld.k-index .d-cover .d-h1{margin-top:24px;font-size:102px;line-height:.92;letter-spacing:-.045em}
+  .sld.k-index .d-cover .d-lead{max-width:660px;font-size:13.2px;line-height:1.74}
+  .sld.k-index .d-cover .d-lead:first-of-type{margin-top:18px;font-size:16.4px;line-height:1.7;color:var(--ink)}
+  .sld.k-index .d-cover-img{margin:24px 0 22px;border:1px solid var(--ink)}
+  .sld.k-index .d-cover-foot{padding-top:11px;border-top:2px solid var(--ink);gap:22px}
+  .sld.k-index .d-cover-foot b{font-size:11.5px;font-weight:600;letter-spacing:.01em}
+  .sld.k-index .d-cover-foot span{font-family:inherit;font-size:8.5px;letter-spacing:.14em;text-transform:uppercase}
+  /* 章节页：照片是贴在纸上的一张卡 */
+  .sld.k-index .d-sec{padding:0}
+  .sld.k-index .d-sec-txt{padding:106px 92px 0 128px}
+  .sld.k-index .d-sec-num{font-family:inherit;font-size:9px;letter-spacing:.26em;text-transform:uppercase;color:var(--accent)}
+  .sld.k-index .d-sec-t{margin-top:14px;max-width:648px;font-size:70px;line-height:1.03;letter-spacing:-.04em;font-weight:600}
+  .sld.k-index .d-sec-lead{margin-top:20px;max-width:552px;font-size:14.8px;line-height:1.86;color:var(--body)}
+  .sld.k-index .d-sec-img{
+    position:absolute;left:128px;right:92px;bottom:92px;height:626px;margin:0;overflow:hidden;
+    border:1px solid var(--ink);box-shadow:6px 6px 0 rgba(24,32,25,.09);
+  }
+  .sld.k-index .d-sec-img .sd-img{width:100%;height:100%;object-fit:cover}
+  /* 图版页 */
+  .sld.k-index .d-fig{padding:98px 92px 84px 128px}
+  .sld.k-index .d-fig-img{border:1px solid var(--ink);box-shadow:6px 6px 0 rgba(24,32,25,.09)}
+  .sld.k-index .d-fig-cap{margin-top:22px;padding-top:14px;border-top:2px solid var(--ink);grid-template-columns:96px minmax(0,1fr);gap:20px}
+  .sld.k-index .d-fig-no{font-family:inherit;font-size:8.5px;letter-spacing:.2em;color:var(--accent)}
+  .sld.k-index .d-fig-cap p{font-size:13.4px;line-height:1.82;color:var(--body)}
+  .sld.k-index .d-fig-src{font-family:inherit;font-size:8.5px;letter-spacing:.16em}
+  /* 目录 */
+  .sld.k-index .d-toc{margin-top:22px;flex:1;display:flex;flex-direction:column;justify-content:space-between}
+  .sld.k-index .d-toc li{grid-template-columns:76px minmax(0,1fr) 168px;gap:18px;padding:22px 0;align-items:center;flex:1;border-top:1px solid var(--rule)}
+  .sld.k-index .d-toc li:last-child{border-bottom:2px solid var(--ink)}
+  .sld.k-index .d-toc .n{font-family:inherit;font-size:26px;line-height:1;letter-spacing:-.02em;color:var(--accent);font-weight:600}
+  .sld.k-index .d-toc .t{font-size:26px;letter-spacing:-.024em}
+  .sld.k-index .d-toc .d{font-family:inherit;font-size:9.4px;line-height:1.6;letter-spacing:0;text-align:right;color:var(--muted)}
+  .sld.k-index .d-toc-figs{margin-top:auto;padding-top:14px;border-top:2px solid var(--ink)}
+  .sld.k-index .d-toc-figs li{font-size:10.4px;line-height:1.7}
+  .sld.k-index .d-toc-figs b{font-family:inherit;font-size:8px;letter-spacing:.16em;font-weight:400}
+  /* 摘要：事实条做成一张分类卡 */
+  .sld.k-index[data-k="dmeta"] .d-facts{
+    margin-top:auto;padding:16px 20px 6px;border:1px solid var(--ink);background:#F4F1E4;
+    box-shadow:5px 5px 0 rgba(24,32,25,.08);
+  }
+  .sld.k-index[data-k="dmeta"] .d-fact{border-bottom:1px dotted var(--rule);padding:10px 0}
+  .sld.k-index[data-k="dmeta"] .d-fact:last-child{border-bottom:0}
+  .sld.k-index[data-k="dmeta"] .d-fact span{font-family:inherit;font-size:8.5px;letter-spacing:.16em}
+  .sld.k-index[data-k="dmeta"] .d-fact b{font-size:15px}
+  .sld.k-index[data-k="dtable"] .d-note,.sld.k-index[data-k="dlist"] .d-note{margin-top:auto}
+  .sld.k-index[data-k="dtable"] .d-read{margin-top:auto}
+  .sld.k-index[data-k="dtable"] .d-note{margin-top:16px}
+  .sld.k-index .d-table td.num{white-space:nowrap}
+  .sld.k-index[data-k="dmeta"] .d-h2{font-size:36px;max-width:712px}
+  .sld.k-index[data-k="dmeta"] .d-lead{font-size:13.6px;line-height:1.84}
+  /* 引文页 */
+  .sld.k-index .d-quote{padding:150px 128px 120px 152px}
+  .sld.k-index .d-quote p{max-width:720px;font-size:38px;line-height:1.42;letter-spacing:-.028em}
+  .sld.k-index .d-quote span{margin-top:26px;font-family:inherit;font-size:9px;letter-spacing:.2em;color:var(--muted)}
+  /* 收尾页 */
+  .sld.k-index .d-end-txt{padding:104px 92px 0 128px}
+  .sld.k-index .d-end-t{margin-top:16px;font-size:48px;line-height:1.14}
+  .sld.k-index .d-end-rows{margin-top:24px;padding-bottom:0}
+  .sld.k-index .d-end-row{border-top:1px solid var(--rule);font-family:inherit;font-size:9px;letter-spacing:.16em}
+  .sld.k-index .d-end-img{flex:1;min-height:0;margin:26px 92px 84px 128px;border:1px solid var(--ink);box-shadow:6px 6px 0 rgba(24,32,25,.09)}
+
   /* ── 社交轮播家族 A：Fridge（深墨绿卡面 + 顶部刻度条 + 巨型数字） ── */
   .sld.k-fridge .sc-top{position:absolute;z-index:4;left:56px;right:56px;top:44px;display:flex;justify-content:space-between;gap:20px;
     font-family:inherit;font-size:10px;letter-spacing:.18em;color:var(--muted)}
