@@ -48,6 +48,9 @@ test('every case deck keeps its agreed page and image budget', () => {
     if (deck.fmt === 'doc') {
       assert.ok(pages >= 15 && pages <= 20, `${deck.name}: 文档 ${pages} 页，应为 15–20`)
       assert.equal(usedImages(deck).size, 10, `${deck.name}: 文档应有 10 张配图`)
+    } else if (deck.fmt === 'card') {
+      assert.ok(pages >= 8 && pages <= 12, `${deck.name}: 轮播 ${pages} 张，应为 8–12`)
+      assert.ok(usedImages(deck).size >= 5 && usedImages(deck).size <= 8, `${deck.name}: 轮播应有 5–8 张配图`)
     } else {
       assert.ok(pages >= 25 && pages <= 30, `${deck.name}: 演示文稿 ${pages} 页，应为 25–30`)
       assert.equal(usedImages(deck).size, 15, `${deck.name}: 演示文稿应有 15 张配图`)

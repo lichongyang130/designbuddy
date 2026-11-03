@@ -372,6 +372,7 @@
     transition:transform var(--d2) var(--ease),box-shadow var(--d2) var(--ease);
   }
   .tpl-card .cover.doc .sdbox{position:absolute;top:50%;left:50%;width:auto;height:100%;aspect-ratio:960/1358;transform:translate(-50%,-50%);box-shadow:0 8px 22px rgba(20,24,20,.22),0 1px 3px rgba(20,24,20,.16)}
+  .tpl-card .cover.card .sdbox{position:absolute;top:50%;left:50%;width:auto;height:100%;aspect-ratio:960/1200;transform:translate(-50%,-50%);box-shadow:0 8px 22px rgba(20,24,20,.22),0 1px 3px rgba(20,24,20,.16)}
   .tpl-card:hover .cover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(18,30,60,.16)}
   .tpl-card:focus-visible .cover{box-shadow:0 0 0 3px rgba(39,125,246,.35)}
   .tpl-cap{display:flex;align-items:center;gap:6px;margin-top:7px;font-size:12.5px;line-height:1.35;color:#313233}
@@ -607,6 +608,8 @@
   /* ── 文档画布：A4 竖版 960×1358 ──────────────────── */
   .sdbox.doc{aspect-ratio:960/1358}
   .sld.doc{width:960px;height:1358px}
+  .sdbox.card{aspect-ratio:960/1200}
+  .sld.card{width:960px;height:1200px}
   .sld.doc .d-pad{position:absolute;inset:0;padding:104px 96px 108px;display:flex;flex-direction:column}
   .sld.doc .d-run{
     position:absolute;left:96px;right:96px;top:54px;display:flex;justify-content:space-between;gap:24px;
@@ -2193,6 +2196,86 @@
   .sld.k-decibel[data-k="dtable"] .d-note,
   .sld.k-decibel[data-k="dlist"] .d-note{margin-top:auto}
 
+  /* ── 社交轮播家族 A：Fridge（深墨绿卡面 + 顶部刻度条 + 巨型数字） ── */
+  .sld.k-fridge .sc-top{position:absolute;z-index:4;left:56px;right:56px;top:44px;display:flex;justify-content:space-between;gap:20px;
+    font-family:inherit;font-size:10px;letter-spacing:.18em;color:var(--muted)}
+  .sld.k-fridge .sc-count{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9px;letter-spacing:.16em}
+  .sld.k-fridge .sc-count b{color:var(--ink);font-weight:500}
+  .sld.k-fridge .sc-ticks{position:absolute;z-index:4;left:56px;right:56px;top:72px;display:flex;gap:6px}
+  .sld.k-fridge .sc-ticks i{flex:1;height:2px;background:rgba(244,240,227,.22)}
+  .sld.k-fridge .sc-ticks i.on{background:var(--accent)}
+  .sld.k-fridge .sc-foot{position:absolute;z-index:4;left:56px;right:56px;bottom:42px;display:flex;justify-content:space-between;gap:22px;
+    font-family:inherit;font-size:10px;letter-spacing:.16em;color:var(--muted)}
+  .sld.k-fridge .sc-kick{font-family:inherit;font-size:11px;letter-spacing:.2em;color:var(--accent)}
+  .sld.k-fridge .sc-h1{margin:20px 0 0;font-size:92px;line-height:.96;letter-spacing:-.05em;font-weight:600}
+  .sld.k-fridge .sc-h1.sm{font-size:64px;line-height:1.1;letter-spacing:-.04em}
+  .sld.k-fridge .sc-h2{margin:24px 0 0;font-size:44px;line-height:1.2;letter-spacing:-.032em;font-weight:600}
+  .sld.k-fridge .sc-sub{margin:22px 0 0;font-size:17px;line-height:1.72;color:var(--body);max-width:600px}
+  .sld.k-fridge .sc-lead{margin:18px 0 0;font-size:14.5px;line-height:1.8;color:var(--body);max-width:620px}
+  .sld.k-fridge[data-k="sc-stat"] .sc-big{font-size:380px}
+  .sld.k-fridge[data-k="sc-stat"] .sc-big i{font-size:60px}
+  .sld.k-fridge[data-k="sc-stat"] .sc-lead{margin-bottom:auto}
+  .sld.k-fridge .sc-pad{position:absolute;left:56px;right:56px;top:112px;bottom:92px;display:flex;flex-direction:column}
+  .sld.k-fridge .sc-big{margin-top:auto;padding-top:26px;border-top:1px solid var(--rule);font-size:296px;line-height:.8;letter-spacing:-.065em;font-weight:600;color:var(--accent)}
+  .sld.k-fridge .sc-big i{font-style:normal;font-size:50px;letter-spacing:-.02em;margin-left:14px;color:var(--ink);vertical-align:baseline}
+  .sld.k-fridge .sc-big.sm{font-size:196px;letter-spacing:-.05em;color:var(--ink)}
+  /* 封面 */
+  .sld.k-fridge .sc-media{position:absolute;left:0;right:0;top:0;height:662px;overflow:hidden}
+  .sld.k-fridge .sc-media .sd-img{width:100%;height:100%;object-fit:cover}
+  .sld.k-fridge .sc-media::after{content:"";position:absolute;left:0;right:0;top:0;height:210px;
+    background:linear-gradient(180deg,rgba(14,33,26,.9) 0,rgba(14,33,26,.52) 92px,rgba(14,33,26,0) 100%)}
+  .sld.k-fridge .sc-media.tall{height:486px}
+  .sld.k-fridge .sc-open-txt{position:absolute;left:56px;right:56px;top:706px}
+  /* 整幅图卡 */
+  .sld.k-fridge .sc-full{position:absolute;left:0;right:0;top:0;height:938px;overflow:hidden}
+  .sld.k-fridge .sc-full .sd-img{width:100%;height:100%;object-fit:cover}
+  .sld.k-fridge .sc-full-cap{position:absolute;left:56px;right:56px;top:976px;display:grid;grid-template-columns:58px minmax(0,1fr);gap:18px}
+  .sld.k-fridge .sc-full-cap .no{padding-top:5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:8.5px;
+    letter-spacing:.2em;color:var(--accent)}
+  .sld.k-fridge .sc-full-cap p{margin:0;font-size:17px;line-height:1.78;color:var(--body)}
+  .sld.k-fridge .sc-full::after{content:"";position:absolute;left:0;right:0;top:0;height:210px;
+    background:linear-gradient(180deg,rgba(14,33,26,.9) 0,rgba(14,33,26,.52) 92px,rgba(14,33,26,0) 100%)}
+  /* 数字压图 */
+  .sld.k-fridge .sc-hero-img{position:absolute;inset:0;overflow:hidden}
+  .sld.k-fridge .sc-hero-img .sd-img{width:100%;height:100%;object-fit:cover;filter:saturate(.92) contrast(1.02)}
+  .sld.k-fridge .sc-hero-img::after{content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(14,33,26,.86) 0%,rgba(14,33,26,.22) 34%,rgba(14,33,26,.9) 78%,rgba(14,33,26,.97) 100%)}
+  .sld.k-fridge .sc-hero-txt{position:absolute;left:56px;right:56px;bottom:104px}
+  .sld.k-fridge .sc-hero-txt .sc-h2{margin-top:12px}
+  .sld.k-fridge .sc-hero-txt .sc-lead{color:#CFC9B8}
+  /* 对照卡 */
+  .sld.k-fridge .sc-cmp{margin-top:34px;border-top:1px solid var(--rule);flex:1;display:flex;flex-direction:column}
+  .sld.k-fridge .sc-cmp-row{display:grid;grid-template-columns:minmax(0,1fr) 34px minmax(0,1fr) 112px;gap:14px;
+    align-items:baseline;padding:26px 0;border-bottom:1px solid var(--rule);flex:1;align-content:center}
+  .sld.k-fridge .sc-cmp-row .a{font-size:76px;line-height:1;letter-spacing:-.05em;font-weight:600;color:var(--muted)}
+  .sld.k-fridge .sc-cmp-row .b{font-size:76px;line-height:1;letter-spacing:-.05em;font-weight:600;color:var(--ink)}
+  .sld.k-fridge .sc-cmp-row .arrow{font-size:20px;color:var(--accent);text-align:center}
+  .sld.k-fridge .sc-cmp-row .l{font-family:inherit;font-size:11px;letter-spacing:.12em;
+    color:var(--muted);text-align:right;white-space:nowrap}
+  .sld.k-fridge[data-k="sc-compare"] .sc-lead{margin-top:auto}
+  /* 清单卡 */
+  .sld.k-fridge .sc-list{list-style:none;margin:26px 0 0;padding:0;border-top:1px solid var(--rule);flex:1;display:flex;flex-direction:column}
+  .sld.k-fridge .sc-list li{display:grid;grid-template-columns:40px minmax(0,1fr);gap:18px;padding:24px 0;border-bottom:1px solid var(--rule);flex:1;align-content:center}
+  .sld.k-fridge .sc-list:has(> li:nth-child(2):last-child),
+  .sld.k-fridge .sc-list:has(> li:nth-child(3):last-child){justify-content:space-between}
+  .sld.k-fridge .sc-list:has(> li:nth-child(2):last-child) li,
+  .sld.k-fridge .sc-list:has(> li:nth-child(3):last-child) li{flex:none;padding:34px 0}
+  .sld.k-fridge .sc-list:has(> li:nth-child(3):last-child) h3{font-size:31px}
+  .sld.k-fridge .sc-list:has(> li:nth-child(3):last-child) p{font-size:15px;margin-top:10px}
+  .sld.k-fridge .sc-list .n{padding-top:7px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9px;
+    letter-spacing:.16em;color:var(--accent)}
+  .sld.k-fridge .sc-list h3{margin:0;font-size:24px;line-height:1.32;letter-spacing:-.022em;font-weight:600}
+  .sld.k-fridge .sc-list p{margin:6px 0 0;font-size:13px;line-height:1.72;color:var(--body)}
+  /* 收尾卡 */
+  .sld.k-fridge .sc-end-txt{position:absolute;left:56px;right:56px;top:534px;bottom:92px;display:flex;flex-direction:column}
+  .sld.k-fridge:has(.sc-media) .sc-top,.sld.k-fridge:has(.sc-hero-img) .sc-top{color:rgba(244,240,227,.78)}
+  .sld.k-fridge:has(.sc-media) .sc-top,.sld.k-fridge:has(.sc-hero-img) .sc-top{
+    text-shadow:0 1px 12px rgba(14,33,26,.95),0 0 2px rgba(14,33,26,.8)}
+  .sld.k-fridge:has(.sc-hero-img) .sc-big{border-top:0;padding-top:0}
+  .sld.k-fridge .sc-lines{list-style:none;margin:auto 0 0;padding:16px 0 0;border-top:1px solid var(--rule);
+    display:grid;gap:9px;font-family:inherit;font-size:10.5px;letter-spacing:.1em;
+    line-height:1.7;color:var(--muted)}
+
   /* 对比页 / 三联图版 */
   .sld .cmp-cols{display:grid;grid-template-columns:1fr 1fr;gap:38px;margin-top:26px}
   .sld .cmp-col{padding-top:12px;border-top:1px solid var(--rule)}
@@ -2556,10 +2639,14 @@
   .tv-left{min-width:0;display:flex;flex-direction:column;background:#e9e9e7}
   .tv-stage{flex:1;min-height:0;display:grid;place-items:center;padding:24px 66px 16px;overflow:hidden}
   .tv-stage .sdbox{width:100%;max-width:1120px;box-shadow:0 14px 34px rgba(18,22,30,.18),0 2px 6px rgba(18,22,30,.08)}
-  .tv-stage .sdbox.doc{width:auto;height:100%;max-width:none;max-height:100%;aspect-ratio:960/1358}
-  .tv-stage:has(.sdbox.doc){padding:14px 40px 10px}
+  .tv-stage .sdbox.doc,.tv-stage .sdbox.card{width:auto;height:100%;max-width:none;max-height:100%}
+  .tv-stage .sdbox.doc{aspect-ratio:960/1358}
+  .tv-stage .sdbox.card{aspect-ratio:960/1200}
+  .tv-stage:has(.sdbox.doc),.tv-stage:has(.sdbox.card){padding:14px 40px 10px}
   .tv-th.doc{width:58px}
   .tv-th.doc .sdbox{aspect-ratio:960/1358}
+  .tv-th.card{width:64px}
+  .tv-th.card .sdbox{aspect-ratio:960/1200}
   .tv-strip{flex:none;display:flex;align-items:center;gap:2px;padding:9px 4px 13px;background:#fff;border-top:1px solid #e8e8e8}
   .tv-nav{flex:none;display:grid;place-items:center;width:34px;height:66px;border-radius:7px;color:#43474d}
   .tv-nav:hover{background:#f4f5f7}
@@ -4266,7 +4353,8 @@ const TPL_CAP_ICON =
 
 /* ── 案例封面：直接用第 1 页幻灯片渲染，卡片与详情页共用一套画布 ── */
 function boxClass(deck) {
-  return deck && deck.fmt === 'doc' ? 'sdbox doc' : 'sdbox'
+  if (!deck) return 'sdbox'
+  return deck.fmt === 'doc' ? 'sdbox doc' : deck.fmt === 'card' ? 'sdbox card' : 'sdbox'
 }
 
 function deckCoverHTML(deck) {
@@ -4282,7 +4370,7 @@ function paintTplGallery() {
     card.className = 'tpl-card'
     card.dataset.cat = deck.kind
     card.innerHTML =
-      '<div class="cover' + (deck.fmt === 'doc' ? ' doc' : '') + '"' + (deck.fmt === 'doc' ? ' style="background:' + deck.paper + '"' : '') + '>' + deckCoverHTML(deck) + '</div>' +
+      '<div class="cover' + (deck.fmt === 'doc' ? ' doc' : '') + (deck.fmt === 'card' ? ' card' : '') + '"' + (deck.fmt === 'doc' || deck.fmt === 'card' ? ' style="background:' + deck.paper + '"' : '') + '>' + deckCoverHTML(deck) + '</div>' +
       '<div class="tpl-cap">' + TPL_CAP_ICON + '<span>' + deck.name + '</span></div>'
     card.onclick = () => openCase(deck)
     grid.appendChild(card)
@@ -4335,7 +4423,7 @@ function renderCase() {
   if (thumbs.dataset.deck !== deck.id) {
     thumbs.dataset.deck = deck.id
     thumbs.innerHTML = deck.slides.map((sl, i) =>
-      '<button class="tv-th' + (deck.fmt === 'doc' ? ' doc' : '') + '" data-i="' + i + '" title="' + sl.label + '">' +
+      '<button class="tv-th' + (deck.fmt === 'doc' ? ' doc' : deck.fmt === 'card' ? ' card' : '') + '" data-i="' + i + '" title="' + sl.label + '">' +
       '<div class="' + boxClass(deck) + '">' + slideHTML(deck, sl, i) + '</div><span>' + sl.label + '</span></button>'
     ).join('')
     thumbs.querySelectorAll('.tv-th').forEach((el) => {

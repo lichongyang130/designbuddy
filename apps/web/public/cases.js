@@ -6241,6 +6241,135 @@ export const CASE_DECKS = [
       },
     ],
   },
+  {
+    id: 'fridge',
+    name: '冰箱里的四成',
+    en: 'Forty Per Cent of a Fridge',
+    by: 'DesignBuddy',
+    cat: '轮播',
+    fmt: 'card',
+    ratio: '4:5 · 竖版',
+    date: 20261103,
+    kind: '食物浪费观察',
+    category: '研究',
+    tags: ['食物浪费', '冰箱', '家庭', '可持续'],
+    desc: '一套 4:5 的社交轮播卡片：墨绿卡面、顶部进度条、巨型数字、压在照片上的结论。十一张卡讲一件事——一台冰箱、三口之家、七天：买回来 41 样，吃下去 24 样，剩下四成去了哪儿，以及第二周把浪费压到一成的三个零成本动作。',
+    bestFor: ['社交平台知识轮播', '家庭消费观察', '可持续议题传播', '数据类长图拆分'],
+    visual: '卡面是深墨绿 #0E211A，字是米白 #F4F0E3，番茄红 #E2542B 只给栏目、页码进度和关键数字。每张卡顶部是系列名和「03 / 10」，下面一条十格进度条——看到第几张不用数。数字用 268px 的紧字距，几乎顶到卡边；照片是纪实色调，只在「数字压图」那一张用暗角压住。这是第一个社交轮播家族：它不考虑「一页能装多少字」，只考虑「手指划过去的那一秒能不能看懂」。',
+    how: '十一张卡按「钩子 → 数字 → 证据 → 归因 → 动作 → 复测 → 收口」推进：封面、数字卡、整幅图卡、对照卡、清单卡、数字压图、收尾卡七种页型交替，避免连续三张都是字。所有数字互相咬合：41 样 / 24 样、5.8 / 3.4 公斤、318 / 192 元、一周 126 元 × 52 周 = 6 552 元、第二周浪费 11%。',
+    styles: ['#0E211A', '#E2542B', '#93A899'],
+    colorway: '墨绿 · 番茄红 · 灰绿',
+    footLeft: '冰箱里的四成 · 一周实验',
+    runHead: 'Fridge · 一周实验',
+    swipe: '左滑 →',
+    swipeEnd: '完 · 收藏',
+    paper: '#0E211A',
+    ink: '#F4F0E3',
+    accent: '#E2542B',
+    second: '#93A899',
+    muted: '#7E8C84',
+    rule: '#2C3D34',
+    body: '#D5CFBE',
+    display: 'sans',
+    slides: [
+      {
+        k: 'sc-open', label: '封面',
+        kicker: '一周实验 · 冰箱',
+        title: '冰箱里的四成',
+        sub: '买回来 41 样，吃下去 24 样。剩下那 17 样去了哪儿，我们守着一台冰箱数了七天。',
+        img: '01',
+        foot: '冰箱观察 · 2026.10',
+      },
+      {
+        k: 'sc-stat', label: '数字',
+        kicker: '01 / 开门的次数',
+        big: '21', unit: '次',
+        title: '一天开二十一次冰箱',
+        lead: '平均值 21 次，第三天最多 27 次。开门不是问题——问题是开门之后，什么也没有拿出来。',
+        foot: '第 1–7 天 · 逐次记录',
+      },
+      {
+        k: 'sc-img', label: '图卡', no: 'FIG.01', img: '02',
+        cap: '第四天早上，最下层抽屉：一袋菠菜、两根西葫芦、半盒豆芽。都还在保质期内，都已经没人想做了。',
+        foot: '抽屉 · 第四天 08:20',
+      },
+      {
+        k: 'sc-compare', label: '对照',
+        kicker: '02 / 进出账',
+        title: '买进来 41 样，吃下去 24 样',
+        pairs: [
+          ['41', '24', '样数'],
+          ['5.8', '3.4', '公斤'],
+          ['318', '192', '一周 / 元'],
+        ],
+        lead: '差掉的 17 样不是一个垃圾袋，是抽屉底层那些「明天再做」的东西：三把青菜、半盒豆腐、两个苹果。',
+        foot: '七天台账 · 单价按小票',
+      },
+      {
+        k: 'sc-list', label: '清单',
+        kicker: '03 / 五种死法',
+        title: '冰箱里，每种东西都有一种死法',
+        items: [
+          ['01', '冷藏格最里层', '放进去就看不见，等再看见已经是第二周。'],
+          ['02', '抽屉最底下', '叶菜被压住，出水、发黏，最后连袋子一起扔。'],
+          ['03', '门架', '温度最高、开合最勤，牛奶和酱料坏得最快。'],
+          ['04', '冷冻室', '冻住的不是时间，是「以后再说」：三袋没拆的饺子皮。'],
+          ['05', '台面上', '最委屈的一类——买回来当天没进冰箱，第二天就开始出水。'],
+        ],
+        foot: '五处 · 按丢弃时间排序',
+      },
+      {
+        k: 'sc-img', label: '图卡', no: 'FIG.02', img: '03',
+        cap: '买回来的那一小时，是这一周唯一能决定命运的一小时。番茄在台面上过一夜，第二天就软了。',
+        foot: '台面 · 第一天 19:40',
+      },
+      {
+        k: 'sc-stat', label: '数字',
+        kicker: '04 / 钱',
+        big: '6 552', unit: '元', sm: true,
+        title: '一年扔掉的钱，够交两个月房租',
+        lead: '一周浪费 126 元 × 52 周。不含外食，只算买回家、最后没进嘴的东西。',
+        foot: '单价按 2026 年 9 月小票',
+      },
+      {
+        k: 'sc-list', label: '清单',
+        kicker: '05 / 三个动作',
+        title: '不用买任何东西，先把顺序换一下',
+        items: [
+          ['01', '抽屉清空，只放「先吃」', '第一层永远放三天内要吃完的，绿叶菜平铺，不叠袋子。'],
+          ['02', '回家的那一晚全部处理', '洗、切、装盒，半小时。没处理的菜，第四天基本就废了。'],
+          ['03', '一周两次「清冰箱日」', '周三和周日晚上，只看抽屉和后排，剩下的做成一顿饭。'],
+        ],
+        foot: '第二周开始执行 · 零成本',
+      },
+      {
+        k: 'sc-img', label: '图卡', no: 'FIG.03', img: '04',
+        cap: '第二周：同一批菜，回家当晚洗、切、装盒。每天只处理一次，抽屉里再没有「明天再做」的东西。',
+        foot: '第二周 · 装盒 4 份',
+      },
+      {
+        k: 'sc-hero', label: '数字压图', img: '05',
+        kicker: '06 / 复测',
+        big: '11%',
+        title: '第二周，浪费从四成掉到一成',
+        lead: '同一台冰箱、同一家人，没有添置任何收纳工具。',
+        foot: '第 8–14 天 · 复测',
+      },
+      {
+        k: 'sc-end', label: '收尾',
+        kicker: '收尾',
+        title: '冰箱不负责保存食物，它只负责拖延',
+        sub: '四十个百分点里，没有一个百分点是技术问题。',
+        lines: [
+          '观察：218 升双门冰箱 · 三口之家 · 七天',
+          '方法：逐项称重 + 每日拍照 + 小票核对',
+          '复测：第二周同法，共 14 天',
+        ],
+        img: '06',
+        foot: '冰箱里的四成 · 完',
+      },
+    ],
+  },
 ]
 
 /* ── 渲染 ─────────────────────────────────────────────
@@ -6259,7 +6388,7 @@ function bulletList(items) {
   return '<ul class="sd-ul">' + items.map((x) => '<li>' + esc(x) + '</li>').join('') + '</ul>'
 }
 
-export function slideInner(deck, s) {
+export function slideInner(deck, s, index) {
   const paras = (list) => '<div class="sd-paras">' + list.map((p) => '<p>' + esc(p) + '</p>').join('') + '</div>'
 
   /* ── 文档页型（A4 竖版）：run 是页眉，d-pad 是正文版心 ── */
@@ -6267,6 +6396,21 @@ export function slideInner(deck, s) {
     '<div class="d-run"><span>' + esc(deck.runHead || deck.name) + '</span><span>' + esc(x.run || '') + '</span></div>'
   const leads = (list) => (list || []).map((p) => '<p class="d-lead">' + esc(p) + '</p>').join('')
   const dnote = (t) => (t ? '<div class="d-note">' + esc(t) + '</div>' : '')
+
+  /* ── 社交轮播卡片的公共骨架：系列名 + 页码、进度刻度、页脚（左注 + 右滑提示） ── */
+  const scChrome = (i) => {
+    const total = deck.slides.length
+    const n = (i || 0) + 1
+    let ticks = ''
+    for (let k = 0; k < total; k++) ticks += '<i' + (k < n ? ' class="on"' : '') + '></i>'
+    return (
+      '<div class="sc-top"><span>' + esc(deck.runHead || deck.name) + '</span>' +
+      '<span class="sc-count"><b>' + String(n).padStart(2, '0') + '</b> / ' + String(total).padStart(2, '0') + '</span></div>' +
+      '<div class="sc-ticks">' + ticks + '</div>' +
+      '<div class="sc-foot"><span>' + esc(s.foot || deck.footLeft || '') + '</span>' +
+      '<span>' + esc(n < total ? deck.swipe || 'Swipe' : deck.swipeEnd || 'End') + '</span></div>'
+    )
+  }
 
   switch (s.k) {
     case 'dcover':
@@ -6391,6 +6535,79 @@ export function slideInner(deck, s) {
           '<div class="d-end-row"><span>' + esc(k) + '</span><span>' + esc(v) + '</span></div>').join('') + '</div>' +
         '</div>' +
         '<div class="d-end-img">' + imgTag(deck, s.img) + '</div>' +
+        '</div>'
+      )
+    case 'sc-open':
+      return (
+        scChrome(index) +
+        '<div class="sc-media">' + imgTag(deck, s.img) + '</div>' +
+        '<div class="sc-open-txt">' +
+        '<div class="sc-kick">' + esc(s.kicker || '') + '</div>' +
+        '<h1 class="sc-h1">' + esc(s.title) + '</h1>' +
+        (s.sub ? '<p class="sc-sub">' + esc(s.sub) + '</p>' : '') +
+        '</div>'
+      )
+    case 'sc-stat':
+      return (
+        scChrome(index) +
+        '<div class="sc-pad">' +
+        '<div class="sc-kick">' + esc(s.kicker || '') + '</div>' +
+        '<div class="sc-big' + (s.sm ? ' sm' : '') + '">' + esc(s.big) + (s.unit ? '<i>' + esc(s.unit) + '</i>' : '') + '</div>' +
+        '<h2 class="sc-h2">' + esc(s.title) + '</h2>' +
+        (s.lead ? '<p class="sc-lead">' + esc(s.lead) + '</p>' : '') +
+        '</div>'
+      )
+    case 'sc-compare':
+      return (
+        scChrome(index) +
+        '<div class="sc-pad">' +
+        '<div class="sc-kick">' + esc(s.kicker || '') + '</div>' +
+        '<h2 class="sc-h2">' + esc(s.title) + '</h2>' +
+        '<div class="sc-cmp">' + (s.pairs || []).map(([a, b, label]) =>
+          '<div class="sc-cmp-row"><span class="a">' + esc(a) + '</span>' +
+          '<span class="arrow">→</span><span class="b">' + esc(b) + '</span>' +
+          '<span class="l">' + esc(label) + '</span></div>').join('') + '</div>' +
+        (s.lead ? '<p class="sc-lead">' + esc(s.lead) + '</p>' : '') +
+        '</div>'
+      )
+    case 'sc-list':
+      return (
+        scChrome(index) +
+        '<div class="sc-pad">' +
+        '<div class="sc-kick">' + esc(s.kicker || '') + '</div>' +
+        '<h2 class="sc-h2">' + esc(s.title) + '</h2>' +
+        '<ol class="sc-list">' + (s.items || []).map(([n, t, d]) =>
+          '<li><span class="n">' + esc(n) + '</span><div class="tx"><h3>' + esc(t) + '</h3>' +
+          (d ? '<p>' + esc(d) + '</p>' : '') + '</div></li>').join('') + '</ol>' +
+        '</div>'
+      )
+    case 'sc-img':
+      return (
+        scChrome(index) +
+        '<div class="sc-full">' + imgTag(deck, s.img) + '</div>' +
+        '<div class="sc-full-cap"><span class="no">' + esc(s.no || '') + '</span>' +
+        '<p>' + esc(s.cap || '') + '</p></div>'
+      )
+    case 'sc-hero':
+      return (
+        scChrome(index) +
+        '<div class="sc-hero-img">' + imgTag(deck, s.img) + '</div>' +
+        '<div class="sc-hero-txt">' +
+        (s.kicker ? '<div class="sc-kick">' + esc(s.kicker) + '</div>' : '') +
+        '<div class="sc-big sm">' + esc(s.big) + '</div>' +
+        '<h2 class="sc-h2">' + esc(s.title) + '</h2>' +
+        (s.lead ? '<p class="sc-lead">' + esc(s.lead) + '</p>' : '') +
+        '</div>'
+      )
+    case 'sc-end':
+      return (
+        scChrome(index) +
+        (s.img ? '<div class="sc-media tall">' + imgTag(deck, s.img) + '</div>' : '') +
+        '<div class="sc-end-txt">' +
+        '<div class="sc-kick">' + esc(s.kicker || '') + '</div>' +
+        '<h2 class="sc-h1 sm">' + esc(s.title) + '</h2>' +
+        (s.sub ? '<p class="sc-sub">' + esc(s.sub) + '</p>' : '') +
+        '<ul class="sc-lines">' + (s.lines || []).map((l) => '<li>' + esc(l) + '</li>').join('') + '</ul>' +
         '</div>'
       )
     case 'cover':
@@ -6676,9 +6893,9 @@ export function slideHTML(deck, s, index) {
     ? '<div class="sd-folio"><span>' + esc(deck.footLeft || deck.name) + '</span>' +
       '<span>' + esc(String((index || 0) + 1).padStart(2, '0')) + '</span></div>'
     : ''
-  return '<div class="sld k-' + deck.id + (deck.fmt === 'doc' ? ' doc' : '') + (deck.imgLine ? ' sld-line' : '') + '" data-k="' + s.k + '" style="' + slideTheme(deck) +
+  return '<div class="sld k-' + deck.id + (deck.fmt === 'doc' ? ' doc' : '') + (deck.fmt === 'card' ? ' card' : '') + (deck.imgLine ? ' sld-line' : '') + '" data-k="' + s.k + '" style="' + slideTheme(deck) +
     (typeof s.at === 'number' ? ';--at:' + s.at : '') + '">' +
-    slideInner(deck, s) + folio + '</div>'
+    slideInner(deck, s, index) + folio + '</div>'
 }
 
 export function deckSlides(deck) {

@@ -50,7 +50,12 @@ test('filters compose: format, category and free text', () => {
 
   const decks = library.list({ fmt: 'deck' })
   assert.ok(decks.every((card) => card.fmt === 'deck'))
-  assert.equal(docs.length + decks.length, CASE_DECKS.length)
+
+  const cards = library.list({ fmt: 'card' })
+  assert.ok(cards.length >= 1, '社交轮播至少 1 套')
+  assert.ok(cards.every((card) => card.fmt === 'card'))
+
+  assert.equal(docs.length + decks.length + cards.length, CASE_DECKS.length)
 
   const proposal = library.list({ cats: ['提案'] })
   assert.ok(proposal.length > 0)
