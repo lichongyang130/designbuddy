@@ -6669,6 +6669,108 @@ export const CASE_DECKS = [
       },
     ],
   },
+  {
+    id: 'lowtide',
+    name: 'Low Tide',
+    en: 'Low Tide Film Festival 2027 · Poster series',
+    by: 'DesignBuddy',
+    cat: '图片',
+    fmt: 'image',
+    ratio: '1:1 · 方形',
+    date: 20261103,
+    kind: 'Poster series',
+    category: '营销材料',
+    tags: ['poster', 'film festival', 'typography', 'campaign'],
+    desc: 'A six-poster campaign for a small coastal film festival, set on a 1:1 canvas: one image per poster, type at 168px, and an information bar pinned to the foot so that every poster carries the same four facts. The photographs do the weather; the type does the shouting.',
+    bestFor: ['Festival and event campaigns', 'Editorial poster series', 'Cultural identity rollouts', 'Social-first square assets'],
+    visual: 'Wet-sand grey #E9E4DA paper, near-black ink #0E0F10, one tangerine #D6472B for kickers and rules, deep-sea green #2B4A46 as the second colour. Photographs are pulled back to 86 per cent saturation so the tangerine stays the loudest thing on the page; every poster ends in the same hairline information bar, which is what makes six different compositions read as one campaign.',
+    how: 'Six posters on a 1200 × 1200 canvas: two full-bleed film stills with the title dropped into the dark, two half-image programme sheets with the schedule set as a ruled list, one closing-night still, and one credits poster. Nothing animates; the series works as a grid on a wall or as six squares in a feed.',
+    styles: ['#E9E4DA', '#D6472B', '#2B4A46'],
+    colorway: 'Wet sand · Tangerine · Deep sea',
+    folio: false,
+    footLeft: 'Low Tide Film Festival · 2027',
+    festival: 'Low Tide Film Festival',
+    paper: '#E9E4DA',
+    ink: '#0E0F10',
+    accent: '#D6472B',
+    second: '#2B4A46',
+    muted: '#6D6A63',
+    rule: '#C8C2B4',
+    body: '#232322',
+    display: 'sans',
+    slides: [
+      {
+        k: 'pt-poster', label: '主海报', dark: true,
+        left: 'Low Tide Film Festival', right: '07—14 Nov 2027',
+        tag: 'North Shore · twelve films',
+        title: 'Low Tide',
+        sub: 'Twelve films about what the water leaves behind, screened in a cinema that used to be a chandlery.',
+        img: '01',
+        meta: ['North Shore Cinemas', '9 days · 12 films', 'lowtide.film'],
+      },
+      {
+        k: 'pt-poster', label: '开幕片', dark: true,
+        left: 'Opening night · 07.11', right: '20:30 · Screen 1',
+        tag: 'A film by Aiko Mercier',
+        title: 'The\nBreakwater',
+        size: 'sm',
+        sub: 'A keeper walks the same 400 metres of sea wall for thirty years, and the sea takes four of them back.',
+        img: '02',
+        meta: ['97 min · 2026', 'Q&A with the director', 'Tickets £9'],
+      },
+      {
+        k: 'pt-poster', label: '节目单', half: true,
+        left: 'Programme', right: 'All screenings · Screen 1',
+        tag: 'Nine days',
+        title: 'Programme',
+        size: 'xs',
+        list: [
+          ['07.11', 'The Breakwater', 'Opening'],
+          ['08.11', 'Nets, Mended', 'Short · 14 min'],
+          ['10.11', 'Six Gulls', 'Documentary'],
+          ['12.11', 'Salt Line', 'Archive · 1974'],
+          ['14.11', 'Low Water', 'Closing'],
+        ],
+        img: '03',
+        meta: ['Screen 1 · 20:30', 'Shorts from 18:00', 'lowtide.film/programme'],
+      },
+      {
+        k: 'pt-poster', label: '场地', dark: true,
+        left: 'Venues', right: 'Four rooms · one estuary',
+        tag: 'Where',
+        title: 'Four\nrooms',
+        size: 'sm',
+        sub: 'The chandlery, the net loft, the harbour office and a marquee on the slipway that only exists if the tide allows it.',
+        img: '04',
+        meta: ['Chandlery · 120 seats', 'Net loft · 60 seats', 'Slipway · weather permitting'],
+      },
+      {
+        k: 'pt-poster', label: '闭幕片', dark: true,
+        left: 'Closing night · 14.11', right: '19:00 · Slipway',
+        tag: 'Closing film',
+        title: 'Six Gulls\nat Six',
+        size: 'sm',
+        sub: 'Filmed over one winter on a slipway that floods twice a day. No narration, no music, six gulls.',
+        img: '05',
+        meta: ['74 min · 2027', 'Outdoor screening', 'Bring a coat'],
+      },
+      {
+        k: 'pt-poster', label: '片尾', dark: true, ruled: true,
+        left: 'Credits', right: 'Low Tide 2027',
+        tag: 'Made by',
+        title: 'Credits',
+        size: 'xs',
+        sub: 'Programmed by the North Shore Film Society. Posters set in Low Tide Grotesk by the festival’s own design team; photographs by the projectionist.',
+        img: '06',
+        list: [
+          ['Direction', 'North Shore Film Society', 'est. 2011'],
+          ['Print', 'Risograph · two colours', '400 copies'],
+          ['Thanks', 'The harbourmaster', 'and the tide'],
+        ],
+        meta: ['lowtide.film', '@lowtidefilm', 'Printed in the net loft'],
+      },
+    ],
+  },
 ]
 
 /* ── 渲染 ─────────────────────────────────────────────
@@ -6839,6 +6941,22 @@ export function slideInner(deck, s, index) {
         '</div>' +
         '<div class="d-end-img">' + imgTag(deck, s.img) + '</div>' +
         '</div>'
+      )
+    case 'pt-poster':
+      return (
+        '<div class="pt ' + (s.dark ? 'dark' : 'light') + (s.ruled ? ' ruled' : '') + (s.half ? ' half' : '') + '">' +
+        (s.img ? '<div class="pt-img">' + imgTag(deck, s.img) + '</div>' : '') +
+        '<div class="pt-pad">' +
+        '<div class="pt-top"><span>' + esc(s.left || deck.festival || '') + '</span><span>' + esc(s.right || '') + '</span></div>' +
+        '<div class="pt-body">' +
+        (s.tag ? '<div class="pt-tag">' + esc(s.tag) + '</div>' : '') +
+        '<h1 class="pt-title' + (s.size ? ' ' + s.size : '') + '">' + esc(s.title) + '</h1>' +
+        (s.sub ? '<p class="pt-sub' + (s.subSm ? ' sm' : '') + '">' + esc(s.sub) + '</p>' : '') +
+        (s.list ? '<ol class="pt-list">' + s.list.map(([a, b, c]) =>
+          '<li><b>' + esc(a) + '</b><span>' + esc(b) + '</span><i>' + esc(c || '') + '</i></li>').join('') + '</ol>' : '') +
+        '</div>' +
+        ((s.meta || []).length ? '<div class="pt-foot">' + s.meta.map((x) => '<span>' + esc(x) + '</span>').join('') + '</div>' : '') +
+        '</div></div>'
       )
     case 'sc-open':
       return (
@@ -7196,7 +7314,8 @@ export function slideHTML(deck, s, index) {
     ? '<div class="sd-folio"><span>' + esc(deck.footLeft || deck.name) + '</span>' +
       '<span>' + esc(String((index || 0) + 1).padStart(2, '0')) + '</span></div>'
     : ''
-  return '<div class="sld k-' + deck.id + (deck.fmt === 'doc' ? ' doc' : '') + (deck.fmt === 'card' ? ' card' : '') + (deck.imgLine ? ' sld-line' : '') + '" data-k="' + s.k + '" style="' + slideTheme(deck) +
+  const fmtCls = deck.fmt && deck.fmt !== 'deck' ? ' ' + deck.fmt : ''
+  return '<div class="sld k-' + deck.id + fmtCls + (deck.imgLine ? ' sld-line' : '') + '" data-k="' + s.k + '" style="' + slideTheme(deck) +
     (typeof s.at === 'number' ? ';--at:' + s.at : '') + '">' +
     slideInner(deck, s, index) + folio + '</div>'
 }

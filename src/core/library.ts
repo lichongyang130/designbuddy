@@ -88,7 +88,17 @@ export interface LibraryFacets {
   tags: FacetRow[]
 }
 
-const FMT_LABELS: Record<string, string> = { deck: '演示文稿', doc: '文档', card: '社交轮播卡片' }
+const FMT_LABELS: Record<string, string> = {
+  deck: '演示文稿',
+  doc: '文档',
+  card: '社交轮播卡片',
+  site: '网站复刻',
+  image: '图片',
+  artifact: '实时产物',
+  video: '视频',
+  audio: '音频',
+  hyper: 'Hyper Frames',
+}
 
 /** 一套 deck 里被 `img` / `a` / `b` / `figure` / `photo` 引用到的图片编号。 */
 function countImages(deck: DeckLike): number {

@@ -373,6 +373,10 @@
   }
   .tpl-card .cover.doc .sdbox{position:absolute;top:50%;left:50%;width:auto;height:100%;aspect-ratio:960/1358;transform:translate(-50%,-50%);box-shadow:0 8px 22px rgba(20,24,20,.22),0 1px 3px rgba(20,24,20,.16)}
   .tpl-card .cover.card .sdbox{position:absolute;top:50%;left:50%;width:auto;height:100%;aspect-ratio:960/1200;transform:translate(-50%,-50%);box-shadow:0 8px 22px rgba(20,24,20,.22),0 1px 3px rgba(20,24,20,.16)}
+  .tpl-card .cover.site .sdbox,.tpl-card .cover.image .sdbox,.tpl-card .cover.artifact .sdbox,
+  .tpl-card .cover.video .sdbox,.tpl-card .cover.audio .sdbox,.tpl-card .cover.hyper .sdbox{
+    position:absolute;top:50%;left:50%;width:auto;height:100%;transform:translate(-50%,-50%);
+    box-shadow:0 8px 22px rgba(20,24,20,.22),0 1px 3px rgba(20,24,20,.16)}
   .tpl-card:hover .cover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(18,30,60,.16)}
   .tpl-card:focus-visible .cover{box-shadow:0 0 0 3px rgba(39,125,246,.35)}
   .tpl-cap{display:flex;align-items:center;gap:6px;margin-top:7px;font-size:12.5px;line-height:1.35;color:#313233}
@@ -610,6 +614,18 @@
   .sld.doc{width:960px;height:1358px}
   .sdbox.card{aspect-ratio:960/1200}
   .sld.card{width:960px;height:1200px}
+  .sdbox.site{aspect-ratio:1440/900}
+  .sld.site{width:1440px;height:900px;transform:scale(calc(100cqw / 1440px))}
+  .sdbox.image{aspect-ratio:1}
+  .sld.image{width:1200px;height:1200px;transform:scale(calc(100cqw / 1200px))}
+  .sdbox.artifact{aspect-ratio:1280/860}
+  .sld.artifact{width:1280px;height:860px;transform:scale(calc(100cqw / 1280px))}
+  .sdbox.video{aspect-ratio:1280/720}
+  .sld.video{width:1280px;height:720px;transform:scale(calc(100cqw / 1280px))}
+  .sdbox.audio{aspect-ratio:1}
+  .sld.audio{width:1080px;height:1080px;transform:scale(calc(100cqw / 1080px))}
+  .sdbox.hyper{aspect-ratio:1280/860}
+  .sld.hyper{width:1280px;height:860px;transform:scale(calc(100cqw / 1280px))}
   .sld.doc .d-pad{position:absolute;inset:0;padding:104px 96px 108px;display:flex;flex-direction:column}
   .sld.doc .d-run{
     position:absolute;left:96px;right:96px;top:54px;display:flex;justify-content:space-between;gap:24px;
@@ -2353,6 +2369,44 @@
   .sld.k-index .d-end-row{border-top:1px solid var(--rule);font-family:inherit;font-size:9px;letter-spacing:.16em}
   .sld.k-index .d-end-img{flex:1;min-height:0;margin:26px 92px 84px 128px;border:1px solid var(--ink);box-shadow:6px 6px 0 rgba(24,32,25,.09)}
 
+  /* ── 图片家族 A：Low Tide（1:1 海报 · 巨字 + 通栏图 + 底部信息条） ── */
+  .sld.k-lowtide .sd-img{filter:saturate(.86) contrast(1.06)}
+  .sld.k-lowtide .pt{position:absolute;inset:0;display:flex;flex-direction:column;overflow:hidden}
+  .sld.k-lowtide .pt-img{position:absolute;inset:0}
+  .sld.k-lowtide .pt-img .sd-img{width:100%;height:100%;object-fit:cover}
+  .sld.k-lowtide .pt-img::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,15,16,.42) 0,rgba(14,15,16,.06) 34%,rgba(14,15,16,.72) 100%)}
+  .sld.k-lowtide .pt-pad{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;padding:60px 60px 52px}
+  .sld.k-lowtide .pt-top{display:flex;justify-content:space-between;gap:24px;
+    font-family:inherit;font-size:12.5px;letter-spacing:.24em;text-transform:uppercase}
+  .sld.k-lowtide .pt-top span:last-child{text-align:right}
+  .sld.k-lowtide .pt-body{margin-top:auto;display:flex;flex-direction:column;gap:16px}
+  .sld.k-lowtide .pt-tag{font-family:inherit;font-size:15px;letter-spacing:.26em;text-transform:uppercase;color:var(--accent)}
+  .sld.k-lowtide .pt-title{margin:0;font-size:168px;line-height:.84;letter-spacing:-.055em;font-weight:700;text-transform:uppercase;white-space:pre-line}
+  .sld.k-lowtide .pt.half .pt-img{inset:0 0 auto 0;height:47%}
+  .sld.k-lowtide .pt.half .pt-img::after{background:linear-gradient(180deg,rgba(14,15,16,.16) 0,rgba(233,228,218,.66) 62%,var(--paper) 100%)}
+  .sld.k-lowtide .pt.half .pt-pad{padding-top:calc(47% + 26px)}
+  .sld.k-lowtide .pt-title.sm{font-size:104px;line-height:.92}
+  .sld.k-lowtide .pt-title.xs{font-size:76px;line-height:1}
+  .sld.k-lowtide .pt-sub{margin:0;max-width:620px;font-size:21px;line-height:1.42;letter-spacing:-.01em}
+  .sld.k-lowtide .pt-sub.sm{font-size:16px;line-height:1.6}
+  .sld.k-lowtide .pt-foot{margin-top:34px;padding-top:16px;border-top:1px solid currentColor;
+    display:flex;justify-content:space-between;gap:22px;opacity:.86;
+    font-family:inherit;font-size:11.5px;letter-spacing:.2em;text-transform:uppercase}
+  .sld.k-lowtide .pt-foot span{white-space:nowrap}
+  .sld.k-lowtide .pt.dark{color:#F1ECE1;background:var(--ink)}
+  .sld.k-lowtide .pt.light{color:var(--ink);background:var(--paper)}
+  .sld.k-lowtide .pt.light .pt-img::after{background:linear-gradient(180deg,rgba(233,228,218,.46) 0,rgba(233,228,218,.04) 36%,rgba(233,228,218,.8) 100%)}
+  /* 节目单卡 */
+  .sld.k-lowtide .pt-list{margin:0;padding:0;list-style:none;display:grid;gap:0;align-content:end}
+  .sld.k-lowtide .pt-list li{display:grid;grid-template-columns:96px 1fr auto;gap:18px;align-items:baseline;
+    padding:15px 0;border-top:1px solid currentColor;font-size:16px}
+  .sld.k-lowtide .pt-list li:last-child{border-bottom:1px solid currentColor}
+  .sld.k-lowtide .pt-list b{font-weight:600;font-size:15px;letter-spacing:.06em}
+  .sld.k-lowtide .pt-list i{font-style:normal;font-size:12px;letter-spacing:.16em;text-transform:uppercase;opacity:.7}
+  /* 纯字海报的横纹底 */
+  .sld.k-lowtide .pt.ruled::before{content:"";position:absolute;inset:0;
+    background-image:repeating-linear-gradient(180deg,transparent 0 47px,rgba(214,71,43,.16) 47px 48px);pointer-events:none}
+
   /* ── 社交轮播家族 A：Fridge（深墨绿卡面 + 顶部刻度条 + 巨型数字） ── */
   .sld.k-fridge .sc-top{position:absolute;z-index:4;left:56px;right:56px;top:44px;display:flex;justify-content:space-between;gap:20px;
     font-family:inherit;font-size:10px;letter-spacing:.18em;color:var(--muted)}
@@ -2799,11 +2853,19 @@
   .tv-stage .sdbox.doc,.tv-stage .sdbox.card{width:auto;height:100%;max-width:none;max-height:100%}
   .tv-stage .sdbox.doc{aspect-ratio:960/1358}
   .tv-stage .sdbox.card{aspect-ratio:960/1200}
-  .tv-stage:has(.sdbox.doc),.tv-stage:has(.sdbox.card){padding:14px 40px 10px}
+  .tv-stage .sdbox.site,.tv-stage .sdbox.image,.tv-stage .sdbox.artifact,
+  .tv-stage .sdbox.video,.tv-stage .sdbox.audio,.tv-stage .sdbox.hyper{width:auto;height:100%;max-width:none;max-height:100%}
+  .tv-stage:has(.sdbox.doc),.tv-stage:has(.sdbox.card),
+  .tv-stage:has(.sdbox.site),.tv-stage:has(.sdbox.image),.tv-stage:has(.sdbox.artifact),
+  .tv-stage:has(.sdbox.video),.tv-stage:has(.sdbox.audio),.tv-stage:has(.sdbox.hyper){padding:14px 40px 10px}
   .tv-th.doc{width:58px}
   .tv-th.doc .sdbox{aspect-ratio:960/1358}
   .tv-th.card{width:64px}
   .tv-th.card .sdbox{aspect-ratio:960/1200}
+  .tv-th.site{width:88px}
+  .tv-th.artifact,.tv-th.hyper{width:78px}
+  .tv-th.video{width:88px}
+  .tv-th.image,.tv-th.audio{width:58px}
   .tv-strip{flex:none;display:flex;align-items:center;gap:2px;padding:9px 4px 13px;background:#fff;border-top:1px solid #e8e8e8}
   .tv-nav{flex:none;display:grid;place-items:center;width:34px;height:66px;border-radius:7px;color:#43474d}
   .tv-nav:hover{background:#f4f5f7}
@@ -3776,6 +3838,42 @@
             <svg class="ts-ico ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"></use></svg>
             <span class="ts-txt">社交轮播卡片</span>
           </label>
+          <label class="ts-opt">
+            <input type="radio" name="tplFmt" value="site" />
+            <span class="ts-dot"></span>
+            <svg class="ts-ico ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-site"></use></svg>
+            <span class="ts-txt">网站复刻</span>
+          </label>
+          <label class="ts-opt">
+            <input type="radio" name="tplFmt" value="image" />
+            <span class="ts-dot"></span>
+            <svg class="ts-ico ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-image"></use></svg>
+            <span class="ts-txt">图片</span>
+          </label>
+          <label class="ts-opt">
+            <input type="radio" name="tplFmt" value="artifact" />
+            <span class="ts-dot"></span>
+            <svg class="ts-ico ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-cube"></use></svg>
+            <span class="ts-txt">实时产物</span>
+          </label>
+          <label class="ts-opt">
+            <input type="radio" name="tplFmt" value="video" />
+            <span class="ts-dot"></span>
+            <svg class="ts-ico ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-video"></use></svg>
+            <span class="ts-txt">视频</span>
+          </label>
+          <label class="ts-opt">
+            <input type="radio" name="tplFmt" value="audio" />
+            <span class="ts-dot"></span>
+            <svg class="ts-ico ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-audio"></use></svg>
+            <span class="ts-txt">音频</span>
+          </label>
+          <label class="ts-opt">
+            <input type="radio" name="tplFmt" value="hyper" />
+            <span class="ts-dot"></span>
+            <svg class="ts-ico ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-frames"></use></svg>
+            <span class="ts-txt">Hyper Frames</span>
+          </label>
         </div>
       </div>
 
@@ -4511,7 +4609,21 @@ const TPL_CAP_ICON =
 /* ── 案例封面：直接用第 1 页幻灯片渲染，卡片与详情页共用一套画布 ── */
 function boxClass(deck) {
   if (!deck) return 'sdbox'
-  return deck.fmt === 'doc' ? 'sdbox doc' : deck.fmt === 'card' ? 'sdbox card' : 'sdbox'
+  return 'sdbox' + (FMT_CLASS.has(deck.fmt) ? ' ' + deck.fmt : '')
+}
+/** 有独立画布尺寸的格式（其余走 16:9 演示画布）。 */
+const FMT_CLASS = new Set(['doc', 'card', 'site', 'image', 'artifact', 'video', 'audio', 'hyper'])
+function fmtClass(deck) {
+  return FMT_CLASS.has(deck.fmt) ? ' ' + deck.fmt : ''
+}
+function metaUnit(deck) {
+  return deck.fmt === 'card' ? ' 张卡片'
+    : deck.fmt === 'image' ? ' 张图'
+    : deck.fmt === 'audio' ? ' 段音频'
+    : deck.fmt === 'video' ? ' 帧画面'
+    : deck.fmt === 'hyper' ? ' 帧'
+    : deck.fmt === 'site' || deck.fmt === 'artifact' ? ' 屏'
+    : ' 个界面'
 }
 
 function deckCoverHTML(deck) {
@@ -4527,7 +4639,7 @@ function paintTplGallery() {
     card.className = 'tpl-card'
     card.dataset.cat = deck.kind
     card.innerHTML =
-      '<div class="cover' + (deck.fmt === 'doc' ? ' doc' : '') + (deck.fmt === 'card' ? ' card' : '') + '"' + (deck.fmt === 'doc' ? ' style="background:' + deck.paper + '"' : '') + '>' + deckCoverHTML(deck) + '</div>' +
+      '<div class="cover' + fmtClass(deck) + '"' + (deck.fmt === 'doc' ? ' style="background:' + deck.paper + '"' : '') + '>' + deckCoverHTML(deck) + '</div>' +
       '<div class="tpl-cap">' + TPL_CAP_ICON + '<span>' + deck.name + '</span></div>'
     card.onclick = () => openCase(deck)
     grid.appendChild(card)
@@ -4580,7 +4692,7 @@ function renderCase() {
   if (thumbs.dataset.deck !== deck.id) {
     thumbs.dataset.deck = deck.id
     thumbs.innerHTML = deck.slides.map((sl, i) =>
-      '<button class="tv-th' + (deck.fmt === 'doc' ? ' doc' : deck.fmt === 'card' ? ' card' : '') + '" data-i="' + i + '" title="' + sl.label + '">' +
+      '<button class="tv-th' + fmtClass(deck) + '" data-i="' + i + '" title="' + sl.label + '">' +
       '<div class="' + boxClass(deck) + '">' + slideHTML(deck, sl, i) + '</div><span>' + sl.label + '</span></button>'
     ).join('')
     thumbs.querySelectorAll('.tv-th').forEach((el) => {
@@ -4601,7 +4713,7 @@ function renderCaseSide(deck) {
     '<div class="tv-side-scroll">' +
       '<div class="tv-ttl" data-no-i18n><h2>' + deck.name + '</h2>' +
         '<button class="tv-link" id="tvCopy" title="复制模板链接">' + iconSVG('link') + '</button></div>' +
-      '<div class="tv-meta" data-no-i18n>' + deck.cat + ' · ' + deck.ratio + ' · ' + deck.slides.length + (deck.fmt === 'card' ? ' 张卡片' : ' 个界面') + '</div>' +
+      '<div class="tv-meta" data-no-i18n>' + deck.cat + ' · ' + deck.ratio + ' · ' + deck.slides.length + metaUnit(deck) + '</div>' +
       '<div class="tv-prov" data-no-i18n><span class="tv-badge">' + badge + '</span>由 ' + deck.by + ' 提供</div>' +
       '<p class="tv-desc" data-no-i18n>' + deck.desc + '</p>' +
       '<h3>最适合</h3><ul class="tv-best" data-no-i18n>' + deck.bestFor.map((x) => '<li>' + x + '</li>').join('') + '</ul>' +

@@ -93,6 +93,9 @@
     download: '<path d="M12 4.4v10.4"/><path d="m7.6 10.6 4.4 4.4 4.4-4.4"/><path d="M4.8 19.6h14.4"/>',
     mail: '<rect x="3.4" y="5.2" width="17.2" height="13.6" rx="2.8"/><path d="m4.8 7.6 6.2 4.6a1.9 1.9 0 0 0 2 0l6.2-4.6"/>',
     video: '<rect x="3.4" y="6" width="12.8" height="12" rx="2.8"/><path d="m16.2 10.4 4.4-2.6v8.4l-4.4-2.6z"/>',
+    audio: '<path d="M4 10.2v3.6M8 7.4v9.2M12 4.8v14.4M16 8.6v6.8M20 10.6v2.8"/>',
+    frames: '<rect x="3.4" y="6.4" width="11.2" height="11.2" rx="2.6"/><path d="M9.4 4.6h8.4a2.6 2.6 0 0 1 2.6 2.6V15.6"/>',
+    site: '<circle cx="12" cy="12" r="8.4"/><path d="M3.7 12h16.6M12 3.6c2.4 2.3 3.6 5.2 3.6 8.4S14.4 18.1 12 20.4c-2.4-2.3-3.6-5.2-3.6-8.4S9.6 5.9 12 3.6z"/>',
     form: '<rect x="3.8" y="4.2" width="16.4" height="15.6" rx="2.8"/><path d="m7.6 9.6 1.5 1.5 2.5-2.5M7.6 15.4l1.5 1.5 2.5-2.5"/><path d="M14 10.4h2.8M14 16.2h2.8"/>',
     task: '<path d="m3.6 6.6 1.6 1.6 2.6-2.6M3.6 12.2l1.6 1.6 2.6-2.6M3.6 17.8l1.6 1.6 2.6-2.6"/><path d="M11.4 7h9M11.4 12.6h9M11.4 18.2h9"/>',
     book: '<path d="M12 6.3C10.3 4.9 8.1 4.3 5.3 4.5a1.2 1.2 0 0 0-1.1 1.2v11.4a1 1 0 0 0 1.1 1c2.6-.1 4.7.5 6.7 1.9 1.9-1.4 4.1-2 6.7-1.9a1 1 0 0 0 1.1-1V5.7a1.2 1.2 0 0 0-1.1-1.2c-2.8-.2-5 .4-6.7 1.8z"/><path d="M12 6.5v13.6"/>',
@@ -122,7 +125,7 @@
     ['导航与容器', ['folder', 'message', 'panel', 'users', 'globe', 'code', 'trash', 'archive', 'clock', 'user', 'apps', 'grid', 'icons', 'layers', 'compass', 'layout', 'list', 'dots-vertical', 'circle', 'shapes']],
     ['内容类型', ['image', 'presentation', 'doc', 'phone', 'carousel']],
     ['专家 · 技能 · 连接器', ['face', 'brain', 'robot', 'cube', 'life', 'plug', 'db', 'tool', 'bolt', 'download']],
-    ['分类与场景', ['cart', 'trend', 'barchart', 'scale', 'storefront', 'book', 'mail', 'video', 'form', 'task', 'terminal']],
+    ['分类与场景', ['cart', 'trend', 'barchart', 'scale', 'storefront', 'book', 'mail', 'video', 'audio', 'frames', 'site', 'form', 'task', 'terminal']],
     ['编辑器与设置', ['font', 'text', 'card', 'keyboard', 'command', 'microphone', 'help']]
   ]
 

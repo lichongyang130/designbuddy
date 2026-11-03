@@ -55,7 +55,11 @@ test('filters compose: format, category and free text', () => {
   assert.ok(cards.length >= 1, '社交轮播至少 1 套')
   assert.ok(cards.every((card) => card.fmt === 'card'))
 
-  assert.equal(docs.length + decks.length + cards.length, CASE_DECKS.length)
+  /* 每种格式各自取一遍，合起来必须等于总数（新增格式时这里会立刻报警） */
+  const FMT = ['deck', 'doc', 'card', 'site', 'image', 'artifact', 'video', 'audio', 'hyper']
+  let sum = 0
+  for (const fmt of FMT) sum += library.list({ fmt }).length
+  assert.equal(sum, CASE_DECKS.length)
 
   const proposal = library.list({ cats: ['提案'] })
   assert.ok(proposal.length > 0)

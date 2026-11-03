@@ -51,6 +51,24 @@ test('every case deck keeps its agreed page and image budget', () => {
     } else if (deck.fmt === 'card') {
       assert.ok(pages >= 8 && pages <= 12, `${deck.name}: 轮播 ${pages} 张，应为 8–12`)
       assert.ok(usedImages(deck).size >= 5 && usedImages(deck).size <= 8, `${deck.name}: 轮播应有 5–8 张配图`)
+    } else if (deck.fmt === 'site') {
+      assert.ok(pages >= 5 && pages <= 8, `${deck.name}: 网站复刻 ${pages} 屏，应为 5–8`)
+      assert.ok(usedImages(deck).size <= 8, `${deck.name}: 网站复刻最多 8 张配图`)
+    } else if (deck.fmt === 'image') {
+      assert.ok(pages >= 4 && pages <= 8, `${deck.name}: 图片 ${pages} 张，应为 4–8`)
+      assert.ok(usedImages(deck).size >= 3 && usedImages(deck).size <= 8, `${deck.name}: 图片组应有 3–8 张图`)
+    } else if (deck.fmt === 'artifact') {
+      assert.ok(pages >= 4 && pages <= 8, `${deck.name}: 实时产物 ${pages} 屏，应为 4–8`)
+      assert.ok(usedImages(deck).size <= 3, `${deck.name}: 实时产物最多 3 张配图`)
+    } else if (deck.fmt === 'video') {
+      assert.ok(pages >= 3 && pages <= 6, `${deck.name}: 视频 ${pages} 帧，应为 3–6`)
+      assert.ok(usedImages(deck).size >= 2 && usedImages(deck).size <= 8, `${deck.name}: 视频应有 2–8 张画面`)
+    } else if (deck.fmt === 'audio') {
+      assert.ok(pages >= 3 && pages <= 6, `${deck.name}: 音频 ${pages} 段，应为 3–6`)
+      assert.ok(usedImages(deck).size <= 3, `${deck.name}: 音频最多 3 张配图`)
+    } else if (deck.fmt === 'hyper') {
+      assert.ok(pages >= 6 && pages <= 10, `${deck.name}: Hyper Frames ${pages} 帧，应为 6–10`)
+      assert.ok(usedImages(deck).size >= 3 && usedImages(deck).size <= 8, `${deck.name}: Hyper Frames 应有 3–8 张图`)
     } else {
       assert.ok(pages >= 25 && pages <= 30, `${deck.name}: 演示文稿 ${pages} 页，应为 25–30`)
       assert.equal(usedImages(deck).size, 15, `${deck.name}: 演示文稿应有 15 张配图`)
