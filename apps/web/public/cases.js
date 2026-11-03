@@ -6890,101 +6890,140 @@ export const CASE_DECKS = [
     ],
   },
   {
-    id: 'poolside',
-    name: 'The Last Summer',
-    en: 'Poolside · a 24-second short',
+    id: 'reel',
+    name: 'The Library in Motion',
+    en: 'Reel 01 · a 31-second frame-by-frame render',
     by: 'DesignBuddy',
     cat: '视频',
     fmt: 'video',
     ratio: '1280×720 · 16:9',
     date: 20261103,
-    kind: 'Short film',
-    category: '营销材料',
-    tags: ['film', 'trailer', 'documentary', 'title design'],
-    desc: 'A twenty-four second short about the last season of a municipal swimming pool, cut from four stills on a 1280 × 720 canvas: a slow push-in per shot, half-second dips to black between them, and one low drone that starts at the first cut and leaves before the last. The deck is the film itself plus the four frames it is built from.',
-    bestFor: ['Short-form brand films', 'Trailer and title design', 'Documentary pitch material', 'Case studies for motion work'],
-    visual: 'Night-water black #0E1113 as the canvas, warm bone #EFEDE6 for type, one sun-bleached amber #E4A05A for kickers and shot numbers, pool teal #4E7E80 as the second colour in the timeline. Supers are set close and wide-tracked; the title is 82px with .945 line height so two lines behave like a film card rather than a slide. Everything sits in the lower third, because the top of the frame belongs to the picture.',
-    how: 'Five frames at 1280 × 720: the title frame over the empty pool, a player page with the real 24-second mp4 and its technical sheet, three-up shot breakdown, a four-track timeline (picture / sound / subtitles / rhythm), and an end card with credits. The film is 25 fps, 1280 × 720, h.264 with a stereo AAC bed — 5.1 MB, playable from the deck.',
-    styles: ['#0E1113', '#E4A05A', '#4E7E80'],
-    colorway: 'Night water · Sun amber · Pool teal',
+    kind: 'Screen film',
+    category: '案例演示',
+    tags: ['film', 'screen render', 'stop motion', 'title design'],
+    desc: 'Thirty-one seconds of the case library moving under its own power: the shelf of twenty-one English decks scrolling, four printed pages of a seabird census turning, three hyper-frames panning on loops that never quite repeat. Every frame was rendered by a real browser at the moment the edit asked for it and then photographed — 450 distinct renders, played back at fifteen a second, with one narration track over the top. There is no still image anywhere in the film.',
+    bestFor: ['Screen films for a product library', 'Case-study motion', 'Title-sequence studies', 'Footage that has to be provably unfaked'],
+    visual: 'Projector black #0A0B0C with a 36 px sprocket rail down the left edge of every frame — repeating perforations in #191C1F, so all six pages read as one strip of film. Type is a tight grotesque on tabular figures; every label, timecode and step number is monospaced and 10 to 12 px. Sulphur #D9E24E is spent only on timecodes and step numbers, so it behaves like leader tape rather than decoration. Cold grey #6B7378 carries the technical rows. Nothing sits on a gradient except the cover, where the frame is allowed to fall to black so the title can sit inside the picture.',
+    how: 'Six frames at 1280 × 720: a cover built from the real 00:04 render, a player page with the shipped 31-second mp4 and its measured sheet, a method page that explains the frame-by-frame render, a strip of five real timecodes cut out of the file, the narration script with its measured levels, and an end card. The five stills are not photographs of a design document — they are frames 60, 129, 204, 309 and 405 of the delivered mp4.',
+    styles: ['#0A0B0C', '#D9E24E', '#6B7378'],
+    colorway: 'Projector black · Sulphur leader · Cold grey',
     folio: false,
-    footLeft: 'Poolside · 2026',
-    paper: '#0E1113',
-    ink: '#EFEDE6',
-    accent: '#E4A05A',
-    second: '#4E7E80',
+    footLeft: 'Reel 01 · 2026',
+    paper: '#0A0B0C',
+    ink: '#F4F2EA',
+    accent: '#D9E24E',
+    second: '#6B7378',
     muted: '#8C9296',
-    rule: '#2A3134',
-    body: '#D7D5CE',
+    rule: '#23272B',
+    body: '#DAD7CF',
     display: 'sans',
     slides: [
       {
-        k: 'vd-page', label: '片名帧', kind: 'title',
+        k: 'rl-page', label: 'TITLE FRAME', kind: 'card', page: '01',
+        headLeft: 'The Library in Motion · reel 01', headRight: '00:00:00:00',
         img: '01',
-        topLeft: 'Poolside · a short film',
-        topRight: '24 sec · 25 fps · 2026',
-        kicker: 'Riverside Municipal Baths · built 1961',
-        title: 'The Last Summer',
-        sub: 'The pool closes in September. Sixty-one summers of lane ropes, chalk, and a whistle at ten past six — filmed on the last four evenings it was open.',
-        bar: ['4 shots', '24 seconds', 'No dialogue', 'Shot on 35mm stills'],
+        topLeft: 'Library in motion · reel 01',
+        topRight: '31.0 s · 15 fps · 1280 × 720',
+        kicker: '450 frames · rendered one at a time · nothing pushed in',
+        title: 'The Library in Motion',
+        sub: 'A shelf of twenty-one decks scrolling, four printed pages turning, three animated frames panning. Every picture in this film was drawn by a real browser at a moment the edit asked for and then photographed — there is no camera move anywhere in the file, and no still held long enough to see.',
+        bar: ['31.0 s', '465 frames', '15 fps', 'One continuous take'],
       },
       {
-        k: 'vd-page', label: '播放', kind: 'play',
+        k: 'rl-page', label: 'PLAYBACK', kind: 'player', page: '02',
+        headLeft: 'Reel 01 · playback', headRight: '00:00:00:00',
         title: 'The film, as delivered',
-        label: 'PLAY · 24s',
-        file: 'film.mp4',
-        poster: '01',
+        file: 'film.mp4', poster: '02',
+        leftTC: '00:00:00:00', rightTC: '00:00:31:00',
         spec: [
-          ['Runtime', '24.0 seconds · 4 shots'],
-          ['Picture', '1280 × 720 · 25 fps · h.264 (High)'],
-          ['Sound', 'Stereo AAC 128 kb/s · one drone bed'],
-          ['Grade', 'Teal shadows, bone highlights, +6 warmth'],
-          ['Delivery', '5.1 MB · faststart · poster frame 01'],
+          ['Runtime', '31.0 s · 465 frames · one continuous take'],
+          ['Picture', '1280 × 720 · 15 fps · h.264 High · yuv420p'],
+          ['Frames', '450 rendered + 15 held under the end card'],
+          ['Sound', 'AAC LC 129 kb/s · 48 kHz stereo · narration 29.0 s'],
+          ['Level', 'mean −20.0 dBFS · peak −2.6 dBFS'],
+          ['Delivery', '3.46 MB · faststart · poster frame 02'],
         ],
-        note: 'Every shot is a still pushed in at 0.055 per cent per frame — between four and eight per cent of travel over six seconds, which reads as a held camera rather than a zoom. The cuts dip to black for 0.7 s so the four frames never argue with each other.',
+        note: 'No cut to black, no push-in, no still held anywhere except the end card. The motion belongs to the page: the shelf scrolls, the pages cross-fade, the hyper-frames pan and pulse on their own loops. What the file holds is 450 distinct renders played back at fifteen a second.',
       },
       {
-        k: 'vd-page', label: '分镜', kind: 'shots',
-        title: 'Four frames, four jobs',
-        label: 'SHOT LIST',
-        shots: [
-          ['01', '01', '0:00 — 6.0', 'The pool, before anyone', 'Wide, empty water, lane ropes stacked. Establishes the size of the place before anything moves.', 'Push in 4 %'],
-          ['02', '02', '0:06 — 12.0', 'Chalk on the block', 'Hands only. The one shot where a person appears, and only to leave a mark.', 'Pull out 3 %'],
-          ['03', '03', '0:12 — 18.0', 'Under the surface', 'The only moving subject: a swimmer crossing frame, no face, bubbles to the top.', 'Push in 6 %'],
-          ['04', '04', '0:18 — 24.0', 'The wall, one lamp', 'Depth markings under a single lamp. The film ends on a number, not a face.', 'Pull out 4 %'],
+        k: 'rl-page', label: 'METHOD', kind: 'method', page: '03',
+        headLeft: 'Reel 01 · how it was made', headRight: '00:00:07:00',
+        title: 'How a frame with nothing still in it gets made',
+        steps: [
+          ['STEP 01', 'Mount the real page', 'The deck components are mounted in a live browser at 1280 × 720: the shelf is the library\'s own rows, the pages are the actual document and hyper-frame components at their real scale. Nothing is redrawn for the film.'],
+          ['STEP 02', 'Set the clock', 'Each frame writes a timeline value t = n / 15, then every CSS animation is paused and scrubbed to that exact instant through the Web Animations API. The pan and the pulse are computed there rather than blended behind it.'],
+          ['STEP 03', 'Photograph the surface', 'Two animation frames are allowed to commit, then the composited surface is captured to JPEG. 186 ms a frame is render time, not playback: the film is a stop-motion of a live page, which is why every frame is a real layout and never an in-between.'],
         ],
-        footLeft: 'Four shots · 6.0 s each · 0.7 s black between',
-        footRight: 'Riverside Municipal Baths',
+        segs: [['The shelf', 7.4], ['Documents', 10.2], ['Hyper frames', 7.2], ['End card', 6.2]],
+        total: 31,
+        ticks: ['00:00 — shelf', '00:07.4 — documents', '00:17.6 — frames', '00:24.8 — end card', '00:31'],
+        rule: ['frames 0 → 449 rendered', '15 fps playback', '0 interpolated in-betweens'],
+        note: 'A screencast of the same page would have produced a worse film and a less honest one: real-time capture drops frames when the compositor stalls and smears when it does not. Rendering each frame on request means the shelf moves a fixed 6.1 px per frame, and every cross-fade is drawn at exactly the opacity the edit asked for.',
       },
       {
-        k: 'vd-page', label: '时间轴', kind: 'timeline',
-        title: 'Where the sound sits',
-        label: 'TIMELINE · 24s',
-        ticks: ['0:00', '0:06', '0:12', '0:18', '0:24'],
-        segs: [
-          ['S1 · 6.0', 'Wide', '#E4A05A'],
-          ['S2 · 6.0', 'Hands', '#D9C9A8'],
-          ['S3 · 6.0', 'Water', '#7FA3A4'],
-          ['S4 · 6.0', 'Wall', '#4E7E80'],
+        k: 'rl-page', label: 'SAMPLES', kind: 'strip', page: '04',
+        headLeft: 'Reel 01 · four movements', headRight: '00:00:31:00',
+        title: 'Four movements, sampled at five timecodes',
+        frames: [
+          ['01', '00:00:04:00', 'The shelf', 'Twenty-one English titles cross a fixed bar.'],
+          ['02', '00:00:08:09', 'Document · page 05', 'Skerry page 5: the 05:40 trailer to the 14:20 backhaul.'],
+          ['03', '00:00:13:09', 'Document · page 07', 'Page 7: 412 guillemots north ledge, 39 on the landing.'],
+          ['04', '00:00:20:09', 'Hyper frame 02', 'Deep Time frame 2 of 8; its 6.4 s pan, scrubbed.'],
+          ['05', '00:00:27:00', 'End card', 'Fifteen held frames while the last sentence lands.'],
         ],
-        frames: ['01', '02', '03', '04'],
-        pic: 'Four stills, one slow push each; 0.7 s dip to black on every cut, 1.4 s at the end.',
-        sound: 'One drone enters at 1.8 s, sits under the whole film, and fades out from 20.6 s so the last frame is silent.',
-        text: 'No dialogue, no supers inside the frame. Titles live in the deck, not on the picture.',
-        rhythm: 'Even 6.0 s shots. The only acceleration is the cut from hands (S2) to water (S3), which lands on the loudest part of the bed.',
-        out: '1280 × 720 · 25 fps · h.264 High · AAC 128 kb/s · faststart · 5.14 MB',
+        moves: [
+          ['Shelf', '00:00:00:00', '00:00:07:00', '105', '6.1 px of scroll a frame'],
+          ['Documents', '00:00:07:00', '00:00:17:09', '159', 'four pages, 0.4 s cross-fades'],
+          ['Hyper frames', '00:00:17:09', '00:00:24:12', '108', 'three pans, scrubbed not re-timed'],
+          ['End card', '00:00:24:12', '00:00:31:00', '93', 'fifteen held frames, one fade'],
+          ['File total', '00:00:00:00', '00:00:31:00', '465', '15 fps throughout'],
+        ],
+        note: 'Timecodes are coded-frame timecodes at 15 fps — 00:00:08:09 is 8.6 s. The five stills above are frames 60, 129, 204, 309 and 405 of the file you can play.',
       },
       {
-        k: 'vd-page', label: '尾卡', kind: 'credits',
-        kicker: 'A DesignBuddy short',
-        title: 'The Last Summer',
+        k: 'rl-page', label: 'NARRATION', kind: 'voice', page: '05',
+        headLeft: 'Reel 01 · narration', headRight: '00:00:14:00',
+        title: 'Seventy-five words, read once',
+        script: [
+          'Thirty-seven case decks, and not one still frame in the whole film.',
+          'First the shelf: twenty-one English titles sliding past.',
+          'Then the documents, printed pages turning — a seabird census from a rock in the North Atlantic.',
+          'Then the frames that move on their own, panning and pulsing on a loop that never quite repeats.',
+          'Every picture here was drawn by a browser, one frame at a time, and played back at fifteen a second.',
+        ],
+        marks: [
+          ['01', '00:00.4', '4.5 s'],
+          ['02', '00:05.4', '4.0 s'],
+          ['03', '00:09.7', '5.8 s'],
+          ['04', '00:16.1', '5.9 s'],
+          ['05', '00:22.5', '6.5 s'],
+        ],
+        audio: 'voice.mp3',
+        audioCap: 'The take as delivered · 24 kHz mono · 113 KB · no edits between sentences',
+        facts: [
+          ['Narration', '29.0 s · 75 words · 155 words a minute'],
+          ['Reader', 'One voice, one take, no splicing between sentences'],
+          ['Track', 'AAC LC 129 kb/s · 48 kHz stereo · −16 LUFS'],
+          ['Peak', '−2.6 dBFS · nothing clipped'],
+          ['Timing', 'Written to the finished cut, then the cut re-timed to the voice'],
+        ],
+        note: 'No waveform is drawn on this page — a drawn waveform is decoration nobody checks against the file. The five marks are silence-detected sentence entries measured on voice.mp3 at −38 dB / 0.22 s; the levels were measured on the delivered mp4. The text above is the script that was read.',
+      },
+      {
+        k: 'rl-page', label: 'END CARD', kind: 'end', page: '06',
+        headLeft: 'Reel 01 · end', headRight: '00:00:31:00',
+        kicker: 'A DesignBuddy reel · 2026',
+        title: 'Rendered in a browser.\nFilmed nowhere.',
+        thumbs: ['01', '02', '03', '04', '05'],
+        thumbsCap: 'Five frames of the film · 00:04 · 00:08 · 00:13 · 00:20 · 00:27',
+        thumbsRight: '465 frames · 31.0 s · 15 fps',
         credits: [
-          ['Direction', 'DesignBuddy\nwith the Riverside Baths trust'],
-          ['Picture', 'Four 35mm stills\npushed in at 0.055 % per frame'],
-          ['Sound', 'One synthesized drone\n98 Hz horn, 73.42 Hz bed'],
-          ['Grade', 'Teal shadows · bone highlights\n+6 warmth, -12 saturation mid'],
-          ['Runtime', '24.0 s · 25 fps\n1280 × 720 · AAC stereo'],
-          ['Thanks', 'The last four swimmers\nand the man with the whistle'],
+          ['Picture', 'Library decks, mounted live\n450 frames at 15 fps'],
+          ['Capture', 'Chromium 1280 × 720\nJPEG q90, 186 ms a frame'],
+          ['Sound', 'One narration track, 29.0 s\nno music bed, no foley'],
+          ['Grade', 'Projector black #0A0B0C\nSulphur leader #D9E24E'],
+          ['Runtime', '31.0 s · 465 frames\nh.264 High + AAC stereo'],
+          ['Note', 'No stock footage, no stills\nno camera moves'],
         ],
       },
     ],
@@ -9392,53 +9431,78 @@ function afTotals(base, groups) {
       }
       return '<div class="af">' + body + '</div>'
     }
-    case 'vd-page': {
+    case 'rl-page': {
       const src = 'cases/' + deck.id + '/'
+      const tc = (t) => '<span class="rl-tc">' + esc(t) + '</span>'
+      const head = (left, right) => '<div class="rl-head"><span><em>' + esc(left) + '</em></span>' +
+        '<span>' + tc(right) + '</span></div>'
       let body = ''
-      if (s.kind === 'title') {
-        body = '<div class="vd-hero">' + imgTag(deck, s.img) +
-          '<div class="vd-top"><span>' + esc(s.topLeft) + '</span><span>' + esc(s.topRight) + '</span></div>' +
-          '<div class="vd-hero-txt"><div class="vd-kick">' + esc(s.kicker) + '</div>' +
-          '<h1 class="vd-h1">' + esc(s.title) + '</h1>' +
-          '<p class="vd-sub">' + esc(s.sub) + '</p>' +
-          '<div class="vd-bar">' + (s.bar || []).map((x) => '<span>' + esc(x) + '</span>').join('') + '</div></div></div>'
-      } else if (s.kind === 'play') {
-        body = '<div class="vd-pad"><div class="vd-head"><h2 class="vd-h2">' + esc(s.title) + '</h2>' +
-          '<span class="vd-lab">' + esc(s.label) + '</span></div>' +
-          '<div class="vd-play">' +
-          '<div class="vd-screen"><video controls playsinline preload="none" poster="' + src + (s.poster || '01') + '.jpg" src="' + src + esc(s.file) + '"></video></div>' +
-          '<div class="vd-spec">' + (s.spec || []).map(([k, v]) =>
-            '<div class="vd-srow"><b>' + esc(k) + '</b><span>' + esc(v) + '</span></div>').join('') +
-          '<p class="vd-snote">' + esc(s.note || '') + '</p></div></div></div>'
-      } else if (s.kind === 'shots') {
-        body = '<div class="vd-pad"><div class="vd-head"><h2 class="vd-h2">' + esc(s.title) + '</h2>' +
-          '<span class="vd-lab">' + esc(s.label) + '</span></div>' +
-          '<div class="vd-shots">' + (s.shots || []).map(([img, n, time, t, d, mv]) =>
-            '<div class="vd-shot">' + imgTag(deck, img) +
-            '<div class="vd-shot-n"><span>SHOT ' + esc(n) + '</span><i>' + esc(time) + '</i></div>' +
-            '<div class="vd-shot-t">' + esc(t) + '</div><p class="vd-shot-d">' + esc(d) + '</p>' +
-            (mv ? '<div class="vd-shot-m">' + esc(mv) + '</div>' : '') + '</div>').join('') + '</div>' +
-          '<div class="vd-foot"><span>' + esc(s.footLeft || '') + '</span><span>' + esc(s.footRight || '') + '</span></div></div>'
-      } else if (s.kind === 'timeline') {
-        body = '<div class="vd-pad"><div class="vd-head"><h2 class="vd-h2">' + esc(s.title) + '</h2>' +
-          '<span class="vd-lab">' + esc(s.label) + '</span></div>' +
-          '<div class="vd-tl"><div class="vd-ticks">' + (s.ticks || []).map((t) => '<span>' + esc(t) + '</span>').join('') + '</div>' +
-          '<div class="vd-track">' + (s.segs || []).map(([lab, cap, col]) =>
-            '<div class="vd-seg" style="width:25%;background:' + col + '"><b>' + esc(lab) + '</b><i>' + esc(cap) + '</i></div>').join('') + '</div>' +
-          '<div class="vd-frames">' + (s.frames || []).map((img, i) =>
-            '<div class="vd-fr">' + imgTag(deck, img) + '<span>' + esc((s.ticks || [])[i] || '') + ' — ' + esc((s.ticks || [])[i + 1] || '') + '</span></div>').join('') + '</div>' +
-          '<div class="vd-row"><b>画面</b><span>' + esc(s.pic) + '</span></div>' +
-          '<div class="vd-row"><b>声音</b><span>' + esc(s.sound) + '</span></div>' +
-          '<div class="vd-row"><b>字幕</b><span>' + esc(s.text) + '</span></div>' +
-          '<div class="vd-row"><b>节奏</b><span>' + esc(s.rhythm) + '</span></div>' +
-          (s.out ? '<div class="vd-row"><b>输出</b><span>' + esc(s.out) + '</span></div>' : '') + '</div></div>'
-      } else if (s.kind === 'credits') {
-        body = '<div class="vd-end"><div class="vd-end-s">' + esc(s.kicker) + '</div>' +
-          '<div class="vd-end-t" style="margin-top:18px">' + esc(s.title) + '</div>' +
-          '<div class="vd-cred">' + (s.credits || []).map(([k, v]) =>
-            '<div>' + esc(k) + '<span>' + esc(v) + '</span></div>').join('') + '</div></div>'
+      if (s.kind === 'card') {
+        body = '<div class="rl-shot">' + imgTag(deck, s.img) + '</div>' +
+          '<div class="rl-cover-txt"><div class="rl-kick">' + esc(s.kicker) + '</div>' +
+          '<h1 class="rl-h1">' + esc(s.title) + '</h1>' +
+          '<p class="rl-sub">' + esc(s.sub) + '</p>' +
+          '<div class="rl-bar">' + (s.bar || []).map((x) => '<span>' + esc(x) + '</span>').join('') + '</div></div>'
+      } else if (s.kind === 'player') {
+        body = '<div class="rl-body"><div style="display:flex;justify-content:space-between;align-items:baseline">' +
+          '<h2 class="rl-h2">' + esc(s.title) + '</h2><div class="rl-kick">' + esc(s.label) + '</div></div>' +
+          '<div class="rl-play"><div>' +
+          '<div class="rl-screen"><video controls playsinline preload="none" poster="' + src + (s.poster || '01') +
+          '.jpg" src="' + src + esc(s.file) + '"></video></div>' +
+          '<div class="rl-timecode"><span>' + esc(s.leftTC) + '</span><span>' + esc(s.rightTC) + '</span></div></div>' +
+          '<div>' + (s.spec || []).map(([k, v]) =>
+            '<div class="rl-srow"><b>' + esc(k) + '</b><span>' + esc(v) + '</span></div>').join('') +
+          '<p class="rl-note">' + esc(s.note || '') + '</p></div></div></div>'
+      } else if (s.kind === 'method') {
+        body = '<div class="rl-body"><h2 class="rl-h2">' + esc(s.title) + '</h2>' +
+          '<div class="rl-steps">' + (s.steps || []).map(([n, t, d]) =>
+            '<div class="rl-step"><div class="rl-step-n">' + esc(n) + '</div>' +
+            '<div class="rl-step-t">' + esc(t) + '</div><p class="rl-step-d">' + esc(d) + '</p></div>').join('') +
+          '</div>' +
+          '<div class="rl-tl"><div class="rl-tl-bar">' + (s.segs || []).map(([lab, dur]) =>
+            '<div class="rl-tl-seg" style="width:' + ((dur / (s.total || 31)) * 100).toFixed(2) + '%"><b>' +
+            esc(lab) + '</b><i>' + esc(dur.toFixed(1)) + ' s</i></div>').join('') + '</div>' +
+          '<div class="rl-tl-ticks">' + (s.ticks || []).map((t) => '<span>' + esc(t) + '</span>').join('') + '</div></div>' +
+          '<div class="rl-rule">' + (s.rule || []).map((x) => '<span>' + esc(x) + '</span>').join('') + '</div>' +
+          '<p class="rl-note">' + esc(s.note || '') + '</p></div>'
+      } else if (s.kind === 'strip') {
+        body = '<div class="rl-body"><div style="display:flex;justify-content:space-between;align-items:baseline">' +
+          '<h2 class="rl-h2">' + esc(s.title) + '</h2><div class="rl-kick">' + esc(s.label) + '</div></div>' +
+          '<div class="rl-strip">' + (s.frames || []).map(([img, t, h, d]) =>
+            '<div class="rl-cell">' + imgTag(deck, img) +
+            '<div class="rl-cell-tc">' + esc(t) + '</div>' +
+            '<div class="rl-cell-h">' + esc(h) + '</div>' +
+            '<p class="rl-cell-d">' + esc(d) + '</p></div>').join('') + '</div>' +
+          (s.moves ? '<table class="rl-moves"><tr><th>Movement</th><th>In</th><th>Out</th><th>Frames</th><th>Motion</th></tr>' +
+            s.moves.map(([m, tin, tout, n, how], i) =>
+              '<tr' + (i === s.moves.length - 1 ? ' class="sum"' : '') + '><td>' + esc(m) + '</td>' +
+              '<td class="mono">' + esc(tin) + '</td><td class="mono">' + esc(tout) + '</td>' +
+              '<td class="mono">' + esc(n) + '</td><td>' + esc(how) + '</td></tr>').join('') + '</table>' : '') +
+          '<p class="rl-note">' + esc(s.note || '') + '</p></div>'
+      } else if (s.kind === 'voice') {
+        body = '<div class="rl-body"><h2 class="rl-h2">' + esc(s.title) + '</h2>' +
+          '<div class="rl-voice"><div class="rl-script">' +
+          (s.script || []).map((p) => '<p>' + esc(p) + '</p>').join('') + '</div>' +
+          '<div class="rl-facts">' + (s.facts || []).map(([k, v]) =>
+            '<div class="rl-frow"><b>' + esc(k) + '</b><span>' + esc(v) + '</span></div>').join('') +
+          '</div></div>' +
+          (s.marks ? '<div class="rl-marks">' + s.marks.map(([n, t, d]) =>
+            '<div class="rl-mark"><b>' + esc(n) + ' · ' + esc(t) + '</b><i>' + esc(d) + '</i></div>').join('') + '</div>' : '') +
+          (s.audio ? '<div class="rl-audio"><audio controls preload="none" src="' + src + esc(s.audio) +
+            '"></audio><span>' + esc(s.audioCap || '') + '</span></div>' : '') +
+          '<p class="rl-note">' + esc(s.note || '') + '</p></div>'
+      } else if (s.kind === 'end') {
+        body = '<div class="rl-end"><div class="rl-kick">' + esc(s.kicker) + '</div>' +
+          '<div class="rl-end-t">' + esc(s.title) + '</div>' +
+          '<div class="rl-cred">' + (s.credits || []).map(([k, v]) =>
+            '<div>' + esc(k) + '<span>' + esc(v) + '</span></div>').join('') + '</div>' +
+          (s.thumbs ? '<div class="rl-thumbs-cap"><span>' + esc(s.thumbsCap || '') + '</span><span>' +
+            esc(s.thumbsRight || '') + '</span></div><div class="rl-thumbs">' +
+            s.thumbs.map((x) => imgTag(deck, x)).join('') + '</div>' : '') + '</div>'
       }
-      return '<div class="vd">' + body + '</div>'
+      const page = String((s.page || 0)).padStart(2, '0')
+      return '<div class="rl"><div class="rl-perf"></div><div class="rl-pn">' + page + '</div>' +
+        head(s.headLeft || '', s.headRight || '') + body + '</div>'
     }
     case 'au-page': {
       const src = 'cases/' + deck.id + '/'

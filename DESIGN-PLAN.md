@@ -960,6 +960,8 @@ rail 72 │ 自定义侧栏 278px（#f5f8fd，右描边 #d6e1ef）│ 主区纯�
 
 ## 38. 新格式第四套「视频」The Last Summer：24 秒真片（2026-11-03）
 
+> **已被 §49 取代。** 这一版的「片子」是四张静帧推拉 + 黑场拼接，不是真视频；下面留作对照，说明为什么静帧推拉过不了这一关。
+
 - **先说媒体怎么来的**：沙箱没有系统 ffmpeg，`ffmpeg-static` 装不上——它的 postinstall 要从 `release-assets.githubusercontent.com` 拉二进制，这个域不在出网白名单里。能用的替代是 npm 包 `@ffmpeg-installer/ffmpeg`（二进制直接躺在 tarball 里，只走 registry），版本是 2018 年的构建，带 `libx264` 与 `libmp3lame`。**这版没有 `xfade`**（4.3 才有），所以转场改成「每段首尾各做一次 `fade` 再 concat」，一样能出「切到黑再起」的短句节奏。命令与原因都写进了 `tools/media/README.md`，生成脚本是 `tools/media/synth.mjs`。
 - **片子**：1280×720 / 25 fps / 24.0 秒，四张本套静帧各 6 秒，逐帧 0.055% 的慢推（四段分别是推 4%、拉 3%、推 6%、拉 4%），段间 0.7 秒黑，末段 1.4 秒淡出；声音是合成的低频底噪（73.42 Hz + 98 Hz 雾笛音色），1.8 秒进、20.6 秒退，最后一段静音。输出 5.14 MB，`+faststart`。
 - **版式**：五帧 1280×720——片名帧（满幅静帧 + 下三分之一字幕块）、播放页（真 mp4 + 技术清单）、四联分镜、四轨时间轴（画面/声音/字幕/节奏/输出）、尾卡 credits。夜间水色 `#0E1113` 打底、骨白 `#EFEDE6`、日光琥珀 `#E4A05A` 只给 kicker 与镜号，池水青 `#4E7E80` 出现在时间轴后两段。
@@ -1088,3 +1090,18 @@ rail 72 │ 自定义侧栏 278px（#f5f8fd，右描边 #d6e1ef）│ 主区纯�
   6. **正文页底部读数带与正文之间空 230 px**：读数三格用 `margin-top:auto` 钉在页脚，正文短的时候中间会留一块白。这一套接受它——读数带是「表格页脚」的角色，不是正文的一部分；但如果以后正文更短，就该改成把读数接到正文后面（`margin-top:32px`）、把空白让到页底。
   7. **本期两次被沙箱重置**（仓库被重新 clone 回基线、`probe/` 连 puppeteer 一起消失）：恢复办法是 `git reset --mixed origin/<branch>` + `git checkout -- .`，截图工具重装 puppeteer-core/@sparticuz/chromium，并把包里的 `al2023.tar.br` 用 brotli 解成 `probe/lib` 供 `LD_LIBRARY_PATH` 使用。工作进度以远端分支为准，这一点没有变。
 - 校验：`npm test` **88/88**（20 页 / 10 图 / 无外链 / 无 `<button>`）、20 页逐页 puppeteer 目检（封面 / 摘要 / 目录 / 四章节 / 四正文 / 三表 / 四图版 / 清单 / 尾声，共改 11 轮）、画廊 37 套（文档 20）、`errs []`。**英文文档七套至此全部出齐（7/7）**。
+
+## 49. 视频套重做：The Library in Motion —— 真帧率、真动、真旁白（2026-11-03）
+
+用户看完 §38 那 24 秒之后说「视频也不是真实的 做一个真实的视频」。那一版技术上是个 mp4：四张静帧按 0.055 %/帧 推拉、0.7 s 黑场拼接、一条合成 drone。内容上它不是影片，这一轮把整条链路换掉。
+
+- **旧案清干净**：`poolside` 整套删除——deck 对象、`k-poolside` 的 40 余条 CSS、`cases/poolside/` 四张图加 5.15 MB 假 mp4、`vd-page` 渲染分支。`cases.js` 仍是 **37 套**（视频 1 套由 `reel` 顶上）。
+- **素材边界**：沙箱里没有摄像头也没有素材库；`generate_image` 只出 jpg/png（路径写 `.mp4` 直接被拒）；CDP `Page.startScreencast` 在 headless shell 下一律只吐 1 帧。所以「实拍」这条路不存在，**唯一真实可拍的对象是这个仓库自己的页面**。
+- **做法（逐帧渲染）**：`probe/film.mjs` 在 1280×720 的实时页面里搭一条 30 秒时间轴——21 个英文标题的货架滚动、skerry 第 5–8 页翻页、deeptime 第 1–3 帧、尾卡。每帧调 `__setFrame(t)` 写入 `t = n/15`，再把 `document.getAnimations()` 里每个 CSS 动画 `pause()` 并 `currentTime = t*1000`（Web Animations API 能定格 CSS keyframes），等两帧 `requestAnimationFrame` 提交后截 `page.screenshot({type:'jpeg',quality:90})`。450 张、186 ms 一张、播放 15 fps，**没有一张是插值或复制**；尾部 15 张是尾卡期间刻意 hold 的克隆帧，所以文件里 465 帧。
+- **为什么不用录屏**：先真录过——`setInterval` 滚动 + 连续 `screenshot`，实测 ≈15 fps，出来全是撕裂帧：文字上下重影，因为截图落在重绘中间。逐帧渲染反而干净，也更诚实：帧率是给播放器的，不假装机器在实时跑。
+- **声音**：旁白 75 词、29.0 s（≈155 wpm），`loudnorm=I=-16:TP=-1.5`，实测 mean −20.0 dBFS / peak −2.6 dBFS；成片 AAC 129 kb/s、48 kHz 立体声。页面上的「句子刻度」不是估的：`silencedetect=noise=-38dB:d=0.22` 量出五处句间静音，入点 00:00.4 / 05.4 / 09.7 / 16.1 / 22.5。
+- **成片**：31.0 s、465 帧、15 fps、h.264 High + AAC、3.45 MB、faststart。`-framerate 15 -i frames/f%04d.jpg` 编码，`tpad=stop_mode=clone` 给尾卡补 1 s，音频 `apad` 补齐，`-t 31` 定长。
+- **版式家族 `k-reel`（新，不是 §38 那套「暗底 + 下三分之一」）**：左侧 36 px 齿孔条用 `repeating-linear-gradient` 打孔，六页共用，像同一卷胶片；报头一栏 mono 时间码；硫黄 `#D9E24E` 只给时间码和步骤号，当引导带用而不是装饰；表格 mono 等宽、`td.mono` 单独一套字距。封面把 00:04 的真帧压在 header 之下、渐隐到黑再接标题。
+- **踩坑**：(1) 封面 `::after` 渐变第一版 0.74 / 0.16 / 0.72 太重，帧几乎看不见——降到 0.42 / 0.06 / 0.70，并把图抬到报头下方。(2) 报头被 `.rl-shot` 盖住，因为 shot 从 `top:0` 起画；改成 `top:52px` + `.rl-head{z-index:4}`。(3) `.rl-tl-ticks` 漏了 `justify-content:space-between`，五个刻度连成一行。(4) 第 4 页一加通行表就顶出 720 底线：图高 150→128、`td` padding 9→8、说明瘦身才收进来。(5) `audio` 控件在深色页里仍是浅色，`color-scheme:dark` 要写在 `.rl` 根上，只写在 `audio` 上不生效。
+- **口径（全部 ffmpeg 实测）**：31.0 s / 465 帧 / 15 fps / 3.45 MB / 129 kb/s / −20.0 dBFS / −2.6 dBFS / 75 词 / 29.0 s / 155 wpm；五张静帧是成片第 60、129、204、309、405 帧（00:04 / 00:08.6 / 00:13.6 / 00:20.6 / 00:27）；`moves` 表四段帧数 105 + 159 + 108 + 93 = 465。
+- 校验：`npm test` **88/88**；六页逐页目检 3 轮、`errs []`。
