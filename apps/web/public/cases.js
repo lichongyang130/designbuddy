@@ -6992,7 +6992,7 @@ export const CASE_DECKS = [
   {
     id: 'fogsignal',
     name: 'Fog Signal',
-    en: 'Fog Signal · a 48-second ambient piece',
+    en: 'Fog Signal · a 2:28 narration in four chapters',
     by: 'DesignBuddy',
     cat: '音频',
     fmt: 'audio',
@@ -7000,11 +7000,11 @@ export const CASE_DECKS = [
     date: 20261103,
     kind: 'Audio release',
     category: '营销材料',
-    tags: ['audio', 'ambient', 'cover art', 'label'],
-    desc: 'A 1080 × 1080 record sleeve for a 48-second ambient piece: the cover, the player page with a real mp3, the four-section structure of the track, the synthesis notes, and the back cover. No photographs — the whole release is type, brass hairlines and a waveform drawn from the same numbers as the audio.',
-    bestFor: ['Music and podcast releases', 'Audio identity systems', 'Sleeve and cover design', 'Sound-brand case studies'],
-    visual: 'Ink black #0B0B0C, bone #EDEAE2, and one brass #C8B98F that carries every label, number and bar of the waveform. Monospace is reserved for catalog numbers and section times; everything else is a tight sans. The waveform is generated, not drawn: 58 bars on the cover, 84 on the player, each height a fixed function of its index, so the same track looks identical every time it is rendered.',
-    how: 'Five squares at 1080 × 1080: cover with title and waveform, player page with the mp3 over one dimmed long exposure of the harbour, a four-section breakdown with timings, synthesis notes naming the actual frequencies, and a back cover with credits and the same waveform at 48 bars. The mp3 is 48.0 seconds, 160 kb/s stereo, 961 KB — synthesized end to end in Node, no samples.',
+    tags: ['audio', 'narration', 'spoken word', 'cover art', 'label'],
+    desc: 'A 1080 × 1080 sleeve for a two-and-a-half-minute narrated piece about a harbour fog signal: the cover, the player page carrying the real mp3, the four chapters at their true start times, the production notes, and the back cover. No photographs anywhere, and every waveform in the release is measured from the master file rather than drawn — you can see where the narrator breathes.',
+    bestFor: ['Spoken-word and podcast releases', 'Audio identity systems', 'Sleeve and cover design', 'Sound-brand case studies'],
+    visual: 'Ink black #0B0B0C, bone #EDEAE2, and one brass #C8B98F that carries every label, number and bar of the waveform. Monospace is reserved for catalog numbers and chapter times; everything else is a tight sans. The waveform is measured, not drawn: a peak-reading per bar off the master file, 58 bars on the cover, 84 on the player, 48 on the back, so the sleeve rises and falls where the voice does and goes flat where the file is silent.',
+    how: 'Five squares at 1080 × 1080: cover with title and waveform, player page with the mp3 over one dimmed long exposure of the harbour, a four-chapter breakdown with the real start times, production notes, and a back cover with credits and the same waveform at 48 bars. The mp3 is 2:28.4, 160 kb/s stereo, 2.9 MB — four takes narrated separately, joined with 0.75 s of silence and mastered to −16 LUFS.',
     styles: ['#0B0B0C', '#C8B98F', '#3E5A5A'],
     colorway: 'Ink black · Brass · Harbour teal',
     folio: false,
@@ -7017,6 +7017,11 @@ export const CASE_DECKS = [
     rule: '#26262A',
     body: '#CFCCC4',
     display: 'sans',
+    /* 波形不是画的：每一格都是从成片里量出来的峰值（做法见 DESIGN-PLAN §46） */
+    wave58: [68, 49, 44, 64, 70, 56, 79, 92, 64, 54, 65, 46, 48, 83, 53, 61, 69, 71, 72, 55, 40, 43, 58, 67, 37, 58, 41, 39, 67, 54, 84, 57, 90, 48, 60, 55, 99, 79, 44, 51, 67, 56, 52, 42, 63, 41, 53, 54, 56, 100, 89, 39, 64, 49, 47, 59, 70, 38],
+    wave84: [68, 58, 49, 44, 41, 64, 70, 55, 56, 79, 92, 65, 64, 54, 51, 65, 46, 43, 83, 56, 61, 61, 45, 36, 71, 47, 72, 55, 39, 40, 43, 40, 58, 67, 63, 37, 58, 42, 41, 39, 67, 55, 48, 84, 49, 55, 57, 90, 45, 60, 59, 49, 74, 99, 79, 44, 36, 51, 67, 56, 56, 52, 43, 42, 63, 61, 53, 43, 54, 48, 56, 48, 100, 89, 39, 64, 49, 43, 44, 47, 59, 51, 70, 37],
+    wave48: [68, 49, 64, 70, 56, 92, 85, 64, 65, 46, 83, 61, 61, 69, 71, 72, 40, 43, 58, 67, 42, 58, 40, 67, 55, 84, 57, 90, 60, 55, 99, 79, 51, 67, 56, 52, 63, 61, 53, 54, 56, 100, 39, 64, 44, 59, 70, 38],
+    wave46: [68, 49, 64, 70, 79, 92, 85, 54, 65, 48, 83, 61, 45, 71, 72, 55, 43, 58, 67, 42, 58, 40, 67, 55, 84, 57, 90, 60, 70, 99, 48, 67, 56, 56, 43, 63, 53, 54, 56, 100, 89, 64, 49, 52, 70, 39],
     slides: [
       {
         k: 'au-page', label: '封面', kind: 'cover',
@@ -7024,9 +7029,9 @@ export const CASE_DECKS = [
         catalog: 'NL-014 · 2026',
         title: 'Fog Signal',
         cn: '雾笛',
-        desc: 'Forty-eight seconds for a harbour at four in the morning: two drones a fifth apart, wind pulled out of filtered noise, and three horns that arrive when the fog does.',
-        metaLeft: '48.0 sec · 44.1 kHz / stereo',
-        metaRight: 'Composed and synthesized in Node',
+        desc: 'Two minutes and twenty-eight seconds on a fog signal at Skerry Head: the horn, the two keepers who ran it, the night it was switched off, and what is left on the pier. Narrated, not synthesised — and no horn is heard, because no recording of one survives.',
+        metaLeft: '02:28 · 44.1 kHz / stereo',
+        metaRight: 'Narrated · four chapters',
       },
       {
         k: 'au-page', label: '播放', kind: 'play',
@@ -7035,36 +7040,38 @@ export const CASE_DECKS = [
         title: 'Play the piece',
         img: '01',
         file: '01.mp3',
-        played: 33,
-        cueLeft: '0:00 ── drone enters',
-        cueRight: '3 horns · 0:47 out',
-        note: 'The file in this deck is the master: 48.0 seconds, 160 kb/s, stereo, no fade applied at the file level — the ending is in the composition, where the last horn decays for six seconds while the bed thins to noise.',
+        played: 45,
+        cueLeft: '0:00 ── chapter one',
+        cueRight: 'four chapters · 2:28',
+        note: 'The file in this deck is the master: 148.4 seconds, 160 kb/s stereo, 2.9 MB. Four takes were recorded separately, trimmed, joined with 0.75 s of silence and mastered to −16 LUFS at a true peak of −1.5 dB. The waveform above is measured from this exact file, so the bars fall on the pauses you can hear.',
       },
       {
         k: 'au-page', label: '结构', kind: 'structure',
         label: 'Structure',
         catalog: 'NL-014',
-        title: 'Four sections, one tide',
+        title: 'Four chapters, one sound',
         secs: [
-          ['0:00', 'The bed arrives', 'D2 and A2 open a fifth apart; wind noise starts under them at 0.012 low-pass.', 'DRONE · 0–48'],
-          ['0:07', 'First horn', '98 Hz, four seconds, saw-soft with a sub an octave below. The fog starts here.', 'HORN · 7.5'],
-          ['0:16', 'The bell', 'A single 587 Hz strike, far right, then nothing until 0:33 on the other side.', 'BELL · 16.2'],
-          ['0:24', 'Second and third', 'The same horn twice more, lower each time, six seconds of decay on the last.', 'HORN · 24 / 38.5'],
+          ['0:00', 'The sound', 'What a diaphone was: a compressor, a piston and a slotted ring, counting thirty seconds so a master could turn an interval into a distance.', 'CH. 1 · 0:00–0:36'],
+          ['0:37', 'The station', 'Nineteen oh four to nineteen eighty-eight. Two keepers, one log, and a year — 1953 — with four hundred and six hours of fog in it.', 'CH. 2 · 0:37–1:19'],
+          ['1:19', 'The night it stopped', 'The station was automated and the horn switched off at twenty to midnight. What went was not safety; it was navigation by ear.', 'CH. 3 · 1:19–1:52'],
+          ['1:53', 'What is left', 'A shed, a piston in a museum case, gulls on the rail — and a voice remembering a sound, because the tape does not survive.', 'CH. 4 · 1:53–2:28'],
         ],
-        foot: 'Total 0:48 · four sections · no fade applied at file level',
+        foot: 'Total 2:28.4 · four chapters · joined with 0.75 s of silence',
       },
       {
         k: 'au-page', label: '制作', kind: 'notes',
-        label: 'Synthesis notes',
+        label: 'Production notes',
         catalog: 'NL-014',
         title: 'How it was made',
         notes: [
-          ['Bed', '<code>73.42 Hz</code> and <code>110.00 Hz</code> sine oscillators, 3.5 s attack, slow vibrato at 0.002 depth, panned 0 / ±0.35.'],
-          ['Wind', 'White noise through a one-pole low-pass at <code>0.012</code>, then a second layer at <code>0.05</code> swelling on a 0.09 Hz LFO.'],
-          ['Horns', 'Saw-soft stack at <code>98 Hz</code> with harmonics at 2× and a sub at 0.5×, 4–6 s duration, 55 % release.'],
-          ['Bells', 'Single sines at <code>587.33 Hz</code> and <code>880 Hz</code>, 10 ms attack, 1.5 s release, hard-panned opposite.'],
-          ['Master', 'Peak-normalized to 0.62, soft-clipped with <code>tanh</code>, 16-bit → 160 kb/s MP3, no compression on the bus.'],
-          ['Why these', '73.42 Hz is D2, the lowest note a small room will play honestly; 98 Hz is a real foghorn fundamental, two semitones under the bed.'],
+          ['Script', 'Four chapters, 444 words, 2,395 characters: written to be read aloud in under two and a half minutes and timed with a stopwatch before anything was recorded.'],
+          ['Voice', 'One narrator, four separate takes, so any chapter could be re-read without touching the others. No pitch shift, no vocoder, no doubling.'],
+          ['Edit', 'Takes trimmed to the breath, joined with <code>0.75 s</code> of silence, high-passed at <code>70 Hz</code> and given a gentle 2.5:1 compressor before the join.'],
+          ['Master', 'Loudness-normalised to <code>−16 LUFS</code>, true peak <code>−1.5 dB</code>, 44.1 kHz stereo, 160 kb/s MPEG-1 Layer III.'],
+          ['Waveform', 'Peak-reading per bar straight off the master: 84 bars on the player, 58 on the cover, 48 on the back. Nothing here is decorative.'],
+          ['Why no horn', 'No recording of the Skerry Head diaphone survives — the 1974 tape is cited, not used. The piece says so rather than faking one.'],
+          ['Runtime', '148.4 s: 36.6 + 41.8 + 32.4 + 35.3, plus three gaps of 0.75 s. Nothing was cut to fit the sleeve.'],
+          ['Delivery', 'One MP3, 2.9 MB, at <code>cases/fogsignal/01.mp3</code> — same origin as the sleeve, no stream, no embed, no third party.'],
         ],
       },
       {
@@ -7073,13 +7080,13 @@ export const CASE_DECKS = [
         catalog: 'NL-014 · 2026',
         title: 'Fog Signal / 雾笛',
         credits: [
-          ['Composed', 'DesignBuddy'],
-          ['Synthesis', 'Node · additive sines, one-pole noise'],
-          ['Master', '48.0 s · 160 kb/s · stereo'],
-          ['Artwork', 'Type and generated waveform, no photography'],
+          ['Narrated', 'DesignBuddy'],
+          ['Written', 'DesignBuddy, from the station log'],
+          ['Master', '2:28.4 · 160 kb/s · stereo'],
+          ['Artwork', 'Type and measured waveform, no photography'],
           ['Press', 'Northlight Editions, NL-014, edition of 300'],
         ],
-        quote: 'Recorded at four in the morning, mixed by six, and never played again at a volume anyone could call reasonable.',
+        quote: 'You will not hear the horn here. What you are hearing is a voice remembering a sound.',
         metaLeft: '℗ 2026 Northlight Editions',
         metaRight: 'northlight.editions / nl-014',
       },
@@ -8530,6 +8537,14 @@ export function slideInner(deck, s, index) {
         '<div class="d-end-img">' + imgTag(deck, s.img) + '</div>' +
         '</div>'
       )
+function waveFrom(vals, n, seed, from, to) {
+  if (!Array.isArray(vals) || !vals.length) return waveBars(n, seed, from, to)
+  return vals.map((h, i) => {
+    const on = i >= (from === undefined ? 0 : from) && i <= (to === undefined ? -1 : to)
+    return '<i class="' + (on ? 'on' : '') + '" style="height:' + h + '%"></i>'
+  }).join('')
+}
+
 function waveBars(n, seed, from, to) {
   let st = seed
   const rnd = () => {
@@ -8759,14 +8774,14 @@ function afTotals(base, groups) {
           '<div class="au-top"><span class="au-mono">' + esc(s.label) + '</span><span class="au-label">' + esc(s.catalog) + '</span></div>' +
           '<div><h1 class="au-ttl">' + esc(s.title) + '</h1><div class="au-cn">' + esc(s.cn) + '</div>' +
           '<p class="au-desc">' + esc(s.desc) + '</p>' +
-          '<div class="au-wave">' + waveBars(58, 20261103) + '</div></div>' +
+          '<div class="au-wave">' + waveFrom(deck.wave58, 58, 20261103) + '</div></div>' +
           '<div><div class="au-meta"><span>' + esc(s.metaLeft) + '</span><span>' + esc(s.metaRight) + '</span></div></div>' +
           '</div></div>'
       } else if (s.kind === 'play') {
         body = '<div class="au-photo">' + imgTag(deck, s.img) + '</div>' +
           '<div class="au-pad"><div class="au-top"><span class="au-mono">' + esc(s.label) + '</span><span class="au-label">' + esc(s.catalog) + '</span></div>' +
           '<div class="au-play"><div class="au-h2" style="font-size:34px">' + esc(s.title) + '</div>' +
-          '<div class="au-bigwave">' + waveBars(84, 771, 0, s.played || -1) + '</div>' +
+          '<div class="au-bigwave">' + waveFrom(deck.wave84, 84, 771, 0, s.played || -1) + '</div>' +
           '<audio controls preload="metadata" src="' + src + esc(s.file) + '"></audio>' +
           '<div class="au-cue"><span>' + esc(s.cueLeft) + '</span><span>' + esc(s.cueRight) + '</span></div>' +
           '<p class="au-desc" style="margin-top:26px;max-width:640px">' + esc(s.note) + '</p></div></div>'
@@ -8788,10 +8803,10 @@ function afTotals(base, groups) {
         body = '<div class="au-back">' +
           '<div class="au-top"><span class="au-mono">' + esc(s.label) + '</span><span class="au-label">' + esc(s.catalog) + '</span></div>' +
           '<div><div class="au-ttl" style="font-size:64px">' + esc(s.title) + '</div>' +
-          '<div class="au-bars" style="margin-top:30px">' + waveBars(48, 991) + '</div>' +
+          '<div class="au-bars" style="margin-top:30px">' + waveFrom(deck.wave48, 48, 991) + '</div>' +
           '<div class="au-cred" style="margin-top:34px">' + (s.credits || []).map(([k, v]) =>
             '<div><b>' + esc(k) + '</b>' + esc(v) + '</div>').join('') + '</div></div>' +
-          '<div>' + (s.quote ? '<div class="au-quote">' + esc(s.quote) + '</div>' : '') + '<div class="au-code">' + waveBars(46, 4242).replace(/class=""/g, '') + '</div>' +
+          '<div>' + (s.quote ? '<div class="au-quote">' + esc(s.quote) + '</div>' : '') + '<div class="au-code">' + waveFrom(deck.wave46, 46, 4242).replace(/class="(on)?"/g, '') + '</div>' +
           '<div class="au-meta"><span>' + esc(s.metaLeft) + '</span><span>' + esc(s.metaRight) + '</span></div></div>' +
           '</div>'
       }
