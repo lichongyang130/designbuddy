@@ -5,7 +5,7 @@
 设计原则和 DSH 一致：**没有特权的核心，一切皆插件**。连 `tools`、`sessions`、`llm`、`agentLoop` 本身都是插件，都能单独卸载替换。
 
 - 零运行时依赖（用 Node 24 原生 TypeScript 类型擦除直接跑 `.ts`）
-- 45 个测试全部通过
+- 120 个测试全部通过
 - `tsc --noEmit` 类型检查通过
 - 完整 demo：Manager → 专家分派 → 记忆写回 → 插件热卸载
 
@@ -14,7 +14,7 @@
 ```bash
 node demo/run.ts                              # 看完整链路（不需要装任何依赖）
 node apps/client/main.ts                      # 跨进程版：客户端 spawn 宿主进程
-npm test                                      # 45 个用例
+npm test                                      # 120 个用例
 npx tsc -p tsconfig.json --noEmit             # 类型检查（需先 npm install）
 ```
 
@@ -26,6 +26,8 @@ npx tsc -p tsconfig.json --noEmit             # 类型检查（需先 npm instal
 src/
 ├── kernel/index.ts          # 插件内核：Context / Fiber / Registry / effect 栈
 ├── core/                    # 与框架无关的能力实现
+│   ├── connectors.ts        #   连接器状态文件（.designbuddy/connectors.json）
+│   ├── credentials.ts       #   凭据文件（0600，只给后端读）
 │   ├── tools.ts             #   工具注册表 + 守卫管线
 │   ├── router.ts            #   AI Model Router（失败回退）
 │   ├── session.ts           #   append-only 会话日志
@@ -34,8 +36,13 @@ src/
 │   ├── agent-loop.ts        #   默认 Agent 驱动
 │   ├── llm.ts               #   消息与流词汇 + 适配器 seam
 │   └── schema.ts            #   JSON Schema 子集与参数校验
+├── connectors/              # 连接器：目录 → 适配器 → 工具
+│   ├── catalog.ts           #   40 条 manifest（名称/权限/鉴权/工具）
+│   ├── adapters.ts          #   rest（真请求）与 demo（结构化样例）
+│   └── hub.ts               #   连接状态机、工具注册/注销、JSONL 审计
 ├── plugins/                 # 每个能力都是一个插件（export name/inject/apply）
 │   ├── core-*.ts            #   把 core/ 的服务挂成 ctx.<key>
+│   ├── connector-hub.ts     #   ConnectorHub 挂成 'connectors' 服务
 │   ├── design-memory.ts     #   Design Memory：服务 + prompt 分节 + 2 个工具
 │   ├── design-experts.ts    #   Manager + 多专家（委托即工具）
 │   ├── connector-figma.ts   #   外部连接器（fixture 版）
@@ -51,7 +58,10 @@ src/
 
 apps/
 ├── host/main.ts             # 宿主进程：JSONL over stdio，持有内核
-└── client/main.ts           # 客户端进程：spawn 宿主，只消费帧（不 import kernel）
+├── client/main.ts           # 客户端进程：spawn 宿主，只消费帧（不 import kernel）
+└── web/                     # 网页版：SSE 下行 + POST 上行的 RPC，静态资源按请求读取
+    ├── server.ts            #   /、/events、/send、/health
+    └── public/              #   index.html（界面）、cases.js（案例）、i18n.js（七种语言）
 ```
 
 ## 插件长什么样

@@ -39,6 +39,8 @@
 
   /* ── 深色主题：同一套语义变量换值，组件不需要各写一份 ───────── */
   html[data-theme="dark"]{
+    /* 让原生控件（复选框、下拉、滚动条）跟着变深，否则深色界面里会冒出一块白 */
+    color-scheme:dark;
     --bg:#0d1016; --surface:#141821; --surface-2:#191e28; --surface-3:#202734;
     --rail:#10141c; --rail-active:#25314a;
     --line:#242b38; --line-strong:#333c4d;
