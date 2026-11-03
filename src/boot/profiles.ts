@@ -31,6 +31,7 @@ import * as designExperts from '../plugins/design-experts.ts'
 import * as connectorFigma from '../plugins/connector-figma.ts'
 import * as connectorHub from '../plugins/connector-hub.ts'
 import * as approvals from '../plugins/approvals.ts'
+import * as deckEngine from '../plugins/deck-engine.ts'
 import * as officeTools from '../plugins/office-tools.ts'
 
 /**
@@ -82,6 +83,7 @@ export const designBundle: Bundle = {
     { id: 'design.experts', plugin: 'design-experts' },
     { id: 'design.figma', plugin: 'connector-figma', config: { fileKey: 'demo-file' } },
     { id: 'design.approvals', plugin: 'approvals' },
+    { id: 'design.decks', plugin: 'deck-engine' },
     { id: 'design.connectors', plugin: 'connector-hub' },
     { id: 'office.tools', plugin: 'office-tools' },
   ],
@@ -115,5 +117,6 @@ export const defaultModules: PluginModules = {
   'connector-figma': connectorFigma,
   'connector-hub': connectorHub,
   approvals,
+  'deck-engine': deckEngine,
   'office-tools': officeTools,
 }

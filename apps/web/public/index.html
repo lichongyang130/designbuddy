@@ -5405,6 +5405,91 @@
   .palette .opt small{margin-left:auto;color:var(--fg-subtle);font-size:11px}
 
   /* 设置窗口 z-index:80、模型弹窗 120；提示条必须压在上面，否则在设置里点按钮像没反应 */
+
+  /* ── 演示文稿引擎 · 生成工作台 ─────────────────────
+   * 三栏：左边是「我在想什么」，中间是「谁在干活」，右边是「已经出什么」。
+   * 用户随时能看见进度，也随时能在底部插一句话改方向。 */
+  .sd-art{overflow:hidden}
+  .sd-art .sd-art-svg{display:block;width:100%;height:100%}
+  /* z-index 要高于移动端收起的侧边抽屉（78）与阅读器（80/82），否则左边缘会露出 24px 的抽屉残影。 */
+  .studio{position:fixed;inset:0;z-index:90;display:flex;flex-direction:column;background:var(--bg);color:var(--fg)}
+  .studio[hidden]{display:none}
+  .st-bar{display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:1px solid var(--line);background:var(--surface)}
+  .st-back,.st-ghost{border:1px solid var(--line-strong);background:var(--surface);color:var(--fg);border-radius:9px;padding:7px 12px;font-size:13px;font-weight:600;cursor:pointer}
+  .st-back:hover,.st-ghost:hover{background:var(--surface-2)}
+  .st-head{display:flex;flex-direction:column;gap:1px;min-width:0;flex:1}
+  .st-head b{font-size:14px;color:var(--ink-strong)}
+  .st-head span{font-size:12px;color:var(--fg-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .st-meter{width:180px;height:6px;border-radius:99px;background:var(--surface-3);overflow:hidden}
+  .st-meter i{display:block;height:100%;width:0;background:var(--accent);border-radius:99px;transition:width .35s ease}
+  .st-pct{font-size:12px;font-variant-numeric:tabular-nums;color:var(--fg-muted);width:38px;text-align:right}
+  .st-grid{flex:1;display:grid;grid-template-columns:300px minmax(280px,1fr) minmax(340px,1.15fr);gap:0;min-height:0;overflow:hidden}
+  .st-col{padding:14px 16px;overflow:auto;min-height:0}
+  .st-left{border-right:1px solid var(--line);background:var(--surface)}
+  .st-mid{border-right:1px solid var(--line);background:var(--surface-2)}
+  .st-right{background:var(--surface-3)}
+  .st-kicker{font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--fg-subtle);text-transform:uppercase;margin:14px 0 7px}
+  .st-kicker:first-child{margin-top:0}
+  .st-brief{display:flex;flex-wrap:wrap;gap:6px}
+  .st-tag{font-size:12px;padding:3px 8px;border-radius:7px;background:var(--accent-soft);color:var(--accent);font-weight:600}
+  .st-tag.k{background:var(--surface-3);color:var(--fg-muted)}
+  .st-narr{font-size:12.5px;line-height:1.65;color:var(--fg-muted)}
+  .st-outline{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+  .st-outline li{display:flex;gap:8px;font-size:12.5px;padding:5px 7px;border-radius:7px;color:var(--fg);cursor:default}
+  .st-outline li.on{background:var(--accent-soft);color:var(--accent);font-weight:600}
+  .st-outline i{font-style:normal;color:var(--fg-subtle);width:18px;text-align:right;font-variant-numeric:tabular-nums}
+  .st-outline li.on i{color:var(--accent)}
+  .st-log{display:flex;flex-direction:column;gap:6px;font-size:12px;line-height:1.6}
+  .st-log p{margin:0;color:var(--fg-muted);padding-left:8px;border-left:2px solid var(--line-strong)}
+  .st-log p b{color:var(--fg);font-weight:600}
+  .st-agents{display:flex;flex-direction:column;gap:8px}
+  .st-agent{display:flex;gap:9px;align-items:flex-start;padding:9px 10px;border-radius:10px;background:var(--surface);border:1px solid var(--line)}
+  .st-agent.run{border-color:var(--accent-line);background:var(--accent-soft)}
+  .st-agent.done .st-dot{background:#15a06a}
+  .st-agent.run .st-dot{background:var(--accent);animation:stPulse 1.1s infinite}
+  .st-dot{width:7px;height:7px;border-radius:99px;background:var(--line-strong);margin-top:6px;flex:none}
+  @keyframes stPulse{0%,100%{opacity:1}50%{opacity:.25}}
+  .st-agent div{min-width:0}
+  .st-agent b{display:block;font-size:12.5px;color:var(--ink-strong)}
+  .st-agent span{font-size:11.5px;color:var(--fg-muted);display:block;line-height:1.5}
+  .st-now{font-size:12.5px;color:var(--fg-muted);padding:10px 2px;min-height:22px}
+  .st-confirm{display:flex;align-items:center;gap:10px;padding:12px;border-radius:12px;background:var(--surface);border:1px solid var(--accent-line);margin:6px 0 10px}
+  .st-confirm[hidden]{display:none}
+  .st-confirm span{font-size:11.5px;color:var(--fg-muted);line-height:1.5}
+  .st-primary{border:0;background:var(--accent);color:var(--on-accent);border-radius:9px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
+  .st-primary:hover{background:var(--accent-hover)}
+  .st-qa{display:flex;flex-direction:column;gap:6px;font-size:12px}
+  .st-qa .row{display:flex;gap:7px;align-items:flex-start;padding:7px 9px;border-radius:8px;background:var(--surface);border:1px solid var(--line)}
+  .st-qa .row.fixed{opacity:.72}
+  .st-qa b{font-size:11px;padding:1px 6px;border-radius:5px;background:var(--surface-3);color:var(--fg-muted);flex:none}
+  .st-qa .row.error b{background:#fde8e6;color:#c0392b}
+  .st-qa .row.warn b{background:#fdf3e0;color:#a8630b}
+  .st-slides{display:flex;flex-direction:column;gap:14px;max-width:520px;margin:0 auto}
+  .st-empty{display:flex;align-items:center;justify-content:center;aspect-ratio:16/9;max-width:520px;margin:0 auto;border-radius:10px;border:1px dashed var(--line-strong);color:var(--fg-subtle);font-size:12.5px;background:var(--surface);text-align:center;padding:0 16px}
+  .st-empty[hidden]{display:none}
+  .st-slide{position:relative;border-radius:10px;overflow:hidden;box-shadow:0 6px 20px rgba(11,31,63,.12),0 1px 3px rgba(11,31,63,.1);background:#fff}
+  .st-slide .sld{border-radius:0}
+  .st-slide figcaption{position:absolute;left:0;top:0;font-size:10px;font-weight:700;background:rgba(11,31,63,.72);color:#fff;padding:2px 7px;border-bottom-right-radius:7px}
+  .st-slide.fresh{animation:stSlideIn .32s ease}
+  @keyframes stSlideIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .st-chat{display:flex;gap:9px;align-items:center;padding:11px 18px;border-top:1px solid var(--line);background:var(--surface)}
+  .st-chat input{flex:1;border:1px solid var(--line-strong);background:var(--surface-2);border-radius:10px;padding:9px 12px;font-size:13px;color:var(--fg);outline:none}
+  .st-chat input:focus{border-color:var(--accent-line);background:var(--surface)}
+  .st-chat .st-ghost[hidden]{display:none}
+  @media (max-width:900px){
+    .st-meter{display:none}
+    /* 单屏放不下三栏：改成自然高度堆叠，整块区域滚动，别让每栏各自被裁一半。 */
+    .st-grid{display:block;overflow:auto}
+    .st-col{overflow:visible;border-right:0;border-bottom:1px solid var(--line)}
+    .st-right{border-bottom:0;min-height:0}
+    .st-slides,.st-empty{max-width:none}
+    .st-bar{gap:8px;padding:10px 12px}
+    .st-head span{font-size:11.5px}
+    .st-back,.st-ghost{padding:6px 9px;font-size:12px}
+    .st-chat{padding:9px 12px}
+    .st-chat input{font-size:13px}
+  }
+
   .toast{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:8px;z-index:200;pointer-events:none}
   .toast .t{
     background:var(--surface);border:1px solid var(--line-strong);border-left:3px solid var(--accent);border-radius:var(--r-md);
@@ -6917,10 +7002,55 @@
     </div>
   </div>
 </div>
+<!-- 演示文稿引擎 · 生成工作台（做一页出一页，随时可插话） -->
+<div class="studio" id="deckStudio" hidden>
+  <div class="st-bar">
+    <button class="st-back" id="stBack">返回</button>
+    <div class="st-head">
+      <b id="stTitle">演示文稿引擎</b>
+      <span id="stSub">正在理解需求…</span>
+    </div>
+    <div class="st-meter"><i id="stMeterFill"></i></div>
+    <span class="st-pct" id="stPct">0%</span>
+    <button class="st-ghost" id="stModeBtn">规划模式</button>
+  </div>
+  <div class="st-grid">
+    <aside class="st-col st-left">
+      <div class="st-kicker">需求分析</div>
+      <div class="st-brief" id="stBrief"></div>
+      <div class="st-kicker">叙事主线</div>
+      <div class="st-narr" id="stNarr">等待分析…</div>
+      <div class="st-kicker">大纲</div>
+      <ol class="st-outline" id="stOutline"></ol>
+      <div class="st-kicker">思考摘要</div>
+      <div class="st-log" id="stLog"></div>
+    </aside>
+    <section class="st-col st-mid">
+      <div class="st-kicker">Agent 分工</div>
+      <div class="st-agents" id="stAgents"></div>
+      <div class="st-now" id="stNow"></div>
+      <div class="st-confirm" id="stConfirm" hidden>
+        <button class="st-primary" id="stBuild">开始生成</button>
+        <span>计划已就绪。确认后逐页生成，中途还能改。</span>
+      </div>
+      <div class="st-kicker" id="stQaKicker" hidden>质量审核</div>
+      <div class="st-qa" id="stQa"></div>
+    </section>
+    <section class="st-col st-right">
+      <div class="st-empty" id="stEmpty">计划确认后，页面会一页一页出现在这里 · 16:9</div>
+      <div class="st-slides" id="stSlides"></div>
+    </section>
+  </div>
+  <div class="st-chat">
+    <input id="stAsk" placeholder="说一句想改的地方，例如「第 3 页换种说法」" />
+    <button class="st-primary" id="stSay">发送</button>
+    <button class="st-ghost" id="stOpen" hidden>打开完整演示</button>
+  </div>
+</div>
 <div class="toast" id="toast"></div>
 
 <script type="module">
-import { CASE_DECKS as BUNDLED_CASES, slideHTML } from './cases.js'
+import { CASE_DECKS as BUNDLED_CASES, slideHTML, esc } from './cases.js'
 import { THEMES as BUNDLED_THEMES } from './themes.js'
 
 /* 案例库与主题目录的真实来源是后端（core.library）。前端这两份 import 只是
@@ -7454,6 +7584,303 @@ function iconSVG(name, size) {
   const n = size || 15
   return '<svg class="ic" width="' + n + '" height="' + n + '" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-' + name + '"></use></svg>'
 }
+
+
+/* ── 演示文稿引擎 · 生成工作台 ──────────────────────────
+ * 左栏是「AI 理解到了什么」，中间是「谁在干活、干到哪」，右边是「已经出到哪一页」。
+ * 页面流式回来，来一页画一页；底部对话框可以随时插一句改方向。
+ * 注意：这里展示的都是真实阶段产出（brief / outline / 每页版式理由 / 审核项），
+ * 不是编出来的「思考过程」。
+ */
+const STUDIO = {
+  id: '', prompt: '', mode: 'plan', status: 'idle',
+  plan: null, deck: null, slides: [], issues: [], agents: {}, total: 0, done: 0,
+}
+
+const ST_MODES = [
+  { id: 'plan', name: '规划模式', hint: '先出计划，你确认后再逐页生成' },
+  { id: 'express', name: '快速模式', hint: '不等确认，出来一页看一页' },
+  { id: 'research', name: '研究模式', hint: '先核对关键词口径，再出计划' },
+]
+
+const ST_AGENTS = [
+  ['intake', '需求分析', '读需求，定主题、用途、受众、页数'],
+  ['research', '资料研究', '核对关键词与行业口径'],
+  ['story', '内容策划', '排叙事顺序，决定每页讲什么'],
+  ['visual', '视觉设计', '定配色、字体、版式家族'],
+  ['builder', '页面生成', '一页一页写出来'],
+  ['qa', '质量审核', '查内容、排版、图片、商业逻辑'],
+]
+
+function studioModeLabel(mode) {
+  return (ST_MODES.find((item) => item.id === mode) || ST_MODES[0]).name
+}
+
+/** 生成中的临时 deck：主题色来自视觉设计阶段，缩略图直接复用案例渲染器。 */
+function studioDeckLike() {
+  const design = (STUDIO.plan && STUDIO.plan.design) || {}
+  const brief = (STUDIO.plan && STUDIO.plan.brief) || {}
+  const name = brief.topic || '未命名演示'
+  return {
+    id: 'gen', name, fmt: 'deck', folio: true, footLeft: name.slice(0, 14),
+    paper: design.paper, ink: design.ink, accent: design.accent, second: design.second,
+    muted: design.muted, rule: design.rule, body: design.body,
+    display: design.display, mono: design.mono,
+  }
+}
+
+function setStudioProgress(value, label) {
+  const v = Math.max(0, Math.min(100, Math.round(value)))
+  $('stMeterFill').style.width = v + '%'
+  $('stPct').textContent = v + '%'
+  if (label) $('stSub').textContent = label
+}
+
+function paintStudioAgents() {
+  $('stAgents').innerHTML = ST_AGENTS.map(([id, name, hint]) => {
+    const stage = STUDIO.agents[id] || {}
+    const cls = stage.status === 'done' ? ' done' : stage.status === 'start' ? ' run' : ''
+    const extra = stage.detail ? esc(String(stage.detail)) : esc(t(hint))
+    return '<div class="st-agent' + cls + '"><i class="st-dot"></i><div><b>' + esc(t(name)) +
+      '</b><span>' + extra + '</span></div></div>'
+  }).join('')
+}
+
+function paintStudioBrief(plan) {
+  const brief = plan.brief || {}
+  const tags = [
+    ['主题', brief.topic], ['用途', brief.purposeLabel], ['受众', brief.audience],
+    ['页数', (plan.outline || []).length + ' 页'], ['风格', brief.style],
+  ].filter((row) => row[1])
+  $('stBrief').innerHTML = tags.map(([k, v]) =>
+    '<span class="st-tag k">' + esc(k) + '</span><span class="st-tag">' + esc(v) + '</span>').join('')
+  $('stNarr').textContent = plan.narrative || ''
+  $('stOutline').innerHTML = (plan.outline || []).map((item) =>
+    '<li data-n="' + item.n + '"><i>' + String(item.n).padStart(2, '0') + '</i><span>' +
+    esc(item.topic) + ' · ' + esc(item.layout) + '</span></li>').join('')
+  $('stTitle').textContent = brief.topic ? brief.topic + ' · 演示文稿' : '演示文稿引擎'
+}
+
+function onDeckPlan(plan) {
+  STUDIO.plan = plan
+  STUDIO.total = (plan.outline || []).length
+  STUDIO.status = 'planned'
+  paintStudioBrief(plan)
+  paintStudioAgents()
+  $('stTitle').textContent = (plan.brief && plan.brief.topic ? plan.brief.topic + ' · ' : '') + '演示文稿'
+  $('stConfirm').hidden = !(STUDIO.mode === 'plan' || STUDIO.mode === 'research')
+  $('stBuild').textContent = tf('开始生成 %s 页', STUDIO.total)
+  if (STUDIO.mode === 'express') setStudioProgress(15, t('计划就绪，开始逐页生成…'))
+  else setStudioProgress(15, t('计划就绪，确认后开始'))
+}
+
+function markStudioOutline(index) {
+  const items = $('stOutline').children
+  for (let i = 0; i < items.length; i += 1) items[i].classList.toggle('on', i === index)
+}
+
+function paintStudioSlide(index, slide, fresh) {
+  const total = STUDIO.total || STUDIO.slides.length
+  const figur = '<figcaption>' + String(index + 1).padStart(2, '0') + ' / ' + total + '</figcaption>'
+  const html = '<div class="sdbox">' + slideHTML(studioDeckLike(), slide, index) + '</div>' + figur
+  let node = $('stSlides').children[index]
+  if (!node) {
+    node = document.createElement('figure')
+    node.className = 'st-slide'
+    $('stSlides').appendChild(node)
+  }
+  node.className = 'st-slide' + (fresh ? ' fresh' : '')
+  node.innerHTML = html
+  $('stEmpty').hidden = true
+  scheduleCanvasScale()
+  if (fresh) node.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
+}
+
+function paintStudioQa(payload) {
+  const issues = payload.issues || []
+  STUDIO.issues = issues
+  $('stQaKicker').hidden = false
+  if (issues.length === 0) {
+    $('stQa').innerHTML = '<div class="row"><b>' + esc(t('通过')) + '</b><span>' + esc(tf('内容、密度、重复与数据支撑都过了 · %s 分', payload.score)) + '</span></div>'
+    return
+  }
+  $('stQa').innerHTML = '<div class="row"><b>得分</b><span>' + payload.score + ' 分 · 查 ' + issues.length +
+    ' 处，已自动修 ' + issues.filter((issue) => issue.fixed).length + ' 处</span></div>' +
+    issues.map((issue) =>
+      '<div class="row ' + esc(issue.level) + (issue.fixed ? ' fixed' : '') + '"><b>' +
+      esc(issue.fixed ? t('已修') : issue.level === 'error' ? t('错误') : t('提醒')) + '</b><span>' +
+      esc(issue.message) + '</span></div>').join('')
+}
+
+function onDeckEvent(frame) {
+  if (!STUDIO.id) STUDIO.id = frame.deckId
+  if (frame.deckId !== STUDIO.id) return
+  const ev = frame.event
+  if (ev.type === 'deck/plan') return onDeckPlan(ev.plan)
+  if (ev.type === 'deck/stage') {
+    STUDIO.agents[ev.id] = { status: ev.status, detail: ev.detail }
+    paintStudioAgents()
+    if (ev.status === 'start') {
+      const name = (ST_AGENTS.find((row) => row[0] === ev.id) || [])[1] || ev.id
+      $('stSub').textContent = tf('%s正在处理…', t(name))
+    }
+    return
+  }
+  if (ev.type === 'deck/thinking') {
+    const name = (ST_AGENTS.find((row) => row[0] === ev.agent) || [])[1] || ev.agent
+    const p = document.createElement('p')
+    p.innerHTML = '<b>' + esc(t(name)) + '</b>' + esc(ev.text)
+    $('stLog').appendChild(p)
+    $('stLog').scrollTop = $('stLog').scrollHeight
+    return
+  }
+  if (ev.type === 'deck/slide') {
+    const fresh = STUDIO.slides[ev.index] === undefined
+    STUDIO.slides[ev.index] = ev.slide
+    STUDIO.total = ev.total || STUDIO.total
+    STUDIO.done = STUDIO.slides.filter(Boolean).length
+    paintStudioSlide(ev.index, ev.slide, fresh)
+    markStudioOutline(fresh ? ev.index : -1)
+    const item = (STUDIO.plan && STUDIO.plan.outline && STUDIO.plan.outline[ev.index]) || {}
+    $('stNow').textContent = tf('第 %s 页 · %s', ev.index + 1, ev.slide.k || '') +
+      (item.why ? ' · ' + item.why : '')
+    const pct = 15 + (STUDIO.done / Math.max(1, STUDIO.total)) * 70
+    setStudioProgress(pct, tf('正在生成第 %s 页 · 共 %s 页', ev.index + 1, STUDIO.total))
+    return
+  }
+  if (ev.type === 'deck/qa') {
+    setStudioProgress(88, t('质量审核中…'))
+    return paintStudioQa(ev)
+  }
+  if (ev.type === 'deck/patch') {
+    for (const index of ev.indexes || []) {
+      if (STUDIO.deck && STUDIO.deck.slides[index]) paintStudioSlide(index, STUDIO.deck.slides[index], false)
+    }
+    toast(ev.summary)
+    return
+  }
+  if (ev.type === 'deck/done') {
+    STUDIO.deck = ev.deck
+    STUDIO.status = 'done'
+    STUDIO.slides = ev.deck.slides.slice()
+    STUDIO.total = ev.deck.slides.length
+    STUDIO.done = STUDIO.total
+    STUDIO.deck.slides.forEach((slide, index) => paintStudioSlide(index, slide, false))
+    $('stConfirm').hidden = true
+    $('stOpen').hidden = false
+    $('stQaKicker').hidden = false
+    setStudioProgress(100, tf('已完成 %s 页 · %s', STUDIO.total, t(studioModeLabel(STUDIO.mode))))
+    // 放到作品库里，右侧「打开完整演示」走的是同一套阅读器
+    if (!LIB.decks.some((item) => item.id === ev.deck.id)) LIB.decks.unshift(ev.deck)
+    syncSendState()
+  }
+}
+
+async function openStudio(prompt, mode) {
+  bindStudioOnce()
+  STUDIO.id = ''
+  STUDIO.prompt = prompt
+  STUDIO.mode = mode || (state.prefs && state.prefs.deckMode) || 'plan'
+  STUDIO.status = 'starting'
+  STUDIO.plan = null
+  STUDIO.deck = null
+  STUDIO.slides = []
+  STUDIO.issues = []
+  STUDIO.agents = {}
+  STUDIO.total = 0
+  STUDIO.done = 0
+  $('deckStudio').hidden = false
+  $('stTitle').textContent = '演示文稿引擎'
+  $('stSub').textContent = t('正在理解需求…')
+  $('stBrief').innerHTML = ''
+  $('stNarr').textContent = t('等待分析…')
+  $('stOutline').innerHTML = ''
+  $('stLog').innerHTML = ''
+  $('stSlides').innerHTML = ''
+  $('stEmpty').hidden = false
+  $('stNow').textContent = ''
+  $('stQa').innerHTML = ''
+  $('stQaKicker').hidden = true
+  $('stConfirm').hidden = true
+  $('stOpen').hidden = true
+  $('stModeBtn').textContent = studioModeLabel(STUDIO.mode)
+  $('stAsk').value = ''
+  paintStudioAgents()
+  setStudioProgress(0, '正在理解需求…')
+  try {
+    const started = await rpc('deck.start', { prompt, mode: STUDIO.mode })
+    STUDIO.id = started.id
+    if (!STUDIO.plan && started.plan) onDeckPlan(started.plan)
+  } catch (error) {
+    STUDIO.status = 'error'
+    setStudioProgress(0, tf('生成没能开始：%s', error.message))
+  }
+}
+
+function closeStudio() {
+  $('deckStudio').hidden = true
+}
+
+/* 事件只在第一次打开工作台时绑一次：
+ * 这段代码在顶层，早于 `$` 的声明，直接 addEventListener 会撞 TDZ。 */
+function bindStudioOnce() {
+  if (STUDIO.bound) return
+  STUDIO.bound = true
+
+$('stBack').addEventListener('click', () => closeStudio())
+
+$('stModeBtn').addEventListener('click', async () => {
+  const at = ST_MODES.findIndex((item) => item.id === STUDIO.mode)
+  const next = ST_MODES[(at + 1) % ST_MODES.length]
+  STUDIO.mode = next.id
+  $('stModeBtn').textContent = next.name
+  toast(t(next.name) + '：' + t(next.hint))
+  // 还没开始生成时切模式就是重排计划，别让选择只停留在按钮文字上
+  if (STUDIO.plan && (STUDIO.status === 'planned')) await openStudio(STUDIO.prompt, STUDIO.mode)
+})
+
+$('stBuild').addEventListener('click', async () => {
+  if (!STUDIO.id) return
+  $('stConfirm').hidden = true
+  setStudioProgress(20, t('开始逐页生成…'))
+  try {
+    await rpc('deck.build', { id: STUDIO.id }, 30000)
+  } catch (error) {
+    setStudioProgress(20, tf('继续生成失败：%s', error.message))
+  }
+})
+
+async function studioAsk() {
+  const input = $('stAsk')
+  const text = input.value.trim()
+  if (text === '') return
+  if (!STUDIO.id) { toast(t('还没开始生成，等一下。')); return }
+  input.value = ''
+  try {
+    const result = await rpc('deck.revise', { id: STUDIO.id, instruction: text }, 30000)
+    if (result.deck) {
+      STUDIO.deck = result.deck
+      STUDIO.slides = result.deck.slides.slice()
+      result.deck.slides.forEach((slide, index) => paintStudioSlide(index, slide, false))
+    }
+    if (!result.indexes || result.indexes.length === 0) toast(result.summary || t('这句没对上具体页面，说「第 3 页…」更准。'))
+  } catch (error) {
+    toast(tf('修改没生效：%s', error.message))
+  }
+}
+
+$('stSay').addEventListener('click', studioAsk)
+$('stAsk').addEventListener('keydown', (event) => {
+  if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); studioAsk() }
+})
+
+$('stOpen').addEventListener('click', () => {
+  if (!STUDIO.deck) return
+  closeStudio()
+  openCase(STUDIO.deck)
+})
+}
+
 
 function openCase(deck) {
   if (deck) pushRecentDeck(deck.id)
@@ -8149,6 +8576,7 @@ function onFrame(frame) {
   if (frame.type === 'event') return onSessionEvent(frame.event)
   if (frame.type === 'agent-event') return onAgentEvent(frame.event)
   if (frame.type === 'approval.request') return onApproval(frame.request)
+  if (frame.type === 'deck-event') return onDeckEvent(frame)
 }
 
 function onSessionEvent(event) {
@@ -9860,7 +10288,10 @@ function sendFromMode() {
   if (text.trim() === '' && !REF.deck) { input.focus(); toast('先描述一下' + (state.mode || '') + '主题。'); return }
   input.value = ''
   syncSendState()
-  send(withImageParams(consumeRef(text)), state.mode)
+  const prompt = withImageParams(consumeRef(text))
+  // 演示文稿走引擎：七步流程 + 逐页可见 + 随时插话，不是丢给通用 agent 就完事。
+  if (state.mode === '演示文稿') { openStudio(prompt, (state.prefs && state.prefs.deckMode) || 'plan'); return }
+  send(prompt, state.mode)
 }
 
 /* ── 专家页 ─────────────────────────────────────────── */

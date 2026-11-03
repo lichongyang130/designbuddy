@@ -24,6 +24,8 @@ import type { CustomModelInput, ModelCatalog } from '../core/models.ts'
 import { probeModel } from '../core/model-probe.ts'
 import type { ConnectorHub } from '../connectors/hub.ts'
 import type { ApprovalBroker } from '../core/approvals.ts'
+import type { DeckEngine } from '../plugins/deck-engine.ts'
+import type { DeckRecord } from '../plugins/deck-engine.ts'
 import { estimateTokens } from '../core/usage.ts'
 import { errorMessage } from '../core/tools.ts'
 import type { ToolRegistry } from '../core/tools.ts'
@@ -259,6 +261,47 @@ export class HostServer {
           agentId: 'office',
           callId: `office-${Date.now()}`,
         })
+      }
+      case 'deck.start': {
+        const decks = this.#ctx.require<DeckEngine>('decks')
+        const started = decks.start({
+          prompt: String(params.prompt ?? ''),
+          mode: (params.mode === 'express' || params.mode === 'research' || params.mode === 'plan' ? params.mode : 'plan'),
+          pages: Number(params.pages ?? 0) || undefined,
+          audience: typeof params.audience === 'string' ? params.audience : undefined,
+          style: typeof params.style === 'string' ? params.style : undefined,
+        })
+        // 订阅只活这一份稿子：跑完就撤掉，不给长连接留订阅泄漏。
+        let off: (() => void) | undefined
+        off = decks.onEvent((record: DeckRecord, event) => {
+          if (record.id !== started.id) return
+          reply({ type: 'deck-event', deckId: record.id, event })
+          if (event.type === 'deck/done') off?.()
+        })
+        return { id: started.id, plan: started.plan }
+      }
+      case 'deck.build': {
+        const decks = this.#ctx.require<DeckEngine>('decks')
+        const id = String(params.id ?? '')
+        // 确认计划之后继续跑；订阅方式和 deck.start 一样，一跑完就撤。
+        let off: (() => void) | undefined
+        off = decks.onEvent((record: DeckRecord, event) => {
+          if (record.id !== id) return
+          reply({ type: 'deck-event', deckId: record.id, event })
+          if (event.type === 'deck/done') off?.()
+        })
+        return decks.build(id)
+      }
+      case 'deck.revise': {
+        const decks = this.#ctx.require<DeckEngine>('decks')
+        const result = decks.revise(String(params.id ?? ''), String(params.instruction ?? ''))
+        return { id: result.id, indexes: result.indexes, summary: result.summary, deck: result.deck }
+      }
+      case 'deck.get': {
+        const decks = this.#ctx.require<DeckEngine>('decks')
+        const record = decks.get(String(params.id ?? ''))
+        if (!record) throw new Error('找不到这份演示文稿：' + String(params.id ?? ''))
+        return { id: record.id, status: record.status, plan: record.plan, deck: record.deck, error: record.error }
       }
       case 'approvals.respond': {
         // 没有审批插件（headless profile）时直接说清楚，而不是假装点了没反应。

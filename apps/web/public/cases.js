@@ -10241,12 +10241,87 @@ export const CASE_DECKS = [
 /* ── 渲染 ─────────────────────────────────────────────
    固定 960×540 画布，外层用容器宽度换算缩放，卡片 / 大图 / 缩略图共用同一套。 */
 
-function esc(text) {
+export function esc(text) {
   return String(text == null ? '' : text).replace(/[&<>"]/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]))
+}
+
+/**
+ * 生成器的抽象主视觉：`img: '#art:orbit'` 这类值由这里画成内联 SVG。
+ *
+ * 为什么不用照片：生成的稿子没有自己的配图目录，借用别的案例图会图文不符；
+ * 画一套几何构成反而能和配色对上，而且离线、无外链、随主题变色。
+ */
+function artSVG(kind, deck) {
+  const accent = deck.accent || '#2a5cf0'
+  const second = deck.second || '#25d0e6'
+  const ink = deck.ink || '#ffffff'
+  const rule = deck.rule || '#1d2a42'
+  const head =
+    '<svg class="sd-art-svg" viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">'
+  let body = ''
+  if (kind === 'orbit') {
+    body =
+      '<g fill="none" stroke="' + accent + '" stroke-opacity=".55">' +
+      '<ellipse cx="200" cy="130" rx="150" ry="58"/><ellipse cx="200" cy="130" rx="104" ry="40"/>' +
+      '<ellipse cx="200" cy="130" rx="58" ry="22"/></g>' +
+      '<circle cx="200" cy="130" r="9" fill="' + second + '"/>' +
+      '<circle cx="350" cy="130" r="5" fill="' + accent + '"/>' +
+      '<circle cx="96" cy="112" r="4" fill="' + ink + '" opacity=".8"/>'
+  } else if (kind === 'grid') {
+    let lines = ''
+    for (let i = 0; i <= 12; i += 1) {
+      const y = 150 + i * i * 0.6
+      lines += '<line x1="0" y1="' + y.toFixed(1) + '" x2="400" y2="' + y.toFixed(1) + '"/>'
+    }
+    for (let i = -6; i <= 6; i += 1) {
+      lines += '<line x1="' + (200 + i * 18) + '" y1="150" x2="' + (200 + i * 62) + '" y2="260"/>'
+    }
+    body = '<g stroke="' + accent + '" stroke-opacity=".45" stroke-width="1">' + lines + '</g>' +
+      '<circle cx="200" cy="150" r="7" fill="' + second + '"/>'
+  } else if (kind === 'mesh') {
+    let dots = ''
+    for (let r = 0; r < 9; r += 1) {
+      for (let c = 0; c < 15; c += 1) {
+        const x = 20 + c * 26
+        const y = 26 + r * 26
+        const d = Math.hypot(x - 200, y - 130) / 180
+        if (d > 1) continue
+        dots += '<circle cx="' + x + '" cy="' + y + '" r="' + (1.2 + (1 - d) * 2.4).toFixed(2) + '"/>'
+      }
+    }
+    body = '<g fill="' + accent + '" fill-opacity=".7">' + dots + '</g>' +
+      '<circle cx="200" cy="130" r="26" fill="none" stroke="' + second + '" stroke-opacity=".8"/>'
+  } else if (kind === 'wave') {
+    let paths = ''
+    for (let i = 0; i < 5; i += 1) {
+      const amp = 22 - i * 3
+      const y = 70 + i * 30
+      let d = 'M0 ' + y
+      for (let x = 0; x <= 400; x += 25) {
+        d += ' Q' + (x + 12.5) + ' ' + (y + (i % 2 === 0 ? -amp : amp)) + ' ' + (x + 25) + ' ' + y
+      }
+      paths += '<path d="' + d + '"/>'
+    }
+    body = '<g fill="none" stroke="' + accent + '" stroke-opacity=".55" stroke-width="1.6">' + paths + '</g>' +
+      '<circle cx="330" cy="70" r="5" fill="' + second + '"/>'
+  } else {
+    // stack：层叠斜切块，最上面一块用强调色
+    body =
+      '<g stroke="' + rule + '" stroke-opacity=".6">' +
+      '<path d="M60 170 L200 118 L340 170 L200 222 Z" fill="' + ink + '" fill-opacity=".06"/>' +
+      '<path d="M60 140 L200 88 L340 140 L200 192 Z" fill="' + accent + '" fill-opacity=".18"/>' +
+      '<path d="M60 110 L200 58 L340 110 L200 162 Z" fill="' + accent + '" fill-opacity=".42"/>' +
+      '</g><circle cx="200" cy="110" r="6" fill="' + second + '"/>'
+  }
+  return head + body + '</svg>'
 }
 
 function imgTag(deck, n, cls) {
   if (!n) return ''
+  const key = String(n)
+  if (key.indexOf('#art:') === 0) {
+    return '<div class="sd-img sd-art ' + (cls || '') + '">' + artSVG(key.slice(5), deck) + '</div>'
+  }
   return '<img class="sd-img ' + (cls || '') + '" src="cases/' + deck.id + '/' + n + '.jpg" alt="" loading="lazy" />'
 }
 

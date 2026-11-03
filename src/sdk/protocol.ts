@@ -18,6 +18,7 @@ import type { Disposer } from '../kernel/index.ts'
 import type { AgentEvent } from '../core/agent.ts'
 import type { SessionEvent } from '../core/session.ts'
 import type { ApprovalRequest } from '../core/approvals.ts'
+import type { DeckEvent } from '../core/deck.ts'
 
 export type ClientMethod =
   | 'session.create'
@@ -39,6 +40,10 @@ export type ClientMethod =
   | 'models.test'
   | 'office.run'
   | 'approvals.respond'
+  | 'deck.start'
+  | 'deck.build'
+  | 'deck.revise'
+  | 'deck.get'
 
 export interface ClientFrame {
   id: string
@@ -70,12 +75,23 @@ export interface ApprovalFrame {
   request: ApprovalRequest
 }
 
+/**
+ * 演示文稿引擎的过程帧。`event.type` 决定界面怎么画：
+ * `deck/plan` 出计划，`deck/slide` 往预览里加一页，`deck/qa` 显示审核结果。
+ */
+export interface DeckFrame {
+  type: 'deck-event'
+  deckId: string
+  event: DeckEvent
+}
+
 export type HostFrame =
   | { type: 'rpc.result'; id: string; result: unknown }
   | { type: 'rpc.error'; id: string; message: string }
   | EventFrame
   | AgentEventFrame
   | ApprovalFrame
+  | DeckFrame
 
 /** Anything that can carry frames in both directions. */
 export interface Transport {
