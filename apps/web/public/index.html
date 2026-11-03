@@ -299,7 +299,7 @@
     transition:transform var(--d2) var(--ease),box-shadow var(--d2) var(--ease);
   }
   .tpl:hover .cover{transform:translateY(-2px);box-shadow:var(--e2)}
-  .tpl .cover{aspect-ratio:16/9;display:block;container-type:inline-size}
+  .tpl .cover{aspect-ratio:16/9;display:block;container-type:inline-size;position:relative}
   .tpl span{font-size:12.5px;color:#5e6266;text-align:center;line-height:1.3}
 
   .tplwrap.flash{animation:flash 1.4s ease}
@@ -4465,7 +4465,10 @@
   .dv-addbtn.done{background:#e8f3ee;color:#2f6b4e;border:1px solid #cfe6db}
   .dv-usesplit{position:relative;display:flex;align-items:center;justify-self:end;background:#fff;border:1px solid #e3e4e6;
     border-radius:999px}
-  .dv-use{height:27px;padding:0 14px;border-radius:999px 0 0 999px;font-size:12.5px;font-weight:600;color:#20242a}
+  .dv-refbtn{height:27px;padding:0 13px;border-right:1px solid #eceef1;border-radius:999px 0 0 999px;
+    font-size:12.5px;font-weight:600;color:#20242a;background:none}
+  .dv-refbtn:hover{background:#f6f7f9;color:#1a5cff}
+  .dv-use{height:27px;padding:0 14px;border-radius:0;font-size:12.5px;font-weight:600;color:#20242a}
   .dv-use:hover{background:#f6f7f9}
   .dv-caret{display:grid;place-items:center;width:27px;height:27px;border-left:1px solid #eceef1;border-radius:0 999px 999px 0;color:#4a4f55}
   .dv-caret:hover{background:#f6f7f9}
@@ -4600,7 +4603,8 @@
   .tv-row-v{margin-left:auto;font-size:12.5px;color:#6d7178}
   .tv-dots{display:flex;align-items:center;gap:7px;margin-left:auto}
   .tv-dots i{display:block;width:15px;height:15px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.16)}
-  .tv-use{flex:none;margin:12px 20px 16px;height:42px;border-radius:8px;background:#1a5cff;color:#fff;font-size:14.5px;font-weight:500}
+  .tv-use{height:42px;width:100%;border-radius:8px;background:#1a5cff;color:#fff;font-size:14.5px;font-weight:500}
+  .tv-uses{flex:none;display:flex;flex-direction:column;gap:8px;margin:12px 20px 16px}
   .tv-use:hover{background:#1450e6}
   @media (max-width:1100px){
     .tv-main{grid-template-columns:minmax(0,1fr) 300px}
@@ -4964,6 +4968,63 @@
   .cn-add{position:absolute;right:10px;top:10px;width:22px;height:22px;border:1px solid var(--line-strong);border-radius:var(--r-sm);color:var(--fg-muted);display:grid;place-items:center;background:var(--surface)}
   .cn-grid .ex-empty{grid-column:1/-1}
   .cn-add:hover{background:var(--surface-2);color:var(--fg)}
+
+
+  /* 模板引用：卡片右下角的「引用」+ 输入框里的引用卡（缩略图 + 名字 + 模板标签） */
+  .tpl-ref{
+    position:absolute;right:7px;bottom:7px;z-index:2;
+    font-size:10.5px;font-weight:600;line-height:1;padding:3px 7px;border-radius:6px;
+    letter-spacing:.02em;
+    color:#fff;background:rgba(16,20,28,.52);border:1px solid rgba(255,255,255,.16);
+    backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+    cursor:pointer;
+    transition:color var(--d1) var(--ease),border-color var(--d1) var(--ease),background var(--d1) var(--ease),box-shadow var(--d1) var(--ease);
+  }
+  .tpl:hover .tpl-ref,.tpl-card:hover .tpl-ref,.mgcard:hover .tpl-ref{background:rgba(16,20,28,.82);border-color:rgba(255,255,255,.4)}
+  .tpl-ref:focus-visible{outline:2px solid var(--accent-line);outline-offset:1px}
+  .tpl-ref.dark{background:rgba(18,22,28,.72);border-color:rgba(255,255,255,.22);color:#fff;box-shadow:none}
+  .tpl-ref.dark:hover{background:rgba(18,22,28,.9);border-color:rgba(255,255,255,.45);color:#fff}
+  .tv-ref{
+    height:38px;border-radius:var(--r-sm);border:1px solid var(--line-strong);background:var(--surface);
+    color:var(--fg);font-size:13px;font-weight:500;cursor:pointer;
+    display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  }
+  .tv-ref:hover{border-color:var(--accent-line);color:var(--accent);background:var(--accent-soft)}
+  .tv-ref svg{flex:none}
+
+  .refrow{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px 2px}
+  .refcard{
+    display:inline-flex;align-items:center;gap:10px;max-width:100%;
+    padding:5px 10px 5px 5px;border-radius:12px;border:1px solid var(--line);
+    background:var(--surface);box-shadow:0 1px 2px rgba(18,30,60,.05);
+    position:relative;
+  }
+  .ref-thumbs{display:flex;align-items:stretch;gap:2px;height:44px;border-radius:8px;overflow:hidden;flex:none;background:var(--surface-2)}
+  .ref-thumb{display:block;height:44px;position:relative;overflow:hidden}
+  .ref-thumb.photo{width:48px}
+  .ref-thumb.photo img{width:100%;height:100%;object-fit:cover;display:block}
+  .ref-thumb.flat{width:52px;display:flex;flex-direction:column;justify-content:center;gap:3px;padding:6px 6px}
+  .ref-thumb.flat i{display:block;height:3px;border-radius:1px;background:currentColor;opacity:.75}
+  .ref-thumb.flat i:nth-child(2){width:74%;opacity:.5}
+  .ref-thumb.flat i:nth-child(3){width:46%;opacity:.32}
+  .ref-meta{display:flex;flex-direction:column;gap:5px;min-width:0;padding-right:2px}
+  .ref-name{font-size:15px;font-weight:600;color:var(--fg);line-height:1.15;max-width:190px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ref-tag{
+    display:inline-flex;align-items:center;gap:4px;align-self:flex-start;
+    font-size:11px;font-weight:600;line-height:1;padding:3px 7px 3px 5px;border-radius:6px;
+    color:#7c3aed;background:#f2ecfe;
+  }
+  .ref-tag svg,.ref-tag .ic{width:11px;height:11px;color:#7c3aed}
+  .ref-x{
+    position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;
+    border:1px solid var(--line);background:var(--surface);color:var(--fg-muted);
+    display:grid;place-items:center;cursor:pointer;opacity:0;transition:opacity var(--d1) var(--ease);
+  }
+  .refcard:hover .ref-x,.ref-x:focus-visible{opacity:1}
+  .ref-x:hover{color:var(--fg);background:var(--surface-2)}
+  html[data-theme="dark"] .ref-tag{background:rgba(124,58,237,.18);color:#c4b5fd}
+  html[data-theme="dark"] .ref-tag svg{color:#c4b5fd}
 
   /* 连接器：筛选、状态徽标、详情弹窗 */
   .cn-filters{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px}
@@ -6125,6 +6186,7 @@
 
         <div class="prompt">
           <div class="inner">
+            <div class="refrow" id="refRowHome" hidden></div>
             <textarea id="homePrompt" rows="2" placeholder="将此电子表格精简为 6 张幻灯片的演示文稿。仅绘制三个最重要的趋势，每张幻灯片展示一个趋势，并在结尾处说明这些数据对下一季度的意义。"></textarea>
             <div class="bar">
               <button class="icobtn" id="attach" title="添加文件">
@@ -6205,6 +6267,7 @@
               <span class="badge">DOCX</span>
               <span class="badge">PDF</span>
             </div>
+            <div class="refrow" id="refRowMode" hidden></div>
             <textarea id="modePrompt" rows="2" placeholder="描述您的演示主题"></textarea>
             <div class="bar">
               <button class="icobtn" id="attachMode" title="添加文件或连接">
@@ -6403,6 +6466,7 @@
       <div class="composer">
         <div class="prompt">
           <div class="inner">
+            <div class="refrow" id="refRowChat" hidden></div>
             <textarea id="chatPrompt" rows="1" placeholder="继续描述你的设计需求…"></textarea>
             <div class="bar">
               <button class="icobtn" id="attachChat" title="更多">
@@ -6787,6 +6851,7 @@
       </button>
     </div>
     <div class="dv-usesplit">
+      <button class="dv-refbtn" id="dvRef">引用</button>
       <button class="dv-use" id="dvUse">使用模板</button>
       <button class="dv-caret" id="dvUseMore" aria-label="更多操作" aria-expanded="false">
         <svg class="ic ic-xs" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
@@ -6840,6 +6905,111 @@ import { THEMES as BUNDLED_THEMES } from './themes.js'
 const LIB = { decks: BUNDLED_CASES, themes: BUNDLED_THEMES, source: 'bundle' }
 import { applyLanguage, resolveLanguage, startAutoTranslate, t } from './i18n.js'
 const tplState = { fmt: 'all', cats: new Set(), q: '', sort: 'date', more: false }
+
+/* ── 模板引用：卡片右下角「引用」→ 输入框上方的引用卡 ──────
+ * 引用的东西必须真的进到请求里：发送时把「引用模板：名字 · 类型」拼到消息后面，
+ * 发完就清空，不做只好看不生效的装饰。
+ */
+const REF = { deck: null }
+const REF_ROWS = ['refRowHome', 'refRowMode', 'refRowChat']
+
+/** 引用卡左边两张小图：用案例自己的本地配图，和卡片上看到的封面是一套东西。 */
+function refPhotosOf(deck) {
+  const seen = new Set()
+  const shots = []
+  for (const slide of deck.slides || []) {
+    if (!slide || !slide.img || seen.has(slide.img)) continue
+    seen.add(slide.img)
+    shots.push('cases/' + deck.id + '/' + slide.img + '.jpg')
+    if (shots.length === 2) break
+  }
+  return shots
+}
+
+function refCardNode(deck) {
+  const card = document.createElement('div')
+  card.className = 'refcard'
+  const photos = refPhotosOf(deck)
+  // 有两张配图就并排放两张（和截图一致）；只有一张或没有，再补一块纯 CSS 色块兜底
+  const thumbs = photos.map((src) => '<span class="ref-thumb photo"><img alt="" src="' + src + '"></span>').join('') +
+    (photos.length >= 2 ? '' : '<span class="ref-thumb flat" style="background:' + (deck.paper || '#f1efea') + ';color:' + (deck.accent || deck.ink || '#39404e') + '"><i></i><i></i><i></i></span>')
+  card.innerHTML =
+    '<span class="ref-thumbs">' + thumbs + '</span>' +
+    '<span class="ref-meta">' +
+      '<span class="ref-name"></span>' +
+      '<span class="ref-tag">' + iconSVG('templates', 11) + '模板</span>' +
+    '</span>' +
+    '<button class="ref-x" type="button" title="取消引用" aria-label="取消引用">' + iconSVG('close', 9) + '</button>'
+  card.querySelector('.ref-name').textContent = deck.name
+  card.querySelector('.ref-x').onclick = (event) => { event.stopPropagation(); clearRef() }
+  return card
+}
+
+function paintRefs() {
+  for (const id of REF_ROWS) {
+    const row = $(id)
+    if (!row) continue
+    row.innerHTML = ''
+    row.hidden = !REF.deck
+    if (REF.deck) row.appendChild(refCardNode(REF.deck))
+  }
+}
+
+function clearRef() {
+  if (!REF.deck) return
+  REF.deck = null
+  paintRefs()
+}
+
+function visiblePrompt() {
+  for (const id of ['modePrompt', 'homePrompt', 'chatPrompt']) {
+    const el = $(id)
+    if (el && el.offsetParent !== null) return el
+  }
+  return $('homePrompt')
+}
+
+function referenceTemplate(deck) {
+  if (!deck) return
+  REF.deck = deck
+  paintRefs()
+  if (typeof closeDocView === 'function') closeDocView()
+  if (typeof closeCase === 'function') closeCase()
+  if (state.view !== 'chat') setView('home')
+  const input = visiblePrompt()
+  if (input) input.focus()
+  toast('已引用模板「' + deck.name + '」，补一句需求一起发出去', 'ok')
+}
+
+/** 发送前把引用拼进消息；发完清空，不留一个已经用过的引用卡。 */
+function consumeRef(text) {
+  const deck = REF.deck
+  const body = String(text || '')
+  if (!deck) return body
+  REF.deck = null
+  paintRefs()
+  const lead = body.trim() === '' ? '用「' + deck.name + '」这套模板做一份' + (deck.cat || '内容') + '。' : body
+  return lead + '\n\n（引用模板：' + deck.name + ' · ' + (deck.cat || '模板') + '）'
+}
+
+/** 卡片右下角的「引用」：卡片本身是 <button>，所以这里用 role=button 的 span。 */
+function refBadge(deck) {
+  return '<span class="tpl-ref" role="button" tabindex="0" aria-label="引用模板 ' + deck.name + '">引用</span>'
+}
+
+function bindRefBadge(card, deck) {
+  const badge = card.querySelector('.tpl-ref')
+  if (!badge) return
+  const pick = (event) => {
+    event.preventDefault()
+    event.stopPropagation()
+    referenceTemplate(deck)
+  }
+  badge.onclick = pick
+  badge.onkeydown = (event) => {
+    if (event.key === 'Enter' || event.key === ' ' || event.key === 'Spacebar') pick(event)
+  }
+}
 
 function useTemplate(name) {
   closeDocView()
@@ -7243,9 +7413,10 @@ function paintTplGallery() {
     card.className = 'tpl-card'
     card.dataset.cat = deck.kind
     card.innerHTML =
-      '<div class="cover' + fmtClass(deck) + '"' + (deck.fmt === 'doc' ? ' style="background:' + deck.paper + '"' : '') + '>' + deckCoverHTML(deck) + '</div>' +
+      '<div class="cover' + fmtClass(deck) + '"' + (deck.fmt === 'doc' ? ' style="background:' + deck.paper + '"' : '') + '>' + deckCoverHTML(deck) + refBadge(deck) + '</div>' +
       '<div class="tpl-cap">' + TPL_CAP_ICON + '<span>' + deck.name + '</span></div>'
     card.onclick = () => openCase(deck)
+    bindRefBadge(card, deck)
     grid.appendChild(card)
   }
   $('tpEmpty').hidden = hits.length > 0
@@ -7330,7 +7501,11 @@ function renderCaseSide(deck) {
         '<span class="tv-row-v">' + deck.colorway.split(' · ')[0] + '</span></div>' +
       '<div class="tv-row"><span class="tv-row-k">分类</span><span class="tv-row-v" data-no-i18n>' + deck.kind + '</span></div>' +
     '</div>' +
-    '<button class="tv-use" id="tvUse">使用模板</button>'
+    '<div class="tv-uses">' +
+      '<button class="tv-ref" id="tvRef">' + iconSVG('templates', 13) + '引用这套模板</button>' +
+      '<button class="tv-use" id="tvUse">使用模板</button>' +
+    '</div>'
+  $('tvRef').onclick = () => referenceTemplate(deck)
   $('tvUse').onclick = () => useTemplate(deck.name)
   $('tvCopy').onclick = () => {
     const url = location.origin + location.pathname + '#case/' + deck.id
@@ -7551,6 +7726,7 @@ function wireDocView() {
     syncDocSaved()
     toast(i >= 0 ? '已从我的工作区移除' : '已添加到我的工作区', 'ok')
   }
+  $('dvRef').onclick = () => docState.deck && referenceTemplate(docState.deck)
   $('dvUse').onclick = () => docState.deck && useTemplate(docState.deck.name)
   $('dvUseMore').onclick = (ev) => {
     ev.stopPropagation()
@@ -8010,8 +8186,9 @@ function paintTemplates() {
   for (const deck of LIB.decks.slice(0, 6)) {
     const item = document.createElement('button')
     item.className = 'tpl'
-    item.innerHTML = '<div class="cover">' + deckCoverHTML(deck) + '</div><span>' + deck.name + '</span>'
+    item.innerHTML = '<div class="cover">' + deckCoverHTML(deck) + refBadge(deck) + '</div><span>' + deck.name + '</span>'
     item.onclick = () => openCase(deck)
+    bindRefBadge(item, deck)
     grid.appendChild(item)
   }
 }
@@ -8193,21 +8370,23 @@ async function send(prompt, kind) {
 function sendFromHome() {
   const input = $('homePrompt')
   const text = input.value
-  if (text.trim() === '') {
+  if (text.trim() === '' && !REF.deck) {
     input.focus()
     toast('先输入一句需求，或选一个模板试试。')
     return
   }
   input.value = ''
-  send(text)
+  syncSendState()
+  send(consumeRef(text))
 }
 
 function sendFromChat() {
   const input = $('chatPrompt')
   const text = input.value
-  if (text.trim() === '') return
+  if (text.trim() === '' && !REF.deck) return
   input.value = ''
-  send(text)
+  syncSendState()
+  send(consumeRef(text))
 }
 
 /* ── 提示 ─────────────────────── */
@@ -9286,10 +9465,11 @@ function mgDeckCard(deck) {
   const card = document.createElement('button')
   card.className = 'mgcard'
   card.type = 'button'
-  card.innerHTML = '<div class="cover">' + deckCoverHTML(deck) + '</div><span></span>'
+  card.innerHTML = '<div class="cover">' + deckCoverHTML(deck) + refBadge(deck) + '</div><span></span>'
   card.querySelector(':scope > span').textContent = deck.name
   card.title = deck.name + ' · ' + deck.category
   card.onclick = () => openCase(deck)
+  bindRefBadge(card, deck)
   return card
 }
 
@@ -9298,11 +9478,14 @@ function mgUploadCard(upload) {
   const card = document.createElement('button')
   card.className = 'mgcard'
   card.type = 'button'
+  const deckLike = { id: 'upload', name: upload.name.replace(/\.[^.]+$/, ''), cat: '模板', slides: [], paper: '#eef3fb', accent: '#3e6fd8' }
   card.innerHTML =
     '<div class="cover mg-up"><div class="mg-up-in"><b>' + ext + '</b><i></i></div></div><span></span>'
-  card.querySelector('i').textContent = upload.name.replace(/\.[^.]+$/, '')
+  card.querySelector('i').textContent = deckLike.name
   card.querySelector(':scope > span').textContent = upload.name
   card.title = '导入的模板 · ' + fmtSize(upload.size)
+  card.querySelector('.cover').insertAdjacentHTML('beforeend', refBadge(deckLike))
+  bindRefBadge(card, deckLike)
   card.onclick = () => openUploadDialog(upload)
   return card
 }
@@ -9549,10 +9732,10 @@ function withImageParams(text) {
 function sendFromMode() {
   const input = $('modePrompt')
   const text = input.value
-  if (text.trim() === '') { input.focus(); toast('先描述一下' + (state.mode || '') + '主题。'); return }
+  if (text.trim() === '' && !REF.deck) { input.focus(); toast('先描述一下' + (state.mode || '') + '主题。'); return }
   input.value = ''
   syncSendState()
-  send(withImageParams(text), state.mode)
+  send(withImageParams(consumeRef(text)), state.mode)
 }
 
 /* ── 专家页 ─────────────────────────────────────────── */

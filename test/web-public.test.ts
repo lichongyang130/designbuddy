@@ -391,3 +391,19 @@ test('RPC 带超时：SSE 丢帧不会让控件永远转圈', () => {
   assert.match(html, /请求超时（/)
   assert.match(html, /response\.status === 409/)
 })
+
+test('模板卡片右下角有「引用」，引用的东西会真的跟着消息发出去', () => {
+  const html = read('index.html')
+  // 卡片右下角的引用标：三种模板卡（推荐 / 探索 / 画廊）+ 上传卡都绑了
+  assert.ok((html.match(/bindRefBadge\(/g) || []).length >= 4, '模板卡都要绑引用')
+  assert.match(html, /function refBadge\(deck\)/)
+  assert.match(html, /<span class="tpl-ref" role="button"/)
+  // 输入框上方的引用卡：三个输入区各一个容器
+  for (const id of ['refRowHome', 'refRowMode', 'refRowChat']) {
+    assert.ok(html.includes('id="' + id + '"'), id + ' 不存在')
+  }
+  // 引用不是装饰：发送时拼进消息、发完清空
+  assert.match(html, /function consumeRef\(text\)/)
+  assert.ok((html.match(/consumeRef\(/g) || []).length >= 4, '三个发送入口都要带上引用')
+  assert.match(html, /（引用模板：/)
+})
