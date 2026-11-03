@@ -1175,3 +1175,58 @@ rail 72 │ 自定义侧栏 278px（#f5f8fd，右描边 #d6e1ef）│ 主区纯�
 - **新增测试**：扫 `index.html` 里写死的中文（`t('…')` / `tf('…')` / `.textContent = '…'` / `<b>` / `<span>`），任何一条查不到译名就失败——以后再漏词条会当场报错，而不是等用户切到英文才发现。
 
 **校验**：`npm test` **120/120**；puppeteer 实测切 en 后连接器筛选（All / Connected / Needs credentials / Demo data）、详情弹窗（Permissions needed / Credentials / Available once connected / Test connection / Connect / Get one → / 写操作说明）、引用卡（Reference / Template / Remove reference / 提示语）全部是英文，`errs []`。
+
+---
+
+## 53. 写操作逐次确认：把「允许」从连接时挪到每一次调用（2026-11-04）
+
+上一轮的口径是「连接时勾了允许写操作，工具才会注册」。这解决的是「这些能力要不要存在」，解决不了
+「这一次要不要真的建这个页面」。所以补第二道闸：**每次调用前停下来问一句，默认拒绝**。
+
+### 53.1 落在守卫生上，而不是塞进连接器
+
+`ToolRegistry.addGuard` 本来就是「调用之前的政策缝」——拒绝时工具压根不进 `execute`，模型收到的是一条
+明确的拒绝理由（`rejectedAt: 'policy'`）。把审批放这里还有三个好处：
+
+- **和连接器解耦**：以后内置的危险工具（部署、删库）也能用同一道闸，前端也只认一种卡片。
+- **顺序可读**：守卫按注册顺序跑，第一个拒绝生效，审批可以排在沙箱之后、限流之前。
+- **不碰超时**：守卫在 `withTimeout` 外面，等 90 秒也不会把工具自己的 15s 超时撞掉。
+
+### 53.2 `ApprovalBroker`：一个很窄的中介
+
+`src/core/approvals.ts`，无 IO、无 DOM，所以三条路径可以直接测：
+
+| 路径 | 行为 |
+|---|---|
+| `onRequest` 有订阅者 → 用户点「允许」 | `resolve({approved:true})`，守卫放行 |
+| 用户点「拒绝」 | `resolve({approved:false, reason})`，理由作为工具结果回给模型 |
+| 90 秒没人应答 | 自动拒绝，理由写「等了 90 秒没等到确认」 |
+| **没有任何订阅者**（终端 / 批处理） | **立即拒绝**——没有审批通道就不放行，绝不默默通过 |
+| 运行被 abort / 会话结束 / 进程关闭 | 各自一条独立的拒绝理由，卡片随即作废 |
+
+计时器是 `unref()` 的：一个没人点的卡片不该拖住进程退出。
+
+### 53.3 协议只多一帧、一个方法
+
+- 下行 `{type:'approval.request', sessionId, request}`，`request` 带 `id / tool / title / detail / args / expiresAt`。
+- 上行 `approvals.respond {id, approved}` → `{id, accepted}`；`accepted:false` 表示这张卡已经过期（超时或重复点），
+  客户端清掉即可，不当成错误。
+- 监听器只在 `agent.run` 期间挂上：客户端半路走掉不会留下僵尸订阅，一轮结束 `finally` 里再 `cancelSession` 兜底。
+
+### 53.4 前端的卡片
+
+停在输入框正上方（`.approval-dock`），不随聊天记录滚走，也不会盖住输入框：标题是「Notion · 新建页面」这类人话，
+副行「这个工具会改动远端数据，点「允许」之前不会执行。」，第三行是参数摘要（`title = 周报`），右侧 `[拒绝] [允许]`。
+
+- **窄屏换行**：≤760px 时按钮整行落到下面，否则标题会被挤成一列词（实测改之前卡片 270px、提示一行一个单词）。
+- **切语言重画**：卡片文案走 `t()`，`#setLanguage` 的 change 里重画一次；活动条也改成渲染时再翻译。
+- **一轮结束自动清**：`agent/start` 与 `agent/end` 都清空，不留一张点了返回 `accepted:false` 的卡。
+
+### 53.5 验收
+
+- `test/approvals.test.ts` 11 条（无监听者拒绝 / 允许 / 拒绝带理由 / 默认理由 / 超时 / abort / 按会话取消 / 重复 respond / dispose / 参数摘要 / **端到端：连上 notion 后写工具被拦、读工具放行**）。
+- `test/host-client.test.ts` 两条帧测试（`approval.request` → `approvals.respond` 往返；过期 id 返回 `accepted:false`）。
+- `npm test` **133/133**。
+- 浏览器实测（1440×900 与 390×844）：卡片宽度分别 820 / 302，`scrollWidth` 不溢出，`errs []`；点「允许」后
+  `.designbuddy/connectors.log.jsonl` 多一行 `notion.create_page ok`；点「拒绝」则**一行都不多**——工具确实没执行。
+- 切 en 后卡片为 `Deny / Allow` + 英文提示，除连接器名与工具描述（目录数据，和卡片上显示的中文描述同源）外无中文残留。

@@ -173,6 +173,11 @@ export function connectorArgs(toolName: string, prompt: string): Record<string, 
   const path = prompt.match(/[\w./-]+\.(?:ts|tsx|js|jsx|css|md|json)\b/)
   if (path && /file|doc|page/.test(toolName)) args.path = path[0]
   if (args.symbol === undefined && /搜|查|找|search/i.test(prompt)) args.query = prompt.slice(0, 30)
+  // 写工具（新建页面/文档）只有一个必填字段，用这句话当标题最自然：
+  // 演示环境里这样才跑得通「连上 → 让我建一页 → 弹确认卡 → 建好」这条完整链路。
+  if (/create_(?:page|doc)$/.test(toolName) && args.title === undefined) {
+    args.title = prompt.replace(/@[\w.-]+/g, '').replace(/^[\s，。:：-]+/, '').slice(0, 24).trim() || '未命名文档'
+  }
   return args
 }
 

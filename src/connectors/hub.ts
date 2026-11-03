@@ -163,6 +163,23 @@ export class ConnectorHub {
     return manifest.auth.filter((field) => field.required && !secrets[field.key]).map((field) => field.label)
   }
 
+  /**
+   * 这个工具名是不是某个已连接连接器的**写**工具。
+   *
+   * 守卫要靠它判断「该不该拦」：读工具不问，写工具每次问一次。
+   * 断开之后工具也注销了，这里自然返回 undefined。
+   */
+  writeToolOf(name: string): { connector: string; name: string; label: string } | undefined {
+    for (const [id, live] of this.#live) {
+      for (const spec of live.manifest.tools) {
+        if (!spec.write) continue
+        if (live.manifest.id + '.' + spec.name !== name) continue
+        return { connector: id, name: spec.name, label: live.manifest.name + ' · ' + spec.desc }
+      }
+    }
+    return undefined
+  }
+
   async test(id: string, provided?: Record<string, string>): Promise<TestResult> {
     const manifest = findConnector(id)
     if (!manifest) throw new Error('没有这个连接器：' + id)

@@ -166,3 +166,61 @@ test('plugins.rows reports the profile with mount state', async (t) => {
   const after = (await client.request('plugins.rows')) as { id: string; mounted: boolean }[]
   assert.equal(after.find((row) => row.id === 'design.figma')?.mounted, false)
 })
+
+test('写工具先发审批帧，客户端点了允许才真的执行', async (t) => {
+  const { client, frames, app } = await harness()
+  t.after(() => app.dispose())
+
+  const hub = app.ctx.require<ConnectorHub>('connectors')
+  await hub.connect('notion', undefined, { allowWrite: true })
+
+  const created = (await client.request('session.create', { title: 'approval' })) as { id: string }
+  const asked: string[] = []
+  const answers: unknown[] = []
+
+  // 客户端在这里扮演「人」：看到卡片就点允许。
+  const off = client.onFrame((frame) => {
+    if (frame.type !== 'approval.request') return
+    asked.push(frame.request.tool + ' | ' + frame.request.detail)
+    void client.request('approvals.respond', { id: frame.request.id, approved: true }).then((answer) => {
+      answers.push(answer)
+    })
+  })
+  t.after(() => off())
+
+  const result = await client.run({
+    sessionId: created.id,
+    presetId: 'manager',
+    prompt: '@notion.create_page 帮我建一页周报',
+  })
+
+  assert.equal(result.status, 'done')
+  // 专家分派会再跑一轮子循环，子循环里的写工具同样要问——所以只断言「每次都要问」。
+  assert.equal(asked[0], 'notion.create_page | title = 帮我建一页周报')
+  assert.ok(asked.length >= 1)
+  assert.ok(asked.every((line) => line.startsWith('notion.create_page | ')))
+  assert.equal(answers.length, asked.length)
+  assert.ok(answers.every((answer) => (answer as { accepted: boolean }).accepted === true))
+
+  const call = frames.find(
+    (frame) =>
+      frame.type === 'agent-event' &&
+      frame.event.type === 'agent/tool-result' &&
+      frame.event.name === 'notion.create_page',
+  )
+  assert.ok(call, '应该有一条 notion.create_page 的工具结果帧')
+  const outcome = call.type === 'agent-event' && call.event.type === 'agent/tool-result' ? call.event : null
+  assert.equal(outcome?.isError, false, '允许之后工具真的执行了')
+  assert.match(String(outcome?.content), /demo/)
+})
+
+test('approvals.respond 认不出过期 id 时返回 accepted:false', async (t) => {
+  const { client, app } = await harness()
+  t.after(() => app.dispose())
+
+  const answer = (await client.request('approvals.respond', { id: 'ap-never-existed', approved: true })) as {
+    id: string
+    accepted: boolean
+  }
+  assert.deepEqual(answer, { id: 'ap-never-existed', accepted: false })
+})

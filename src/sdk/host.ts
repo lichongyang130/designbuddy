@@ -23,6 +23,7 @@ import type { Library } from '../core/library.ts'
 import type { CustomModelInput, ModelCatalog } from '../core/models.ts'
 import { probeModel } from '../core/model-probe.ts'
 import type { ConnectorHub } from '../connectors/hub.ts'
+import type { ApprovalBroker } from '../core/approvals.ts'
 import { estimateTokens } from '../core/usage.ts'
 import { errorMessage } from '../core/tools.ts'
 import type { ToolRegistry } from '../core/tools.ts'
@@ -255,6 +256,15 @@ export class HostServer {
           callId: `office-${Date.now()}`,
         })
       }
+      case 'approvals.respond': {
+        // 没有审批插件（headless profile）时直接说清楚，而不是假装点了没反应。
+        const approvals = this.#ctx.get<ApprovalBroker>('approvals')
+        if (!approvals) throw new Error('当前部署没有启用写操作确认')
+        const id = String(params.id ?? '')
+        const accepted = approvals.respond(id, params.approved === true, typeof params.reason === 'string' ? params.reason : undefined)
+        // false 不是错误：卡片可能已经因为超时/回车/重复点击失效了，客户端清掉即可。
+        return { id, accepted }
+      }
       case 'agent.run': {
         const sessionId = String(params.sessionId)
         const presetId = String(params.presetId ?? 'default')
@@ -276,6 +286,14 @@ export class HostServer {
         // reconnect instead of trusting a delta stream.
         const unsubscribe = sessions.subscribe(sessionId, (event) => {
           reply({ type: 'event', sessionId, event })
+        })
+
+        // Write tools park here. The listener lives only for the length of this
+        // run: a client that goes away mid-turn leaves no stale subscriber, and
+        // a run that ends unhooks the card so it cannot be answered later.
+        const approvals = this.#ctx.get<ApprovalBroker>('approvals')
+        const detachApprovals = approvals?.onRequest((request) => {
+          reply({ type: 'approval.request', sessionId, request })
         })
 
         try {
@@ -301,6 +319,9 @@ export class HostServer {
           return final
         } finally {
           unsubscribe()
+          detachApprovals?.()
+          // 运行结束（成功、失败、中止）都不该留一张没人能点、还占着守卫的卡片。
+          approvals?.cancelSession(sessionId, '这一轮已经结束，写操作没有执行')
         }
       }
       default:

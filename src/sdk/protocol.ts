@@ -17,6 +17,7 @@
 import type { Disposer } from '../kernel/index.ts'
 import type { AgentEvent } from '../core/agent.ts'
 import type { SessionEvent } from '../core/session.ts'
+import type { ApprovalRequest } from '../core/approvals.ts'
 
 export type ClientMethod =
   | 'session.create'
@@ -37,6 +38,7 @@ export type ClientMethod =
   | 'models.remove'
   | 'models.test'
   | 'office.run'
+  | 'approvals.respond'
 
 export interface ClientFrame {
   id: string
@@ -58,11 +60,22 @@ export interface AgentEventFrame {
   event: AgentEvent
 }
 
+/**
+ * A write tool is parked, waiting for a human. The client renders one card and
+ * answers with `approvals.respond`; silence means refusal.
+ */
+export interface ApprovalFrame {
+  type: 'approval.request'
+  sessionId: string
+  request: ApprovalRequest
+}
+
 export type HostFrame =
   | { type: 'rpc.result'; id: string; result: unknown }
   | { type: 'rpc.error'; id: string; message: string }
   | EventFrame
   | AgentEventFrame
+  | ApprovalFrame
 
 /** Anything that can carry frames in both directions. */
 export interface Transport {

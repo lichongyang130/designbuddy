@@ -4740,6 +4740,22 @@
   .tool[open] summary::before{transform:rotate(90deg)}
   .tool pre{margin:0;padding:0 13px 11px;white-space:pre-wrap;color:var(--fg-muted);font-size:12px;line-height:1.6}
   .activity{height:24px;padding:0 max(32px,calc((100% - 820px)/2));font-size:12px;color:var(--fg-subtle);display:flex;align-items:center;gap:7px}
+  /* 写操作确认卡：停在输入框正上方，不随聊天记录滚走，也不会盖住输入框 */
+  .approval-dock{flex:none;display:flex;flex-direction:column;gap:8px;padding:0 max(32px,calc((100% - 820px)/2)) 6px}
+  .approval-dock[hidden]{display:none}
+  .appcard{display:flex;gap:11px;align-items:flex-start;padding:12px 13px;border:1px solid var(--accent-line);border-radius:var(--r-lg);background:var(--accent-soft);box-shadow:var(--e1)}
+  .appcard.err{border-color:var(--err-line);background:var(--err-soft)}
+  .appcard .aico{flex:none;width:26px;height:26px;border-radius:var(--r-sm);background:var(--surface);display:grid;place-items:center;color:var(--accent)}
+  .appcard .abody{flex:1;min-width:0}
+  .appcard .atitle{font-size:13px;font-weight:600;color:var(--ink-strong);line-height:1.35}
+  .appcard .ahint{font-size:12px;color:var(--fg-muted);margin-top:3px;line-height:1.45}
+  .appcard .aargs{margin-top:6px;font-size:11.5px;color:var(--fg-subtle);font-family:var(--mono-font,ui-monospace,SFMono-Regular,Menlo,monospace);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .appcard .aacts{flex:none;display:flex;gap:7px;align-items:center;padding-top:1px}
+  .appcard .abtn{height:28px;padding:0 12px;border-radius:var(--r-sm);border:1px solid var(--line-strong);background:var(--surface);color:var(--fg);font-size:12.5px;cursor:pointer}
+  .appcard .abtn:hover{background:var(--surface-2)}
+  .appcard .abtn.ok{border-color:var(--accent);background:var(--accent);color:var(--on-accent)}
+  .appcard .abtn.ok:hover{background:var(--accent-hover)}
+  .appcard .abtn[disabled]{opacity:.55;cursor:default}
   .spinner{width:9px;height:9px;border:2px solid var(--accent);border-right-color:transparent;opacity:.7;border-radius:50%;animation:spin .8s linear infinite}
   @keyframes spin{to{transform:rotate(360deg)}}
   .composer{flex:none;padding:8px max(32px,calc((100% - 820px)/2)) 24px}
@@ -5787,6 +5803,11 @@
     .prompt{padding:12px}
     .thread{padding:16px 16px 8px}
     .composer{padding:8px 16px 16px}
+    /* 窄屏上按钮换到第二行，否则文字会被挤成一列词 */
+    .approval-dock{padding:0 16px 4px}
+    .appcard{flex-wrap:wrap;row-gap:9px}
+    .appcard .abody{flex:1 1 0}
+    .appcard .aacts{flex:1 0 100%;justify-content:flex-end}
     .chips{gap:6px}
     .chip{padding:0 10px;height:32px;font-size:12.5px}
     .cards{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:12px}
@@ -6465,6 +6486,7 @@
       </div>
       <div class="thread" id="thread"></div>
       <div class="activity" id="activity"></div>
+      <div class="approval-dock" id="approvalDock" hidden></div>
       <div class="composer">
         <div class="prompt">
           <div class="inner">
@@ -8046,6 +8068,7 @@ const state = {
   sessionTitle: '',
   transcript: [],
   activity: null,
+  approvals: [],
   busy: false,
   sessions: [],
   presets: [],
@@ -8125,6 +8148,7 @@ function onFrame(frame) {
   }
   if (frame.type === 'event') return onSessionEvent(frame.event)
   if (frame.type === 'agent-event') return onAgentEvent(frame.event)
+  if (frame.type === 'approval.request') return onApproval(frame.request)
 }
 
 function onSessionEvent(event) {
@@ -8142,12 +8166,17 @@ function onSessionEvent(event) {
   if (event.type === 'agent/start') {
     state.busy = true
     state.activity = '已接收任务'
+    state.approvals = []
+    paintApprovals()
     paintActivity()
     return
   }
   if (event.type === 'agent/end') {
     state.busy = false
     state.activity = null
+    // 这一轮已经收尾：还挂着的卡片后端也一起作废了，别留在界面上让人白点。
+    state.approvals = []
+    paintApprovals()
     paintActivity()
     refreshSessions()
     if (state.prefs.autoHome) setView('home')
@@ -8160,6 +8189,86 @@ function onAgentEvent(event) {
   else if (event.type === 'agent/tool-result') state.activity = event.name + (event.isError ? ' 失败' : ' 完成') + ' · ' + event.durationMs + 'ms'
   else if (event.type === 'agent/text') state.activity = '正在输出'
   paintActivity()
+}
+
+/* ── 写操作确认：每次调用都问一次，没人点就不执行 ─────── */
+function onApproval(request) {
+  if (!request || !request.id) return
+  if (state.approvals.some((entry) => entry.id === request.id)) return
+  state.approvals.push(request)
+  state.activity = '等待你确认写操作'
+  paintActivity()
+  paintApprovals()
+}
+
+function paintApprovals() {
+  const dock = $('approvalDock')
+  if (!dock) return
+  dock.innerHTML = ''
+  dock.hidden = state.approvals.length === 0
+  for (const request of state.approvals) dock.appendChild(approvalCard(request))
+}
+
+function approvalCard(request) {
+  const card = document.createElement('div')
+  card.className = 'appcard'
+  card.dataset.id = request.id
+
+  const ico = document.createElement('span')
+  ico.className = 'aico'
+  ico.innerHTML = iconSVG('plug', 14)
+
+  const body = document.createElement('div')
+  body.className = 'abody'
+  const title = document.createElement('div')
+  title.className = 'atitle'
+  title.textContent = request.title || request.tool
+  const hint = document.createElement('div')
+  hint.className = 'ahint'
+  hint.textContent = t('这个工具会改动远端数据，点「允许」之前不会执行。')
+  body.append(title, hint)
+  if (request.detail) {
+    const args = document.createElement('div')
+    args.className = 'aargs'
+    args.textContent = request.detail
+    body.appendChild(args)
+  }
+
+  const acts = document.createElement('div')
+  acts.className = 'aacts'
+  const deny = document.createElement('button')
+  deny.type = 'button'
+  deny.className = 'abtn'
+  deny.textContent = t('拒绝')
+  const allow = document.createElement('button')
+  allow.type = 'button'
+  allow.className = 'abtn ok'
+  allow.textContent = t('允许')
+  const buttons = [deny, allow]
+  deny.onclick = () => answerApproval(request.id, false, buttons)
+  allow.onclick = () => answerApproval(request.id, true, buttons)
+  acts.append(deny, allow)
+
+  card.append(ico, body, acts)
+  return card
+}
+
+async function answerApproval(id, approved, buttons) {
+  for (const btn of buttons) btn.disabled = true
+  try {
+    const result = await rpc('approvals.respond', { id, approved })
+    dropApproval(id)
+    if (!result || result.accepted !== true) toast('这张确认卡已经失效', 'err')
+    else toast(approved ? '已允许这次写操作' : '已拒绝这次写操作')
+  } catch (error) {
+    dropApproval(id)
+    toast(tf('提交确认失败：%s', error && error.message ? error.message : ''), 'err')
+  }
+}
+
+function dropApproval(id) {
+  state.approvals = state.approvals.filter((entry) => entry.id !== id)
+  paintApprovals()
 }
 
 /* ── 视图切换 ────────────────────────────────────────── */
@@ -8272,7 +8381,7 @@ function paintActivity() {
   if (state.activity) {
     const dot = document.createElement('span')
     dot.className = 'spinner'
-    bar.append(dot, document.createTextNode(state.activity))
+    bar.append(dot, document.createTextNode(t(state.activity)))
   }
   syncSendState()
 }
@@ -8581,6 +8690,7 @@ $('setLanguage').addEventListener('change', () => {
   if (typeof paintTplGallery === 'function' && !$('viewTemplates').hidden) paintTplGallery()
   if (typeof paintModeGallery === 'function' && state.mode) paintModeGallery()
   paintRefs()
+  paintApprovals()
   if (CNX.items.length > 0 && state.exTab === 'connectors') paintConnectors()
 })
 document.addEventListener('click', (event) => {

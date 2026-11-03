@@ -5,7 +5,7 @@
 设计原则和 DSH 一致：**没有特权的核心，一切皆插件**。连 `tools`、`sessions`、`llm`、`agentLoop` 本身都是插件，都能单独卸载替换。
 
 - 零运行时依赖（用 Node 24 原生 TypeScript 类型擦除直接跑 `.ts`）
-- 120 个测试全部通过
+- 133 个测试全部通过
 - `tsc --noEmit` 类型检查通过
 - 完整 demo：Manager → 专家分派 → 记忆写回 → 插件热卸载
 
@@ -14,7 +14,7 @@
 ```bash
 node demo/run.ts                              # 看完整链路（不需要装任何依赖）
 node apps/client/main.ts                      # 跨进程版：客户端 spawn 宿主进程
-npm test                                      # 120 个用例
+npm test                                      # 133 个用例
 npx tsc -p tsconfig.json --noEmit             # 类型检查（需先 npm install）
 ```
 
@@ -28,6 +28,7 @@ src/
 ├── core/                    # 与框架无关的能力实现
 │   ├── connectors.ts        #   连接器状态文件（.designbuddy/connectors.json）
 │   ├── credentials.ts       #   凭据文件（0600，只给后端读）
+│   ├── approvals.ts         #   写操作审批中介（默认拒绝、超时兜底）
 │   ├── tools.ts             #   工具注册表 + 守卫管线
 │   ├── router.ts            #   AI Model Router（失败回退）
 │   ├── session.ts           #   append-only 会话日志
@@ -43,6 +44,7 @@ src/
 ├── plugins/                 # 每个能力都是一个插件（export name/inject/apply）
 │   ├── core-*.ts            #   把 core/ 的服务挂成 ctx.<key>
 │   ├── connector-hub.ts     #   ConnectorHub 挂成 'connectors' 服务
+│   ├── approvals.ts         #   写工具守卫：每次调用前弹确认（'approvals' 服务）
 │   ├── design-memory.ts     #   Design Memory：服务 + prompt 分节 + 2 个工具
 │   ├── design-experts.ts    #   Manager + 多专家（委托即工具）
 │   ├── connector-figma.ts   #   外部连接器（fixture 版）
