@@ -35,6 +35,7 @@ export type ClientMethod =
   | 'models.list'
   | 'models.save'
   | 'models.remove'
+  | 'models.test'
   | 'office.run'
 
 export interface ClientFrame {

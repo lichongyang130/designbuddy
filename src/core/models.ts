@@ -12,8 +12,8 @@
  * @module designbuddy/core/models
  */
 
-import { mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs'
-import { dirname } from 'node:path'
+import { chmodSync, existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs'
+import { dirname, join } from 'node:path'
 
 export interface CustomModel {
   /** 稳定 id，界面上的编辑 / 删除都按它来。 */
@@ -26,14 +26,21 @@ export interface CustomModel {
   provider: string
   /** 兼容 OpenAI 协议的 base URL，可留空表示跟随环境变量。 */
   baseUrl?: string
-  /** 读取密钥的环境变量名，密钥本身不落盘。 */
+  /** 读取密钥的环境变量名；密钥本身只写进旁边的 keys 文件，不写进这一份配置。 */
   apiKeyEnv?: string
+  /** 高级配置：tools / vision / reasoning / custom-protocol。 */
+  capabilities?: string[]
+  /** 是否已经存过密钥（列表接口只回这个布尔值）。 */
+  hasKey?: boolean
   createdAt: number
   updatedAt: number
 }
 
 export interface CustomModelInput {
   id?: string
+  apiKey?: string
+  clearKey?: boolean
+  capabilities?: string[]
   name?: string
   model?: string
   provider?: string
@@ -69,6 +76,9 @@ function sanitize(raw: unknown): CustomModel | null {
     provider: typeof item.provider === 'string' && item.provider !== '' ? item.provider : '自建',
     baseUrl: typeof item.baseUrl === 'string' && item.baseUrl !== '' ? item.baseUrl : undefined,
     apiKeyEnv: typeof item.apiKeyEnv === 'string' && item.apiKeyEnv !== '' ? item.apiKeyEnv : undefined,
+    capabilities: Array.isArray(item.capabilities)
+      ? item.capabilities.filter((cap): cap is string => typeof cap === 'string')
+      : undefined,
     createdAt: typeof item.createdAt === 'number' ? item.createdAt : now,
     updatedAt: typeof item.updatedAt === 'number' ? item.updatedAt : now,
   }
@@ -82,12 +92,14 @@ export interface ModelCatalogOptions {
 
 export class ModelCatalog {
   #file: string
+  #keysFile: string
   #seed: boolean
   #items: CustomModel[] | null = null
   #error: string | null = null
 
   constructor(options: ModelCatalogOptions) {
     this.#file = options.file
+    this.#keysFile = options.file === '' ? '' : join(dirname(options.file), 'models.keys.json')
     this.#seed = options.seed !== false
   }
 
@@ -102,9 +114,9 @@ export class ModelCatalog {
   }
 
   list(): CustomModel[] {
-    if (this.#items) return this.#items.slice()
-    this.#items = this.#read()
-    return this.#items.slice()
+    if (!this.#items) this.#items = this.#read()
+    const keys = this.#readKeys()
+    return this.#items.map((item) => Object.assign({}, item, { hasKey: keys[item.id] !== undefined }))
   }
 
   lastError(): string | null {
@@ -121,12 +133,14 @@ export class ModelCatalog {
 
     if (existing) {
       existing.name = (input.name ?? existing.name).trim() || existing.name
+      if (input.capabilities !== undefined) existing.capabilities = input.capabilities.slice()
       existing.model = model
       existing.provider = (input.provider ?? existing.provider).trim() || existing.provider
       existing.baseUrl = input.baseUrl === undefined ? existing.baseUrl : (input.baseUrl.trim() || undefined)
       existing.apiKeyEnv = input.apiKeyEnv === undefined ? existing.apiKeyEnv : (input.apiKeyEnv.trim() || undefined)
       existing.updatedAt = now
       this.#write(items)
+      this.#applyKey(existing.id, input)
       return existing
     }
 
@@ -140,11 +154,13 @@ export class ModelCatalog {
       provider: (input.provider ?? '').trim() || '自建',
       baseUrl: (input.baseUrl ?? '').trim() || undefined,
       apiKeyEnv: (input.apiKeyEnv ?? '').trim() || undefined,
+      capabilities: Array.isArray(input.capabilities) ? input.capabilities.slice() : undefined,
       createdAt: now,
       updatedAt: now,
     }
     items.push(created)
     this.#write(items)
+    this.#applyKey(created.id, input)
     return created
   }
 
@@ -153,7 +169,51 @@ export class ModelCatalog {
     const next = items.filter((item) => item.id !== id)
     if (next.length === items.length) return false
     this.#write(next)
+    this.#applyKey(id, { clearKey: true })
     return true
+  }
+
+  key(id: string): string | undefined {
+    return this.#readKeys()[id]
+  }
+
+  #applyKey(id: string, input: CustomModelInput): void {
+    if (input.clearKey) {
+      const keys = this.#readKeys()
+      if (keys[id] !== undefined) {
+        delete keys[id]
+        this.#writeKeys(keys)
+      }
+      return
+    }
+    const key = (input.apiKey ?? '').trim()
+    if (key === '') return
+    const keys = this.#readKeys()
+    keys[id] = key
+    this.#writeKeys(keys)
+  }
+
+  #readKeys(): Record<string, string> {
+    if (this.#keysFile === '') return {}
+    if (!existsSync(this.#keysFile)) return {}
+    try {
+      const parsed = JSON.parse(readFileSync(this.#keysFile, 'utf8')) as unknown
+      if (!parsed || typeof parsed !== 'object') return {}
+      const out: Record<string, string> = {}
+      for (const [id, value] of Object.entries(parsed as Record<string, unknown>)) {
+        if (typeof value === 'string' && value !== '') out[id] = value
+      }
+      return out
+    } catch {
+      return {}
+    }
+  }
+
+  #writeKeys(keys: Record<string, string>): void {
+    if (this.#keysFile === '') return
+    mkdirSync(dirname(this.#keysFile), { recursive: true })
+    writeFileSync(this.#keysFile, JSON.stringify(keys, null, 2) + '\n', { encoding: 'utf8', mode: 0o600 })
+    try { chmodSync(this.#keysFile, 0o600) } catch { /* 非 POSIX 平台忽略 */ }
   }
 
   #read(): CustomModel[] {

@@ -5118,22 +5118,68 @@
   html[data-theme="dark"] .md-ico.danger{color:#FF9B9B;background:#3A2020}
   .md-ico svg{width:15px;height:15px}
   .md-empty{padding:22px 16px;font-size:13px;color:var(--fg-subtle);text-align:center}
-  .md-form{background:var(--surface);border:1px solid var(--line-strong);border-radius:12px;padding:14px;
-    margin-bottom:12px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .md-field{display:flex;flex-direction:column;gap:5px;min-width:0}
-  .md-field.w{grid-column:span 2}
-  .md-field label{font-size:11.5px;color:var(--fg-subtle);letter-spacing:.02em}
-  .md-field input{height:32px;border:1px solid var(--line-strong);border-radius:7px;padding:0 9px;
-    font-size:13px;color:var(--fg);background:var(--surface);outline:0;min-width:0}
-  .md-field input:focus{border-color:var(--fg-subtle)}
-  .md-form-foot{grid-column:span 2;display:flex;align-items:center;gap:8px;margin-top:2px}
-  .md-btn{height:30px;padding:0 14px;border-radius:8px;font-size:13px;border:1px solid var(--line-strong);
+  /* 添加 / 编辑模型：居中弹窗 */
+  .mfm{position:fixed;inset:0;z-index:120;background:rgba(17,17,22,.30);backdrop-filter:blur(3px);
+    display:flex;align-items:center;justify-content:center;padding:24px}
+  .mfm[hidden]{display:none}
+  .mfm-card{width:min(560px,94vw);max-height:88vh;display:flex;flex-direction:column;background:var(--surface);
+    border:1px solid var(--line);border-radius:14px;box-shadow:var(--e3);overflow:hidden}
+  .mfm-head{display:flex;align-items:center;padding:18px 20px 12px}
+  .mfm-head h3{font-size:16px;font-weight:600;color:var(--fg);line-height:1.3}
+  .mfm-x{margin-left:auto;width:26px;height:26px;border-radius:7px;color:var(--fg-muted);font-size:15px;
+    line-height:1;display:grid;place-items:center}
+  .mfm-x:hover{background:var(--surface-2);color:var(--fg)}
+  .mfm-body{padding:2px 20px 8px;overflow:auto}
+  .mfm-field{margin-bottom:16px}
+  .mfm-field > label{display:block;font-size:13px;color:var(--fg-muted);margin-bottom:7px}
+  .mfm-field > label .mfm-sub{color:var(--fg-subtle)}
+  .mfm-input{width:100%;height:40px;border:1px solid var(--line-strong);border-radius:8px;padding:0 11px;
+    font-size:13px;color:var(--fg);background:var(--surface);outline:0}
+  .mfm-input::placeholder{color:var(--fg-subtle)}
+  .mfm-input:focus{border-color:var(--fg-subtle)}
+  /* 弹窗里的输入框自己用边框表示焦点，不要浏览器默认的蓝色描边（截图里也没有） */
+  .mfm .mfm-input:focus-visible,.mfm .mfm-select select:focus-visible{outline:0}
+  .mfm .mfm-input:focus,.mfm .mfm-select:focus-within{border-color:var(--fg-subtle);box-shadow:0 0 0 3px rgba(17,17,22,.05)}
+  html[data-theme="dark"] .mfm .mfm-input:focus,
+  html[data-theme="dark"] .mfm .mfm-select:focus-within{box-shadow:0 0 0 3px rgba(255,255,255,.08)}
+  .mfm-select{position:relative;display:flex;align-items:center;height:40px;border:1px solid var(--line-strong);
+    border-radius:8px;background:var(--surface);padding-left:11px}
+  .mfm-select:focus-within{border-color:var(--fg-subtle)}
+  .mfm-select .mfm-dia{color:var(--fg-muted);display:grid;place-items:center;flex:none}
+  .mfm-select .mfm-dia svg{width:14px;height:14px}
+  .mfm-select select{appearance:none;-webkit-appearance:none;flex:1;height:100%;border:0;background:transparent;
+    font-size:13px;color:var(--fg);padding:0 26px 0 8px;outline:0}
+  .mfm-select .mfm-chev{position:absolute;right:11px;top:50%;transform:translateY(-50%);color:var(--fg-subtle);
+    pointer-events:none;display:grid;place-items:center}
+  .mfm-keyrow{display:flex;gap:10px;align-items:center}
+  .mfm-keybox{position:relative;flex:1;min-width:0}
+  .mfm-keybox .mfm-input{padding-right:38px}
+  .mfm-eye{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:30px;height:30px;
+    display:grid;place-items:center;border-radius:6px;color:var(--fg-subtle)}
+  .mfm-eye:hover{background:var(--surface-2);color:var(--fg)}
+  .mfm-eye svg{width:15px;height:15px}
+  .mfm-test{flex:none;height:40px;padding:0 14px;border:1px solid var(--line-strong);border-radius:8px;
+    font-size:13px;color:var(--fg);background:var(--surface);transition:background var(--d1) var(--ease)}
+  .mfm-test:hover{background:var(--surface-2)}
+  .mfm-test:disabled{opacity:.55;cursor:default}
+  .mfm-msg{margin-top:7px;font-size:12.5px;line-height:1.5;color:var(--fg-subtle);word-break:break-all}
+  .mfm-msg.ok{color:#0E9F6E}
+  .mfm-msg.err{color:#D14343}
+  html[data-theme="dark"] .mfm-msg.ok{color:#4ADE9B}
+  html[data-theme="dark"] .mfm-msg.err{color:#FF9B9B}
+  .mfm-checks{display:flex;align-items:center;gap:18px;flex-wrap:wrap;padding-top:2px}
+  .mfm-check{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--fg-muted);cursor:pointer}
+  .mfm-check input{appearance:none;-webkit-appearance:none;width:15px;height:15px;border:1px solid var(--line-strong);
+    border-radius:3px;background:var(--surface);display:grid;place-items:center;cursor:pointer;margin:0}
+  .mfm-check input:checked{background:var(--fg);border-color:var(--fg)}
+  .mfm-check input:checked::after{content:"";width:8px;height:4px;border-left:1.6px solid var(--surface);
+    border-bottom:1.6px solid var(--surface);transform:rotate(-45deg) translateY(-1px)}
+  .mfm-foot{display:flex;justify-content:flex-end;gap:10px;padding:12px 20px 18px}
+  .mfm-btn{height:36px;padding:0 20px;border-radius:8px;font-size:13px;border:1px solid var(--line-strong);
     background:var(--surface);color:var(--fg)}
-  .md-btn.primary{background:var(--fg);color:var(--surface);border-color:var(--fg)}
-  .md-btn.primary:hover{opacity:.9}
-  .md-btn.ghost{border-color:transparent;background:transparent;color:var(--fg-muted)}
-  .md-btn.ghost:hover{background:var(--surface-2);color:var(--fg)}
-  .md-note{font-size:12px;color:var(--fg-subtle);margin-left:auto}
+  .mfm-btn:hover{background:var(--surface-2)}
+  .mfm-btn.primary{background:var(--fg);color:var(--surface);border-color:var(--fg)}
+  .mfm-btn.primary:hover{opacity:.92;background:var(--fg)}
   .md-more{margin-top:16px;border-top:1px solid var(--line);padding-top:4px}
   .md-more > summary{cursor:pointer;list-style:none;font-size:13px;color:var(--fg-muted);
     padding:10px 2px;display:flex;align-items:center;gap:6px}
@@ -9595,7 +9641,7 @@ async function buildModelsPanel(box) {
     }
   }
 
-  addBtn.onclick = () => openModelForm(box, null, rerender)
+  addBtn.onclick = () => openModelDialog(box, null, rerender)
 
   const models = Array.isArray(catalog.models) ? catalog.models : []
   if (models.length === 0) {
@@ -9615,7 +9661,7 @@ async function buildModelsPanel(box) {
 
     const pen = mdNode('button', 'md-ico pen')
     pen.type = 'button'; pen.title = '编辑'; pen.innerHTML = MD_PEN
-    pen.onclick = () => openModelForm(box, item, rerender)
+    pen.onclick = () => openModelDialog(box, item, rerender)
 
     const link = mdNode('button', 'md-ico')
     link.type = 'button'; link.title = '复制模型名（发给别人或贴进配置）'; link.innerHTML = MD_LINK
@@ -9687,56 +9733,196 @@ function paintRuntime(host, status) {
   host.append(spSection('最近调用'), attempts)
 }
 
-function openModelForm(box, item, rerender) {
-  const existing = box.querySelector('.md-form')
-  if (existing) { existing.remove(); if (!item) return }
+/* 供应商预设：只填接口地址，Key 还是用户自己的 */
+const MD_PROVIDERS = [
+  { id: 'custom', name: '自定义', baseUrl: '' },
+  { id: 'openai', name: 'OpenAI', baseUrl: 'https://api.openai.com/v1/chat/completions' },
+  { id: 'deepseek', name: 'DeepSeek', baseUrl: 'https://api.deepseek.com/v1/chat/completions' },
+  { id: 'moonshot', name: 'Moonshot', baseUrl: 'https://api.moonshot.cn/v1/chat/completions' },
+  { id: 'zhipu', name: '智谱 GLM', baseUrl: 'https://open.bigmodel.cn/api/paas/v4/chat/completions' },
+  { id: 'gateway', name: '自建网关', baseUrl: '' },
+]
 
-  const form = mdNode('div', 'md-form')
-  const field = (label, key, value, cls, placeholder) => {
-    const wrap = mdNode('div', 'md-field' + (cls ? ' ' + cls : ''))
-    const id = 'md-' + key
-    const lab = mdNode('label', null, label); lab.htmlFor = id
+const MD_CAPS = [
+  { id: 'tools', label: '工具调用' },
+  { id: 'vision', label: '图片输入' },
+  { id: 'reasoning', label: '思考模式' },
+  { id: 'custom-protocol', label: '自定义协议' },
+]
+
+const MD_EYE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="2.6"/></svg>'
+const MD_CHEV_DOWN = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9.5 12 15.5 18 9.5"/></svg>'
+
+function openModelDialog(box, item, rerender) {
+  document.querySelectorAll('.mfm').forEach((el) => el.remove())
+
+  const overlay = document.createElement('div')
+  overlay.className = 'mfm'
+
+  const card = document.createElement('div')
+  card.className = 'mfm-card'
+  card.setAttribute('role', 'dialog')
+  card.setAttribute('aria-modal', 'true')
+  card.setAttribute('aria-label', item ? '编辑模型' : '添加模型')
+
+  const head = document.createElement('div')
+  head.className = 'mfm-head'
+  const title = document.createElement('h3')
+  title.textContent = item ? '编辑模型' : '添加模型'
+  const close = document.createElement('button')
+  close.className = 'mfm-x'; close.type = 'button'; close.textContent = '×'; close.title = '关闭'
+  head.append(title, close)
+
+  const body = document.createElement('div')
+  body.className = 'mfm-body'
+
+  /* 供应商 */
+  const provField = document.createElement('div'); provField.className = 'mfm-field'
+  const provLabel = document.createElement('label')
+  provLabel.append(document.createTextNode('供应商'))
+  const provSub = document.createElement('span'); provSub.className = 'mfm-sub'
+  provSub.textContent = '（仅支持 OpenAI 兼容协议 API）'
+  provLabel.append(provSub)
+  const selectWrap = document.createElement('div'); selectWrap.className = 'mfm-select'
+  const dia = document.createElement('span'); dia.className = 'mfm-dia'; dia.innerHTML = MD_DIAMOND
+  const select = document.createElement('select')
+  for (const provider of MD_PROVIDERS) {
+    const option = document.createElement('option')
+    option.value = provider.id; option.textContent = provider.name
+    select.append(option)
+  }
+  select.value = (item && MD_PROVIDERS.some((p) => p.id === item.provider)) ? item.provider : 'custom'
+  const chev = document.createElement('span'); chev.className = 'mfm-chev'; chev.innerHTML = MD_CHEV_DOWN
+  selectWrap.append(dia, select, chev)
+  provField.append(provLabel, selectWrap)
+
+  /* 接口地址 */
+  const urlField = document.createElement('div'); urlField.className = 'mfm-field'
+  const urlLabel = document.createElement('label'); urlLabel.textContent = '接口地址'
+  const urlInput = document.createElement('input')
+  urlInput.className = 'mfm-input'
+  urlInput.placeholder = 'https://api.example.com/v1/chat/completions'
+  urlInput.value = item ? (item.baseUrl || '') : ''
+  urlField.append(urlLabel, urlInput)
+
+  /* API Key + 测试连接 */
+  const keyField = document.createElement('div'); keyField.className = 'mfm-field'
+  const keyLabel = document.createElement('label'); keyLabel.textContent = 'API Key'
+  const keyRow = document.createElement('div'); keyRow.className = 'mfm-keyrow'
+  const keyBox = document.createElement('div'); keyBox.className = 'mfm-keybox'
+  const keyInput = document.createElement('input')
+  keyInput.className = 'mfm-input'
+  keyInput.type = 'password'
+  keyInput.placeholder = item && item.hasKey ? '已保存到本机，留空则不修改' : '输入你的 API Key'
+  const eye = document.createElement('button')
+  eye.className = 'mfm-eye'; eye.type = 'button'; eye.title = '显示 / 隐藏'; eye.innerHTML = MD_EYE
+  eye.onclick = () => { keyInput.type = keyInput.type === 'password' ? 'text' : 'password' }
+  keyBox.append(keyInput, eye)
+  const test = document.createElement('button')
+  test.className = 'mfm-test'; test.type = 'button'; test.textContent = '测试连接'
+  keyRow.append(keyBox, test)
+  const msg = document.createElement('div'); msg.className = 'mfm-msg'
+  msg.textContent = item && item.hasKey ? 'Key 已存在本机 models.keys.json（权限 600），不会写进 models.json。' : ''
+  keyField.append(keyLabel, keyRow, msg)
+
+  /* 模型名称 */
+  const modelField = document.createElement('div'); modelField.className = 'mfm-field'
+  const modelLabel = document.createElement('label'); modelLabel.textContent = '模型名称'
+  const modelInput = document.createElement('input')
+  modelInput.className = 'mfm-input'
+  modelInput.placeholder = '输入模型参数值，例如 gpt-4o 或 openai/gpt-4o'
+  modelInput.value = item ? item.model : ''
+  modelField.append(modelLabel, modelInput)
+
+  /* 高级配置 */
+  const capField = document.createElement('div'); capField.className = 'mfm-field'
+  const capLabel = document.createElement('label'); capLabel.textContent = '高级配置'
+  const checks = document.createElement('div'); checks.className = 'mfm-checks'
+  const picked = new Set(item && Array.isArray(item.capabilities) ? item.capabilities : ['tools'])
+  for (const cap of MD_CAPS) {
+    const label = document.createElement('label'); label.className = 'mfm-check'
     const input = document.createElement('input')
-    input.id = id; input.value = value || ''; input.placeholder = placeholder || ''
-    input.dataset.key = key
-    wrap.append(lab, input)
-    return wrap
+    input.type = 'checkbox'; input.value = cap.id; input.checked = picked.has(cap.id)
+    input.onchange = () => { input.checked ? picked.add(cap.id) : picked.delete(cap.id) }
+    label.append(input, document.createTextNode(cap.label))
+    checks.append(label)
+  }
+  capField.append(capLabel, checks)
+
+  body.append(provField, urlField, keyField, modelField, capField)
+
+  const foot = document.createElement('div'); foot.className = 'mfm-foot'
+  const cancel = document.createElement('button'); cancel.className = 'mfm-btn'; cancel.type = 'button'; cancel.textContent = '取消'
+  const save = document.createElement('button'); save.className = 'mfm-btn primary'; save.type = 'button'; save.textContent = '保存'
+  foot.append(cancel, save)
+
+  card.append(head, body, foot)
+  overlay.append(card)
+  document.body.append(overlay)
+  const closeDialog = () => overlay.remove()
+  close.onclick = closeDialog
+  cancel.onclick = closeDialog
+  overlay.onclick = (event) => { if (event.target === overlay) closeDialog() }
+  overlay.addEventListener('keydown', (event) => { if (event.key === 'Escape') { event.stopPropagation(); closeDialog() } })
+  window.setTimeout(() => (item ? modelInput : urlInput).focus(), 30)
+
+  select.onchange = () => {
+    const preset = MD_PROVIDERS.find((entry) => entry.id === select.value)
+    if (!preset) return
+    const current = urlInput.value.trim()
+    const isOtherPreset = MD_PROVIDERS.some((entry) => entry.baseUrl !== '' && entry.baseUrl === current)
+    if (preset.baseUrl !== '' && (current === '' || isOtherPreset)) urlInput.value = preset.baseUrl
   }
 
-  form.append(
-    field('展示名', 'name', item ? item.name : '', '', '例如 免费的 kimi'),
-    field('模型名', 'model', item ? item.model : '', '', '例如 free/kimi-k3'),
-    field('供应商', 'provider', item ? item.provider : '', '', '例如 deepseek / 自建'),
-    field('Base URL', 'baseUrl', item ? item.baseUrl : '', '', '留空则跟随 DB_LLM_BASE_URL'),
-    field('密钥环境变量', 'apiKeyEnv', item ? item.apiKeyEnv : '', '', '例如 DEEPSEEK_API_KEY（密钥本身不落盘）'),
-  )
-
-  const foot = mdNode('div', 'md-form-foot')
-  const save = mdNode('button', 'md-btn primary', item ? '保存修改' : '写入 models.json')
-  save.type = 'button'
-  const cancel = mdNode('button', 'md-btn ghost', '取消')
-  cancel.type = 'button'
-  const note = mdNode('span', 'md-note', '')
-  foot.append(save, cancel, note)
-  form.append(foot)
-  box.insertBefore(form, box.querySelector('.md-card'))
-  form.querySelector('input').focus()
-
-  cancel.onclick = () => form.remove()
-  save.onclick = async () => {
-    const payload = Object.assign({}, item ? { id: item.id } : {})
-    for (const input of form.querySelectorAll('input')) payload[input.dataset.key] = input.value.trim()
-    if (!payload.model) { note.textContent = '模型名不能为空'; return }
-    save.disabled = true
-    note.textContent = '写入中…'
+  test.onclick = async () => {
+    if (urlInput.value.trim() === '') { msg.className = 'mfm-msg err'; msg.textContent = '先填接口地址'; return }
+    test.disabled = true
+    msg.className = 'mfm-msg'
+    msg.textContent = '测试中…'
     try {
-      await rpc('models.save', { model: payload })
-      toast(item ? '已保存「' + payload.name + '」' : '已添加「' + (payload.name || payload.model) + '」', 'ok')
+      const result = await rpc('models.test', {
+        id: item ? item.id : '',
+        baseUrl: urlInput.value.trim(),
+        apiKey: keyInput.value.trim(),
+        model: modelInput.value.trim(),
+      })
+      msg.className = 'mfm-msg ' + (result.ok ? 'ok' : 'err')
+      msg.textContent = (result.ok ? '✓ ' : '✕ ') + result.message + ' · ' + result.ms + 'ms · ' + result.endpoint
+    } catch (error) {
+      msg.className = 'mfm-msg err'
+      msg.textContent = '测试失败：' + error.message
+    } finally {
+      test.disabled = false
+    }
+  }
+
+  save.onclick = async () => {
+    const model = modelInput.value.trim()
+    const baseUrl = urlInput.value.trim()
+    if (baseUrl === '') { msg.className = 'mfm-msg err'; msg.textContent = '接口地址不能为空'; urlInput.focus(); return }
+    if (model === '') { msg.className = 'mfm-msg err'; msg.textContent = '模型名称不能为空'; modelInput.focus(); return }
+    save.disabled = true
+    save.textContent = '保存中…'
+    try {
+      await rpc('models.save', {
+        model: {
+          id: item ? item.id : '',
+          name: model,
+          model,
+          provider: select.value,
+          baseUrl,
+          apiKey: keyInput.value.trim(),
+          capabilities: [...picked],
+        },
+      })
+      toast((item ? '已保存 ' : '已添加 ') + model, 'ok')
+      closeDialog()
       await rerender(null)
     } catch (error) {
       save.disabled = false
-      note.textContent = '写入失败：' + error.message
-      toast('写入失败：' + error.message, 'err')
+      save.textContent = '保存'
+      msg.className = 'mfm-msg err'
+      msg.textContent = '保存失败：' + error.message
     }
   }
 }

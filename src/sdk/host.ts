@@ -21,6 +21,7 @@ import type { SessionService } from '../core/session.ts'
 import type { UsageService } from '../core/usage.ts'
 import type { Library } from '../core/library.ts'
 import type { CustomModelInput, ModelCatalog } from '../core/models.ts'
+import { probeModel } from '../core/model-probe.ts'
 import { estimateTokens } from '../core/usage.ts'
 import { errorMessage } from '../core/tools.ts'
 import type { ToolRegistry } from '../core/tools.ts'
@@ -157,6 +158,16 @@ export class HostServer {
       case 'models.save': {
         const catalog = this.#ctx.require<ModelCatalog>('models')
         return catalog.save((params.model ?? params) as CustomModelInput)
+      }
+      case 'models.test': {
+        const catalog = this.#ctx.require<ModelCatalog>('models')
+        const id = typeof params.id === 'string' ? params.id : ''
+        const stored = id === '' ? undefined : catalog.key(id)
+        return probeModel({
+          baseUrl: String(params.baseUrl ?? ''),
+          apiKey: typeof params.apiKey === 'string' && params.apiKey !== '' ? params.apiKey : stored,
+          model: typeof params.model === 'string' ? params.model : undefined,
+        })
       }
       case 'models.remove': {
         const catalog = this.#ctx.require<ModelCatalog>('models')

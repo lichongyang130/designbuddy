@@ -1,10 +1,12 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { createServer } from 'node:http'
+import { mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
 import { ModelCatalog } from '../src/core/models.ts'
+import { normalizeEndpoint, probeModel } from '../src/core/model-probe.ts'
 
 /**
  * `models.json` 是设置里「模型」页唯一的后端。这组用例守的是：
@@ -75,4 +77,91 @@ test('坏文件把错误留在 lastError 里，而不是静默清空', (t) => {
   const catalog = new ModelCatalog({ file })
   assert.deepEqual(catalog.list(), [])
   assert.ok((catalog.lastError() ?? '').length > 0)
+})
+
+test('API Key 单独写 models.keys.json（600），models.json 里不留明文', (t) => {
+  const file = tempFile()
+  t.after(() => rmSync(join(file, '..'), { recursive: true, force: true }))
+  const catalog = new ModelCatalog({ file, seed: false })
+  const keysFile = join(file, '..', 'models.keys.json')
+
+  const created = catalog.save({
+    model: 'deepseek-chat',
+    provider: 'deepseek',
+    baseUrl: 'https://api.deepseek.com/v1/chat/completions',
+    apiKey: 'sk-secret-1',
+    capabilities: ['tools', 'vision'],
+  })
+  assert.equal(readFileSync(file, 'utf8').includes('sk-secret-1'), false)
+  assert.equal(JSON.parse(readFileSync(keysFile, 'utf8'))[created.id], 'sk-secret-1')
+  assert.equal(statSync(keysFile).mode & 0o777, 0o600)
+  assert.equal(catalog.key(created.id), 'sk-secret-1')
+
+  const listed = catalog.list().find((item) => item.id === created.id)
+  assert.deepEqual(listed?.capabilities, ['tools', 'vision'])
+  assert.equal(listed?.hasKey, true)
+  assert.equal(Object.hasOwn(listed ?? {}, 'apiKey'), false)
+
+  // 编辑时留空不覆盖旧 Key，能力集跟着改。
+  catalog.save({ id: created.id, model: 'deepseek-chat', capabilities: ['tools'] })
+  assert.equal(catalog.key(created.id), 'sk-secret-1')
+  assert.deepEqual(catalog.list()[0]?.capabilities, ['tools'])
+
+  // clearKey 才是显式清除。
+  catalog.save({ id: created.id, model: 'deepseek-chat', clearKey: true })
+  assert.equal(catalog.key(created.id), undefined)
+
+  catalog.save({ id: created.id, model: 'deepseek-chat', apiKey: 'sk-secret-2' })
+  catalog.remove(created.id)
+  assert.deepEqual(JSON.parse(readFileSync(keysFile, 'utf8')), {})
+})
+
+test('normalizeEndpoint 只补缺的路径，不重写用户写全的地址', () => {
+  assert.equal(normalizeEndpoint('https://api.example.com'), 'https://api.example.com/v1/chat/completions')
+  assert.equal(normalizeEndpoint('https://api.example.com/'), 'https://api.example.com/v1/chat/completions')
+  assert.equal(normalizeEndpoint('https://api.example.com/v1'), 'https://api.example.com/v1/chat/completions')
+  assert.equal(
+    normalizeEndpoint('https://api.example.com/v1/chat/completions'),
+    'https://api.example.com/v1/chat/completions',
+  )
+  assert.equal(normalizeEndpoint('not a url'), '')
+})
+
+test('「测试连接」真的发出 POST，成功/失败都照实回报', async (t) => {
+  const seen: { url?: string; auth?: string; body?: string; method?: string } = {}
+  const server = createServer((req, res) => {
+    let body = ''
+    req.on('data', (chunk) => { body += chunk })
+    req.on('end', () => {
+      seen.url = req.url
+      seen.method = req.method
+      seen.auth = req.headers.authorization
+      seen.body = body
+      const bad = (req.url ?? '').includes('/v1/bad')
+      res.writeHead(bad ? 401 : 200, { 'content-type': 'application/json' })
+      res.end(bad ? '{"error":{"message":"invalid api key"}}' : '{"choices":[]}')
+    })
+  })
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve))
+  t.after(() => server.close())
+  const port = (server.address() as { port: number }).port
+  const base = `http://127.0.0.1:${port}`
+
+  const ok = await probeModel({ baseUrl: base + '/v1', apiKey: 'sk-live', model: 'demo-1' })
+  assert.equal(ok.ok, true)
+  assert.equal(ok.status, 200)
+  assert.equal(ok.endpoint, base + '/v1/chat/completions')
+  assert.equal(seen.method, 'POST')
+  assert.equal(seen.url, '/v1/chat/completions')
+  assert.equal(seen.auth, 'Bearer sk-live')
+  assert.equal(JSON.parse(seen.body ?? '{}').model, 'demo-1')
+
+  const bad = await probeModel({ baseUrl: base + '/v1/bad', apiKey: 'sk-wrong' })
+  assert.equal(bad.ok, false)
+  assert.equal(bad.status, 401)
+  assert.match(bad.message, /401/)
+
+  const broken = await probeModel({ baseUrl: 'http://127.0.0.1:1/v1', apiKey: 'sk-x', timeoutMs: 1500 })
+  assert.equal(broken.ok, false)
+  assert.match(broken.message, /网络错误|超时/)
 })
