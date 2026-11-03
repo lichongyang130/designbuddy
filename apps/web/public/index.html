@@ -2475,6 +2475,83 @@
   .sld.k-fogsignal .au-bars i{flex:1;background:rgba(237,234,226,.22)}
   .sld.k-fogsignal .au-cred{font-size:12px;line-height:2;color:rgba(237,234,226,.6)}
   .sld.k-fogsignal .au-cred b{display:inline-block;width:92px;color:rgba(237,234,226,.4);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase}
+  /* ── 实时产物画布：1280×860 的可用界面 ────────── */
+  .sld.k-vellum{font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif;background:#F4F5F3}
+  .sld.k-vellum .af{position:absolute;inset:0;background:#F4F5F3;color:#14171A;display:flex;flex-direction:column;padding:44px 52px 40px}
+  .sld.k-vellum .af-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px}
+  .sld.k-vellum .af-brand{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;letter-spacing:.02em}
+  .sld.k-vellum .af-brand i{width:18px;height:18px;border-radius:5px;background:#2F6B4F;display:inline-block;position:relative}
+  .sld.k-vellum .af-brand i::after{content:"";position:absolute;inset:5px;border:1.5px solid #F4F5F3;border-radius:2px}
+  .sld.k-vellum .af-nav{display:flex;gap:20px;font-size:12.5px;color:#6E726C}
+  .sld.k-vellum .af-nav b{color:#14171A;font-weight:500}
+  .sld.k-vellum .af-live{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border-radius:99px;background:#E7EFE9;color:#2F6B4F;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600}
+  .sld.k-vellum .af-live::before{content:"";width:6px;height:6px;border-radius:50%;background:#2F6B4F;box-shadow:0 0 0 3px rgba(47,107,79,.18)}
+  /* 首屏 */
+  .sld.k-vellum .af-hero{display:grid;grid-template-columns:1fr 460px;gap:44px;flex:1;align-items:center}
+  .sld.k-vellum .af-kick{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:#C36B3E;font-weight:600}
+  .sld.k-vellum .af-h1{margin:16px 0 0;font-size:54px;line-height:1.02;letter-spacing:-.035em;font-weight:600}
+  .sld.k-vellum .af-lead{margin:20px 0 0;font-size:15px;line-height:1.7;color:#4B504B;max-width:520px}
+  .sld.k-vellum .af-facts{display:flex;gap:36px;margin-top:32px;padding-top:20px;border-top:1px solid #DDDCD6}
+  .sld.k-vellum .af-facts div{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#7C807A}
+  .sld.k-vellum .af-facts b{display:block;margin-top:6px;font-size:26px;letter-spacing:-.02em;color:#14171A;text-transform:none;letter-spacing:0}
+  .sld.k-vellum .af-shot{width:100%;height:460px;object-fit:cover;border-radius:14px;box-shadow:0 18px 40px rgba(20,23,26,.14)}
+  /* 配置器 */
+  .sld.k-vellum .af-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:20px}
+  .sld.k-vellum .af-h2{margin:0;font-size:30px;letter-spacing:-.025em;font-weight:600}
+  .sld.k-vellum .af-grid{display:grid;grid-template-columns:1fr 372px;gap:28px;flex:1;min-height:0}
+  .sld.k-vellum .af-groups{display:flex;flex-direction:column;gap:18px}
+  .sld.k-vellum .af-group{background:#fff;border:1px solid #E2E1DA;border-radius:12px;padding:16px 18px}
+  .sld.k-vellum .af-gl{display:flex;justify-content:space-between;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#8A8E87;margin-bottom:11px}
+  .sld.k-vellum .af-opts{display:flex;gap:8px;flex-wrap:wrap}
+  .sld.k-vellum .af-opt{
+    font:inherit;text-align:left;cursor:pointer;user-select:none;background:#F7F7F4;border:1px solid #E2E1DA;border-radius:9px;
+    padding:9px 13px;font-size:13px;color:#2E332E;display:flex;flex-direction:column;gap:3px;min-width:104px;
+    transition:background .12s,border-color .12s,color .12s;
+  }
+  .sld.k-vellum .af-opt:focus-visible{outline:2px solid #2F6B4F;outline-offset:2px}
+  .sld.k-vellum .af-opt i{font-style:normal;font-size:11px;color:#8A8E87}
+  .sld.k-vellum .af-opt:hover{background:#EFF2EE}
+  .sld.k-vellum .af-opt.on{background:#2F6B4F;border-color:#2F6B4F;color:#FDFDFB}
+  .sld.k-vellum .af-opt.on i{color:rgba(253,253,251,.72)}
+  .sld.k-vellum .af-sum{background:#101512;color:#F2F3EE;border-radius:14px;padding:22px 22px 20px;display:flex;flex-direction:column}
+  .sld.k-vellum .af-sum-k{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(242,243,238,.5)}
+  .sld.k-vellum .af-total{margin-top:8px;font-size:46px;letter-spacing:-.035em;font-weight:600;font-variant-numeric:tabular-nums}
+  .sld.k-vellum .af-srow{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid rgba(242,243,238,.14);font-size:12.5px}
+  .sld.k-vellum .af-srow span{color:rgba(242,243,238,.55)}
+  .sld.k-vellum .af-srow b{font-variant-numeric:tabular-nums;font-weight:500}
+  .sld.k-vellum .af-sum .sd-img{width:100%;height:150px;object-fit:cover;border-radius:9px;margin-top:16px}
+  .sld.k-vellum .af-snote{margin-top:auto;padding-top:14px;font-size:11.5px;line-height:1.6;color:rgba(242,243,238,.5)}
+  /* 状态三联 */
+  .sld.k-vellum .af-states{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;flex:1;align-content:center}
+  .sld.k-vellum .af-state{background:#fff;border:1px solid #E2E1DA;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px}
+  .sld.k-vellum .af-state h4{margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#8A8E87;font-weight:600}
+  .sld.k-vellum .af-line{display:flex;justify-content:space-between;font-size:12px;padding:7px 0;border-top:1px solid #EFEEE8}
+  .sld.k-vellum .af-line b{font-variant-numeric:tabular-nums}
+  .sld.k-vellum .af-state .af-total{color:#14171A;font-size:30px;margin:2px 0 0}
+  .sld.k-vellum .af-warn{background:#FBF0EA;color:#A5502A;border-radius:8px;padding:9px 11px;font-size:11.5px;line-height:1.5}
+  .sld.k-vellum .af-cap{font-size:11.5px;line-height:1.6;color:#6E726C}
+  /* 交接页 */
+  .sld.k-vellum .af-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;flex:1;align-content:center;margin-top:6px}
+  .sld.k-vellum .af-col h4{margin:0 0 10px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#C36B3E}
+  .sld.k-vellum .af-col ul{margin:0;padding:0;list-style:none;font-size:12.5px;line-height:1.5}
+  .sld.k-vellum .af-col li{padding:15px 0;border-top:1px solid #E2E1DA;display:flex;justify-content:space-between;gap:12px}
+  .sld.k-vellum .af-col li i{font-style:normal;color:#8A8E87;font-family:ui-monospace,Menlo,monospace;font-size:11px}
+  .sld.k-vellum .af-swatch{display:flex;gap:6px;margin-top:12px}
+  .sld.k-vellum .af-swatch i{width:26px;height:26px;border-radius:6px;border:1px solid rgba(20,23,26,.12)}
+  .sld.k-vellum .af-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}
+  .sld.k-vellum .af-strip div{background:#fff;border:1px solid #E2E1DA;border-radius:10px;padding:13px 15px}
+  .sld.k-vellum .af-strip b{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#8A8E87;font-weight:600}
+  .sld.k-vellum .af-strip span{display:block;margin-top:6px;font-size:12.5px;line-height:1.55;color:#3B403B}
+  .sld.k-vellum .af-band{margin-top:22px;padding:14px 18px;background:#fff;border:1px solid #E2E1DA;border-radius:10px;font-size:12.5px;line-height:1.6;color:#3B403B;display:flex;gap:10px;align-items:center}
+  .sld.k-vellum .af-band::before{content:"";width:8px;height:8px;border-radius:2px;background:#2F6B4F;flex:none}
+  /* 账单 */
+  .sld.k-vellum .af-bill{flex:1;display:grid;grid-template-columns:1fr 330px;gap:40px;align-content:center}
+  .sld.k-vellum .af-row{display:flex;align-items:baseline;gap:10px;padding:13px 0;border-bottom:1px solid #E2E1DA;font-size:13px}
+  .sld.k-vellum .af-row span{white-space:nowrap}
+  .sld.k-vellum .af-row i{flex:1;border-bottom:1px dotted #C9C8C0;height:1px}
+  .sld.k-vellum .af-row b{font-variant-numeric:tabular-nums;font-weight:500}
+  .sld.k-vellum .af-row.big{border-bottom:none;font-size:16px;padding-top:18px}
+  .sld.k-vellum .af-bill .af-sum{height:auto;align-self:center}
   .sld.k-northwind{font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif}
   .sld.k-northwind .st{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--paper);color:var(--ink)}
   .sld.k-northwind .st-chrome{
@@ -4861,6 +4938,36 @@ if (window.ResizeObserver) new ResizeObserver(scheduleCanvasScale).observe(docum
 window.addEventListener('resize', scheduleCanvasScale)
 /* 画廊、缩略图、查看器都是动态插入的，插完再量一次。 */
 new MutationObserver(scheduleCanvasScale).observe(document.body, { childList: true, subtree: true })
+
+/* ── 实时产物：配置器真的能点 ────────────────────────
+ * 案例里的 .af-calc 带 base 价/重/工期，每个 .af-opt 带自己的增量；
+ * 点一下换选中态，然后把总价、重量、工期重算到所有 [data-af] 上。 */
+function afRecalc(root) {
+  let price = Number(root.dataset.basePrice || 0)
+  let weight = Number(root.dataset.baseWeight || 0)
+  let lead = Number(root.dataset.baseLead || 0)
+  root.querySelectorAll('.af-opt.on').forEach((b) => {
+    price += Number(b.dataset.price || 0)
+    weight += Number(b.dataset.weight || 0)
+    lead += Number(b.dataset.lead || 0)
+  })
+  const money = '\u00a3' + price.toLocaleString('en-GB')
+  root.querySelectorAll('[data-af="price"]').forEach((el) => { el.textContent = money })
+  root.querySelectorAll('[data-af="weight"]').forEach((el) => { el.textContent = weight.toFixed(1) + ' kg' })
+  root.querySelectorAll('[data-af="lead"]').forEach((el) => { el.textContent = lead + ' weeks' })
+  root.querySelectorAll('[data-af="deposit"]').forEach((el) => { el.textContent = '\u00a3' + Math.round(price * 0.3).toLocaleString('en-GB') })
+}
+document.addEventListener('click', (event) => {
+  const opt = event.target.closest && event.target.closest('.af-opt')
+  if (!opt) return
+  const root = opt.closest('.af-calc')
+  if (!root) return
+  const group = opt.dataset.g
+  root.querySelectorAll('.af-opt').forEach((b) => {
+    if (b.dataset.g === group) b.classList.toggle('on', b === opt)
+  })
+  afRecalc(root)
+})
 
 function metaUnit(deck) {
   return deck.fmt === 'card' ? ' 张卡片'

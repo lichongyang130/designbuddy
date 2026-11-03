@@ -7085,6 +7085,134 @@ export const CASE_DECKS = [
       },
     ],
   },
+  {
+    id: 'vellum',
+    name: 'Vellum Cycles',
+    en: 'Vellum Cycles · a live build sheet',
+    by: 'DesignBuddy',
+    cat: '实时产物',
+    fmt: 'artifact',
+    ratio: '1280×860 · 工具界面',
+    date: 20261103,
+    kind: 'Live tool',
+    category: '数字产品',
+    tags: ['artifact', 'configurator', 'tool', 'ecommerce'],
+    desc: 'A working frame configurator, not a picture of one: three option groups, a live price, a recomputed weight and lead time, and a bill that adds up. The deck shows the tool, its three states, the handoff, and the arithmetic behind the number — and the middle page is genuinely clickable in the preview.',
+    bestFor: ['Product configurators', 'Live pricing surfaces', 'Interactive case studies', 'Design-to-engineering handoffs'],
+    visual: 'Paper #F4F5F3 with white panels and one hairline #E2E1DA, ink #14171A, workshop green #2F6B4F for the selected state and the live badge, clay #C36B3E for kickers and column heads. Every number is tabular so the price never shifts when it changes; the summary panel is the only dark surface on the canvas, which is what makes the total read as the answer.',
+    how: 'Five screens at 1280 × 860: the pitch, the live configurator (click any option — price, weight, lead time and deposit all move), the three states it can be in, the handoff sheet (tokens, behaviour, limits), and the bill that shows the same arithmetic as a customer would see it. State is the DOM: `.af-live` carries the base numbers, each `.af-opt` carries its own delta.',
+    styles: ['#F4F5F3', '#2F6B4F', '#C36B3E'],
+    colorway: 'Paper · Workshop green · Clay',
+    folio: false,
+    footLeft: 'Vellum Cycles · build sheet',
+    paper: '#F4F5F3',
+    ink: '#14171A',
+    accent: '#2F6B4F',
+    second: '#C36B3E',
+    muted: '#8A8E87',
+    rule: '#E2E1DA',
+    body: '#3B403B',
+    display: 'sans',
+    slides: [
+      {
+        k: 'af-page', label: '首屏', kind: 'intro',
+        kicker: 'Custom steel frames · since 2014',
+        title: 'Build the frame before you order it.',
+        lead: 'Three decisions, one number. Pick a size, a finish and what you want brazed on, and the sheet recalculates the price, the frame weight and the week it will be finished — on the spot, no quote request, no waiting for an email.',
+        facts: [['Base frameset', '£1,850'], ['Built to order', '14 weeks'], ['Weight, unpainted', '8.4 kg']],
+        img: '02',
+      },
+      {
+        k: 'af-page', label: '配置器', kind: 'config',
+        title: 'Three groups, one number',
+        hint: 'click to change · the sheet recomputes',
+        base: { price: 1850, weight: 8.4, lead: 14 },
+        img: '02',
+        groups: [
+          {
+            label: 'Frame size', hint: 'centre to centre',
+            opts: [
+              { t: '48 cm', note: 'included', price: 0, weight: 0, lead: 0, on: true },
+              { t: '52 cm', note: '+£90 · +0.1 kg', price: 90, weight: 0.1, lead: 1 },
+              { t: '56 cm', note: '+£160 · +0.2 kg', price: 160, weight: 0.2, lead: 2 },
+            ],
+          },
+          {
+            label: 'Finish', hint: 'paint booth, two coats',
+            opts: [
+              { t: 'Raw steel', note: 'included', price: 0, weight: 0, lead: 0, on: true },
+              { t: 'Sprayed', note: '+£240 · +2 wks', price: 240, weight: 0.2, lead: 2 },
+              { t: 'Two-tone', note: '+£380 · +3 wks', price: 380, weight: 0.25, lead: 3 },
+            ],
+          },
+          {
+            label: 'Brazed extras', hint: 'one set',
+            opts: [
+              { t: 'Rack mounts', note: '+£45', price: 45, weight: 0.08, lead: 0, on: true },
+              { t: 'Guard eyes', note: '+£60 · +1 wk', price: 60, weight: 0.1, lead: 1 },
+              { t: 'Dynamo routing', note: '+£120 · +1 wk', price: 120, weight: 0.05, lead: 1 },
+            ],
+          },
+        ],
+        strip: [
+          ['VAT', 'Included in every number shown'],
+          ['Delivery', 'Crated, UK and EU, £40'],
+          ['Fit', 'Two hours at the workshop, free'],
+        ],
+        note: 'Every number on this panel is computed from the three groups above — nothing is hard-coded to the selected state. Change the size and the deposit moves with it.',
+      },
+      {
+        k: 'af-page', label: '状态', kind: 'states',
+        title: 'The three states it can be in',
+        hint: 'default · fully specified · over the cap',
+        states: [
+          {
+            label: 'First load', total: '£1,895',
+            rows: [['Frame size', '48 cm'], ['Finish', 'Raw steel'], ['Brazed extras', 'Rack mounts'], ['Frame weight', '8.5 kg'], ['Lead time', '14 weeks'], ['Deposit', '£569']],
+            cap: 'Defaults are the cheapest honest build: smallest size, no paint, one extra. The sheet is never empty and never starts at zero.',
+          },
+          {
+            label: 'Fully specified', total: '£2,510',
+            rows: [['Frame size', '56 cm'], ['Finish', 'Two-tone'], ['Brazed extras', 'Dynamo routing'], ['Frame weight', '8.9 kg'], ['Lead time', '20 weeks'], ['Deposit', '£753']],
+            cap: 'Largest size, most expensive paint, every braze we offer. Weight reads 8.9 kg and the deposit moves to £753.',
+          },
+          {
+            label: 'Over the cap', total: '£2,510',
+            rows: [['Frame size', '56 cm'], ['Finish', 'Two-tone'], ['Brazed extras', 'Dynamo routing'], ['Budget you set', '£2,500'], ['Over by', '£10'], ['Cheapest way back', 'Sprayed paint']],
+            warn: '£10 over the cap you set. Two-tone paint is the last thing to go.',
+            cap: 'The warning is a suggestion, not a block: the customer can still order, they just have to have read the sentence.',
+          },
+        ],
+      },
+      {
+        k: 'af-page', label: '交接', kind: 'handoff',
+        title: 'What engineering needs',
+        hint: 'tokens · behaviour · limits',
+        cols: [
+          ['Tokens', [['--af-paper', '#F4F5F3'], ['--af-ink', '#14171A'], ['--af-accent', '#2F6B4F'], ['--af-second', '#C36B3E'], ['--af-warn', '#A5502A'], ['--af-rule', '#E2E1DA'], ['--af-radius', '12px'], ['--af-gap', '8px']]],
+          ['Behaviour', [['Select', 'one per group'], ['Recalculate', 'on click'], ['Deposit', '30 %, rounded'], ['Weight', 'one decimal'], ['Focus', '2px accent ring'], ['Keys', 'Tab · Space'], ['Announce', 'aria-live polite'], ['Reset', 'clears to defaults']]],
+          ['Limits', [['Payload', '18 KB gzip'], ['First paint', '240 ms'], ['State', 'in the URL'], ['Print', 'falls back to bill'], ['Empty state', 'never shown'], ['Locale', 'en-GB money'], ['Offline', 'works, no API'], ['Max options', '5 per group']]],
+        ],
+        band: 'The sheet is the product: one 18 KB file, no build step, no API call — the workshop can email it as an attachment and it still adds up.',
+        swatch: ['#F4F5F3', '#14171A', '#2F6B4F', '#C36B3E', '#A5502A', '#E2E1DA'],
+      },
+      {
+        k: 'af-page', label: '账单', kind: 'bill',
+        title: 'The same arithmetic, on paper',
+        hint: 'what the customer prints',
+        baseLabel: 'Frameset, built to order',
+        base: { price: 1850, weight: 8.4, lead: 14 },
+        img: '01',
+        groups: [
+          { label: 'Frame size', opts: [{ t: '52 cm', price: 90, weight: 0.1, lead: 1, on: true }] },
+          { label: 'Finish', opts: [{ t: 'Sprayed', price: 240, weight: 0.2, lead: 2, on: true }] },
+          { label: 'Brazed extras', opts: [{ t: 'Dynamo routing', price: 120, weight: 0.05, lead: 1, on: true }] },
+        ],
+        note: '£2,300 collected in two parts: 30 % today, the rest on collection. The lead time shown is the week the frame leaves the booth, not the week it is welded — the workshop quotes the later of the two.',
+        foot: 'Deposit is 30 % of the configured total, rounded to the pound.',
+      },
+    ],
+  },
 ]
 
 /* ── 渲染 ─────────────────────────────────────────────
@@ -7272,6 +7400,91 @@ function waveBars(n, seed, from, to) {
   return out.join('')
 }
 
+function afMoney(n) {
+  return '\u00a3' + n.toLocaleString('en-GB')
+}
+function afTotals(base, groups) {
+  const out = { price: base.price, weight: base.weight, lead: base.lead }
+  for (const g of groups) {
+    const on = g.opts.find((o) => o.on)
+    if (!on) continue
+    out.price += on.price || 0
+    out.weight += on.weight || 0
+    out.lead += on.lead || 0
+  }
+  return out
+}
+
+    case 'af-page': {
+      const src = 'cases/' + deck.id + '/'
+      const top = '<div class="af-top"><div class="af-brand"><i></i>' + esc(deck.name) + '</div>' +
+        '<div class="af-nav"><span>Frames</span><span>Fit</span><b>Build yours</b><span>Workshop</span></div>' +
+        '<span class="af-live">' + esc(s.live || 'Live build sheet') + '</span></div>'
+      let body = ''
+      if (s.kind === 'intro') {
+        body = top + '<div class="af-hero"><div><div class="af-kick">' + esc(s.kicker) + '</div>' +
+          '<h1 class="af-h1">' + esc(s.title) + '</h1><p class="af-lead">' + esc(s.lead) + '</p>' +
+          '<div class="af-facts">' + (s.facts || []).map(([k, v]) => '<div>' + esc(k) + '<b>' + esc(v) + '</b></div>').join('') + '</div></div>' +
+          '<img class="sd-img af-shot" src="' + src + esc(s.img) + '.jpg" alt="" />' +
+          '</div>'
+      } else if (s.kind === 'config') {
+        const t = afTotals(s.base, s.groups || [])
+        body = top + '<div class="af-head"><h2 class="af-h2">' + esc(s.title) + '</h2>' +
+          '<span style="font-size:12.5px;color:#6E726C">' + esc(s.hint || '') + '</span></div>' +
+          '<div class="af-grid af-calc" data-base-price="' + s.base.price + '" data-base-weight="' + s.base.weight + '" data-base-lead="' + s.base.lead + '">' +
+          '<div class="af-groups">' + (s.groups || []).map((g) =>
+            '<div class="af-group"><div class="af-gl"><span>' + esc(g.label) + '</span><span>' + esc(g.hint || '') + '</span></div>' +
+            '<div class="af-opts">' + g.opts.map((o) =>
+              '<div class="af-opt' + (o.on ? ' on' : '') + '" role="button" tabindex="0" data-g="' + esc(g.label) + '" data-price="' + (o.price || 0) +
+              '" data-weight="' + (o.weight || 0) + '" data-lead="' + (o.lead || 0) + '">' + esc(o.t) +
+              '<i>' + esc(o.note || '') + '</i></div>').join('') + '</div></div>').join('') +
+          '<div class="af-strip">' + (s.strip || []).map(([k, v]) =>
+            '<div><b>' + esc(k) + '</b><span>' + esc(v) + '</span></div>').join('') + '</div></div>' +
+          '<div class="af-sum"><div class="af-sum-k">Your build</div>' +
+          '<div class="af-total" data-af="price">' + afMoney(t.price) + '</div>' +
+          '<div class="af-srow" style="margin-top:14px"><span>Frame weight</span><b data-af="weight">' + t.weight.toFixed(1) + ' kg</b></div>' +
+          '<div class="af-srow"><span>Lead time</span><b data-af="lead">' + t.lead + ' weeks</b></div>' +
+          '<div class="af-srow"><span>Deposit</span><b data-af="deposit">' + afMoney(Math.round(t.price * 0.3)) + '</b></div>' +
+          '<img class="sd-img" src="' + src + esc(s.img) + '.jpg" alt="" />' +
+          '<div class="af-snote">' + esc(s.note || '') + '</div></div></div>'
+      } else if (s.kind === 'states') {
+        body = top + '<div class="af-head"><h2 class="af-h2">' + esc(s.title) + '</h2>' +
+          '<span style="font-size:12.5px;color:#6E726C">' + esc(s.hint || '') + '</span></div>' +
+          '<div class="af-states">' + (s.states || []).map((st) =>
+            '<div class="af-state"><h4>' + esc(st.label) + '</h4><div class="af-total">' + esc(st.total) + '</div>' +
+            (st.rows || []).map(([k, v]) => '<div class="af-line"><span>' + esc(k) + '</span><b>' + esc(v) + '</b></div>').join('') +
+            (st.warn ? '<div class="af-warn">' + esc(st.warn) + '</div>' : '') +
+            '<div class="af-cap" style="margin-top:auto">' + esc(st.cap) + '</div></div>').join('') + '</div>'
+      } else if (s.kind === 'handoff') {
+        body = top + '<div class="af-head"><h2 class="af-h2">' + esc(s.title) + '</h2>' +
+          '<span style="font-size:12.5px;color:#6E726C">' + esc(s.hint || '') + '</span></div>' +
+          '<div class="af-cols">' + (s.cols || []).map(([h, rows]) =>
+            '<div class="af-col"><h4>' + esc(h) + '</h4><ul>' + rows.map(([k, v]) =>
+              '<li><span>' + esc(k) + '</span><i>' + esc(v) + '</i></li>').join('') + '</ul></div>').join('') + '</div>' +
+          '<div class="af-swatch">' + (s.swatch || []).map((c) => '<i style="background:' + c + '"></i>').join('') + '</div>' +
+          (s.band ? '<div class="af-band">' + esc(s.band) + '</div>' : '')
+      } else if (s.kind === 'bill') {
+        const t = afTotals(s.base, s.groups || [])
+        body = top + '<div class="af-head"><h2 class="af-h2">' + esc(s.title) + '</h2>' +
+          '<span style="font-size:12.5px;color:#6E726C">' + esc(s.hint || '') + '</span></div>' +
+          '<div class="af-bill"><div>' +
+          '<div class="af-row"><span>' + esc(s.baseLabel) + '</span><i></i><b>' + afMoney(s.base.price) + '</b></div>' +
+          (s.groups || []).map((g) => {
+            const on = g.opts.find((o) => o.on)
+            return '<div class="af-row"><span>' + esc(g.label) + ' · ' + esc(on ? on.t : '') + '</span><i></i><b>' +
+              (on && on.price ? '+' + afMoney(on.price) : 'included') + '</b></div>'
+          }).join('') +
+          '<div class="af-row big"><span>Total, as configured</span><i></i><b>' + afMoney(t.price) + '</b></div>' +
+          '<div class="af-cap" style="margin-top:18px;max-width:520px">' + esc(s.note || '') + '</div></div>' +
+          '<div class="af-sum"><div class="af-sum-k">Balance on collection</div>' +
+          '<div class="af-total">' + afMoney(t.price - Math.round(t.price * 0.3)) + '</div>' +
+          '<div class="af-srow" style="margin-top:14px"><span>Deposit today</span><b>' + afMoney(Math.round(t.price * 0.3)) + '</b></div>' +
+          '<div class="af-srow"><span>Lead time</span><b>' + t.lead + ' weeks</b></div>' +
+          '<img class="sd-img" src="' + src + esc(s.img) + '.jpg" alt="" />' +
+          '<div class="af-snote">' + esc(s.foot || '') + '</div></div></div>'
+      }
+      return '<div class="af">' + body + '</div>'
+    }
     case 'vd-page': {
       const src = 'cases/' + deck.id + '/'
       let body = ''

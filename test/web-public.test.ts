@@ -13,7 +13,7 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { CASE_DECKS } from '../apps/web/public/cases.js'
+import { CASE_DECKS, slideHTML } from '../apps/web/public/cases.js'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const publicDir = join(here, '..', 'apps', 'web', 'public')
@@ -72,6 +72,18 @@ test('every case deck keeps its agreed page and image budget', () => {
     } else {
       assert.ok(pages >= 25 && pages <= 30, `${deck.name}: 演示文稿 ${pages} 页，应为 25–30`)
       assert.equal(usedImages(deck).size, 15, `${deck.name}: 演示文稿应有 15 张配图`)
+    }
+  }
+})
+
+test('幻灯片里不放 <button>：缩略图外壳本身就是按钮', () => {
+  /* 画廊缩略图是 <button class="tv-th">，里面再出现 <button> 的话 HTML 解析器
+   * 会提前把外壳闭合，后面的节点会跑到 #tvThumbs 里当兄弟节点——画廊看起来
+   * 还是一排缩略图，实际 DOM 已经散了。 */
+  for (const deck of CASE_DECKS) {
+    for (const [i, slide] of deck.slides.entries()) {
+      const html = slideHTML(deck as never, slide as never, i)
+      assert.ok(!/<button[\s>]/i.test(html), `${deck.name} 第 ${i + 1} 页里有 <button>`)
     }
   }
 })
