@@ -4977,6 +4977,8 @@
   .cn-badge{font-size:11px;padding:2px 6px;border-radius:var(--r-sm);font-weight:500;flex:none}
   .cn-badge.ok{background:var(--ok-soft);color:var(--ok)}
   .cn-demo{font-style:normal;font-size:10.5px;font-weight:600;color:var(--fg-subtle);background:var(--surface-3);border-radius:3px;padding:1px 4px;margin-right:5px}
+  .cnx-link{margin-left:8px;font-size:11px;font-weight:500;color:var(--accent);text-decoration:none}
+  .cnx-link:hover{text-decoration:underline}
   .cnx-kind{font-size:11px;color:var(--fg-subtle);background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-sm);padding:1px 6px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
   .cn-badge.warn{background:var(--err-soft);color:var(--err)}
   .cn-card.on{border-color:var(--accent-line);box-shadow:0 0 0 2px var(--accent-soft) inset}
@@ -10245,6 +10247,15 @@ function renderConnectorBody(item, log) {
       input.autocomplete = 'off'
       fields[field.key] = input
       wrap.append(label, input)
+      if (field.docUrl) {
+        const link = document.createElement('a')
+        link.className = 'cnx-link'
+        link.href = field.docUrl
+        link.target = '_blank'
+        link.rel = 'noreferrer noopener'
+        link.textContent = '去申请 →'
+        label.appendChild(link)
+      }
       if (field.help) {
         const help = document.createElement('div')
         help.className = 'cnx-msg'

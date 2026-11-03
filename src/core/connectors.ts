@@ -24,6 +24,8 @@ export interface AuthField {
   placeholder?: string
   /** 去哪里申请，直接写给人看。 */
   help?: string
+  /** 申请页地址（有就渲染成「去申请」，没有就只留 help 文案，不放假链接）。 */
+  docUrl?: string
   required: boolean
 }
 

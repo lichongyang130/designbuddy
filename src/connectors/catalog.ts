@@ -39,6 +39,7 @@ export const CONNECTORS: ConnectorManifest[] = [
         type: 'password',
         placeholder: 'ghp_…',
         help: 'GitHub → Settings → Developer settings → Personal access tokens，勾选 repo',
+        docUrl: 'https://github.com/settings/tokens',
         required: true,
       },
     ],
