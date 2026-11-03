@@ -4370,7 +4370,7 @@ function paintTplGallery() {
     card.className = 'tpl-card'
     card.dataset.cat = deck.kind
     card.innerHTML =
-      '<div class="cover' + (deck.fmt === 'doc' ? ' doc' : '') + (deck.fmt === 'card' ? ' card' : '') + '"' + (deck.fmt === 'doc' || deck.fmt === 'card' ? ' style="background:' + deck.paper + '"' : '') + '>' + deckCoverHTML(deck) + '</div>' +
+      '<div class="cover' + (deck.fmt === 'doc' ? ' doc' : '') + (deck.fmt === 'card' ? ' card' : '') + '"' + (deck.fmt === 'doc' ? ' style="background:' + deck.paper + '"' : '') + '>' + deckCoverHTML(deck) + '</div>' +
       '<div class="tpl-cap">' + TPL_CAP_ICON + '<span>' + deck.name + '</span></div>'
     card.onclick = () => openCase(deck)
     grid.appendChild(card)
@@ -4444,7 +4444,7 @@ function renderCaseSide(deck) {
     '<div class="tv-side-scroll">' +
       '<div class="tv-ttl" data-no-i18n><h2>' + deck.name + '</h2>' +
         '<button class="tv-link" id="tvCopy" title="复制模板链接">' + iconSVG('link') + '</button></div>' +
-      '<div class="tv-meta" data-no-i18n>' + deck.cat + ' · ' + deck.ratio + ' · ' + deck.slides.length + ' 个界面</div>' +
+      '<div class="tv-meta" data-no-i18n>' + deck.cat + ' · ' + deck.ratio + ' · ' + deck.slides.length + (deck.fmt === 'card' ? ' 张卡片' : ' 个界面') + '</div>' +
       '<div class="tv-prov" data-no-i18n><span class="tv-badge">' + badge + '</span>由 ' + deck.by + ' 提供</div>' +
       '<p class="tv-desc" data-no-i18n>' + deck.desc + '</p>' +
       '<h3>最适合</h3><ul class="tv-best" data-no-i18n>' + deck.bestFor.map((x) => '<li>' + x + '</li>').join('') + '</ul>' +
