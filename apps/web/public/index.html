@@ -2552,6 +2552,138 @@
   .sld.k-vellum .af-row b{font-variant-numeric:tabular-nums;font-weight:500}
   .sld.k-vellum .af-row.big{border-bottom:none;font-size:16px;padding-top:18px}
   .sld.k-vellum .af-bill .af-sum{height:auto;align-self:center}
+  /* ── Hyper Frames 画布：1280×860 的动效帧 ──────── */
+  .sld.k-deeptime{font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif;background:#08080C}
+  .sld.k-deeptime .dt{position:absolute;inset:0;background:#08080C;color:#F0EDE4;overflow:hidden}
+  @keyframes dt-spin{to{transform:rotate(360deg)}}
+  @keyframes dt-spin-r{to{transform:rotate(-360deg)}}
+  @keyframes dt-pulse{0%,100%{opacity:.35;transform:scale(1)}50%{opacity:1;transform:scale(1.14)}}
+  @keyframes dt-drop{0%{opacity:0;transform:translateY(-26px)}60%{opacity:1}100%{opacity:1;transform:none}}
+  @keyframes dt-sweep{0%{transform:scaleX(0)}55%{transform:scaleX(1)}100%{transform:scaleX(1)}}
+  @keyframes dt-pan{from{transform:scale(1.06) translate3d(0,0,0)}to{transform:scale(1.14) translate3d(-2%, -1.5%, 0)}}
+  @keyframes dt-rise{from{transform:translateY(14px);opacity:0}to{transform:none;opacity:1}}
+  @keyframes dt-blink{0%,100%{opacity:.25}50%{opacity:1}}
+  /* 缩略图与封面一律停在终帧：动效只在查看器里跑，网格里 32 张封面不动。 */
+  .tv-th .dt *,.tpl-card .dt *{animation:none!important}
+  .tv-th .dt-ln,.tpl-card .dt-ln,
+  .tv-th .dt-letters span,.tpl-card .dt-letters span{opacity:1!important;transform:none!important}
+  .sld.k-deeptime .dt-pad{position:absolute;inset:0;padding:52px 56px 44px;display:flex;flex-direction:column}
+  .sld.k-deeptime .dt-kick{font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:#C8A464}
+  .sld.k-deeptime .dt-h1{margin:0;font-size:104px;line-height:.88;letter-spacing:-.045em;font-weight:500}
+  .sld.k-deeptime .dt-h2{margin:0;font-size:38px;letter-spacing:-.03em;font-weight:500}
+  .sld.k-deeptime .dt-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:28px}
+  .sld.k-deeptime .dt-badge{display:inline-flex;align-items:center;gap:9px;padding:7px 13px;border-radius:99px;border:1px solid rgba(240,237,228,.22);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:rgba(240,237,228,.7)}
+  .sld.k-deeptime .dt-badge i{width:6px;height:6px;border-radius:50%;background:#C8A464;animation:dt-blink 1.6s ease-in-out infinite}
+  /* 主帧 */
+  .sld.k-deeptime .dt-hero{position:absolute;inset:0}
+  .sld.k-deeptime .dt-hero .sd-img{width:100%;height:100%;object-fit:cover;opacity:.62}
+  .sld.k-deeptime .dt-hero::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 100% at 22% 68%,rgba(8,8,12,.94) 0%,rgba(8,8,12,.62) 46%,rgba(8,8,12,.36) 100%)}
+  .sld.k-deeptime .dt-rings{position:absolute;right:64px;top:50%;width:560px;height:560px;margin-top:-280px}
+  .sld.k-deeptime .dt-ring{position:absolute;border-radius:50%;border:1px dashed rgba(200,164,100,.55);animation:dt-spin 26s linear infinite}
+  .sld.k-deeptime .dt-ring.r1{inset:0}
+  .sld.k-deeptime .dt-ring.r2{inset:74px;border-style:solid;border-color:rgba(240,237,228,.16);animation:dt-spin-r 34s linear infinite}
+  .sld.k-deeptime .dt-ring.r3{inset:150px;border-color:rgba(200,164,100,.4);animation:dt-spin 18s linear infinite}
+  .sld.k-deeptime .dt-core{position:absolute;left:50%;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:#C8A464;animation:dt-pulse 2.8s ease-in-out infinite}
+  .sld.k-deeptime .dt-hero-txt{position:absolute;left:56px;bottom:52px;right:640px;z-index:2}
+  .sld.k-deeptime .dt-sub{margin:22px 0 0;max-width:430px;font-size:14.5px;line-height:1.7;color:rgba(240,237,228,.72)}
+  .sld.k-deeptime .dt-meta{display:flex;gap:28px;margin-top:26px;padding-top:14px;border-top:1px solid rgba(240,237,228,.18);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(240,237,228,.5)}
+  /* 地层帧 */
+  .sld.k-deeptime .dt-split{flex:1;display:grid;grid-template-columns:560px 1fr;gap:48px;align-items:center}
+  .sld.k-deeptime .dt-window{width:560px;height:470px;border-radius:16px;overflow:hidden;position:relative;background:#101018}
+  .sld.k-deeptime .dt-window .sd-img{width:100%;height:100%;object-fit:cover;animation:dt-pan 9s ease-in-out infinite alternate}
+  .sld.k-deeptime .dt-frame-tag{position:absolute;left:16px;top:16px;font-family:ui-monospace,Menlo,monospace;font-size:10.5px;letter-spacing:.14em;color:rgba(240,237,228,.8);background:rgba(8,8,12,.55);padding:6px 10px;border-radius:6px}
+  .sld.k-deeptime .dt-lines{display:flex;flex-direction:column;gap:0}
+  .sld.k-deeptime .dt-ln{font-size:30px;line-height:1.28;letter-spacing:-.02em;padding:13px 0;border-top:1px solid rgba(240,237,228,.14);opacity:0;animation:dt-rise .72s cubic-bezier(.2,.7,.2,1) forwards}
+  .sld.k-deeptime .dt-ln:nth-child(1){animation-delay:.04s}
+  .sld.k-deeptime .dt-ln:nth-child(2){animation-delay:.18s}
+  .sld.k-deeptime .dt-ln:nth-child(3){animation-delay:.32s}
+  .sld.k-deeptime .dt-ln:nth-child(4){animation-delay:.46s}
+  .sld.k-deeptime .dt-ln b{color:#C8A464;font-weight:500}
+  .sld.k-deeptime .dt-note{margin-top:24px;font-size:12.5px;line-height:1.7;color:rgba(240,237,228,.55);max-width:460px}
+  /* 时间尺度帧 */
+  .sld.k-deeptime .dt-scale{flex:1;display:flex;flex-direction:column}
+  .sld.k-deeptime .dt-scale .dt-h2{margin-top:auto}
+  .sld.k-deeptime .dt-track{position:relative;height:2px;background:rgba(240,237,228,.2);margin:44px 0 0}
+  .sld.k-deeptime .dt-fill{position:absolute;left:0;top:-1px;height:4px;width:100%;background:linear-gradient(90deg,rgba(200,164,100,.35),#C8A464);transform-origin:left;animation:dt-sweep 3.4s cubic-bezier(.4,0,.2,1) infinite}
+  .sld.k-deeptime .dt-lead{position:absolute;top:-9px;width:14px;height:14px;margin-left:-7px;border-radius:50%;background:#C8A464;box-shadow:0 0 0 5px rgba(200,164,100,.16);animation:dt-lead 3.4s cubic-bezier(.4,0,.2,1) infinite}
+  @keyframes dt-lead{0%{left:0}55%{left:100%}100%{left:100%}}
+  .sld.k-deeptime .dt-marks{display:flex;justify-content:space-between;margin-top:0}
+  .sld.k-deeptime .dt-mk{width:12.5%;padding-top:16px;position:relative}
+  .sld.k-deeptime .dt-mk::before{content:"";position:absolute;left:0;top:-7px;width:1px;height:14px;background:rgba(240,237,228,.3)}
+  .sld.k-deeptime .dt-mk b{display:block;font-size:19px;letter-spacing:-.01em;font-weight:500}
+  .sld.k-deeptime .dt-mk span{display:block;margin-top:5px;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(240,237,228,.45)}
+  .sld.k-deeptime .dt-scale-note{margin-top:auto;padding-bottom:6px;display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .sld.k-deeptime .dt-scale-note div{border-top:1px solid rgba(240,237,228,.16);padding-top:12px;font-size:12.5px;line-height:1.65;color:rgba(240,237,228,.62)}
+  .sld.k-deeptime .dt-scale-note b{display:block;color:#F0EDE4;font-size:13px;margin-bottom:5px;font-weight:500}
+  /* 字标帧 */
+  .sld.k-deeptime .dt-mark{flex:1;display:flex;flex-direction:column;justify-content:flex-start;padding-top:44px}
+  .sld.k-deeptime .dt-letters{display:flex;gap:6px;font-size:132px;line-height:.86;letter-spacing:-.04em;font-weight:500}
+  .sld.k-deeptime .dt-letters span{opacity:0;animation:dt-drop .8s cubic-bezier(.2,.8,.2,1) forwards}
+  .sld.k-deeptime .dt-letters span:nth-child(1){animation-delay:.05s}
+  .sld.k-deeptime .dt-letters span:nth-child(2){animation-delay:.13s}
+  .sld.k-deeptime .dt-letters span:nth-child(3){animation-delay:.21s}
+  .sld.k-deeptime .dt-letters span:nth-child(4){animation-delay:.29s}
+  .sld.k-deeptime .dt-letters span:nth-child(5){animation-delay:.37s}
+  .sld.k-deeptime .dt-letters span:nth-child(6){animation-delay:.45s}
+  .sld.k-deeptime .dt-letters span:nth-child(7){animation-delay:.53s}
+  .sld.k-deeptime .dt-letters span:nth-child(8){animation-delay:.61s}
+  .sld.k-deeptime .dt-baseline{display:flex;gap:6px;margin-top:14px}
+  .sld.k-deeptime .dt-baseline i{flex:1;height:1px;background:rgba(200,164,100,.5)}
+  .sld.k-deeptime .dt-film{display:flex;gap:10px;margin:auto 0}
+  .sld.k-deeptime .dt-fl{flex:1;height:132px;border:1px solid rgba(240,237,228,.14);border-radius:9px;padding:11px 12px;display:flex;flex-direction:column;justify-content:space-between;background:rgba(240,237,228,.015)}
+  .sld.k-deeptime .dt-fl b{font-size:22px;font-weight:500;letter-spacing:-.02em;color:rgba(240,237,228,.9)}
+  .sld.k-deeptime .dt-fl span{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(240,237,228,.42)}
+  .sld.k-deeptime .dt-fl.cur{border-color:rgba(200,164,100,.65);background:rgba(200,164,100,.07)}
+  .sld.k-deeptime .dt-fl.cur b{color:#C8A464}
+  .sld.k-deeptime .dt-steps{display:flex;gap:6px;margin-top:26px}
+  .sld.k-deeptime .dt-step{flex:1}
+  .sld.k-deeptime .dt-step i{display:block;height:1px;background:rgba(200,164,100,.45)}
+  .sld.k-deeptime .dt-step:nth-child(n+7) i{background:rgba(200,164,100,.22)}
+  .sld.k-deeptime .dt-step span{display:block;margin-top:9px;font-family:ui-monospace,Menlo,monospace;font-size:10.5px;letter-spacing:.06em;color:rgba(240,237,228,.45)}
+  .sld.k-deeptime .dt-rows{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:0;padding-bottom:4px}
+  .sld.k-deeptime .dt-rows div{border-top:1px solid rgba(240,237,228,.16);padding-top:11px;font-size:12px;line-height:1.6;color:rgba(240,237,228,.6)}
+  .sld.k-deeptime .dt-rows b{display:block;margin-bottom:4px;color:#F0EDE4;font-weight:500}
+  /* 系统帧 */
+  .sld.k-deeptime .dt-cols{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:26px;align-content:center}
+  .sld.k-deeptime .dt-col h4{margin:0 0 12px;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:#C8A464;font-weight:500}
+  .sld.k-deeptime .dt-ease{position:relative;height:150px;border:1px solid rgba(240,237,228,.16);border-radius:8px;overflow:hidden;margin-bottom:14px;background:linear-gradient(180deg,rgba(240,237,228,.03),transparent)}
+  .sld.k-deeptime .dt-ease svg{position:absolute;inset:0;width:100%;height:100%}
+  .sld.k-deeptime .dt-ease path{fill:none;stroke:rgba(200,164,100,.85);stroke-width:1.6;vector-effect:non-scaling-stroke}
+  .sld.k-deeptime .dt-ease .dt-axis{stroke:rgba(240,237,228,.14);stroke-dasharray:3 4}
+  .sld.k-deeptime .dt-dot{position:absolute;left:0;top:50%;width:8px;height:8px;margin-top:-4px;border-radius:50%;background:#C8A464;animation:dt-travel 2.6s cubic-bezier(.16,1,.3,1) infinite}
+  .sld.k-deeptime .dt-dot.b{animation-timing-function:linear;animation-duration:2.6s}
+  .sld.k-deeptime .dt-dot.c{animation-timing-function:cubic-bezier(.7,0,.84,0);animation-duration:2.6s}
+  @keyframes dt-travel{0%{left:6px}70%{left:calc(100% - 14px)}100%{left:calc(100% - 14px)}}
+  .sld.k-deeptime .dt-col ul{margin:0;padding:0;list-style:none;font-size:12px;line-height:1.5}
+  .sld.k-deeptime .dt-col li{display:flex;justify-content:space-between;gap:10px;padding:11px 0;border-top:1px solid rgba(240,237,228,.12)}
+  .sld.k-deeptime .dt-col li i{font-style:normal;color:rgba(240,237,228,.5);font-family:ui-monospace,Menlo,monospace;font-size:10.5px}
+  /* 应用帧 */
+  .sld.k-deeptime .dt-apps{flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:18px;align-content:center}
+  .sld.k-deeptime .dt-app{border:1px solid rgba(240,237,228,.16);border-radius:10px;overflow:hidden;background:#0C0C12}
+  .sld.k-deeptime .dt-app{display:flex;flex-direction:column}
+  .sld.k-deeptime .dt-app .sd-img{width:100%;height:336px;object-fit:cover;display:block}
+  .sld.k-deeptime .dt-app.sd .sd-img{border-radius:50% 50% 6px 6px;object-position:50% 38%}
+  .sld.k-deeptime .dt-app-b{padding:11px 13px;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(240,237,228,.6);display:flex;justify-content:space-between}
+  /* 停顿帧：整圈只剩轨道在转 */
+  .sld.k-deeptime .dt-hold{flex:1;position:relative}
+  .sld.k-deeptime .dt-hold-rings{position:absolute;left:50%;top:50%;width:600px;height:600px;margin:-300px 0 0 -300px}
+  .sld.k-deeptime .dt-hold-rings .dt-ring{inset:0}
+  .sld.k-deeptime .dt-hold-rings .dt-ring.r2{inset:78px}
+  .sld.k-deeptime .dt-hold-rings .dt-ring.r3{inset:158px}
+  .sld.k-deeptime .dt-hold-cap{position:absolute;left:0;bottom:6px;max-width:420px}
+  .sld.k-deeptime .dt-hold-cap b{display:block;font-size:26px;font-weight:500;letter-spacing:-.02em}
+  .sld.k-deeptime .dt-hold-cap span{display:block;margin-top:10px;font-size:13px;line-height:1.7;color:rgba(240,237,228,.58)}
+  .sld.k-deeptime .dt-hold-facts{position:absolute;right:0;bottom:6px;display:flex;gap:34px;text-align:right}
+  .sld.k-deeptime .dt-hold-facts div{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(240,237,228,.42)}
+  .sld.k-deeptime .dt-hold-facts b{display:block;margin-top:7px;font-size:15px;letter-spacing:0;text-transform:none;color:#F0EDE4;font-weight:500}
+  /* 尾帧 */
+  .sld.k-deeptime .dt-end{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-start;padding:150px 96px 0}
+  .sld.k-deeptime .dt-end .dt-ring{opacity:.5}
+  .sld.k-deeptime .dt-end-rings{position:absolute;right:-120px;top:50%;width:620px;height:620px;margin-top:-310px;opacity:.5}
+  .sld.k-deeptime .dt-cred{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;margin-top:auto;padding-bottom:70px;max-width:820px}
+  .sld.k-deeptime .dt-cred div{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(240,237,228,.42);line-height:1.9}
+  .sld.k-deeptime .dt-cred span{display:block;margin-top:6px;font-size:12.5px;letter-spacing:0;text-transform:none;color:rgba(240,237,228,.82);line-height:1.7;white-space:pre-line}
+  .sld.k-deeptime .dt-end .dt-end-lead{margin:26px 0 0;max-width:470px;font-size:15px;line-height:1.75;color:rgba(240,237,228,.66)}
   .sld.k-northwind{font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif}
   .sld.k-northwind .st{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--paper);color:var(--ink)}
   .sld.k-northwind .st-chrome{

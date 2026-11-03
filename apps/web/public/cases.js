@@ -7213,6 +7213,153 @@ export const CASE_DECKS = [
       },
     ],
   },
+  {
+    id: 'deeptime',
+    name: 'Deep Time',
+    en: 'Deep Time · an eight-frame looping ident',
+    by: 'DesignBuddy',
+    cat: 'Hyper Frames',
+    fmt: 'hyper',
+    ratio: '1280×860 · 动效帧',
+    date: 20261103,
+    kind: 'Motion identity',
+    category: '营销材料',
+    tags: ['hyper', 'motion', 'title sequence', 'identity'],
+    desc: 'An eight-frame loop for a planetarium exhibition, built as frames that actually move: orbit rings turn, a type mark assembles letter by letter, a 4.54-billion-year timeline sweeps in 3.4 seconds, and a dot travels three different easing curves on the system frame. Everything loops at 6.4 seconds on a 1280 × 860 canvas, and nothing is a video file — it is CSS, so it renders in the deck, in the thumbnail and in the browser at whatever size.',
+    bestFor: ['Title sequences', 'Motion identity systems', 'Exhibition and event identities', 'Frame-by-frame design reviews'],
+    visual: 'Night dome #08080C, bone #F0EDE4 for type, one dusty gold #C8A464 that only ever appears as a line, a ring or a single dot — it is the motion colour, never a fill. Frames are numbered like a contact sheet (FRAME 02 / 08), type is set tight and wide-tracked, and every element that moves has a still that reads at 1:1, which is the test for a frame that has to survive as a poster.',
+    how: 'Eight frames at 1280 × 860: the title frame with three counter-rotating orbit rings (26 s / 34 s / 18 s), a strata frame whose photograph pans on a 9 s alternate loop while four lines rise in sequence, the 4.54 Ga timeline with a 3.4 s sweep, the wordmark assembling in 0.8 s per letter with a 0.08 s stagger, a motion system sheet that runs three easing curves side by side, four output formats, a hold frame where the orbit is the only thing moving, and an end card. Animations are disabled in thumbnails and covers so a grid of 31 cases stays cheap.',
+    styles: ['#08080C', '#C8A464', '#3B4A6B'],
+    colorway: 'Dome black · Dusty gold · Deep blue',
+    folio: false,
+    footLeft: 'Deep Time · planetarium ident',
+    paper: '#08080C',
+    ink: '#F0EDE4',
+    accent: '#C8A464',
+    second: '#3B4A6B',
+    muted: '#8E8A80',
+    rule: '#22222C',
+    body: '#CFCBC0',
+    display: 'sans',
+    slides: [
+      {
+        k: 'dt-page', label: '主帧', kind: 'title', img: '01',
+        kicker: 'Planetarium Nord · Deep Time · 2027',
+        title: 'Deep Time',
+        sub: 'An eight-frame loop for the exhibition that tries to make 4.54 billion years sit still for six and a half seconds. The dome turns; the type does not.',
+        meta: ['8 frames', '6.4 s loop', '4.54 Ga → today', 'CSS only, no video'],
+      },
+      {
+        k: 'dt-page', label: '地层帧', kind: 'split', img: '02',
+        crumb: 'Frame 02 / 08 · strata',
+        frame: 'FRAME 02 / 08 · 9 s pan',
+        lines: [
+          'The exhibition asks one <b>unreasonable</b> question.',
+          'How long is <b>4.54 billion years</b>, if you have to sit still for it?',
+          'The ident answers with <b>6.4 seconds</b> and a single pan.',
+          'Nothing else moves in this frame. The rock does the talking.',
+        ],
+        note: 'The photograph pans 8 per cent over nine seconds and back — the slowest thing in the whole loop, and the only frame with no typographic entrance.',
+      },
+      {
+        k: 'dt-page', label: '时间轴', kind: 'scale',
+        crumb: 'Frame 03 / 08 · scale',
+        title: '4.54 billion years, one track',
+        marks: [
+          ['4,540', 'Earth forms'],
+          ['3,800', 'First life'],
+          ['541', 'Cambrian'],
+          ['252', 'The great dying'],
+          ['66', 'Dinosaurs out'],
+          ['2.6', 'Ice ages'],
+          ['0.3', 'Humans'],
+          ['0', 'Tonight'],
+        ],
+        notes: [
+          ['One second ≈ 709 million years', 'The sweep takes 3.4 s of the 6.4 s loop, so the last 300,000 years of human history occupy the final 4 milliseconds.'],
+          ['Non-linear on purpose', 'Marks are placed by event, not by arithmetic — an honest linear scale would bury everything after the Cambrian in the last pixel.'],
+          ['The dot is the caption', 'The travelling dot is the only gold on the frame; the labels underneath are set at 45 % opacity so the motion reads first.'],
+        ],
+      },
+      {
+        k: 'dt-page', label: '字标帧', kind: 'mark',
+        crumb: 'Frame 04 / 08 · wordmark',
+        word: 'DEEP TIME',
+        frames: ['title', 'strata', 'scale', 'wordmark', 'system', 'outputs', 'hold', 'out'],
+        rows: [
+          ['Entrance', '0.8 s per letter, 0.08 s stagger, drop 26 px'],
+          ['Baseline', 'One hairline per letter, drawn to the same grid'],
+          ['Still', 'Reads as a poster at frame 0 — the test for any motion mark'],
+          ['Rule', 'No rotation, no scale: only vertical position moves'],
+        ],
+      },
+      {
+        k: 'dt-page', label: '动效规则', kind: 'system',
+        crumb: 'Frame 05 / 08 · system',
+        title: 'Three curves, one loop',
+        note: 'These are the literal values in the frame CSS. Entrance is used for anything that arrives, travel for anything that measures, exit for anything that leaves. Nothing eases in and out — the dome never reverses inside a beat.',
+        cols: [
+          ['Entrance · 0.8 s', '', [
+            ['Curve', 'cubic-bezier(.2,.8,.2,1)'],
+            ['Distance', '26 px'],
+            ['Stagger', '0.08 s'],
+            ['Use', 'type, cards, captions'],
+          ]],
+          ['Travel · 2.6 s', 'b', [
+            ['Curve', 'linear'],
+            ['Distance', 'full track'],
+            ['Repeat', 'hold 30 % at end'],
+            ['Use', 'timeline, scan sweep'],
+          ]],
+          ['Exit · 2.6 s', 'c', [
+            ['Curve', 'cubic-bezier(.7,0,.84,0)'],
+            ['Distance', 'full track'],
+            ['Repeat', 'hold 30 % at end'],
+            ['Use', 'anything leaving frame'],
+          ]],
+        ],
+      },
+      {
+        k: 'dt-page', label: '应用', kind: 'apps',
+        crumb: 'Frame 06 / 08 · outputs',
+        title: 'Outputs · four crops, one loop',
+        note: 'Every crop is cut from the same eight frames, so the dome cap, the square and the vertical all breathe at the same rate. No export is a video: the loop is replayed by the browser at the equivalent of 25 fps.',
+        fps: '25 fps',
+        apps: [
+          ['s16', '03', 'Dome 16:9', '1280×720', 'title + rings'],
+          ['s1', '05', 'Square', '1080×1080', 'vitrine frame'],
+          ['s9', '04', 'Vertical', '1080×1920', 'ammonite frame'],
+          ['sd', '01', 'Dome cap', '4096×4096', 'rings only'],
+        ],
+      },
+      {
+        k: 'dt-page', label: '停顿帧', kind: 'hold',
+        crumb: 'Frame 07 / 08 · hold',
+        title: 'Four tenths of nothing',
+        sub: 'The one frame with no entrance, no photograph and no new type — the orbit keeps turning and that is the whole event. It is what makes the next loop feel like a loop instead of a slideshow.',
+        facts: [
+          ['Duration', '0.4 s'],
+          ['Type', 'none'],
+          ['Gold', 'core only'],
+        ],
+      },
+      {
+        k: 'dt-page', label: '尾帧', kind: 'end',
+        crumb: 'Frame 08 / 08 · out',
+        kicker: 'A DesignBuddy ident',
+        title: 'Deep Time',
+        lead: 'Six and a half seconds, eight frames, no video file — the whole ident is CSS keyframes plus five photographs taken in the dome after closing.',
+        credits: [
+          ['Exhibition', 'Planetarium Nord\nspring 2027'],
+          ['Motion', 'CSS keyframes\nno video file'],
+          ['Loop', '6.4 s · 8 frames\nholds at 6.0 s'],
+          ['Palette', 'Dome black #08080C\nDusty gold #C8A464\nBone white #F0EDE4'],
+          ['Type', 'Set tight, tracked wide\nno rotation anywhere'],
+          ['Thanks', 'The night guard,\nwho never once asked\nwhy we were there'],
+        ],
+      },
+    ],
+  },
 ]
 
 /* ── 渲染 ─────────────────────────────────────────────
@@ -7414,6 +7561,78 @@ function afTotals(base, groups) {
   }
   return out
 }
+
+    case 'dt-page': {
+      const src = 'cases/' + deck.id + '/'
+      const top = '<div class="dt-top"><span class="dt-kick">' + esc(s.crumb || 'Deep Time · 动效帧') + '</span>' +
+        '<span class="dt-badge"><i></i>' + esc(s.loop || 'loop 6.4 s') + '</span></div>'
+      let body = ''
+      if (s.kind === 'title') {
+        body = '<div class="dt-hero">' + imgTag(deck, s.img) +
+          '<div class="dt-rings"><div class="dt-ring r1"></div><div class="dt-ring r2"></div><div class="dt-ring r3"></div><div class="dt-core"></div></div>' +
+          '<div class="dt-hero-txt"><div class="dt-kick">' + esc(s.kicker) + '</div>' +
+          '<h1 class="dt-h1">' + esc(s.title) + '</h1>' +
+          '<p class="dt-sub">' + esc(s.sub) + '</p>' +
+          '<div class="dt-meta">' + (s.meta || []).map((x) => '<span>' + esc(x) + '</span>').join('') + '</div></div></div>'
+      } else if (s.kind === 'split') {
+        body = '<div class="dt-pad">' + top +
+          '<div class="dt-split"><div class="dt-window">' + imgTag(deck, s.img) +
+          '<div class="dt-frame-tag">' + esc(s.frame || '') + '</div></div>' +
+          '<div><div class="dt-lines">' + (s.lines || []).map((x) => '<div class="dt-ln">' + x + '</div>').join('') + '</div>' +
+          '<p class="dt-note">' + esc(s.note || '') + '</p></div></div></div>'
+      } else if (s.kind === 'scale') {
+        body = '<div class="dt-pad">' + top +
+          '<div class="dt-scale"><h2 class="dt-h2">' + esc(s.title) + '</h2>' +
+          '<div class="dt-track"><div class="dt-fill"></div><div class="dt-lead"></div></div>' +
+          '<div class="dt-marks">' + (s.marks || []).map(([a, b]) =>
+            '<div class="dt-mk"><b>' + esc(a) + '</b><span>' + esc(b) + '</span></div>').join('') + '</div>' +
+          '<div class="dt-scale-note">' + (s.notes || []).map(([h, d]) =>
+            '<div><b>' + esc(h) + '</b>' + esc(d) + '</div>').join('') + '</div></div></div>'
+      } else if (s.kind === 'mark') {
+        body = '<div class="dt-pad">' + top +
+          '<div class="dt-mark"><div class="dt-letters">' + (s.word || 'DEEP TIME').split('').map((c) =>
+            '<span>' + (c === ' ' ? '&nbsp;' : esc(c)) + '</span>').join('') + '</div>' +
+          '<div class="dt-baseline">' + (s.word || 'DEEP TIME').split('').map(() => '<i></i>').join('') + '</div>' +
+          '<div class="dt-steps">' + (s.word || 'DEEP TIME').split('').map((c, i) =>
+            '<div class="dt-step"><i></i><span>' + (c === ' ' ? 'gap' : esc(c)) + ' · ' + (0.05 + 0.08 * i).toFixed(2) + ' s</span></div>').join('') + '</div>' +
+          '<div class="dt-film">' + (s.frames || []).map((f, i) =>
+            '<div class="dt-fl' + (i === 3 ? ' cur' : '') + '"><b>' + ('0' + (i + 1)) + '</b><span>' + esc(f) + '</span></div>').join('') + '</div>' +
+          '<div class="dt-rows">' + (s.rows || []).map(([k, v]) =>
+            '<div><b>' + esc(k) + '</b>' + esc(v) + '</div>').join('') + '</div></div></div>'
+      } else if (s.kind === 'system') {
+        const curve = (k) => k === 'b' ? 'M6,90 L294,6' : k === 'c' ? 'M6,90 C170,88 240,62 294,6' : 'M6,90 C70,8 110,6 294,6'
+        body = '<div class="dt-pad">' + top +
+          (s.title ? '<h2 class="dt-h2" style="margin:6px 0 30px">' + esc(s.title) + '</h2>' : '') +
+          '<div class="dt-cols">' + (s.cols || []).map(([h, dur, rows]) =>
+            '<div class="dt-col"><h4>' + esc(h) + '</h4><div class="dt-ease">' +
+            '<svg viewBox="0 0 300 96" preserveAspectRatio="none"><path class="dt-axis" d="M6,90 L294,90"/>' +
+            '<path d="' + curve(dur) + '"/></svg><div class="dt-dot ' + esc(dur) + '"></div></div>' +
+            '<ul>' + rows.map(([k, v]) => '<li><span>' + esc(k) + '</span><i>' + esc(v) + '</i></li>').join('') + '</ul></div>').join('') + '</div>' +
+          '<p class="dt-note" style="max-width:none;margin-top:26px">' + esc(s.note || '') + '</p></div>'
+      } else if (s.kind === 'apps') {
+        body = '<div class="dt-pad">' + top +
+          (s.title ? '<h2 class="dt-h2" style="margin:6px 0 26px">' + esc(s.title) + '</h2>' : '') +
+          '<div class="dt-apps">' + (s.apps || []).map(([cls, img, name, size, ratio]) =>
+            '<div class="dt-app ' + esc(cls) + '">' + imgTag(deck, img) +
+            '<div class="dt-app-b"><span>' + esc(name) + '</span><span>' + esc(size) + '</span></div>' +
+            '<div class="dt-app-b" style="border-top:1px solid rgba(240,237,228,.1)"><span>' + esc(ratio) + '</span><span>' + esc(s.fps || '25 fps') + '</span></div></div>').join('') + '</div>' +
+          '<p class="dt-note" style="max-width:none;margin-top:26px">' + esc(s.note || '') + '</p></div>'
+      } else if (s.kind === 'hold') {
+        body = '<div class="dt-pad">' + top +
+          '<div class="dt-hold"><div class="dt-hold-rings"><div class="dt-ring r1"></div><div class="dt-ring r2"></div><div class="dt-ring r3"></div><div class="dt-core"></div></div>' +
+          '<div class="dt-hold-cap"><b>' + esc(s.title) + '</b><span>' + esc(s.sub) + '</span></div>' +
+          '<div class="dt-hold-facts">' + (s.facts || []).map(([k, v]) =>
+            '<div>' + esc(k) + '<b>' + esc(v) + '</b></div>').join('') + '</div></div></div>'
+      } else if (s.kind === 'end') {
+        body = '<div class="dt-end"><div class="dt-end-rings"><div class="dt-ring r1"></div><div class="dt-ring r2"></div></div>' +
+          '<div class="dt-kick">' + esc(s.kicker) + '</div>' +
+          '<h1 class="dt-h1" style="margin-top:18px">' + esc(s.title) + '</h1>' +
+          (s.lead ? '<p class="dt-end-lead">' + esc(s.lead) + '</p>' : '') +
+          '<div class="dt-cred">' + (s.credits || []).map(([k, v]) =>
+            '<div>' + esc(k) + '<span>' + esc(v) + '</span></div>').join('') + '</div></div>'
+      }
+      return '<div class="dt">' + body + '</div>'
+    }
 
     case 'af-page': {
       const src = 'cases/' + deck.id + '/'
