@@ -3308,6 +3308,210 @@
     padding:9px 0;border-top:1px solid rgba(242,238,229,.32);
     font-size:8.6px;letter-spacing:.16em;color:rgba(242,238,229,.78);
   }
+  /* ── 文档家族：Skerry（野外记录单 · 印刷框线 · 左栏刻度 · 方格表） ── */
+  .sld.k-skerry{background:var(--paper);font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif}
+  .sld.k-skerry .sd-img{filter:saturate(.93) contrast(1.04)}
+  /* 每一页都压一道 26 px 的印刷框线，图片也收在框里 */
+  .sld.k-skerry::before{
+    content:"";position:absolute;inset:26px;border:1px solid rgba(22,33,30,.42);
+    pointer-events:none;z-index:6;
+  }
+  .sld.k-skerry .d-run{
+    left:76px;right:76px;top:46px;padding-bottom:7px;border-bottom:1px solid var(--rule);
+    font-size:7.8px;letter-spacing:.24em;color:var(--muted);
+  }
+  .sld.k-skerry .d-run span:first-child{color:var(--ink)}
+  .sld.k-skerry .d-run span:last-child{color:var(--accent);letter-spacing:.22em}
+  .sld.k-skerry .d-pad{padding:92px 76px 88px 96px}
+  /* 左栏一把刻度尺 */
+  .sld.k-skerry .d-pad::before{
+    content:"";position:absolute;left:54px;top:96px;bottom:96px;width:13px;
+    background:
+      linear-gradient(var(--rule),var(--rule)) 0 0/1px 100% no-repeat,
+      repeating-linear-gradient(to bottom,var(--rule) 0 1px,transparent 1px 16px) 1px 0/6px 100% no-repeat,
+      repeating-linear-gradient(to bottom,var(--accent) 0 1px,transparent 1px 80px) 1px 0/13px 100% no-repeat;
+  }
+  .sld.k-skerry .sd-folio{left:76px;right:76px;bottom:40px;font-size:7.8px;letter-spacing:.2em;color:var(--muted)}
+  .sld.k-skerry .sd-folio span:last-child{color:var(--accent)}
+  .sld.k-skerry .d-kicker{
+    align-self:flex-start;display:inline-flex;align-items:center;gap:9px;
+    font-size:8.4px;letter-spacing:.24em;color:var(--accent);
+  }
+  .sld.k-skerry .d-kicker::before{content:"";width:7px;height:7px;border:1px solid var(--accent);flex:none}
+  .sld.k-skerry .d-h1{margin:0;font-size:56px;line-height:1.06;font-weight:500;letter-spacing:-.024em}
+  .sld.k-skerry .d-h2{
+    margin:14px 0 0;padding-bottom:13px;border-bottom:1px dotted var(--rule);
+    font-size:29px;line-height:1.28;font-weight:500;letter-spacing:-.018em;
+  }
+  .sld.k-skerry .d-h3{font-size:15px;font-weight:600}
+  .sld.k-skerry .d-lead{max-width:640px;font-size:14.2px;line-height:1.88;color:var(--body)}
+  .sld.k-skerry .d-lead + .d-lead{margin-top:11px}
+  .sld.k-skerry .d-lead-sm{margin-top:13px;font-size:12.8px;line-height:1.86;color:var(--body)}
+  .sld.k-skerry .d-cols{grid-template-columns:minmax(0,1fr) 192px;gap:42px;margin-top:24px}
+  .sld.k-skerry .d-main p{font-size:14.2px;line-height:1.9;color:var(--body);text-align:left}
+  .sld.k-skerry .d-main p:first-child{font-size:15.6px;line-height:1.8;color:var(--ink)}
+  .sld.k-skerry .d-main p:first-child::first-letter{font-size:1em}
+  .sld.k-skerry .d-main p + p{margin-top:13px}
+  /* 边栏：一块方格纸 */
+  .sld.k-skerry .d-side{
+    padding:13px 13px 15px;border:1px solid var(--rule);border-top:2px solid var(--accent);
+    background-color:rgba(31,75,94,.035);
+    background-image:
+      linear-gradient(rgba(31,75,94,.075) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(31,75,94,.075) 1px,transparent 1px);
+    background-size:14px 14px;
+  }
+  .sld.k-skerry .d-side::before{
+    content:"FIELD NOTE";display:block;margin-bottom:9px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:7.2px;letter-spacing:.26em;
+    color:var(--accent);
+  }
+  .sld.k-skerry .d-side p{font-size:9.8px;line-height:1.76;color:#3A4640}
+  .sld.k-skerry .d-side p + p{margin-top:9px;padding-top:9px;border-top:1px dotted rgba(31,75,94,.3)}
+  .sld.k-skerry .d-note{
+    margin-top:auto;padding-top:11px;border-top:1px dotted var(--rule);
+    font-size:8px;line-height:1.85;letter-spacing:.09em;color:var(--muted);
+  }
+  /* 读数三格：中间用点线切 */
+  .sld.k-skerry .d-points{
+    margin-top:auto;gap:0;padding-top:14px;border-top:1px solid var(--ink);
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+  .sld.k-skerry .d-points > div{padding-right:18px}
+  .sld.k-skerry .d-points > div + div{padding-left:18px;border-left:1px dotted var(--rule)}
+  .sld.k-skerry .d-points span{font-size:7.8px;letter-spacing:.22em;color:var(--accent)}
+  .sld.k-skerry .d-points b{display:block;margin-top:8px;font-size:18.5px;font-weight:500;letter-spacing:-.015em}
+  .sld.k-skerry .d-points i{display:block;margin-top:5px;font-size:9.8px;line-height:1.66;color:var(--muted)}
+  .sld.k-skerry .d-points + .d-note,
+  .sld.k-skerry .d-bars + .d-note{margin-top:16px;border-top:0}
+  /* 封面 */
+  .sld.k-skerry .d-cover{padding:0;display:flex;flex-direction:column}
+  .sld.k-skerry .d-cover-top{
+    order:0;margin:0 27px;padding:44px 40px 13px;border-bottom:1px solid var(--rule);
+    font-size:8px;letter-spacing:.22em;color:var(--muted);
+  }
+  .sld.k-skerry .d-cover-top span:first-child{color:var(--accent)}
+  .sld.k-skerry .d-cover .d-h1{order:1;margin:26px 66px 0;font-size:58px}
+  .sld.k-skerry .d-cover .d-lead{order:2;margin:15px 66px 0;max-width:604px;font-size:13.2px;line-height:1.85}
+  .sld.k-skerry .d-cover-img{order:3;flex:1;min-height:320px;margin:24px 34px 0}
+  .sld.k-skerry .d-cover-stats{
+    order:4;margin:0 27px;padding:13px 40px 14px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+    border-top:1px solid var(--ink);
+  }
+  .sld.k-skerry .d-cover-stats > div{padding-right:16px}
+  .sld.k-skerry .d-cover-stats > div + div{padding-left:18px;border-left:1px dotted var(--rule)}
+  .sld.k-skerry .d-cover-stats b{display:block;font-size:30px;font-weight:500;letter-spacing:-.025em;line-height:1}
+  .sld.k-skerry .d-cover-stats span{
+    display:block;margin-top:8px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-size:7.4px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);
+  }
+  .sld.k-skerry .d-cover-foot{
+    order:5;margin:0 27px;padding:13px 40px 38px;border-top:0;
+    display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  }
+  .sld.k-skerry .d-cover-foot > div{padding-right:14px}
+  .sld.k-skerry .d-cover-foot > div + div{padding-left:14px;border-left:1px dotted var(--rule)}
+  .sld.k-skerry .d-cover-foot b{
+    display:block;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-size:7.2px;font-weight:400;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);
+  }
+  .sld.k-skerry .d-cover-foot span{display:block;margin-top:6px;font-size:11px;line-height:1.5;color:var(--ink)}
+  /* 摘要事实表 */
+  .sld.k-skerry .d-facts{margin-top:24px;border-top:1px solid var(--ink)}
+  .sld.k-skerry .d-fact{grid-template-columns:190px 1fr;padding:10px 0;border-bottom:1px dotted var(--rule)}
+  .sld.k-skerry .d-fact span{font-size:8px;letter-spacing:.18em;color:var(--muted)}
+  .sld.k-skerry .d-fact b{font-size:13.2px;font-weight:500}
+  /* 目录 */
+  .sld.k-skerry .d-toc{margin-top:22px;flex:1;display:flex;flex-direction:column;justify-content:space-between}
+  .sld.k-skerry .d-toc li{
+    grid-template-columns:88px minmax(0,1fr) 200px;gap:18px;align-items:center;flex:1;
+    padding:9px 0;border-top:1px dotted var(--rule);
+  }
+  .sld.k-skerry .d-toc li:last-child{border-bottom:1px dotted var(--rule)}
+  .sld.k-skerry .d-toc .n{
+    display:flex;align-items:center;gap:8px;color:var(--accent);
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:8.4px;letter-spacing:.16em;
+  }
+  .sld.k-skerry .d-toc .n::before{content:"";width:14px;height:1px;background:var(--accent)}
+  .sld.k-skerry .d-toc .t{font-size:20px;line-height:1.3;font-weight:500;letter-spacing:-.014em}
+  .sld.k-skerry .d-toc .d{font-size:9.6px;line-height:1.6;text-align:right;color:var(--muted)}
+  .sld.k-skerry .d-toc-figs{margin-top:auto;padding-top:12px;border-top:1px solid var(--ink)}
+  .sld.k-skerry .d-toc-figs li{font-size:9.6px;line-height:1.7}
+  .sld.k-skerry .d-toc-figs b{color:var(--accent)}
+  /* 章节页：图上文下，图片收在框里 */
+  .sld.k-skerry .d-sec{display:block}
+  .sld.k-skerry .d-sec-txt{
+    position:absolute;left:0;right:0;top:0;height:38%;padding:76px 76px 0 96px;
+    display:flex;flex-direction:column;align-items:flex-start;
+  }
+  .sld.k-skerry .d-sec-num{
+    padding:5px 10px;border:1px solid var(--accent);color:var(--accent);
+    font-size:8.2px;letter-spacing:.24em;text-transform:uppercase;
+  }
+  .sld.k-skerry .d-sec-t{margin-top:19px;max-width:648px;font-size:44px;line-height:1.14;letter-spacing:-.022em;font-weight:500}
+  .sld.k-skerry .d-sec-lead{
+    max-width:552px;margin-top:auto;padding-top:12px;border-top:1px dotted var(--rule);
+    font-size:13.4px;line-height:1.88;color:var(--body);
+  }
+  .sld.k-skerry .d-sec-img{position:absolute;left:34px;right:34px;bottom:34px;top:40%;margin:0;height:auto}
+  /* 图版：双线装裱 + 说明两栏 */
+  .sld.k-skerry .d-fig{padding:64px 66px 66px 66px}
+  .sld.k-skerry .d-fig-img{position:relative;background:rgba(255,255,255,.35);border:1px solid var(--ink)}
+  .sld.k-skerry .d-fig-img::after{content:"";position:absolute;inset:-9px;border:1px solid var(--rule);pointer-events:none}
+  .sld.k-skerry .d-fig-cap{grid-template-columns:92px 1fr;gap:18px;margin-top:22px;padding-top:0;border-top:0}
+  .sld.k-skerry .d-fig-no{
+    align-self:start;padding:4px 0;border-top:1px solid var(--accent);border-bottom:1px solid var(--accent);
+    color:var(--accent);text-align:left;letter-spacing:.18em;
+  }
+  .sld.k-skerry .d-fig-cap p{font-size:12.6px;line-height:1.8}
+  .sld.k-skerry .d-fig-src{grid-column:2;font-size:7.8px;letter-spacing:.16em;color:var(--muted)}
+  /* 表格：整格方格纸，合计行加双线 */
+  .sld.k-skerry .d-table{margin-top:20px;border-collapse:collapse;table-layout:fixed;width:100%}
+  .sld.k-skerry .d-table th:first-child{width:40%}
+  .sld.k-skerry .d-table th{
+    padding:8px 10px;background:rgba(31,75,94,.09);border:1px solid var(--ink);
+    color:var(--ink);font-size:7.8px;letter-spacing:.16em;
+  }
+  .sld.k-skerry .d-table td{padding:9px 10px;border:1px solid var(--rule);font-size:12.6px}
+  .sld.k-skerry .d-table tr.sum td{background:rgba(31,75,94,.11);border-top:2px solid var(--ink);font-weight:500}
+  .sld.k-skerry .d-read{margin-top:18px;padding-top:11px;border-top:1px dotted var(--rule);font-size:12px;line-height:1.76}
+  .sld.k-skerry .d-bars{
+    margin-top:26px;padding-top:11px;border-top:1px solid var(--ink);
+    flex:1;display:flex;flex-direction:column;justify-content:space-between;
+  }
+  .sld.k-skerry .d-bars-head{
+    display:flex;justify-content:space-between;gap:18px;
+    font-size:7.8px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
+  }
+  .sld.k-skerry .d-brow{
+    display:grid;grid-template-columns:110px 1fr 108px;gap:16px;align-items:center;
+    padding:5px 0;flex:1;border-bottom:1px dotted var(--rule);
+  }
+  .sld.k-skerry .d-brow span{font-size:9.6px;color:var(--body)}
+  .sld.k-skerry .d-btrack{display:flex;flex-direction:column;gap:3px}
+  .sld.k-skerry .d-btrack i{display:block;height:5px}
+  .sld.k-skerry .d-btrack i.b1{background:rgba(31,75,94,.32)}
+  .sld.k-skerry .d-btrack i.b2{background:var(--accent)}
+  .sld.k-skerry .d-brow b{
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:8.6px;font-weight:400;
+    letter-spacing:.02em;text-align:right;color:var(--ink);
+  }
+  /* 清单 */
+  .sld.k-skerry .d-list{margin-top:20px;flex:1;display:flex;flex-direction:column;justify-content:space-between}
+  .sld.k-skerry .d-list li{
+    grid-template-columns:58px 1fr;gap:18px;padding:14px 0;flex:1;align-items:start;
+    border-top:1px dotted var(--rule);
+  }
+  .sld.k-skerry .d-list li:last-child{border-bottom:1px solid var(--ink)}
+  .sld.k-skerry .d-list .n{padding-top:2px;font-size:10px;letter-spacing:.08em;color:var(--accent)}
+  .sld.k-skerry .d-list p{font-size:12.2px;line-height:1.8}
+  /* 尾声：纸页 + 框内照片 */
+  .sld.k-skerry .d-end{padding:0;display:flex;flex-direction:column}
+  .sld.k-skerry .d-end-txt{padding:66px 76px 0 96px}
+  .sld.k-skerry .d-end-t{margin-top:14px;font-size:38px;line-height:1.25;letter-spacing:-.02em;max-width:640px}
+  .sld.k-skerry .d-end-rows{margin-top:24px;max-width:700px}
+  .sld.k-skerry .d-end-row{padding:8px 0;border-top:1px dotted var(--rule);font-size:8.4px;letter-spacing:.14em}
+  .sld.k-skerry .d-end-img{flex:1;min-height:0;margin:22px 34px 34px}
   .sld.k-northwind{font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif}
   .sld.k-northwind .st{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--paper);color:var(--ink)}
   .sld.k-northwind .st-chrome{
