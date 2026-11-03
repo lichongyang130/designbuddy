@@ -9764,6 +9764,478 @@ export const CASE_DECKS = [
       },
     ],
   },
+  {
+    id: 'wavelength',
+    name: 'Wavelength FM',
+    en: 'Wavelength 96.4 · a 24-screen community radio site, every screen wired',
+    by: 'DesignBuddy',
+    cat: '网站',
+    fmt: 'site',
+    ratio: '1440×900 · 16:10',
+    date: 20261103,
+    kind: 'Site recreation',
+    category: '案例演示',
+    tags: ['radio', 'schedule', 'events', 'tickets', 'interactive'],
+    desc: 'A twenty-four-screen site for a community radio station in Ghent, on a 1440 × 900 canvas with a black ticker pinned above every page. Every screen answers: the schedule filters by day, the show page switches between three episodes, the live player moves through the running order, the archive filters by year, the article changes its own text size, the donation figure recalculates the yearly total, the ticket page adds a booking fee, the shop and the cart do real arithmetic, and the venue hours follow the day you pick. Ten photographs, no hand-typed numbers.',
+    bestFor: ['Cultural institutions', 'Schedule-heavy sites', 'Membership and ticketing', 'Editorial layout'],
+    visual: 'Warm paper #FAF7F2 with a black ticker bar and near-black ink #17130F, a single cobalt #1F3FE0 for links, selected chips and the ruler under a pull quote, and red #E23A4E reserved for the on-air dot and the play key. Georgia carries every headline; everything else is a 10 px uppercase label with .14 em tracking. Where Northwind is hairline pills and Bellwether is a dark rail, this one is a program guide: rules, time gutters, column text, and photographs that sit in the grid rather than beside it.',
+    how: 'Twenty-four screens at 1440 × 900 behind one ticker: home with a now/next/later switcher, a schedule filtered by day, a show page on three episodes, a genre index, the live player with transport controls, an archive filtered by year, an episode page with a transcript and a text-size control, a news index, a second article, donations on three amounts, a membership table, an events index filtered by type, a ticket page with a quantity stepper and a booking fee, a venue page with daily hours and a map, a team switcher, a contact page with three reasons, a shop filtered by type, a product with size and quantity, cart, checkout, account, press kit switcher, FAQ and a 404. Controls are data attributes; totals are derived once, in the app.',
+    styles: ['#FAF7F2', '#17130F', '#1F3FE0'],
+    colorway: 'Warm paper · Ink · Cobalt',
+    folio: false,
+    footLeft: 'Wavelength 96.4 · Ghent · 2026',
+    paper: '#FAF7F2',
+    ink: '#17130F',
+    accent: '#1F3FE0',
+    second: '#E23A4E',
+    muted: '#8A8074',
+    rule: '#E2DCD2',
+    body: '#4E463C',
+    display: 'serif',
+    slides: [
+      {
+        k: 'wl-page', label: '首页', kind: 'home', path: '/', nav: 'Schedule', now: 'Lowlight — Tue 21:00',
+        blocks: [
+          {
+            t: 'hero', kicker: 'Community radio · 96.4 FM · Ghent',
+            title: 'A station for\none city.',
+            sub: 'Eleven hours of live programming a day, made by forty-one volunteers, broadcast from a room above a bike shop on the Sleepstraat. No playlist, no algorithm, no ads.',
+            ctas: ['See the schedule', 'Listen live'],
+            chips: { g: 'slot', items: [['On now', 'now', true], ['Next', 'next', false], ['Later tonight', 'later', false]] },
+            panes: [
+              { id: 'now', img: '02', meta: 'On air · 14:00 – 16:00 · Afternoon Static' },
+              { id: 'next', img: '01', meta: 'Next · 16:00 – 18:00 · The Long Player' },
+              { id: 'later', img: '04', meta: 'Tonight · 21:00 – 23:00 · Lowlight, live session' },
+            ],
+          },
+        ],
+        band: ['96.4 FM', '41 volunteers', '11 hours live a day', 'Member funded since 2009'],
+      },
+      {
+        k: 'wl-page', label: '节目单', kind: 'schedule', path: '/schedule', nav: 'Schedule', bar: 'Thursday 4 November',
+        blocks: [
+          { t: 'head', kicker: 'Schedule', title: 'Thursday, hour by hour', right: 'All times CET\nLive shows marked red' },
+          {
+            t: 'schedule',
+            days: [['Mon', 'Mon', false], ['Tue', 'Tue', false], ['Wed', 'Wed', false], ['Thu', 'Thu', true], ['Fri', 'Fri', false], ['Sat', 'Sat', false], ['Sun', 'Sun', false]],
+            rows: [
+              ['07:00', 'Morning Static', 'ambient, weather, the ferry times', 'Mon Tue Wed Thu Fri', true],
+              ['09:00', 'The Long Player', 'one record, side by side', 'Mon Tue Wed Thu Fri', false],
+              ['11:00', 'Kitchen Radio', 'cooking, complaints, requests', 'Mon Tue Wed Thu Fri', false],
+              ['14:00', 'Afternoon Static', 'dub, dub, and more dub', 'Mon Tue Wed Thu Fri', true],
+              ['16:00', 'Sleepstraat Sounds', 'local labels, loud', 'Mon Tue Wed Thu', false],
+              ['21:00', 'Lowlight', 'slow music for the end of the day', 'Tue Thu Sat', false],
+              ['23:00', 'Night Bus', 'no talking after midnight', 'Wed Fri Sat', false],
+            ],
+          },
+          { t: 'rows', title: 'Also this week', rows: [['Friday', 'Lowlight live session, 21:00'], ['Saturday', 'Harvest Night at the venue, 19:00'], ['Sunday', 'Silent hour, no ads, no talking']] },
+        ],
+        band: ['Thursday', 'Seven shows', 'Two live right now', 'Requests by text'],
+      },
+      {
+        k: 'wl-page', label: '节目详情', kind: 'show', path: '/schedule/lowlight', nav: 'Schedule', bar: 'Lowlight · Tue & Thu 21:00',
+        blocks: [
+          { t: 'head', kicker: 'Show · Lowlight', title: 'Slow music for the end of the day', right: 'Tue & Thu · 21:00 – 23:00\nHosted by Maite Vos' },
+          { t: 'chips', g: 'ep', extra: ' style="margin:16px 0 0"', items: [['Ep. 214 · 31 Oct', 'e214', true], ['Ep. 213 · 29 Oct', 'e213', false], ['Ep. 212 · 24 Oct', 'e212', false]] },
+          {
+            t: 'split', img: '02', cap: 'Maite in the small studio, October 2026',
+            paras: 'Two hours of records that do not need to be anywhere else. No guest, no interview, no talking over the intro.',
+            rows: [['Running time', '1 h 58 min'], ['Records', '19'], ['Recorded', 'Live, small studio'], ['Archive', 'Public for 12 months']],
+          },
+          {
+            t: 'panes', items: [
+              { id: 'e214', rows: [['Episode 214 · 31 October 2026', '19 records'], ['First record', 'Dub Syndicate — Ravi Shankar Pt. 2'], ['Repeated', 'The September closer, on purpose']], body: 'Autumn arrived, so the same record opens and closes the month.' },
+              { id: 'e213', rows: [['Episode 213 · 29 October 2026', '17 records'], ['First record', 'Alice Coltrane — Journey'], ['Guest', 'None, as usual']], body: 'A short one: two records were skipped because the ferry was late and the studio was empty.' },
+              { id: 'e212', rows: [['Episode 212 · 24 October 2026', '21 records'], ['First record', 'Broadcast — Come On Let Us Go'], ['Repeated', 'One request, played twice']], body: 'The request show that was not a request show. Nineteen texts, four played.' },
+            ],
+          },
+        ],
+        band: ['Two hours', 'Nineteen records', 'Archive one year', 'Members get ten'],
+      },
+      {
+        k: 'wl-page', label: '节目索引', kind: 'shows', path: '/shows', nav: 'Shows', bar: 'Twenty-two shows',
+        blocks: [
+          { t: 'head', kicker: 'Shows', title: 'Everything we make, weekly', right: '22 shows\n41 volunteers' },
+          { t: 'chips', g: 'genre', extra: ' style="margin:16px 0 0"', items: [['All', 'all', true], ['Music', 'music', false], ['Talk', 'talk', false], ['Local', 'local', false]] },
+          {
+            t: 'cards', n: 3, items: [
+              { img: '02', kick: 'Music · Tue & Thu 21:00', name: 'Lowlight', meta: 'Slow music, no talking. Maite Vos.', tag: 'music' },
+              { img: '03', kick: 'Music · Fri 20:00', name: 'The Long Player', meta: 'One record, both sides, in order.', tag: 'music' },
+              { img: '06', kick: 'Local · Sat 11:00', name: 'Sleepstraat Sounds', meta: 'Labels and rooms within two kilometres.', tag: 'local' },
+              { img: '01', kick: 'Talk · Wed 18:00', name: 'Kitchen Radio', meta: 'Cooking, complaints, requests.', tag: 'talk' },
+              { img: '09', kick: 'Talk · Sun 12:00', name: 'The Archive Hour', meta: 'Tapes from 2009 to now.', tag: 'talk music' },
+              { img: '04', kick: 'Music · Mon 22:00', name: 'Live Room', meta: 'One band, one room, no overdubs.', tag: 'music local' },
+            ],
+          },
+          { t: 'rows', title: 'New this season', rows: [['Night Bus', 'Wednesdays from 23:00 · no talking after midnight'], ['The Archive Hour', 'Sundays at 12:00 · tapes from 2009'], ['Pitch a show', 'March and September · one paragraph, three tracks']] },
+        ],
+        band: ['22 shows', 'Music · Talk · Local', 'Live sessions monthly', 'Pitch us a show'],
+      },
+      {
+        k: 'wl-page', label: '直播', kind: 'listen', path: '/listen', nav: 'Listen', bar: 'Live · Afternoon Static', root: 'player',
+        tracks: 'Dub Syndicate — Ravi Shankar Pt. 2|Augustus Pablo — King Tubby Meets Rockers|Lee Perry — Blackboard Jungle|The Upsetters — Return of the Super Ape',
+        blocks: [
+          { t: 'head', kicker: 'Listen', title: 'Live from the small studio', right: '96.4 FM in Ghent\nStream everywhere else' },
+          { t: 'player', station: 'WAVELENGTH 96.4', first: 'Dub Syndicate — Ravi Shankar Pt. 2', shown: '14:00 – 16:00' },
+          {
+            t: 'tracklist', title: 'Running order · Afternoon Static', items: [
+              ['01', 'Dub Syndicate', 'Ravi Shankar Pt. 2 · 1996', '5:12'],
+              ['02', 'Augustus Pablo', 'King Tubby Meets Rockers Uptown', '3:04'],
+              ['03', 'Lee Perry', 'Blackboard Jungle Dub', '4:38'],
+              ['04', 'The Upsetters', 'Return of the Super Ape', '3:51'],
+            ],
+          },
+          {
+            t: 'grid2', left: [
+              { t: 'figure', img: '01', h: 168, cap: 'The desk, mid-programme. Two turntables, one CD player nobody uses.' },
+            ],
+            right: [
+              { t: 'rows', title: 'Also available', rows: [['Stream', '128 kbps, no login'], ['Archive', 'Ten years, members'], ['Podcast', 'Next morning'], ['Studio', '+32 9 224 96 40']] },
+            ],
+          },
+        ],
+        band: ['Press play', 'Four tracks queued', 'Text the studio', 'No ads, ever'],
+      },
+      {
+        k: 'wl-page', label: '档案', kind: 'archive', path: '/archive', nav: 'Archive', bar: '10 years · 3,214 episodes',
+        blocks: [
+          { t: 'head', kicker: 'Archive', title: 'Ten years, searchable', right: '3,214 episodes\nMembers get everything' },
+          { t: 'chips', g: 'year', extra: ' style="margin:16px 0 6px"', items: [['2026', '2026', true], ['2025', '2025', false], ['2024', '2024', false], ['Tapes 09–19', 'old', false]] },
+          {
+            t: 'rows', rows: [
+              ['Lowlight · Ep. 214 · 1 h 58', '31 Oct 2026', '2026'], ['The Long Player · Blue Train · 1 h 12', '30 Oct 2026', '2026'],
+              ['Kitchen Radio · Pumpkin · 58 min', '29 Oct 2026', '2026'], ['Lowlight · Ep. 203 · 1 h 44', '12 Sep 2026', '2026'],
+              ['Harvest Night · Live from the venue · 2 h 20', '9 Nov 2025', '2025'], ['Silent Hour · 1 h 00', '2 Mar 2025', '2025'],
+              ['The Archive Hour · Tapes 09–12 · 55 min', '14 Jun 2024', '2024'],
+              ['Lowlight · the first tape · 42 min', '17 Sep 2009', 'old'],
+            ],
+          },
+          { t: 'figure', img: '09', h: 168, cap: 'The tape shelf, before the 2016 digitisation. Everything before 2016 exists twice.' },
+        ],
+        band: ['3,214 episodes', 'Members only', 'Tapes to 2009', 'Digitised 2016'],
+      },
+      {
+        k: 'wl-page', label: '单集', kind: 'episode', path: '/archive/2026-10-31', nav: 'Archive', bar: 'Ep. 214 · Lowlight',
+        blocks: [
+          {
+            t: 'article', kicker: 'Episode · 31 October 2026 · Lowlight',
+            title: 'Nineteen records, and the one we played twice',
+            byline: 'Maite Vos · recorded live · 1 h 58 min',
+            paras: [
+              'There is no plan for Lowlight. The records arrive on the bus in a bag, and the order is decided in the ten minutes before the show, mostly by what the weather is doing.',
+              'This episode opens with the same record we closed with in September, which is not a mistake. It is the only way we could think of to say that autumn had arrived.',
+              'Halfway through, a listener texted in asking what the second track was, and we read it out, and that is as close to an interview as this show gets.',
+            ],
+            pull: 'The right record at the wrong hour is just background music.',
+            tail: 'Episodes stay public for a year. After that they move to the members archive, where the whole ten years sits in one list, ordered by nothing in particular.',
+            img: '03', rows: [['Broadcast', '31 Oct 2026 · 21:00'], ['Duration', '1 h 58 min'], ['Records', '19'], ['Archive', 'Public for 12 months']],
+          },
+          { t: 'figure', img: '04', h: 150, cap: 'Lowlight live, September: three players, one room, no overdubs.' },
+        ],
+        band: ['Episode 214', 'Text size is yours', 'Public for a year', 'Members keep it'],
+      },
+      {
+        k: 'wl-page', label: '新闻', kind: 'news', path: '/news', nav: 'Archive', bar: 'Newsroom',
+        blocks: [
+          { t: 'head', kicker: 'News', title: 'From the station', right: 'Four or five notes a month\nNo press releases' },
+          { t: 'chips', g: 'kind', extra: ' style="margin:16px 0 6px"', items: [['All', 'all', true], ['Station', 'station', false], ['Programming', 'prog', false], ['Money', 'money', false]] },
+          {
+            t: 'rows', rows: [
+              ['A new transmitter on the roof', '2 Nov 2026 · Station', 'station'], ['Lowlight moves to two nights', '28 Oct 2026 · Programming', 'prog'],
+              ['Where the membership money went', '14 Oct 2026 · Money', 'money'], ['The studio is closed on Mondays in November', '30 Sep 2026 · Station', 'station'],
+              ['We are hiring a part-time engineer', '12 Sep 2026 · Station', 'station'],
+            ],
+          },
+          { t: 'figure', img: '05', h: 176, cap: 'The mast on the roof, 34 metres, replaced this month.' },
+        ],
+        band: ['Five notes', 'Station · Programming · Money', 'No press releases', 'Subscribe by RSS'],
+      },
+      {
+        k: 'wl-page', label: '新闻详情', kind: 'newsitem', path: '/news/transmitter', nav: 'Archive', bar: 'New transmitter · 2 Nov',
+        blocks: [
+          {
+            t: 'article', kicker: 'Station · 2 November 2026',
+            title: 'A new transmitter, and why the old one hissed',
+            byline: 'Iris Coppens · station manager',
+            paras: [
+              'The mast on the roof is thirty-four metres tall and has been there since 2009, when the station was two people and a borrowed desk.',
+              'For the last eighteen months it has been putting a hiss under everything broadcast after sunset. Listeners in the south of the city heard it first, which is how we knew it was the transmitter and not the studio.',
+              'The replacement arrived in September, sat in the corridor for six weeks, and went up on a Tuesday morning while the station played records and pretended nothing was happening.',
+            ],
+            pull: 'Nobody notices a transmitter until it adds a sound to the music.',
+            tail: 'Coverage is unchanged on paper and better in practice: the south of the city, Merelbeke, and a stretch of the E40 that has never had a signal before.',
+            img: '05', rows: [['Power', '120 W, reduced to 60 at night'], ['Reach', 'Ghent + 12 km'], ['Cost', '€18,400, members fund'], ['Old mast', 'Recycled, mostly']],
+          },
+          { t: 'figure', img: '10', h: 150, cap: 'The street at 21:00. The signal reaches Merelbeke and one stretch of the E40.' },
+        ],
+        band: ['New mast', '€18,400', 'Member funded', 'Better in the south'],
+      },
+      {
+        k: 'wl-page', label: '支持', kind: 'support', path: '/support', nav: 'Listen', bar: 'Member funded', root: 'donate',
+        blocks: [
+          { t: 'head', kicker: 'Support', title: 'The station runs on members', right: 'Roughly 60% of income\nNo advertising, ever' },
+          { t: 'chips', g: 'amt', extra: ' style="margin:16px 0 0"', items: [['€5', '5', false], ['€10', '10', true], ['€25', '25', false], ['€50', '50', false]] },
+          { t: 'outs', items: [['Per month', 'month', '€10'], ['Per year', 'year', '€120'], ['Pays for', 'covers', 'a third of a month of the studio rent']] },
+          {
+            t: 'rows', title: 'What members get', rows: [
+              ['Archive', 'Ten years, everything, no ads'], ['Events', 'Two euros off every ticket'],
+              ['Newsletter', 'Monthly, one page'], ['Vote', 'At the annual meeting, one vote per member'],
+            ],
+          },
+          { t: 'figure', img: '06', h: 152, cap: 'Harvest Night 2025. The bar paid for itself; the room did not.' },
+        ],
+        band: ['Members fund 60%', 'No advertising', 'Cancel any month', 'One vote each'],
+      },
+      {
+        k: 'wl-page', label: '会员', kind: 'members', path: '/support/members', nav: 'Listen', bar: 'Three tiers',
+        blocks: [
+          { t: 'head', kicker: 'Membership', title: 'Three ways to pay for a radio station', right: 'Annual, or monthly\nCancel any time' },
+          { t: 'chips', g: 'tier', extra: ' style="margin:14px 0 10px"', items: [['Listener', 'l', true], ['Supporter', 's', false], ['Patron', 'p', false]] },
+          {
+            t: 'tiers', items: [
+              { kicker: 'Tier 01', name: 'Listener', price: '€5 / month', cta: 'Join', perks: ['The members archive', 'Monthly newsletter', 'One vote'] },
+              { kicker: 'Tier 02 · most chosen', name: 'Supporter', price: '€10 / month', cta: 'Join', perks: ['Everything above', '€2 off event tickets', 'Name in the annual report'] },
+              { kicker: 'Tier 03', name: 'Patron', price: '€25 / month', cta: 'Join', perks: ['Everything above', 'Two guest passes a year', 'Studio tour with an engineer'] },
+            ],
+          },
+          {
+            t: 'panes', items: [
+              { id: 'l', rows: [['Listener · €5 a month', '€60 a year'], ['Best for', 'Listening at home, all ten years'], ['Not included', 'Ticket discount, guest passes']] },
+              { id: 's', rows: [['Supporter · €10 a month', '€120 a year'], ['Best for', 'People who come to things'], ['Includes', '€2 off every ticket, name in the annual report']] },
+              { id: 'p', rows: [['Patron · €25 a month', '€300 a year'], ['Best for', 'Keeping the transmitter on the roof'], ['Includes', 'Two guest passes, a studio tour']] },
+            ],
+          },
+        ],
+        band: ['€5 · €10 · €25', 'Annual meeting in March', 'One vote each', 'Cancel any time'],
+      },
+      {
+        k: 'wl-page', label: '活动', kind: 'events', path: '/events', nav: 'Events', bar: 'Three events this month',
+        blocks: [
+          { t: 'head', kicker: 'Events', title: 'Rooms we borrow, nights we run', right: 'Four or five a month\nMembers get €2 off' },
+          { t: 'chips', g: 'type', extra: ' style="margin:16px 0 6px"', items: [['All', 'all', true], ['Gig', 'gig', false], ['Talk', 'talk', false], ['Workshop', 'workshop', false]] },
+          {
+            t: 'rows', rows: [
+              ['Harvest Night · Lowlight live · 19:00', 'Sat 14 Nov · €12', 'gig'], ['How a transmitter works · talk · 20:00', 'Thu 19 Nov · free', 'talk'],
+              ['Tape transfer workshop · 14:00', 'Sun 22 Nov · €8', 'workshop'], ['Sleepstraat Sounds · label night · 21:00', 'Fri 27 Nov · €10', 'gig'],
+              ['Members meeting · 15:00', 'Sun 6 Dec · members only', 'talk'],
+            ],
+          },
+          { t: 'figure', img: '06', h: 168, cap: 'Harvest Night, 2025: 240 people in a room licensed for 200.' },
+        ],
+        band: ['Four events', 'Members get €2 off', 'One free talk', 'Venue: De Centrale'],
+      },
+      {
+        k: 'wl-page', label: '活动详情', kind: 'event', path: '/events/harvest-night', nav: 'Events', bar: 'Harvest Night · 14 Nov', root: 'ticket', base: 12, qty: 1,
+        blocks: [
+          { t: 'head', kicker: 'Event', title: 'Harvest Night', right: 'Sat 14 November · 19:00\nDe Centrale, Ghent' },
+          {
+            t: 'split', img: '06', h: 250, cap: 'Last year, 240 people in a room licensed for 200',
+            paras: 'Three live sets from the Lowlight orbit, one bar, no support act. Doors at 19:00, first set at 20:00, last record at 01:00.',
+            rows: [['Doors', '19:00'], ['Sets', '20:00 · 22:00 · 23:30'], ['Age', '18+'], ['Cloakroom', 'Free, coat only']],
+          },
+          {
+            t: 'grid2', left: [
+              { t: 'rows', title: 'Tickets', rows: [['Price', '€12 per ticket'], ['Booking fee', '€1.50 per ticket'], ['Members', '€10, show your card'], ['On the door', '€15, if there is room']] },
+            ],
+            right: [
+              { t: 'summary', dark: true, title: 'Order', lines: [['Tickets', '<span data-bw-out="qty">1</span>'], ['Tickets total', '<span data-bw-out="sub">€12</span>'], ['Booking fee', '<span data-bw-out="fee">€1.50</span>'], ['Total', '<span data-bw-out="total">€13.50</span>']] },
+              { t: 'stepper', n: 1 },
+            ],
+          },
+        ],
+        band: ['€12 a ticket', '€1.50 fee', 'Members €10', 'Doors 19:00'],
+      },
+      {
+        k: 'wl-page', label: '场地', kind: 'venue', path: '/venue', nav: 'Events', bar: 'Sleepstraat 118',
+        blocks: [
+          { t: 'head', kicker: 'Venue', title: 'Above the bike shop, second door', right: 'Sleepstraat 118\nTwo flights, no lift' },
+          { t: 'chips', g: 'day', extra: ' style="margin:16px 0 6px"', items: [['Mon', 'Mon', true], ['Tue', 'Tue', false], ['Wed', 'Wed', false], ['Thu', 'Thu', false], ['Fri', 'Fri', false], ['Sat', 'Sat', false], ['Sun', 'Sun', false]] },
+          {
+            t: 'rows', rows: [
+              ['Monday', 'closed', 'Mon'], ['Tuesday', '14:00 – 23:00', 'Tue'], ['Wednesday', '14:00 – 23:00', 'Wed'],
+              ['Thursday', '14:00 – 01:00', 'Thu'], ['Friday', '14:00 – 01:00', 'Fri'], ['Saturday', '12:00 – 01:00', 'Sat'], ['Sunday', '12:00 – 20:00', 'Sun'],
+            ],
+          },
+          {
+            t: 'grid2', left: [
+              { t: 'rows', title: 'Getting here', rows: [['Tram', '4 to Sleutelstraat, 3 min'], ['Bike', 'Racks in the courtyard'], ['Car', 'Paid, under the library'], ['Access', 'Two flights, no lift']] },
+            ],
+            right: [{ t: 'map', label: 'Sleepstraat 118 · Ghent', pins: [[42, 46]] }],
+          },
+        ],
+        band: ['Open six days', 'Thursday until 01:00', 'No lift', 'Bike racks inside'],
+      },
+      {
+        k: 'wl-page', label: '团队', kind: 'team', path: '/team', nav: 'Archive', bar: '41 volunteers',
+        blocks: [
+          { t: 'head', kicker: 'Team', title: 'Forty-one people, one rota', right: 'Three paid, the rest volunteers' },
+          { t: 'chips', g: 'team', extra: ' style="margin:16px 0 10px"', items: [['Station', 'station', true], ['Engineers', 'eng', false], ['Hosts', 'hosts', false]] },
+          {
+            t: 'panes', items: [
+              { id: 'station', rows: [['Iris Coppens', 'Station manager · paid'], ['Jo De Smet', 'Programme · volunteer'], ['Farah Nouri', 'Membership · paid']] },
+              { id: 'eng', rows: [['Wim Aerts', 'Chief engineer · paid'], ['Tom Vermeulen', 'Live sound · volunteer'], ['Sofie Maes', 'Archive · volunteer']] },
+              { id: 'hosts', rows: [['Maite Vos', 'Lowlight · since 2016'], ['Bram Willems', 'The Long Player · since 2011'], ['Lotte Peeters', 'Kitchen Radio · since 2021']] },
+            ],
+          },
+          { t: 'figure', img: '01', h: 200, cap: 'The desk, the rota, and a record that should be filed somewhere else.' },
+        ],
+        band: ['41 volunteers', 'Three paid', 'One rota', 'Everyone does a night'],
+      },
+      {
+        k: 'wl-page', label: '联系', kind: 'contact', path: '/contact', nav: 'Archive', bar: 'Write to us',
+        blocks: [
+          { t: 'head', kicker: 'Contact', title: 'What do you need?', right: 'Answer within a week\nFaster if it is about a show' },
+          { t: 'chips', g: 'why', extra: ' style="margin:16px 0 10px"', items: [['A show idea', 'pitch', true], ['Press', 'press', false], ['Something broke', 'tech', false]] },
+          {
+            t: 'panes', items: [
+              { id: 'pitch', rows: [['Who reads it', 'Jo De Smet, programme'], ['What to send', 'One paragraph, three tracks'], ['Timing', 'Pitches open twice a year'], ['Paid', 'No, but the training is free']] },
+              { id: 'press', rows: [['Press kit', '/press · logos, photos, facts'], ['Interview', 'Iris Coppens, station manager'], ['Lead time', 'Five working days'], ['Photos', 'Credit Wavelength']] },
+              { id: 'tech', rows: [['Stream down', 'Text +32 9 224 96 40'], ['No signal', 'Check 96.4 first'], ['Website', 'This page, ironically'], ['In person', 'Tuesday to Sunday']] },
+            ],
+          },
+          { t: 'form', cta: 'Send it', fields: [{ label: 'Name', ph: 'Maite Vos' }, { label: 'Email', ph: 'maite@example.be' }, { label: 'Subject', ph: 'A show about the harbour' }, { label: 'When', ph: 'Spring 2027' }, { label: 'Message', ph: 'One paragraph is enough', w: true }] },
+        ],
+        band: ['One week', 'Programme pitches twice a year', 'Press kit online', 'Studio phone answered'],
+      },
+      {
+        k: 'wl-page', label: '商店', kind: 'shop', path: '/shop', nav: 'Shop', bar: 'Shop · members get 10%',
+        blocks: [
+          { t: 'head', kicker: 'Shop', title: 'Things with the logo on them', right: 'Made in Ghent\nMembers get 10% off' },
+          { t: 'chips', g: 'cat', extra: ' style="margin:16px 0 0"', items: [['All', 'all', true], ['Clothing', 'wear', false], ['Records', 'rec', false], ['Paper', 'paper', false]] },
+          {
+            t: 'cards', n: 3, items: [
+              { img: '07', kick: 'Clothing · 100% cotton', name: 'Station tote', meta: '€18 · two colours', tag: 'wear' },
+              { img: '09', kick: 'Records · 180 g', name: 'Lowlight · Tape 01', meta: '€24 · 300 pressed', tag: 'rec' },
+              { img: '08', kick: 'Paper · A2', name: 'Harvest Night poster', meta: '€12 · risograph, signed', tag: 'paper' },
+            ],
+          },
+          { t: 'rows', title: 'Shipping', rows: [['Belgium', '€4, next day'], ['EU', '€9, three days'], ['Pick up', 'Free, at the venue'], ['Returns', '30 days, unworn']] },
+        ],
+        band: ['Members 10% off', 'Made in Ghent', '300 records pressed', 'Free pick up'],
+      },
+      {
+        k: 'wl-page', label: '商品', kind: 'product', path: '/shop/tote', nav: 'Shop', bar: 'Station tote · €18', root: 'bike', base: 18, qty: 1,
+        blocks: [
+          { t: 'head', kicker: 'Shop · Clothing', title: 'Station tote', right: '€18\nMembers €16.20' },
+          {
+            t: 'split', img: '07', cap: 'Two colours, printed in Ghent',
+            paras: 'Heavy cotton, 38 × 42 cm, screen printed on both sides. Fits a record, a laptop, or a week of shopping.',
+            rows: [['Material', '280 g cotton'], ['Size', '38 × 42 cm'], ['Print', 'Two colours, water based'], ['Made', 'Ghent, 40 km from here']],
+          },
+          { t: 'outs', items: [['Size', 'size', 'One size'], ['Per bag', 'unit', '€18'], ['Quantity', 'qty', '1'], ['Total', 'total', '€18']] },
+          { t: 'opts', label: 'Colour', g: 'build', cols: 3, items: [['Ink', 0, true], ['Paper', 0], ['Cobalt', 2]] },
+          { t: 'stepper', n: 1 },
+        ],
+        band: ['€18', 'Members €16.20', 'Printed in Ghent', 'Ships next day'],
+      },
+      {
+        k: 'wl-page', label: '购物车', kind: 'cart', path: '/cart', nav: 'Shop', bar: 'Cart', root: 'cart',
+        blocks: [
+          { t: 'head', kicker: 'Cart', title: 'Two things in the bag', right: 'Members get 10% off\nApplied at checkout' },
+          {
+            t: 'grid2', left: [
+              {
+                t: 'lines', items: [
+                  { img: '07', name: 'Station tote · ink', meta: 'One size · cotton', price: 18, qty: 1 },
+                  { img: '09', name: 'Lowlight · Tape 01', meta: '180 g · 300 pressed', price: 24, qty: 2 },
+                ],
+              },
+              { t: 'rows', title: 'Before you pay', rows: [['Membership', 'Checked against your card at checkout'], ['Pick up', 'Free, at the venue, Tuesday to Sunday'], ['Returns', 'Thirty days, unworn, no questions'], ['Postage', '€4 in Belgium, €9 in the EU']] },
+            ],
+            right: [
+              { t: 'summary', dark: true, title: 'Order', lines: [['Items', '<span data-bw-out="count">3</span>'], ['Subtotal', '<span data-bw-out="subtotal">€66</span>'], ['Member discount', '<span data-bw-out="discount">−€6.60</span>'], ['Total', '<span data-bw-out="total">€59.40</span>']] },
+              { t: 'rows', title: 'Delivery', rows: [['Belgium', '€4 · next day'], ['EU', '€9 · three days'], ['Pick up', 'Free']] },
+            ],
+          },
+        ],
+        band: ['Members save €6.60', 'Shipping €4', 'Free pick up', 'Returns 30 days'],
+      },
+      {
+        k: 'wl-page', label: '结算', kind: 'checkout', path: '/checkout', nav: 'Shop', bar: 'Checkout', root: 'checkout', subtotal: 66,
+        blocks: [
+          { t: 'head', kicker: 'Checkout', title: 'Where should it go?', right: 'Three options\nPick up is free' },
+          {
+            t: 'grid2', left: [
+              { t: 'opts', label: 'Shipping', g: 'ship', cols: 3, items: [['Pick up', 0, true, 'free'], ['Belgium', 4, false, '+€4'], ['EU', 9, false, '+€9']] },
+              {
+                t: 'form', cta: 'Pay', fields: [
+                  { label: 'Name', ph: 'Maite Vos' }, { label: 'Email', ph: 'maite@example.be' },
+                  { label: 'Street', ph: 'Sleepstraat 118' }, { label: 'City', ph: 'Ghent' },
+                  { label: 'Postcode', ph: '9000' }, { label: 'Card', ph: '•••• 4242' },
+                ],
+              },
+            ],
+            right: [
+              { t: 'summary', dark: true, title: 'Order', lines: [['Subtotal', '<span data-bw-out="subtotal">€66</span>'], ['Shipping', '<span data-bw-out="ship">free</span>'], ['Total', '<span data-bw-out="total">€66</span>']] },
+              { t: 'rows', title: 'Good to know', rows: [['Dispatch', 'Next working day'], ['Members', '10% taken at the desk'], ['Returns', '30 days'], ['Questions', 'shop@wavelength.be']] },
+            ],
+          },
+        ],
+        band: ['Pick up free', 'Belgium €4', 'EU €9', 'Next day dispatch'],
+      },
+      {
+        k: 'wl-page', label: '账户', kind: 'account', path: '/account', nav: 'Shop', bar: 'Account · Maite Vos',
+        blocks: [
+          { t: 'head', kicker: 'Account', title: 'Maite Vos', right: 'Member since 2016\nSupporter tier' },
+          { t: 'chips', g: 'state', extra: ' style="margin:16px 0 6px"', items: [['All', 'all', true], ['Tickets', 'ticket', false], ['Shop', 'shop', false]] },
+          {
+            t: 'rows', rows: [
+              ['Harvest Night · 2 tickets', '14 Nov 2026 · €26', 'ticket'], ['Lowlight live · 1 ticket', '9 Nov 2025 · €12', 'ticket'],
+              ['Station tote · ink', '2 Nov 2026 · €18', 'shop'], ['Lowlight · Tape 01', '18 Aug 2026 · €24', 'shop'],
+            ],
+          },
+          { t: 'rows', title: 'Membership', rows: [['Tier', 'Supporter · €10 a month'], ['Since', 'March 2016'], ['Next payment', '1 December 2026'], ['Vote', 'One, at the annual meeting']] },
+        ],
+        band: ['Supporter since 2016', 'Two tickets booked', 'One vote', 'Cancel any time'],
+      },
+      {
+        k: 'wl-page', label: '媒体包', kind: 'press', path: '/press', nav: 'Archive', bar: 'Press kit',
+        blocks: [
+          { t: 'head', kicker: 'Press', title: 'Everything a journalist needs', right: 'Updated quarterly\nCredit Wavelength' },
+          { t: 'chips', g: 'kit', extra: ' style="margin:16px 0 10px"', items: [['Logos', 'logo', true], ['Photos', 'photo', false], ['Facts', 'fact', false]] },
+          {
+            t: 'panes', items: [
+              { id: 'logo', rows: [['Wordmark', 'SVG · 12 kB · black on paper'], ['Square mark', 'SVG · 8 kB · cobalt'], ['Usage', 'Do not outline, do not recolour'], ['Clear space', 'Half the height of the mark']] },
+              { id: 'photo', rows: [['Studio', 'Six frames, 3 000 px, credit Maite Vos'], ['Desk', 'Four frames, credit Wim Aerts'], ['Portrait', 'Station manager, two frames'], ['Licence', 'Editorial use, credit Wavelength']] },
+              { id: 'fact', rows: [['Founded', '2009, above a bike shop'], ['Frequency', '96.4 FM, Ghent'], ['Volunteers', '41'], ['Income', '60% members, 40% grants']] },
+            ],
+          },
+          { t: 'rows', title: 'For interviews', rows: [['Station manager', 'Iris Coppens · iris@wavelength.be'], ['Programme', 'Jo De Smet · jo@wavelength.be'], ['Lead time', 'Five working days'], ['Phone', '+32 9 224 96 40']] },
+
+        ],
+        band: ['Logos · photos · facts', 'Editorial use', 'Credit Wavelength', 'Updated quarterly'],
+      },
+      {
+        k: 'wl-page', label: '常见问题', kind: 'faq', path: '/faq', nav: 'Listen', bar: 'Six questions',
+        blocks: [
+          { t: 'head', kicker: 'FAQ', title: 'What people ask at the door', right: 'Six answers\nAll of them honest' },
+          {
+            t: 'acc', items: [
+              ['Can I just walk in?', 'Tuesday to Sunday, yes. There is a bar, a sofa, and someone who will explain what is happening on air.'],
+              ['Do you play requests?', 'Text the studio on +32 9 224 96 40. Requests are read out, not guaranteed, occasionally mocked.'],
+              ['Why is there no advertising?', 'Because 60% of the income is members and 40% is grants. The trade is that we ask twice a year instead of every hour.'],
+              ['Can I pitch a show?', 'Twice a year, in March and September. One paragraph and three tracks is the whole application.'],
+              ['Is the archive free?', 'The last twelve months are. Everything back to 2009 is members only, which is how the tapes got digitised.'],
+              ['Where does the money go?', 'Rent, the transmitter, two and a half salaries, and the licence. The bar pays for itself, roughly.'],
+            ],
+          },
+        ],
+        band: ['Six answers', 'Text the studio', 'Pitches in March', 'Archive to 2009'],
+      },
+      {
+        k: 'wl-page', label: '404', kind: '404', path: '/schedule/thursdy', nav: 'Schedule', bar: 'Not found',
+        blocks: [
+          {
+            t: 'notfound', img: '10', title: 'That frequency is silent.',
+            sub: 'A show that moved, an episode that went to the members archive, or a link from 2019. The schedule, the archive and the shop are all still on air.',
+            chips: { g: 'fix', items: [['Schedule', 'schedule', true], ['Archive', 'archive', false], ['Shop', 'shop', false]] },
+            rows: [['This week on air', '/schedule', 'schedule'], ['Ten years of episodes', '/archive', 'archive'], ['The shop', '/shop', 'shop']],
+          },
+        ],
+        band: ['404', 'Nothing lost', 'Three ways back', '96.4 FM'],
+      },
+    ],
+  }
 ]
 
 /* ── 渲染 ─────────────────────────────────────────────
@@ -10780,6 +11252,184 @@ function afTotals(base, groups) {
         '<div class="bw-main">' + (s.blocks || []).map(block).join('') + '</div>' + band + '</div></div>'
     }
 
+    case 'wl-page': {
+      const NAVD = [['/schedule', 'Schedule'], ['/shows', 'Shows'], ['/listen', 'Listen'], ['/archive', 'Archive'],
+        ['/events', 'Events'], ['/shop', 'Shop']]
+      const im = (n, h) => '<div class="wl-img"' + (h ? ' style="height:' + h + 'px"' : '') + '>' + imgTag(deck, n) + '</div>'
+      const chiprow = (g, items, extra) => '<div class="wl-chiprow"' + (extra || '') + '>' + items.map(([label, val, on, attrs]) =>
+        '<span class="wl-chip' + (on ? ' on' : '') + '" data-bw="chip" data-g="' + g + '" data-f="' + esc(val) + '"' + (attrs || '') + '>' +
+        esc(label) + '</span>').join('') + '</div>'
+      const optrow = (g, items, cols) => '<div class="wl-cols" style="grid-template-columns:repeat(' + (cols || items.length) + ',1fr);gap:6px">' +
+        items.map(([label, add, on, note]) => '<span class="wl-opt' + (on ? ' on' : '') + '" data-bw="opt" data-g="' + g +
+          '" data-add="' + add + '" data-label="' + esc(label) + '">' + esc(label) + (note ? '<i>' + esc(note) + '</i>' : '') + '</span>').join('') + '</div>'
+      const stepper = (out, n) => '<span class="wl-stepwrap" style="display:inline-flex;align-items:center;gap:1px">' +
+        '<span class="wl-step" data-bw="step" data-d="-1">−</span><span class="wl-qty" data-bw-out="' + out + '">' + n + '</span>' +
+        '<span class="wl-step" data-bw="step" data-d="1">+</span></span>'
+      const row = ([a, b, tag]) => '<div class="wl-row"' + (tag ? ' data-f="' + esc(tag) + '"' : '') + '><span class="t"></span>' +
+        '<span class="n"><b>' + esc(a) + '</b></span><span class="r">' + esc(b) + '</span></div>'
+
+      const block = (b) => {
+        if (b.t === 'head') {
+          return '<div class="wl-head"><div>' + (b.kicker ? '<div class="wl-kick">' + esc(b.kicker) + '</div>' : '') +
+            '<h2 class="wl-h2" style="margin-top:8px">' + esc(b.title) + '</h2></div>' +
+            (b.right ? '<div class="wl-note" style="text-align:right;max-width:300px">' + esc(b.right) + '</div>' : '') + '</div>'
+        }
+        if (b.t === 'hero') {
+          const right = b.panes ? b.panes.map((p, i) => '<div class="wl-pane bw-pane' + (i === 0 ? ' on' : '') + '" data-pane="' + esc(p.id) + '">' +
+            im(p.img, 320) + '<div class="wl-cap">' + esc(p.meta) + '</div></div>').join('') : (b.img ? im(b.img) : '')
+          return '<div class="wl-hero"><div>' + (b.kicker ? '<div class="wl-kick">' + esc(b.kicker) + '</div>' : '') +
+            '<h1 class="wl-h1">' + esc(b.title) + '</h1>' + (b.sub ? '<p class="wl-sub">' + esc(b.sub) + '</p>' : '') +
+            (b.ctas ? '<div class="wl-ctas">' + b.ctas.map((c, i) => '<span class="wl-btn' + (i ? ' ghost' : '') + '">' + esc(c) + '</span>').join('') + '</div>' : '') +
+            (b.chips ? '<div style="margin-top:20px">' + chiprow(b.chips.g, b.chips.items) + '</div>' : '') +
+            '</div><div class="wl-heroimg">' + right + '</div></div>'
+        }
+        if (b.t === 'cards') {
+          return '<div class="wl-cols" style="grid-template-columns:repeat(' + (b.n || 3) + ',1fr);gap:22px;padding-top:16px">' +
+            b.items.map((c) => '<div class="wl-card"' + (c.tag ? ' data-f="' + esc(c.tag) + '"' : '') + '>' + im(c.img) +
+              '<div class="wl-kick" style="margin-top:9px">' + esc(c.kick || '') + '</div>' +
+              '<h3 class="wl-h3" style="margin-top:4px">' + esc(c.name) + '</h3>' +
+              '<div class="wl-note" style="margin-top:4px">' + esc(c.meta) + '</div></div>').join('') + '</div>'
+        }
+        if (b.t === 'schedule') {
+          return chiprow('day', b.days, ' style="margin:14px 0 8px"') + '<div class="wl-rows">' +
+            b.rows.map(([time, title, meta, days, live]) => '<div class="wl-row' + (live ? ' on' : '') + '" data-f="' + esc(days) + '">' +
+              '<span class="t">' + esc(time) + '</span><span class="n"><b>' + esc(title) + '</b>' +
+              '<span class="wl-note">' + esc(meta) + '</span></span><span class="r wl-days">' + esc(days) +
+              (live ? '<b class="wl-on">on air</b>' : '') + '</span></div>').join('') + '</div>'
+        }
+        if (b.t === 'split') {
+          return '<div class="wl-split"><div>' + im(b.img, b.h || 320) + (b.cap ? '<div class="wl-cap">' + esc(b.cap) + '</div>' : '') + '</div><div>' +
+            (b.kicker ? '<div class="wl-kick">' + esc(b.kicker) + '</div>' : '') +
+            (b.title ? '<h2 class="wl-h2" style="margin-top:8px">' + esc(b.title) + '</h2>' : '') +
+            (b.paras ? '<p class="wl-sub" style="max-width:none">' + esc(b.paras) + '</p>' : '') +
+            (b.rows ? '<div class="wl-rows" style="margin-top:12px">' + b.rows.map(row).join('') + '</div>' : '') + '</div></div>'
+        }
+        if (b.t === 'rows') {
+          return (b.title ? '<div class="wl-label">' + esc(b.title) + '</div>' : '') +
+            '<div class="wl-rows">' + b.rows.map((r) => Array.isArray(r) && r.length === 2
+              ? '<div class="wl-row"><span class="n"><b>' + esc(r[0]) + '</b></span><span class="r">' + esc(r[1]) + '</span></div>'
+              : row(r)).join('') + '</div>'
+        }
+        if (b.t === 'player') {
+          return '<div class="wl-player"><div>' + esc(b.station || 'WAVELENGTH 96.4') + '</div>' +
+            '<div class="wl-transport"><span class="wl-key" data-bw="tr" data-d="-1">◀◀</span>' +
+            '<span class="wl-key main" data-bw="play">▶</span><span class="wl-key" data-bw="tr" data-d="1">▶▶</span></div>' +
+            '<div style="flex:1;min-width:0"><div class="wl-note" style="color:#A79E92">Now playing</div>' +
+            '<div class="wl-h3" style="color:#FAF7F2" data-bw-out="now">' + esc(b.first || '') + '</div></div>' +
+            '<div style="text-align:right"><div class="wl-note" style="color:#A79E92">' + esc(b.shown || '09:00 – 11:00') + '</div>' +
+            '<div class="wl-note" style="color:#FAF7F2" data-bw-out="state">on air</div></div></div>'
+        }
+        if (b.t === 'article') {
+          return '<div class="wl-grid2"><div class="wl-art"><div class="wl-kick">' + esc(b.kicker) + '</div>' +
+            '<h1>' + esc(b.title) + '</h1>' + '<div class="wl-note" style="margin-top:8px">' + esc(b.byline) + '</div>' +
+            '<div class="wl-chiprow" style="margin-top:10px"><span class="wl-note">Text size</span>' +
+            '<span class="wl-chip" data-bw="fs" data-d="-1">A−</span><span class="wl-chip" data-bw="fs" data-d="1">A+</span></div>' +
+            '<div class="wl-artcols">' + b.paras.map((x) => '<p>' + esc(x) + '</p>').join('') + '</div>' +
+            '<div class="wl-pull">' + esc(b.pull) + '</div>' +
+            '<div class="wl-artcols" style="margin-top:12px"><p>' + esc(b.tail) + '</p></div></div>' +
+            '<div>' + im(b.img, 160) + '<div class="wl-rows" style="margin-top:12px">' + b.rows.map(row).join('') + '</div></div></div>'
+        }
+        if (b.t === 'acc') {
+          return '<div class="wl-rows">' + b.items.map(([q, a], i) => '<div class="wl-accrow' + (i === 0 ? ' open' : '') + '" data-bw="acc">' +
+            '<div class="wl-accq"><span>' + esc(q) + '</span><i>+</i></div><div class="wl-acca">' + esc(a) + '</div></div>').join('') + '</div>'
+        }
+        if (b.t === 'table') {
+          const head = '<tr>' + b.head.map((h) => '<th>' + esc(h) + '</th>').join('') + '</tr>'
+          const body = (rs) => rs.map((tr) => '<tr>' + tr.map((td) => '<td>' + esc(td) + '</td>').join('') + '</tr>').join('')
+          return '<table class="wl-table">' + (b.panes
+            ? '<thead>' + head + '</thead><tbody>' + b.panes.map((p, i) => '<tr class="wl-pane bw-pane' + (i === 0 ? ' on' : '') +
+              '" data-pane="' + esc(p.id) + '"><td colspan="' + b.head.length + '" style="padding:0;border:0"><table class="wl-table" style="margin-top:8px"><tbody>' +
+              body(p.rows) + '</tbody></table></td></tr>').join('') + '</tbody>'
+            : '<thead>' + head + '</thead><tbody>' + body(b.rows) + '</tbody>') + '</table>'
+        }
+        if (b.t === 'form') {
+          return '<div class="wl-form">' +
+            b.fields.map((f) => '<div class="wl-field' + (f.w ? ' w' : '') + '"><label>' + esc(f.label) + '</label>' +
+              '<span class="' + (f.w ? 'tall' : '') + '">' + esc(f.ph || '') + '</span></div>').join('') + '</div>' +
+            '<span class="wl-btn blue" style="margin-top:14px">' + esc(b.cta) + '</span>'
+        }
+        if (b.t === 'lines') {
+          return '<div class="wl-rows">' + b.items.map((l) => '<div class="wl-line" data-line data-price="' + l.price + '" data-bw-qty="' + l.qty + '">' +
+            im(l.img) + '<div style="flex:1;min-width:0"><div class="wl-h3" style="font-size:14px">' + esc(l.name) + '</div>' +
+            '<div class="wl-note" style="margin-top:3px">' + esc(l.meta) + '</div></div>' + stepper('q', l.qty) +
+            '<div class="wl-linep" data-bw-out="line">€' + l.price + '</div></div>').join('') + '</div>'
+        }
+        if (b.t === 'summary') {
+          return '<div class="wl-panel' + (b.dark ? ' dark' : '') + '">' + (b.title ? '<div class="wl-label" style="margin-top:0">' + esc(b.title) + '</div>' : '') +
+            b.lines.map(([a, v]) => '<div class="wl-row" style="border-color:rgba(0,0,0,.12)"><span class="n" style="font-size:11.5px">' + esc(a) +
+              '</span><span class="r" style="color:inherit;font-size:12px">' + v + '</span></div>').join('') + '</div>'
+        }
+        if (b.t === 'tiers') {
+          return '<div class="wl-cols" style="grid-template-columns:repeat(' + b.items.length + ',1fr);gap:14px;padding-top:14px">' +
+            b.items.map((t, i) => '<div class="wl-panel" style="padding:16px 18px"><div class="wl-kick">' + esc(t.kicker || '') + '</div>' +
+              '<div class="wl-h3" style="margin-top:6px">' + esc(t.name) + '</div>' +
+              '<div class="wl-price" style="font-size:24px;margin:8px 0 10px">' + esc(t.price) + '</div>' +
+              t.perks.map((p) => '<div class="wl-note" style="margin-top:3px">— ' + esc(p) + '</div>').join('') +
+              '<span class="wl-btn' + (i === 1 ? ' blue' : ' ghost') + '" style="margin-top:14px">' + esc(t.cta) + '</span></div>').join('') + '</div>'
+        }
+        if (b.t === 'map') {
+          return '<div class="wl-map" style="height:100%;min-height:' + (b.h || 260) + 'px">' +
+            (b.pins || []).map(([x, y]) => '<i class="wl-pin" style="left:' + x + '%;top:' + y + '%"></i>').join('') +
+            '<div class="wl-maplab">' + esc(b.label) + '</div></div>'
+        }
+        if (b.t === 'grid2') {
+          return '<div class="wl-grid2"><div>' + b.left.map(block).join('') + '</div><div>' + b.right.map(block).join('') + '</div></div>'
+        }
+        if (b.t === 'opts') return '<div class="wl-label">' + esc(b.label) + '</div>' + optrow(b.g, b.items, b.cols || b.items.length)
+        if (b.t === 'outs') {
+          return '<div class="wl-rows">' + b.items.map(([label, key, init]) => '<div class="wl-row"><span class="n"><b>' + esc(label) +
+            '</b></span><span class="r" style="font-size:13px;color:#17130F" data-bw-out="' + key + '">' + esc(init) + '</span></div>').join('') + '</div>'
+        }
+        if (b.t === 'figure') {
+          return '<div style="margin-top:14px">' + im(b.img, b.h || 180) + (b.cap ? '<div class="wl-cap">' + esc(b.cap) + '</div>' : '') + '</div>'
+        }
+        if (b.t === 'chips') return chiprow(b.g, b.items, b.extra)
+        if (b.t === 'stepper') {
+          return '<div class="wl-label">' + esc(b.label || 'Quantity') + '</div>' + stepper('qty', b.n || 1)
+        }
+        if (b.t === 'panes') {
+          return b.items.map((p, i) => '<div class="wl-pane bw-pane' + (i === 0 ? ' on' : '') + '" data-pane="' + esc(p.id) + '">' +
+            '<div class="wl-rows">' + p.rows.map(row).join('') + '</div>' + (p.body ? '<p class="wl-note" style="margin-top:8px">' + esc(p.body) + '</p>' : '') +
+            '</div>').join('')
+        }
+        if (b.t === 'tracklist') {
+          return (b.title ? '<div class="wl-label">' + esc(b.title) + '</div>' : '') + '<div class="wl-rows wl-tl">' +
+            b.items.map(([n, name, meta, dur]) => '<div class="wl-row"><span class="t">' + esc(n) + '</span>' +
+              '<span class="n"><b>' + esc(name) + '</b><span class="wl-note">' + esc(meta) + '</span></span>' +
+              '<span class="r wl-days">' + esc(dur) + '</span></div>').join('') + '</div>'
+        }
+        if (b.t === 'text') return '<p class="wl-sub" style="max-width:none">' + esc(b.body) + '</p>'
+        if (b.t === 'notfound') {
+          return '<div class="wl-hero"><div><div class="wl-kick">Error 404</div>' +
+            '<div class="wl-h1" style="font-size:104px;line-height:.9">404</div>' +
+            '<h2 class="wl-h2" style="margin-top:12px">' + esc(b.title) + '</h2>' +
+            '<p class="wl-sub">' + esc(b.sub) + '</p>' +
+            '<div style="margin-top:16px">' + chiprow(b.chips.g, b.chips.items) + '</div>' +
+            '<div class="wl-rows" style="margin-top:14px;max-width:480px">' + b.rows.map(row).join('') + '</div></div>' +
+            '<div class="wl-heroimg">' + im(b.img, 400) + '</div></div>'
+        }
+        return ''
+      }
+
+      const foot = (s.kind && s.kind !== 'home' && s.kind !== '404')
+        ? '<div class="wl-footer"><div><b>Wavelength.</b>Community radio since 2009, above a bike shop.<br>Sleepstraat 118 · 9000 Ghent</div>' +
+          '<div><b>Listen</b>96.4 FM · stream · podcast<br>Archive back to 2009</div>' +
+          '<div><b>Visit</b>Tuesday to Sunday, from 14:00<br>Two flights, no lift</div>' +
+          '<div><b>Members</b>€5, €10 or €25 a month<br>One vote at the annual meeting</div></div>'
+        : ''
+      const band = (s.band || []).length ? '<div class="wl-band">' + s.band.map((x) => '<span>' + esc(x) + '</span>').join('') + '</div>' : ''
+      const chrome = '<div class="wl-ticker"><span class="wl-live"><i></i>On air</span>' +
+        '<span>' + esc(s.now || 'Lowlight — ' + 'Tue 21:00') + '</span>' +
+        '<span class="wl-sp">96.4 FM · Ghent · Wednesday 4 November</span></div>' +
+        '<div class="wl-bar"><div class="wl-logo">Wavelength<i>.</i></div>' +
+        '<div class="wl-nav">' + NAVD.map(([h, t]) => t === s.nav ? '<b>' + esc(t) + '</b>' : '<span>' + esc(t) + '</span>').join('') + '</div>' +
+        '<div class="wl-onair"><span><i></i>' + esc(s.bar || 'Live now') + '</span></div></div>'
+
+      return '<div class="wl" data-bw-root="' + esc(s.root || 'none') + '"' + (s.base ? ' data-base="' + s.base + '"' : '') +
+        (s.qty ? ' data-bw-qty="' + s.qty + '"' : '') + (s.subtotal ? ' data-subtotal="' + s.subtotal + '"' : '') +
+        (s.tracks ? ' data-tracks="' + esc(s.tracks) + '"' : '') + '>' + chrome +
+        '<div class="wl-main">' + (s.blocks || []).map(block).join('') + foot + '</div>' + band + '</div>'
+    }
     case 'pt-poster':
       return (
         '<div class="pt ' + (s.dark ? 'dark' : 'light') + (s.ruled ? ' ruled' : '') + (s.half ? ' half' : '') + '">' +
