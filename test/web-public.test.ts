@@ -236,6 +236,46 @@ test('模型列表每行的三个图标都接了真实行为，反馈不被设�
   assert.match(toast[0], /pointer-events:none/, '提示条不应拦截点击')
 })
 
+test('演示文稿首页按参考截图：头图、标题、格式胶囊、示例预设与工作区画廊', () => {
+  // 头图是本地的 3D 场景图片（相对路径，沙箱里也能加载）
+  assert.match(indexHtml, /src="brand\/present-hero\.jpg"/)
+  assert.ok(existsSync(join(publicDir, 'brand', 'present-hero.jpg')), '缺少头图 brand/present-hero.jpg')
+
+  // 标题与格式胶囊：胶囊单独一行，下面才是工具条
+  assert.match(indexHtml, /让您的创意焕发生机/)
+  assert.match(indexHtml, /class="prompt mode-prompt"/)
+  assert.match(indexHtml, /<div class="mpills">/)
+  assert.match(indexHtml, /id="modeChipLabel">演示文稿</)
+
+  // 工具条：加号、设置、图片、档位、语音、发送
+  for (const id of ['attachMode', 'modeTune', 'imagePickMode', 'modeModel', 'modeMic', 'modeSend']) {
+    assert.match(indexHtml, new RegExp('id="' + id + '"'), `工具条缺少 #${id}`)
+  }
+
+  // 示例指令的四个预设与截图一致，右上角可切换
+  for (const label of ['进行用户研究并为设计项目创建角色', '向 17 世纪的海盗解释宇宙大爆炸', '个人理财']) {
+    assert.ok(indexHtml.includes(label), '示例指令缺少：' + label)
+  }
+  assert.match(indexHtml, /id="exPresetBtn"/)
+
+  // 浏览模板 / 上传模板 / 工作区-探索
+  assert.match(indexHtml, /id="browseTpl"/)
+  assert.match(indexHtml, /id="uploadTpl"/)
+  assert.match(indexHtml, /accept="\.pptx/)
+  assert.match(indexHtml, /id="mgTabWork"/)
+  assert.match(indexHtml, /id="mgTabExplore"/)
+  assert.match(indexHtml, /id="mgGrid"/)
+
+  // 侧栏抬头与两条真实入口
+  assert.match(indexHtml, /id="wsName"/)
+  assert.match(indexHtml, /id="recentDecks"/)
+  assert.match(indexHtml, /id="sideAll"/)
+  assert.match(indexHtml, /id="sideSites"/)
+
+  // 参考截图里的外来品牌词不能出现在界面文案里
+  assert.doesNotMatch(indexHtml, /gammas/i)
+})
+
 test('深色主题与窄屏断点都还在', () => {
   assert.match(indexHtml, /html\[data-theme="dark"\]\{/, '缺少深色主题 token')
   assert.match(indexHtml, /html\[data-theme="dark"\] \.tplpage\{/, '缺少深色主题的页面覆盖')

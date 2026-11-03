@@ -5368,6 +5368,116 @@
   .tplbtn.primary:hover{background:var(--accent-line)}
   .tplbtn:not(.primary):hover{background:var(--surface-2)}
 
+  /* ── 演示文稿首页（对齐参考截图） ─────────────── */
+  .hero.mode{max-width:700px}
+  .hero.mode .art.wide{
+    width:104px;height:72px;margin-top:16px;border-radius:12px;object-fit:cover;
+    transform:rotate(-6deg);box-shadow:0 10px 24px rgba(24,36,64,.18);
+  }
+  .hero.mode h1{font-size:clamp(26px,2.3vw,33px);margin:18px 0 20px}
+  .mode-prompt{max-width:620px;border-radius:20px}
+  .mode-prompt .inner{padding:12px 15px 11px;gap:7px}
+  .mode-prompt textarea{height:44px;font-size:15px;line-height:1.5}
+  .mode-prompt .mpills{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-height:28px}
+  .mode-prompt .modechip{gap:4px}
+  .mode-prompt .mchip{
+    height:30px;padding:0 11px;border-radius:var(--r-pill);font-size:13.5px;font-weight:500;border:0;
+    background:var(--accent-soft);color:var(--accent);
+  }
+  .mode-prompt .mchip svg{color:var(--accent)}
+  .mode-prompt .mclear{width:16px;height:16px;color:var(--accent);opacity:.75}
+  .mode-prompt .mclear:hover{background:var(--accent-soft);color:var(--accent);opacity:1}
+  .mode-prompt .bar{gap:7px;margin-top:1px}
+  .mode-prompt .icobtn{width:30px;height:30px;border-color:var(--line-strong)}
+  .mode-prompt .model{font-size:13.5px;color:var(--violet)}
+  .mode-prompt .model i{color:var(--violet)}
+  .mode-prompt .send{width:36px;height:36px}
+  .mode-prompt .mic.on{background:#ffeef1;border-color:#f5bcc6;color:#c62d4b}
+  html[data-theme="dark"] .mode-prompt .mic.on{background:#3a2026;border-color:#5a2b34;color:#ff9db0}
+
+  .exhead .exfilter{
+    display:inline-flex;align-items:center;gap:6px;font-size:13.5px;color:var(--fg-muted);
+    padding:4px 7px;border-radius:var(--r-sm);
+  }
+  .exhead .exfilter:hover{background:var(--surface-2);color:var(--fg)}
+  .exhead .exfilter[aria-expanded="true"]{background:var(--surface-2);color:var(--fg)}
+  .exgrid{gap:12px}
+  .excard{
+    height:96px;border-radius:12px;border-color:var(--line-strong);padding:12px 13px;
+    font-size:13.5px;line-height:1.5;
+    display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;
+  }
+  .excard:hover{border-color:var(--accent-line);box-shadow:var(--e1);background:var(--surface)}
+  .excard .go{right:10px;bottom:7px;color:var(--fg-subtle);font-size:13px}
+
+  .mgal{width:100%;margin-top:24px}
+  .mgtabs{display:flex;align-items:center;gap:20px;margin-bottom:14px}
+  .mgtab{font-size:13.5px;color:var(--fg-subtle);padding:2px 0;position:relative}
+  .mgtab:hover{color:var(--fg-muted)}
+  .mgtab.on{color:var(--fg);font-weight:600}
+  .mgtab.on::after{
+    content:"";position:absolute;left:0;right:0;bottom:-7px;height:2px;border-radius:2px;background:var(--fg);
+  }
+  .mggrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+  .mgcard{display:flex;flex-direction:column;gap:8px;text-align:left;min-width:0}
+  .mgcard .cover{
+    aspect-ratio:16/10;border-radius:10px;overflow:hidden;border:1px solid var(--line);
+    position:relative;container-type:inline-size;
+    transition:transform var(--d2) var(--ease),box-shadow var(--d2) var(--ease);
+  }
+  .mgcard:hover .cover{transform:translateY(-2px);box-shadow:var(--e2)}
+  .mgcard>span{
+    font-size:12.5px;color:var(--fg-muted);line-height:1.3;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  .mgcard.add .mg-add{
+    aspect-ratio:16/10;border-radius:10px;border:1px dashed var(--line-strong);
+    display:grid;place-items:center;color:var(--fg-subtle);font-size:12.5px;gap:6px;
+  }
+  .mgcard.add:hover .mg-add{border-color:var(--accent-line);color:var(--accent);background:var(--surface-2)}
+  .mgcard.off .cover{opacity:.55}
+
+  /* 示例预设菜单 / 生成设置菜单 */
+  .exmenu,.tunemenu{width:auto;min-width:168px}
+  .mm-tick{margin-left:auto;color:var(--accent);font-size:12px}
+  .mm-desc{margin-left:auto;font-size:11.5px;color:var(--fg-subtle)}
+
+  /* 上传的模板卡片：纯 CSS 封面，按文件类型给个色块 */
+  .mgcard .cover.mg-up{background:linear-gradient(150deg,#eef3fb,#dfe8f8);display:grid;place-items:center}
+  .mg-up-in{display:flex;flex-direction:column;align-items:center;gap:6px;padding:0 10%;max-width:100%}
+  .mg-up-in b{font:700 17px/1 ui-sans-serif,system-ui;color:#3c4f74;letter-spacing:.06em}
+  .mg-up-in i{
+    font:500 11.5px/1.4 ui-sans-serif,system-ui;color:#5e6c85;font-style:normal;text-align:center;
+    max-width:100%;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+  }
+  html[data-theme="dark"] .mgcard .cover.mg-up{background:linear-gradient(150deg,#1b2230,#232c3d)}
+  html[data-theme="dark"] .mg-up-in b{color:#b9c8e6}
+  html[data-theme="dark"] .mg-up-in i{color:#8e9bb3}
+
+  /* 模板详情弹窗 */
+  .up-card{width:min(460px,94vw)}
+  .up-list{display:flex;flex-direction:column;gap:0;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .up-row{display:flex;align-items:baseline;gap:16px;padding:12px 14px;font-size:13px}
+  .up-row + .up-row{border-top:1px solid var(--line)}
+  .up-row span{flex:none;width:70px;color:var(--fg-muted)}
+  .up-row b{font-weight:500;color:var(--fg);word-break:break-all;line-height:1.5}
+  .up-note{margin-top:12px;font-size:12.5px;line-height:1.6;color:var(--fg-subtle)}
+
+  /* 工作区抬头 */
+  .ws{
+    display:flex;align-items:center;gap:9px;width:100%;padding:7px 8px;border-radius:10px;
+    background:var(--surface-3);margin-bottom:10px;text-align:left;
+  }
+  .ws:hover{background:var(--line)}
+  .ws-av{
+    width:26px;height:26px;border-radius:50%;background:#2b1440;color:#fff;font-size:11px;font-weight:600;
+    display:grid;place-items:center;flex:none;letter-spacing:.02em;
+  }
+  .ws-tx{display:flex;flex-direction:column;gap:1px;min-width:0;flex:1}
+  .ws-tx b{font-size:13px;font-weight:600;color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ws-tx small{font-size:11.5px;color:var(--fg-subtle)}
+  .ws svg{color:var(--fg-subtle);flex:none}
+
   .gallery{width:100%;max-width:866px;margin-top:30px;text-align:left}
   .gtabs{display:flex;gap:18px;align-items:center;margin-bottom:14px}
   .gtab{font-size:13px;color:var(--fg-subtle);padding:2px 0;position:relative}
@@ -5640,6 +5750,12 @@
 
   <!-- 工作区侧栏 -->
   <aside class="side" id="sidePanel">
+    <button class="ws" id="wsBtn" title="打开个人主页">
+      <span class="ws-av" id="wsAvatar">D</span>
+      <span class="ws-tx"><b id="wsName">我的工作区</b><small>免费版</small></span>
+      <svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
+    </button>
+
     <button class="create" id="newBlank">
       <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"></use></svg>
       创建
@@ -5649,6 +5765,10 @@
       <button class="row" id="recentChats">
         <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-message"></use></svg>
         最近的对话记录
+      </button>
+      <button class="row" id="recentDecks">
+        <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-presentation"></use></svg>
+        最近的演示
       </button>
       <div class="sesslist" id="sessList"></div>
     </div>
@@ -5661,8 +5781,15 @@
           <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-search"></use></svg>
           搜索<span class="kbd">⌘K</span>
         </button>
+        <button class="row" id="sideAll">
+          <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"></use></svg>
+          全部
+        </button>
+        <button class="row" id="sideSites">
+          <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-globe"></use></svg>
+          网站
+        </button>
       </div>
-
     </div>
 
   </aside>
@@ -5862,23 +5989,7 @@
       </div>
 
       <div class="hero mode" id="heroMode" hidden>
-        <svg class="art wide" viewBox="0 0 132 78" aria-hidden="true">
-          <defs>
-            <linearGradient id="sunset" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#1e2b6b"/><stop offset=".42" stop-color="#6b3f93"/>
-              <stop offset=".68" stop-color="#c94f8d"/><stop offset="1" stop-color="#f39aa6"/>
-            </linearGradient>
-          </defs>
-          <rect x="1" y="1" width="130" height="76" rx="9" fill="url(#sunset)"/>
-          <g fill="#0d1020" opacity=".92">
-            <rect x="58.5" y="31.6" width="26" height="1.4" rx=".7"/>
-            <rect x="70.4" y="33" width="1.5" height="3.2"/>
-            <ellipse cx="71.2" cy="39.2" rx="6.6" ry="3.5"/>
-            <rect x="66.6" y="41.2" width="12.4" height="1.5" rx=".75"/>
-            <rect x="62.8" y="44.6" width="16.6" height="1.2" rx=".6"/>
-            <rect x="69.6" y="42.7" width="1.4" height="2"/>
-          </g>
-        </svg>
+        <img class="art wide mode-art" src="brand/present-hero.jpg" alt="" />
 
         <svg class="art photo" id="artPhoto" viewBox="0 0 132 78" hidden aria-hidden="true">
           <defs>
@@ -5892,9 +6003,9 @@
           <path d="M0 68 q30 -7 62 0 t70 0 v10 H0 Z" fill="#f8e6c8"/>
         </svg>
 
-        <h1 id="modeTitle">今天我们要做点什么呢？</h1>
+        <h1 id="modeTitle">让您的创意焕发生机</h1>
 
-        <div class="prompt">
+        <div class="prompt mode-prompt">
           <div class="inner">
             <div class="dropzone" id="dropzone" hidden>
               <span class="dz-add">
@@ -5906,10 +6017,7 @@
               <span class="badge">PDF</span>
             </div>
             <textarea id="modePrompt" rows="2" placeholder="描述您的演示主题"></textarea>
-            <div class="bar">
-              <button class="icobtn" id="attachMode" title="添加或连接">
-                <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"></use></svg>
-              </button>
+            <div class="mpills">
               <div class="modechip">
                 <span class="mchip">
                   <span class="mico" id="modeChipIcon"></span>
@@ -5919,15 +6027,26 @@
                   <svg class="ic ic-xs" width="11" height="11" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-close"></use></svg>
                 </button>
               </div>
+            </div>
+            <div class="bar">
+              <button class="icobtn" id="attachMode" title="添加文件或连接">
+                <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"></use></svg>
+              </button>
               <div class="grow"></div>
+              <button class="icobtn" id="modeTune" title="生成设置">
+                <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sliders"></use></svg>
+              </button>
               <button class="icobtn" id="imagePickMode" title="图片">
                 <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-image"></use></svg>
               </button>
               <button class="model" id="modeModel"><i>✦</i><span class="mlabel">标准</span>
                 <svg class="ic ic-xs" width="11" height="11" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
               </button>
-              <button class="send blue" id="modeSend" title="发送">
-                <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-send"></use></svg>
+              <button class="icobtn" id="modeMic" title="语音输入">
+                <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-microphone"></use></svg>
+              </button>
+              <button class="send blue" id="modeSend" title="生成">
+                <svg class="ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5.6"/><path d="M5.8 11.2 12 5l6.2 6.2"/></svg>
               </button>
             </div>
           </div>
@@ -5936,6 +6055,11 @@
         <div class="examples" id="modeExamples">
           <div class="exhead">
             <span>示例指令</span>
+            <button class="exfilter" id="exPresetBtn" aria-haspopup="menu" aria-expanded="false">
+              <svg class="ic ic-xs" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-filter"></use></svg>
+              <span id="exPresetLabel">常规</span>
+              <svg class="ic ic-xs" width="11" height="11" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
+            </button>
           </div>
           <div class="exgrid" id="exGridHome"></div>
         </div>
@@ -5945,6 +6069,19 @@
             <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"></use></svg>
             浏览模板
           </button>
+          <button class="tplbtn" id="uploadTpl">
+            <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-upload"></use></svg>
+            上传模板
+          </button>
+          <input type="file" id="tplUploadFile" accept=".pptx,.ppt,.key,.pdf,.potx" hidden />
+        </div>
+
+        <div class="mgal">
+          <div class="mgtabs" role="tablist">
+            <button class="mgtab on" id="mgTabWork" role="tab" aria-selected="true">工作区</button>
+            <button class="mgtab" id="mgTabExplore" role="tab" aria-selected="false">探索</button>
+          </div>
+          <div class="mggrid" id="mgGrid" data-no-i18n></div>
         </div>
 
 
@@ -6858,6 +6995,7 @@ function iconSVG(name, size) {
 }
 
 function openCase(deck) {
+  if (deck) pushRecentDeck(deck.id)
   if (deck && deck.fmt === 'doc') {
     openDocView(deck)
     return
@@ -7821,6 +7959,7 @@ function toast(message, kind) {
 }
 
 function syncNickname() {
+  syncWorkspace()
   const el = $('homeHello')
   if (!el) return
   const name = String(state.prefs.nickname || '').trim()
@@ -7893,6 +8032,32 @@ $('setFontSize').oninput = () => {
   applyPrefs(); savePrefs()
 }
 $('recentChats').onclick = () => { if (state.sessions[0]) openSession(state.sessions[0].id, state.sessions[0].title); else toast('还没有对话记录。') }
+$('wsBtn').onclick = () => openSettings('profile')
+$('recentDecks').onclick = () => {
+  const decks = recentDeckIds().map((id) => LIB.decks.find((deck) => deck.id === id)).filter(Boolean)
+  if (decks.length > 0) { openCase(decks[0]); return }
+  if (state.mode) {
+    document.querySelector('.mgal')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    toast('还没有打开过演示，先从下面「探索」里挑一套')
+  } else {
+    toast('还没有打开过演示，从模板库挑一套开始')
+    openTplLibrary()
+  }
+}
+$('sideAll').onclick = () => { exitMode(); setView('templates'); pickTplFormat('all') }
+$('sideSites').onclick = () => { exitMode(); setView('templates'); pickTplFormat('site') }
+function pickTplFormat(value) {
+  const input = document.querySelector('#tsFmt input[value="' + value + '"]')
+  if (input) { input.checked = true; tplState.fmt = value }
+  paintTplGallery()
+}
+function syncWorkspace() {
+  const name = String(state.prefs.nickname || '').trim()
+  const el = $('wsName')
+  if (!el) return
+  el.textContent = name === '' ? '我的工作区' : name + ' 的工作区'
+  $('wsAvatar').textContent = (name === '' ? 'D' : name.slice(0, 1)).toUpperCase()
+}
 $('attach').onclick = (event) => { event.stopPropagation(); openPlusMenu($('attach')) }
 document.querySelectorAll('.bcard').forEach((card) => {
   card.onclick = () => {
@@ -8262,11 +8427,40 @@ window.addEventListener('scroll', (event) => {
 }, true)
 
 /* ── 类型模式：每种类型有自己的标题、示例与模板 ───────── */
+/* 演示文稿的示例指令分几套，右上角「常规」可以切换 */
+const EX_PRESETS = {
+  '常规': [
+    '进行用户研究并为设计项目创建角色',
+    '向 17 世纪的海盗解释宇宙大爆炸',
+    '个人理财',
+    '进行审计或评估，以确定公司运营或流程中需要改进的地方',
+  ],
+  '专业': [
+    '季度业务回顾：三条增长曲线与下季度押注',
+    '面向投资人的 10 页融资路演',
+    '新市场进入策略与风险评估',
+    '组织架构调整的内部沟通方案',
+  ],
+  '创意': [
+    '把一次城市夜跑讲成侦探故事',
+    '用 12 张卡片解释一杯咖啡的旅程',
+    '给孩子的海洋保护课',
+    '2040 年未来城市年度报告',
+  ],
+  '学术': [
+    '论文答辩：图神经网络研究综述',
+    '实验结果与方法对比',
+    '文献综述与研究空白',
+    '会议报告：可复现性实践',
+  ],
+}
+let exPresetName = '常规'
+
 const MODE_CONTENT = {
   '演示文稿': {
-    title: '今天我们要做点什么呢？',
+    title: '让您的创意焕发生机',
     placeholder: '描述您的演示主题',
-    examples: ['房地产投资指南', '[name] 组合演示文稿', '毕业论文答辩', '课程大纲'],
+    examples: EX_PRESETS['常规'],
   },
   '文档': {
     title: '今天想写哪份文档？',
@@ -8310,6 +8504,372 @@ function paintExamples(labels) {
   }
 }
 
+/* ── 演示文稿首页：示例预设 / 语音 / 生成设置 ─────────── */
+function paintExPreset() {
+  $('exPresetLabel').textContent = exPresetName
+  paintExamples(EX_PRESETS[exPresetName])
+}
+
+let exMenuEl = null
+function closeExMenu() {
+  if (exMenuEl) { exMenuEl.remove(); exMenuEl = null }
+  const btn = $('exPresetBtn')
+  if (btn) btn.setAttribute('aria-expanded', 'false')
+}
+function openExMenu() {
+  closeExMenu()
+  const btn = $('exPresetBtn')
+  const menu = document.createElement('div')
+  menu.className = 'moremenu exmenu'
+  menu.setAttribute('role', 'menu')
+  for (const name of Object.keys(EX_PRESETS)) {
+    const item = document.createElement('button')
+    item.className = 'mm-item'
+    item.setAttribute('role', 'menuitemradio')
+    item.setAttribute('aria-checked', String(name === exPresetName))
+    const label = document.createElement('span')
+    label.textContent = name
+    item.append(label)
+    if (name === exPresetName) {
+      const tick = document.createElement('span')
+      tick.className = 'mm-tick'
+      tick.textContent = '✓'
+      item.append(tick)
+    }
+    item.onclick = () => { exPresetName = name; paintExPreset(); closeExMenu(); toast('已切换到「' + name + '」示例', 'ok') }
+    menu.append(item)
+  }
+  document.body.append(menu)
+  const rect = btn.getBoundingClientRect()
+  const width = menu.offsetWidth || 168
+  menu.style.left = Math.max(12, Math.min(rect.right - width, window.innerWidth - width - 12)) + 'px'
+  menu.style.top = (rect.bottom + 6) + 'px'
+  btn.setAttribute('aria-expanded', 'true')
+  exMenuEl = menu
+}
+$('exPresetBtn').onclick = (event) => {
+  event.stopPropagation()
+  if (exMenuEl) closeExMenu()
+  else openExMenu()
+}
+document.addEventListener('click', (event) => {
+  if (!exMenuEl) return
+  if (exMenuEl.contains(event.target) || event.target.closest('#exPresetBtn')) return
+  closeExMenu()
+}, true)
+document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeExMenu() })
+
+/* 生成设置：语气写进 state.prefs，发送时会前缀到提示词里 */
+function openTune(anchor) {
+  document.querySelectorAll('.tunemenu').forEach((el) => el.remove())
+  const options = [
+    { id: 'balanced', name: '平衡', desc: '默认篇幅与细节' },
+    { id: 'concise', name: '简洁', desc: '更短的页面与文案' },
+    { id: 'detailed', name: '详尽', desc: '更多论据与例子' },
+  ]
+  const menu = document.createElement('div')
+  menu.className = 'moremenu tunemenu'
+  menu.setAttribute('role', 'menu')
+  for (const option of options) {
+    const item = document.createElement('button')
+    item.className = 'mm-item'
+    item.setAttribute('role', 'menuitemradio')
+    const text = document.createElement('span')
+    text.textContent = option.name
+    const desc = document.createElement('small')
+    desc.className = 'mm-desc'
+    desc.textContent = option.desc
+    item.append(text, desc)
+    if (state.prefs.tone === option.id) {
+      const tick = document.createElement('span')
+      tick.className = 'mm-tick'
+      tick.textContent = '✓'
+      item.append(tick)
+    }
+    item.onclick = () => {
+      state.prefs.tone = option.id
+      savePrefs()
+      menu.remove()
+      toast('生成语气：' + option.name, 'ok')
+    }
+    menu.append(item)
+  }
+  document.body.append(menu)
+  const rect = anchor.getBoundingClientRect()
+  const width = menu.offsetWidth || 200
+  menu.style.left = Math.max(12, Math.min(rect.left - 8, window.innerWidth - width - 12)) + 'px'
+  menu.style.bottom = (window.innerHeight - rect.top + 8) + 'px'
+  const dismiss = (event) => {
+    if (menu.contains(event.target) || anchor.contains(event.target)) return
+    menu.remove()
+    document.removeEventListener('click', dismiss, true)
+  }
+  setTimeout(() => document.addEventListener('click', dismiss, true), 0)
+}
+$('modeTune').onclick = (event) => { event.stopPropagation(); openTune($('modeTune')) }
+
+/* 语音输入：支持 Web Speech 的浏览器直接听写进输入框 */
+let micRec = null
+$('modeMic').onclick = () => {
+  const btn = $('modeMic')
+  if (micRec) { try { micRec.stop() } catch { /* 已经停了 */ } return }
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition
+  if (!SR) { toast('这个浏览器不支持语音输入，Chrome / Edge 可以用', 'err'); return }
+  const rec = new SR()
+  rec.lang = 'zh-CN'
+  rec.interimResults = true
+  rec.continuous = false
+  const base = $('modePrompt').value.trim()
+  rec.onresult = (event) => {
+    let text = ''
+    for (let i = event.resultIndex; i < event.results.length; i += 1) text += event.results[i][0].transcript
+    $('modePrompt').value = (base ? base + ' ' : '') + text
+  }
+  rec.onerror = (event) => {
+    const reason = event.error === 'not-allowed' ? '麦克风权限被拒绝' : '语音识别失败：' + event.error
+    toast(reason, 'err')
+  }
+  rec.onend = () => { btn.classList.remove('on'); micRec = null; $('modePrompt').focus() }
+  micRec = rec
+  btn.classList.add('on')
+  try { rec.start(); toast('正在聆听，说完会自动停下', 'ok') } catch (error) {
+    btn.classList.remove('on'); micRec = null
+    toast('语音输入启动失败：' + error.message, 'err')
+  }
+}
+
+/* ── 工作区 / 探索：沿用案例封面（纯 CSS 渲染的首页），不上图 ───── */
+const RECENT_DECKS_KEY = 'dsh-recent-decks'
+const TPL_UPLOADS_KEY = 'dsh-tpl-uploads'
+let mgTab = 'work'
+
+function readLocal(key, fallback) {
+  try {
+    const value = JSON.parse(localStorage.getItem(key) || 'null')
+    return value == null ? fallback : value
+  } catch { return fallback }
+}
+function writeLocal(key, value) {
+  try { localStorage.setItem(key, JSON.stringify(value)); return true } catch { return false }
+}
+function recentDeckIds() {
+  const list = readLocal(RECENT_DECKS_KEY, [])
+  return Array.isArray(list) ? list.filter((id) => typeof id === 'string') : []
+}
+function pushRecentDeck(id) {
+  if (!id) return
+  const list = recentDeckIds().filter((item) => item !== id)
+  list.unshift(id)
+  writeLocal(RECENT_DECKS_KEY, list.slice(0, 12))
+}
+function tplUploads() {
+  const list = readLocal(TPL_UPLOADS_KEY, [])
+  return Array.isArray(list) ? list : []
+}
+function fmtSize(bytes) {
+  if (!Number.isFinite(bytes) || bytes <= 0) return '—'
+  if (bytes < 1024) return bytes + ' B'
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB'
+  return (bytes / (1024 * 1024)).toFixed(1) + ' MB'
+}
+function fmtWhen(ms) {
+  const d = new Date(ms)
+  const pad = (n) => String(n).padStart(2, '0')
+  return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes())
+}
+
+function mgDeckCard(deck) {
+  const card = document.createElement('button')
+  card.className = 'mgcard'
+  card.type = 'button'
+  card.innerHTML = '<div class="cover">' + deckCoverHTML(deck) + '</div><span></span>'
+  card.querySelector(':scope > span').textContent = deck.name
+  card.title = deck.name + ' · ' + deck.category
+  card.onclick = () => openCase(deck)
+  return card
+}
+
+function mgUploadCard(upload) {
+  const ext = (upload.name.split('.').pop() || 'file').toUpperCase().slice(0, 4)
+  const card = document.createElement('button')
+  card.className = 'mgcard'
+  card.type = 'button'
+  card.innerHTML =
+    '<div class="cover mg-up"><div class="mg-up-in"><b>' + ext + '</b><i></i></div></div><span></span>'
+  card.querySelector('i').textContent = upload.name.replace(/\.[^.]+$/, '')
+  card.querySelector(':scope > span').textContent = upload.name
+  card.title = '导入的模板 · ' + fmtSize(upload.size)
+  card.onclick = () => openUploadDialog(upload)
+  return card
+}
+
+function paintModeGallery() {
+  const grid = $('mgGrid')
+  if (!grid) return
+  grid.innerHTML = ''
+  const decks = (typeof LIB !== 'undefined' && Array.isArray(LIB.decks)) ? LIB.decks : []
+  $('mgTabWork').classList.toggle('on', mgTab === 'work')
+  $('mgTabExplore').classList.toggle('on', mgTab === 'explore')
+  $('mgTabWork').setAttribute('aria-selected', String(mgTab === 'work'))
+  $('mgTabExplore').setAttribute('aria-selected', String(mgTab === 'explore'))
+
+  if (mgTab === 'work') {
+    const uploads = tplUploads()
+    const recent = recentDeckIds().map((id) => decks.find((deck) => deck.id === id)).filter(Boolean)
+    const rest = decks.filter((deck) => !recent.includes(deck))
+    const picks = recent.concat(rest).slice(0, Math.max(0, 4 - Math.min(uploads.length, 2)))
+    for (const upload of uploads.slice(0, 2)) grid.append(mgUploadCard(upload))
+    for (const deck of picks) grid.append(mgDeckCard(deck))
+    if (grid.childElementCount < 4 && uploads.length === 0) {
+      const add = document.createElement('button')
+      add.className = 'mgcard add'
+      add.type = 'button'
+      add.innerHTML = '<div class="mg-add"><b>＋</b><span>上传模板或从案例库挑一套</span></div><span>新建</span>'
+      add.onclick = () => openTplLibrary()
+      grid.append(add)
+    }
+    return
+  }
+
+  const recent = new Set(recentDeckIds())
+  const fresh = decks.filter((deck) => !recent.has(deck.id))
+  const picks = (fresh.length >= 4 ? fresh.slice(-4) : decks.slice(-4)).reverse()
+  for (const deck of picks) grid.append(mgDeckCard(deck))
+}
+
+function openTplLibrary() {
+  exitMode()
+  setView('templates')
+}
+
+function openUploadDialog(upload) {
+  document.querySelectorAll('.mfm').forEach((el) => el.remove())
+  const overlay = document.createElement('div')
+  overlay.className = 'mfm'
+  const card = document.createElement('div')
+  card.className = 'mfm-card up-card'
+  card.setAttribute('role', 'dialog')
+  card.setAttribute('aria-modal', 'true')
+
+  const head = document.createElement('div')
+  head.className = 'mfm-head'
+  const title = document.createElement('h3')
+  title.textContent = '导入的模板'
+  const x = document.createElement('button')
+  x.className = 'mfm-x'
+  x.type = 'button'
+  x.textContent = '×'
+  head.append(title, x)
+  card.append(head)
+
+  const body = document.createElement('div')
+  body.className = 'mfm-body'
+  const list = document.createElement('div')
+  list.className = 'up-list'
+  const rows = [
+    ['文件名', upload.name],
+    ['大小', fmtSize(upload.size)],
+    ['导入时间', fmtWhen(upload.at)],
+    ['本地副本', upload.dataUrl ? '已保存（可下载原文件）' : '未保存（文件超过 2MB，只记录信息）'],
+  ]
+  for (const [key, value] of rows) {
+    const row = document.createElement('div')
+    row.className = 'up-row'
+    const k = document.createElement('span')
+    k.textContent = key
+    const v = document.createElement('b')
+    v.textContent = value
+    row.append(k, v)
+    list.append(row)
+  }
+  body.append(list)
+  const note = document.createElement('div')
+  note.className = 'up-note'
+  note.textContent = '模板只存在这台机器的浏览器里，不会上传到服务器；删掉它不会影响案例库。'
+  body.append(note)
+  card.append(body)
+
+  const foot = document.createElement('div')
+  foot.className = 'mfm-foot'
+  if (upload.dataUrl) {
+    const download = document.createElement('button')
+    download.className = 'mfm-btn'
+    download.type = 'button'
+    download.textContent = '下载原文件'
+    download.onclick = () => {
+      const a = document.createElement('a')
+      a.href = upload.dataUrl
+      a.download = upload.name
+      document.body.append(a)
+      a.click()
+      a.remove()
+    }
+    foot.append(download)
+  }
+  const remove = document.createElement('button')
+  remove.className = 'mfm-btn'
+  remove.type = 'button'
+  remove.textContent = '移除'
+  remove.onclick = () => {
+    writeLocal(TPL_UPLOADS_KEY, tplUploads().filter((item) => item.id !== upload.id))
+    overlay.remove()
+    paintModeGallery()
+    toast('已移除「' + upload.name + '」', 'ok')
+  }
+  const close = document.createElement('button')
+  close.className = 'mfm-btn primary'
+  close.type = 'button'
+  close.textContent = '关闭'
+  close.onclick = () => overlay.remove()
+  foot.append(remove, close)
+  card.append(foot)
+  x.onclick = () => overlay.remove()
+  overlay.append(card)
+  overlay.onclick = (event) => { if (event.target === overlay) overlay.remove() }
+  document.addEventListener('keydown', function onEsc(event) {
+    if (event.key !== 'Escape') return
+    overlay.remove()
+    document.removeEventListener('keydown', onEsc)
+  })
+  document.body.append(overlay)
+  close.focus()
+}
+
+$('mgTabWork').onclick = () => { mgTab = 'work'; paintModeGallery() }
+$('mgTabExplore').onclick = () => { mgTab = 'explore'; paintModeGallery() }
+
+$('uploadTpl').onclick = () => $('tplUploadFile').click()
+$('tplUploadFile').onchange = async (event) => {
+  const input = event.target
+  const file = input.files && input.files[0]
+  input.value = ''
+  if (!file) return
+  const row = {
+    id: 'up-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 6),
+    name: file.name,
+    size: file.size,
+    at: Date.now(),
+  }
+  if (file.size <= 2 * 1024 * 1024) {
+    row.dataUrl = await new Promise((resolve) => {
+      const reader = new FileReader()
+      reader.onload = () => resolve(String(reader.result || ''))
+      reader.onerror = () => resolve('')
+      reader.readAsDataURL(file)
+    })
+  }
+  const next = [row, ...tplUploads().filter((item) => item.name !== row.name)].slice(0, 6)
+  let saved = writeLocal(TPL_UPLOADS_KEY, next)
+  if (!saved && row.dataUrl) {
+    delete row.dataUrl
+    saved = writeLocal(TPL_UPLOADS_KEY, [row, ...tplUploads().filter((item) => item.name !== row.name)].slice(0, 6))
+  }
+  if (!saved) { toast('本地存储已满，没能保存这个模板', 'err'); return }
+  mgTab = 'work'
+  paintModeGallery()
+  toast('已导入模板「' + file.name + '」', 'ok')
+}
+
 function setHidden(el, hidden) {
   // SVGElement 没有 hidden 这个 IDL 属性：必须走 attribute，CSS 的 [hidden] 才生效。
   if (!el) return
@@ -8326,7 +8886,7 @@ function enterMode(kind) {
   setHidden($('heroHome'), true)
   setHidden($('heroMode'), false)
   setHidden($('tplwrap'), true)
-  setHidden($('modeBack'), false)
+  setHidden($('modeBack'), true)
   $('modeChipLabel').textContent = kind
   $('modeChipIcon').innerHTML = CHIP_ICONS[kind] || CHIP_ICONS['演示文稿']
 
@@ -8339,7 +8899,15 @@ function enterMode(kind) {
   setHidden($('modeExamples'), fileMode)
   setHidden($('modeTplActions'), fileMode)
 
-  if (!fileMode) paintExamples(content.examples)
+  const preset = $('exPresetBtn')
+  if (preset) preset.hidden = kind !== '演示文稿'
+  const gallery = document.querySelector('.mgal')
+  if (gallery) setHidden(gallery, fileMode)
+  if (!fileMode) {
+    if (kind === '演示文稿') paintExPreset()
+    else paintExamples(content.examples)
+    paintModeGallery()
+  }
   $('modePrompt').placeholder = beautify ? '描述您希望更改或改进的内容' : content.placeholder
 
   setView('home')
@@ -10327,6 +10895,7 @@ paintSessions()
 paintActivity()
 renderOfficeCards()
 syncNickname()
+paintModeGallery()
 
 await connected
 try {
