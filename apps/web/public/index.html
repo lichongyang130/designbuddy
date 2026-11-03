@@ -5118,6 +5118,18 @@
   html[data-theme="dark"] .md-ico.danger{color:#FF9B9B;background:#3A2020}
   .md-ico svg{width:15px;height:15px}
   .md-empty{padding:22px 16px;font-size:13px;color:var(--fg-subtle);text-align:center}
+  /* 删除二次确认：整行染红 + 行内文案和取消按钮，反馈不再依赖别处的提示条 */
+  .md-item.confirm{background:#FFF6F6}
+  html[data-theme="dark"] .md-item.confirm{background:#2E1E1E}
+  .md-arm{display:none;margin-left:auto;min-width:0;align-items:center;gap:8px;font-size:12.5px;color:#D14343;white-space:nowrap}
+  .md-arm > span{overflow:hidden;text-overflow:ellipsis;min-width:0}
+  html[data-theme="dark"] .md-arm{color:#FF9B9B}
+  .md-item.confirm .md-arm{display:flex}
+  .md-item.confirm .md-tag{opacity:.5}
+  .md-arm button{font-size:12.5px;color:var(--fg-muted);padding:2px 6px;border-radius:6px}
+  .md-arm button:hover{background:var(--surface-3);color:var(--fg)}
+  .md-ico.copied{color:#0E9F6E;background:#E9F8F1}
+  html[data-theme="dark"] .md-ico.copied{color:#4ADE9B;background:#17322A}
   /* 添加 / 编辑模型：居中弹窗 */
   .mfm{position:fixed;inset:0;z-index:120;background:rgba(17,17,22,.30);backdrop-filter:blur(3px);
     display:flex;align-items:center;justify-content:center;padding:24px}
@@ -5216,7 +5228,8 @@
   .palette .opt:hover,.palette .opt.sel{background:var(--accent-soft)}
   .palette .opt small{margin-left:auto;color:var(--fg-subtle);font-size:11px}
 
-  .toast{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:8px;z-index:60}
+  /* 设置窗口 z-index:80、模型弹窗 120；提示条必须压在上面，否则在设置里点按钮像没反应 */
+  .toast{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:8px;z-index:200;pointer-events:none}
   .toast .t{
     background:var(--surface);border:1px solid var(--line-strong);border-left:3px solid var(--accent);border-radius:var(--r-md);
     padding:10px 13px;font-size:13px;max-width:430px;box-shadow:var(--e2);
@@ -9571,9 +9584,18 @@ async function buildAgentsPanel(box) {
  */
 const MD_DIAMOND = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2 20.8 12 12 20.8 3.2 12z"/></svg>'
 const MD_PEN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4l10-10a2.1 2.1 0 0 0-3-3L5 17z"/><path d="M13.5 6.5 17.5 10.5"/></svg>'
+const MD_CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.8 10 17.8 19 7.2"/></svg>'
 const MD_LINK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 14.5 14.5 9.5"/><path d="M11.8 6.6l1.6-1.6a3.7 3.7 0 0 1 5.2 5.2l-1.6 1.6"/><path d="M12.2 17.4l-1.6 1.6a3.7 3.7 0 0 1-5.2-5.2l1.6-1.6"/></svg>'
 const MD_TRASH = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 6.5h15"/><path d="M9.5 6.5V4.8h5v1.7"/><path d="M6.5 6.5l.9 12.2a1.6 1.6 0 0 0 1.6 1.5h6a1.6 1.6 0 0 0 1.6-1.5l.9-12.2"/><path d="M10.4 10.5v6M13.6 10.5v6"/></svg>'
 const MD_CHEV = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5.5 16 12l-7 6.5"/></svg>'
+
+/** 复制用的接入配置：只带公开字段，Key 永远不进剪贴板。 */
+function modelConfigText(item) {
+  const config = { model: item.model, provider: item.provider || '自建' }
+  if (item.baseUrl) config.baseUrl = item.baseUrl
+  if (Array.isArray(item.capabilities) && item.capabilities.length > 0) config.capabilities = item.capabilities
+  return JSON.stringify(config, null, 2)
+}
 
 function mdNode(tag, cls, text) {
   const el = document.createElement(tag)
@@ -9582,8 +9604,8 @@ function mdNode(tag, cls, text) {
   return el
 }
 
-function mdCopy(text) {
-  const done = () => toast('已复制模型名 ' + text, 'ok')
+function mdCopy(text, okText) {
+  const done = () => toast(okText || ('已复制 ' + text), 'ok')
   const fallback = () => {
     try {
       const area = document.createElement('textarea')
@@ -9661,33 +9683,64 @@ async function buildModelsPanel(box) {
 
     const pen = mdNode('button', 'md-ico pen')
     pen.type = 'button'; pen.title = '编辑'; pen.innerHTML = MD_PEN
+    pen.setAttribute('aria-label', '编辑 ' + item.name)
     pen.onclick = () => openModelDialog(box, item, rerender)
 
-    const link = mdNode('button', 'md-ico')
-    link.type = 'button'; link.title = '复制模型名（发给别人或贴进配置）'; link.innerHTML = MD_LINK
-    link.onclick = () => mdCopy(item.model)
+    const link = mdNode('button', 'md-ico copy')
+    link.type = 'button'
+    link.title = '复制接入配置（模型名 / 接口地址 / 能力，不含 API Key）'
+    link.setAttribute('aria-label', '复制 ' + item.name + ' 的接入配置')
+    link.innerHTML = MD_LINK
+    let copied = 0
+    link.onclick = () => {
+      mdCopy(modelConfigText(item), '已复制「' + item.name + '」的接入配置（不含 Key）')
+      link.innerHTML = MD_CHECK
+      link.classList.add('copied')
+      window.clearTimeout(copied)
+      copied = window.setTimeout(() => { link.innerHTML = MD_LINK; link.classList.remove('copied') }, 1400)
+    }
 
-    const trash = mdNode('button', 'md-ico')
+    const trash = mdNode('button', 'md-ico del')
     trash.type = 'button'; trash.title = '删除'; trash.innerHTML = MD_TRASH
+    trash.setAttribute('aria-label', '删除 ' + item.name)
+
+    /* 二次确认直接写在行里：第一下不删，只把整行染红并给出「确认 / 取消」 */
+    const arm = mdNode('span', 'md-arm')
+    const armText = mdNode('span', null, '再点一次确认删除')
+    const cancelArm = mdNode('button', null, '取消')
+    arm.append(armText, cancelArm)
     let armed = 0
-    trash.onclick = async () => {
-      if (!armed) {
-        armed = window.setTimeout(() => { armed = 0; trash.classList.remove('danger'); trash.title = '删除' }, 4000)
+    let pending = false
+    const disarm = () => {
+      window.clearTimeout(armed)
+      armed = 0; pending = false
+      row.classList.remove('confirm')
+      trash.classList.remove('danger')
+      trash.title = '删除'
+    }
+    cancelArm.onclick = (event) => { event.stopPropagation(); disarm(); toast('已取消删除', 'ok') }
+    trash.onclick = async (event) => {
+      event.stopPropagation()
+      if (!pending) {
+        pending = true
+        row.classList.add('confirm')
         trash.classList.add('danger')
-        trash.title = '再点一次删除'
-        toast('再点一次删除「' + item.name + '」', 'ok')
+        trash.title = '确认删除'
+        armText.textContent = '再点一次确认删除「' + item.name + '」'
+        armed = window.setTimeout(disarm, 5000)
         return
       }
-      window.clearTimeout(armed)
+      disarm()
       try {
         const reply = await rpc('models.remove', { id: item.id })
         if (!reply || !reply.removed) toast('这条已经不在文件里了', 'err')
-        else toast('已删除「' + item.name + '」', 'ok')
+        else toast('已删除「' + item.name + '」，已从 models.json 移除', 'ok')
         await rerender(null)
       } catch (error) { toast('删除失败：' + error.message, 'err') }
     }
 
     tools.append(pen, link, trash)
+    row.append(arm)
     row.append(tools)
     card.append(row)
   }

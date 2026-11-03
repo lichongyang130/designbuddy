@@ -214,6 +214,28 @@ test('没有「未接入」类占位控件', () => {
   assert.doesNotMatch(visible, />未接入</, '界面上不应出现「未接入」徽标')
 })
 
+test('模型列表每行的三个图标都接了真实行为，反馈不被设置窗口盖住', () => {
+  const source = read('index.html')
+
+  // 编辑：打开同一个添加/编辑弹窗，并把刷新后的行重新聚焦
+  assert.match(source, /pen\.onclick = \(\) => openModelDialog\(box, item, rerender\)/)
+
+  // 复制：复制接入配置（不含 Key），并在图标上给出对勾反馈
+  assert.match(source, /mdCopy\(modelConfigText\(item\)/)
+  assert.match(source, /link\.classList\.add\('copied'\)/)
+
+  // 删除：行内二次确认 + 真正调用 models.remove
+  assert.match(source, /row\.classList\.add\('confirm'\)/)
+  assert.match(source, /rpc\('models\.remove'/)
+  assert.match(source, /cancelArm\.onclick/)
+
+  // 提示条必须压在设置窗口（z-index:80）和模型弹窗（120）之上，且不挡点击
+  const toast = source.match(/\.toast\{[^}]*\}/)
+  assert.ok(toast, '缺少 .toast 规则')
+  assert.match(toast[0], /z-index:2\d\d/, '提示条 z-index 需要高于设置窗口')
+  assert.match(toast[0], /pointer-events:none/, '提示条不应拦截点击')
+})
+
 test('深色主题与窄屏断点都还在', () => {
   assert.match(indexHtml, /html\[data-theme="dark"\]\{/, '缺少深色主题 token')
   assert.match(indexHtml, /html\[data-theme="dark"\] \.tplpage\{/, '缺少深色主题的页面覆盖')
