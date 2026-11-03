@@ -5043,6 +5043,57 @@
   body.compact .thread{gap:11px}
   body.mono .msg .body,body.mono .tool pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
 
+  /* ── 个人主页（账号 · 套件关联） ─────────────── */
+  .pf{display:flex;flex-direction:column;gap:14px;max-width:620px}
+  .pf-user{display:flex;align-items:center;gap:14px;padding:15px 16px;background:var(--surface);border:1px solid var(--line);
+    border-radius:14px;box-shadow:0 1px 2px rgba(16,24,40,.04)}
+  .pf-av{width:44px;height:44px;border-radius:999px;background:var(--surface-3);color:var(--fg-muted);
+    display:grid;place-items:center;font-size:19px;font-weight:500;flex:none;line-height:1}
+  .pf-id{flex:1;min-width:0}
+  .pf-name{display:inline-flex;align-items:center;gap:7px;font-size:15px;font-weight:600;color:var(--fg);
+    line-height:1.3;max-width:100%}
+  .pf-name b{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .pf-name svg{color:var(--fg-subtle);flex:none;transition:color var(--d1) var(--ease)}
+  .pf-name:hover svg{color:var(--fg)}
+  .pf-name input{font:inherit;font-size:15px;font-weight:600;color:var(--fg);background:var(--surface);
+    border:1px solid var(--line-strong);border-radius:7px;padding:2px 8px;outline:0;width:190px}
+  .pf-name input:focus{border-color:var(--fg-subtle)}
+  .pf-plan{font-size:13px;color:var(--fg-subtle);margin-top:4px}
+  .pf-manage{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 13px;border:1px solid var(--line-strong);
+    border-radius:9px;font-size:13px;color:var(--fg);background:var(--surface);flex:none;
+    transition:background var(--d1) var(--ease)}
+  .pf-manage:hover{background:var(--surface-2)}
+  .pf-manage svg{color:var(--fg-subtle)}
+  .pf-sec{display:flex;align-items:center;gap:5px;font-size:13px;color:var(--fg-subtle);padding:2px 2px 0}
+  .pf-sec svg{color:var(--fg-subtle);opacity:.8}
+  .pf-list{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;
+    box-shadow:0 1px 2px rgba(16,24,40,.04)}
+  .pf-item{display:flex;align-items:center;gap:11px;padding:13px 16px;min-height:52px}
+  .pf-item + .pf-item{border-top:1px solid var(--line)}
+  .pf-logo{width:26px;height:26px;flex:none;display:grid;place-items:center}
+  .pf-logo .cn-ico{width:24px;height:24px;border-radius:7px}
+  .pf-logo .cn-ico svg{width:19px;height:19px}
+  .pf-nm{font-size:14px;font-weight:600;color:var(--fg);white-space:nowrap}
+  .pf-desc{flex:1;min-width:0;font-size:13px;color:var(--fg-subtle);margin-left:6px;overflow:hidden;
+    text-overflow:ellipsis;white-space:nowrap}
+  .pf-item.pf-main .pf-acc{margin-left:8px}
+  .pf-acc{margin-left:auto;display:flex;align-items:center;gap:9px;font-size:13px;color:var(--fg-subtle);
+    font-variant-numeric:tabular-nums}
+  .pf-badge{font-size:11px;line-height:1;padding:4px 7px;border-radius:5px;background:var(--surface-3);color:var(--fg-muted)}
+  .pf-btn{height:30px;padding:0 15px;border:1px solid var(--line-strong);border-radius:8px;font-size:13px;
+    color:var(--fg);background:var(--surface);flex:none;transition:background var(--d1) var(--ease)}
+  .pf-btn:hover{background:var(--surface-2)}
+  .pf-btn.on{color:var(--fg-muted);border-color:var(--line);background:var(--surface-2)}
+  .pf-logout{width:100%;height:46px;border:1px solid var(--line);border-radius:12px;background:var(--surface);
+    font-size:14px;color:var(--fg);box-shadow:0 1px 2px rgba(16,24,40,.04);margin-top:2px;
+    transition:background var(--d1) var(--ease),color var(--d1) var(--ease),border-color var(--d1) var(--ease)}
+  .pf-logout:hover{background:var(--surface-2)}
+  .pf-logout.confirm{color:#D14343;border-color:#F0C9C9;background:#FFF6F6}
+  html[data-theme="dark"] .pf-logout.confirm{color:#FF9B9B;border-color:#5A2E2E;background:#2A1B1B}
+  .pf-hint{font-size:12.5px;line-height:1.6;color:var(--fg-subtle);padding:0 2px}
+  .pf-guest{display:flex;align-items:center;gap:14px;padding:15px 16px;background:var(--surface);
+    border:1px dashed var(--line-strong);border-radius:14px}
+  .pf-guest .pf-av{background:var(--surface-2);color:var(--fg-subtle);font-size:17px}
   .sp-soon{font-size:13px;color:var(--fg-subtle);border:1px dashed var(--line-strong);border-radius:var(--r-md);padding:18px;background:var(--surface-2)}
 
   /* ── 更多：右侧悬浮菜单 ───────────────────── */
@@ -8573,6 +8624,9 @@ const BRAND_KEYS = [
 
 /* 没有官方矢量的品牌：白底 + 品牌色简称（两字够用时用两字，避免一排「腾讯」） */
 const CN_MARKS = [
+  [/^DesignBuddy/i, ['D', '#2D6AE3']],
+  [/腾讯ima|^ima$/i, ['ima', '#12A594']],
+  [/腾讯网盘/, ['网盘', '#2D8CF0']],
   [/腾讯文档/, ['文档', '#2B7BFF']],
   [/腾讯问卷/, ['问卷', '#0AA1F5']],
   [/腾讯地图/, ['地图', '#1AA0E8']],
@@ -9077,27 +9131,190 @@ async function openPanel(id) {
 }
 
 /* ── 各栏目 ─────────────────────────────────────────── */
+/* ── 个人主页：账号卡 + Buddy One 套件关联账号 ──────────
+ * 关联状态存在 prefs.account 里（本机），没有假的「已接入」：
+ * 没点到关联就一直是「未关联」，点过之后文案会写明只记录在本机。
+ */
+const PF_SUITE = [
+  { name: '腾讯会议', desc: '未关联，关联后可同步账号与会议数据' },
+  { name: '腾讯文档', desc: '未关联，关联后即可实现积分数据互通' },
+  { name: '腾讯ima', desc: '未关联，关联后即可实现积分数据互通' },
+  { name: '腾讯网盘', desc: '未关联，关联后即可实现积分数据互通' },
+]
+const PF_DEFAULT_ACCOUNT = { name: '199****1651', plan: '个人版', seat: '1', linked: [], signedOut: false }
+
+function pfAccount() {
+  if (!state.prefs.account || typeof state.prefs.account !== 'object') {
+    state.prefs.account = Object.assign({}, PF_DEFAULT_ACCOUNT)
+  }
+  const acc = state.prefs.account
+  if (!Array.isArray(acc.linked)) acc.linked = []
+  if (typeof acc.name !== 'string' || acc.name === '') acc.name = PF_DEFAULT_ACCOUNT.name
+  if (typeof acc.plan !== 'string' || acc.plan === '') acc.plan = PF_DEFAULT_ACCOUNT.plan
+  if (typeof acc.seat !== 'string' || acc.seat === '') acc.seat = PF_DEFAULT_ACCOUNT.seat
+  return acc
+}
+
+function pfNode(tag, cls, text) {
+  const el = document.createElement(tag)
+  if (cls) el.className = cls
+  if (text != null) el.textContent = text
+  return el
+}
+
+const PF_ARROW = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.5 16.5 16.5 7.5M9.5 7.5h7v7"/></svg>'
+const PF_INFO = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.6"/><path d="M12 11v5.2M12 8.1v.1"/></svg>'
+
+function paintProfile(wrap) {
+  const acc = pfAccount()
+  wrap.innerHTML = ''
+
+  if (acc.signedOut) {
+    const guest = pfNode('div', 'pf-guest')
+    guest.append(
+      pfNode('div', 'pf-av', '—'),
+      (() => {
+        const id = pfNode('div', 'pf-id')
+        const nm = pfNode('div', 'pf-name'); nm.append(pfNode('b', null, '未登录'))
+        id.append(nm, pfNode('div', 'pf-plan', '本地工作区 · 会话与文件仍保存在这台设备'))
+        return id
+      })(),
+      (() => {
+        const btn = pfNode('button', 'pf-manage'); btn.type = 'button'
+        btn.textContent = '恢复本地账号'
+        btn.onclick = () => {
+          acc.signedOut = false
+          savePrefs()
+          toast('已恢复到本地账号', 'ok')
+          paintProfile(wrap)
+        }
+        return btn
+      })(),
+    )
+    wrap.append(guest, pfNode('div', 'pf-hint', '登录后可以关联 DesignBuddy 套件账号。'))
+    return
+  }
+
+  /* 账号卡 */
+  const user = pfNode('div', 'pf-user')
+  const av = pfNode('div', 'pf-av', acc.seat)
+  const idBox = pfNode('div', 'pf-id')
+  const nameBtn = pfNode('button', 'pf-name')
+  nameBtn.type = 'button'
+  nameBtn.title = '修改显示名称'
+  nameBtn.append(pfNode('b', null, acc.name))
+  nameBtn.insertAdjacentHTML('beforeend', iconMark('pen', 13))
+  nameBtn.onclick = () => startRename(idBox, acc, wrap)
+  idBox.append(nameBtn, pfNode('div', 'pf-plan', acc.plan))
+
+  const manage = pfNode('button', 'pf-manage')
+  manage.type = 'button'
+  manage.title = '在「设备连接」里管理账号与插件'
+  manage.append(document.createTextNode('前往管理中心'))
+  manage.insertAdjacentHTML('beforeend', PF_ARROW)
+  manage.onclick = () => openSettings('devices')
+
+  user.append(av, idBox, manage)
+  wrap.append(user)
+
+  /* 套件关联账号 */
+  const sec = pfNode('div', 'pf-sec')
+  sec.append(document.createTextNode('DesignBuddy 产品套件关联账号'))
+  sec.insertAdjacentHTML('beforeend', PF_INFO)
+  sec.title = '这些产品共用一个 DesignBuddy 账号；关联后账号数据在本机合并'
+  wrap.append(sec)
+
+  const list = pfNode('div', 'pf-list')
+
+  const mainRow = pfNode('div', 'pf-item pf-main')
+  const mainLogo = pfNode('div', 'pf-logo')
+  mainLogo.innerHTML = brandTile('DesignBuddy')
+  const mainAcc = pfNode('div', 'pf-acc')
+  mainAcc.append(pfNode('span', null, acc.name), pfNode('span', 'pf-badge', '主账号'))
+  mainRow.append(mainLogo, pfNode('div', 'pf-nm', 'DesignBuddy'), mainAcc)
+  list.append(mainRow)
+
+  for (const item of PF_SUITE) {
+    const linked = acc.linked.includes(item.name)
+    const row = pfNode('div', 'pf-item')
+    const logo = pfNode('div', 'pf-logo')
+    logo.innerHTML = brandTile(item.name)
+    row.append(logo, pfNode('div', 'pf-nm', item.name))
+    row.append(pfNode('div', 'pf-desc', linked ? '已关联 · 账号绑定只记录在本机' : item.desc))
+    const btn = pfNode('button', 'pf-btn' + (linked ? ' on' : ''), linked ? '已关联' : '关联')
+    btn.type = 'button'
+    btn.title = linked ? '点击取消关联' : '关联到当前账号（记录在本机）'
+    btn.onclick = () => {
+      if (acc.linked.includes(item.name)) {
+        acc.linked = acc.linked.filter((name) => name !== item.name)
+        toast('已取消关联 ' + item.name, 'ok')
+      } else {
+        acc.linked.push(item.name)
+        toast('已关联 ' + item.name + '（仅记录在本机）', 'ok')
+      }
+      savePrefs()
+      paintProfile(wrap)
+    }
+    row.append(btn)
+    list.append(row)
+  }
+  wrap.append(list)
+
+  /* 退出登录：两次确认，退出后可一键恢复 */
+  const out = pfNode('button', 'pf-logout', '退出登录')
+  out.type = 'button'
+  let armed = 0
+  out.onclick = () => {
+    if (!armed) {
+      armed = window.setTimeout(() => { armed = 0; out.classList.remove('confirm'); out.textContent = '退出登录' }, 4000)
+      out.classList.add('confirm')
+      out.textContent = '再点一次退出登录'
+      return
+    }
+    window.clearTimeout(armed)
+    armed = 0
+    acc.signedOut = true
+    savePrefs()
+    toast('已退出本地账号，会话与文件仍保留', 'ok')
+    paintProfile(wrap)
+  }
+  wrap.append(out)
+}
+
+function startRename(idBox, acc, wrap) {
+  const btn = idBox.querySelector('.pf-name')
+  if (!btn) return
+  const input = document.createElement('input')
+  input.type = 'text'
+  input.value = acc.name
+  input.maxLength = 24
+  input.setAttribute('aria-label', '显示名称')
+  btn.replaceWith(input)
+  input.focus()
+  input.select()
+  let done = false
+  const commit = (save) => {
+    if (done) return
+    done = true
+    const next = input.value.trim()
+    if (save && next !== '' && next !== acc.name) {
+      acc.name = next
+      savePrefs()
+      toast('名称已更新', 'ok')
+    }
+    paintProfile(wrap)
+  }
+  input.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') { event.preventDefault(); commit(true) }
+    else if (event.key === 'Escape') { event.preventDefault(); commit(false) }
+  })
+  input.addEventListener('blur', () => commit(true))
+}
+
 async function buildProfilePanel(box) {
-  const sessions = await rpc('session.list')
-  const messages = sessions.reduce((total, item) => total + (item.messages || 0), 0)
-  const events = sessions.reduce((total, item) => total + (item.events || 0), 0)
-  const presets = await rpc('presets.list')
-  const current = presets.find((preset) => preset.id === state.presetId)
-
-  const card = spCard()
-  card.append(
-    spRow('会话数', '本进程内创建过的会话', spValue(String(sessions.length))),
-    spRow('消息数', '这些会话里的消息总数', spValue(String(messages))),
-    spRow('事件数', '工具调用与步骤事件', spValue(String(events))),
-  )
-  box.append(spSection('使用情况'), card)
-
-  const settingsCard = spCard()
-  settingsCard.append(
-    spRow('默认专家', '发消息时使用的 preset', spValue(current ? current.name : '—')),
-    spRow('视觉主题', '在「主题」页可切换', spValue(state.prefs.theme || '默认')),
-  )
-  box.append(spSection('当前配置'), settingsCard)
+  const wrap = pfNode('div', 'pf')
+  box.appendChild(wrap)
+  paintProfile(wrap)
 }
 
 function buildAppearancePanel(box) {
@@ -9364,7 +9581,13 @@ async function buildDataPanel(box) {
     )
     card.append(spRow(session.title || session.id, session.messages + ' 条消息 · ' + session.events + ' 个事件', actions))
   }
-  box.append(spSection('会话数据'), card)
+  const totals = sessions.reduce((acc, item) => ({
+    messages: acc.messages + (item.messages || 0),
+    events: acc.events + (item.events || 0),
+  }), { messages: 0, events: 0 })
+  box.append(spSection(sessions.length === 0
+    ? '会话数据'
+    : `会话数据 · ${sessions.length} 个会话 / ${totals.messages} 条消息 / ${totals.events} 个事件`), card)
 
   const danger = spCard()
   danger.append(spRow('清空界面会话', '只清空当前窗口显示，不删除服务端记录', spButton('清空', () => {
