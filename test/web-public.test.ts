@@ -244,7 +244,7 @@ test('演示文稿首页按参考截图：头图、标题、格式胶囊、示�
   // 标题与格式胶囊：胶囊单独一行，下面才是工具条
   assert.match(indexHtml, /让您的创意焕发生机/)
   assert.match(indexHtml, /class="prompt mode-prompt"/)
-  assert.match(indexHtml, /<div class="mpills">/)
+  assert.match(indexHtml, /<div class="bar">[\s\S]{0,400}id="attachMode"[\s\S]{0,400}class="modechip"/)
   assert.match(indexHtml, /id="modeChipLabel">演示文稿</)
 
   // 工具条：加号、设置、图片、档位、语音、发送
