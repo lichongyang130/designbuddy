@@ -6817,7 +6817,7 @@ export const CASE_DECKS = [
         products: [
           { img: '10', tags: 'single filter ethiopia', name: 'Kestrel', desc: 'Washed · Ethiopia, Guji · blueberry, jasmine', price: '$19', stock: 'In stock · roasted Tue' },
           { img: '16', tags: 'espresso brazil colombia', name: 'Northwind Blend', desc: 'Natural Brazil + washed Colombia · cocoa, hazelnut', price: '$17', stock: 'In stock · 24 bags' },
-          { img: '03', tags: 'decaf colombia espresso', name: 'Meridian Decaf', desc: 'Sugarcane decaf · Colombia, Huila · plum, cocoa', price: '$18', stock: 'Low · 6 bags' },
+          { img: '08', tags: 'decaf colombia espresso', name: 'Meridian Decaf', desc: 'Sugarcane decaf · Colombia, Huila · plum, cocoa', price: '$18', stock: 'Low · 6 bags' },
         ],
         strip: ['3 origins on the bench this week', 'Roast date printed on every bag', 'Grind to order, no extra charge', 'Free shipping over $40'],
       },
@@ -6825,7 +6825,7 @@ export const CASE_DECKS = [
         k: 'nw-page', label: '商品', kind: 'product', path: '/shop/kestrel', nav: 'Coffee', cart: '4',
         kicker: 'Washed · Ethiopia, Guji', title: 'Kestrel',
         lead: 'Picked at 2,050 m, washed and dried on raised beds for eleven days. Blueberry first, then jasmine, and a finish that stays clean as it cools. Roasted light on Tuesdays.',
-        img: '02', thumbs: ['02', '03', '16'], unit: 19,
+        img: '10', thumbs: ['16', '02', '05'], unit: 19,
         sizes: [['250 g', 0, '$19'], ['1 kg', 43, '$62']],
         grinds: ['Whole bean', 'Filter', 'Espresso', 'Moka'],
         stocknote: 'Roasted Tuesday 03 November · 8 bags left',
@@ -6958,6 +6958,11 @@ export const CASE_DECKS = [
           'The interesting part is how little of this shows up in a photograph of a bag. Freshness is a claim that only survives contact with a method: you can print a date, but the customer has to brew it to find out whether you were telling the truth.',
         ],
         pull: 'Twelve days is not a shelf life. It is the point where we stop being able to defend the bag.',
+        img: '17',
+        author: 'Marta Oyelaran', authorRole: 'Head roaster · at the drum since 2019',
+        meta: [['Filed under', 'Roasting'], ['Words', '1,400'], ['Read', '5 minutes'], ['Published', '28 Sep 2026']],
+        next: 'A grinder that costs more than the roaster',
+        imgFirst: true,
         tail: 'Which is why the shop page lists the roast day rather than a countdown, and why we roast to the week instead of to the month. If a bag is older than twelve days it goes to the staff box, the wholesale invoice and the cold brew — in that order.',
         strip: ['Every bag dated by hand', 'Cupped every second day', 'Twelve days, then the staff box', 'Subscribe and the bag is never old'],
       },
@@ -6969,7 +6974,7 @@ export const CASE_DECKS = [
         places: [
           { name: 'Harbour Street', addr: '14 Harbour Street · the roastery', img: '11',
             hours: [['Mon', '07:00 – 17:00'], ['Tue', '07:00 – 17:00'], ['Wed', '07:00 – 17:00'], ['Thu', '07:00 – 17:00'], ['Fri', '07:00 – 17:00'], ['Sat', '08:00 – 17:00'], ['Sun', '09:00 – 15:00']] },
-          { name: 'Old Market', addr: '3 Corn Exchange Lane · bench only', img: '12',
+          { name: 'Old Market', addr: '3 Corn Exchange Lane · bench only', img: '14',
             hours: [['Mon', 'Closed'], ['Tue', '08:00 – 16:00'], ['Wed', '08:00 – 16:00'], ['Thu', '08:00 – 16:00'], ['Fri', '08:00 – 16:00'], ['Sat', '08:00 – 16:00'], ['Sun', 'Closed']] },
           { name: 'Quay Kiosk', addr: 'North pier · takeaway window', img: '13',
             hours: [['Mon', '06:30 – 14:00'], ['Tue', '06:30 – 14:00'], ['Wed', '06:30 – 14:00'], ['Thu', '06:30 – 14:00'], ['Fri', '06:30 – 14:00'], ['Sat', '07:00 – 15:00'], ['Sun', '07:00 – 15:00']] },
@@ -7030,7 +7035,7 @@ export const CASE_DECKS = [
         note: 'Roasted Tuesday 03 November\nShips the same afternoon',
         lines: [['10', 'Kestrel · 250 g', 'Washed Ethiopia, Guji · whole bean', 19, 2],
           ['16', 'Northwind Blend · 250 g', 'Natural Brazil + washed Colombia · filter', 17, 1],
-          ['03', 'Meridian Decaf · 250 g', 'Sugarcane decaf, Colombia · whole bean', 18, 1]],
+          ['08', 'Meridian Decaf · 250 g', 'Sugarcane decaf, Colombia · whole bean', 18, 1]],
         strip: ['Free shipping over $40', 'Packed in paper, not plastic', 'Returns within 14 days', 'Roast date printed on every bag'],
       },
       {
@@ -9885,12 +9890,19 @@ function afTotals(base, groups) {
           '<div class="nw-rows" style="margin-top:14px">' + (s.most || []).map(([n, t]) =>
             '<div class="nw-row"><span>' + esc(n) + '</span><b>' + esc(t) + '</b></div>').join('') + '</div></div></div>'
       } else if (k === 'post') {
-        body = '<div class="nw-article"><div class="nw-kick">' + esc(s.kicker) + '</div>' +
+        body = '<div class="nw-artwrap"><div class="nw-article"><div class="nw-kick">' + esc(s.kicker) + '</div>' +
           '<h1>' + esc(s.title) + '</h1>' +
           '<div class="nw-note" style="margin-top:10px">' + esc(s.byline) + '</div>' +
           '<div class="nw-cols">' + (s.paras || []).map((x) => '<p>' + esc(x) + '</p>').join('') + '</div>' +
           '<div class="nw-pull">' + esc(s.pull) + '</div>' +
-          '<div class="nw-cols" style="margin-top:14px"><p>' + esc(s.tail) + '</p></div></div>'
+          '<div class="nw-cols" style="margin-top:14px"><p>' + esc(s.tail) + '</p></div></div>' +
+          '<div class="nw-artside">' + img(s.img) +
+          '<div class="nw-h3" style="margin-top:14px;font-size:15px">' + esc(s.author || '') + '</div>' +
+          '<div class="nw-note" style="margin-top:4px">' + esc(s.authorRole || '') + '</div>' +
+          '<div class="nw-rows" style="margin-top:14px">' + (s.meta || []).map(([a, b]) =>
+            '<div class="nw-row"><span>' + esc(a) + '</span><b>' + esc(b) + '</b></div>').join('') + '</div>' +
+          '<div class="nw-label">Next</div><div class="nw-h3" style="font-size:15px;margin-top:6px">' + esc(s.next || '') + '</div>' +
+          '</div></div>'
       } else if (k === 'places') {
         body = head(s.kicker, s.title, esc(s.note)) +
           '<div data-nw-root="none"><div class="nw-filters">' + (s.days || []).map((d, i) =>
