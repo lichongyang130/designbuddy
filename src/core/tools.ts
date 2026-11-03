@@ -33,6 +33,12 @@ export interface ToolDefinition {
   parameters?: JsonSchema
   timeoutMs?: number
   maxOutputChars?: number
+  /**
+   * Registered at runtime by an integration the user switched on (a connector),
+   * not baked in at boot. Preset allow-lists do not apply to these: the user
+   * pressed "connect" and expects the tool to be usable in the very next turn.
+   */
+  dynamic?: boolean
   execute(args: Record<string, unknown>, ctx: ToolCallContext): Promise<ToolOutput> | ToolOutput
 }
 
@@ -102,11 +108,14 @@ export class ToolRegistry {
     return [...this.#tools.values()]
   }
 
-  /** Schemas for the model. `allow` narrows to a preset's toolset. */
+  /**
+   * Schemas for the model. `allow` narrows to a preset's toolset, but dynamic
+   * tools (connector tools the user just connected) always stay visible.
+   */
   schemas(allow?: readonly string[]): JsonSchemaToolSchema[] {
     const allowed = allow ? new Set(allow) : null
     return this.list()
-      .filter((tool) => !allowed || allowed.has(tool.name))
+      .filter((tool) => !allowed || tool.dynamic === true || allowed.has(tool.name))
       .map((tool) => ({
         name: tool.name,
         description: tool.description,

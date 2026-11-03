@@ -29,6 +29,7 @@ import * as openaiLlm from '../plugins/openai-llm.ts'
 import * as designMemory from '../plugins/design-memory.ts'
 import * as designExperts from '../plugins/design-experts.ts'
 import * as connectorFigma from '../plugins/connector-figma.ts'
+import * as connectorHub from '../plugins/connector-hub.ts'
 import * as officeTools from '../plugins/office-tools.ts'
 
 /**
@@ -79,6 +80,7 @@ export const designBundle: Bundle = {
     },
     { id: 'design.experts', plugin: 'design-experts' },
     { id: 'design.figma', plugin: 'connector-figma', config: { fileKey: 'demo-file' } },
+    { id: 'design.connectors', plugin: 'connector-hub' },
     { id: 'office.tools', plugin: 'office-tools' },
   ],
 }
@@ -109,5 +111,6 @@ export const defaultModules: PluginModules = {
   'design-memory': designMemory,
   'design-experts': designExperts,
   'connector-figma': connectorFigma,
+  'connector-hub': connectorHub,
   'office-tools': officeTools,
 }

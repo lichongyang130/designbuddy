@@ -14,4 +14,5 @@ export function applyDefaultDataPaths(cwd = process.cwd()): void {
   process.env.DB_SESSION_DIR ??= join(cwd, '.designbuddy', 'sessions')
   process.env.DB_USAGE_FILE ??= join(cwd, '.designbuddy', 'usage.jsonl')
   process.env.DB_MODELS_FILE ??= join(cwd, '.designbuddy', 'models.json')
+  process.env.DB_CONNECTORS_FILE ??= join(cwd, '.designbuddy', 'connectors.json')
 }

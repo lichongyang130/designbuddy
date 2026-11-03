@@ -22,6 +22,7 @@ import type { UsageService } from '../core/usage.ts'
 import type { Library } from '../core/library.ts'
 import type { CustomModelInput, ModelCatalog } from '../core/models.ts'
 import { probeModel } from '../core/model-probe.ts'
+import type { ConnectorHub } from '../connectors/hub.ts'
 import { estimateTokens } from '../core/usage.ts'
 import { errorMessage } from '../core/tools.ts'
 import type { ToolRegistry } from '../core/tools.ts'
@@ -150,6 +151,33 @@ export class HostServer {
           policies: router.candidateKinds(),
           attempts: router.attempts,
         }
+      }
+      case 'connectors.list': {
+        const hub = this.#ctx.require<ConnectorHub>('connectors')
+        return { items: hub.list() }
+      }
+      case 'connectors.test': {
+        const hub = this.#ctx.require<ConnectorHub>('connectors')
+        return hub.test(
+          String(params.id ?? ''),
+          (params.secrets ?? {}) as Record<string, string>,
+        )
+      }
+      case 'connectors.connect': {
+        const hub = this.#ctx.require<ConnectorHub>('connectors')
+        return hub.connect(
+          String(params.id ?? ''),
+          (params.secrets ?? {}) as Record<string, string>,
+          { allowWrite: params.allowWrite === true },
+        )
+      }
+      case 'connectors.disconnect': {
+        const hub = this.#ctx.require<ConnectorHub>('connectors')
+        return hub.disconnect(String(params.id ?? ''))
+      }
+      case 'connectors.log': {
+        const hub = this.#ctx.require<ConnectorHub>('connectors')
+        return { items: hub.auditLog(String(params.id ?? ''), Number(params.limit ?? 20)) }
       }
       case 'models.list': {
         const catalog = this.#ctx.require<ModelCatalog>('models')

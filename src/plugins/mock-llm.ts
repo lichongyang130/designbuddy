@@ -77,6 +77,10 @@ export class MockAdapter implements LlmAdapter {
   }
 }
 
+import { CONNECTORS } from '../connectors/catalog.ts'
+
+const CONNECTOR_IDS = new Set(CONNECTORS.map((item) => item.id))
+
 export interface Decision {
   text: string
   call?: ToolCallPart
@@ -103,8 +107,10 @@ export function decide(request: LlmRequest, plan: string[]): Decision {
   // 其次才看消息里有没有文件路径，最后才回落到预设计划。
   const mentioned = mentionedTool(prompt, available)
   const office = officeToolFor(prompt)
+  const connector = connectorToolFor(prompt, available, called)
   const next = (mentioned && !called.has(mentioned) ? mentioned : undefined)
     ?? (office && available.has(office) && !called.has(office) ? office : undefined)
+    ?? connector
     ?? plan.find((toolName) => available.has(toolName) && !called.has(toolName))
   if (next) {
     return {
@@ -132,8 +138,42 @@ function argsFor(toolName: string, prompt: string, results: Message[]): Record<s
       return { topic: '首屏改版', content: summarizeResults(results) }
     default:
       if (toolName.startsWith('office.read_')) return { filePath: officePath(prompt) }
+      if (toolName.includes('.')) return connectorArgs(toolName, prompt)
       return {}
   }
+}
+
+/**
+ * 用户消息里点名了某个已连接的连接器（例如「用通达信查一下 600519」），
+ * 就优先调用它的只读工具——否则演示环境里连接器永远轮不到被调用，
+ * 「连上就能用」这句话就成了空话。
+ */
+export function connectorToolFor(prompt: string, available: Set<string>, called: Set<string>): string | undefined {
+  for (const manifest of CONNECTORS) {
+    if (!prompt.includes(manifest.name)) continue
+    for (const spec of manifest.tools) {
+      if (spec.write) continue
+      const name = manifest.id + '.' + spec.name
+      if (available.has(name) && !called.has(name)) return name
+    }
+  }
+  return undefined
+}
+
+/** 连接器工具的参数：能从句子里捞到就带过去，捞不到交给工具自己兜底。 */
+export function connectorArgs(toolName: string, prompt: string): Record<string, unknown> {
+  const args: Record<string, unknown> = {}
+  const symbol = prompt.match(/\b(\d{6})\b/)
+  if (symbol) args.symbol = symbol[1]
+  const repo = prompt.match(/\b([\w-]+)\/([\w.-]+)\b/)
+  if (repo && toolName.startsWith('github.')) {
+    args.owner = repo[1]
+    args.repo = repo[2]
+  }
+  const path = prompt.match(/[\w./-]+\.(?:ts|tsx|js|jsx|css|md|json)\b/)
+  if (path && /file|doc|page/.test(toolName)) args.path = path[0]
+  if (args.symbol === undefined && /搜|查|找|search/i.test(prompt)) args.query = prompt.slice(0, 30)
+  return args
 }
 
 /** 能从用户消息里直接拿到参数的工具，才允许被 `@` 点名优先执行。 */
@@ -142,7 +182,9 @@ const MENTIONABLE = /^(?:office\.read_\w+|office\.docx_formulas|memory\.(?:save|
 export function mentionedTool(prompt: string, available: Set<string>): string | undefined {
   for (const match of prompt.matchAll(/@([a-zA-Z][\w.-]*)/g)) {
     const candidate = match[1]!
-    if (available.has(candidate) && MENTIONABLE.test(candidate)) return candidate
+    if (!available.has(candidate)) continue
+    // 连接器工具（`tdx.quote`）也能被 @ 点名，前缀必须是真的连上了的目录 id
+    if (MENTIONABLE.test(candidate) || CONNECTOR_IDS.has(candidate.split('.')[0]!)) return candidate
   }
   return undefined
 }

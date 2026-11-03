@@ -4965,6 +4965,70 @@
   .cn-grid .ex-empty{grid-column:1/-1}
   .cn-add:hover{background:var(--surface-2);color:var(--fg)}
 
+  /* 连接器：筛选、状态徽标、详情弹窗 */
+  .cn-filters{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px}
+  .cn-filter{
+    font-size:12.5px;color:var(--fg-muted);background:var(--surface-2);border:1px solid var(--line);
+    border-radius:var(--r-pill);padding:5px 12px;cursor:pointer;transition:color var(--d1) var(--ease),border-color var(--d1) var(--ease),background var(--d1) var(--ease);
+  }
+  .cn-filter:hover{border-color:var(--line-strong);color:var(--fg)}
+  .cn-filter.on{background:var(--accent-soft);border-color:var(--accent-line);color:var(--accent);font-weight:600}
+  .cn-count{font-size:12px;color:var(--fg-subtle);margin-left:auto;align-self:center}
+  .cn-badge{font-size:11px;padding:2px 6px;border-radius:var(--r-sm);font-weight:500;flex:none}
+  .cn-badge.ok{background:var(--ok-soft);color:var(--ok)}
+  .cn-demo{font-style:normal;font-size:10.5px;font-weight:600;color:var(--fg-subtle);background:var(--surface-3);border-radius:3px;padding:1px 4px;margin-right:5px}
+  .cnx-kind{font-size:11px;color:var(--fg-subtle);background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-sm);padding:1px 6px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .cn-badge.warn{background:var(--err-soft);color:var(--err)}
+  .cn-card.on{border-color:var(--accent-line);box-shadow:0 0 0 2px var(--accent-soft) inset}
+
+  .cnx-card{width:min(600px,94vw)}
+  .cnx-head{align-items:center;gap:12px}
+  .cnx-logo{width:42px;height:42px;flex:none;display:grid;place-items:center}
+  .cnx-logo .cn-ico{width:42px;height:42px}
+  .cnx-ident{min-width:0;flex:1}
+  .cnx-ident h3{font-size:16px;font-weight:600;color:var(--fg);line-height:1.3}
+  .cnx-sub{font-size:12px;color:var(--fg-subtle);margin-top:3px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .cnx-desc{font-size:13px;line-height:1.6;color:var(--fg-muted);margin:0 0 16px}
+  .cnx-banner{
+    display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.55;
+    padding:9px 11px;border-radius:8px;margin:0 0 16px;
+    background:var(--surface-2);border:1px solid var(--line);color:var(--fg-muted);
+  }
+  .cnx-banner svg{flex:none;margin-top:1px;color:var(--fg-subtle)}
+  .cnx-sec{margin:0 0 18px}
+  .cnx-sec > b{display:block;font-size:12px;font-weight:600;color:var(--fg-muted);margin-bottom:9px}
+  .cnx-scopes{display:flex;gap:6px;flex-wrap:wrap}
+  .cnx-scope{font-size:11.5px;color:var(--fg-muted);background:var(--surface-2);border-radius:var(--r-sm);padding:3px 7px}
+  .cnx-tools{display:flex;flex-direction:column;gap:6px}
+  .cnx-tool{display:flex;align-items:flex-start;gap:9px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface-2)}
+  .cnx-tool .cnx-tool-main{flex:1;min-width:0}
+  .cnx-tool code{display:block;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;color:var(--fg)}
+  .cnx-tool small{display:block;font-size:11.5px;color:var(--fg-subtle);margin-top:2px}
+  .cnx-tag{font-size:10.5px;font-weight:600;padding:2px 6px;border-radius:var(--r-sm);flex:none}
+  .cnx-tag.read{background:var(--accent-soft);color:var(--accent)}
+  .cnx-tag.write{background:#fdeee9;color:#b4451f}
+  .cnx-log{display:flex;flex-direction:column;gap:5px;font-size:11.5px;color:var(--fg-muted)}
+  .cnx-log div{display:flex;gap:8px;align-items:center}
+  .cnx-log code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--fg)}
+  .cnx-log .bad{color:var(--err)}
+  .cnx-msg{font-size:12px;line-height:1.5;margin-top:8px}
+  .cnx-msg.ok{color:var(--ok)}
+  .cnx-msg.err{color:var(--err)}
+  .cnx-check{display:flex;gap:8px;align-items:flex-start;font-size:12.5px;color:var(--fg-muted);line-height:1.5}
+  .cnx-check input{margin-top:2px}
+  .cnx-foot{display:flex;gap:10px;align-items:center;padding:14px 20px 18px;border-top:1px solid var(--line)}
+  .cnx-foot .grow{flex:1}
+  .cnx-btn{
+    height:38px;padding:0 16px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;
+    border:1px solid var(--line-strong);background:var(--surface);color:var(--fg);
+    transition:background var(--d1) var(--ease),border-color var(--d1) var(--ease),color var(--d1) var(--ease);
+  }
+  .cnx-btn:hover{background:var(--surface-2)}
+  .cnx-btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+  .cnx-btn.primary:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+  .cnx-btn.danger{background:var(--err-soft);border-color:var(--err-line);color:var(--err)}
+  .cnx-btn[disabled]{opacity:.55;cursor:default}
+
   /* ── 设置窗口 ─────────────────────────────── */
   .settings{
     position:fixed;inset:0;z-index:80;background:rgba(17,17,22,.32);backdrop-filter:blur(6px);
@@ -6414,11 +6478,34 @@
       </div>
 
       <div class="ex-pane" id="paneConnectors" hidden>
-        <p class="cn-hint">连接器目录。授权与装载由本地插件完成，点任意一项查看「设置 · 设备连接」。</p>
+        <p class="cn-hint">连接器目录。连上之后 Agent 会多出对应工具，断开即注销；没有真实后端的条目返回演示数据，会在详情里写明。</p>
+        <div class="cn-filters" id="cnFilters">
+          <button class="cn-filter on" data-cnf="all">全部</button>
+          <button class="cn-filter" data-cnf="connected">已连接</button>
+          <button class="cn-filter" data-cnf="auth">需要凭据</button>
+          <button class="cn-filter" data-cnf="demo">演示数据</button>
+          <span class="cn-count" id="cnCount"></span>
+        </div>
         <div class="cn-grid" id="cnGrid"></div>
       </div>
     </section>
   </main>
+</div>
+
+<!-- 连接器详情 -->
+<div class="mfm cnx" id="cnxModal" hidden>
+  <div class="mfm-card cnx-card" role="dialog" aria-modal="true" aria-labelledby="cnxName">
+    <div class="mfm-head cnx-head">
+      <span class="cnx-logo" id="cnxLogo"></span>
+      <div class="cnx-ident">
+        <h3 id="cnxName">连接器</h3>
+        <div class="cnx-sub" id="cnxSub"></div>
+      </div>
+      <button class="mfm-x" id="cnxClose" title="关闭" aria-label="关闭">✕</button>
+    </div>
+    <div class="mfm-body" id="cnxBody"></div>
+    <div class="cnx-foot" id="cnxFoot"></div>
+  </div>
 </div>
 
 <!-- 专家召唤：整页加载 -->
@@ -6742,7 +6829,6 @@
 <div class="toast" id="toast"></div>
 
 <script type="module">
-import { CN_CONNECTORS } from './demo-data.js'
 import { CASE_DECKS as BUNDLED_CASES, slideHTML } from './cases.js'
 import { THEMES as BUNDLED_THEMES } from './themes.js'
 
@@ -7813,15 +7899,32 @@ stream.onmessage = (event) => {
   onFrame(frame)
 }
 
-function rpc(method, params) {
+/**
+ * SSE 丢帧时这个 Promise 会一直挂着，界面就停在空面板上装作在加载。
+ * 所以每个请求都带超时：宁可报错，也不留一个永远转圈的控件。
+ */
+function rpc(method, params, timeoutMs) {
   const id = 'web-' + (++seq)
+  const limit = timeoutMs || 20000
   return new Promise((resolve, reject) => {
-    pending.set(id, { resolve, reject })
+    const timer = setTimeout(() => {
+      if (pending.delete(id)) reject(new Error('请求超时（' + limit + 'ms）：' + method))
+    }, limit)
+    pending.set(id, {
+      resolve: (value) => { clearTimeout(timer); resolve(value) },
+      reject: (error) => { clearTimeout(timer); reject(error) },
+    })
     fetch('/send?id=' + encodeURIComponent(clientId), {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ id, method, params: params || {} }),
-    }).catch((error) => { pending.delete(id); reject(error) })
+    }).then((response) => {
+      if (response.status === 409) {
+        pending.delete(id)
+        clearTimeout(timer)
+        reject(new Error('连接已断开，刷新页面后重试'))
+      }
+    }).catch((error) => { pending.delete(id); clearTimeout(timer); reject(error) })
   })
 }
 
@@ -8479,21 +8582,19 @@ function subItems(act) {
         hue: 265,
         run: () => { closePlusMenu(); openSettings('devices') },
       }))
-    const demo = CN_CONNECTORS.map((item) => ({ label: item.name, desc: item.desc || '', hue: item.hue, settings: true }))
-    const all = real.concat(demo)
-    const shown = all.slice(0, 12)
-    const rows = shown.map((item) => ({
-      label: item.label,
-      desc: item.desc,
-      ico: '<span class="smi-ico smi-brand">' + brandTile(item.label, item.hue) + '</span>',
-      run: item.run || (() => {
-        closePlusMenu()
-        openSettings('devices')
-      }),
+    if (CNX.items.length === 0) void loadConnectors()
+    const connected = CNX.items.filter((item) => item.state === 'connected')
+    const list = (connected.length ? connected : CNX.items).slice(0, 12)
+    const rows = list.map((item) => ({
+      label: item.name,
+      desc: (item.state === 'connected' ? '已连接' : item.demo ? '演示数据' : '未连接') + ' · ' + item.desc,
+      ico: '<span class="smi-ico smi-brand">' + brandTile(item.name, 210) + '</span>',
+      run: () => { closePlusMenu(); openExperts('connectors') },
     }))
-    if (all.length > shown.length) {
-      rows.push({ foot: '查看全部 ' + all.length + ' 个连接器', run: () => { closePlusMenu(); openExperts('connectors') } })
+    if (rows.length === 0) {
+      rows.push({ label: '正在读取连接器…', desc: '稍等一下', run: () => { void loadConnectors(true) } })
     }
+    rows.push({ foot: '查看全部 ' + (CNX.items.length || 40) + ' 个连接器', run: () => { closePlusMenu(); openExperts('connectors') } })
     return rows
   }
   return []
@@ -9963,55 +10064,360 @@ function brandTint(color) {
   return r + ',' + g + ',' + b
 }
 
-let cnPaintSeq = 0
-async function paintConnectors() {
-  const seq = ++cnPaintSeq
-  const grid = $('cnGrid')
-  grid.innerHTML = ''
-  let real = []
+/* ── 连接器目录（真数据：connectors.list） ───────────────── */
+const CNX = { items: [], filter: 'all', loading: false, error: '', openId: null }
+
+async function loadConnectors(force) {
+  if (CNX.loading) return
+  if (!force && CNX.items.length > 0) return
+  CNX.loading = true
+  CNX.error = ''
+  if (state.exTab === 'connectors') paintConnectors()
   try {
-    const rows = await rpc('plugins.rows')
-    real = rows
-      .filter((row) => /figma|connector|web|mcp|ssh/i.test(row.plugin))
-      .map((row) => ({
-        name: row.plugin,
-        desc: '插件行 ' + row.id + (row.mounted ? ' · 已连接' : ' · 未装载'),
-        hue: 265,
-        connected: row.mounted,
-        row,
-      }))
+    const result = await rpc('connectors.list')
+    CNX.items = Array.isArray(result.items) ? result.items : []
   } catch (error) {
-    toast(error.message, 'err')
+    CNX.error = error.message || '与后端断开连接'
+  } finally {
+    CNX.loading = false
+    if (state.exTab === 'connectors') paintConnectors()
+  }
+}
+
+function cnxBadge(item) {
+  if (item.state === 'connected') return '<span class="cn-badge ok">已连接</span>'
+  if (item.state === 'error') return '<span class="cn-badge warn">需重新授权</span>'
+  return ''
+}
+
+function paintConnectors() {
+  const grid = $('cnGrid')
+  if (!grid) return
+  grid.innerHTML = ''
+  const query = state.exQuery.trim().toLowerCase()
+  const connected = CNX.items.filter((item) => item.state === 'connected').length
+
+  if (CNX.loading && CNX.items.length === 0) {
+    const empty = document.createElement('div')
+    empty.className = 'ex-empty'
+    empty.innerHTML = '<span class="ex-spin"></span><b>正在读取连接器目录…</b>'
+    grid.appendChild(empty)
+    return
+  }
+  if (CNX.error && CNX.items.length === 0) {
+    const empty = document.createElement('div')
+    empty.className = 'ex-empty'
+    empty.innerHTML = '<b>连接器目录没读到</b><span>' + CNX.error + '</span>'
+    const retry = document.createElement('button')
+    retry.type = 'button'
+    retry.className = 'ex-retry'
+    retry.textContent = '重新读取'
+    retry.onclick = () => { void loadConnectors(true) }
+    empty.appendChild(retry)
+    grid.appendChild(empty)
+    return
   }
 
-  if (seq !== cnPaintSeq) return
-  const list = real.concat(CN_CONNECTORS.map((item) => Object.assign({}, item)))
-  const query = state.exQuery.trim().toLowerCase()
-  const filtered = query
-    ? list.filter((item) => (item.name + item.desc).toLowerCase().indexOf(query) >= 0)
-    : list
+  const filtered = CNX.items.filter((item) => {
+    if (CNX.filter === 'connected' && item.state !== 'connected') return false
+    if (CNX.filter === 'auth' && (item.demo || item.auth.length === 0)) return false
+    if (CNX.filter === 'demo' && !item.demo) return false
+    if (!query) return true
+    return (item.name + ' ' + item.desc + ' ' + item.id).toLowerCase().indexOf(query) >= 0
+  })
 
   for (const item of filtered) {
     const card = document.createElement('button')
-    card.className = 'cn-card'
+    card.className = 'cn-card' + (item.state === 'connected' ? ' on' : '')
     card.innerHTML =
-      brandTile(item.name, item.hue) +
+      brandTile(item.name, 210) +
       '<span class="cn-main">' +
-        '<span class="cn-nm">' + item.name + (item.connected ? '<span class="ex-badge real">已连接</span>' : '') + '</span>' +
-        '<span class="cn-desc">' + item.desc + '</span>' +
+        '<span class="cn-nm">' + item.name + cnxBadge(item) + '</span>' +
+        '<span class="cn-desc">' + (item.demo ? '<i class="cn-demo">演示</i>' : '') + item.desc + '</span>' +
       '</span>' +
       '<span class="cn-go">' + iconMark('chevron-right', 12) + '</span>'
-    card.onclick = () => openSettings('devices')
+    card.onclick = () => openConnector(item.id)
     grid.appendChild(card)
+  }
+
+  // 计数跟着筛选走：筛了「演示数据」还写 0 / 40 会让人以为筛错了
+  const count = $('cnCount')
+  if (count) {
+    count.textContent = CNX.items.length === 0
+      ? ''
+      : (CNX.filter === 'all' && !query ? '' : '筛出 ' + filtered.length + ' 项 · ') +
+        connected + ' / ' + CNX.items.length + ' 已连接'
   }
 
   if (filtered.length === 0) {
     const empty = document.createElement('div')
     empty.className = 'ex-empty'
-    empty.textContent = '没有匹配的连接器。'
+    empty.innerHTML = CNX.items.length === 0 ? '<b>还没有连接器</b><span>后端没有返回目录条目</span>' : '<b>没有匹配的连接器</b><span>换个关键词或筛选条件试试</span>'
     grid.appendChild(empty)
   }
 }
+
+/* ── 连接器详情弹窗 ─────────────────────────────────── */
+function cnxStateText(item) {
+  if (item.state === 'connected') {
+    const when = item.since ? new Date(item.since).toLocaleString('zh-CN', { hour12: false }) : ''
+    return '已连接' + (item.account ? ' · ' + item.account : '') + (when ? ' · ' + when : '')
+  }
+  if (item.state === 'error') return '需要重新授权：' + (item.error || '凭据失效')
+  if (item.demo) return '演示数据 · 无需凭据'
+  const need = item.auth.filter((field) => field.required).map((field) => field.label)
+  return need.length ? '未连接 · 需要 ' + need.join('、') : '未连接'
+}
+
+function closeConnector() {
+  CNX.openId = null
+  const modal = $('cnxModal')
+  if (modal) modal.hidden = true
+}
+
+async function openConnector(id) {
+  const item = CNX.items.find((entry) => entry.id === id)
+  if (!item) return
+  CNX.openId = id
+  const modal = $('cnxModal')
+  $('cnxLogo').innerHTML = brandTile(item.name, 210)
+  $('cnxName').textContent = item.name
+  $('cnxSub').innerHTML = '<span>' + cnxStateText(item) + '</span>' +
+    (item.kind ? '<span class="cnx-kind">' + item.kind + '</span>' : '')
+  modal.hidden = false
+  let log = []
+  if (item.state === 'connected') {
+    try {
+      const result = await rpc('connectors.log', { id: item.id, limit: 5 })
+      log = Array.isArray(result.items) ? result.items : []
+    } catch { /* 审计读不到不影响连接 */ }
+  }
+  if (CNX.openId !== id) return
+  if (modal.hidden) return
+  renderConnectorBody(item, log)
+}
+
+function renderConnectorBody(item, log) {
+  const body = $('cnxBody')
+  const foot = $('cnxFoot')
+  body.innerHTML = ''
+  foot.innerHTML = ''
+
+  const desc = document.createElement('p')
+  desc.className = 'cnx-desc'
+  desc.textContent = item.desc
+  body.appendChild(desc)
+
+  if (item.demo) {
+    const banner = document.createElement('div')
+    banner.className = 'cnx-banner'
+    banner.innerHTML = iconMark('plug', 13) + '<span>' + (item.note || '该连接器暂未接入真实服务，连接后返回演示数据') + '。连上后工具会真的注册进技能表，调用返回结构化样例。</span>'
+    body.appendChild(banner)
+  } else if (item.kind !== 'rest') {
+    const banner = document.createElement('div')
+    banner.className = 'cnx-banner'
+    banner.innerHTML = iconMark('plug', 13) + '<span>该类型（' + item.kind + '）的运行时适配器还没接，连接会明确报错而不是静默成功。</span>'
+    body.appendChild(banner)
+  }
+
+  if (item.scopes.length) {
+    const sec = document.createElement('div')
+    sec.className = 'cnx-sec'
+    sec.innerHTML = '<b>需要权限</b><div class="cnx-scopes">' + item.scopes.map((scope) => '<span class="cnx-scope">' + scope + '</span>').join('') + '</div>'
+    body.appendChild(sec)
+  }
+
+  const hasWrite = item.tools.some((tool) => tool.write)
+  const fields = {}
+  if (item.state !== 'connected' && item.auth.length > 0) {
+    const sec = document.createElement('div')
+    sec.className = 'cnx-sec'
+    sec.innerHTML = '<b>凭据</b>'
+    for (const field of item.auth) {
+      const wrap = document.createElement('div')
+      wrap.className = 'mfm-field'
+      const label = document.createElement('label')
+      label.textContent = field.label + (field.required ? '' : '（可选）')
+      const input = document.createElement('input')
+      input.className = 'mfm-input'
+      input.type = field.type === 'password' ? 'password' : 'text'
+      input.placeholder = field.placeholder || ''
+      input.autocomplete = 'off'
+      fields[field.key] = input
+      wrap.append(label, input)
+      if (field.help) {
+        const help = document.createElement('div')
+        help.className = 'cnx-msg'
+        help.style.color = 'var(--fg-subtle)'
+        help.textContent = field.help
+        wrap.appendChild(help)
+      }
+      sec.appendChild(wrap)
+    }
+    body.appendChild(sec)
+  }
+
+  if (hasWrite) {
+    const sec = document.createElement('div')
+    sec.className = 'cnx-sec'
+    const label = document.createElement('label')
+    label.className = 'cnx-check'
+    const box = document.createElement('input')
+    box.type = 'checkbox'
+    box.checked = item.allowWrite === true
+    const text = document.createElement('span')
+    text.textContent = '允许写操作（创建、发送、部署这类会改动远端数据的能力）。不开也能连，只是写工具不会注册。'
+    label.append(box, text)
+    sec.appendChild(label)
+    body.appendChild(sec)
+    fields.__allowWrite = box
+  }
+
+  const toolsSec = document.createElement('div')
+  toolsSec.className = 'cnx-sec'
+  toolsSec.innerHTML = '<b>连接后可用（' + item.tools.length + '）</b>' +
+    '<div class="cnx-tools">' + item.tools.map((tool) => {
+      const active = item.activeTools.includes(item.id + '.' + tool.name)
+      return '<div class="cnx-tool">' +
+        '<div class="cnx-tool-main"><code>' + item.id + '.' + tool.name + '</code><small>' + tool.desc + '</small></div>' +
+        '<span class="cnx-tag ' + (tool.write ? 'write' : 'read') + '">' + (tool.write ? '写' : '读') + '</span>' +
+        (item.state === 'connected' && !active ? '<span class="cnx-tag">未注册</span>' : '') +
+      '</div>'
+    }).join('') + '</div>'
+  body.appendChild(toolsSec)
+
+  if (log.length) {
+    const logSec = document.createElement('div')
+    logSec.className = 'cnx-sec'
+    logSec.innerHTML = '<b>最近调用</b><div class="cnx-log">' + log.map((entry) => {
+      const when = new Date(entry.at).toLocaleTimeString('zh-CN', { hour12: false })
+      return '<div><span>' + when + '</span><code>' + entry.tool + '</code><span>' + entry.ms + 'ms</span>' +
+        (entry.ok ? '<span>成功</span>' : '<span class="bad">失败' + (entry.error ? '：' + entry.error : '') + '</span>') + '</div>'
+    }).join('') + '</div>'
+    body.appendChild(logSec)
+  }
+
+  const msg = document.createElement('div')
+  msg.className = 'cnx-msg'
+  msg.id = 'cnxMsg'
+
+  const testBtn = document.createElement('button')
+  testBtn.type = 'button'
+  testBtn.className = 'cnx-btn'
+  testBtn.textContent = '测试连接'
+  testBtn.onclick = async () => {
+    testBtn.disabled = true
+    msg.className = 'cnx-msg'
+    msg.textContent = '正在测试…'
+    try {
+      const result = await rpc('connectors.test', { id: item.id, secrets: collectSecrets() })
+      msg.className = 'cnx-msg ' + (result.ok ? 'ok' : 'err')
+      msg.textContent = result.ok
+        ? '通了 · ' + (result.account || '已验证') + '（' + result.ms + 'ms）'
+        : '不通：' + (result.error || '未知原因')
+    } catch (error) {
+      msg.className = 'cnx-msg err'
+      msg.textContent = error.message
+    } finally {
+      testBtn.disabled = false
+    }
+  }
+
+  function collectSecrets() {
+    const out = {}
+    for (const [key, node] of Object.entries(fields)) {
+      if (key === '__allowWrite') continue
+      out[key] = node.value
+    }
+    return out
+  }
+
+  if (item.state === 'connected') {
+    const disconnect = document.createElement('button')
+    disconnect.type = 'button'
+    disconnect.className = 'cnx-btn danger'
+    disconnect.textContent = '断开连接'
+    disconnect.onclick = async () => {
+      disconnect.disabled = true
+      try {
+        await rpc('connectors.disconnect', { id: item.id })
+        toast('已断开 ' + item.name + '，相关工具已注销', 'ok')
+        await loadConnectors(true)
+        closeConnector()
+        refreshToolsViews()
+      } catch (error) {
+        toast(error.message, 'err')
+        disconnect.disabled = false
+      }
+    }
+    foot.append(disconnect)
+  } else {
+    const connect = document.createElement('button')
+    connect.type = 'button'
+    connect.className = 'cnx-btn primary'
+    connect.textContent = item.demo ? '启用演示数据' : '连接'
+    connect.onclick = async () => {
+      connect.disabled = true
+      msg.className = 'cnx-msg'
+      msg.textContent = '正在连接…'
+      try {
+        const result = await rpc('connectors.connect', {
+          id: item.id,
+          secrets: collectSecrets(),
+          allowWrite: Boolean(fields.__allowWrite && fields.__allowWrite.checked),
+        })
+        toast('已连接 ' + item.name + '，新增 ' + result.tools.length + ' 个工具', 'ok')
+        await loadConnectors(true)
+        await openConnector(item.id)
+        refreshToolsViews()
+      } catch (error) {
+        msg.className = 'cnx-msg err'
+        msg.textContent = '连接失败：' + error.message
+        connect.disabled = false
+      }
+    }
+    if (item.auth.length === 0) {
+      const hint = document.createElement('span')
+      hint.className = 'cnx-msg'
+      hint.style.color = 'var(--fg-subtle)'
+      hint.textContent = '无需凭据'
+      foot.append(hint)
+    }
+    foot.append(testBtn, connect)
+  }
+
+  const grow = document.createElement('span')
+  grow.className = 'grow'
+  foot.prepend(grow)
+  foot.appendChild(msg)
+}
+
+/** 工具表变了，技能页/专家的工具列表要跟着变。 */
+function refreshToolsViews() {
+  if (typeof paintSkillsSoft === 'function') paintSkillsSoft()
+  if (typeof loadPlugins === 'function') void loadPlugins()
+  paintXpertChip()
+}
+function paintSkillsSoft() {
+  if (state.exTab === 'skills' && typeof paintSkills === 'function') paintSkills()
+}
+
+function switchCnxFilter(filter) {
+  CNX.filter = filter
+  document.querySelectorAll('.cn-filter').forEach((btn) => btn.classList.toggle('on', btn.dataset.cnf === filter))
+  paintConnectors()
+}
+
+document.querySelectorAll('.cn-filter').forEach((btn) => {
+  btn.onclick = () => switchCnxFilter(btn.dataset.cnf)
+})
+$('cnxClose').onclick = () => closeConnector()
+$('cnxModal').addEventListener('click', (event) => {
+  if (event.target === $('cnxModal')) closeConnector()
+})
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && !$('cnxModal').hidden) closeConnector()
+})
 
 function switchExTab(tab) {
   state.exTab = tab
@@ -10022,7 +10428,7 @@ function switchExTab(tab) {
   $('exSearch').placeholder = tab === 'skills' ? '搜索工具' : tab === 'connectors' ? '搜索连接器' : '搜索专家'
   if (tab === 'experts') { paintExperts(); if (state.presets.length === 0) void loadPresets() }
   if (tab === 'skills') paintSkills()
-  if (tab === 'connectors') void paintConnectors()
+  if (tab === 'connectors') { paintConnectors(); void loadConnectors() }
 }
 
 function openExperts(tab) {
@@ -11150,26 +11556,52 @@ async function buildAssistantPanel(box) {
 }
 
 async function buildDevicesPanel(box) {
-  const rows = await rpc('plugins.rows')
-  const connectors = rows.filter((row) => /figma|connector|web|mcp|ssh/i.test(row.plugin))
+  // 这里只说真话：列的是真的连上的连接器（后台 connectors.list），
+  // 「已连接」永远对应一个真在注册工具的条目，而不是「插件装上了」。
+  const [{ items }, rows] = await Promise.all([rpc('connectors.list'), rpc('plugins.rows')])
+  const connected = items.filter((item) => item.state === 'connected')
   const card = spCard()
-  if (connectors.length === 0) card.append(spRow('暂无连接器', '装载连接器插件后出现'))
-  for (const row of connectors) {
+  if (connected.length === 0) card.append(spRow('还没有连接器', '目录里有 ' + items.length + ' 个，随便挑一个打开'))
+  for (const item of connected) {
     const wrap = document.createElement('div')
     wrap.className = 'sp-inline'
-    wrap.append(spValue(row.mounted ? '已连接' : '未装载'))
+    wrap.append(spValue((item.activeTools ? item.activeTools.length : 0) + ' 个工具'))
+    wrap.append(spButton('断开', async () => {
+      try {
+        await rpc('connectors.disconnect', { id: item.id })
+        await loadConnectors(true)
+        refreshToolsViews()
+        toast('已断开 ' + item.name, 'ok')
+      } catch (error) { toast(error.message, 'err') }
+      void openPanel('devices')
+    }, 'danger'))
+    card.append(spRow(item.name, item.id, wrap))
+  }
+  card.append(spRow('连接器目录', '按分类筛选，看每个连接器要什么权限、连上能用哪些工具', spButton('前往连接器', () => {
+    closeSettings()
+    switchExTab('connectors')
+  })))
+  box.append(spSection('已连接的连接器'), card)
+
+  const plugins = rows.filter((row) => /figma|web|mcp|ssh/i.test(row.plugin))
+  const pluginCard = spCard()
+  if (plugins.length === 0) pluginCard.append(spRow('暂无运行中的外部插件', '装载后出现在这里'))
+  for (const row of plugins) {
+    const wrap = document.createElement('div')
+    wrap.className = 'sp-inline'
+    wrap.append(spValue(row.mounted ? '运行中' : '未装载'))
     if (row.mounted) {
-      wrap.append(spButton('断开', async () => {
+      wrap.append(spButton('卸载', async () => {
         try {
           await unmount(row.id, false)
-          toast('已断开 ' + row.plugin, 'ok')
+          toast('已卸载 ' + row.plugin, 'ok')
         } catch (error) { toast(error.message, 'err') }
         void openPanel('devices')
       }, 'danger'))
     }
-    card.append(spRow(row.plugin, row.id, wrap))
+    pluginCard.append(spRow(row.plugin, row.id, wrap))
   }
-  box.append(spSection('设备连接'), card)
+  box.append(spSection('运行时插件'), pluginCard)
 }
 
 async function buildDialoguePanel(box) {

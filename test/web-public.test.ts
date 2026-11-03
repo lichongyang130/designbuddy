@@ -384,3 +384,10 @@ test('深色主题与窄屏断点都还在', () => {
   assert.match(indexHtml, /@media \(max-width:760px\)\{/, '缺少窄屏断点')
   assert.match(indexHtml, /id="sideToggle"/, '窄屏抽屉开关缺失')
 })
+
+test('RPC 带超时：SSE 丢帧不会让控件永远转圈', () => {
+  const html = read('index.html')
+  assert.match(html, /function rpc\(method, params, timeoutMs\)/)
+  assert.match(html, /请求超时（/)
+  assert.match(html, /response\.status === 409/)
+})
