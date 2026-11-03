@@ -6807,6 +6807,11 @@ export const CASE_DECKS = [
         lead: 'We roast 640 kilos a month on a twelve-kilo drum in the back of the shop, twice a week, and we print the date on every bag. Nothing older than twelve days leaves the counter.',
         cta: 'Shop the roast', cta2: 'Subscribe · save 15%', img: '01',
         badges: ['Four producers, all visited', 'Roasted in-house, Tue & Fri', 'Free shipping over $40'],
+        faces: [
+          { id: 'hf1', label: 'This week', img: '02' },
+          { id: 'hf2', label: 'The next batch', img: '04' },
+          { id: 'hf3', label: 'Inside the shop', img: '12' },
+        ],
         strip: ['Roasted in-house, Tue & Fri', 'Free shipping over $40', 'Whole bean or ground to order', 'Est. 2019 · Northwind Coffee Co.'],
       },
       {
@@ -6863,7 +6868,11 @@ export const CASE_DECKS = [
           'We buy from four producers, all of whom we have visited, and we pay above the posted price because the alternative is a market that rewards volume over flavour. Two of the four have been with us since the garage.',
           'The blend is deliberately unglamorous: a natural Brazil for body, a washed Colombia for the finish. It is the coffee we drink, and the one we can roast consistently on a machine this size, which matters more than a score sheet.',
         ],
-        facts: [['2019', 'first roast · 400 g'], ['640 kg', 'roasted last month'], ['4 min', 'grinder to cup']],
+        eras: [
+          { id: 'era1', label: '2019', facts: [['400 g', 'first roast, on a borrowed scale'], ['1', 'producer, on a handshake'], ['2', 'neighbours who said yes']], note: 'The garage, the sample roaster, and the first bag with a printed date on it.' },
+          { id: 'era2', label: '2023', facts: [['6 kg', 'drum, bought second-hand'], ['4', 'producers, all visited'], ['210', 'bags a month']], note: 'The move to the harbour, the four stools, and the first wholesale contract.' },
+          { id: 'era3', label: '2026', facts: [['12 kg', 'drum, twice a week'], ['640 kg', 'roasted last month'], ['4 min', 'grinder to cup']], note: 'Seven years on: same bench, same twelve-day window, quieter mornings.' },
+        ],
         rows: [['Ethiopia', 'Kestrel · Guji · washed · since 2021'],
           ['Colombia', 'La Palma · Huila · washed · since 2020'],
           ['Brazil', 'Fazenda Sul · Cerrado · natural · since 2019'],
@@ -6882,7 +6891,7 @@ export const CASE_DECKS = [
             head: 'The one that started the shop',
             body: 'Kestrel comes from a 34-hectare plot above the Ganale river, picked by eleven households and dried on raised beds for eleven days. We have bought the same lot every year since 2021.',
             rows: [['Lots bought in 2026', '3 · 1,800 kg'], ['Price paid', '$4.10 / kg green'], ['Above posted price', '+38%'], ['Cup', 'Blueberry, jasmine, cane']] },
-          { name: 'Colombia', img: '07', region: 'Huila · 1,780 m · washed',
+          { name: 'Colombia', img: '16', region: 'Huila · 1,780 m · washed',
             head: 'The finish in the blend',
             body: 'La Palma is a family farm of nine hectares, and the washed lots we buy are fermented for 36 hours before drying. It is the reason the blend does not taste like a Brazil.',
             rows: [['Lots bought in 2026', '4 · 2,400 kg'], ['Price paid', '$3.40 / kg green'], ['Above posted price', '+22%'], ['Cup', 'Red apple, cocoa, clean']] },
@@ -6910,7 +6919,7 @@ export const CASE_DECKS = [
             body: 'The blend wants 93 °C and a 1 : 2 ratio. Kestrel on its own prefers a longer shot and a coarser grind — 1 : 2.4, about thirty-two seconds.',
             cells: [['18 g', 'dose'], ['36 g', 'yield'], ['28 s', 'shot time'], ['1 : 2', 'ratio']],
             rows: [['Basket', '18 g, level, no tap'], ['Temperature', '93 °C for the blend'], ['Shot', '28 s, 36 g out'], ['Taste', 'Cocoa first, dried fig after']] },
-          { name: 'AeroPress', img: '18', kicker: 'Immersion · 2 minutes', head: 'The travel one',
+          { name: 'AeroPress', img: '09', kicker: 'Immersion · 2 minutes', head: 'The travel one',
             body: 'Inverted, 15 g to 220 g, stirred once at thirty seconds and pressed slowly at 1:45. It survives a hotel room and a bad grinder.',
             cells: [['15 g', 'coffee'], ['220 g', 'water'], ['1:45', 'press'], ['1 : 14.7', 'ratio']],
             rows: [['Grind', 'Medium, one notch finer than V60'], ['Steep', '1:15, inverted, filter rinsed'], ['Stir', 'Once at 0:30, three turns'], ['Press', 'Slow, 25 s, stop at the hiss']] },
@@ -6925,7 +6934,7 @@ export const CASE_DECKS = [
         k: 'nw-page', label: '配方', kind: 'guide', path: '/brew/v60', nav: 'Brew', cart: '4',
         kicker: 'V60 · the bench recipe', title: 'Scale it to the cups you are making',
         lead: 'One cup is 18 grams to 288 of water. The calculator follows you up to six cups; the timings stretch with it.',
-        img: '18', pull: 'Grind medium-fine. If it drains in under two minutes, go finer.',
+        img: '09', pull: 'Grind medium-fine. If it drains in under two minutes, go finer.',
         paras: ['Weigh the dose, not the scoop. A level tablespoon of Kestrel is anywhere between 9 and 14 grams depending on how the bag settled, which is a 30 per cent difference in the cup.',
           'Rinse the paper, tip it out, and add the coffee. Forty grams of water, forty seconds, then three pours of ninety grams each, waiting for the bed to fall between them.'],
         steps: [['0:00', '40 g bloom'], ['0:40', 'pour 1 · 90 g'], ['1:15', 'pour 2 · 90 g'], ['1:50', 'pour 3 · 68 g'], ['2:45', 'drawdown done']],
@@ -6936,12 +6945,12 @@ export const CASE_DECKS = [
         kicker: 'Journal', title: 'Notes from the bench',
         note: 'Four pieces a month\nNo sponsored links',
         posts: [
-          ['12 Oct', 'Why we print the roast date, not the harvest date', 'A harvest date is a story about a farm. A roast date is a fact about a bag, and it is the only one a customer can check on their own kitchen counter.'],
-          ['28 Sep', 'The twelve-day window, and what happens on day thirteen', 'We pull bags on day twelve because the third week is a different coffee. Here is what the cupping table shows, week by week, with numbers.'],
-          ['09 Sep', 'A grinder that costs more than the roaster', 'The second-hand Ditting arrived before the drum did. Seven years on it is still the single biggest improvement to the cup we ever made.'],
-          ['21 Aug', 'Four producers, and the price we actually pay', 'What forward contracts mean for a roastery this size, what we paid per kilo this year, and why the blend still costs $17.'],
+          ['12 Oct', 'Why we print the roast date, not the harvest date', 'A harvest date is a story about a farm. A roast date is a fact about a bag, and it is the only one a customer can check on their own kitchen counter.', 'roast'],
+          ['28 Sep', 'The twelve-day window, and what happens on day thirteen', 'We pull bags on day twelve because the third week is a different coffee. Here is what the cupping table shows, week by week, with numbers.', 'brew'],
+          ['09 Sep', 'A grinder that costs more than the roaster', 'The second-hand Ditting arrived before the drum did. Seven years on it is still the single biggest improvement to the cup we ever made.', 'brew'],
+          ['21 Aug', 'Four producers, and the price we actually pay', 'What forward contracts mean for a roastery this size, what we paid per kilo this year, and why the blend still costs $17.', 'people'],
         ],
-        img: '17', featureKicker: 'Most read',
+        img: '05', featureKicker: 'Most read',
         featureTitle: 'The twelve-day window',
         featureDek: 'What the third week does to a bag, measured at the cupping table.',
         most: [['01', 'The twelve-day window'], ['02', 'Why the roast date matters'], ['03', 'On paying above the posted price']],
@@ -6958,7 +6967,7 @@ export const CASE_DECKS = [
           'The interesting part is how little of this shows up in a photograph of a bag. Freshness is a claim that only survives contact with a method: you can print a date, but the customer has to brew it to find out whether you were telling the truth.',
         ],
         pull: 'Twelve days is not a shelf life. It is the point where we stop being able to defend the bag.',
-        img: '17',
+        img: '14',
         author: 'Marta Oyelaran', authorRole: 'Head roaster · at the drum since 2019',
         meta: [['Filed under', 'Roasting'], ['Words', '1,400'], ['Read', '5 minutes'], ['Published', '28 Sep 2026']],
         next: 'A grinder that costs more than the roaster',
@@ -6995,7 +7004,7 @@ export const CASE_DECKS = [
         k: 'nw-page', label: '批发', kind: 'wholesale', path: '/wholesale', nav: 'Coffee', cart: '4',
         kicker: 'Wholesale', title: 'Twenty-two kitchens, one drum',
         lead: 'We supply cafés, a bakery and one bookshop. The rate drops with volume, the roast day stays the same, and the grinder is ours until the contract ends.',
-        img: '15', facts: [['22', 'wholesale accounts'], ['310 kg', 'shipped each week'], ['12 wk', 'minimum term']],
+        img: '10', facts: [['22', 'wholesale accounts'], ['310 kg', 'shipped each week'], ['12 wk', 'minimum term']],
         rows: [['Delivery', 'Tuesday and Friday, our own van'], ['Invoicing', 'Weekly, 14-day terms'], ['Training', 'At your bar, twice a year'], ['Grinder', 'On loan, serviced by us']],
         tiers: [['Starter', '2 to 5 kg', 28], ['Bench', '6 to 12 kg', 26], ['Roastery', '13 kg and up', 24]],
         strip: ['Invoiced weekly, 14-day terms', 'Free loan of a grinder', 'Same roast day as the shop', 'Training at your bar, twice a year'],
@@ -7078,8 +7087,13 @@ export const CASE_DECKS = [
         k: 'nw-page', label: '404', kind: 'notfound', path: '/shop/kestre1', nav: 'Coffee', cart: '4',
         title: 'That page went off the bench',
         lead: 'A typo, a sold-out lot, or a link from 2019. The shop, the brew guides and the journal are all still where they were.',
-        suggestions: ['Kestrel', 'Brew guides', 'This week on the bench', 'Visit the roastery'],
-        img: '20',
+        sugs: [
+          ['Kestrel', '/shop/kestrel', 'the washed Ethiopian, back on the bench Tuesday'],
+          ['Brew guides', '/brew', 'four methods and the recipes we use at the counter'],
+          ['This week on the bench', '/shop', 'three coffees, all roasted this week'],
+          ['Visit the roastery', '/visit', 'open Tuesday to Sunday, four stools'],
+        ],
+        img: '11',
         strip: ['Sold-out lots are removed, not hidden', 'Everything else is one click away', 'Journal archive back to 2019', 'Tell us if a link is broken'],
       },
     ],
@@ -7583,6 +7597,16 @@ export const CASE_DECKS = [
           ['Type', 'none'],
           ['Gold', 'core only'],
         ],
+      },
+      {
+        k: 'dt-page', label: '静帧', kind: 'split', img: '03',
+        crumb: 'Still · frame 03, held for the poster',
+        frame: 'STILL · 1/8 · printed at 1 200 mm',
+        lines: [
+          'The loop has one <b>still</b> in it, and this is the one.',
+          'Frame three is printed at 1 200 mm for the wall outside the dome, because the loop cannot follow people home.',
+        ],
+        note: 'Same photograph, same grade, no type. If the still does not work on a wall, the loop does not work either.',
       },
       {
         k: 'dt-page', label: '尾帧', kind: 'end',
@@ -9263,6 +9287,483 @@ export const CASE_DECKS = [
       },
     ],
   },
+  {
+    id: 'bellwether',
+    name: 'Bellwether Cycles',
+    en: 'Bellwether CC · a 25-screen workshop site, every screen wired',
+    by: 'DesignBuddy',
+    cat: '网站',
+    fmt: 'site',
+    ratio: '1440×900 · 16:10',
+    date: 20261103,
+    kind: 'Site recreation',
+    category: '案例演示',
+    tags: ['workshop', 'bikes', 'configurator', 'interactive', 'booking'],
+    desc: 'A twenty-five-screen site for a steel frame workshop in Rotterdam, built on a 1440 × 900 canvas with a dark navigation rail that stays put while the page changes. Every one of the twenty-five screens answers back: the model index filters by discipline, the product page re-prices when you switch build or quantity, the configurator adds up four option groups and reports its own lead time, the fit page turns a height into a frame size, the workshop booking holds a bay, the club rides filter by pace, the route page recalculates distance and climbing, the article changes its own text size, the cart and the checkout do real arithmetic, and the order tracker moves a status line. Ten photographs, no hand-typed totals.',
+    bestFor: ['Custom manufacturing sites', 'Configurator UX', 'Booking flows', 'Boutique retail'],
+    visual: 'Cool steel greys #F1F2F3 and #E4E6E8 against a near-black rail #101A21, with a single signal orange #E8541F used only for the current nav item, kickers, pins and the one primary action. Where Northwind is warm paper and hairlines, this is a workshop: hard rectangles, zero radius, tabular numerals everywhere a price or a measurement can appear, and a left rail that carries the basket total on every screen. Photographs are the only soft thing on the page.',
+    how: 'Twenty-five screens at 1440 × 900 behind one rail: home with a discipline switcher, a filtered model index, two product pages with build and quantity, a geometry table on size tabs, a four-group configurator with a running total and lead time, a fit calculator, workshop services on tabs, a bay booking, a club ride index filtered by pace, one route with three variants, a journal index, a long article with a text-size control, a showroom with a day filter, stockists with region filters and a map, a team switcher, an order tracker, cart, checkout, account, warranty registration, an accordion FAQ, gift cards, trade tiers and a 404. Everything is one delegated handler and one calculator: controls are data attributes, totals are derived, so a price exists exactly once in the file. Ten images, reused deliberately across pages the way a real workshop reuses its own photography.',
+    styles: ['#F1F2F3', '#101A21', '#E8541F'],
+    colorway: 'Steel · Near-black · Signal orange',
+    folio: false,
+    footLeft: 'Bellwether CC · Rotterdam · 2026',
+    paper: '#F1F2F3',
+    ink: '#121B21',
+    accent: '#E8541F',
+    second: '#101A21',
+    muted: '#76838B',
+    rule: '#D2D6D9',
+    body: '#4C5A62',
+    display: 'sans',
+    slides: [
+      {
+        k: 'bw-page', label: '首页', kind: 'home', path: '/', nav: 'Bikes', crumb: 'Home', cart: '€2,545',
+        blocks: [
+          {
+            t: 'hero', kicker: 'Rotterdam · frames welded since 2011',
+            title: 'Steel, welded\nto order.',
+            sub: 'Six hundred frames a year, one at a time. Pick a model, pick a build, and the tubes are cut the week you order — not the season before.',
+            ctas: ['See the four models', 'Book a fit'], img: '02',
+            chips: { g: 'feat', items: [['All-road', 'allroad', true], ['Gravel', 'gravel', false], ['Town', 'town', false]] },
+            panes: [
+              { id: 'allroad', img: '02', name: 'Lowland · all-road', meta: '700 × 35 · 8.6 kg · Columbus Zona', price: '€2,150' },
+              { id: 'gravel', img: '03', name: 'Kade · gravel', meta: '700 × 45 · 9.1 kg · three mounts', price: '€2,450' },
+              { id: 'town', img: '08', name: 'Haven · town', meta: '700 × 38 · 12.4 kg · rack and lights', price: '€1,690' },
+            ],
+          },
+        ],
+        band: ['600 frames a year', 'Six welders, one bench', 'Custom geometry included', 'Ten-year frame warranty'],
+      },
+      {
+        k: 'bw-page', label: '车型', kind: 'bikes', path: '/bikes', nav: 'Bikes', crumb: 'Models', cart: '€2,545',
+        blocks: [
+          { t: 'head', kicker: 'Models', title: 'Four frames, one workshop', right: 'All prices incl. 21% VAT\nWelded to order, 6–9 weeks' },
+          { t: 'chips', g: 'disc', extra: ' style="margin:16px 0 0"', items: [['All four', 'all', true], ['All-road', 'allroad', false], ['Gravel', 'gravel', false], ['Town', 'town', false]] },
+          {
+            t: 'cards', n: 4, items: [
+              { img: '02', name: 'Lowland', meta: 'All-road · 700 × 35 · 8.6 kg', price: '€2,150', tag: 'allroad' },
+              { img: '03', name: 'Kade', meta: 'Gravel · 700 × 45 · 9.1 kg', price: '€2,450', tag: 'gravel' },
+              { img: '08', name: 'Haven', meta: 'Town · rack, lights, belt drive', price: '€1,690', tag: 'town' },
+              { img: '01', name: 'Dijk', meta: 'Porteur · long wheelbase · 11.2 kg', price: '€2,890', tag: 'town allroad' },
+            ],
+          },
+          { t: 'rows', title: 'Every frame', rows: [['Tubeset', 'Columbus Zona / Spirit'], ['Max tyre', '700 × 45 with mudguards'], ['Frame weight', '1,840 g · size M, unpainted'], ['Warranty', '10 years, frame and fork']] },
+        ],
+        band: ['4 models', '600 frames a year', '6–9 week lead', 'Test rides daily'],
+      },
+      {
+        k: 'bw-page', label: '车型详情', kind: 'product', path: '/bikes/lowland', nav: 'Bikes', crumb: 'Models / Lowland', cart: '€2,545',
+        root: 'bike', base: 1290, qty: 1,
+        blocks: [
+          {
+            t: 'product', img: '02', thumb: '09', kicker: 'Lowland · all-road', title: 'One frame, three builds',
+            paras: 'The frame we build most: 700 × 35, room for guards, and a front end that stays calm when the tarmac turns to brick.',
+            rows: [['Tubeset', 'Columbus Zona'], ['Max tyre', '700 × 35'], ['Frame weight', '1,840 g'], ['Lead time', '6 weeks']],
+            buildOpts: [['Frameset', 0, true, '€1,290'], ['105', 860, false, '€2,150'], ['Ultegra', 1720, false, '€2,880']],
+            sizeOpts: [['S', 0, true], ['M', 0], ['L', 0], ['XL', 0]],
+            qty: 1, stock: '3 frames cut this week', priceLabel: '€1,290',
+          },
+        ],
+        band: ['Free fit with every build', 'Ships in 6 weeks', '10-year warranty', 'Test ride in Rotterdam'],
+      },
+      {
+        k: 'bw-page', label: '几何表', kind: 'geometry', path: '/bikes/lowland/geometry', nav: 'Bikes', crumb: 'Models / Lowland / Geometry', cart: '€2,545',
+        blocks: [
+          { t: 'head', kicker: 'Geometry', title: 'Lowland · four sizes', right: 'All numbers in mm\nUnpainted frame' },
+          { t: 'chips', g: 'geo', extra: ' style="margin:16px 0 14px"', items: [['S', 'S', true], ['M', 'M', false], ['L', 'L', false], ['XL', 'XL', false]] },
+          {
+            t: 'grid2', left: [
+              {
+                t: 'table', head: ['Size', 'Seat tube', 'Top tube', 'Head angle', 'Stack', 'Reach'], panes: [
+                  { id: 'S', rows: [['S', '500', '530', '71.0°', '556', '372']] },
+                  { id: 'M', rows: [['M', '530', '552', '71.5°', '572', '381']] },
+                  { id: 'L', rows: [['L', '560', '570', '72.0°', '590', '389']] },
+                  { id: 'XL', rows: [['XL', '590', '588', '72.5°', '608', '397']] },
+                ],
+              },
+              { t: 'rows', title: 'Notes', rows: [['Rider range', 'S 162–172 · M 170–180'], ['', 'L 178–188 · XL 186–196'], ['Standover', '700 × 35 with guards'], ['Custom', 'Free on any build']] },
+            ],
+            right: [{ t: 'img', img: '09', h: 330 }, { t: 'text', body: 'The numbers come off the jig, not off a catalogue. Every frame is measured twice before paint and once after.' }],
+          },
+        ],
+        band: ['Four sizes', 'Custom geometry free', 'Fit included', 'Frame and fork, 10 years'],
+      },
+      {
+        k: 'bw-page', label: '第二车型', kind: 'product', path: '/bikes/haven', nav: 'Bikes', crumb: 'Models / Haven', cart: '€2,545',
+        root: 'bike', base: 690, qty: 1,
+        blocks: [
+          {
+            t: 'product', img: '08', thumb: '10', kicker: 'Haven · town', title: 'A frame that expects weather',
+            paras: 'Belt drive, internal routing, and a rack that carries a week of groceries without a second thought. Built for the 6 km nobody photographs.',
+            rows: [['Drive', 'Gates belt, 8-speed hub'], ['Max tyre', '700 × 38'], ['Frame weight', '2,410 g'], ['Lead time', '7 weeks']],
+            buildOpts: [['Frameset', 0, true, '€690'], ['Belt drive', 1000, false, '€1,690'], ['Belt + hub gears', 1290, false, '€1,980']],
+            sizeOpts: [['S', 0, true], ['M', 0], ['L', 0]],
+            qty: 1, stock: 'In stock, one size M in raw steel', priceLabel: '€690',
+          },
+        ],
+        band: ['Belt drive', 'Rack included', 'Lights wired in', 'Ships in 7 weeks'],
+      },
+      {
+        k: 'bw-page', label: '配置器', kind: 'configure', path: '/configure', nav: 'Bikes', crumb: 'Configure', cart: '€2,545',
+        root: 'config', base: 1290,
+        blocks: [
+          { t: 'head', kicker: 'Configure', title: 'Build it, then we cut it', right: 'Base frame €1,290\nChanges update instantly' },
+          {
+            t: 'config', img: '04',
+            rows: [['Frame', 'Columbus Zona, TIG welded'], ['Paint', 'Powder coat, two coats'], ['Assembly', 'In house, Rotterdam'], ['Deposit', '30% at order']],
+            groups: [
+              { label: 'Frame size', g: 'size', cols: 4, opts: [['S', 0, true], ['M', 0], ['L', 0], ['XL', 0]] },
+              { label: 'Colour', g: 'colour', cols: 3, opts: [['Raw steel', 0, true], ['Moss', 120], ['Safety orange', 180]] },
+              { label: 'Groupset', g: 'group', cols: 3, opts: [['105', 860, true, '8 weeks', '8'], ['GRX', 1140, false, '9 weeks', '9'], ['Ultegra', 1720, false, '10 weeks', '10']] },
+              { label: 'Wheels', g: 'wheels', cols: 2, opts: [['Alloy 32h', 0, true], ['Carbon 45', 940]] },
+            ],
+            spec: 'S · Raw steel · 105 · Alloy 32h', totalLabel: '€2,150',
+          },
+        ],
+        band: ['30% deposit', 'Paint in house', 'Lead time adjusts', 'Cancel free for 14 days'],
+      },
+      {
+        k: 'bw-page', label: '选码', kind: 'fit', path: '/fit', nav: 'Bikes', crumb: 'Fit', cart: '€2,545',
+        root: 'fit', qty: 178,
+        blocks: [
+          { t: 'head', kicker: 'Fit', title: 'Height in, frame size out', right: 'Step the height\nWe do the rest' },
+          {
+            t: 'fit', img: '07', title: 'The two numbers we start with',
+            paras: 'Saddle height is 0.883 of inseam; reach we take from the same table we use at the bench. Everything else — stem, bars, crank — is set in the first hour of the fit.',
+            rows: [['Inseam', 'height × 0.47, or measure at the shop'], ['Saddle', 'centre of BB to top of saddle'], ['Reach', 'BB to the centre of the hoods'], ['Second fit', 'free within 90 days of delivery']],
+          },
+        ],
+        band: ['Free fit with every build', '2 cm steps', 'Second fit free', 'Rotterdam or video'],
+      },
+      {
+        k: 'bw-page', label: '车间', kind: 'workshop', path: '/workshop', nav: 'Workshop', crumb: 'Workshop', cart: '€2,545',
+        blocks: [
+          { t: 'head', kicker: 'Workshop', title: 'Three benches, one queue', right: 'Booked work only\nSame-day repairs before 11:00' },
+          {
+            t: 'tabs', g: 'svc', extra: ' style="margin:16px 0 0"',
+            items: [['Service', 'service', true], ['Repairs', 'repair', false], ['Paint', 'paint', false]],
+            panes: [
+              { id: 'service', img: '07', title: 'Service', rows: [['Standard service', '€95 · 45 min'], ['Full service', '€185 · 2 h'], ['Overhaul with bearings', '€320 · 4 h'], ['Annual contract, two bikes', '€420']], body: 'Every service ends with a torque sheet and a photograph of the frame number.' },
+              { id: 'repair', img: '01', title: 'Repairs', rows: [['Wheel build', '€120 + parts'], ['Frame alignment', '€90'], ['Braze-on or dropout', '€45'], ['Thread chase and face', '€60']], body: 'Steel we welded is repaired at cost. Steel we did not is quoted after inspection.' },
+              { id: 'paint', img: '05', title: 'Paint', rows: [['Single colour', '€380'], ['Two-tone with masking', '€520'], ['Chrome ends', '€640'], ['Decals under clear', '€70']], body: 'Powder first, then wet paint for the details. Six working days, longer in spring.' },
+            ],
+          },
+          { t: 'figure', img: '05', h: 214, cap: 'The paint booth, six days behind the queue.' },
+        ],
+        band: ['Queue: 9 days', 'Repairs before 11:00', 'Torque sheet', 'Photos of every frame'],
+      },
+      {
+        k: 'bw-page', label: '预约工位', kind: 'book', path: '/workshop/book', nav: 'Workshop', crumb: 'Workshop / Book', cart: '€2,545',
+        root: 'book',
+        blocks: [
+          { t: 'head', kicker: 'Book a bay', title: 'One bay, forty-five minutes', right: 'Drop the bike the same day\nWe call before 17:00' },
+          {
+            t: 'booking', img: '07',
+            days: [['Mon', 'Mon', false], ['Tue', 'Tue', true], ['Wed', 'Wed', false], ['Thu', 'Thu', false], ['Fri', 'Fri', false], ['Sat', 'Sat', false]],
+            slots: [['09:00', '09:00', false], ['11:00', '11:00', true], ['14:00', '14:00', false], ['16:00', '16:00', false]],
+            rows: [['What you get', '45 min with a mechanic'], ['Bring', 'The bike, and the noise it makes'], ['Price', '€95, parts quoted separately'], ['Cancel', 'Free up to 24 hours before']],
+          },
+          { t: 'figure', img: '01', h: 190, cap: 'Bays are booked, not queued: one bike on the stand at a time.' },
+        ],
+        band: ['6 days a week', '45 minute bays', 'Parts quoted first', 'Free cancellation'],
+      },
+      {
+        k: 'bw-page', label: '骑行活动', kind: 'rides', path: '/rides', nav: 'Rides', crumb: 'Rides', cart: '€2,545',
+        blocks: [
+          { t: 'head', kicker: 'Rides', title: 'Four rides a week, no drop', right: 'Meet at the shop\nLeave on the hour' },
+          { t: 'chips', g: 'pace', extra: ' style="margin:16px 0 6px"', items: [['All rides', 'all', true], ['Social', 'social', false], ['Steady', 'steady', false], ['Fast', 'fast', false]] },
+          {
+            t: 'rows', rows: [
+              ['Tuesday social · 34 km · 22 km/h', 'Tue 18:30', 'social'],
+              ['Thursday steady · 58 km · 26 km/h', 'Thu 18:00', 'steady'],
+              ['Saturday loop · 92 km · 28 km/h', 'Sat 08:30', 'fast'],
+              ['Sunday coffee · 26 km · 20 km/h', 'Sun 10:00', 'social'],
+            ],
+          },
+          { t: 'rows', title: 'What to bring', rows: [['Bike', 'Anything that brakes'], ['Lights', 'Required October to March'], ['Spare', 'Tube, levers, pump'], ['Cost', 'Free, coffee is not']] },
+          { t: 'figure', img: '06', h: 214, cap: 'Tuesday social, six bikes and no drop.' },
+        ],
+        band: ['No drop', 'Four rides a week', 'Lights in winter', 'Free to join'],
+      },
+      {
+        k: 'bw-page', label: '路线详情', kind: 'ride', path: '/rides/saturday-loop', nav: 'Rides', crumb: 'Rides / Saturday loop', cart: '€2,545',
+        root: 'ride',
+        blocks: [
+          { t: 'head', kicker: 'Saturday loop', title: 'Out along the Maas, back through the polder', right: 'Three variants\nSame start, same coffee' },
+          {
+            t: 'chips', g: 'route', extra: ' style="margin:16px 0 0"', items: [
+              ['Long · 92 km', 'long', true, ' data-km="92 km" data-ele="180 m" data-time="3 h 20"'],
+              ['Short · 61 km', 'short', false, ' data-km="61 km" data-ele="40 m" data-time="2 h 15"'],
+              ['Hills · 78 km', 'hills', false, ' data-km="78 km" data-ele="420 m" data-time="3 h 05"'],
+            ],
+          },
+          {
+            t: 'tiles', items: [['Distance', 'km', '92 km'], ['Climbing', 'ele', '180 m'], ['Moving time', 'time', '3 h 20']],
+          },
+          { t: 'rows', title: 'The route', rows: [['Start', 'Bellwether, 08:30 sharp'], ['Cafe', 'Km 54, 20 minutes'], ['Surface', '90% tarmac, 6 km brick'], ['Return', 'Back at the shop by 12:30']] },
+          { t: 'figure', img: '03', h: 208, cap: 'Km 54, the polder, and the cafe where everyone stops.' },
+        ],
+        band: ['92 km long route', '08:30 start', 'Cafe at km 54', 'Back by 12:30'],
+      },
+      {
+        k: 'bw-page', label: '日志', kind: 'journal', path: '/journal', nav: 'Journal', crumb: 'Journal', cart: '€2,545',
+        blocks: [
+          { t: 'head', kicker: 'Journal', title: 'Notes from the bench', right: 'Twelve entries a year\nNo newsletter' },
+          { t: 'chips', g: 'tag', extra: ' style="margin:16px 0 0"', items: [['All', 'all', true], ['Workshop', 'workshop', false], ['People', 'people', false], ['Routes', 'routes', false]] },
+          {
+            t: 'cards', n: 4, items: [
+              { img: '05', name: 'Steel is not a religion', meta: 'Workshop · 12 min · 4 Nov', price: 'Read', tag: 'workshop' },
+              { img: '06', name: 'What a club ride is actually for', meta: 'People · 6 min · 28 Oct', price: 'Read', tag: 'people' },
+              { img: '09', name: 'The headbadge, and why it is welded', meta: 'Workshop · 8 min · 19 Oct', price: 'Read', tag: 'workshop' },
+              { img: '03', name: 'The polder in November', meta: 'Routes · 5 min · 11 Oct', price: 'Read', tag: 'routes' },
+            ],
+          },
+        ],
+        band: ['12 entries a year', 'No newsletter', 'Photographs by us', 'Comments closed'],
+      },
+      {
+        k: 'bw-page', label: '文章', kind: 'article', path: '/journal/steel-is-not-a-religion', nav: 'Journal', crumb: 'Journal / Steel is not a religion', cart: '€2,545',
+        root: 'fs',
+        blocks: [
+          {
+            t: 'art', kicker: 'Journal · 4 November · 1,900 words', title: 'Steel is not a religion',
+            byline: 'Joost Bakker · photographed at the bench',
+            paras: [
+              'Every month somebody writes to ask which steel is best. The honest answer is that the tube matters less than the person holding the torch, and that answer is bad for marketing, so the industry sells you Reynolds instead.',
+              'A frame is a set of decisions about stiffness, clearance, and where the load goes. Columbus Zona is cheap, welds cleanly, and rides like a bicycle. Spirit is lighter, and on a frame this size the difference shows up in the front end, not in a chart.',
+              'We keep two tubesets in stock and a third on order. Not because the third is better, but because a customer asked for it and we would rather learn than argue.',
+              'What actually changes how a bike feels: tyre volume, bar width, stem length, and whether the person who built it rode it. None of those are printed on a sticker.',
+            ],
+            pull: 'A sticker on a downtube is a claim. A straight weld is evidence.',
+            tail: 'The workshop takes two frame-building apprentices a year. They start on the alignment table, not on the torch, and they stay on the table until they can tell a bent frame by hand.',
+            img: '04', author: 'Joost Bakker', role: 'Frame builder · at the bench since 2011',
+            rows: [['Filed under', 'Workshop'], ['Words', '1,900'], ['Read', '12 minutes'], ['Published', '4 Nov 2026']],
+            next: 'The headbadge, and why it is welded',
+          },
+        ],
+        band: ['Text size is yours', 'Four apprentices so far', 'Bench photographs', 'No comments'],
+      },
+      {
+        k: 'bw-page', label: '展厅', kind: 'visit', path: '/visit', nav: 'Visit', crumb: 'Visit', cart: '€2,545',
+        blocks: [
+          { t: 'head', kicker: 'Visit', title: 'The showroom is the workshop', right: 'Walk in, or book an hour\nCoffee is on the bench' },
+          { t: 'chips', g: 'day', extra: ' style="margin:16px 0 0"', items: [['Mon', 'Mon', true], ['Tue', 'Tue', false], ['Wed', 'Wed', false], ['Thu', 'Thu', false], ['Fri', 'Fri', false], ['Sat', 'Sat', false], ['Sun', 'Sun', false]] },
+          {
+            t: 'rows', rows: [
+              ['Monday', '09:00 – 18:00', 'Mon'], ['Tuesday', '09:00 – 18:00', 'Tue'], ['Wednesday', '09:00 – 18:00', 'Wed'],
+              ['Thursday', '09:00 – 20:00', 'Thu'], ['Friday', '09:00 – 18:00', 'Fri'], ['Saturday', '10:00 – 17:00', 'Sat'], ['Sunday', 'Closed', 'Sun'],
+            ],
+          },
+          { t: 'rows', title: 'Find us', rows: [['Address', 'Scheepmakershaven 22, Rotterdam'], ['Tram', '7 to Willemskade, 3 minutes'], ['Parking', 'Paid, under the building'], ['Dogs', 'Welcome, both of them']] },
+        ],
+        band: ['Open six days', 'Thursday until 20:00', 'Test rides here', 'Dogs welcome'],
+      },
+      {
+        k: 'bw-page', label: '经销店', kind: 'stockists', path: '/stockists', nav: 'Stockists', crumb: 'Stockists', cart: '€2,545',
+        blocks: [
+          { t: 'head', kicker: 'Stockists', title: 'Where else you can buy a Bellwether', right: 'Six shops carry frames\nService stays with us' },
+          { t: 'chips', g: 'region', extra: ' style="margin:16px 0 12px"', items: [['All', 'all', true], ['North', 'north', false], ['South', 'south', false], ['East', 'east', false]] },
+          {
+            t: 'grid2', left: [
+              {
+                t: 'rows', rows: [
+                  ['Kade Fietsen · Groningen', 'North · frames + fit', 'north'],
+                  ['Stad & Staal · Utrecht', 'East · frames + service', 'east'],
+                  ['Maas cycles · Rotterdam', 'South · frames only', 'south'],
+                  ['Haven Garage · Amsterdam', 'North · frames + service', 'north'],
+                  ['Zuid Wielers · Eindhoven', 'South · frames + fit', 'south'],
+                  ['Kop van Salland · Deventer', 'East · frames only', 'east'],
+                ],
+              },
+              { t: 'rows', title: 'What every shop carries', rows: [['Frames', 'Lowland and Haven, two sizes each'], ['Test rides', 'North and South only'], ['Service', 'Rotterdam, or your own mechanic'], ['Warranty', 'Registered by us, handled by us']] },
+            ],
+            right: [{ t: 'map', label: 'Six shops, one workshop', pins: [[28, 22], [58, 40], [46, 66], [36, 34], [62, 74], [72, 30]] }],
+          },
+        ],
+        band: ['Six stockists', 'North, South, East', 'Service in Rotterdam', 'Frames ship direct'],
+      },
+      {
+        k: 'bw-page', label: '团队', kind: 'team', path: '/team', nav: 'Visit', crumb: 'Visit / Team', cart: '€2,545',
+        blocks: [
+          { t: 'head', kicker: 'Team', title: 'Nine people, two rooms', right: 'Six in the workshop\nThree upstairs' },
+          {
+            t: 'tabs', g: 'team', extra: ' style="margin:16px 0 0"', items: [['Workshop', 'shop', true], ['Office', 'office', false], ['Rides', 'rides', false]],
+            panes: [
+              { id: 'shop', img: '04', title: 'Workshop', rows: [['Joost Bakker', 'Frames · 15 years'], ['Mira de Vries', 'Paint · 7 years'], ['Sam Okafor', 'Assembly · 4 years'], ['Lena Roth', 'Apprentice · year two']], body: 'Everyone in this room welds. Two of them also answer the phone.' },
+              { id: 'office', img: '10', title: 'Office', rows: [['Iris Kuiper', 'Orders · 9 years'], ['Teun Smit', 'Parts · 3 years'], ['Noura Haddad', 'Fit studio · 6 years']], body: 'Three desks, one kettle, no open plan.' },
+              { id: 'rides', img: '06', title: 'Rides', rows: [['Tuesday social', 'Led by Sam'], ['Thursday steady', 'Led by Iris'], ['Saturday loop', 'Led by Teun'], ['Sunday coffee', 'Whoever is awake']], body: 'Nobody gets dropped. That is the whole policy.' },
+            ],
+          },
+        ],
+        band: ['Nine people', 'Six welders', 'Two apprentices', 'One kettle'],
+      },
+      {
+        k: 'bw-page', label: '订单进度', kind: 'status', path: '/service/status', nav: 'Workshop', crumb: 'Workshop / Status', cart: '€2,545',
+        root: 'status',
+        blocks: [
+          { t: 'head', kicker: 'Order status', title: 'Where the frame is, today', right: 'Three live orders\nUpdated every evening' },
+          {
+            t: 'chips', g: 'order', extra: ' style="margin:16px 0 0"', items: [
+              ['#1053 · Lowland', '#1053', true, ' data-stage="1" data-eta="cut · ready 21 Nov"'],
+              ['#1048 · Kade', '#1048', false, ' data-stage="3" data-eta="paint · ready 12 Nov"'],
+              ['#1042 · Haven', '#1042', false, ' data-stage="4" data-eta="shipped · delivered"'],
+            ],
+          },
+          { t: 'steps', items: [['Cut', 'tubes mitred', true], ['Welded', 'at the bench', true], ['Paint', 'in the booth', true], ['Built', 'wheels and bars', true], ['Shipped', 'tracking sent', true]] },
+          { t: 'outs', items: [['Order', 'order', '#1053'], ['Current stage', 'eta', 'cut · ready 21 Nov'], ['Bike', 'bike', 'Lowland · size M']] },
+          { t: 'rows', title: 'What happens next', rows: [['Photos', 'Sent at welding and at paint'], ['Changes', 'Possible until paint starts'], ['Collection', 'Or shipped, your choice']] },
+          { t: 'figure', img: '07', h: 196, cap: 'Every stage ends with a photograph and a phone call.' },
+        ],
+        band: ['Three live orders', 'Photos at each stage', 'Changes until paint', 'Ship or collect'],
+      },
+      {
+        k: 'bw-page', label: '购物车', kind: 'cart', path: '/cart', nav: 'Bikes', crumb: 'Cart', cart: '€2,545',
+        root: 'cart',
+        blocks: [
+          { t: 'head', kicker: 'Cart', title: 'Two things, one deposit', right: 'Deposit is 30%\nDelivery chosen next' },
+          {
+            t: 'lines', items: [
+              { img: '03', name: 'Kade · gravel · size M', meta: 'GRX · Moss · alloy 32h', price: 2450, qty: 1 },
+              { img: '07', name: 'Standard service', meta: '45 minutes, booked at the bay', price: 95, qty: 1 },
+            ],
+          },
+          { t: 'summary', title: 'Summary', lines: [['Subtotal', '<b data-bw-out="subtotal">€2,545</b>'], ['Items', '<b data-bw-out="count">2</b>'], ['Deposit today', '€764'], ['Total', '<b>€2,545</b>']], totalLabel: 'Total' },
+        ],
+        band: ['30% deposit', 'Free changes 14 days', 'Parts quoted first', 'Pick up or ship'],
+      },
+      {
+        k: 'bw-page', label: '结算', kind: 'checkout', path: '/checkout', nav: 'Bikes', crumb: 'Checkout', cart: '€2,545',
+        root: 'checkout', subtotal: 2545,
+        blocks: [
+          { t: 'head', kicker: 'Checkout', title: 'Three ways to get it', right: 'Pick up in Rotterdam\nOr we box it properly' },
+          {
+            t: 'grid2', left: [
+              { t: 'opts', label: 'Delivery', g: 'ship', cols: 3, items: [['Pick up', 0, true, 'free'], ['Courier', 45, false, '+€45'], ['Rail freight', 25, false, '+€25']] },
+              {
+                t: 'form', cta: 'Place the order', fields: [
+                  { label: 'Name', ph: 'Iris Kuiper' }, { label: 'Email', ph: 'iris@example.nl' },
+                  { label: 'Street', ph: 'Scheepmakershaven 22' }, { label: 'City', ph: 'Rotterdam' },
+                  { label: 'Postcode', ph: '3011 VD' }, { label: 'Phone', ph: '+31 6 1234 5678' },
+                  { label: 'Frame number, if a trade-in', ph: 'M-2019-118', w: true },
+                ],
+              },
+            ],
+            right: [
+              { t: 'summary', dark: true, title: 'Order', lines: [['Subtotal', '<b data-bw-out="subtotal">€2,545</b>'], ['Delivery', '<b data-bw-out="ship">free</b>'], ['Deposit 30%', '€764'], ['Total', '<b data-bw-out="total">€2,545</b>']], totalLabel: 'Total' },
+              { t: 'rows', title: 'Good to know', rows: [['Lead time', '6–9 weeks from deposit'], ['Changes', 'Free for 14 days'], ['Returns', 'Frame back within 30 days'], ['Warranty', '10 years, frame and fork']] },
+            ],
+          },
+        ],
+        band: ['Free pick up', 'Courier €45', 'Rail €25', 'Deposit 30%'],
+      },
+      {
+        k: 'bw-page', label: '账户', kind: 'account', path: '/account', nav: 'Visit', crumb: 'Account', cart: '€2,545',
+        blocks: [
+          { t: 'head', kicker: 'Account', title: 'Iris Kuiper', right: 'Member since 2019\nFour orders' },
+          { t: 'chips', g: 'state', extra: ' style="margin:16px 0 6px"', items: [['All orders', 'all', true], ['In workshop', 'workshop', false], ['Delivered', 'done', false]] },
+          {
+            t: 'rows', rows: [
+              ['#1053 · Lowland · €2,150', 'In workshop', 'workshop'],
+              ['#1048 · Kade · €2,450', 'In workshop', 'workshop'],
+              ['#1042 · Haven · €1,690', 'Delivered', 'done'],
+              ['#0987 · Service · €95', 'Delivered', 'done'],
+            ],
+          },
+          { t: 'rows', title: 'Details', rows: [['Address', 'Scheepmakershaven 22, Rotterdam'], ['Bikes registered', 'Haven · 2019, Kade · 2026'], ['Fits', 'Last fit 4 March 2026'], ['Contact', 'iris@example.nl']] },
+          { t: 'figure', img: '08', h: 200, cap: 'Scheepmakershaven 22, where the frames wait for their owners.' },
+        ],
+        band: ['Four orders', 'Two bikes registered', 'Fit history kept', 'One address'],
+      },
+      {
+        k: 'bw-page', label: '保修登记', kind: 'warranty', path: '/warranty', nav: 'Workshop', crumb: 'Workshop / Warranty', cart: '€2,545',
+        root: 'warranty',
+        blocks: [
+          { t: 'head', kicker: 'Warranty', title: 'Register the frame, keep the ten years', right: 'Ten years on frame and fork\nFive on paint' },
+          {
+            t: 'grid2', left: [
+              {
+                t: 'form', cta: 'Register this frame', fields: [
+                  { label: 'Frame number', ph: 'M-2026-118' }, { label: 'Model', ph: 'Lowland' },
+                  { label: 'Size', ph: 'M' }, { label: 'Bought from', ph: 'Bellwether, Rotterdam' },
+                  { label: 'Receipt', ph: 'Upload or paste a link', w: true },
+                ],
+              },
+            ],
+            right: [
+              { t: 'chips', g: 'year', items: [['2024', '2024', false], ['2025', '2025', false], ['2026', '2026', true]] },
+              { t: 'outs', items: [['Frame warranty', 'cover', 'covered · 10 years left']] },
+              { t: 'rows', title: 'What is covered', rows: [['Frame and fork', 'Ten years, first owner'], ['Paint', 'Five years against blistering'], ['Bearings', 'Two years'], ['Crash damage', 'Not covered, but we repair']] },
+            ],
+          },
+          { t: 'figure', img: '04', h: 190, cap: 'The weld that the ten-year warranty is actually about.' },
+        ],
+        band: ['Register in a minute', 'Ten years', 'Crash repair at cost', 'Original owner'],
+      },
+      {
+        k: 'bw-page', label: '常见问题', kind: 'faq', path: '/faq', nav: 'Workshop', crumb: 'FAQ', cart: '€2,545',
+        blocks: [
+          { t: 'head', kicker: 'FAQ', title: 'Six questions we answer weekly', right: 'Open the ones you need\nAll six are honest' },
+          {
+            t: 'acc', items: [
+              ['How long is the wait, really?', 'Six weeks for a Lowland or a Haven, nine for a Kade. The queue is on the workshop page and it is the same number we quote on the phone.'],
+              ['Can I test ride before ordering?', 'Yes. Two demo frames live at the showroom in sizes M and L, and you can take one for an hour with a deposit.'],
+              ['Do you ship outside the Netherlands?', 'Within the EU, by rail or courier. Outside the EU we ship frames only, because complete bikes get complicated at customs.'],
+              ['What if the fit is wrong?', 'The first fit is included, and a second one within 90 days is free. If the frame is genuinely the wrong size we rebuild it at cost.'],
+              ['Do you repair frames you did not build?', 'Steel, yes, after inspection. Aluminium and carbon we pass to two workshops we trust.'],
+              ['Is the paint covered?', 'Five years against blistering and adhesion, not against the lock you dropped on the top tube.'],
+            ],
+          },
+          { t: 'figure', img: '06', h: 206, cap: 'Six bikes on the dyke, three of them ours — the Saturday loop leaves at 08:30.' },
+        ],
+        band: ['Six answers', 'Queue on the workshop page', 'EU shipping', 'Second fit free'],
+      },
+      {
+        k: 'bw-page', label: '礼品卡', kind: 'gift', path: '/gift', nav: 'Bikes', crumb: 'Gift cards', cart: '€2,545',
+        root: 'gift',
+        blocks: [
+          { t: 'head', kicker: 'Gift cards', title: 'Give a service, or a frame', right: 'Posted as a card\nNo expiry' },
+          {
+            t: 'grid2', left: [
+              { t: 'chips', g: 'amt', items: [['€50', '50', false], ['€100', '100', true], ['€250', '250', false], ['€500', '500', false]] },
+              { t: 'summary', title: 'Card', lines: [['Value', '<b data-bw-out="amount">€100</b>'], ['Covers', '<b data-bw-out="cover">a standard service</b>'], ['Postage', 'Free in the EU'], ['Expiry', 'None']], totalLabel: 'Value' },
+              { t: 'text', body: 'Cards are printed on the same stock as our frame tags and posted in a plain envelope. If you need it today we can email a code instead.' },
+            ],
+            right: [{ t: 'img', img: '09', h: 300 }, { t: 'btn', label: 'Buy a €100 card' }],
+          },
+        ],
+        band: ['No expiry', 'Free postage', 'Cards or codes', 'Services and frames'],
+      },
+      {
+        k: 'bw-page', label: '同业采购', kind: 'trade', path: '/trade', nav: 'Bikes', crumb: 'Trade', cart: '€2,545',
+        root: 'trade',
+        blocks: [
+          { t: 'head', kicker: 'Trade', title: 'For shops that sell steel', right: 'Three tiers\nSample frame on request' },
+          {
+            t: 'grid2', left: [
+              { t: 'chips', g: 'tier', items: [['1–3 frames', '10', true], ['4–9 frames', '15', false], ['10+ frames', '20', false]] },
+              { t: 'summary', title: 'On a €2,450 Kade', lines: [['List price', '€2,450'], ['Trade discount', '<b data-bw-out="discount">10%</b>'], ['You pay', '<b data-bw-out="price">€2,205</b>'], ['Payment', '30 days, invoice']], totalLabel: 'You pay' },
+              { t: 'rows', title: 'What shops get', rows: [['Frames', 'Unpainted or painted'], ['Fit support', 'Video call with the fit studio'], ['Warranty', 'Handled by us, not you'], ['Returns', 'Unsold frames after 12 months']] },
+            ],
+            right: [{ t: 'img', img: '10', h: 320 }, { t: 'text', body: 'Nine shops in the Benelux carry frames. We answer the phone for all of them.' }],
+          },
+          { t: 'figure', img: '09', h: 186, cap: 'Fillet-brazed head tube, filed by hand before paint.' },
+        ],
+        band: ['Three tiers', '30-day terms', 'Unpainted or painted', 'Returns after 12 months'],
+      },
+      {
+        k: 'bw-page', label: '404', kind: '404', path: '/bikes/lowlandd', nav: 'Bikes', crumb: 'Not found', cart: '€2,545',
+        blocks: [
+          {
+            t: 'notfound', img: '10', title: 'That frame number does not exist.',
+            sub: 'Somebody welded a link wrong. Pick a shelf and start again — the four models, the workshop queue and the journal are all still where they were.',
+            chips: { g: 'fix', items: [['Models', 'bikes', true], ['Workshop', 'workshop', false], ['Journal', 'journal', false]] },
+            rows: [['The four models', '/bikes', 'bikes'], ['Book a bay', '/workshop/book', 'workshop'], ['Read the journal', '/journal', 'journal']],
+          },
+        ],
+        band: ['404', 'Nothing lost', 'Three ways back', 'Bellwether CC'],
+      },
+    ],
+  },
 ]
 
 /* ── 渲染 ─────────────────────────────────────────────
@@ -9767,8 +10268,11 @@ function afTotals(base, groups) {
           '<p class="nw-lead">' + esc(s.lead) + '</p>' +
           '<div class="nw-ctas"><span class="nw-btn">' + esc(s.cta) + '</span>' +
           '<span class="nw-btn ghost">' + esc(s.cta2) + '</span></div>' +
+          '<div class="nw-filters" style="padding:18px 0 0">' + (s.faces || []).map((f, i) =>
+            '<span class="nw-chip' + (i === 0 ? ' on' : '') + '" data-nw="tab" data-pane="' + esc(f.id) + '">' + esc(f.label) + '</span>').join('') + '</div>' +
           '<div class="nw-badges">' + (s.badges || []).map((x) => '<span>' + esc(x) + '</span>').join('') + '</div>' +
-          '</div>' + img(s.img) + '</div>'
+          '</div><div class="nw-faces">' + (s.faces || []).map((f, i) =>
+            '<div class="nw-face' + (i === 0 ? ' on' : '') + '" data-pane="' + esc(f.id) + '">' + img(f.img) + '</div>').join('') + '</div></div>'
       } else if (k === 'shop') {
         body = head(s.kicker, s.title, esc(s.note)) +
           '<div class="nw-filters">' + (s.filters || []).map(([label, f], i) =>
@@ -9829,8 +10333,12 @@ function afTotals(base, groups) {
         body = '<div class="nw-story"><div><div class="nw-kick">' + esc(s.kicker) + '</div>' +
           '<h2 class="nw-h2" style="margin-top:8px">' + esc(s.title) + '</h2>' +
           '<div class="nw-cols">' + (s.paras || []).map((x) => '<p>' + esc(x) + '</p>').join('') + '</div>' +
-          '<div class="nw-facts">' + (s.facts || []).map(([b, t]) =>
-            '<div class="nw-fact"><b>' + esc(b) + '</b><span>' + esc(t) + '</span></div>').join('') + '</div>' +
+          '<div class="nw-filters" style="padding:16px 0 10px">' + (s.eras || []).map((e, i) =>
+            '<span class="nw-chip' + (i === 0 ? ' on' : '') + '" data-nw="tab" data-pane="' + esc(e.id) + '">' + esc(e.label) + '</span>').join('') + '</div>' +
+          (s.eras || []).map((e, i) => '<div class="nw-face' + (i === 0 ? ' on' : '') + '" data-pane="' + esc(e.id) + '">' +
+            '<div class="nw-facts">' + e.facts.map(([b, t]) =>
+              '<div class="nw-fact"><b>' + esc(b) + '</b><span>' + esc(t) + '</span></div>').join('') + '</div>' +
+            '<p class="nw-note" style="margin-top:10px">' + esc(e.note) + '</p></div>').join('') +
           (s.rows ? '<div class="nw-rows">' + s.rows.map(([a, b]) =>
             '<div class="nw-row"><span>' + esc(a) + '</span><b>' + esc(b) + '</b></div>').join('') + '</div>' : '') + '</div>' +
           '<div class="nw-portrait">' + img(s.img) + img(s.img2, '') +
@@ -9881,8 +10389,11 @@ function afTotals(base, groups) {
             '<div class="nw-row"><span>' + esc(t) + '</span><b>' + esc(d) + '</b></div>').join('') + '</div></div></div>'
       } else if (k === 'journal') {
         body = head(s.kicker, s.title, esc(s.note)) +
-          '<div class="nw-journal"><div>' + (s.posts || []).map(([d, h, dek]) =>
-            '<div class="nw-jrow"><div class="d">' + esc(d) + '</div><div><h4>' + esc(h) + '</h4><p>' + esc(dek) + '</p></div></div>').join('') +
+          '<div class="nw-filters" style="padding:12px 0 14px">' + [['All', 'all'], ['Roasting', 'roast'], ['Brewing', 'brew'], ['People', 'people']].map(([label, f], i) =>
+            '<span class="nw-chip' + (i === 0 ? ' on' : '') + '" data-nw="chip" data-g="post" data-f="' + f + '">' + label + '</span>').join('') +
+          '<span class="nw-note">Tap a shelf — the list is live</span></div>' +
+          '<div class="nw-journal"><div>' + (s.posts || []).map(([d, h, dek, tag]) =>
+            '<div class="nw-jrow" data-tags="' + esc(tag || 'roast') + '"><div class="d">' + esc(d) + '</div><div><h4>' + esc(h) + '</h4><p>' + esc(dek) + '</p></div></div>').join('') +
           '</div><div class="nw-feature">' + img(s.img) +
           '<div class="nw-kick" style="margin-top:14px">' + esc(s.featureKicker) + '</div>' +
           '<h3 class="nw-h3" style="margin-top:6px">' + esc(s.featureTitle) + '</h3>' +
@@ -9893,6 +10404,8 @@ function afTotals(base, groups) {
         body = '<div class="nw-artwrap"><div class="nw-article"><div class="nw-kick">' + esc(s.kicker) + '</div>' +
           '<h1>' + esc(s.title) + '</h1>' +
           '<div class="nw-note" style="margin-top:10px">' + esc(s.byline) + '</div>' +
+          '<div class="nw-filters" style="padding:12px 0 0"><span class="nw-note">Text size</span>' +
+          '<span class="nw-chip" data-nw="fs" data-d="-1">A−</span><span class="nw-chip" data-nw="fs" data-d="1">A+</span></div>' +
           '<div class="nw-cols">' + (s.paras || []).map((x) => '<p>' + esc(x) + '</p>').join('') + '</div>' +
           '<div class="nw-pull">' + esc(s.pull) + '</div>' +
           '<div class="nw-cols" style="margin-top:14px"><p>' + esc(s.tail) + '</p></div></div>' +
@@ -9920,8 +10433,11 @@ function afTotals(base, groups) {
           '<div class="nw-map"><div class="nw-pin"></div><div class="nw-maplab">' + esc(s.mapLabel) + '</div></div></div>' +
           '<div><div class="nw-kick">' + esc(s.kicker) + '</div><h2 class="nw-h2" style="margin-top:8px">' + esc(s.title) + '</h2>' +
           '<p class="nw-lead">' + esc(s.lead) + '</p>' +
-          '<div class="nw-hours" style="margin-top:16px">' + (s.hours || []).map(([d, h]) =>
-            '<div' + (s.today === d ? ' class="on"' : '') + '><span>' + esc(d) + '</span><span>' + esc(h) + '</span></div>').join('') + '</div>' +
+          '<div class="nw-filters" style="padding:12px 0 4px">' + (s.hours || []).map(([d]) =>
+            '<span class="nw-chip" data-nw="chip" data-g="hr" data-f="' + esc(d) + '">' + esc(d) + '</span>').join('') +
+          '<span class="nw-note">Tap a day</span></div>' +
+          '<div class="nw-hours" style="margin-top:10px">' + (s.hours || []).map(([d, h]) =>
+            '<div data-tags="' + esc(d) + '"' + (s.today === d ? ' class="on"' : '') + '><span>' + esc(d) + '</span><span>' + esc(h) + '</span></div>').join('') + '</div>' +
           '<div class="nw-rows" style="margin-top:16px">' + (s.rows || []).map(([a, b]) =>
             '<div class="nw-row"><span>' + esc(a) + '</span><b>' + esc(b) + '</b></div>').join('') + '</div></div></div>'
       } else if (k === 'wholesale') {
@@ -10039,12 +10555,231 @@ function afTotals(base, groups) {
         body = '<div class="nw-404"><div class="big">404</div>' + (s.img ? '' : '') +
           '<h2 class="nw-h2">' + esc(s.title) + '</h2>' +
           '<p class="nw-lead" style="margin-top:8px;text-align:center">' + esc(s.lead) + '</p>' +
-          '<div class="nw-sugs">' + (s.suggestions || []).map((x, i) =>
-            '<span class="nw-chip' + (i === 0 ? ' on' : '') + '">' + esc(x) + '</span>').join('') + '</div></div>' +
+          '<div class="nw-sugs">' + (s.sugs || []).map(([label, , ,], i) =>
+            '<span class="nw-chip' + (i === 0 ? ' on' : '') + '" data-nw="tab" data-pane="s' + i + '">' + esc(label) + '</span>').join('') + '</div>' +
+          (s.sugs || []).map(([label, path, note], i) => '<div class="nw-face' + (i === 0 ? ' on' : '') + '" data-pane="s' + i + '" style="margin-top:12px">' +
+            '<div class="nw-note" style="text-align:center">' + esc(label) + ' · <b>' + esc(path) + '</b> — ' + esc(note) + '</div></div>').join('') + '</div>' +
           (s.img ? '<div class="nw-404shot">' + img(s.img) + '</div>' : '')
       }
       return '<div class="nw">' + chrome + nav + '<div class="nw-body">' + body + '</div>' + strip + '</div>'
     }
+    case 'bw-page': {
+      const NAVD = [['/bikes', 'Bikes'], ['/workshop', 'Workshop'], ['/rides', 'Rides'],
+        ['/journal', 'Journal'], ['/visit', 'Visit'], ['/stockists', 'Stockists']]
+      const im = (n, h) => '<div class="bw-img"' + (h ? ' style="height:' + h + 'px"' : '') + '>' + imgTag(deck, n) + '</div>'
+      const chiprow = (g, items, extra) => '<div class="bw-chiprow"' + (extra || '') + '>' +
+        items.map(([label, val, on, attrs]) => '<span class="bw-chip' + (on ? ' on' : '') + '" data-bw="chip" data-g="' + g +
+          '" data-f="' + esc(val) + '"' + (attrs || '') + '>' + esc(label) + '</span>').join('') + '</div>'
+      const optgrid = (g, items, cols) => '<div class="bw-cols" style="grid-template-columns:repeat(' + (cols || items.length) +
+        ',1fr);gap:4px">' + items.map(([label, add, on, note, weeks]) => '<span class="bw-opt' + (on ? ' on' : '') +
+          '" data-bw="opt" data-g="' + g + '" data-add="' + add + '" data-label="' + esc(label) + '"' + (weeks ? ' data-weeks="' + weeks + '"' : '') + '>' + esc(label) +
+          (note ? '<i>' + esc(note) + '</i>' : '') + '</span>').join('') + '</div>'
+      const stepper = (out, n) => '<span class="bw-stepwrap"><span class="bw-step" data-bw="step" data-d="-1">−</span>' +
+        '<span class="bw-qty" data-bw-out="' + out + '">' + n + '</span>' +
+        '<span class="bw-step" data-bw="step" data-d="1">+</span></span>'
+      const row = ([a, b, tag]) => '<div class="bw-row"' + (tag ? ' data-f="' + esc(tag) + '"' : '') + '><span>' + esc(a) +
+        '</span><b>' + esc(b) + '</b></div>'
+
+      const block = (b) => {
+        if (b.t === 'head') {
+          return '<div class="bw-head"><div>' + (b.kicker ? '<div class="bw-kick">' + esc(b.kicker) + '</div>' : '') +
+            '<h2 class="bw-h2" style="margin-top:7px">' + esc(b.title) + '</h2></div>' +
+            (b.right ? '<div class="bw-note" style="text-align:right;max-width:300px">' + esc(b.right) + '</div>' : '') + '</div>'
+        }
+        if (b.t === 'hero') {
+          const right = b.panes
+            ? b.panes.map((p, i) => '<div class="bw-pane' + (i === 0 ? ' on' : '') + '" data-pane="' + esc(p.id) + '">' +
+              im(p.img, 330) + '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:10px">' +
+              '<div><div class="bw-h3">' + esc(p.name) + '</div><div class="bw-note" style="margin-top:3px">' + esc(p.meta) + '</div></div>' +
+              '<div class="bw-price" style="font-size:20px">' + esc(p.price) + '</div></div></div>').join('')
+            : (b.img ? im(b.img) : '')
+          return '<div class="bw-hero"><div>' + (b.kicker ? '<div class="bw-kick">' + esc(b.kicker) + '</div>' : '') +
+            '<h1 class="bw-h1">' + esc(b.title) + '</h1>' +
+            (b.sub ? '<p class="bw-sub">' + esc(b.sub) + '</p>' : '') +
+            (b.ctas ? '<div class="bw-ctas">' + b.ctas.map((c, i) => '<span class="bw-btn' + (i ? ' ghost' : '') + '">' + esc(c) + '</span>').join('') + '</div>' : '') +
+            (b.chips ? '<div style="margin-top:20px">' + chiprow(b.chips.g, b.chips.items) + '</div>' : '') +
+            '</div><div class="bw-heroimg">' + right + '</div></div>'
+        }
+        if (b.t === 'cards') {
+          return '<div class="bw-cols" style="grid-template-columns:repeat(' + (b.n || 3) + ',1fr);gap:18px;padding-top:16px">' +
+            b.items.map((c) => '<div class="bw-card"' + (c.tag ? ' data-f="' + esc(c.tag) + '"' : '') + '>' + im(c.img) +
+              '<div class="bw-cardmeta"><b>' + esc(c.name) + '</b><span>' + esc(c.price) + '</span></div>' +
+              '<div class="bw-note" style="margin-top:3px">' + esc(c.meta) + '</div></div>').join('') + '</div>'
+        }
+        if (b.t === 'split') {
+          return '<div class="bw-split"><div>' + im(b.img, b.h || 330) + (b.img2 ? '<div style="margin-top:8px">' + im(b.img2, 96) + '</div>' : '') +
+            (b.facts ? '<div class="bw-rows" style="margin-top:12px">' + b.facts.map(row).join('') + '</div>' : '') + '</div><div>' +
+            (b.kicker ? '<div class="bw-kick">' + esc(b.kicker) + '</div>' : '') +
+            (b.title ? '<h2 class="bw-h2" style="margin-top:8px">' + esc(b.title) + '</h2>' : '') +
+            (b.paras ? '<p class="bw-sub" style="max-width:none">' + esc(b.paras.join('\n\n')) + '</p>' : '') +
+            (b.rows ? '<div class="bw-rows" style="margin-top:12px">' + b.rows.map(row).join('') + '</div>' : '') +
+            (b.buy || '') + '</div></div>'
+        }
+        if (b.t === 'rows') {
+          return (b.title ? '<div class="bw-label">' + esc(b.title) + '</div>' : '') +
+            '<div class="bw-rows">' + b.rows.map(row).join('') + '</div>'
+        }
+        if (b.t === 'tabs') {
+          return chiprow(b.g, b.items, ' style="margin-top:2px"') + '<div style="margin-top:16px">' + b.panes.map((p, i) =>
+            '<div class="bw-pane' + (i === 0 ? ' on' : '') + '" data-pane="' + esc(p.id) + '">' +
+            '<div class="bw-tabsplit"><div>' +
+            (p.title ? '<div class="bw-h3" style="font-size:19px;margin-bottom:6px">' + esc(p.title) + '</div>' : '') +
+            (p.rows ? '<div class="bw-rows">' + p.rows.map(row).join('') + '</div>' : '') +
+            (p.body ? '<div class="bw-note" style="margin-top:12px;max-width:560px">' + esc(p.body) + '</div>' : '') +
+            '</div><div>' + (p.img ? im(p.img) : '') + '</div></div></div>').join('') + '</div>'
+        }
+        if (b.t === 'table') {
+          const head = '<tr>' + b.head.map((h) => '<th>' + esc(h) + '</th>').join('') + '</tr>'
+          const body = (r) => r.map((tr) => '<tr>' + tr.map((td) => '<td>' + esc(td) + '</td>').join('') + '</tr>').join('')
+          return '<table class="bw-table">' + (b.panes
+            ? '<thead>' + head + '</thead><tbody>' + b.panes.map((p, i) =>
+              '<tr class="bw-pane' + (i === 0 ? ' on' : '') + '" data-pane="' + esc(p.id) + '"><td colspan="' + b.head.length +
+              '" style="padding:0"><table class="bw-table" style="margin-top:6px"><tbody>' + body(p.rows) + '</tbody></table></td></tr>').join('') + '</tbody>'
+            : '<thead>' + head + '</thead><tbody>' + body(b.rows) + '</tbody>') + '</table>'
+        }
+        if (b.t === 'acc') {
+          return '<div class="bw-rows">' + b.items.map(([q, a], i) => '<div class="bw-accrow' + (i === 0 ? ' open' : '') +
+            '" data-bw="acc"><div class="bw-accq"><span>' + esc(q) + '</span><i>+</i></div><div class="bw-acca">' + esc(a) + '</div></div>').join('') + '</div>'
+        }
+        if (b.t === 'form') {
+          return '<div class="bw-cols" style="grid-template-columns:repeat(2,1fr);gap:12px;max-width:760px">' +
+            b.fields.map((f) => '<div class="bw-field"' + (f.w ? ' style="grid-column:span 2"' : '') + '><label>' + esc(f.label) +
+              '</label><span>' + esc(f.ph || '') + '</span></div>').join('') + '</div>' +
+            '<div class="bw-btn accent" style="margin-top:14px">' + esc(b.cta) + '</div>'
+        }
+        if (b.t === 'summary') {
+          return '<div class="bw-panel' + (b.dark ? ' dark' : '') + '">' + (b.title ? '<div class="bw-label" style="margin-top:0">' + esc(b.title) + '</div>' : '') +
+            '<div class="bw-rows">' + b.lines.map(([a, v]) => '<div class="bw-row" style="border-color:rgba(0,0,0,.12)"><span>' + esc(a) +
+              '</span><b' + (a === b.totalLabel ? ' style="font-size:15px"' : '') + '>' + v + '</b></div>').join('') + '</div></div>'
+        }
+        if (b.t === 'lines') {
+          return '<div class="bw-rows">' + b.items.map((l) => '<div class="bw-line" data-line data-price="' + l.price + '" data-bw-qty="' + l.qty + '">' +
+            im(l.img) + '<div class="bw-lineinfo"><div class="bw-h3" style="font-size:13px">' + esc(l.name) + '</div>' +
+            '<div class="bw-note" style="margin-top:3px">' + esc(l.meta) + '</div></div>' +
+            stepper('q', l.qty) + '<div class="bw-lineprice" data-bw-out="line">€' + l.price + '</div></div>').join('') + '</div>'
+        }
+        if (b.t === 'map') {
+          return '<div class="bw-map" style="height:100%;min-height:' + (b.h || 250) + 'px">' +
+            b.pins.map(([x, y]) => '<i class="bw-pin" style="left:' + x + '%;top:' + y + '%"></i>').join('') +
+            '<div class="bw-maplabel">' + esc(b.label) + '</div></div>'
+        }
+        if (b.t === 'steps') {
+          return '<div class="bw-steps">' + b.items.map(([label, when, done]) => '<div class="bw-stepitem' + (done ? ' done' : '') +
+            '"><b>' + esc(label) + '</b>' + esc(when) + '</div>').join('') + '</div>'
+        }
+        if (b.t === 'chips') return chiprow(b.g, b.items, b.extra)
+        if (b.t === 'tiles') {
+          return '<div class="bw-cols" style="grid-template-columns:repeat(' + b.items.length + ',1fr);gap:2px;margin-top:12px">' +
+            b.items.map(([label, key, val]) => '<div class="bw-panel"><div class="bw-label" style="margin-top:0">' + esc(label) +
+              '</div><div class="bw-price" style="font-size:24px" data-bw-out="' + key + '">' + esc(val) + '</div></div>').join('') + '</div>'
+        }
+        if (b.t === 'product') {
+          return '<div class="bw-split"><div>' + im(b.img, 336) +
+            (b.thumb ? '<div style="display:flex;gap:8px;margin-top:8px">' + im(b.thumb, 74) + '</div>' : '') +
+            '<div class="bw-rows" style="margin-top:14px">' + (b.rows || []).map(row).join('') + '</div></div><div>' +
+            '<div class="bw-kick">' + esc(b.kicker) + '</div><h2 class="bw-h2" style="margin-top:8px">' + esc(b.title) + '</h2>' +
+            '<p class="bw-sub" style="max-width:none">' + esc(b.paras) + '</p>' +
+            '<div class="bw-label">Build</div>' + optgrid('build', b.buildOpts, 3) +
+            (b.sizeOpts ? '<div class="bw-label">Size</div>' + optgrid('size', b.sizeOpts, 4) : '') +
+            '<div class="bw-label">Quantity</div><div style="display:flex;align-items:center;gap:10px">' +
+            stepper('qty', b.qty || 1) + '<span class="bw-note">' + esc(b.stock || '') + '</span></div>' +
+            '<div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:14px;padding-top:12px;' +
+            'border-top:1px solid #D2D6D9"><div><div class="bw-note">Per bike · <span data-bw-out="build">' + esc(b.buildOpts[0][0]) +
+            '</span> · <span data-bw-out="unit">' + esc(b.priceLabel || '') + '</span></div>' +
+            '<div class="bw-price" data-bw-out="total">' + esc(b.priceLabel || '') + '</div></div>' +
+            '<span class="bw-btn accent">Reserve this build</span></div></div></div>'
+        }
+        if (b.t === 'config') {
+          return '<div class="bw-split"><div>' + im(b.img, 300) +
+            '<div class="bw-rows" style="margin-top:14px">' + (b.rows || []).map(row).join('') + '</div></div><div>' +
+            b.groups.map((gr) => '<div class="bw-label">' + esc(gr.label) + '</div>' + optgrid(gr.g, gr.opts, gr.cols || gr.opts.length)).join('') +
+            '<div class="bw-panel dark" style="margin-top:14px"><div class="bw-note" style="color:#93A2AA">' + esc(b.specLabel || 'Your build') + '</div>' +
+            '<div class="bw-h3" style="margin-top:4px;color:#fff" data-bw-out="spec">' + esc(b.spec || '') + '</div>' +
+            '<div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:10px">' +
+            '<div><div class="bw-note" style="color:#93A2AA">Total · incl. VAT</div><div class="bw-price" style="color:#fff" data-bw-out="total">' +
+            esc(b.totalLabel || '') + '</div></div><div style="text-align:right"><div class="bw-note" style="color:#93A2AA">Lead time</div>' +
+            '<div class="bw-h3" style="color:#fff" data-bw-out="lead">8 weeks</div></div></div></div></div></div>'
+        }
+        if (b.t === 'fit') {
+          return '<div class="bw-split"><div>' + im(b.img, 300) + '</div><div>' +
+            '<div class="bw-kick">Fit</div><h2 class="bw-h2" style="margin-top:8px">' + esc(b.title) + '</h2>' +
+            '<p class="bw-sub" style="max-width:none">' + esc(b.paras) + '</p>' +
+            '<div class="bw-label">Rider height</div><div style="display:flex;align-items:center;gap:10px">' +
+            '<span class="bw-step" data-bw="step" data-d="-2">−</span><span class="bw-price" style="font-size:20px" data-bw-out="height">178 cm</span>' +
+            '<span class="bw-step" data-bw="step" data-d="2">+</span><span class="bw-note">in 2 cm steps</span></div>' +
+            '<div class="bw-cols" style="grid-template-columns:repeat(3,1fr);gap:2px;margin-top:14px">' +
+            [['Frame size', 'size', 'M'], ['Saddle height', 'saddle', '157.2 cm'], ['Reach', 'reach', '655 mm']].map(([l, k, v]) =>
+              '<div class="bw-panel"><div class="bw-label" style="margin-top:0">' + l + '</div><div class="bw-price" style="font-size:22px" data-bw-out="' + k + '">' + v + '</div></div>').join('') +
+            '</div><div class="bw-rows" style="margin-top:14px">' + (b.rows || []).map(row).join('') + '</div></div></div>'
+        }
+        if (b.t === 'booking') {
+          return '<div class="bw-grid2"><div>' +
+            '<div class="bw-label">Day</div>' + chiprow('day', b.days) +
+            '<div class="bw-label">Time</div>' + chiprow('slot', b.slots) +
+            '<div class="bw-panel dark" style="margin-top:16px;display:flex;justify-content:space-between;align-items:center">' +
+            '<div><div class="bw-note" style="color:#93A2AA">Your bay</div><div class="bw-h3" style="color:#fff;margin-top:3px" data-bw-out="slot">Tue · 09:00</div></div>' +
+            '<div style="text-align:right"><div class="bw-note" style="color:#93A2AA">Held for 20 min</div><div class="bw-price" style="font-size:22px;color:#fff" data-bw-out="fee">€95</div></div></div>' +
+            '<div class="bw-btn accent" style="margin-top:12px">Confirm the bay</div>' +
+            '<div class="bw-rows" style="margin-top:14px">' + (b.rows || []).map(row).join('') + '</div></div><div>' +
+            im(b.img, 400) + '</div></div>'
+        }
+        if (b.t === 'art') {
+          return '<div class="bw-grid2"><div class="bw-art"><div class="bw-kick">' + esc(b.kicker) + '</div><h1>' + esc(b.title) + '</h1>' +
+            '<div class="bw-note" style="margin-top:8px">' + esc(b.byline) + '</div>' +
+            '<div class="bw-artcols">' + b.paras.map((x) => '<p>' + esc(x) + '</p>').join('') + '</div>' +
+            '<div class="bw-pull">' + esc(b.pull) + '</div>' +
+            '<div class="bw-artcols" style="margin-top:12px"><p>' + esc(b.tail) + '</p></div></div>' +
+            '<div>' + im(b.img, 150) +
+            '<div class="bw-h3" style="margin-top:12px">' + esc(b.author) + '</div><div class="bw-note" style="margin-top:3px">' + esc(b.role) + '</div>' +
+            '<div class="bw-label">Text size</div><div style="display:flex;gap:4px"><span class="bw-btn ghost" data-bw="fs" data-d="-1" style="padding:5px 10px">A−</span>' +
+            '<span class="bw-btn ghost" data-bw="fs" data-d="1" style="padding:5px 10px">A+</span></div>' +
+            '<div class="bw-rows" style="margin-top:12px">' + (b.rows || []).map(row).join('') + '</div>' +
+            '<div class="bw-label">Next</div><div class="bw-h3" style="font-size:14px">' + esc(b.next) + '</div></div></div>'
+        }
+        if (b.t === 'grid2') {
+          return '<div class="bw-grid2"><div>' + b.left.map(block).join('') + '</div><div>' + b.right.map(block).join('') + '</div></div>'
+        }
+        if (b.t === 'opts') return '<div class="bw-label">' + esc(b.label) + '</div>' + optgrid(b.g, b.items, b.cols || b.items.length)
+        if (b.t === 'outs') {
+          return '<div class="bw-rows">' + b.items.map(([label, key, init]) => '<div class="bw-row"><span>' + esc(label) +
+            '</span><b data-bw-out="' + key + '">' + esc(init) + '</b></div>').join('') + '</div>'
+        }
+        if (b.t === 'figure') {
+          return '<div style="margin-top:auto"><div class="bw-img" style="height:' + (b.h || 200) + 'px">' + imgTag(deck, b.img) + '</div>' +
+            (b.cap ? '<div class="bw-note" style="margin-top:7px">' + esc(b.cap) + '</div>' : '') + '</div>'
+        }
+        if (b.t === 'img') return im(b.img, b.h || 260)
+        if (b.t === 'btn') return '<div class="bw-btn accent" style="margin-top:12px;justify-content:center" data-bw-out="cta">' + esc(b.label) + '</div>'
+        if (b.t === 'notfound') {
+          return '<div class="bw-404"><div><div class="bw-kick">Error 404</div>' +
+            '<div class="bw-h1" style="font-size:104px;letter-spacing:-.055em;line-height:.9">404</div>' +
+            '<div class="bw-h2" style="margin-top:12px">' + esc(b.title) + '</div>' +
+            '<p class="bw-sub">' + esc(b.sub) + '</p>' +
+            '<div style="margin-top:16px">' + chiprow(b.chips.g, b.chips.items) + '</div>' +
+            '<div class="bw-rows" style="margin-top:14px;max-width:460px">' + (b.rows || []).map(row).join('') + '</div></div>' +
+            '<div>' + im(b.img, 420) + '</div></div>'
+        }
+        if (b.t === 'text') {
+          return '<p class="bw-sub" style="max-width:none">' + esc(b.body) + '</p>'
+        }
+        return ''
+      }
+
+      const band = (s.band || []).length ? '<div class="bw-band">' + s.band.map((x) => '<span>' + esc(x) + '</span>').join('') + '</div>' : ''
+      const crumb = s.crumb ? '<span class="bw-crumb">' + esc(s.crumb) + '</span>' : ''
+      const rail = '<div class="bw-rail"><div class="bw-logo">BELLWETHER<i>CC</i><span>STEEL, WELDED TO ORDER</span></div>' +
+        '<div class="bw-nav">' + NAVD.map(([h, t]) => '<div class="bw-navitem' + (t === s.nav ? ' on' : '') + '">' +
+          esc(t) + '<i>' + esc(h) + '</i></div>').join('') + '</div>' +
+        '<div class="bw-railfoot"><div class="bw-basket">Basket<em>' + esc(s.cart || '€2,545') + '</em></div>' +
+        '<div class="bw-tiny">Rotterdam · since 2011\n600 frames a year\nShips in 6–9 weeks</div></div></div>'
+
+      return '<div class="bw" data-bw-root="' + esc(s.root || 'none') + '"' + (s.base ? ' data-base="' + s.base + '"' : '') + (s.qty ? ' data-bw-qty="' + s.qty + '"' : '') + (s.subtotal ? ' data-subtotal="' + s.subtotal + '"' : '') +
+        (s.weeks ? ' data-weeks="' + s.weeks + '"' : '') + '>' + rail + '<div class="bw-right">' +
+        '<div class="bw-chrome"><div class="bw-dots"><i></i><i></i><i></i></div>' +
+        '<div class="bw-url">bellwether.cc<b>' + esc(s.path || '/') + '</b></div>' + crumb + '</div>' +
+        '<div class="bw-main">' + (s.blocks || []).map(block).join('') + '</div>' + band + '</div></div>'
+    }
+
     case 'pt-poster':
       return (
         '<div class="pt ' + (s.dark ? 'dark' : 'light') + (s.ruled ? ' ruled' : '') + (s.half ? ' half' : '') + '">' +

@@ -3573,6 +3573,141 @@
   .sld.k-skerry .d-end-rows{margin-top:24px;max-width:700px}
   .sld.k-skerry .d-end-row{padding:8px 0;border-top:1px dotted var(--rule);font-size:8.4px;letter-spacing:.14em}
   .sld.k-skerry .d-end-img{flex:1;min-height:0;margin:22px 34px 34px}
+  /* ===== 网站复刻 #2：Bellwether Cycles（左轨导航家族） ===== */
+  .sld.k-bellwether{font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif}
+  .sld.k-bellwether .bw{position:absolute;inset:0;display:flex;background:#F1F2F3;color:#121B21;overflow:hidden}
+  .sld.k-bellwether .bw-rail{flex:none;width:212px;display:flex;flex-direction:column;padding:22px 20px 18px;
+    background:#101A21;color:#E9EDEF}
+  .sld.k-bellwether .bw-logo{font-size:17px;font-weight:700;letter-spacing:.14em}
+  .sld.k-bellwether .bw-logo i{font-style:normal;color:#E8541F;margin-left:3px}
+  .sld.k-bellwether .bw-logo span{display:block;margin-top:7px;font-size:10px;letter-spacing:.14em;color:#7C8A93;font-weight:500}
+  .sld.k-bellwether .bw-nav{margin-top:34px;display:flex;flex-direction:column;gap:2px}
+  .sld.k-bellwether .bw-navitem{display:flex;align-items:baseline;justify-content:space-between;padding:8px 0;
+    font-size:13px;color:#9BA9B2;border-bottom:1px solid rgba(233,237,239,.08);cursor:pointer}
+  .sld.k-bellwether .bw-navitem i{font-style:normal;font-size:9.5px;letter-spacing:.1em;color:#5C6A73}
+  .sld.k-bellwether .bw-navitem.on{color:#fff}
+  .sld.k-bellwether .bw-navitem.on i{color:#E8541F}
+  .sld.k-bellwether .bw-railfoot{margin-top:auto}
+  .sld.k-bellwether .bw-basket{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;
+    background:#1B2A33;font-size:12px;color:#C6D1D7}
+  .sld.k-bellwether .bw-basket em{font-style:normal;color:#fff;font-variant-numeric:tabular-nums}
+  .sld.k-bellwether .bw-tiny{margin-top:12px;font-size:9.5px;line-height:1.7;letter-spacing:.06em;color:#65737B;white-space:pre-line}
+  .sld.k-bellwether .bw-right{flex:1;min-width:0;display:flex;flex-direction:column}
+  .sld.k-bellwether .bw-chrome{flex:none;height:38px;display:flex;align-items:center;gap:12px;padding:0 22px;
+    background:#E4E6E8;border-bottom:1px solid #D2D6D9}
+  .sld.k-bellwether .bw-dots{display:flex;gap:5px}
+  .sld.k-bellwether .bw-dots i{width:8px;height:8px;border-radius:50%;background:#B6BCC1}
+  .sld.k-bellwether .bw-url{flex:1;max-width:520px;height:23px;border-radius:3px;background:#F1F2F3;display:flex;
+    align-items:center;justify-content:center;gap:6px;font-size:11px;color:#6E7A82}
+  .sld.k-bellwether .bw-url b{font-weight:600;color:#1B262D}
+  .sld.k-bellwether .bw-crumb{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#84939B}
+  .sld.k-bellwether .bw-main{flex:1;min-height:0;display:flex;flex-direction:column;padding:26px 34px 0;overflow:hidden}
+  .sld.k-bellwether .bw-band{flex:none;display:flex;justify-content:space-between;padding:11px 34px 12px;margin-top:auto;
+    border-top:1px solid #D2D6D9;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:#7A868D}
+  /* 排版 */
+  .sld.k-bellwether .bw-kick{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#E8541F}
+  .sld.k-bellwether .bw-h1{margin:10px 0 0;font-size:58px;line-height:.95;letter-spacing:-.035em;font-weight:600;white-space:pre-line}
+  .sld.k-bellwether .bw-h2{margin:0;font-size:33px;line-height:1.05;letter-spacing:-.025em;font-weight:600;white-space:pre-line}
+  .sld.k-bellwether .bw-h3{margin:0;font-size:16px;letter-spacing:-.01em;font-weight:600}
+  .sld.k-bellwether .bw-sub{margin:12px 0 0;font-size:13px;line-height:1.62;color:#4C5A62;max-width:520px;white-space:pre-line}
+  .sld.k-bellwether .bw-note{margin:0;font-size:11.5px;line-height:1.62;color:#76838B;white-space:pre-line}
+  .sld.k-bellwether .bw-mono{font-variant-numeric:tabular-nums}
+  .sld.k-bellwether .bw-img{overflow:hidden;background:#DDE1E3;display:block;position:relative}
+  .sld.k-bellwether .bw-img .sd-img{width:100%;height:100%;object-fit:cover;display:block}
+  .sld.k-bellwether .bw-btn{display:inline-flex;align-items:center;padding:9px 16px;background:#121B21;color:#fff;
+    font-size:11.5px;letter-spacing:.04em;cursor:pointer;user-select:none}
+  .sld.k-bellwether .bw-btn.ghost{background:transparent;color:#121B21;box-shadow:inset 0 0 0 1px #B6BCC1}
+  .sld.k-bellwether .bw-btn.accent{background:#E8541F}
+  /* 控件 */
+  .sld.k-bellwether .bw-chip{display:inline-flex;align-items:center;gap:5px;padding:8px 13px;background:#F1F2F3;
+    box-shadow:inset 0 0 0 1px #C7CDD1;font-size:11px;letter-spacing:.04em;color:#3C4A52;cursor:pointer;user-select:none}
+  .sld.k-bellwether .bw-chip.on{background:#121B21;color:#fff;box-shadow:none}
+  .sld.k-bellwether .bw-chiprow{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .sld.k-bellwether .bw-opt{flex:1;padding:8px 10px;box-shadow:inset 0 0 0 1px #C7CDD1;font-size:11.5px;cursor:pointer;
+    user-select:none;text-align:center;background:#F1F2F3}
+  .sld.k-bellwether .bw-opt.on{background:#121B21;color:#fff;box-shadow:none}
+  .sld.k-bellwether .bw-opt i{display:block;font-style:normal;font-size:9.5px;opacity:.62;margin-top:2px}
+  .sld.k-bellwether .bw-step{width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;
+    box-shadow:inset 0 0 0 1px #C7CDD1;cursor:pointer;user-select:none;font-size:13px;background:#F1F2F3}
+  .sld.k-bellwether .bw-step:hover{background:#E4E6E8}
+  .sld.k-bellwether .bw-qty{width:30px;text-align:center;font-size:12px;font-variant-numeric:tabular-nums}
+  .sld.k-bellwether .bw-label{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:#84939B;margin:14px 0 6px}
+  .sld.k-bellwether .bw-price{font-size:30px;font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+  /* 结构 */
+  .sld.k-bellwether .bw-head{display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:12px;
+    border-bottom:1px solid #D2D6D9;flex:none}
+  .sld.k-bellwether .bw-hero{flex:1;display:grid;grid-template-columns:1fr 560px;gap:34px;padding:6px 0 0;min-height:0}
+  .sld.k-bellwether .bw-hero>div:first-child{display:flex;flex-direction:column;justify-content:center}
+  .sld.k-bellwether .bw-hero .bw-img{height:100%;min-height:360px}
+  .sld.k-bellwether .bw-ctas{display:flex;gap:8px;margin-top:18px}
+  .sld.k-bellwether .bw-cols{display:grid;gap:20px}
+  .sld.k-bellwether .bw-card{display:flex;flex-direction:column;cursor:pointer}
+  .sld.k-bellwether .bw-card .bw-img{height:270px}
+  .sld.k-bellwether .bw-card .bw-img .sd-img{transition:transform .4s}
+  .sld.k-bellwether .bw-card:hover .bw-img .sd-img{transform:scale(1.03)}
+  .sld.k-bellwether .bw-cardmeta{display:flex;justify-content:space-between;align-items:baseline;margin-top:9px;font-size:11.5px}
+  .sld.k-bellwether .bw-cardmeta b{font-size:13.5px;font-weight:600}
+  .sld.k-bellwether .bw-card[hidden]{display:none}
+  .sld.k-bellwether .bw-split{flex:1;display:grid;grid-template-columns:1fr 452px;gap:30px;padding-top:8px;min-height:0}
+  .sld.k-bellwether .bw-rows{display:flex;flex-direction:column}
+  .sld.k-bellwether .bw-row{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:12px 0;
+    border-bottom:1px solid #DDE1E3;font-size:11.5px}
+  .sld.k-bellwether .bw-row b{font-weight:600;font-variant-numeric:tabular-nums;text-align:right}
+  .sld.k-bellwether .bw-row i{font-style:normal;font-size:9.5px;color:#84939B;letter-spacing:.08em;text-transform:uppercase}
+  .sld.k-bellwether .bw-row[hidden]{display:none}
+  .sld.k-bellwether .bw-pane{display:none}
+  .sld.k-bellwether .bw-pane.on{display:block}
+  .sld.k-bellwether .bw-table{width:100%;border-collapse:collapse;font-size:11.5px;font-variant-numeric:tabular-nums}
+  .sld.k-bellwether .bw-table th{text-align:left;font-weight:500;font-size:9.5px;letter-spacing:.12em;
+    text-transform:uppercase;color:#84939B;padding:0 0 7px;border-bottom:1px solid #C7CDD1}
+  .sld.k-bellwether .bw-table td{padding:11px 0;border-bottom:1px solid #E1E5E7;background:transparent}
+  .sld.k-bellwether .bw-accrow{border-bottom:1px solid #DDE1E3;cursor:pointer;user-select:none}
+  .sld.k-bellwether .bw-accq{display:flex;justify-content:space-between;align-items:center;padding:11px 0;font-size:12.5px;font-weight:500}
+  .sld.k-bellwether .bw-accq i{font-style:normal;color:#E8541F;font-size:14px;transition:transform .2s}
+  .sld.k-bellwether .bw-acca{display:none;padding:0 0 12px;font-size:11px;line-height:1.65;color:#4C5A62;max-width:760px}
+  .sld.k-bellwether .bw-accrow.open .bw-acca{display:block}
+  .sld.k-bellwether .bw-accrow.open .bw-accq i{transform:rotate(45deg)}
+  .sld.k-bellwether .bw-panel{background:#E6E9EB;padding:14px 16px}
+  .sld.k-bellwether .bw-panel.dark{background:#121B21;color:#E9EDEF}
+  .sld.k-bellwether .bw-line{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #DDE1E3}
+  .sld.k-bellwether .bw-line .bw-img{width:62px;height:46px;flex:none}
+  .sld.k-bellwether .bw-lineinfo{flex:1;min-width:0}
+  .sld.k-bellwether .bw-lineprice{width:74px;text-align:right;font-size:12.5px;font-weight:600;font-variant-numeric:tabular-nums}
+  .sld.k-bellwether .bw-stepwrap{display:inline-flex;align-items:center;gap:1px}
+  .sld.k-bellwether .bw-map{background:#E1E5E7;background-image:linear-gradient(#CBD2D6 1px,transparent 1px),
+    linear-gradient(90deg,#CBD2D6 1px,transparent 1px);background-size:34px 34px;position:relative;overflow:hidden}
+  .sld.k-bellwether .bw-pin{position:absolute;width:9px;height:9px;border-radius:50%;background:#E8541F;
+    box-shadow:0 0 0 4px rgba(232,84,31,.22)}
+  .sld.k-bellwether .bw-maplabel{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);background:#121B21;
+    color:#fff;font-size:10px;padding:5px 10px;white-space:nowrap}
+  .sld.k-bellwether .bw-field{display:flex;flex-direction:column;gap:4px}
+  .sld.k-bellwether .bw-field label{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:#84939B}
+  .sld.k-bellwether .bw-field span{display:block;padding:8px 10px;background:#F1F2F3;box-shadow:inset 0 0 0 1px #C7CDD1;
+    font-size:11.5px;color:#3C4A52;min-height:16px}
+  .sld.k-bellwether .bw-steps{display:flex;align-items:flex-start;gap:0;margin-top:6px}
+  .sld.k-bellwether .bw-stepitem{flex:1;border-top:2px solid #C7CDD1;padding-top:8px;font-size:10.5px;color:#84939B}
+  .sld.k-bellwether .bw-stepitem.done{border-color:#E8541F;color:#121B21}
+  .sld.k-bellwether .bw-stepitem b{display:block;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px}
+  .sld.k-bellwether .bw-grid2{display:grid;grid-template-columns:1fr 300px;gap:30px;flex:1;min-height:0;padding-top:8px}
+  .sld.k-bellwether .bw-art{overflow:hidden}
+  .sld.k-bellwether .bw-art h1{font-size:38px;line-height:1.03;letter-spacing:-.03em;margin:8px 0 0;font-weight:600}
+  .sld.k-bellwether .bw-artcols{column-count:2;column-gap:26px;margin-top:14px;font-size:11.5px;line-height:1.72;color:#3C4A52}
+  .sld.k-bellwether .bw-artcols p{margin:0 0 9px}
+  .sld.k-bellwether .bw-pull{margin:12px 0 0;padding:12px 0 0;border-top:2px solid #E8541F;font-size:16px;
+    line-height:1.35;letter-spacing:-.01em;font-weight:500;max-width:560px}
+  .sld.k-bellwether .bw-404{flex:1;display:grid;grid-template-columns:1fr 520px;gap:34px;align-items:center}
+  .sld.k-bellwether .bw-404 .bw-h2{font-size:26px;max-width:520px}
+  .sld.k-bellwether .bw-404 .bw-sub{max-width:520px}
+  .sld.k-bellwether tr.bw-pane.on{display:table-row}
+  .sld.k-bellwether .bw-grid2>div:last-child{display:flex;flex-direction:column;min-width:0}
+  .sld.k-bellwether .bw-grid2 .bw-map{flex:1;min-height:330px}
+  .sld.k-bellwether .bw-main{padding-top:30px}
+  .sld.k-bellwether .bw-row{padding:11px 0;font-size:12.5px}
+  .sld.k-bellwether .bw-table td{padding:10px 0;font-size:12.5px}
+  .sld.k-bellwether .bw-accq{padding:14px 0;font-size:13.5px}
+  .sld.k-bellwether .bw-card .bw-img{height:296px}
+  .sld.k-bellwether .bw-tabsplit{display:grid;grid-template-columns:1fr 452px;gap:34px;align-items:start}
+  .sld.k-bellwether .bw-tabsplit>div:last-child .bw-img{height:352px}
   .sld.k-northwind{font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif}
   .sld.k-northwind .nw{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--paper);color:var(--ink);overflow:hidden}
   /* 浏览器外壳：每屏同一根 */
@@ -3616,6 +3751,12 @@
     padding:6px 0 16px;border-bottom:1px solid rgba(28,24,18,.16)}
   .sld.k-northwind .nw-face{display:none}
   .sld.k-northwind .nw-face.on{display:block}
+  .sld.k-northwind .nw-faces{height:100%}
+  .sld.k-northwind .nw-faces .nw-face{height:100%}
+  .sld.k-northwind .nw-faces .nw-face .nw-img{height:100%}
+  .sld.k-northwind .nw-jrow[hidden]{display:none}
+  .sld.k-northwind .nw-hours div[hidden]{display:none}
+  .sld.k-northwind .nw-filters .nw-chip{margin-right:6px}
   /* 首页 */
   .sld.k-northwind .nw-hero{flex:1;display:grid;grid-template-columns:1fr 620px;gap:48px;align-items:stretch;padding:4px 0 18px}
   .sld.k-northwind .nw-hero>div:first-child{display:flex;flex-direction:column;justify-content:center}
@@ -6219,9 +6360,144 @@ document.addEventListener('click', (event) => {
   if (kind === 'acc') {
     const acc = el.closest('.nw-acc'); if (acc) acc.classList.toggle('open')
   }
+  if (kind === 'fs') {
+    const stage = el.closest('.nw') || document
+    const cols = stage.querySelectorAll('.nw-article .nw-cols')
+    cols.forEach((c) => {
+      const px = Number(c.dataset.px || 13)
+      c.dataset.px = String(Math.min(18, Math.max(11, px + Number(el.dataset.d || 1))))
+      c.style.fontSize = c.dataset.px + 'px'
+    })
+  }
   const owner = el.closest('[data-nw-root]')
   if (owner) nwCalc(owner)
 })
+function bwEuro(n) { return '€' + Number(n).toLocaleString('en-US') }
+function bwCalc(root) {
+  if (!root || !root.dataset) return
+  const kind = root.dataset.bwRoot
+  const on = (g) => root.querySelector('[data-bw][data-g="' + g + '"].on')
+  const addOf = (g) => { const el = on(g); return el ? Number(el.dataset.add || 0) : 0 }
+  const nameOf = (g) => { const el = on(g); return el ? (el.dataset.label || el.textContent.trim()) : '' }
+  const out = (k, v) => root.querySelectorAll('[data-bw-out="' + k + '"]').forEach((el) => { el.textContent = v })
+  const qtyOf = (el) => Number(el.dataset.bwQty || 1)
+  const rootQty = () => Number(root.dataset.bwQty || 1)
+  const base = Number(root.dataset.base || 0)
+
+  if (kind === 'bike') {
+    const unit = base + addOf('build')
+    out('build', nameOf('build')); out('unit', bwEuro(unit)); out('qty', String(rootQty()))
+    out('total', bwEuro(unit * rootQty()))
+  } else if (kind === 'config') {
+    const total = base + addOf('size') + addOf('colour') + addOf('group') + addOf('wheels')
+    out('total', bwEuro(total))
+    const g = on('group')
+    out('lead', ((g && g.dataset.weeks) || '8') + ' weeks')
+    out('spec', [nameOf('size'), nameOf('colour'), nameOf('group'), nameOf('wheels')].filter(Boolean).join(' · '))
+  } else if (kind === 'fit') {
+    const h = rootQty()
+    out('height', h + ' cm')
+    out('size', h < 168 ? 'S' : h < 176 ? 'M' : h < 184 ? 'L' : 'XL')
+    out('saddle', (h * 0.883).toFixed(1) + ' cm')
+    out('reach', Math.round(h * 3.68) + ' mm')
+  } else if (kind === 'book') {
+    out('slot', (nameOf('day') || 'Mon') + ' · ' + (nameOf('slot') || '09:00'))
+    out('bay', '1 bay · 45 min'); out('fee', '€95')
+  } else if (kind === 'cart') {
+    let sum = 0, count = 0
+    root.querySelectorAll('[data-line]').forEach((el) => {
+      const p = Number(el.dataset.price || 0), q = qtyOf(el)
+      sum += p * q; count += q
+      const price = el.querySelector('[data-bw-out="line"]'); if (price) price.textContent = bwEuro(p * q)
+      const qEl = el.querySelector('[data-bw-out="q"]'); if (qEl) qEl.textContent = String(q)
+    })
+    out('subtotal', bwEuro(sum)); out('count', String(count))
+    root.dataset.subtotal = String(sum)
+  } else if (kind === 'checkout') {
+    const sub = Number(root.dataset.subtotal || 0), ship = addOf('ship')
+    out('subtotal', bwEuro(sub)); out('ship', ship ? '+' + bwEuro(ship) : 'free')
+    out('total', bwEuro(sub + ship))
+  } else if (kind === 'gift') {
+    const el = on('amt'); const v = el ? Number(el.dataset.f) : 100
+    out('amount', bwEuro(v))
+    out('cover', v >= 250 ? 'a full service and the parts' : v >= 100 ? 'a standard service' : 'a tube and a coffee')
+    out('cta', 'Buy a ' + bwEuro(v) + ' card')
+  } else if (kind === 'trade') {
+    const d = Number((on('tier') || {}).dataset ? on('tier').dataset.f : 10)
+    out('discount', d + '%'); out('price', bwEuro(2450 * (1 - d / 100)))
+  } else if (kind === 'status') {
+    const el = on('order')
+    const stage = el ? Number(el.dataset.stage || 0) : 0
+    root.querySelectorAll('.bw-stepitem').forEach((s, i) => s.classList.toggle('done', i <= stage))
+    out('eta', (el && el.dataset.eta) || '—')
+    out('order', el ? el.dataset.f : '—')
+  } else if (kind === 'ride') {
+    const el = on('route')
+    out('km', (el && el.dataset.km) || '—')
+    out('ele', (el && el.dataset.ele) || '—')
+    out('time', (el && el.dataset.time) || '—')
+  } else if (kind === 'warranty') {
+    const y = Number((on('year') || {}).dataset ? on('year').dataset.f : 2026)
+    const left = Math.max(0, 10 - (2026 - y))
+    out('cover', left > 0 ? 'covered · ' + left + ' years left on the frame' : 'frame warranty has run out')
+  }
+}
+function bwClick(el) {
+  const root = el.closest('[data-bw-root]')
+  const kind = el.dataset.bw
+  if (kind === 'fs') {
+    const art = el.closest('[data-bw-root]') && el.closest('[data-bw-root]').querySelector('.bw-artcols')
+    if (art) {
+      const cur = Number(art.dataset.px || 11.5)
+      art.dataset.px = String(Math.min(15, Math.max(10, cur + Number(el.dataset.d || 1) * 0.5)))
+      art.style.fontSize = art.dataset.px + 'px'
+    }
+    return
+  }
+  if (kind === 'acc') { el.classList.toggle('open'); return }
+  if (kind === 'step') {
+    const d = Number(el.dataset.d || 1)
+    const line = el.closest('[data-line]')
+    if (line) line.dataset.bwQty = String(Math.min(9, Math.max(1, Number(line.dataset.bwQty || 1) + d)))
+    else if (root) {
+      const isFit = root.dataset.bwRoot === 'fit'
+      const lo = isFit ? 150 : 1, hi = isFit ? 200 : 9
+      root.dataset.bwQty = String(Math.min(hi, Math.max(lo, Number(root.dataset.bwQty || (isFit ? 178 : 1)) + d)))
+    }
+    if (root) bwCalc(root)
+    return
+  }
+  if (!root) return
+  const g = el.dataset.g
+  if (kind === 'opt') {
+    root.querySelectorAll('[data-bw="opt"][data-g="' + g + '"]').forEach((x) => x.classList.toggle('on', x === el))
+    bwCalc(root); return
+  }
+  if (kind === 'chip') {
+    root.querySelectorAll('[data-bw="chip"][data-g="' + g + '"]').forEach((x) => x.classList.toggle('on', x === el))
+    const v = el.dataset.f
+    root.querySelectorAll('.bw-pane[data-pane]').forEach((p) => p.classList.toggle('on', p.dataset.pane === v))
+    root.querySelectorAll('[data-f]').forEach((item) => {
+      if (item.dataset.bw === 'chip' && item.dataset.g === g) return
+      if (item.dataset.bw === 'chip') return
+      const toks = (item.dataset.f || '').split(/\s+/)
+      item.hidden = !(v === 'all' || toks.includes(v))
+    })
+    bwCalc(root)
+  }
+}
+
+document.addEventListener('click', (event) => {
+  const el = event.target.closest && event.target.closest('[data-bw]')
+  if (!el) return
+  bwClick(el)
+})
+/** 每屏渲染完先跑一遍计算，保证首屏数字和 data-* 一致。 */
+function paintCalcs(host) {
+  if (!host) return
+  host.querySelectorAll('[data-nw-root]').forEach((el) => { try { nwCalc(el) } catch (e) { /* 首屏既可以是静态页 */ } })
+  host.querySelectorAll('[data-bw-root]').forEach((el) => { try { bwCalc(el) } catch (e) { /* 同上 */ } })
+}
 function metaUnit(deck) {
   return deck.fmt === 'card' ? ' 张卡片'
     : deck.fmt === 'image' ? ' 张图'
@@ -6295,6 +6571,7 @@ function renderCase() {
   if (!deck) return
   const slide = deck.slides[caseState.i]
   $('tvStage').innerHTML = '<div class="' + boxClass(deck) + '">' + slideHTML(deck, slide, caseState.i) + '</div>'
+  paintCalcs($('tvStage'))
   const thumbs = $('tvThumbs')
   if (thumbs.dataset.deck !== deck.id) {
     thumbs.dataset.deck = deck.id
@@ -6412,6 +6689,7 @@ function paintDocPage() {
         '</div>'
     )
     .join('')
+  paintCalcs(wrap)
   wrap.scrollTop = 0
   docState.i = 0
   markDocCurrent()

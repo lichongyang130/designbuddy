@@ -22,21 +22,34 @@ const read = (name: string) => readFileSync(join(publicDir, name), 'utf8')
 const indexHtml = read('index.html')
 const i18nJs = read('i18n.js')
 
-/** Every `01`..`15` that a deck mentions and that exists on disk. */
+/**
+ * 真正被排版引用的配图：只看图片字段，不把价格、年份、编号里的两位数当成图号。
+ * 之前这里扫的是“任何两位数字符串”，于是 $17、2019、第 07 行都被算成一张图，
+ * 三套演示稿实际只有 11–13 张，却一直显示达标。
+ */
+const IMAGE_KEYS = ['img', 'img2', 'imgs', 'thumbs', 'images', 'poster', 'cover', 'image', 'photo']
 function usedImages(deck: (typeof CASE_DECKS)[number]): Set<string> {
   const disk = readdirSync(join(publicDir, 'cases', deck.id))
     .filter((name) => name.endsWith('.jpg'))
     .map((name) => name.slice(0, 2))
   const used = new Set<string>()
-  const walk = (value: unknown): void => {
+  const take = (value: unknown) => {
     if (typeof value === 'string') {
       if (/^\d{2}$/.test(value) && disk.includes(value)) used.add(value)
       return
     }
-    if (Array.isArray(value)) return value.forEach(walk)
-    if (value && typeof value === 'object') Object.values(value).forEach(walk)
+    if (Array.isArray(value)) value.forEach(take)
   }
-  walk(deck.slides)
+  const walk = (value: unknown, key: string, kind: string): void => {
+    // figpair 用 a / b 两格，别的字段里的 a / b 不是图
+    if (IMAGE_KEYS.includes(key) || (kind === 'figpair' && (key === 'a' || key === 'b'))) return take(value)
+    if (Array.isArray(value)) return value.forEach((item) => walk(item, key, kind))
+    if (value && typeof value === 'object') {
+      const k = (value as { k?: string }).k || kind
+      Object.entries(value).forEach(([key2, v]) => walk(v, key2, k))
+    }
+  }
+  walk(deck.slides, '', '')
   return used
 }
 
@@ -52,8 +65,9 @@ test('every case deck keeps its agreed page and image budget', () => {
       assert.ok(pages >= 8 && pages <= 12, `${deck.name}: 轮播 ${pages} 张，应为 8–12`)
       assert.ok(usedImages(deck).size >= 5 && usedImages(deck).size <= 8, `${deck.name}: 轮播应有 5–8 张配图`)
     } else if (deck.fmt === 'site') {
-      assert.ok(pages >= 15 && pages <= 30, `${deck.name}: 网站复刻 ${pages} 屏，应为 15–30`)
-      assert.equal(usedImages(deck).size, 20, `${deck.name}: 网站复刻应有 20 张配图`)
+      assert.ok(pages >= 20 && pages <= 30, `${deck.name}: 网站复刻 ${pages} 屏，应为 20–30`)
+      const imgs = usedImages(deck).size
+      assert.ok(imgs >= 10 && imgs <= 15, `${deck.name}: 网站复刻应有 10–15 张配图，现在 ${imgs}`)
     } else if (deck.fmt === 'image') {
       assert.ok(pages >= 4 && pages <= 8, `${deck.name}: 图片 ${pages} 张，应为 4–8`)
       assert.ok(usedImages(deck).size >= 3 && usedImages(deck).size <= 8, `${deck.name}: 图片组应有 3–8 张图`)
@@ -84,6 +98,20 @@ test('幻灯片里不放 <button>：缩略图外壳本身就是按钮', () => {
     for (const [i, slide] of deck.slides.entries()) {
       const html = slideHTML(deck as never, slide as never, i)
       assert.ok(!/<button[\s>]/i.test(html), `${deck.name} 第 ${i + 1} 页里有 <button>`)
+    }
+  }
+})
+
+test('every screen of a site recreation answers back', () => {
+  const sites = CASE_DECKS.filter((deck) => deck.fmt === 'site')
+  assert.ok(sites.length >= 2, '网站复刻至少要有两套')
+  for (const deck of sites) {
+    for (const [i, slide] of deck.slides.entries()) {
+      const html = slideHTML(deck as never, slide as never, i)
+      assert.ok(
+        /data-nw=|data-bw=/.test(html),
+        `${deck.name} 第 ${i + 1} 屏（${(slide as { path?: string }).path || ''}）没有任何可交互控件`
+      )
     }
   }
 })
