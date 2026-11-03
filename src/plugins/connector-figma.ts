@@ -77,7 +77,10 @@ export function apply(ctx: Context, config: Config = {}): void {
       execute: async (args) => {
         const frameId = String(args.frameId)
         const frame = await fetchFrame(frameId)
-        if (!frame) return { content: `未找到 frame "${frameId}"`, isError: true }
+        if (!frame) {
+          const known = Object.keys(FIXTURES).join('、')
+          return { content: `未找到 frame "${frameId}"。当前本地示例 frame：${known}（换成这些 id 才能读到 token）。`, isError: true }
+        }
 
         if (config.rememberTokens !== false) {
           memory.save(`frame:${frame.frameId}`, `${frame.name} 主色 ${frame.tokens['color.primary']}`)

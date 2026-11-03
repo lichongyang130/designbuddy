@@ -28,6 +28,24 @@ import type { ToolRegistry } from './tools.ts'
 
 const DEFAULT_MAX_STEPS = 6
 
+/** 「技能」卡会往输入框里写 `@工具名`；这里把点名解析成系统提示，真模型也照办。 */
+export function mentionedTools(prompt: string, available: readonly string[]): string[] {
+  const names = new Set(available)
+  const found: string[] = []
+  for (const match of prompt.matchAll(/@([a-zA-Z][\w.-]*)/g)) {
+    const candidate = match[1]!
+    if (names.has(candidate) && !found.includes(candidate)) found.push(candidate)
+  }
+  return found
+}
+
+function mentionHint(names: string[]): string {
+  return [
+    `用户点名要用工具：${names.map((n) => '`' + n + '`').join('、')}。`,
+    '第一轮就调用它，参数从用户消息里取；缺参数就问一句，不要用别的工具顶替。',
+  ].join('')
+}
+
 export class DefaultAgentLoop implements AgentLoop {
   #ctx: Context
 
@@ -73,8 +91,13 @@ export class DefaultAgentLoop implements AgentLoop {
 
       yield { type: 'agent/step', agentId, step }
 
+      const schemas = tools.schemas(preset.tools)
       const system = await prompts.build(this.#ctx, preset.instructions)
-      const messages: Message[] = [textMessage('system', system), ...sessions.messages(session.id)]
+      const mention = mentionedTools(options.prompt, schemas.map((tool) => tool.name))
+      const messages: Message[] = [
+        textMessage('system', mention.length === 0 ? system : `${system}\n\n${mentionHint(mention)}`),
+        ...sessions.messages(session.id),
+      ]
 
       let stepText = ''
       const calls: ToolCallPart[] = []
@@ -83,7 +106,7 @@ export class DefaultAgentLoop implements AgentLoop {
         kind: preset.kind,
         model: preset.model,
         messages,
-        tools: tools.schemas(preset.tools),
+        tools: schemas,
         signal: options.signal,
       })) {
         if (chunk.type === 'text-delta') {

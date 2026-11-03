@@ -99,8 +99,12 @@ export function decide(request: LlmRequest, plan: string[]): Decision {
   const results = turn.filter((message) => message.role === 'tool')
   const available = new Set(request.tools.map((tool) => tool.name))
 
+  // 「技能」页点卡片会往输入框里写 `@工具名`：用户点名要哪个工具就先跑哪个，
+  // 其次才看消息里有没有文件路径，最后才回落到预设计划。
+  const mentioned = mentionedTool(prompt, available)
   const office = officeToolFor(prompt)
-  const next = (office && available.has(office) && !called.has(office) ? office : undefined)
+  const next = (mentioned && !called.has(mentioned) ? mentioned : undefined)
+    ?? (office && available.has(office) && !called.has(office) ? office : undefined)
     ?? plan.find((toolName) => available.has(toolName) && !called.has(toolName))
   if (next) {
     return {
@@ -130,6 +134,17 @@ function argsFor(toolName: string, prompt: string, results: Message[]): Record<s
       if (toolName.startsWith('office.read_')) return { filePath: officePath(prompt) }
       return {}
   }
+}
+
+/** 能从用户消息里直接拿到参数的工具，才允许被 `@` 点名优先执行。 */
+const MENTIONABLE = /^(?:office\.read_\w+|office\.docx_formulas|memory\.(?:save|recall)|expert\.consult|figma\.inspect_frame)$/
+
+export function mentionedTool(prompt: string, available: Set<string>): string | undefined {
+  for (const match of prompt.matchAll(/@([a-zA-Z][\w.-]*)/g)) {
+    const candidate = match[1]!
+    if (available.has(candidate) && MENTIONABLE.test(candidate)) return candidate
+  }
+  return undefined
 }
 
 function officePath(prompt: string): string {
