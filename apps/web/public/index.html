@@ -2684,6 +2684,98 @@
   .sld.k-deeptime .dt-cred div{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(240,237,228,.42);line-height:1.9}
   .sld.k-deeptime .dt-cred span{display:block;margin-top:6px;font-size:12.5px;letter-spacing:0;text-transform:none;color:rgba(240,237,228,.82);line-height:1.7;white-space:pre-line}
   .sld.k-deeptime .dt-end .dt-end-lead{margin:26px 0 0;max-width:470px;font-size:15px;line-height:1.75;color:rgba(240,237,228,.66)}
+  /* ── 文档家族：Second Cut（田测表 · 竖向索引栏 + 双线图版 + 斑马表格） ── */
+  .sld.k-secondcut .sd-img{filter:saturate(.94) contrast(1.03)}
+  /* 页边竖向索引线：整本册子的左侧一条细线，所有页面共用 */
+  .sld.k-secondcut::after{content:"";position:absolute;left:112px;top:56px;bottom:56px;width:1px;background:var(--rule)}
+  .sld.k-secondcut .d-pad{padding:112px 104px 104px 152px}
+  .sld.k-secondcut .d-run{
+    left:152px;right:104px;top:54px;padding-bottom:0;border-bottom:0;align-items:center;
+    font-size:9px;letter-spacing:.2em;color:var(--muted);
+  }
+  .sld.k-secondcut .d-run span:first-child{display:flex;align-items:center;gap:10px;color:var(--ink)}
+  .sld.k-secondcut .d-run span:first-child::before{content:"";flex:none;width:7px;height:7px;background:var(--accent)}
+  .sld.k-secondcut .d-run span:last-child{color:var(--accent);letter-spacing:.18em}
+  .sld.k-secondcut .sd-folio{left:152px;right:104px;bottom:46px;align-items:center;font-size:8.5px;letter-spacing:.2em}
+  .sld.k-secondcut .sd-folio span:last-child{
+    min-width:30px;padding:4px 0;text-align:center;border:1px solid var(--rule);
+    background:rgba(63,95,52,.07);color:var(--ink);letter-spacing:.08em;
+  }
+  .sld.k-secondcut .d-kicker{
+    display:flex;align-items:center;gap:11px;font-size:9px;letter-spacing:.26em;color:var(--accent);
+  }
+  .sld.k-secondcut .d-kicker::before{content:"";flex:none;width:16px;height:1px;background:var(--accent)}
+  .sld.k-secondcut .d-h1{font-size:74px;line-height:1.03;letter-spacing:-.032em;font-weight:500}
+  .sld.k-secondcut .d-h2{
+    margin:16px 0 0;padding-bottom:15px;border-bottom:1px solid var(--ink);
+    font-size:36px;line-height:1.24;letter-spacing:-.022em;font-weight:500;
+  }
+  .sld.k-secondcut .d-h3{font-size:17px;line-height:1.4;letter-spacing:-.012em;font-weight:600}
+  .sld.k-secondcut .d-lead{max-width:636px;font-size:16.4px;line-height:1.86;color:var(--body)}
+  .sld.k-secondcut .d-lead + .d-lead{margin-top:13px}
+  .sld.k-secondcut .d-lead-sm{font-size:13.6px;line-height:1.85}
+  .sld.k-secondcut .d-cols{grid-template-columns:minmax(0,1fr) 196px;gap:50px;margin-top:26px}
+  .sld.k-secondcut .d-main p{font-size:15.2px;line-height:1.98;text-align:left;color:var(--body)}
+  .sld.k-secondcut .d-main p + p{margin-top:15px}
+  .sld.k-secondcut .d-side{padding-top:13px;border-top:2px solid var(--accent)}
+  .sld.k-secondcut .d-side p{font-size:10.4px;line-height:1.85;letter-spacing:.005em;color:var(--muted)}
+  .sld.k-secondcut .d-note{
+    margin-top:22px;padding-top:12px;border-top:1px dashed var(--rule);
+    font-size:8.8px;line-height:1.8;letter-spacing:.1em;color:var(--muted);
+  }
+  .sld.k-secondcut .d-pull{
+    margin:30px 0 0;padding:22px 0;border-left:0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);
+    font-size:22px;line-height:1.62;letter-spacing:-.01em;
+  }
+  .sld.k-secondcut .d-points{border-top:2px solid var(--ink);gap:26px}
+  .sld.k-secondcut .d-points b{font-size:16.5px;font-weight:500}
+  .sld.k-secondcut .d-read{border-top:1px dashed var(--rule);font-size:12.8px}
+  /* 事实条：虚线分隔，像田间记录表的行 */
+  .sld.k-secondcut .d-facts{margin-top:30px;border-top:2px solid var(--ink)}
+  .sld.k-secondcut .d-fact{grid-template-columns:178px 1fr;padding:12px 0;border-bottom:1px dashed var(--rule)}
+  .sld.k-secondcut .d-fact b{font-size:15.2px;font-weight:500}
+  /* 目录 / 清单：一律虚线 */
+  .sld.k-secondcut .d-toc{margin-top:28px}
+  .sld.k-secondcut .d-toc li{grid-template-columns:46px minmax(0,1fr) 206px;padding:21px 0;border-top:1px dashed var(--rule)}
+  .sld.k-secondcut .d-toc .t{font-size:20.5px;font-weight:500}
+  .sld.k-secondcut .d-toc-figs{border-top:1px solid var(--ink)}
+  .sld.k-secondcut .d-list{margin-top:26px}
+  .sld.k-secondcut .d-list li{grid-template-columns:42px 1fr;padding:18px 0;border-top:1px dashed var(--rule)}
+  /* 表格：表头压一条苔绿底色，偶数行极浅底纹 */
+  .sld.k-secondcut .d-table{margin-top:26px}
+  .sld.k-secondcut .d-table th{
+    padding:10px 12px;background:rgba(63,95,52,.1);border-bottom:1px solid var(--accent);color:var(--accent);
+  }
+  .sld.k-secondcut .d-table th:first-child{padding-left:0;background:transparent}
+  .sld.k-secondcut .d-table td{padding:11px 12px;border-bottom:1px solid var(--rule);font-size:13.2px}
+  .sld.k-secondcut .d-table td:first-child{padding-left:0}
+  .sld.k-secondcut .d-table tbody tr:nth-child(even) td{background:rgba(30,36,24,.035)}
+  .sld.k-secondcut .d-table tbody tr:nth-child(even) td:first-child{background:transparent}
+  /* 封面：图版留白 8px 白边，四栏事实压在双线下面 */
+  .sld.k-secondcut .d-cover{padding:112px 104px 94px 152px}
+  .sld.k-secondcut .d-cover-top{border-bottom:0;padding-bottom:0}
+  .sld.k-secondcut .d-cover-top span:first-child{color:var(--ink);letter-spacing:.2em}
+  .sld.k-secondcut .d-cover-top span:last-child{color:var(--accent);letter-spacing:.2em}
+  .sld.k-secondcut .d-cover .d-h1{margin-top:36px}
+  .sld.k-secondcut .d-cover .d-lead{max-width:604px;font-size:15.6px;line-height:1.9}
+  .sld.k-secondcut .d-cover-img{margin:34px 0 24px;padding:8px;border:1px solid var(--ink);background:#FFFDF6}
+  .sld.k-secondcut .d-cover-foot{border-top:2px solid var(--ink);padding-top:15px;gap:26px}
+  .sld.k-secondcut .d-cover-foot b{font-size:12.4px;font-weight:600}
+  /* 章节页 / 图版页 / 尾声 */
+  .sld.k-secondcut .d-sec-txt{padding:112px 104px 0 152px}
+  .sld.k-secondcut .d-sec-num{font-size:11px;letter-spacing:.24em;color:var(--accent)}
+  .sld.k-secondcut .d-sec-t{margin-top:20px;font-size:52px;line-height:1.14;letter-spacing:-.028em;font-weight:500}
+  .sld.k-secondcut .d-sec-lead{max-width:566px;font-size:15.6px;line-height:1.9}
+  .sld.k-secondcut .d-sec-img{margin-top:38px;padding:8px;border:1px solid var(--ink);border-bottom:0;background:#FFFDF6}
+  .sld.k-secondcut .d-fig{padding:104px 104px 94px 152px}
+  .sld.k-secondcut .d-fig-img{padding:8px;border:1px solid var(--ink);background:#FFFDF6}
+  .sld.k-secondcut .d-fig-cap{grid-template-columns:72px 1fr;margin-top:16px;padding-top:12px;border-top:1px solid var(--ink)}
+  .sld.k-secondcut .d-fig-cap p{font-size:12.6px;line-height:1.8}
+  .sld.k-secondcut .d-fig-no{font-size:9px;letter-spacing:.2em;color:var(--accent)}
+  .sld.k-secondcut .d-end-txt{padding:112px 104px 0 152px}
+  .sld.k-secondcut .d-end-t{font-size:46px;line-height:1.2}
+  .sld.k-secondcut .d-end-row{padding:12px 0;border-top:1px dashed var(--rule)}
+  .sld.k-secondcut .d-end-img{padding:8px;border:1px solid var(--ink);border-bottom:0;background:#FFFDF6}
   .sld.k-northwind{font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif}
   .sld.k-northwind .st{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--paper);color:var(--ink)}
   .sld.k-northwind .st-chrome{
