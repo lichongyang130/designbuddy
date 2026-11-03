@@ -20,6 +20,7 @@ import { ModelRouter } from '../core/router.ts'
 import type { SessionService } from '../core/session.ts'
 import type { UsageService } from '../core/usage.ts'
 import type { Library } from '../core/library.ts'
+import type { CustomModelInput, ModelCatalog } from '../core/models.ts'
 import { estimateTokens } from '../core/usage.ts'
 import { errorMessage } from '../core/tools.ts'
 import type { ToolRegistry } from '../core/tools.ts'
@@ -148,6 +149,18 @@ export class HostServer {
           policies: router.candidateKinds(),
           attempts: router.attempts,
         }
+      }
+      case 'models.list': {
+        const catalog = this.#ctx.require<ModelCatalog>('models')
+        return { file: catalog.displayPath(), error: catalog.lastError(), models: catalog.list() }
+      }
+      case 'models.save': {
+        const catalog = this.#ctx.require<ModelCatalog>('models')
+        return catalog.save((params.model ?? params) as CustomModelInput)
+      }
+      case 'models.remove': {
+        const catalog = this.#ctx.require<ModelCatalog>('models')
+        return { removed: catalog.remove(String(params.id ?? '')) }
       }
       case 'library.cases': {
         const library = this.#ctx.require<Library>('library')

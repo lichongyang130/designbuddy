@@ -32,6 +32,9 @@ export type ClientMethod =
   | 'memory.save'
   | 'session.export'
   | 'router.status'
+  | 'models.list'
+  | 'models.save'
+  | 'models.remove'
   | 'office.run'
 
 export interface ClientFrame {

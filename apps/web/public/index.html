@@ -4971,6 +4971,8 @@
   .sp-item.on{background:var(--accent-soft);border-color:var(--accent-line);font-weight:500;color:var(--accent)}
   .sp-item svg{flex:none;color:var(--fg-muted)}
   .sp-body{flex:1;overflow:auto;padding:22px 28px 40px;background:var(--surface)}
+  .sp-body.sp-canvas{background:var(--surface-2)}
+  #pageCustom.sp-own-head > .sp-panelhead{display:none}
   .sp-sec{font-size:13px;color:var(--fg-subtle);margin:0 0 10px}
   .sp-card{border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;margin-bottom:22px}
   .sp-row{display:flex;align-items:flex-start;gap:18px;padding:16px}
@@ -5090,6 +5092,55 @@
   .pf-logout:hover{background:var(--surface-2)}
   .pf-logout.confirm{color:#D14343;border-color:#F0C9C9;background:#FFF6F6}
   html[data-theme="dark"] .pf-logout.confirm{color:#FF9B9B;border-color:#5A2E2E;background:#2A1B1B}
+  /* ── 模型：自定义模型清单 ───────────────────── */
+  .md-head{display:flex;align-items:flex-start;gap:16px;padding:2px 2px 12px}
+  .md-head .md-t{font-size:14px;font-weight:600;color:var(--fg);line-height:1.4}
+  .md-head .md-d{font-size:13px;color:var(--fg-subtle);margin-top:5px;line-height:1.5}
+  .md-head code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;
+    color:var(--fg-muted);background:var(--surface-2);border-radius:4px;padding:1px 5px}
+  .md-add{margin-left:auto;flex:none;height:30px;padding:0 14px;border:1px solid var(--line-strong);
+    border-radius:8px;background:var(--surface);font-size:13px;color:var(--fg);
+    transition:background var(--d1) var(--ease)}
+  .md-add:hover{background:var(--surface-2)}
+  .md-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;
+    box-shadow:0 1px 2px rgba(16,24,40,.04)}
+  .md-item{display:flex;align-items:center;gap:10px;padding:0 14px;height:52px}
+  .md-item:hover{background:var(--surface-2)}
+  .md-dia{width:16px;height:16px;flex:none;color:var(--fg-muted);display:grid;place-items:center}
+  .md-dia svg{width:15px;height:15px}
+  .md-nm{font-size:14px;color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:60%}
+  .md-tag{font-size:12px;color:var(--fg-subtle);margin-left:2px;flex:none}
+  .md-tools{margin-left:auto;display:flex;align-items:center;gap:2px;flex:none}
+  .md-ico{width:28px;height:28px;display:grid;place-items:center;border-radius:7px;color:var(--fg-muted);
+    transition:background var(--d1) var(--ease),color var(--d1) var(--ease)}
+  .md-ico:hover{background:var(--surface-3);color:var(--fg)}
+  .md-ico.danger{color:#D14343;background:#FFF1F1}
+  html[data-theme="dark"] .md-ico.danger{color:#FF9B9B;background:#3A2020}
+  .md-ico svg{width:15px;height:15px}
+  .md-empty{padding:22px 16px;font-size:13px;color:var(--fg-subtle);text-align:center}
+  .md-form{background:var(--surface);border:1px solid var(--line-strong);border-radius:12px;padding:14px;
+    margin-bottom:12px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .md-field{display:flex;flex-direction:column;gap:5px;min-width:0}
+  .md-field.w{grid-column:span 2}
+  .md-field label{font-size:11.5px;color:var(--fg-subtle);letter-spacing:.02em}
+  .md-field input{height:32px;border:1px solid var(--line-strong);border-radius:7px;padding:0 9px;
+    font-size:13px;color:var(--fg);background:var(--surface);outline:0;min-width:0}
+  .md-field input:focus{border-color:var(--fg-subtle)}
+  .md-form-foot{grid-column:span 2;display:flex;align-items:center;gap:8px;margin-top:2px}
+  .md-btn{height:30px;padding:0 14px;border-radius:8px;font-size:13px;border:1px solid var(--line-strong);
+    background:var(--surface);color:var(--fg)}
+  .md-btn.primary{background:var(--fg);color:var(--surface);border-color:var(--fg)}
+  .md-btn.primary:hover{opacity:.9}
+  .md-btn.ghost{border-color:transparent;background:transparent;color:var(--fg-muted)}
+  .md-btn.ghost:hover{background:var(--surface-2);color:var(--fg)}
+  .md-note{font-size:12px;color:var(--fg-subtle);margin-left:auto}
+  .md-more{margin-top:16px;border-top:1px solid var(--line);padding-top:4px}
+  .md-more > summary{cursor:pointer;list-style:none;font-size:13px;color:var(--fg-muted);
+    padding:10px 2px;display:flex;align-items:center;gap:6px}
+  .md-more > summary::-webkit-details-marker{display:none}
+  .md-more > summary:hover{color:var(--fg)}
+  .md-more > summary svg{transition:transform var(--d1) var(--ease)}
+  .md-more[open] > summary svg{transform:rotate(90deg)}
   .pf-hint{font-size:12.5px;line-height:1.6;color:var(--fg-subtle);padding:0 2px}
   .pf-guest{display:flex;align-items:center;gap:14px;padding:15px 16px;background:var(--surface);
     border:1px dashed var(--line-strong);border-radius:14px}
@@ -9017,6 +9068,10 @@ function selectSettingsPanel(id) {
   $('pageGeneral').hidden = id !== 'general'
   $('pageApps').hidden = id !== 'apps'
   $('pageCustom').hidden = !custom
+  const body = document.querySelector('.sp-body')
+  const ownHead = id === 'profile' || id === 'models'
+  if (body) body.classList.toggle('sp-canvas', ownHead)
+  $('pageCustom').classList.toggle('sp-own-head', ownHead)
   if (custom) void openPanel(id)
   if (id === 'apps') paintSettingsApps()
 }
@@ -9115,7 +9170,7 @@ async function openPanel(id) {
   box.innerHTML = ''
   const meta = SETTINGS_NAV.flatMap((group) => group.items).find((entry) => entry.id === id)
   const head = document.createElement('div')
-  head.className = 'sp-sec'
+  head.className = 'sp-sec sp-panelhead'
   head.textContent = meta ? meta.name : id
   box.appendChild(head)
   const builder = PANEL_BUILDERS[id]
@@ -9464,21 +9519,160 @@ async function buildAgentsPanel(box) {
   box.append(spSection('智能体'), card)
 }
 
+/* ── 模型：自定义模型清单（真实落到 models.json） ─────────
+ * 列表、增删改都走 models.list / models.save / models.remove 三个 RPC，
+ * 文件写不进去时会直接把错误显示在面板上，不假装保存成功。
+ */
+const MD_DIAMOND = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2 20.8 12 12 20.8 3.2 12z"/></svg>'
+const MD_PEN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4l10-10a2.1 2.1 0 0 0-3-3L5 17z"/><path d="M13.5 6.5 17.5 10.5"/></svg>'
+const MD_LINK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 14.5 14.5 9.5"/><path d="M11.8 6.6l1.6-1.6a3.7 3.7 0 0 1 5.2 5.2l-1.6 1.6"/><path d="M12.2 17.4l-1.6 1.6a3.7 3.7 0 0 1-5.2-5.2l1.6-1.6"/></svg>'
+const MD_TRASH = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 6.5h15"/><path d="M9.5 6.5V4.8h5v1.7"/><path d="M6.5 6.5l.9 12.2a1.6 1.6 0 0 0 1.6 1.5h6a1.6 1.6 0 0 0 1.6-1.5l.9-12.2"/><path d="M10.4 10.5v6M13.6 10.5v6"/></svg>'
+const MD_CHEV = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5.5 16 12l-7 6.5"/></svg>'
+
+function mdNode(tag, cls, text) {
+  const el = document.createElement(tag)
+  if (cls) el.className = cls
+  if (text != null) el.textContent = text
+  return el
+}
+
+function mdCopy(text) {
+  const done = () => toast('已复制模型名 ' + text, 'ok')
+  const fallback = () => {
+    try {
+      const area = document.createElement('textarea')
+      area.value = text
+      area.style.cssText = 'position:fixed;left:-9999px;top:0'
+      document.body.appendChild(area)
+      area.select()
+      const ok = document.execCommand('copy')
+      area.remove()
+      if (ok) done()
+      else toast('复制被浏览器拦住了，模型名是 ' + text, 'err')
+    } catch (error) { toast('复制失败：' + error.message, 'err') }
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done).catch(fallback)
+  } else fallback()
+}
+
 async function buildModelsPanel(box) {
-  const status = await rpc('router.status')
+  const catalog = await rpc('models.list').catch((error) => ({ file: '—', models: [], error: error.message }))
+  const adapters = await rpc('router.status').catch(() => ({ adapters: [], policies: [], attempts: [] }))
+  const served = new Set(adapters.adapters.flatMap((adapter) => adapter.models))
+
+  const head = mdNode('div', 'md-head')
+  const info = mdNode('div')
+  info.append(
+    mdNode('div', 'md-t', '自定义模型'),
+    (() => {
+      const d = mdNode('div', 'md-d')
+      d.append(document.createTextNode('模型添加后会自动写入到本地 '))
+      d.append(mdNode('code', null, catalog.file || '~/.designbuddy/models.json'))
+      d.append(document.createTextNode(' 文件中。'))
+      return d
+    })(),
+  )
+  const addBtn = mdNode('button', 'md-add', '添加模型')
+  addBtn.type = 'button'
+  head.append(info, addBtn)
+  box.append(head)
+
+  if (catalog.error) {
+    const warn = mdNode('div', 'sp-soon', 'models.json 读取失败：' + catalog.error)
+    box.append(warn)
+  }
+
+  const card = mdNode('div', 'md-card')
+  box.append(card)
+
+  const rerender = async (editId) => {
+    box.innerHTML = ''
+    await buildModelsPanel(box)
+    if (editId) {
+      const target = [...box.querySelectorAll('.md-item')].find((el) => el.dataset.id === editId)
+      if (target) target.querySelector('.md-ico.pen').click()
+    }
+  }
+
+  addBtn.onclick = () => openModelForm(box, null, rerender)
+
+  const models = Array.isArray(catalog.models) ? catalog.models : []
+  if (models.length === 0) {
+    card.append(mdNode('div', 'md-empty', '还没有自定义模型。点右上角「添加模型」，写进 models.json 后就会出现在这里。'))
+  }
+
+  for (const item of models) {
+    const row = mdNode('div', 'md-item')
+    row.dataset.id = item.id
+    const dia = mdNode('div', 'md-dia')
+    dia.innerHTML = MD_DIAMOND
+    const nm = mdNode('span', 'md-nm', item.name)
+    nm.title = item.model + ' · ' + (item.provider || '自建') + (served.has(item.model) ? ' · 当前有适配器提供' : '')
+    row.append(dia, nm, mdNode('span', 'md-tag', '自定义'))
+
+    const tools = mdNode('div', 'md-tools')
+
+    const pen = mdNode('button', 'md-ico pen')
+    pen.type = 'button'; pen.title = '编辑'; pen.innerHTML = MD_PEN
+    pen.onclick = () => openModelForm(box, item, rerender)
+
+    const link = mdNode('button', 'md-ico')
+    link.type = 'button'; link.title = '复制模型名（发给别人或贴进配置）'; link.innerHTML = MD_LINK
+    link.onclick = () => mdCopy(item.model)
+
+    const trash = mdNode('button', 'md-ico')
+    trash.type = 'button'; trash.title = '删除'; trash.innerHTML = MD_TRASH
+    let armed = 0
+    trash.onclick = async () => {
+      if (!armed) {
+        armed = window.setTimeout(() => { armed = 0; trash.classList.remove('danger'); trash.title = '删除' }, 4000)
+        trash.classList.add('danger')
+        trash.title = '再点一次删除'
+        toast('再点一次删除「' + item.name + '」', 'ok')
+        return
+      }
+      window.clearTimeout(armed)
+      try {
+        const reply = await rpc('models.remove', { id: item.id })
+        if (!reply || !reply.removed) toast('这条已经不在文件里了', 'err')
+        else toast('已删除「' + item.name + '」', 'ok')
+        await rerender(null)
+      } catch (error) { toast('删除失败：' + error.message, 'err') }
+    }
+
+    tools.append(pen, link, trash)
+    row.append(tools)
+    card.append(row)
+  }
+
+  /* 运行状态：适配器 / 路由策略 / 最近调用，折叠起来，别抢自定义模型的视线 */
+  const more = document.createElement('details')
+  more.className = 'md-more'
+  const summary = document.createElement('summary')
+  summary.innerHTML = MD_CHEV
+  summary.append(document.createTextNode('运行状态 · 适配器与最近调用'))
+  more.append(summary)
+  const runtime = mdNode('div')
+  more.append(runtime)
+  box.append(more)
+  more.addEventListener('toggle', () => { if (more.open && runtime.childElementCount === 0) paintRuntime(runtime, adapters) })
+}
+
+function paintRuntime(host, status) {
   const adapters = spCard()
   if (status.adapters.length === 0) adapters.append(spRow('未注册适配器', '装载 llm 适配器插件后出现'))
   for (const adapter of status.adapters) {
     adapters.append(spRow(adapter.id, '模型：' + adapter.models.join(', '), spValue('当前 ' + state.effort)))
   }
-  box.append(spSection('适配器'), adapters)
+  host.append(spSection('适配器'), adapters)
 
   const policies = spCard()
   if (status.policies.length === 0) policies.append(spRow('无路由策略', null))
   for (const policy of status.policies) {
     policies.append(spRow(policy.kind, '候选链（按顺序回退）', spValue(policy.candidates.join(' → '))))
   }
-  box.append(spSection('路由策略'), policies)
+  host.append(spSection('路由策略'), policies)
 
   const attempts = spCard()
   const recent = status.attempts.slice(-5).reverse()
@@ -9490,7 +9684,61 @@ async function buildModelsPanel(box) {
       spValue(attempt.ms + 'ms'),
     ))
   }
-  box.append(spSection('最近调用'), attempts)
+  host.append(spSection('最近调用'), attempts)
+}
+
+function openModelForm(box, item, rerender) {
+  const existing = box.querySelector('.md-form')
+  if (existing) { existing.remove(); if (!item) return }
+
+  const form = mdNode('div', 'md-form')
+  const field = (label, key, value, cls, placeholder) => {
+    const wrap = mdNode('div', 'md-field' + (cls ? ' ' + cls : ''))
+    const id = 'md-' + key
+    const lab = mdNode('label', null, label); lab.htmlFor = id
+    const input = document.createElement('input')
+    input.id = id; input.value = value || ''; input.placeholder = placeholder || ''
+    input.dataset.key = key
+    wrap.append(lab, input)
+    return wrap
+  }
+
+  form.append(
+    field('展示名', 'name', item ? item.name : '', '', '例如 免费的 kimi'),
+    field('模型名', 'model', item ? item.model : '', '', '例如 free/kimi-k3'),
+    field('供应商', 'provider', item ? item.provider : '', '', '例如 deepseek / 自建'),
+    field('Base URL', 'baseUrl', item ? item.baseUrl : '', '', '留空则跟随 DB_LLM_BASE_URL'),
+    field('密钥环境变量', 'apiKeyEnv', item ? item.apiKeyEnv : '', '', '例如 DEEPSEEK_API_KEY（密钥本身不落盘）'),
+  )
+
+  const foot = mdNode('div', 'md-form-foot')
+  const save = mdNode('button', 'md-btn primary', item ? '保存修改' : '写入 models.json')
+  save.type = 'button'
+  const cancel = mdNode('button', 'md-btn ghost', '取消')
+  cancel.type = 'button'
+  const note = mdNode('span', 'md-note', '')
+  foot.append(save, cancel, note)
+  form.append(foot)
+  box.insertBefore(form, box.querySelector('.md-card'))
+  form.querySelector('input').focus()
+
+  cancel.onclick = () => form.remove()
+  save.onclick = async () => {
+    const payload = Object.assign({}, item ? { id: item.id } : {})
+    for (const input of form.querySelectorAll('input')) payload[input.dataset.key] = input.value.trim()
+    if (!payload.model) { note.textContent = '模型名不能为空'; return }
+    save.disabled = true
+    note.textContent = '写入中…'
+    try {
+      await rpc('models.save', { model: payload })
+      toast(item ? '已保存「' + payload.name + '」' : '已添加「' + (payload.name || payload.model) + '」', 'ok')
+      await rerender(null)
+    } catch (error) {
+      save.disabled = false
+      note.textContent = '写入失败：' + error.message
+      toast('写入失败：' + error.message, 'err')
+    }
+  }
 }
 
 async function buildAssistantPanel(box) {
