@@ -2814,6 +2814,142 @@
   .sld.k-secondcut .d-end-t{font-size:46px;line-height:1.2}
   .sld.k-secondcut .d-end-row{padding:12px 0;border-top:1px dashed var(--rule)}
   .sld.k-secondcut .d-end-img{position:relative;z-index:1;padding:8px;border:1px solid var(--ink);border-bottom:0;background:#FFFDF6}
+  /* ── 文档家族：The Long Inventory（藏品账 · 顶部色带 + 铭牌箱 + 全出血图版） ── */
+  .sld.k-longinventory .sd-img{filter:saturate(.92) contrast(1.04)}
+  /* 每页顶部一条淡紫带：书眉在带子里，像档案馆的页眉条 */
+  .sld.k-longinventory::before{
+    content:"";position:absolute;left:0;right:0;top:0;height:74px;
+    background:rgba(90,46,78,.055);border-bottom:1px solid rgba(90,46,78,.2);
+  }
+  .sld.k-longinventory .d-pad{padding:126px 96px 104px}
+  .sld.k-longinventory .d-run{
+    left:96px;right:96px;top:28px;padding-bottom:0;border-bottom:0;align-items:center;
+    font-size:8.5px;letter-spacing:.2em;color:var(--muted);
+  }
+  .sld.k-longinventory .d-run span:first-child{color:var(--accent)}
+  .sld.k-longinventory .d-run span:last-child{color:var(--ink)}
+  .sld.k-longinventory .sd-folio{left:96px;right:96px;bottom:44px;align-items:center;font-size:8.5px;letter-spacing:.18em}
+  .sld.k-longinventory .sd-folio span:last-child{
+    min-width:34px;padding:4px 6px;text-align:center;
+    border:1px solid rgba(90,46,78,.5);color:var(--accent);background:rgba(90,46,78,.06);letter-spacing:.1em;
+  }
+  /* 眉标做成实底铭牌 */
+  .sld.k-longinventory .d-kicker{
+    display:inline-block;align-self:flex-start;padding:5px 10px 4px;background:var(--accent);color:#F6F3EE;
+    font-size:8.5px;letter-spacing:.2em;
+  }
+  .sld.k-longinventory .d-h1{font-size:70px;line-height:1.05;letter-spacing:-.032em;font-weight:500}
+  .sld.k-longinventory .d-h2{margin:18px 0 0;max-width:660px;font-size:33px;line-height:1.26;letter-spacing:-.022em;font-weight:500}
+  .sld.k-longinventory .d-h3{font-size:16.5px;line-height:1.42;font-weight:600;letter-spacing:-.01em}
+  .sld.k-longinventory .d-lead{max-width:648px;font-size:15.2px;line-height:1.82;color:var(--body)}
+  .sld.k-longinventory .d-lead + .d-lead{margin-top:12px}
+  .sld.k-longinventory .d-lead-sm{font-size:13.4px;line-height:1.8}
+  .sld.k-longinventory .d-cols{grid-template-columns:minmax(0,1fr) 194px;gap:46px;margin-top:22px}
+  .sld.k-longinventory .d-main p{font-size:14.9px;line-height:1.92;color:var(--body);text-align:left}
+  .sld.k-longinventory .d-main p:first-child{font-size:16.4px;line-height:1.8;color:var(--ink)}
+  .sld.k-longinventory .d-main p:first-child::first-letter{font-size:1em}
+  .sld.k-longinventory .d-main p + p{margin-top:14px}
+  /* 边栏做成一张浅紫的记录卡 */
+  .sld.k-longinventory .d-side{padding:15px 16px 17px;background:rgba(90,46,78,.05);border-top:0}
+  .sld.k-longinventory .d-side p{font-size:10.3px;line-height:1.78;color:#4B4340}
+  .sld.k-longinventory .d-side p:first-child::before{
+    content:"";display:block;width:18px;height:2px;background:var(--accent);margin-bottom:11px;
+  }
+  .sld.k-longinventory .d-note{
+    margin-top:auto;padding-top:12px;border-top:1px solid var(--rule);
+    font-size:8.8px;line-height:1.8;letter-spacing:.1em;color:var(--muted);
+  }
+  .sld.k-longinventory .d-pull{
+    margin:28px 0 0;padding:20px 22px;border-left:0;background:rgba(90,46,78,.06);
+    font-size:20px;line-height:1.62;letter-spacing:-.008em;
+  }
+  .sld.k-longinventory .d-points{border-top:2px solid var(--accent);gap:24px;padding-top:14px}
+  .sld.k-longinventory .d-points span{color:var(--accent)}
+  .sld.k-longinventory .d-points b{font-size:16px;font-weight:500}
+  .sld.k-longinventory .d-read{border-top:1px solid var(--rule);font-size:12.8px}
+  .sld.k-longinventory .d-facts{margin-top:26px;border-top:2px solid var(--accent)}
+  .sld.k-longinventory .d-fact{grid-template-columns:176px 1fr;padding:11px 0;border-bottom:1px solid var(--rule)}
+  .sld.k-longinventory .d-fact b{font-size:14.8px;font-weight:500}
+  /* 目录 / 清单：行首一块淡紫编号格 */
+  .sld.k-longinventory .d-toc{margin-top:24px;flex:1;display:flex;flex-direction:column;justify-content:space-between}
+  .sld.k-longinventory .d-toc li{
+    grid-template-columns:74px minmax(0,1fr) 196px;gap:20px;align-items:center;flex:1;
+    padding:18px 0;border-top:1px solid var(--rule);
+  }
+  .sld.k-longinventory .d-toc li:last-child{border-bottom:0}
+  .sld.k-longinventory .d-toc .n{
+    display:grid;place-items:center;width:56px;height:56px;background:rgba(90,46,78,.08);
+    color:var(--accent);font-size:17px;letter-spacing:.02em;
+  }
+  .sld.k-longinventory .d-toc .t{font-size:24px;line-height:1.22;font-weight:500;letter-spacing:-.02em}
+  .sld.k-longinventory .d-toc .d{font-size:10.4px;line-height:1.6;text-align:right;color:var(--muted)}
+  .sld.k-longinventory .d-toc-figs{margin-top:auto;padding-top:14px;border-top:2px solid var(--accent)}
+  .sld.k-longinventory .d-toc-figs li{font-size:10.4px;line-height:1.7}
+  .sld.k-longinventory .d-list{margin-top:24px;flex:1;display:flex;flex-direction:column;justify-content:space-between}
+  .sld.k-longinventory .d-list li{
+    grid-template-columns:56px 1fr;gap:22px;padding:22px 0 18px;flex:1;align-items:start;
+    border-top:1px solid var(--rule);
+  }
+  .sld.k-longinventory .d-list li:last-child{border-bottom:2px solid var(--accent)}
+  .sld.k-longinventory .d-list .n{padding-top:3px;font-size:11.5px;letter-spacing:.08em}
+  .sld.k-longinventory .d-list p{font-size:12.8px;line-height:1.86}
+  /* 表格：紫线表头、细线行，没有斑马纹 */
+  .sld.k-longinventory .d-table{margin-top:24px}
+  .sld.k-longinventory .d-table th{
+    padding:0 10px 9px;border-bottom:1.5px solid var(--accent);color:var(--accent);
+  }
+  .sld.k-longinventory .d-table th:first-child{padding-left:0}
+  .sld.k-longinventory .d-table td{padding:13px 10px;border-bottom:1px solid var(--rule);font-size:13px}
+  .sld.k-longinventory .d-table td:first-child{padding-left:0}
+  .sld.k-longinventory .d-bars{margin-top:auto;padding-top:14px;border-top:1px solid var(--rule)}
+  .sld.k-longinventory .d-bars-head{
+    display:flex;justify-content:space-between;gap:20px;
+    font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);
+  }
+  .sld.k-longinventory .d-brow{
+    display:grid;grid-template-columns:112px 1fr 96px;gap:18px;align-items:center;
+    padding:11px 0;border-bottom:1px solid rgba(217,211,203,.55);
+  }
+  .sld.k-longinventory .d-brow span{font-size:10.2px;letter-spacing:.03em;color:var(--muted)}
+  .sld.k-longinventory .d-btrack{display:flex;flex-direction:column;gap:3px}
+  .sld.k-longinventory .d-btrack i{display:block;height:7px}
+  .sld.k-longinventory .d-btrack i.b1{background:rgba(34,30,28,.2)}
+  .sld.k-longinventory .d-btrack i.b2{background:var(--accent)}
+  .sld.k-longinventory .d-brow b{
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9.6px;letter-spacing:.04em;
+    font-weight:400;text-align:right;color:var(--ink);
+  }
+  .sld.k-longinventory .d-bars + .d-note,
+  .sld.k-longinventory .d-points + .d-note{margin-top:20px;border-top:0}
+  /* 封面 */
+  .sld.k-longinventory .d-cover{padding:126px 96px 92px}
+  .sld.k-longinventory .d-cover-top{border-bottom:0;padding-bottom:0}
+  .sld.k-longinventory .d-cover-top span:first-child{color:var(--accent);letter-spacing:.2em}
+  .sld.k-longinventory .d-cover-top span:last-child{color:var(--muted);letter-spacing:.2em}
+  .sld.k-longinventory .d-cover .d-h1{margin-top:30px}
+  .sld.k-longinventory .d-cover .d-lead{max-width:612px;font-size:14.8px;line-height:1.88}
+  .sld.k-longinventory .d-cover-img{margin:30px 0 22px}
+  .sld.k-longinventory .d-cover-foot{border-top:2px solid var(--accent);padding-top:14px;gap:26px}
+  .sld.k-longinventory .d-cover-foot b{font-size:12.2px;font-weight:600}
+  .sld.k-longinventory .d-cover-foot span{font-size:8px;letter-spacing:.1em;line-height:1.6}
+  /* 章节页 / 图版页：图贴左边出血，说明缩进 */
+  .sld.k-longinventory .d-sec-txt{padding:126px 96px 0}
+  .sld.k-longinventory .d-sec-num{font-size:10.5px;letter-spacing:.24em;color:var(--accent)}
+  .sld.k-longinventory .d-sec-t{margin-top:18px;font-size:50px;line-height:1.14;letter-spacing:-.028em;font-weight:500}
+  .sld.k-longinventory .d-sec-lead{max-width:576px;font-size:15.2px;line-height:1.88}
+  .sld.k-longinventory .d-sec-img{position:relative;z-index:1;margin:34px 96px 0 0}
+  .sld.k-longinventory .d-fig{padding:126px 0 94px}
+  .sld.k-longinventory .d-fig-img{margin-right:96px;position:relative;z-index:1}
+  .sld.k-longinventory .d-fig-cap{
+    grid-template-columns:78px 1fr;gap:18px;margin:16px 96px 0;padding-top:12px;
+    border-top:1.5px solid var(--accent);
+  }
+  .sld.k-longinventory .d-fig-cap p{font-size:12.6px;line-height:1.78}
+  .sld.k-longinventory .d-fig-no{color:var(--accent);font-size:9px;letter-spacing:.2em}
+  .sld.k-longinventory .d-end-txt{padding:126px 96px 0}
+  .sld.k-longinventory .d-end-t{font-size:44px;line-height:1.24}
+  .sld.k-longinventory .d-end-row{padding:11px 0;border-top:1px solid var(--rule)}
+  .sld.k-longinventory .d-end-img{position:relative;z-index:1}
   .sld.k-northwind{font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif}
   .sld.k-northwind .st{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--paper);color:var(--ink)}
   .sld.k-northwind .st-chrome{
