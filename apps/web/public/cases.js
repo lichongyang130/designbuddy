@@ -6771,6 +6771,124 @@ export const CASE_DECKS = [
       },
     ],
   },
+  {
+    id: 'northwind',
+    name: 'Northwind Coffee',
+    en: 'Northwind Coffee Co. · a six-screen shop',
+    by: 'DesignBuddy',
+    cat: '网站复刻',
+    fmt: 'site',
+    ratio: '1440×900 · 桌面',
+    date: 20261103,
+    kind: 'Website replica',
+    category: '数字产品',
+    tags: ['website', 'ecommerce', 'coffee', 'editorial'],
+    desc: 'A small roastery’s shop, rebuilt screen by screen on a 1440 × 900 desktop canvas: browser chrome stays pinned at the top, the navigation is shared by every page, and each screen does one job — sell the shop, explain the roast, or take the subscription. Three photographs carry the whole site; everything else is type, rules and one terracotta accent.',
+    bestFor: ['Direct-to-consumer storefronts', 'Small-brand site systems', 'Product and story page patterns', 'Desktop-first design reviews'],
+    visual: 'Warm paper #F6F3EA with a slightly darker chrome bar #E7E2D6, near-black ink #1C1812, terracotta #B4562B reserved for kickers, prices and the active link, deep green #2F4B3A as the second colour on the phone screen. Hairlines instead of boxes; the only shadows are under photographs and the phone, which is what keeps a 1440 canvas feeling light. The nav, the 46px browser bar and the 26px information strip are identical on every screen, so the six pages read as one site rather than six slides.',
+    how: 'Six screens at 1440 × 900: a hero with the promise and two buttons, the shop grid with three products and stock states, an about page set in two columns with three numbers under it, a three-tier subscription page with the middle tier reversed out, a journal index, and a mobile breakpoint shown inside a 330 × 660 phone on the same canvas. Every screen keeps the browser chrome and the footer strip; nothing scrolls.',
+    styles: ['#F6F3EA', '#B4562B', '#2F4B3A'],
+    colorway: 'Paper · Terracotta · Bottle green',
+    folio: false,
+    footLeft: 'Northwind Coffee Co. · 2026',
+    paper: '#F6F3EA',
+    ink: '#1C1812',
+    accent: '#B4562B',
+    second: '#2F4B3A',
+    muted: '#6A6252',
+    rule: '#D8D2C2',
+    body: '#3B3527',
+    display: 'sans',
+    slides: [
+      {
+        k: 'st-page', label: '首页', kind: 'home', path: '/',
+        kicker: 'Single origin · roasted Tuesdays',
+        title: 'Coffee that tastes like somewhere.',
+        lead: 'We roast 640 kilos a month on a 12-kilo drum in the back of the shop, twice a week, and we print the date on every bag. Nothing older than twelve days leaves the counter.',
+        cta: 'Shop the roast',
+        cta2: 'Subscribe & save 15%',
+        img: '01',
+        tag: 'Roastery · 06:20',
+        strip: ['Roasted in-house, Tue & Fri', 'Free shipping over $40', 'Whole bean or ground to order', 'Est. 2019 · Northwind Coffee Co.'],
+      },
+      {
+        k: 'st-page', label: '商店', kind: 'shop', path: '/shop', nav: 'Coffee',
+        title: 'This week on the bench',
+        note: '3 of 12 · updated Monday',
+        products: [
+          { img: '02', name: 'Kestrel', desc: 'Washed · Ethiopia · blueberry, jasmine', price: ['$19', 'In stock'] },
+          { img: '03', name: 'Harbour Mug', desc: 'Stoneware · 320 ml · glazed twice', price: ['$28', 'Pair it'] },
+          { promo: ['Subscribers only', 'Every Tuesday, on your doorstep.', 'From $14 a month', '15%', 'Free mug after six months'],
+            name: 'Northwind Blend', desc: 'Natural · Brazil + Colombia · cocoa', price: ['$17', 'Bestseller'] },
+        ],
+        strip: ['3 origins on the bench this week', 'Roast date printed on every bag', 'Grind to order, no extra charge', 'Returns within 14 days'],
+      },
+      {
+        k: 'st-page', label: '关于', kind: 'story', path: '/our-story', nav: 'Our story',
+        title: 'One roaster, two mornings a week.',
+        paras: [
+          'Northwind started in a garage on the north side of the harbour in 2019, with a 1-kilo sample roaster and a borrowed scale. The first batch was 400 grams and most of it went to neighbours who had agreed, in advance, to be polite about it.',
+          'Seven years later the drum is twelve kilos and the garage is a shop with a bench, four stools and a window that faces the water. The roasting still happens twice a week, on Tuesday and Friday mornings, because a smaller drum and a slower week make it possible to taste every batch before it is bagged.',
+          'We buy from four producers, all of whom we have visited, and we pay above the posted price because the alternative is a market that rewards volume over flavour. Two of the four have been with us since the garage.',
+          'The blend is deliberately unglamorous: a natural Brazil for body, a washed Colombia for the finish. It is the coffee we drink, and the one we can roast consistently on a machine this size, which matters more than a score sheet.',
+        ],
+        facts: [['2019', 'first roast · 400 g'], ['640 kg', 'roasted last month'], ['4 min', 'grinder to cup']],
+        quote: 'A roast date is the only claim on a bag that a customer can check for themselves.',
+        quoteBy: 'Marta Oyelaran · head roaster',
+        strip: ['Four producers, all visited', 'Paid above posted price', 'Twelve-day freshness window', 'Northwind Coffee Co. · since 2019'],
+      },
+      {
+        k: 'st-page', label: '订阅', kind: 'plans', path: '/subscribe', nav: 'Subscribe',
+        title: 'A bag on your doorstep',
+        plans: [
+          ['Taster', '$14', '/ month', ['250 g, one origin', 'Roasts on the 1st', 'Pause any month', 'Brew notes by email', 'Ground or whole bean'],
+            false, 'For one cup a day, and a person who likes to finish a bag before it stales.'],
+          ['Regular', '$26', '/ month', ['500 g, two origins', 'Ships twice a month', 'Free mug after six months', 'Cancel in one click', 'First pick of limited lots'],
+            true, 'The one most people end up on. Two bags a month, alternating producers.'],
+          ['Café', '$88', '/ month', ['2 kg, rotating menu', 'Invoiced monthly', 'Roast profiles included', 'A person on the phone', 'Wholesale pricing'],
+            false, 'For the shop down the road, the office, or a household with a very good machine.'],
+        ],
+        foot: 'All plans: free shipping in the city, roast date printed on the bag, and a pause button that works.',
+        strip: ['Save 15% against one-off bags', 'Skip or pause any time', 'Ground to your brewer', 'Ships from the roastery'],
+      },
+      {
+        k: 'st-page', label: '日志', kind: 'journal', path: '/journal', nav: 'Journal',
+        title: 'Notes from the bench',
+        posts: [
+          ['12 Oct 2026', 'Why we roast on Tuesdays', 'The short version: a twelve-kilo drum needs a day of attention, and attention is easier to book than to find.'],
+          ['28 Sep 2026', 'The case against very dark', 'Past a certain point you are tasting the roaster, not the farm. Here is where we stop, and why the line moves.'],
+          ['09 Sep 2026', 'A grinder that outlives you', 'We have replaced three grinders and kept two. What actually failed, and what we would buy again.'],
+          ['21 Aug 2026', 'Twelve days, and then what', 'What actually happens to a bag after the roast date, and the point at which we stop selling it.'],
+        ],
+        mostKicker: 'Most read',
+        most: [['01', 'Roast dates, explained'], ['02', 'Water, and why yours is wrong'], ['03', 'What 250 g actually means'],
+          ['04', 'Four producers, four reasons'], ['05', 'Grind size, in one page'],
+          ['06', 'The Tuesday problem'], ['07', 'Notes on taking notes']],
+        mostNote: 'The journal is written by whoever was on the drum that morning, published every other Tuesday, and never edited by anyone in marketing.',
+        strip: ['New note every other week', 'No sponsored posts', 'Written by the roasters', 'Archive back to 2019'],
+      },
+      {
+        k: 'st-page', label: '手机视角', kind: 'mobile', path: '/m',
+        title: 'Northwind, in your pocket',
+        lead: 'The same shop at 390 points wide: one photograph, one promise, one button, and the nav folded into a single line.',
+        cta: 'Shop this week',
+        img: '02',
+        noteTitle: 'One breakpoint, not five.',
+        paras: [
+          'Below 720 points the hero drops to a single column, the shop grid stacks to full-width cards, and the journal index moves above the fold.',
+        ],
+        noteRows: [
+          ['Layout', 'Two-column hero becomes one. Shop grid 3 → 1.'],
+          ['Nav', 'Five links fold into one line; cart becomes an icon.'],
+          ['Type', 'H1 70 → 38 px. Lead stays 16 px, unhyphenated.'],
+          ['Colour', 'Same paper and terracotta; ink lightens one step.'],
+          ['Weight', 'One photograph per screen, lazy-loaded below the fold.'],
+        ],
+        swatchNote: 'Five colours, unchanged from 1440 to 390. The phone is the same site, not a second design.',
+        strip: ['Breakpoint at 720 pt', 'Single-column shop', 'Same five colours', 'Tested on 390 × 844'],
+      },
+    ],
+  },
 ]
 
 /* ── 渲染 ─────────────────────────────────────────────
@@ -6942,6 +7060,100 @@ export function slideInner(deck, s, index) {
         '<div class="d-end-img">' + imgTag(deck, s.img) + '</div>' +
         '</div>'
       )
+    case 'st-page': {
+      const NAV = ['Coffee', 'Subscribe', 'Our story', 'Journal', 'Visit']
+      const nav = '<div class="st-nav"><div class="st-logo">NORTHWIND<i style="color:var(--accent)">.</i></div>' +
+        '<div class="st-links">' + NAV.map((t) => (t === s.nav ? '<b>' + esc(t) + '</b>' : '<span>' + esc(t) + '</span>')).join('') + '</div>' +
+        '<div class="st-cart">Cart · ' + esc(s.cart || '2') + '</div></div>'
+      const chrome = '<div class="st-chrome"><div class="st-dots"><i></i><i></i><i></i></div>' +
+        '<div class="st-url">northwind.coffee<b>' + esc(s.path || '/') + '</b></div><div style="width:52px"></div></div>'
+      const strip = (s.strip || []).length
+        ? '<div class="st-strip">' + s.strip.map((x) => '<span>' + esc(x) + '</span>').join('') + '</div>'
+        : ''
+      let body = ''
+      if (s.kind === 'home') {
+        body = nav +
+          '<div class="st-hero">' +
+          '<div><div class="st-kick">' + esc(s.kicker) + '</div><h1 class="st-h1">' + esc(s.title) + '</h1>' +
+          '<p class="st-lead">' + esc(s.lead) + '</p>' +
+          '<div class="st-cta"><span class="st-btn">' + esc(s.cta || 'Shop the roast') + '</span>' +
+          '<span class="st-btn ghost">' + esc(s.cta2 || 'Subscribe & save 15%') + '</span></div></div>' +
+          '<div class="st-shot">' + imgTag(deck, s.img) + '<div class="st-tag">' + esc(s.tag || '') + '</div></div>' +
+          '</div>' + strip
+      } else if (s.kind === 'shop') {
+        body = nav +
+          '<div class="st-shop"><div class="st-shophead"><h2 class="st-h2">' + esc(s.title) + '</h2>' +
+          '<span style="font-size:13px;color:#6A6252">' + esc(s.note || '') + '</span></div>' +
+          '<div class="st-grid">' + (s.products || []).map((p) => {
+            const top = p.promo
+              ? '<div class="st-promo"><div class="k">' + esc(p.promo[0]) + '</div>' +
+                (p.promo[3] ? '<div class="big">' + esc(p.promo[3]) + '</div>' : '') +
+                (p.promo[4] ? '<div class="s">' + esc(p.promo[4]) + '</div>' : '') +
+                '<div class="t">' + esc(p.promo[1]) + '</div><div class="p">' + esc(p.promo[2]) + '</div></div>'
+              : imgTag(deck, p.img)
+            return '<div class="st-card">' + top + '<div class="st-cardinfo"><b>' + esc(p.name) + '</b>' +
+              '<span>' + esc(p.desc) + '</span><div class="st-price"><span>' + esc(p.price[0]) + '</span>' +
+              '<i>' + esc(p.price[1]) + '</i></div></div></div>'
+          }).join('') + '</div></div>' + strip
+      } else if (s.kind === 'story') {
+        body = nav +
+          '<div class="st-story"><div><h2 class="st-h2">' + esc(s.title) + '</h2>' +
+          '<div class="st-cols">' + (s.paras || []).map((x) => '<p>' + esc(x) + '</p>').join('') + '</div>' +
+          '<div class="st-facts">' + (s.facts || []).map(([k, v]) =>
+            '<div class="st-fact"><b>' + esc(k) + '</b><span>' + esc(v) + '</span></div>').join('') + '</div></div>' +
+          (s.img
+            ? '<div class="st-shot" style="height:560px">' + imgTag(deck, s.img) + '<div class="st-tag">' + esc(s.tag || '') + '</div></div>'
+            : '<div class="st-quote"><div class="st-qmark">“</div>' +
+              '<div><div class="st-kick" style="margin:0 0 14px">' + esc(s.quoteKicker || 'From the roastery') + '</div>' +
+              '<div class="st-quote-t">' + esc(s.quote || '') + '</div>' +
+              '<div class="st-quote-by" style="margin-top:18px">' + esc(s.quoteBy || '') + '</div></div></div>') +
+          '</div>' + strip
+      } else if (s.kind === 'plans') {
+        body = nav +
+          '<div style="padding:4px 56px 0"><h2 class="st-h2">' + esc(s.title) + '</h2></div>' +
+          '<div class="st-plans" style="margin-top:22px">' + (s.plans || []).map(([name, price, per, feats, hi, note]) =>
+            '<div class="st-plan' + (hi ? ' hi' : '') + '"><h3>' + esc(name) + '</h3>' +
+            '<div class="p">' + esc(price) + '<i>' + esc(per) + '</i></div>' +
+            (note ? '<div class="d">' + esc(note) + '</div>' : '') +
+            '<ul>' + (feats || []).map((f) => '<li>' + esc(f) + '</li>').join('') + '</ul>' +
+            '<span class="st-btn">' + esc(hi ? 'Start with this' : 'Choose') + '</span></div>').join('') + '</div>' +
+          (s.foot ? '<div class="st-planfoot">' + esc(s.foot) + '</div>' : '') + strip
+      } else if (s.kind === 'journal') {
+        body = nav +
+          '<div class="st-story" style="grid-template-columns:1fr 420px"><div>' +
+          '<h2 class="st-h2">' + esc(s.title) + '</h2>' +
+          '<div style="margin-top:26px">' + (s.posts || []).map(([date, head, dek]) =>
+            '<div style="padding:20px 0;border-top:1px solid rgba(28,24,18,.14)">' +
+            '<div style="font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:#6A6252">' + esc(date) + '</div>' +
+            '<div style="margin-top:8px;font-size:21px;letter-spacing:-.02em">' + esc(head) + '</div>' +
+            '<p style="margin:8px 0 0;font-size:13.5px;line-height:1.7;color:#5B5344">' + esc(dek) + '</p></div>').join('') +
+          '</div></div>' +
+          (s.img
+            ? '<div class="st-shot" style="height:520px">' + imgTag(deck, s.img) + '<div class="st-tag">' + esc(s.tag || '') + '</div></div>'
+            : '<div class="st-most"><div class="st-kick" style="margin:0 0 14px">' + esc(s.mostKicker || 'Most read') + '</div>' +
+              ((s.most || []).map(([n, t]) => '<div class="st-mostrow"><b>' + esc(n) + '</b><span>' + esc(t) + '</span></div>').join('')) +
+              '<div class="st-mostnote">' + esc(s.mostNote || '') + '</div>' +
+              '</div>') +
+          '</div>' + strip
+      } else if (s.kind === 'mobile') {
+        body = '<div class="st-mobile">' +
+          '<div class="st-phone"><div style="height:32px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font-size:11px;color:#6A6252"><span>9:41</span><span>▮▮▮</span></div>' +
+          '<div class="st-phone-nav"><span class="l">NORTHWIND<i>.</i></span><span class="m">☰</span></div>' +
+          imgTag(deck, s.img) +
+          '<div class="st-phone-in"><b>' + esc(s.title) + '</b><span>' + esc(s.lead) + '</span>' +
+          '<div class="st-btn" style="margin-top:16px;justify-content:center">' + esc(s.cta || 'Shop') + '</div></div>' +
+          '<div class="st-phone-foot"><span>Shop</span><span>Subscribe</span><span>Journal</span></div></div>' +
+          '<div class="st-note"><h3>' + esc(s.noteTitle || '') + '</h3>' +
+          (s.paras || []).map((x) => '<p style="margin:0 0 12px;font-size:13px;line-height:1.72;color:#5B5344">' + esc(x) + '</p>').join('') +
+          '<div class="st-note-list">' + (s.noteRows || []).map(([k, v]) =>
+            '<div class="st-note-row"><b>' + esc(k) + '</b><span>' + esc(v) + '</span></div>').join('') + '</div>' +
+          '<div class="st-swatches"><i style="background:#F6F3EA"></i><i style="background:#1C1812"></i>' +
+          '<i style="background:#B4562B"></i><i style="background:#2F4B3A"></i><i style="background:#D8D2C2"></i></div>' +
+          (s.swatchNote ? '<div class="st-swnote">' + esc(s.swatchNote) + '</div>' : '') +
+          '</div></div>' + strip
+      }
+      return '<div class="st">' + chrome + '<div class="st-body">' + body + '</div></div>'
+    }
     case 'pt-poster':
       return (
         '<div class="pt ' + (s.dark ? 'dark' : 'light') + (s.ruled ? ' ruled' : '') + (s.half ? ' half' : '') + '">' +
