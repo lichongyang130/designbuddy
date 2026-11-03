@@ -2370,6 +2370,111 @@
   .sld.k-index .d-end-img{flex:1;min-height:0;margin:26px 92px 84px 128px;border:1px solid var(--ink);box-shadow:6px 6px 0 rgba(24,32,25,.09)}
 
   /* ── 网站复刻家族 A：Northwind（浏览器窗口 · 1440×900 · 导航 + 栅格） ── */
+  /* ── 视频画布：1280×720 的影片帧 ───────────────── */
+  .sld.k-poolside{font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif;background:#0E1113}
+  .sld.k-poolside .vd{position:absolute;inset:0;background:#0E1113;color:#EFEDE6;overflow:hidden}
+  .sld.k-poolside .vd-hero{position:absolute;inset:0}
+  .sld.k-poolside .vd-hero .sd-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .sld.k-poolside .vd-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(8,12,14,.94) 0%,rgba(8,12,14,.55) 42%,rgba(8,12,14,.12) 74%,rgba(8,12,14,.34) 100%)}
+  .sld.k-poolside .vd-top{position:absolute;left:56px;right:56px;top:44px;display:flex;justify-content:space-between;align-items:center;z-index:2;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:rgba(239,237,230,.78)}
+  .sld.k-poolside .vd-hero-txt{position:absolute;left:56px;right:56px;bottom:52px;z-index:2}
+  .sld.k-poolside .vd-kick{font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:#E4A05A}
+  .sld.k-poolside .vd-h1{margin:14px 0 0;font-size:82px;line-height:.94;letter-spacing:-.035em;font-weight:500}
+  .sld.k-poolside .vd-sub{margin:16px 0 0;max-width:560px;font-size:15px;line-height:1.6;color:rgba(239,237,230,.82)}
+  .sld.k-poolside .vd-bar{display:flex;gap:34px;margin-top:26px;padding-top:16px;border-top:1px solid rgba(239,237,230,.2);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:rgba(239,237,230,.66)}
+  .sld.k-poolside .vd-pad{position:absolute;inset:0;padding:44px 56px 40px;display:flex;flex-direction:column}
+  .sld.k-poolside .vd-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:26px}
+  .sld.k-poolside .vd-h2{margin:0;font-size:34px;letter-spacing:-.02em;font-weight:500}
+  .sld.k-poolside .vd-lab{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#E4A05A}
+  /* 播放页 */
+  .sld.k-poolside .vd-play{display:grid;grid-template-columns:760px 1fr;gap:40px;flex:1;align-items:center}
+  .sld.k-poolside .vd-screen{width:760px;height:428px;border-radius:3px;background:#000;overflow:hidden;box-shadow:0 18px 44px rgba(0,0,0,.5)}
+  .sld.k-poolside .vd-screen video{width:100%;height:100%;object-fit:cover;display:block;background:#000}
+  .sld.k-poolside .vd-spec{display:flex;flex-direction:column;gap:0}
+  .sld.k-poolside .vd-srow{display:grid;grid-template-columns:96px 1fr;gap:14px;padding:13px 0;border-bottom:1px solid rgba(239,237,230,.14);font-size:13px;line-height:1.5}
+  .sld.k-poolside .vd-srow b{font-weight:500;color:rgba(239,237,230,.5);font-size:11px;letter-spacing:.16em;text-transform:uppercase;padding-top:2px}
+  .sld.k-poolside .vd-snote{margin:18px 0 0;font-size:12.5px;line-height:1.7;color:rgba(239,237,230,.62)}
+  /* 分镜 */
+  .sld.k-poolside .vd-shots{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;flex:1;align-content:center}
+  .sld.k-poolside .vd-shot-m{margin-top:10px;padding-top:9px;border-top:1px solid rgba(239,237,230,.16);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#E4A05A}
+  .sld.k-poolside .vd-shot .sd-img{width:100%;height:286px;object-fit:cover;display:block;border-radius:3px}
+  .sld.k-poolside .vd-shot-n{display:flex;justify-content:space-between;margin-top:12px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#E4A05A}
+  .sld.k-poolside .vd-shot-n i{font-style:normal;color:rgba(239,237,230,.5)}
+  .sld.k-poolside .vd-shot-t{margin-top:8px;font-size:15px;letter-spacing:-.01em}
+  .sld.k-poolside .vd-shot-d{margin:7px 0 0;font-size:12px;line-height:1.65;color:rgba(239,237,230,.6)}
+  .sld.k-poolside .vd-foot{margin-top:auto;padding-top:16px;border-top:1px solid rgba(239,237,230,.14);font-size:11.5px;letter-spacing:.1em;color:rgba(239,237,230,.5);display:flex;justify-content:space-between}
+  /* 时间轴 */
+  .sld.k-poolside .vd-tl{flex:1;display:flex;flex-direction:column;justify-content:center;gap:0}
+  .sld.k-poolside .vd-ticks{display:flex;font-size:10.5px;letter-spacing:.14em;color:rgba(239,237,230,.42);margin-bottom:8px}
+  .sld.k-poolside .vd-ticks span{width:25%}
+  .sld.k-poolside .vd-track{display:flex;height:52px;border-radius:3px;overflow:hidden;margin-bottom:10px}
+  .sld.k-poolside .vd-seg{position:relative;border-right:2px solid #0E1113;display:flex;flex-direction:column;justify-content:center;gap:3px;padding:0 12px;font-size:12px;letter-spacing:.06em;color:#0E1113}
+  .sld.k-poolside .vd-seg i{font-style:normal;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;opacity:.62}
+  .sld.k-poolside .vd-frames{display:flex;margin:0 0 18px}
+  .sld.k-poolside .vd-fr{width:25%;padding-right:2px}
+  .sld.k-poolside .vd-fr .sd-img{width:100%;height:96px;object-fit:cover;display:block;filter:saturate(.8) brightness(.92)}
+  .sld.k-poolside .vd-fr span{display:block;margin-top:6px;font-size:10px;letter-spacing:.14em;color:rgba(239,237,230,.42)}
+  .sld.k-poolside .vd-seg b{font-weight:600}
+  .sld.k-poolside .vd-fade{position:absolute;top:0;bottom:0;width:11%;background:linear-gradient(to right,rgba(14,17,19,.55),rgba(14,17,19,0) 70%,rgba(14,17,19,.55))}
+  .sld.k-poolside .vd-row{display:grid;grid-template-columns:120px 1fr;gap:16px;padding:14px 0;border-top:1px solid rgba(239,237,230,.14);font-size:13px;line-height:1.6}
+  .sld.k-poolside .vd-row b{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(239,237,230,.45);font-weight:500;padding-top:3px}
+  /* 尾卡 */
+  .sld.k-poolside .vd-end{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;background:#0A0C0D;padding:0 120px}
+  .sld.k-poolside .vd-end-t{font-size:64px;letter-spacing:-.03em;font-weight:500}
+  .sld.k-poolside .vd-end-s{margin-top:12px;font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:#E4A05A}
+  .sld.k-poolside .vd-cred{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;margin-top:52px;width:100%;text-align:left}
+  .sld.k-poolside .vd-cred div{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(239,237,230,.45);line-height:2.1}
+  .sld.k-poolside .vd-cred span{display:block;margin-top:6px;font-size:13px;letter-spacing:0;text-transform:none;color:rgba(239,237,230,.85);line-height:1.7;white-space:pre-line}
+  /* ── 音频画布：1080×1080 的唱片封套 ────────────── */
+  .sld.k-fogsignal{font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif;background:#0B0B0C}
+  .sld.k-fogsignal .au{position:absolute;inset:0;background:#0B0B0C;color:#EDEAE2;overflow:hidden}
+  .sld.k-fogsignal .au-pad{position:absolute;inset:0;padding:64px 68px;display:flex;flex-direction:column}
+  .sld.k-fogsignal .au-mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:#C8B98F}
+  .sld.k-fogsignal .au-top{display:flex;justify-content:space-between;align-items:baseline}
+  .sld.k-fogsignal .au-label{font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:rgba(237,234,226,.5)}
+  /* 封面 */
+  .sld.k-fogsignal .au-cover{display:flex;flex-direction:column;justify-content:space-between;height:100%}
+  .sld.k-fogsignal .au-ttl{margin:0;font-size:118px;line-height:.9;letter-spacing:-.045em;font-weight:500}
+  .sld.k-fogsignal .au-cn{margin-top:20px;font-size:22px;letter-spacing:.34em;color:#C8B98F}
+  .sld.k-fogsignal .au-desc{max-width:520px;margin-top:26px;font-size:13.5px;line-height:1.75;color:rgba(237,234,226,.62)}
+  .sld.k-fogsignal .au-wave{display:flex;align-items:flex-end;gap:3px;height:78px;margin-top:14px}
+  .sld.k-fogsignal .au-wave i{flex:1;background:#C8B98F;opacity:.85;border-radius:1px}
+  .sld.k-fogsignal .au-meta{display:flex;justify-content:space-between;margin-top:18px;padding-top:14px;border-top:1px solid rgba(237,234,226,.18);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(237,234,226,.5)}
+  /* 播放页 */
+  .sld.k-fogsignal .au-photo{position:absolute;inset:0}
+  .sld.k-fogsignal .au-photo .sd-img{width:100%;height:100%;object-fit:cover;opacity:.44;filter:grayscale(.4) contrast(1.04)}
+  .sld.k-fogsignal .au-photo::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 95% at 50% 42%,rgba(11,11,12,.2) 0%,rgba(11,11,12,.68) 62%,#0B0B0C 96%)}
+  .sld.k-fogsignal .au-play{position:relative;flex:1;display:flex;flex-direction:column;justify-content:center}
+  .sld.k-fogsignal .au-bigwave{display:flex;align-items:center;gap:2px;height:180px;margin:26px 0}
+  .sld.k-fogsignal .au-bigwave i{flex:1;background:rgba(237,234,226,.28);border-radius:1px}
+  .sld.k-fogsignal .au-bigwave i.on{background:#C8B98F}
+  .sld.k-fogsignal audio{width:100%;height:44px;filter:invert(.92) hue-rotate(180deg) saturate(.35)}
+  .sld.k-fogsignal .au-cue{display:flex;justify-content:space-between;margin-top:12px;font-size:10.5px;letter-spacing:.16em;color:rgba(237,234,226,.42)}
+  /* 结构 */
+  .sld.k-fogsignal .au-struct{flex:1;display:flex;flex-direction:column;justify-content:center}
+  .sld.k-fogsignal .au-sec{display:grid;grid-template-columns:74px 1fr 132px;gap:20px;align-items:baseline;padding:26px 0;border-top:1px solid rgba(237,234,226,.16)}
+  .sld.k-fogsignal .au-sec:last-child{border-bottom:1px solid rgba(237,234,226,.16)}
+  .sld.k-fogsignal .au-sec b{font-family:ui-monospace,Menlo,monospace;font-size:12px;letter-spacing:.08em;color:#C8B98F;font-weight:400}
+  .sld.k-fogsignal .au-sec-t{font-size:19px;letter-spacing:-.01em}
+  .sld.k-fogsignal .au-sec-d{margin-top:6px;font-size:12.5px;line-height:1.65;color:rgba(237,234,226,.58)}
+  .sld.k-fogsignal .au-sec-r{text-align:right;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(237,234,226,.45)}
+  .sld.k-fogsignal .au-h2{margin:0 0 6px;font-size:40px;letter-spacing:-.03em;font-weight:500}
+  .sld.k-fogsignal .au-foot{margin-top:26px;padding-top:16px;border-top:1px solid rgba(237,234,226,.16);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:rgba(237,234,226,.45)}
+  .sld.k-fogsignal .au-code{display:flex;gap:2px;align-items:flex-end;height:44px;margin-bottom:22px}
+  .sld.k-fogsignal .au-quote{max-width:560px;margin-bottom:26px;font-size:13px;line-height:1.75;color:rgba(237,234,226,.62);border-left:2px solid #C8B98F;padding-left:16px}
+  .sld.k-fogsignal .au-code i{flex:1;background:rgba(237,234,226,.55)}
+  /* 制作说明 */
+  .sld.k-fogsignal .au-notes{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:34px;align-content:center}
+  .sld.k-fogsignal .au-n{border-top:1px solid rgba(237,234,226,.16);padding-top:14px}
+  .sld.k-fogsignal .au-n b{display:block;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#C8B98F;font-weight:500;margin-bottom:8px}
+  .sld.k-fogsignal .au-n p{margin:0;font-size:12.5px;line-height:1.75;color:rgba(237,234,226,.7)}
+  .sld.k-fogsignal .au-n code{font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:#EDEAE2;background:rgba(237,234,226,.08);padding:1px 5px;border-radius:2px}
+  /* 封底 */
+  .sld.k-fogsignal .au-back{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:64px 68px;background:#0B0B0C}
+  .sld.k-fogsignal .au-bars{display:flex;gap:4px;height:120px;align-items:flex-end}
+  .sld.k-fogsignal .au-bars i{flex:1;background:rgba(237,234,226,.22)}
+  .sld.k-fogsignal .au-cred{font-size:12px;line-height:2;color:rgba(237,234,226,.6)}
+  .sld.k-fogsignal .au-cred b{display:inline-block;width:92px;color:rgba(237,234,226,.4);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase}
   .sld.k-northwind{font-family:ui-sans-serif,system-ui,"PingFang SC",sans-serif}
   .sld.k-northwind .st{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--paper);color:var(--ink)}
   .sld.k-northwind .st-chrome{

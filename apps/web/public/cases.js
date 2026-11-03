@@ -6889,6 +6889,202 @@ export const CASE_DECKS = [
       },
     ],
   },
+  {
+    id: 'poolside',
+    name: 'The Last Summer',
+    en: 'Poolside · a 24-second short',
+    by: 'DesignBuddy',
+    cat: '视频',
+    fmt: 'video',
+    ratio: '1280×720 · 16:9',
+    date: 20261103,
+    kind: 'Short film',
+    category: '营销材料',
+    tags: ['film', 'trailer', 'documentary', 'title design'],
+    desc: 'A twenty-four second short about the last season of a municipal swimming pool, cut from four stills on a 1280 × 720 canvas: a slow push-in per shot, half-second dips to black between them, and one low drone that starts at the first cut and leaves before the last. The deck is the film itself plus the four frames it is built from.',
+    bestFor: ['Short-form brand films', 'Trailer and title design', 'Documentary pitch material', 'Case studies for motion work'],
+    visual: 'Night-water black #0E1113 as the canvas, warm bone #EFEDE6 for type, one sun-bleached amber #E4A05A for kickers and shot numbers, pool teal #4E7E80 as the second colour in the timeline. Supers are set close and wide-tracked; the title is 82px with .945 line height so two lines behave like a film card rather than a slide. Everything sits in the lower third, because the top of the frame belongs to the picture.',
+    how: 'Five frames at 1280 × 720: the title frame over the empty pool, a player page with the real 24-second mp4 and its technical sheet, three-up shot breakdown, a four-track timeline (picture / sound / subtitles / rhythm), and an end card with credits. The film is 25 fps, 1280 × 720, h.264 with a stereo AAC bed — 5.1 MB, playable from the deck.',
+    styles: ['#0E1113', '#E4A05A', '#4E7E80'],
+    colorway: 'Night water · Sun amber · Pool teal',
+    folio: false,
+    footLeft: 'Poolside · 2026',
+    paper: '#0E1113',
+    ink: '#EFEDE6',
+    accent: '#E4A05A',
+    second: '#4E7E80',
+    muted: '#8C9296',
+    rule: '#2A3134',
+    body: '#D7D5CE',
+    display: 'sans',
+    slides: [
+      {
+        k: 'vd-page', label: '片名帧', kind: 'title',
+        img: '01',
+        topLeft: 'Poolside · a short film',
+        topRight: '24 sec · 25 fps · 2026',
+        kicker: 'Riverside Municipal Baths · built 1961',
+        title: 'The Last Summer',
+        sub: 'The pool closes in September. Sixty-one summers of lane ropes, chalk, and a whistle at ten past six — filmed on the last four evenings it was open.',
+        bar: ['4 shots', '24 seconds', 'No dialogue', 'Shot on 35mm stills'],
+      },
+      {
+        k: 'vd-page', label: '播放', kind: 'play',
+        title: 'The film, as delivered',
+        label: 'PLAY · 24s',
+        file: 'film.mp4',
+        poster: '01',
+        spec: [
+          ['Runtime', '24.0 seconds · 4 shots'],
+          ['Picture', '1280 × 720 · 25 fps · h.264 (High)'],
+          ['Sound', 'Stereo AAC 128 kb/s · one drone bed'],
+          ['Grade', 'Teal shadows, bone highlights, +6 warmth'],
+          ['Delivery', '5.1 MB · faststart · poster frame 01'],
+        ],
+        note: 'Every shot is a still pushed in at 0.055 per cent per frame — between four and eight per cent of travel over six seconds, which reads as a held camera rather than a zoom. The cuts dip to black for 0.7 s so the four frames never argue with each other.',
+      },
+      {
+        k: 'vd-page', label: '分镜', kind: 'shots',
+        title: 'Four frames, four jobs',
+        label: 'SHOT LIST',
+        shots: [
+          ['01', '01', '0:00 — 6.0', 'The pool, before anyone', 'Wide, empty water, lane ropes stacked. Establishes the size of the place before anything moves.', 'Push in 4 %'],
+          ['02', '02', '0:06 — 12.0', 'Chalk on the block', 'Hands only. The one shot where a person appears, and only to leave a mark.', 'Pull out 3 %'],
+          ['03', '03', '0:12 — 18.0', 'Under the surface', 'The only moving subject: a swimmer crossing frame, no face, bubbles to the top.', 'Push in 6 %'],
+          ['04', '04', '0:18 — 24.0', 'The wall, one lamp', 'Depth markings under a single lamp. The film ends on a number, not a face.', 'Pull out 4 %'],
+        ],
+        footLeft: 'Four shots · 6.0 s each · 0.7 s black between',
+        footRight: 'Riverside Municipal Baths',
+      },
+      {
+        k: 'vd-page', label: '时间轴', kind: 'timeline',
+        title: 'Where the sound sits',
+        label: 'TIMELINE · 24s',
+        ticks: ['0:00', '0:06', '0:12', '0:18', '0:24'],
+        segs: [
+          ['S1 · 6.0', 'Wide', '#E4A05A'],
+          ['S2 · 6.0', 'Hands', '#D9C9A8'],
+          ['S3 · 6.0', 'Water', '#7FA3A4'],
+          ['S4 · 6.0', 'Wall', '#4E7E80'],
+        ],
+        frames: ['01', '02', '03', '04'],
+        pic: 'Four stills, one slow push each; 0.7 s dip to black on every cut, 1.4 s at the end.',
+        sound: 'One drone enters at 1.8 s, sits under the whole film, and fades out from 20.6 s so the last frame is silent.',
+        text: 'No dialogue, no supers inside the frame. Titles live in the deck, not on the picture.',
+        rhythm: 'Even 6.0 s shots. The only acceleration is the cut from hands (S2) to water (S3), which lands on the loudest part of the bed.',
+        out: '1280 × 720 · 25 fps · h.264 High · AAC 128 kb/s · faststart · 5.14 MB',
+      },
+      {
+        k: 'vd-page', label: '尾卡', kind: 'credits',
+        kicker: 'A DesignBuddy short',
+        title: 'The Last Summer',
+        credits: [
+          ['Direction', 'DesignBuddy\nwith the Riverside Baths trust'],
+          ['Picture', 'Four 35mm stills\npushed in at 0.055 % per frame'],
+          ['Sound', 'One synthesized drone\n98 Hz horn, 73.42 Hz bed'],
+          ['Grade', 'Teal shadows · bone highlights\n+6 warmth, -12 saturation mid'],
+          ['Runtime', '24.0 s · 25 fps\n1280 × 720 · AAC stereo'],
+          ['Thanks', 'The last four swimmers\nand the man with the whistle'],
+        ],
+      },
+    ],
+  },
+  {
+    id: 'fogsignal',
+    name: 'Fog Signal',
+    en: 'Fog Signal · a 48-second ambient piece',
+    by: 'DesignBuddy',
+    cat: '音频',
+    fmt: 'audio',
+    ratio: '1080×1080 · 方形',
+    date: 20261103,
+    kind: 'Audio release',
+    category: '营销材料',
+    tags: ['audio', 'ambient', 'cover art', 'label'],
+    desc: 'A 1080 × 1080 record sleeve for a 48-second ambient piece: the cover, the player page with a real mp3, the four-section structure of the track, the synthesis notes, and the back cover. No photographs — the whole release is type, brass hairlines and a waveform drawn from the same numbers as the audio.',
+    bestFor: ['Music and podcast releases', 'Audio identity systems', 'Sleeve and cover design', 'Sound-brand case studies'],
+    visual: 'Ink black #0B0B0C, bone #EDEAE2, and one brass #C8B98F that carries every label, number and bar of the waveform. Monospace is reserved for catalog numbers and section times; everything else is a tight sans. The waveform is generated, not drawn: 58 bars on the cover, 84 on the player, each height a fixed function of its index, so the same track looks identical every time it is rendered.',
+    how: 'Five squares at 1080 × 1080: cover with title and waveform, player page with the mp3 over one dimmed long exposure of the harbour, a four-section breakdown with timings, synthesis notes naming the actual frequencies, and a back cover with credits and the same waveform at 48 bars. The mp3 is 48.0 seconds, 160 kb/s stereo, 961 KB — synthesized end to end in Node, no samples.',
+    styles: ['#0B0B0C', '#C8B98F', '#3E5A5A'],
+    colorway: 'Ink black · Brass · Harbour teal',
+    folio: false,
+    footLeft: 'Northlight Editions · NL-014',
+    paper: '#0B0B0C',
+    ink: '#EDEAE2',
+    accent: '#C8B98F',
+    second: '#3E5A5A',
+    muted: '#8A8880',
+    rule: '#26262A',
+    body: '#CFCCC4',
+    display: 'sans',
+    slides: [
+      {
+        k: 'au-page', label: '封面', kind: 'cover',
+        label: 'Northlight Editions',
+        catalog: 'NL-014 · 2026',
+        title: 'Fog Signal',
+        cn: '雾笛',
+        desc: 'Forty-eight seconds for a harbour at four in the morning: two drones a fifth apart, wind pulled out of filtered noise, and three horns that arrive when the fog does.',
+        metaLeft: '48.0 sec · 44.1 kHz / stereo',
+        metaRight: 'Composed and synthesized in Node',
+      },
+      {
+        k: 'au-page', label: '播放', kind: 'play',
+        label: 'Northlight Editions',
+        catalog: 'NL-014',
+        title: 'Play the piece',
+        img: '01',
+        file: '01.mp3',
+        played: 33,
+        cueLeft: '0:00 ── drone enters',
+        cueRight: '3 horns · 0:47 out',
+        note: 'The file in this deck is the master: 48.0 seconds, 160 kb/s, stereo, no fade applied at the file level — the ending is in the composition, where the last horn decays for six seconds while the bed thins to noise.',
+      },
+      {
+        k: 'au-page', label: '结构', kind: 'structure',
+        label: 'Structure',
+        catalog: 'NL-014',
+        title: 'Four sections, one tide',
+        secs: [
+          ['0:00', 'The bed arrives', 'D2 and A2 open a fifth apart; wind noise starts under them at 0.012 low-pass.', 'DRONE · 0–48'],
+          ['0:07', 'First horn', '98 Hz, four seconds, saw-soft with a sub an octave below. The fog starts here.', 'HORN · 7.5'],
+          ['0:16', 'The bell', 'A single 587 Hz strike, far right, then nothing until 0:33 on the other side.', 'BELL · 16.2'],
+          ['0:24', 'Second and third', 'The same horn twice more, lower each time, six seconds of decay on the last.', 'HORN · 24 / 38.5'],
+        ],
+        foot: 'Total 0:48 · four sections · no fade applied at file level',
+      },
+      {
+        k: 'au-page', label: '制作', kind: 'notes',
+        label: 'Synthesis notes',
+        catalog: 'NL-014',
+        title: 'How it was made',
+        notes: [
+          ['Bed', '<code>73.42 Hz</code> and <code>110.00 Hz</code> sine oscillators, 3.5 s attack, slow vibrato at 0.002 depth, panned 0 / ±0.35.'],
+          ['Wind', 'White noise through a one-pole low-pass at <code>0.012</code>, then a second layer at <code>0.05</code> swelling on a 0.09 Hz LFO.'],
+          ['Horns', 'Saw-soft stack at <code>98 Hz</code> with harmonics at 2× and a sub at 0.5×, 4–6 s duration, 55 % release.'],
+          ['Bells', 'Single sines at <code>587.33 Hz</code> and <code>880 Hz</code>, 10 ms attack, 1.5 s release, hard-panned opposite.'],
+          ['Master', 'Peak-normalized to 0.62, soft-clipped with <code>tanh</code>, 16-bit → 160 kb/s MP3, no compression on the bus.'],
+          ['Why these', '73.42 Hz is D2, the lowest note a small room will play honestly; 98 Hz is a real foghorn fundamental, two semitones under the bed.'],
+        ],
+      },
+      {
+        k: 'au-page', label: '封底', kind: 'back',
+        label: 'Northlight Editions',
+        catalog: 'NL-014 · 2026',
+        title: 'Fog Signal / 雾笛',
+        credits: [
+          ['Composed', 'DesignBuddy'],
+          ['Synthesis', 'Node · additive sines, one-pole noise'],
+          ['Master', '48.0 s · 160 kb/s · stereo'],
+          ['Artwork', 'Type and generated waveform, no photography'],
+          ['Press', 'Northlight Editions, NL-014, edition of 300'],
+        ],
+        quote: 'Recorded at four in the morning, mixed by six, and never played again at a volume anyone could call reasonable.',
+        metaLeft: '℗ 2026 Northlight Editions',
+        metaRight: 'northlight.editions / nl-014',
+      },
+    ],
+  },
 ]
 
 /* ── 渲染 ─────────────────────────────────────────────
@@ -7060,6 +7256,116 @@ export function slideInner(deck, s, index) {
         '<div class="d-end-img">' + imgTag(deck, s.img) + '</div>' +
         '</div>'
       )
+function waveBars(n, seed, from, to) {
+  let st = seed
+  const rnd = () => {
+    st = (st * 1103515245 + 12345) % 2147483648
+    return st / 2147483648
+  }
+  const out = []
+  for (let i = 0; i < n; i++) {
+    const shape = Math.pow(Math.sin(Math.PI * (i / (n - 1))), 0.55)
+    const h = Math.round((0.16 + 0.84 * shape * (0.42 + 0.58 * rnd())) * 100)
+    const on = i >= (from === undefined ? 0 : from) && i <= (to === undefined ? -1 : to)
+    out.push('<i class="' + (on ? 'on' : '') + '" style="height:' + h + '%"></i>')
+  }
+  return out.join('')
+}
+
+    case 'vd-page': {
+      const src = 'cases/' + deck.id + '/'
+      let body = ''
+      if (s.kind === 'title') {
+        body = '<div class="vd-hero">' + imgTag(deck, s.img) +
+          '<div class="vd-top"><span>' + esc(s.topLeft) + '</span><span>' + esc(s.topRight) + '</span></div>' +
+          '<div class="vd-hero-txt"><div class="vd-kick">' + esc(s.kicker) + '</div>' +
+          '<h1 class="vd-h1">' + esc(s.title) + '</h1>' +
+          '<p class="vd-sub">' + esc(s.sub) + '</p>' +
+          '<div class="vd-bar">' + (s.bar || []).map((x) => '<span>' + esc(x) + '</span>').join('') + '</div></div></div>'
+      } else if (s.kind === 'play') {
+        body = '<div class="vd-pad"><div class="vd-head"><h2 class="vd-h2">' + esc(s.title) + '</h2>' +
+          '<span class="vd-lab">' + esc(s.label) + '</span></div>' +
+          '<div class="vd-play">' +
+          '<div class="vd-screen"><video controls playsinline preload="none" poster="' + src + (s.poster || '01') + '.jpg" src="' + src + esc(s.file) + '"></video></div>' +
+          '<div class="vd-spec">' + (s.spec || []).map(([k, v]) =>
+            '<div class="vd-srow"><b>' + esc(k) + '</b><span>' + esc(v) + '</span></div>').join('') +
+          '<p class="vd-snote">' + esc(s.note || '') + '</p></div></div></div>'
+      } else if (s.kind === 'shots') {
+        body = '<div class="vd-pad"><div class="vd-head"><h2 class="vd-h2">' + esc(s.title) + '</h2>' +
+          '<span class="vd-lab">' + esc(s.label) + '</span></div>' +
+          '<div class="vd-shots">' + (s.shots || []).map(([img, n, time, t, d, mv]) =>
+            '<div class="vd-shot">' + imgTag(deck, img) +
+            '<div class="vd-shot-n"><span>SHOT ' + esc(n) + '</span><i>' + esc(time) + '</i></div>' +
+            '<div class="vd-shot-t">' + esc(t) + '</div><p class="vd-shot-d">' + esc(d) + '</p>' +
+            (mv ? '<div class="vd-shot-m">' + esc(mv) + '</div>' : '') + '</div>').join('') + '</div>' +
+          '<div class="vd-foot"><span>' + esc(s.footLeft || '') + '</span><span>' + esc(s.footRight || '') + '</span></div></div>'
+      } else if (s.kind === 'timeline') {
+        body = '<div class="vd-pad"><div class="vd-head"><h2 class="vd-h2">' + esc(s.title) + '</h2>' +
+          '<span class="vd-lab">' + esc(s.label) + '</span></div>' +
+          '<div class="vd-tl"><div class="vd-ticks">' + (s.ticks || []).map((t) => '<span>' + esc(t) + '</span>').join('') + '</div>' +
+          '<div class="vd-track">' + (s.segs || []).map(([lab, cap, col]) =>
+            '<div class="vd-seg" style="width:25%;background:' + col + '"><b>' + esc(lab) + '</b><i>' + esc(cap) + '</i></div>').join('') + '</div>' +
+          '<div class="vd-frames">' + (s.frames || []).map((img, i) =>
+            '<div class="vd-fr">' + imgTag(deck, img) + '<span>' + esc((s.ticks || [])[i] || '') + ' — ' + esc((s.ticks || [])[i + 1] || '') + '</span></div>').join('') + '</div>' +
+          '<div class="vd-row"><b>画面</b><span>' + esc(s.pic) + '</span></div>' +
+          '<div class="vd-row"><b>声音</b><span>' + esc(s.sound) + '</span></div>' +
+          '<div class="vd-row"><b>字幕</b><span>' + esc(s.text) + '</span></div>' +
+          '<div class="vd-row"><b>节奏</b><span>' + esc(s.rhythm) + '</span></div>' +
+          (s.out ? '<div class="vd-row"><b>输出</b><span>' + esc(s.out) + '</span></div>' : '') + '</div></div>'
+      } else if (s.kind === 'credits') {
+        body = '<div class="vd-end"><div class="vd-end-s">' + esc(s.kicker) + '</div>' +
+          '<div class="vd-end-t" style="margin-top:18px">' + esc(s.title) + '</div>' +
+          '<div class="vd-cred">' + (s.credits || []).map(([k, v]) =>
+            '<div>' + esc(k) + '<span>' + esc(v) + '</span></div>').join('') + '</div></div>'
+      }
+      return '<div class="vd">' + body + '</div>'
+    }
+    case 'au-page': {
+      const src = 'cases/' + deck.id + '/'
+      let body = ''
+      if (s.kind === 'cover') {
+        body = '<div class="au-pad"><div class="au-cover">' +
+          '<div class="au-top"><span class="au-mono">' + esc(s.label) + '</span><span class="au-label">' + esc(s.catalog) + '</span></div>' +
+          '<div><h1 class="au-ttl">' + esc(s.title) + '</h1><div class="au-cn">' + esc(s.cn) + '</div>' +
+          '<p class="au-desc">' + esc(s.desc) + '</p>' +
+          '<div class="au-wave">' + waveBars(58, 20261103) + '</div></div>' +
+          '<div><div class="au-meta"><span>' + esc(s.metaLeft) + '</span><span>' + esc(s.metaRight) + '</span></div></div>' +
+          '</div></div>'
+      } else if (s.kind === 'play') {
+        body = '<div class="au-photo">' + imgTag(deck, s.img) + '</div>' +
+          '<div class="au-pad"><div class="au-top"><span class="au-mono">' + esc(s.label) + '</span><span class="au-label">' + esc(s.catalog) + '</span></div>' +
+          '<div class="au-play"><div class="au-h2" style="font-size:34px">' + esc(s.title) + '</div>' +
+          '<div class="au-bigwave">' + waveBars(84, 771, 0, s.played || -1) + '</div>' +
+          '<audio controls preload="metadata" src="' + src + esc(s.file) + '"></audio>' +
+          '<div class="au-cue"><span>' + esc(s.cueLeft) + '</span><span>' + esc(s.cueRight) + '</span></div>' +
+          '<p class="au-desc" style="margin-top:26px;max-width:640px">' + esc(s.note) + '</p></div></div>'
+      } else if (s.kind === 'structure') {
+        body = '<div class="au-pad"><div class="au-top"><span class="au-mono">' + esc(s.label) + '</span><span class="au-label">' + esc(s.catalog) + '</span></div>' +
+          '<div class="au-struct"><h2 class="au-h2">' + esc(s.title) + '</h2>' +
+          (s.secs || []).map(([t, head, d, r]) =>
+            '<div class="au-sec"><b>' + esc(t) + '</b><div><div class="au-sec-t">' + esc(head) + '</div>' +
+            '<div class="au-sec-d">' + esc(d) + '</div></div><div class="au-sec-r">' + esc(r) + '</div></div>').join('') +
+          (s.foot ? '<div class="au-foot">' + esc(s.foot) + '</div>' : '') +
+          '</div></div>'
+      } else if (s.kind === 'notes') {
+        body = '<div class="au-pad"><div class="au-top"><span class="au-mono">' + esc(s.label) + '</span><span class="au-label">' + esc(s.catalog) + '</span></div>' +
+          '<div class="au-notes" style="margin-top:34px"><h2 class="au-h2" style="grid-column:span 2;margin-bottom:8px">' + esc(s.title) + '</h2>' +
+          (s.notes || []).map(([k, v]) =>
+            '<div class="au-n"><b>' + esc(k) + '</b><p>' + v + '</p></div>').join('') +
+          '</div></div>'
+      } else if (s.kind === 'back') {
+        body = '<div class="au-back">' +
+          '<div class="au-top"><span class="au-mono">' + esc(s.label) + '</span><span class="au-label">' + esc(s.catalog) + '</span></div>' +
+          '<div><div class="au-ttl" style="font-size:64px">' + esc(s.title) + '</div>' +
+          '<div class="au-bars" style="margin-top:30px">' + waveBars(48, 991) + '</div>' +
+          '<div class="au-cred" style="margin-top:34px">' + (s.credits || []).map(([k, v]) =>
+            '<div><b>' + esc(k) + '</b>' + esc(v) + '</div>').join('') + '</div></div>' +
+          '<div>' + (s.quote ? '<div class="au-quote">' + esc(s.quote) + '</div>' : '') + '<div class="au-code">' + waveBars(46, 4242).replace(/class=""/g, '') + '</div>' +
+          '<div class="au-meta"><span>' + esc(s.metaLeft) + '</span><span>' + esc(s.metaRight) + '</span></div></div>' +
+          '</div>'
+      }
+      return '<div class="au">' + body + '</div>'
+    }
     case 'st-page': {
       const NAV = ['Coffee', 'Subscribe', 'Our story', 'Journal', 'Visit']
       const nav = '<div class="st-nav"><div class="st-logo">NORTHWIND<i style="color:var(--accent)">.</i></div>' +
