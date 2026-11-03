@@ -6774,118 +6774,308 @@ export const CASE_DECKS = [
   {
     id: 'northwind',
     name: 'Northwind Coffee',
-    en: 'Northwind Coffee Co. · a six-screen shop',
+    en: 'Northwind Coffee Co. · a 20-screen shop, wired',
     by: 'DesignBuddy',
-    cat: '网站复刻',
+    cat: '网站',
     fmt: 'site',
-    ratio: '1440×900 · 桌面',
+    ratio: '1440×900 · 16:10',
     date: 20261103,
-    kind: 'Website replica',
-    category: '数字产品',
-    tags: ['website', 'ecommerce', 'coffee', 'editorial'],
-    desc: 'A small roastery’s shop, rebuilt screen by screen on a 1440 × 900 desktop canvas: browser chrome stays pinned at the top, the navigation is shared by every page, and each screen does one job — sell the shop, explain the roast, or take the subscription. Four photographs carry the whole site, the last of them portrait so the phone screen has its own shot instead of re-using the hero; everything else is type, rules and one terracotta accent.',
-    bestFor: ['Direct-to-consumer storefronts', 'Small-brand site systems', 'Product and story page patterns', 'Desktop-first design reviews'],
-    visual: 'Warm paper #F6F3EA with a slightly darker chrome bar #E7E2D6, near-black ink #1C1812, terracotta #B4562B reserved for kickers, prices and the active link, deep green #2F4B3A as the second colour on the phone screen. Hairlines instead of boxes; the only shadows are under photographs and the phone, which is what keeps a 1440 canvas feeling light. The nav, the 46px browser bar and the 26px information strip are identical on every screen, so the six pages read as one site rather than six slides.',
-    how: 'Six screens at 1440 × 900: a hero with the promise and two buttons, the shop grid with three products and stock states, an about page set in two columns with three numbers under it, a three-tier subscription page with the middle tier reversed out, a journal index, and a mobile breakpoint shown inside a 330 × 660 phone on the same canvas. Every screen keeps the browser chrome and the footer strip; nothing scrolls.',
-    styles: ['#F6F3EA', '#B4562B', '#2F4B3A'],
-    colorway: 'Paper · Terracotta · Bottle green',
+    kind: 'Site recreation',
+    category: '案例演示',
+    tags: ['e-commerce', 'shop', 'subscription', 'interactive'],
+    desc: 'A twenty-screen shop for a twelve-kilo roastery, rebuilt on a 1440 × 900 canvas with the browser chrome and the navigation pinned to every page. Fifteen of the twenty screens answer back: the shop grid filters, the product page re-prices when you change size or quantity, the subscription bar recomputes the monthly equivalent, the brew guide scales from one cup to six, the cart and the checkout do real arithmetic, and the café finder moves every card when you change the day. Twenty photographs carry the whole site.',
+    bestFor: ['E-commerce site design', 'Interactive case studies', 'Design-system handoff', 'Small-brand retail'],
+    visual: 'Warm paper #F6F3EA with a slightly darker chrome bar #E7E2D6, near-black ink #1C1812, terracotta #B4562B reserved for kickers, prices and the selected state, deep green #2F4B3A only on the subscription screen. Hairlines instead of boxes; the only fills are photographs, the reversed-out plan panel and the order summary, which is what keeps twenty screens feeling like one light site. Every control is a hairline pill or a 2 px rule, so the interactive parts read as part of the type rather than as widgets bolted on.',
+    how: 'Twenty screens at 1440 × 900: home, shop with live filters, product with size/grind/quantity, subscription with a cadence calculator, story, four origins on tabs, four brew methods on tabs, one guide with a cup scaler, journal index, a long article, three cafés with a day filter, one café detail, wholesale with a volume calculator, a wholesale application form, stockists with region filters, cart with line steppers, checkout with delivery options, an account screen, gift cards, and a 404. Interactions are wired once in the app: every control is a data attribute, every price is computed from those attributes, so no screen carries a second, hand-typed set of numbers.',
+    styles: ['#F6F3EA', '#1C1812', '#B4562B'],
+    colorway: 'Warm paper · Ink · Terracotta',
     folio: false,
     footLeft: 'Northwind Coffee Co. · 2026',
     paper: '#F6F3EA',
     ink: '#1C1812',
     accent: '#B4562B',
     second: '#2F4B3A',
-    muted: '#6A6252',
-    rule: '#D8D2C2',
-    body: '#3B3527',
+    muted: '#7A7264',
+    rule: '#DCD5C6',
+    body: '#4C4536',
     display: 'sans',
     slides: [
       {
-        k: 'st-page', label: '首页', kind: 'home', path: '/',
-        kicker: 'Single origin · roasted Tuesdays',
+        k: 'nw-page', label: '首页', kind: 'home', path: '/', nav: 'Coffee', cart: '0',
+        kicker: 'Single origin · roasted Tuesdays and Fridays',
         title: 'Coffee that tastes like somewhere.',
-        lead: 'We roast 640 kilos a month on a 12-kilo drum in the back of the shop, twice a week, and we print the date on every bag. Nothing older than twelve days leaves the counter.',
-        cta: 'Shop the roast',
-        cta2: 'Subscribe & save 15%',
-        img: '01',
-        tag: 'Roastery · 06:20',
+        lead: 'We roast 640 kilos a month on a twelve-kilo drum in the back of the shop, twice a week, and we print the date on every bag. Nothing older than twelve days leaves the counter.',
+        cta: 'Shop the roast', cta2: 'Subscribe · save 15%', img: '01',
+        badges: ['Four producers, all visited', 'Roasted in-house, Tue & Fri', 'Free shipping over $40'],
         strip: ['Roasted in-house, Tue & Fri', 'Free shipping over $40', 'Whole bean or ground to order', 'Est. 2019 · Northwind Coffee Co.'],
       },
       {
-        k: 'st-page', label: '商店', kind: 'shop', path: '/shop', nav: 'Coffee',
-        title: 'This week on the bench',
-        note: '3 of 12 · updated Monday',
+        k: 'nw-page', label: '商店', kind: 'shop', path: '/shop', nav: 'Coffee', cart: '4',
+        kicker: 'The bench', title: 'This week on the bench',
+        note: '3 of 12 listed · updated Monday\nFilters below are live',
+        filters: [['All 12', 'all'], ['Filter roast', 'filter'], ['Espresso', 'espresso'], ['Decaf', 'decaf'], ['Single origin', 'single']],
         products: [
-          { img: '02', name: 'Kestrel', desc: 'Washed · Ethiopia · blueberry, jasmine', price: ['$19', 'In stock'] },
-          { img: '03', name: 'Harbour Mug', desc: 'Stoneware · 320 ml · glazed twice', price: ['$28', 'Pair it'] },
-          { promo: ['Subscribers only', 'Every Tuesday, on your doorstep.', 'From $14 a month', '15%', 'Free mug after six months'],
-            name: 'Northwind Blend', desc: 'Natural · Brazil + Colombia · cocoa', price: ['$17', 'Bestseller'] },
+          { img: '10', tags: 'single filter ethiopia', name: 'Kestrel', desc: 'Washed · Ethiopia, Guji · blueberry, jasmine', price: '$19', stock: 'In stock · roasted Tue' },
+          { img: '16', tags: 'espresso brazil colombia', name: 'Northwind Blend', desc: 'Natural Brazil + washed Colombia · cocoa, hazelnut', price: '$17', stock: 'In stock · 24 bags' },
+          { img: '03', tags: 'decaf colombia espresso', name: 'Meridian Decaf', desc: 'Sugarcane decaf · Colombia, Huila · plum, cocoa', price: '$18', stock: 'Low · 6 bags' },
         ],
-        strip: ['3 origins on the bench this week', 'Roast date printed on every bag', 'Grind to order, no extra charge', 'Returns within 14 days'],
+        strip: ['3 origins on the bench this week', 'Roast date printed on every bag', 'Grind to order, no extra charge', 'Free shipping over $40'],
       },
       {
-        k: 'st-page', label: '关于', kind: 'story', path: '/our-story', nav: 'Our story',
-        title: 'One roaster, two mornings a week.',
+        k: 'nw-page', label: '商品', kind: 'product', path: '/shop/kestrel', nav: 'Coffee', cart: '4',
+        kicker: 'Washed · Ethiopia, Guji', title: 'Kestrel',
+        lead: 'Picked at 2,050 m, washed and dried on raised beds for eleven days. Blueberry first, then jasmine, and a finish that stays clean as it cools. Roasted light on Tuesdays.',
+        img: '02', thumbs: ['02', '03', '16'], unit: 19,
+        sizes: [['250 g', 0, '$19'], ['1 kg', 43, '$62']],
+        grinds: ['Whole bean', 'Filter', 'Espresso', 'Moka'],
+        stocknote: 'Roasted Tuesday 03 November · 8 bags left',
+        lotRows: [['Producer', 'Bekele family · 34 ha, above the Ganale river'],
+          ['Process', 'Washed, 36 h fermentation, 11 days on raised beds'],
+          ['Altitude', '2,050 m · shade grown under false banana'],
+          ['On the bench since', '2021 · the same lot every year']],
+        strip: ['Free shipping over $40', 'Grind to order, no extra charge', 'Twelve-day freshness window', 'Returns within 14 days'],
+      },
+      {
+        k: 'nw-page', label: '订阅', kind: 'plans', path: '/subscribe', nav: 'Subscribe', cart: '4',
+        kicker: 'Subscription', title: 'A bag on your doorstep',
+        note: 'Pause or cancel from the account screen\nNo minimum term',
+        plans: [
+          ['Taster', '14', ['250 g, one origin', 'Brew notes by email', 'Pause any month', 'Ground or whole bean'], false],
+          ['Bench', '26', ['500 g, two origins', 'Brew notes by email', 'First shot at micro-lots', 'Free mug after six months'], true],
+          ["Roaster's", '48', ['1 kg, every origin', 'Green sample each quarter', 'Invite to the Friday cupping', 'Free shipping, always'], false],
+        ],
+        boxes: [['250 g', 14], ['500 g', 26], ['1 kg', 48]],
+        cadence: [['Weekly', 1], ['Fortnightly', 2], ['Monthly', 4]],
+        band: { img: '09', title: 'What lands on the doorstep', rows: [
+          ['Packed', 'Tuesday morning, paper bag, no plastic'],
+          ['Posted', 'The same afternoon, 2 to 3 days'],
+          ['Brew card', 'One method, one recipe, sized to the box'],
+          ['Skip', 'Two boxes a year, from the account screen'],
+        ] },
+        strip: ['15% off every delivery', 'Pause or skip any month', 'Roasted the day it ships', 'Cancel in two clicks'],
+      },
+      {
+        k: 'nw-page', label: '关于', kind: 'story', path: '/our-story', nav: 'Coffee', cart: '4',
+        kicker: 'Our story', title: 'One roaster, two mornings a week.',
         paras: [
-          'Northwind started in a garage on the north side of the harbour in 2019, with a 1-kilo sample roaster and a borrowed scale. The first batch was 400 grams and most of it went to neighbours who had agreed, in advance, to be polite about it.',
-          'Seven years later the drum is twelve kilos and the garage is a shop with a bench, four stools and a window that faces the water. The roasting still happens twice a week, on Tuesday and Friday mornings, because a smaller drum and a slower week make it possible to taste every batch before it is bagged.',
+          'Northwind started in a garage on the north side of the harbour in 2019, with a one-kilo sample roaster and a borrowed scale. The first batch was 400 grams and most of it went to neighbours who had agreed, in advance, to be polite about it.',
+          'Seven years later the drum is twelve kilos and the garage is a shop with a bench, four stools and a window that faces the water. Roasting still happens twice a week, on Tuesday and Friday mornings, because a smaller drum and a slower week make it possible to taste every batch before it is bagged.',
           'We buy from four producers, all of whom we have visited, and we pay above the posted price because the alternative is a market that rewards volume over flavour. Two of the four have been with us since the garage.',
           'The blend is deliberately unglamorous: a natural Brazil for body, a washed Colombia for the finish. It is the coffee we drink, and the one we can roast consistently on a machine this size, which matters more than a score sheet.',
         ],
         facts: [['2019', 'first roast · 400 g'], ['640 kg', 'roasted last month'], ['4 min', 'grinder to cup']],
+        rows: [['Ethiopia', 'Kestrel · Guji · washed · since 2021'],
+          ['Colombia', 'La Palma · Huila · washed · since 2020'],
+          ['Brazil', 'Fazenda Sul · Cerrado · natural · since 2019'],
+          ['Kenya', 'Gaturiri · Nyeri · one micro-lot a year']],
+        img: '04', img2: '19',
         quote: 'A roast date is the only claim on a bag that a customer can check for themselves.',
         quoteBy: 'Marta Oyelaran · head roaster',
-        strip: ['Four producers, all visited', 'Paid above posted price', 'Twelve-day freshness window', 'Northwind Coffee Co. · since 2019'],
+        strip: ['Four producers, all visited', 'Paid above posted price', 'Twelve-day freshness window', 'Since 2019 · north side of the harbour'],
       },
       {
-        k: 'st-page', label: '订阅', kind: 'plans', path: '/subscribe', nav: 'Subscribe',
-        title: 'A bag on your doorstep',
-        plans: [
-          ['Taster', '$14', '/ month', ['250 g, one origin', 'Roasts on the 1st', 'Pause any month', 'Brew notes by email', 'Ground or whole bean'],
-            false, 'For one cup a day, and a person who likes to finish a bag before it stales.'],
-          ['Regular', '$26', '/ month', ['500 g, two origins', 'Ships twice a month', 'Free mug after six months', 'Cancel in one click', 'First pick of limited lots'],
-            true, 'The one most people end up on. Two bags a month, alternating producers.'],
-          ['Café', '$88', '/ month', ['2 kg, rotating menu', 'Invoiced monthly', 'Roast profiles included', 'A person on the phone', 'Wholesale pricing'],
-            false, 'For the shop down the road, the office, or a household with a very good machine.'],
+        k: 'nw-page', label: '产地', kind: 'origins', path: '/sourcing', nav: 'Sourcing', cart: '4',
+        kicker: 'Sourcing', title: 'Four producers, four contracts',
+        note: 'Every lot bought forward\nPrices are what we paid, not what we charge',
+        origins: [
+          { name: 'Ethiopia', img: '06', region: 'Guji · 2,050 m · washed',
+            head: 'The one that started the shop',
+            body: 'Kestrel comes from a 34-hectare plot above the Ganale river, picked by eleven households and dried on raised beds for eleven days. We have bought the same lot every year since 2021.',
+            rows: [['Lots bought in 2026', '3 · 1,800 kg'], ['Price paid', '$4.10 / kg green'], ['Above posted price', '+38%'], ['Cup', 'Blueberry, jasmine, cane']] },
+          { name: 'Colombia', img: '07', region: 'Huila · 1,780 m · washed',
+            head: 'The finish in the blend',
+            body: 'La Palma is a family farm of nine hectares, and the washed lots we buy are fermented for 36 hours before drying. It is the reason the blend does not taste like a Brazil.',
+            rows: [['Lots bought in 2026', '4 · 2,400 kg'], ['Price paid', '$3.40 / kg green'], ['Above posted price', '+22%'], ['Cup', 'Red apple, cocoa, clean']] },
+          { name: 'Brazil', img: '03', region: 'Cerrado · 1,100 m · natural',
+            head: 'Body, and the only natural we buy',
+            body: 'Fazenda Sul dries in whole cherry on patios for eighteen days. We buy the same screen size every year because a natural that changes grade changes the blend.',
+            rows: [['Lots bought in 2026', '2 · 3,000 kg'], ['Price paid', '$2.85 / kg green'], ['Above posted price', '+14%'], ['Cup', 'Hazelnut, dried fig, heavy']] },
+          { name: 'Kenya', img: '05', region: 'Nyeri · 1,850 m · washed',
+            head: 'A micro-lot, once a year',
+            body: 'Gaturiri arrives in one 300-kilo lot and sells out in about three weeks. We do not blend it, and we do not buy more than the lot, because the point of it is that it is small.',
+            rows: [['Lots bought in 2026', '1 · 300 kg'], ['Price paid', '$5.20 / kg green'], ['Above posted price', '+41%'], ['Cup', 'Blackcurrant, tomato leaf']] },
         ],
-        foot: 'All plans: free shipping in the city, roast date printed on the bag, and a pause button that works.',
-        strip: ['Save 15% against one-off bags', 'Skip or pause any time', 'Ground to your brewer', 'Ships from the roastery'],
+        strip: ['All four farms visited in person', 'Forward contracts, no spot market', 'Prices above the posted rate', 'Every lot cupped before it ships'],
       },
       {
-        k: 'st-page', label: '日志', kind: 'journal', path: '/journal', nav: 'Journal',
-        title: 'Notes from the bench',
+        k: 'nw-page', label: '冲煮', kind: 'brew', path: '/brew', nav: 'Brew', cart: '4',
+        kicker: 'Brew guides', title: 'Four ways, one bag',
+        note: 'Ratios in grams\nWater at 94 °C unless noted',
+        methods: [
+          { name: 'V60', img: '09', kicker: 'Pour-over · 3 minutes', head: 'The one we use at the bench',
+            body: 'A medium-fine grind, a 40-second bloom and three pours. If the bed looks flat at the end, the grind was too coarse; if it stalls, too fine.',
+            cells: [['18 g', 'coffee'], ['288 g', 'water'], ['2:45', 'total time'], ['1 : 16', 'ratio']],
+            rows: [['0:00', '40 g bloom, swirl once'], ['0:40', 'pour to 130 g'], ['1:15', 'pour to 220 g'], ['1:50', 'pour to 288 g, draw down by 2:45']] },
+          { name: 'Espresso', img: '08', kicker: '18 g in, 36 g out', head: 'Twenty-eight seconds, give or take',
+            body: 'The blend wants 93 °C and a 1 : 2 ratio. Kestrel on its own prefers a longer shot and a coarser grind — 1 : 2.4, about thirty-two seconds.',
+            cells: [['18 g', 'dose'], ['36 g', 'yield'], ['28 s', 'shot time'], ['1 : 2', 'ratio']],
+            rows: [['Basket', '18 g, level, no tap'], ['Temperature', '93 °C for the blend'], ['Shot', '28 s, 36 g out'], ['Taste', 'Cocoa first, dried fig after']] },
+          { name: 'AeroPress', img: '18', kicker: 'Immersion · 2 minutes', head: 'The travel one',
+            body: 'Inverted, 15 g to 220 g, stirred once at thirty seconds and pressed slowly at 1:45. It survives a hotel room and a bad grinder.',
+            cells: [['15 g', 'coffee'], ['220 g', 'water'], ['1:45', 'press'], ['1 : 14.7', 'ratio']],
+            rows: [['Grind', 'Medium, one notch finer than V60'], ['Steep', '1:15, inverted, filter rinsed'], ['Stir', 'Once at 0:30, three turns'], ['Press', 'Slow, 25 s, stop at the hiss']] },
+          { name: 'Cold brew', img: '14', kicker: '16 hours, in the fridge', head: 'For the week, not the morning',
+            body: 'A coarse grind, 1 : 8, sixteen hours in the fridge and then diluted by half over ice. It keeps four days and does not need a filter paper.',
+            cells: [['100 g', 'coffee'], ['800 g', 'water'], ['16 h', 'steep'], ['1 : 8', 'ratio']],
+            rows: [['Grind', 'Coarse, like raw sugar'], ['Steep', '16 hours, in the fridge'], ['Dilute', 'Half concentrate, half water'], ['Keeps', 'Four days, covered']] },
+        ],
+        strip: ['Recipes are for 250 g bags', 'Water at 94 °C unless noted', 'Grind to order, free', 'Ask at the bench on Saturdays'],
+      },
+      {
+        k: 'nw-page', label: '配方', kind: 'guide', path: '/brew/v60', nav: 'Brew', cart: '4',
+        kicker: 'V60 · the bench recipe', title: 'Scale it to the cups you are making',
+        lead: 'One cup is 18 grams to 288 of water. The calculator follows you up to six cups; the timings stretch with it.',
+        img: '18', pull: 'Grind medium-fine. If it drains in under two minutes, go finer.',
+        paras: ['Weigh the dose, not the scoop. A level tablespoon of Kestrel is anywhere between 9 and 14 grams depending on how the bag settled, which is a 30 per cent difference in the cup.',
+          'Rinse the paper, tip it out, and add the coffee. Forty grams of water, forty seconds, then three pours of ninety grams each, waiting for the bed to fall between them.'],
+        steps: [['0:00', '40 g bloom'], ['0:40', 'pour 1 · 90 g'], ['1:15', 'pour 2 · 90 g'], ['1:50', 'pour 3 · 68 g'], ['2:45', 'drawdown done']],
+        strip: ['Recipe scales · the grind does not', 'Medium-fine, ground to order', '94 °C, soft water', 'Ask for a free grind test at the bench'],
+      },
+      {
+        k: 'nw-page', label: '日志', kind: 'journal', path: '/journal', nav: 'Journal', cart: '4',
+        kicker: 'Journal', title: 'Notes from the bench',
+        note: 'Four pieces a month\nNo sponsored links',
         posts: [
-          ['12 Oct 2026', 'Why we roast on Tuesdays', 'The short version: a twelve-kilo drum needs a day of attention, and attention is easier to book than to find.'],
-          ['28 Sep 2026', 'The case against very dark', 'Past a certain point you are tasting the roaster, not the farm. Here is where we stop, and why the line moves.'],
-          ['09 Sep 2026', 'A grinder that outlives you', 'We have replaced three grinders and kept two. What actually failed, and what we would buy again.'],
-          ['21 Aug 2026', 'Twelve days, and then what', 'What actually happens to a bag after the roast date, and the point at which we stop selling it.'],
+          ['12 Oct', 'Why we print the roast date, not the harvest date', 'A harvest date is a story about a farm. A roast date is a fact about a bag, and it is the only one a customer can check on their own kitchen counter.'],
+          ['28 Sep', 'The twelve-day window, and what happens on day thirteen', 'We pull bags on day twelve because the third week is a different coffee. Here is what the cupping table shows, week by week, with numbers.'],
+          ['09 Sep', 'A grinder that costs more than the roaster', 'The second-hand Ditting arrived before the drum did. Seven years on it is still the single biggest improvement to the cup we ever made.'],
+          ['21 Aug', 'Four producers, and the price we actually pay', 'What forward contracts mean for a roastery this size, what we paid per kilo this year, and why the blend still costs $17.'],
         ],
-        mostKicker: 'Most read',
-        most: [['01', 'Roast dates, explained'], ['02', 'Water, and why yours is wrong'], ['03', 'What 250 g actually means'],
-          ['04', 'Four producers, four reasons'], ['05', 'Grind size, in one page'],
-          ['06', 'The Tuesday problem'], ['07', 'Notes on taking notes']],
-        mostNote: 'The journal is written by whoever was on the drum that morning, published every other Tuesday, and never edited by anyone in marketing.',
-        strip: ['New note every other week', 'No sponsored posts', 'Written by the roasters', 'Archive back to 2019'],
+        img: '17', featureKicker: 'Most read',
+        featureTitle: 'The twelve-day window',
+        featureDek: 'What the third week does to a bag, measured at the cupping table.',
+        most: [['01', 'The twelve-day window'], ['02', 'Why the roast date matters'], ['03', 'On paying above the posted price']],
+        strip: ['Written by the people who roast', 'No sponsored links, ever', 'Brew notes by email on signup', 'Archive back to 2019'],
       },
       {
-        k: 'st-page', label: '手机视角', kind: 'mobile', path: '/m',
-        title: 'Northwind, in your pocket',
-        lead: 'The same shop at 390 points wide: one photograph, one promise, one button, and the nav folded into a single line.',
-        cta: 'Shop this week',
-        img: '04',
-        noteTitle: 'One breakpoint, not five.',
+        k: 'nw-page', label: '文章', kind: 'post', path: '/journal/twelve-day-window', nav: 'Journal', cart: '4',
+        kicker: 'Journal · 28 September · 1,400 words',
+        title: 'The twelve-day window, and what happens on day thirteen',
+        byline: 'Marta Oyelaran · photographed at the bench',
         paras: [
-          'Below 720 points the hero drops to a single column, the shop grid stacks to full-width cards, and the journal index moves above the fold.',
+          'A bag of Kestrel leaves the counter with a date on it, and that date is twelve days before its best. Not because twelve is a magic number, but because that is where our own cupping table stops agreeing with itself.',
+          'We cup the same lot every second day for four weeks after roast. Days one to three the coffee is still closed: the blueberry is there but the finish is thin and the acidity reads sharp against nothing. Days four to eleven it is the coffee we sell. Day twelve it is still good. Day thirteen the jasmine goes first, then the fruit flattens into something sweeter and less interesting, and by day twenty we are drinking a coffee that would be fine in a supermarket and is not what anyone paid us for.',
+          'The interesting part is how little of this shows up in a photograph of a bag. Freshness is a claim that only survives contact with a method: you can print a date, but the customer has to brew it to find out whether you were telling the truth.',
         ],
-        noteRows: [
-          ['Layout', 'Two-column hero becomes one. Shop grid 3 → 1.'],
-          ['Nav', 'Five links fold into one line; cart becomes an icon.'],
-          ['Type', 'H1 70 → 38 px. Lead stays 16 px, unhyphenated.'],
-          ['Colour', 'Same paper and terracotta; ink lightens one step.'],
-          ['Weight', 'One photograph per screen, lazy-loaded below the fold.'],
+        pull: 'Twelve days is not a shelf life. It is the point where we stop being able to defend the bag.',
+        tail: 'Which is why the shop page lists the roast day rather than a countdown, and why we roast to the week instead of to the month. If a bag is older than twelve days it goes to the staff box, the wholesale invoice and the cold brew — in that order.',
+        strip: ['Every bag dated by hand', 'Cupped every second day', 'Twelve days, then the staff box', 'Subscribe and the bag is never old'],
+      },
+      {
+        k: 'nw-page', label: '门店', kind: 'places', path: '/visit', nav: 'Visit', cart: '4',
+        kicker: 'Visit', title: 'Three doors, one roaster',
+        note: 'Opening hours follow the day you pick',
+        days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        places: [
+          { name: 'Harbour Street', addr: '14 Harbour Street · the roastery', img: '11',
+            hours: [['Mon', '07:00 – 17:00'], ['Tue', '07:00 – 17:00'], ['Wed', '07:00 – 17:00'], ['Thu', '07:00 – 17:00'], ['Fri', '07:00 – 17:00'], ['Sat', '08:00 – 17:00'], ['Sun', '09:00 – 15:00']] },
+          { name: 'Old Market', addr: '3 Corn Exchange Lane · bench only', img: '12',
+            hours: [['Mon', 'Closed'], ['Tue', '08:00 – 16:00'], ['Wed', '08:00 – 16:00'], ['Thu', '08:00 – 16:00'], ['Fri', '08:00 – 16:00'], ['Sat', '08:00 – 16:00'], ['Sun', 'Closed']] },
+          { name: 'Quay Kiosk', addr: 'North pier · takeaway window', img: '13',
+            hours: [['Mon', '06:30 – 14:00'], ['Tue', '06:30 – 14:00'], ['Wed', '06:30 – 14:00'], ['Thu', '06:30 – 14:00'], ['Fri', '06:30 – 14:00'], ['Sat', '07:00 – 15:00'], ['Sun', '07:00 – 15:00']] },
         ],
-        swatchNote: 'Five colours, unchanged from 1440 to 390. The phone is the same site, not a second design.',
-        strip: ['Breakpoint at 720 pt', 'Single-column shop', 'Same five colours', 'Tested on 390 × 844'],
+        strip: ['Three doors, one roaster', 'Four stools at Harbour Street', 'Cuppings on Fridays at 10:00', 'Dogs welcome at two of three'],
+      },
+      {
+        k: 'nw-page', label: '门店详情', kind: 'place', path: '/visit/harbour-street', nav: 'Visit', cart: '4',
+        kicker: 'Harbour Street · the roastery', title: 'Four stools by the window',
+        lead: 'The shop is the front half of the roastery: a bench, a two-group machine, four stools and a window that faces the water. On Tuesday and Friday mornings you can watch the drum through the door.',
+        img: '12', img2: '13', today: 'Tue',
+        mapLabel: '14 Harbour Street · 4 min from the ferry',
+        hours: [['Mon', '07:00 – 17:00'], ['Tue', '07:00 – 17:00'], ['Wed', '07:00 – 17:00'], ['Thu', '07:00 – 17:00'], ['Fri', '07:00 – 17:00'], ['Sat', '08:00 – 17:00'], ['Sun', '09:00 – 15:00']],
+        rows: [['Roasting', 'Tue & Fri, 06:00 – 11:00'], ['Cupping', 'Fridays, 10:00 · free, six seats'], ['Grinder', 'Bring a bag, we will grind it'], ['Nearest', 'Ferry terminal, 4 minutes on foot']],
+        strip: ['Four stools, no reservations', 'Cuppings Friday at 10:00', 'Free grind with any bag', 'Dogs welcome on the bench side'],
+      },
+      {
+        k: 'nw-page', label: '批发', kind: 'wholesale', path: '/wholesale', nav: 'Coffee', cart: '4',
+        kicker: 'Wholesale', title: 'Twenty-two kitchens, one drum',
+        lead: 'We supply cafés, a bakery and one bookshop. The rate drops with volume, the roast day stays the same, and the grinder is ours until the contract ends.',
+        img: '15', facts: [['22', 'wholesale accounts'], ['310 kg', 'shipped each week'], ['12 wk', 'minimum term']],
+        rows: [['Delivery', 'Tuesday and Friday, our own van'], ['Invoicing', 'Weekly, 14-day terms'], ['Training', 'At your bar, twice a year'], ['Grinder', 'On loan, serviced by us']],
+        tiers: [['Starter', '2 to 5 kg', 28], ['Bench', '6 to 12 kg', 26], ['Roastery', '13 kg and up', 24]],
+        strip: ['Invoiced weekly, 14-day terms', 'Free loan of a grinder', 'Same roast day as the shop', 'Training at your bar, twice a year'],
+      },
+      {
+        k: 'nw-page', label: '批发申请', kind: 'wform', path: '/wholesale/apply', nav: 'Coffee', cart: '4',
+        kicker: 'Wholesale · application', title: 'Tell us about the bar',
+        note: 'We reply within two working days\nTwelve accounts at a time',
+        types: ['Café', 'Restaurant', 'Office', 'Shop'],
+        typeNotes: ['Cafés get the full rate card and a loan grinder. Most start on 6 kg a week.',
+          'Restaurants usually take the blend on a 5 kg weekly standing order, invoiced monthly.',
+          'Offices take 1 kg a week plus a loan grinder; we deliver on Tuesdays with the shop round.',
+          'Shops and delis resell 250 g bags at 35% margin; we print the roast date, not yours.'],
+        fields: [['Business name', 'Harbour Kitchen', false, false], ['Contact', 'Nadia Renn', false, false],
+          ['Email', 'nadia@harbourkitchen.co', false, true], ['Phone', '07700 900 412', false, false],
+          ['Weekly volume', '10 kg', false, false], ['Grind', 'Espresso', false, false],
+          ['Address', '18 Harbour Street, North Quay', true, false], ['Notes', 'Two-group machine, opens 07:00', true, false]],
+        small: 'We will send a 500 g sample of the blend and the current single origin before anything is invoiced.',
+        cta: 'Send application',
+        strip: ['Sample before invoice', 'Two working days to reply', 'Loan grinder, no deposit', 'Twelve-week minimum term'],
+      },
+      {
+        k: 'nw-page', label: '库存点', kind: 'stockists', path: '/stockists', nav: 'Coffee', cart: '4',
+        kicker: 'Stockists', title: 'Where else you can buy a bag',
+        note: 'Six shops this side of the river', query: 'harbour', count: '6 shops',
+        regions: [['All 6', 'all'], ['North quay', 'north'], ['Old town', 'old'], ['South bank', 'south']],
+        mapLabel: 'Six shops, 2.1 km end to end',
+        info: [['Order day', 'Monday, delivered Wednesday'], ['Minimum', 'Six bags of 250 g'], ['Margin', '35% on 250 g bags'], ['Payment', 'Monthly invoice, 14 days']],
+        rows: [['Harbour Kitchen', '18 Harbour Street', 'north'], ['Old Market Deli', '3 Corn Exchange Lane', 'old'],
+          ['Quay Books', '9 North Pier', 'north'], ['Riverside Bakery', '44 Bridge Road', 'south'],
+          ['Ferry Kiosk', 'Terminal forecourt', 'north'], ['Southbank Grocer', '2 Wharf Lane', 'south']],
+        strip: ['Stockists order weekly', 'Bags dated by hand', 'Ask them to grind it for you', 'Not listed? Tell us where you shop'],
+      },
+      {
+        k: 'nw-page', label: '购物车', kind: 'cart', path: '/cart', nav: 'Coffee', cart: '4',
+        kicker: 'Cart', title: 'Four bags, one roast day',
+        note: 'Roasted Tuesday 03 November\nShips the same afternoon',
+        lines: [['10', 'Kestrel · 250 g', 'Washed Ethiopia, Guji · whole bean', 19, 2],
+          ['16', 'Northwind Blend · 250 g', 'Natural Brazil + washed Colombia · filter', 17, 1],
+          ['03', 'Meridian Decaf · 250 g', 'Sugarcane decaf, Colombia · whole bean', 18, 1]],
+        strip: ['Free shipping over $40', 'Packed in paper, not plastic', 'Returns within 14 days', 'Roast date printed on every bag'],
+      },
+      {
+        k: 'nw-page', label: '结算', kind: 'checkout', path: '/checkout', nav: 'Coffee', cart: '4',
+        kicker: 'Checkout · step 2 of 3', title: 'When should it arrive',
+        note: 'Prices are final, tax included\nNo account needed',
+        subtotal: 73,
+        options: [['Standard · 2 to 3 days', 'Posted Tuesday afternoon, arrives Thursday or Friday', 0],
+          ['Express · next day', 'Sent before 15:00, arrives Wednesday', 8],
+          ['Collect at Harbour Street', 'From the counter, Tuesday after 14:00', 0]],
+        fields: [['Name', 'Nadia Renn', false], ['Email', 'nadia@harbourkitchen.co', false],
+          ['Address line 1', '18 Harbour Street', true], ['City', 'North Quay', false], ['Postcode', 'NQ1 4HR', false],
+          ['Card', '•••• 4417', true]],
+        strip: ['Tax included in every price', 'Card details never stored', 'Posted the day it is roasted', 'Collect from the counter, free'],
+      },
+      {
+        k: 'nw-page', label: '账户', kind: 'account', path: '/account', nav: 'Subscribe', cart: '4',
+        kicker: 'Account', title: 'Nadia Renn',
+        note: 'Subscriber since March 2023\nBench · 500 g · fortnightly',
+        cards: [['Next delivery', 'Thursday 05 November · 500 g Bench · two origins, ground for filter', 'Skip or move it from the buttons below'],
+          ['Payment', 'Visa •••• 4417 · renews 05 November · $26.00', 'No failed payments'],
+          ['Roast history', '14 deliveries · 7.0 kg · Kestrel 6 times, Blend 5 times, Meridian 3', 'Download the list as CSV']],
+        actions: [['All changes', 'all'], ['Skip', 'skip'], ['Move', 'move'], ['Box', 'box'], ['Cancel', 'cancel']],
+        rows: [['Skip the 05 November delivery', 'Confirm', 'skip'], ['Move the next one to 12 November', 'Confirm', 'move'],
+          ['Switch box from 500 g to 1 kg', '+$22 a delivery', 'box'], ['Cancel the subscription', 'Ends after the last box', 'cancel']],
+        allNote: true,
+        strip: ['Skip up to two boxes a year', 'No minimum term', 'Cancel in two clicks', 'Bags are never older than five days'],
+      },
+      {
+        k: 'nw-page', label: '礼品卡', kind: 'gift', path: '/gift', nav: 'Coffee', cart: '4',
+        kicker: 'Gift cards', title: 'Give a bag, or twelve',
+        lead: 'A gift card arrives by email within a minute and works on everything except wholesale invoices. It never expires, and it can be spent across more than one order.',
+        amounts: [[25], [50], [100], [150]],
+        buys: [['One 250 g bag', '$19'], ['Two 250 g bags', '$36'], ['Brew kit + a bag', '$48'], ['Three months of Taster', '$42']],
+        rows: [['Delivery', 'Email, instantly'], ['Expires', 'Never'], ['Can be split', 'Yes, across orders'], ['Refundable', 'Within 14 days, unused']],
+        cta: 'Add to cart',
+        strip: ['Arrives by email in a minute', 'Never expires', 'Spend it across several orders', 'Printed cards at the counter'],
+      },
+      {
+        k: 'nw-page', label: '404', kind: 'notfound', path: '/shop/kestre1', nav: 'Coffee', cart: '4',
+        title: 'That page went off the bench',
+        lead: 'A typo, a sold-out lot, or a link from 2019. The shop, the brew guides and the journal are all still where they were.',
+        suggestions: ['Kestrel', 'Brew guides', 'This week on the bench', 'Visit the roastery'],
+        img: '20',
+        strip: ['Sold-out lots are removed, not hidden', 'Everything else is one click away', 'Journal archive back to 2019', 'Tell us if a link is broken'],
       },
     ],
   },
@@ -9550,99 +9740,298 @@ function afTotals(base, groups) {
       }
       return '<div class="au">' + body + '</div>'
     }
-    case 'st-page': {
-      const NAV = ['Coffee', 'Subscribe', 'Our story', 'Journal', 'Visit']
-      const nav = '<div class="st-nav"><div class="st-logo">NORTHWIND<i style="color:var(--accent)">.</i></div>' +
-        '<div class="st-links">' + NAV.map((t) => (t === s.nav ? '<b>' + esc(t) + '</b>' : '<span>' + esc(t) + '</span>')).join('') + '</div>' +
-        '<div class="st-cart">Cart · ' + esc(s.cart || '2') + '</div></div>'
-      const chrome = '<div class="st-chrome"><div class="st-dots"><i></i><i></i><i></i></div>' +
-        '<div class="st-url">northwind.coffee<b>' + esc(s.path || '/') + '</b></div><div style="width:52px"></div></div>'
+    case 'nw-page': {
+      const NAV = [['/', 'Coffee'], ['/subscribe', 'Subscribe'], ['/sourcing', 'Sourcing'],
+        ['/brew', 'Brew'], ['/journal', 'Journal'], ['/visit', 'Visit']]
+      const chrome = '<div class="nw-chrome"><div class="nw-dots"><i></i><i></i><i></i></div>' +
+        '<div class="nw-url">northwind.coffee<b>' + esc(s.path || '/') + '</b></div><div style="width:56px"></div></div>'
+      const nav = '<div class="nw-nav"><div class="nw-logo">NORTHWIND<i>.</i></div><div class="nw-links">' +
+        NAV.map(([href, t]) => t === s.nav ? '<b>' + esc(t) + '</b>' : '<span>' + esc(t) + '</span>').join('') +
+        '</div><div class="nw-cart">Cart · <em>' + esc(s.cart || '0') + '</em></div></div>'
       const strip = (s.strip || []).length
-        ? '<div class="st-strip">' + s.strip.map((x) => '<span>' + esc(x) + '</span>').join('') + '</div>'
-        : ''
+        ? '<div class="nw-strip">' + s.strip.map((x) => '<span>' + esc(x) + '</span>').join('') + '</div>' : ''
+      const img = (n, cls) => '<div class="nw-img' + (cls ? ' ' + cls : '') + '">' + imgTag(deck, n) + '</div>'
+      const head = (kicker, title, right) => '<div class="nw-pagehead"><div><div class="nw-kick">' + esc(kicker) +
+        '</div><h2 class="nw-h2" style="margin-top:8px">' + esc(title) + '</h2></div>' +
+        '<div class="nw-note" style="text-align:right">' + (right || '') + '</div></div>'
+      const k = s.kind
       let body = ''
-      if (s.kind === 'home') {
-        body = nav +
-          '<div class="st-hero">' +
-          '<div><div class="st-kick">' + esc(s.kicker) + '</div><h1 class="st-h1">' + esc(s.title) + '</h1>' +
-          '<p class="st-lead">' + esc(s.lead) + '</p>' +
-          '<div class="st-cta"><span class="st-btn">' + esc(s.cta || 'Shop the roast') + '</span>' +
-          '<span class="st-btn ghost">' + esc(s.cta2 || 'Subscribe & save 15%') + '</span></div></div>' +
-          '<div class="st-shot">' + imgTag(deck, s.img) + '<div class="st-tag">' + esc(s.tag || '') + '</div></div>' +
-          '</div>' + strip
-      } else if (s.kind === 'shop') {
-        body = nav +
-          '<div class="st-shop"><div class="st-shophead"><h2 class="st-h2">' + esc(s.title) + '</h2>' +
-          '<span style="font-size:13px;color:#6A6252">' + esc(s.note || '') + '</span></div>' +
-          '<div class="st-grid">' + (s.products || []).map((p) => {
-            const top = p.promo
-              ? '<div class="st-promo"><div class="k">' + esc(p.promo[0]) + '</div>' +
-                (p.promo[3] ? '<div class="big">' + esc(p.promo[3]) + '</div>' : '') +
-                (p.promo[4] ? '<div class="s">' + esc(p.promo[4]) + '</div>' : '') +
-                '<div class="t">' + esc(p.promo[1]) + '</div><div class="p">' + esc(p.promo[2]) + '</div></div>'
-              : imgTag(deck, p.img)
-            return '<div class="st-card">' + top + '<div class="st-cardinfo"><b>' + esc(p.name) + '</b>' +
-              '<span>' + esc(p.desc) + '</span><div class="st-price"><span>' + esc(p.price[0]) + '</span>' +
-              '<i>' + esc(p.price[1]) + '</i></div></div></div>'
-          }).join('') + '</div></div>' + strip
-      } else if (s.kind === 'story') {
-        body = nav +
-          '<div class="st-story"><div><h2 class="st-h2">' + esc(s.title) + '</h2>' +
-          '<div class="st-cols">' + (s.paras || []).map((x) => '<p>' + esc(x) + '</p>').join('') + '</div>' +
-          '<div class="st-facts">' + (s.facts || []).map(([k, v]) =>
-            '<div class="st-fact"><b>' + esc(k) + '</b><span>' + esc(v) + '</span></div>').join('') + '</div></div>' +
-          (s.img
-            ? '<div class="st-shot" style="height:560px">' + imgTag(deck, s.img) + '<div class="st-tag">' + esc(s.tag || '') + '</div></div>'
-            : '<div class="st-quote"><div class="st-qmark">“</div>' +
-              '<div><div class="st-kick" style="margin:0 0 14px">' + esc(s.quoteKicker || 'From the roastery') + '</div>' +
-              '<div class="st-quote-t">' + esc(s.quote || '') + '</div>' +
-              '<div class="st-quote-by" style="margin-top:18px">' + esc(s.quoteBy || '') + '</div></div></div>') +
-          '</div>' + strip
-      } else if (s.kind === 'plans') {
-        body = nav +
-          '<div style="padding:4px 56px 0"><h2 class="st-h2">' + esc(s.title) + '</h2></div>' +
-          '<div class="st-plans" style="margin-top:22px">' + (s.plans || []).map(([name, price, per, feats, hi, note]) =>
-            '<div class="st-plan' + (hi ? ' hi' : '') + '"><h3>' + esc(name) + '</h3>' +
-            '<div class="p">' + esc(price) + '<i>' + esc(per) + '</i></div>' +
-            (note ? '<div class="d">' + esc(note) + '</div>' : '') +
-            '<ul>' + (feats || []).map((f) => '<li>' + esc(f) + '</li>').join('') + '</ul>' +
-            '<span class="st-btn">' + esc(hi ? 'Start with this' : 'Choose') + '</span></div>').join('') + '</div>' +
-          (s.foot ? '<div class="st-planfoot">' + esc(s.foot) + '</div>' : '') + strip
-      } else if (s.kind === 'journal') {
-        body = nav +
-          '<div class="st-story" style="grid-template-columns:1fr 420px"><div>' +
-          '<h2 class="st-h2">' + esc(s.title) + '</h2>' +
-          '<div style="margin-top:26px">' + (s.posts || []).map(([date, head, dek]) =>
-            '<div style="padding:20px 0;border-top:1px solid rgba(28,24,18,.14)">' +
-            '<div style="font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:#6A6252">' + esc(date) + '</div>' +
-            '<div style="margin-top:8px;font-size:21px;letter-spacing:-.02em">' + esc(head) + '</div>' +
-            '<p style="margin:8px 0 0;font-size:13.5px;line-height:1.7;color:#5B5344">' + esc(dek) + '</p></div>').join('') +
-          '</div></div>' +
-          (s.img
-            ? '<div class="st-shot" style="height:520px">' + imgTag(deck, s.img) + '<div class="st-tag">' + esc(s.tag || '') + '</div></div>'
-            : '<div class="st-most"><div class="st-kick" style="margin:0 0 14px">' + esc(s.mostKicker || 'Most read') + '</div>' +
-              ((s.most || []).map(([n, t]) => '<div class="st-mostrow"><b>' + esc(n) + '</b><span>' + esc(t) + '</span></div>').join('')) +
-              '<div class="st-mostnote">' + esc(s.mostNote || '') + '</div>' +
-              '</div>') +
-          '</div>' + strip
-      } else if (s.kind === 'mobile') {
-        body = '<div class="st-mobile">' +
-          '<div class="st-phone"><div style="height:32px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font-size:11px;color:#6A6252"><span>9:41</span><span>▮▮▮</span></div>' +
-          '<div class="st-phone-nav"><span class="l">NORTHWIND<i>.</i></span><span class="m">☰</span></div>' +
-          imgTag(deck, s.img) +
-          '<div class="st-phone-in"><b>' + esc(s.title) + '</b><span>' + esc(s.lead) + '</span>' +
-          '<div class="st-btn" style="margin-top:16px;justify-content:center">' + esc(s.cta || 'Shop') + '</div></div>' +
-          '<div class="st-phone-foot"><span>Shop</span><span>Subscribe</span><span>Journal</span></div></div>' +
-          '<div class="st-note"><h3>' + esc(s.noteTitle || '') + '</h3>' +
-          (s.paras || []).map((x) => '<p style="margin:0 0 12px;font-size:13px;line-height:1.72;color:#5B5344">' + esc(x) + '</p>').join('') +
-          '<div class="st-note-list">' + (s.noteRows || []).map(([k, v]) =>
-            '<div class="st-note-row"><b>' + esc(k) + '</b><span>' + esc(v) + '</span></div>').join('') + '</div>' +
-          '<div class="st-swatches"><i style="background:#F6F3EA"></i><i style="background:#1C1812"></i>' +
-          '<i style="background:#B4562B"></i><i style="background:#2F4B3A"></i><i style="background:#D8D2C2"></i></div>' +
-          (s.swatchNote ? '<div class="st-swnote">' + esc(s.swatchNote) + '</div>' : '') +
-          '</div></div>' + strip
+      if (k === 'home') {
+        body = '<div class="nw-hero"><div>' +
+          '<div class="nw-kick">' + esc(s.kicker) + '</div><h1 class="nw-h1">' + esc(s.title) + '</h1>' +
+          '<p class="nw-lead">' + esc(s.lead) + '</p>' +
+          '<div class="nw-ctas"><span class="nw-btn">' + esc(s.cta) + '</span>' +
+          '<span class="nw-btn ghost">' + esc(s.cta2) + '</span></div>' +
+          '<div class="nw-badges">' + (s.badges || []).map((x) => '<span>' + esc(x) + '</span>').join('') + '</div>' +
+          '</div>' + img(s.img) + '</div>'
+      } else if (k === 'shop') {
+        body = head(s.kicker, s.title, esc(s.note)) +
+          '<div class="nw-filters">' + (s.filters || []).map(([label, f], i) =>
+            '<span class="nw-chip' + (i === 0 ? ' on' : '') + '" data-nw="chip" data-g="shop" data-f="' + esc(f) + '">' +
+            esc(label) + '</span>').join('') +
+          '<span class="nw-note">Tap a filter — the grid is live</span></div>' +
+          '<div class="nw-grid" data-nw-root="none">' + (s.products || []).map((p) =>
+            '<div class="nw-card" data-tags="' + esc(p.tags) + '">' + img(p.img) +
+            '<div class="nw-card-info"><div class="nw-h3" style="font-size:16px">' + esc(p.name) + '</div>' +
+            '<div class="nw-note" style="margin-top:5px">' + esc(p.desc) + '</div>' +
+            '<div class="nw-card-price"><b>' + esc(p.price) + '</b><i>' + esc(p.stock) + '</i></div></div></div>').join('') +
+          '</div>'
+      } else if (k === 'product') {
+        body = '<div class="nw-product"><div class="nw-p-main">' + img(s.img) +
+          '<div class="nw-thumbs">' + (s.thumbs || []).map((t, i) =>
+            '<div class="nw-img' + (i === 0 ? ' on' : '') + '">' + imgTag(deck, t) + '</div>').join('') + '</div>' +
+          (s.lotRows ? '<div class="nw-rows" style="margin-top:18px">' + s.lotRows.map(([a, b]) =>
+            '<div class="nw-row"><span>' + esc(a) + '</span><b>' + esc(b) + '</b></div>').join('') + '</div>' : '') +
+          '</div>' +
+          '<div class="nw-buy" data-nw-root="product" data-unit="' + s.unit + '" data-qty="1">' +
+          '<div class="nw-kick">' + esc(s.kicker) + '</div>' +
+          '<h2 class="nw-h2" style="margin-top:8px">' + esc(s.title) + '</h2>' +
+          '<p class="nw-lead" style="margin-top:10px">' + esc(s.lead) + '</p>' +
+          '<div class="nw-label">Size</div><div class="nw-optrow">' + (s.sizes || []).map(([lab, add, note], i) =>
+            '<span class="nw-opt' + (i === 0 ? ' on' : '') + '" data-nw="opt" data-g="size" data-add="' + add + '">' +
+            esc(lab) + '<i>' + esc(note) + '</i></span>').join('') + '</div>' +
+          '<div class="nw-label">Grind</div><div class="nw-optrow">' + (s.grinds || []).map((g0, i) =>
+            '<span class="nw-opt' + (i === 0 ? ' on' : '') + '" data-nw="opt" data-g="grind" data-add="0">' + esc(g0) + '</span>').join('') + '</div>' +
+          '<div class="nw-label">Quantity</div><div class="nw-optrow">' +
+          '<span class="nw-stepwrap"><span class="nw-step" data-nw="step" data-for="qty" data-d="-1">−</span>' +
+          '<span class="nw-qty" data-nw-out="qty">1</span>' +
+          '<span class="nw-step" data-nw="step" data-for="qty" data-d="1">+</span></span></div>' +
+          '<div style="display:flex;align-items:flex-end;justify-content:space-between;margin-top:26px;padding-top:16px;border-top:1px solid rgba(28,24,18,.14)">' +
+          '<div><div class="nw-price"><span data-nw-out="unit">$' + s.unit + '</span><i>per bag</i></div>' +
+          '<div class="nw-note" style="margin-top:6px">' + esc(s.stocknote) + '</div></div>' +
+          '<div style="text-align:right"><div class="nw-price" style="font-size:26px"><span data-nw-out="total">$' + s.unit + '</span></div>' +
+          '<span class="nw-btn" style="margin-top:8px">Add to cart</span></div></div></div></div>'
+      } else if (k === 'plans') {
+        body = head(s.kicker, s.title, esc(s.note)) +
+          '<div class="nw-plan-grid">' + (s.plans || []).map(([name, price, feats, hi]) =>
+            '<div class="nw-plan' + (hi ? ' hi' : '') + '"><div class="nw-kick" style="color:inherit;opacity:.7">' + esc(name) + '</div>' +
+            '<div class="p">$' + price + '<i>/ month</i></div>' +
+            '<ul>' + feats.map((f) => '<li>' + esc(f) + '</li>').join('') + '</ul></div>').join('') + '</div>' +
+          '<div class="nw-calcbar" data-nw-root="plan">' +
+          '<div><div class="nw-label" style="margin:0 0 6px">Box</div><div class="nw-optrow" style="margin:0">' +
+          (s.boxes || []).map(([lab, price], i) => '<span class="nw-chip' + (i === 0 ? ' on' : '') +
+            '" data-nw="chip" data-g="box" data-price="' + price + '">' + esc(lab) + '</span>').join('') + '</div></div>' +
+          '<div><div class="nw-label" style="margin:0 0 6px">Cadence</div><div class="nw-optrow" style="margin:0">' +
+          (s.cadence || []).map(([lab, w], i) => '<span class="nw-chip' + (i === 1 ? ' on' : '') +
+            '" data-nw="chip" data-g="cad" data-weeks="' + w + '">' + esc(lab) + '</span>').join('') + '</div></div>' +
+          '<div style="margin-left:auto;text-align:right"><div class="nw-label" style="margin:0 0 4px">Per delivery · per month</div>' +
+          '<b><span data-nw-out="per">$' + (s.boxes[0] ? s.boxes[0][1] : 14) + '</span> · <span data-nw-out="month">$' +
+            (Math.round((s.boxes[0] ? s.boxes[0][1] : 14) * 30 / 14 * 100) / 100) + '</span></b></div></div>' +
+          (s.band ? '<div class="nw-band">' + img(s.band.img) + '<div><div class="nw-h3">' + esc(s.band.title) + '</div>' +
+            '<div class="nw-rows" style="margin-top:10px">' + (s.band.rows || []).map(([a, b]) =>
+              '<div class="nw-row"><span>' + esc(a) + '</span><b>' + esc(b) + '</b></div>').join('') + '</div></div></div>' : '')
+      } else if (k === 'story') {
+        body = '<div class="nw-story"><div><div class="nw-kick">' + esc(s.kicker) + '</div>' +
+          '<h2 class="nw-h2" style="margin-top:8px">' + esc(s.title) + '</h2>' +
+          '<div class="nw-cols">' + (s.paras || []).map((x) => '<p>' + esc(x) + '</p>').join('') + '</div>' +
+          '<div class="nw-facts">' + (s.facts || []).map(([b, t]) =>
+            '<div class="nw-fact"><b>' + esc(b) + '</b><span>' + esc(t) + '</span></div>').join('') + '</div>' +
+          (s.rows ? '<div class="nw-rows">' + s.rows.map(([a, b]) =>
+            '<div class="nw-row"><span>' + esc(a) + '</span><b>' + esc(b) + '</b></div>').join('') + '</div>' : '') + '</div>' +
+          '<div class="nw-portrait">' + img(s.img) + img(s.img2, '') +
+          '<div class="nw-quote">' + esc(s.quote) + '<span>' + esc(s.quoteBy) + '</span></div></div></div>'
+      } else if (k === 'origins') {
+        body = head(s.kicker, s.title, esc(s.note)) +
+          '<div data-nw-root="none"><div class="nw-tabs">' + (s.origins || []).map((o, i) =>
+            '<span class="nw-tab' + (i === 0 ? ' on' : '') + '" data-nw="tab" data-pane="o' + i + '">' + esc(o.name) + '</span>').join('') + '</div>' +
+          (s.origins || []).map((o, i) =>
+            '<div class="nw-pane' + (i === 0 ? ' on' : '') + '" data-pane="o' + i + '"><div class="nw-origin">' +
+            img(o.img) + '<div><div class="nw-kick">' + esc(o.region) + '</div>' +
+            '<h3 class="nw-h3" style="margin-top:8px;font-size:23px">' + esc(o.head) + '</h3>' +
+            '<p class="nw-lead" style="max-width:none">' + esc(o.body) + '</p>' +
+            '<div class="nw-rows">' + o.rows.map(([a, b]) =>
+              '<div class="nw-row"><span>' + esc(a) + '</span><b>' + esc(b) + '</b></div>').join('') + '</div></div></div></div>').join('') +
+          '</div>'
+      } else if (k === 'brew') {
+        body = head(s.kicker, s.title, esc(s.note)) +
+          '<div data-nw-root="none"><div class="nw-tabs">' + (s.methods || []).map((m, i) =>
+            '<span class="nw-tab' + (i === 0 ? ' on' : '') + '" data-nw="tab" data-pane="m' + i + '">' + esc(m.name) + '</span>').join('') + '</div>' +
+          (s.methods || []).map((m, i) =>
+            '<div class="nw-pane' + (i === 0 ? ' on' : '') + '" data-pane="m' + i + '"><div class="nw-origin">' +
+            '<div class="nw-img" style="height:436px">' + imgTag(deck, m.img) + '</div><div><div class="nw-kick">' + esc(m.kicker) + '</div>' +
+            '<h3 class="nw-h3" style="margin-top:6px;font-size:22px">' + esc(m.head) + '</h3>' +
+            '<p class="nw-lead" style="max-width:none">' + esc(m.body) + '</p>' +
+            '<div class="nw-recipe">' + m.cells.map(([b, t]) =>
+              '<div class="nw-rcell"><b>' + esc(b) + '</b><span>' + esc(t) + '</span></div>').join('') + '</div>' +
+            '<div class="nw-rows" style="margin-top:14px">' + (m.rows || []).map(([a, b]) =>
+              '<div class="nw-row"><span>' + esc(a) + '</span><b>' + esc(b) + '</b></div>').join('') + '</div></div></div></div>').join('') +
+          '</div>'
+      } else if (k === 'guide') {
+        body = '<div class="nw-guide"><div>' + img(s.img) +
+          '<div class="nw-pull">' + esc(s.pull) + '</div>' +
+          '<div class="nw-cols" style="columns:2">' + (s.paras || []).map((x) => '<p>' + esc(x) + '</p>').join('') + '</div></div>' +
+          '<div data-nw-root="brew" data-cups="2" data-gpc="18" data-ratio="16">' +
+          '<div class="nw-kick">' + esc(s.kicker) + '</div><h2 class="nw-h2" style="margin-top:8px">' + esc(s.title) + '</h2>' +
+          '<p class="nw-lead">' + esc(s.lead) + '</p>' +
+          '<div class="nw-scalebox" style="margin-top:20px"><div class="nw-label" style="margin:0 0 8px">Cups</div>' +
+          '<span class="nw-stepwrap"><span class="nw-step" data-nw="step" data-for="cups" data-d="-1">−</span>' +
+          '<span class="nw-qty" data-nw-out="cups">2</span>' +
+          '<span class="nw-step" data-nw="step" data-for="cups" data-d="1">+</span></span>' +
+          '<div style="display:flex;gap:26px;margin-top:18px">' +
+          '<div><div class="nw-bignum"><span data-nw-out="grams">36</span><i>g coffee</i></div></div>' +
+          '<div><div class="nw-bignum"><span data-nw-out="water">576</span><i>g water</i></div></div>' +
+          '<div><div class="nw-bignum"><span data-nw-out="time">3.0</span><i>min</i></div></div></div>' +
+          '<div class="nw-note" style="margin-top:14px">1 : 16, ground medium-fine · 60 g bloom for 40 s</div></div>' +
+          '<div class="nw-rows" style="margin-top:18px">' + (s.steps || []).map(([t, d]) =>
+            '<div class="nw-row"><span>' + esc(t) + '</span><b>' + esc(d) + '</b></div>').join('') + '</div></div></div>'
+      } else if (k === 'journal') {
+        body = head(s.kicker, s.title, esc(s.note)) +
+          '<div class="nw-journal"><div>' + (s.posts || []).map(([d, h, dek]) =>
+            '<div class="nw-jrow"><div class="d">' + esc(d) + '</div><div><h4>' + esc(h) + '</h4><p>' + esc(dek) + '</p></div></div>').join('') +
+          '</div><div class="nw-feature">' + img(s.img) +
+          '<div class="nw-kick" style="margin-top:14px">' + esc(s.featureKicker) + '</div>' +
+          '<h3 class="nw-h3" style="margin-top:6px">' + esc(s.featureTitle) + '</h3>' +
+          '<p class="nw-note" style="margin-top:8px">' + esc(s.featureDek) + '</p>' +
+          '<div class="nw-rows" style="margin-top:14px">' + (s.most || []).map(([n, t]) =>
+            '<div class="nw-row"><span>' + esc(n) + '</span><b>' + esc(t) + '</b></div>').join('') + '</div></div></div>'
+      } else if (k === 'post') {
+        body = '<div class="nw-article"><div class="nw-kick">' + esc(s.kicker) + '</div>' +
+          '<h1>' + esc(s.title) + '</h1>' +
+          '<div class="nw-note" style="margin-top:10px">' + esc(s.byline) + '</div>' +
+          '<div class="nw-cols">' + (s.paras || []).map((x) => '<p>' + esc(x) + '</p>').join('') + '</div>' +
+          '<div class="nw-pull">' + esc(s.pull) + '</div>' +
+          '<div class="nw-cols" style="margin-top:14px"><p>' + esc(s.tail) + '</p></div></div>'
+      } else if (k === 'places') {
+        body = head(s.kicker, s.title, esc(s.note)) +
+          '<div data-nw-root="none"><div class="nw-filters">' + (s.days || []).map((d, i) =>
+            '<span class="nw-chip' + (i === 0 ? ' on' : '') + '" data-nw="day" data-g="day" data-day="' + esc(d) + '">' + esc(d) + '</span>').join('') +
+          '<span class="nw-note" style="margin-left:auto">Pick a day — every card follows</span></div>' +
+          '<div class="nw-places">' + (s.places || []).map((p) =>
+            '<div class="nw-place-card">' + img(p.img) +
+            '<div class="nw-h3" style="margin-top:12px;font-size:16px">' + esc(p.name) + '</div>' +
+            '<div class="nw-note" style="margin-top:4px">' + esc(p.addr) + '</div>' +
+            '<div class="nw-hours">' + p.hours.map(([d, h]) =>
+              '<div data-day="' + esc(d) + '"><span>' + esc(d) + '</span><span>' + esc(h) + '</span></div>').join('') + '</div></div>').join('') +
+          '</div></div>'
+      } else if (k === 'place') {
+        body = '<div class="nw-cafe"><div>' + img(s.img) + img(s.img2, '') +
+          '<div class="nw-map"><div class="nw-pin"></div><div class="nw-maplab">' + esc(s.mapLabel) + '</div></div></div>' +
+          '<div><div class="nw-kick">' + esc(s.kicker) + '</div><h2 class="nw-h2" style="margin-top:8px">' + esc(s.title) + '</h2>' +
+          '<p class="nw-lead">' + esc(s.lead) + '</p>' +
+          '<div class="nw-hours" style="margin-top:16px">' + (s.hours || []).map(([d, h]) =>
+            '<div' + (s.today === d ? ' class="on"' : '') + '><span>' + esc(d) + '</span><span>' + esc(h) + '</span></div>').join('') + '</div>' +
+          '<div class="nw-rows" style="margin-top:16px">' + (s.rows || []).map(([a, b]) =>
+            '<div class="nw-row"><span>' + esc(a) + '</span><b>' + esc(b) + '</b></div>').join('') + '</div></div></div>'
+      } else if (k === 'wholesale') {
+        body = '<div class="nw-whole"><div><div class="nw-kick">' + esc(s.kicker) + '</div>' +
+          '<h2 class="nw-h2" style="margin-top:8px">' + esc(s.title) + '</h2>' +
+          '<p class="nw-lead">' + esc(s.lead) + '</p>' + img(s.img, '') +
+          '<div class="nw-facts" style="margin-top:18px">' + (s.facts || []).map(([b, t]) =>
+            '<div class="nw-fact"><b>' + esc(b) + '</b><span>' + esc(t) + '</span></div>').join('') + '</div>' +
+          (s.rows ? '<div class="nw-rows" style="margin-top:16px">' + s.rows.map(([a, b]) =>
+            '<div class="nw-row"><span>' + esc(a) + '</span><b>' + esc(b) + '</b></div>').join('') + '</div>' : '') + '</div>' +
+          '<div data-nw-root="whole" data-qty="2">' +
+          '<div class="nw-label" style="margin-top:0">Weekly volume</div>' +
+          (s.tiers || []).map(([lab, kg, per], i) =>
+            '<div class="nw-tier' + (i === 1 ? ' on' : '') + '" data-nw="tier" data-g="tier" data-kg="' + per + '">' +
+            '<div><b>' + esc(lab) + '</b><div class="nw-note">' + esc(kg) + ' a week · 12-week minimum</div></div>' +
+            '<i>$' + per + ' / kg</i></div>').join('') +
+          '<div class="nw-label">Deliveries per week</div>' +
+          '<span class="nw-stepwrap"><span class="nw-step" data-nw="step" data-for="qty" data-d="-1">−</span>' +
+          '<span class="nw-qty" data-nw-out="kg">10 kg</span>' +
+          '<span class="nw-step" data-nw="step" data-for="qty" data-d="1">+</span></span>' +
+          '<div class="nw-sum" style="margin-top:20px"><div class="nw-sumrow"><span>Rate</span><b data-nw-out="perkg">$26 / kg</b></div>' +
+          '<div class="nw-sumrow"><span>Weekly volume</span><b data-nw-out="kg2">10 kg</b></div>' +
+          '<div class="nw-sumrow total"><span>First invoice</span><b data-nw-out="total">$260</b></div>' +
+          '<div class="nw-note" style="margin-top:10px">Invoiced weekly, 14-day terms, free loan of a grinder.</div></div></div></div>'
+      } else if (k === 'wform') {
+        body = head(s.kicker, s.title, esc(s.note)) +
+          '<div data-nw-root="none"><div class="nw-tabs">' + (s.types || []).map((t, i) =>
+            '<span class="nw-tab' + (i === 0 ? ' on' : '') + '" data-nw="tab" data-pane="t' + i + '">' + esc(t) + '</span>').join('') + '</div>' +
+          (s.types || []).map((t, i) =>
+            '<div class="nw-pane' + (i === 0 ? ' on' : '') + '" data-pane="t' + i + '"><div class="nw-note" style="margin-top:6px">' +
+            esc(s.typeNotes[i]) + '</div></div>').join('') + '</div>' +
+          '<div class="nw-form">' + (s.fields || []).map(([label, value, wide, active]) =>
+            '<div class="nw-field' + (wide ? ' wide' : '') + (active ? ' on' : '') + '"><label>' + esc(label) + '</label>' +
+            '<span>' + esc(value) + '</span></div>').join('') + '</div>' +
+          '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:18px">' +
+          '<div class="nw-note">' + esc(s.small) + '</div><span class="nw-btn">' + esc(s.cta) + '</span></div>'
+      } else if (k === 'stockists') {
+        body = head(s.kicker, s.title, esc(s.note)) +
+          '<div class="nw-two" style="padding-top:14px"><div data-nw-root="none">' +
+          '<div class="nw-searchbar">Search <b>' + esc(s.query) + '</b><span style="margin-left:auto;color:#8A8274">' + esc(s.count) + '</span></div>' +
+          '<div class="nw-filters">' + (s.regions || []).map(([lab, f], i) =>
+            '<span class="nw-chip' + (i === 0 ? ' on' : '') + '" data-nw="chip" data-g="reg" data-f="' + esc(f) + '">' + esc(lab) + '</span>').join('') + '</div>' +
+          '<div class="nw-rows">' + (s.rows || []).map(([name, area, tags]) =>
+            '<div class="nw-row" data-tags="' + esc(tags) + '"><b>' + esc(name) + '</b><span>' + esc(area) + '</span></div>').join('') + '</div></div>' +
+          '<div><div class="nw-map" style="height:268px"><div class="nw-pin"></div>' +
+          '<div class="nw-maplab">' + esc(s.mapLabel || '') + '</div></div>' +
+          '<div class="nw-rows" style="margin-top:16px">' + (s.info || []).map(([a, b]) =>
+            '<div class="nw-row"><span>' + esc(a) + '</span><b>' + esc(b) + '</b></div>').join('') + '</div></div></div>'
+      } else if (k === 'cart') {
+        const sub0 = (s.lines || []).reduce((a, l) => a + l[3] * l[4], 0)
+        const cnt0 = (s.lines || []).reduce((a, l) => a + l[4], 0)
+        const ship0 = sub0 >= 40 ? 0 : 6
+        body = head(s.kicker, s.title, esc(s.note)) +
+          '<div class="nw-two" data-nw-root="cart"><div>' + (s.lines || []).map(([im, name, sub, unit, qty]) =>
+            '<div class="nw-line" data-line data-unit="' + unit + '" data-qty="' + qty + '">' + img(im) +
+            '<div><div class="nw-h3" style="font-size:15px">' + esc(name) + '</div>' +
+            '<div class="nw-note" style="margin-top:4px">' + esc(sub) + '</div>' +
+            '<span class="nw-stepwrap" style="margin-top:8px"><span class="nw-step" data-nw="step" data-for="qty" data-d="-1">−</span>' +
+            '<span class="nw-qty" data-nw-out="qty">' + qty + '</span>' +
+            '<span class="nw-step" data-nw="step" data-for="qty" data-d="1">+</span></span></div>' +
+            '<div class="nw-price" data-nw-out="line">$' + (unit * qty) + '</div></div>').join('') +
+          '<div class="nw-rows" style="margin-top:16px"><div class="nw-row"><span>Grind</span><b>Whole bean, ground on request</b></div>' +
+          '<div class="nw-row"><span>Roast date</span><b>Tuesday 03 November</b></div></div></div>' +
+          '<div class="nw-sum"><div class="nw-h3" style="font-size:15px">Order summary</div>' +
+          '<div class="nw-sumrow" style="margin-top:10px"><span>Subtotal</span><b data-nw-out="subtotal">$' + sub0 + '</b></div>' +
+          '<div class="nw-sumrow"><span>Shipping</span><b data-nw-out="ship">' + (ship0 ? '$' + ship0 : 'Free') + '</b></div>' +
+          '<div class="nw-sumrow"><span>Tax</span><b>Included</b></div>' +
+          '<div class="nw-sumrow total"><span>Total</span><b data-nw-out="total">$' + (sub0 + ship0) + '</b></div>' +
+          '<span class="nw-btn" style="width:100%;margin-top:14px">Checkout</span>' +
+          '<div class="nw-note" style="margin-top:10px">Free shipping over $40 · <span data-nw-out="count">' + cnt0 + '</span> items</div></div></div>'
+      } else if (k === 'checkout') {
+        body = head(s.kicker, s.title, esc(s.note)) +
+          '<div class="nw-track"><div class="done">1 · Cart</div><div class="done">2 · Delivery</div><div>3 · Payment</div></div>' +
+          '<div class="nw-two" style="padding-top:18px" data-nw-root="checkout" data-subtotal="' + s.subtotal + '"><div>' +
+          '<div class="nw-label" style="margin-top:0">Delivery</div>' +
+          (s.options || []).map(([lab, note, add], i) =>
+            '<div class="nw-radio' + (i === 0 ? ' on' : '') + '" data-nw="radio" data-g="del" data-add="' + add + '">' +
+            '<span class="dot"></span><div style="flex:1"><b>' + esc(lab) + '</b><div class="nw-note">' + esc(note) + '</div></div>' +
+            '<i>' + (add ? '+$' + add : 'Free') + '</i></div>').join('') +
+          '<div class="nw-form" style="margin-top:16px">' + (s.fields || []).map(([l, v, wide]) =>
+            '<div class="nw-field' + (wide ? ' wide' : '') + '"><label>' + esc(l) + '</label><span>' + esc(v) + '</span></div>').join('') + '</div>' +
+          '</div><div class="nw-sum"><div class="nw-h3" style="font-size:15px">Paying today</div>' +
+          '<div class="nw-sumrow" style="margin-top:10px"><span>Subtotal</span><b data-nw-out="subtotal">$' + s.subtotal + '</b></div>' +
+          '<div class="nw-sumrow total"><span>Total</span><b data-nw-out="total">$' + s.subtotal + '</b></div>' +
+          '<div class="nw-note" style="margin-top:12px">Roasted Tuesday, posted the same afternoon.</div></div></div>'
+      } else if (k === 'account') {
+        body = head(s.kicker, s.title, esc(s.note)) +
+          '<div class="nw-acct">' + (s.cards || []).map(([t, body2, foot]) =>
+            '<div class="nw-acard"><div class="nw-h3">' + esc(t) + '</div>' +
+            '<div class="nw-note" style="margin-top:6px">' + esc(body2) + '</div>' +
+            '<div class="nw-row" style="border-bottom:0;padding-bottom:0;margin-top:10px"><span>' + esc(foot) + '</span><b></b></div></div>').join('') +
+          '</div><div data-nw-root="none"><div class="nw-filters" style="margin-top:18px">' +
+          (s.actions || []).map((a, i) => '<span class="nw-chip' + (i === 0 ? ' on' : '') + '" data-nw="chip" data-g="acct" data-f="'
+            + esc(a[1]) + '">' + esc(a[0]) + '</span>').join('') +
+          '<span class="nw-note" style="margin-left:auto">Changes apply to the next roast, not this one</span></div>' +
+          '<div class="nw-rows">' + (s.rows || []).map((row) =>
+            '<div class="nw-row" data-tags="' + esc(row[2] || '') + '"><span>' + esc(row[0]) + '</span><b>' +
+            esc(row[1]) + '</b></div>').join('') + '</div></div>'
+      } else if (k === 'gift') {
+        body = '<div class="nw-gift" data-nw-root="gift" data-amount="50"><div>' +
+          '<div class="nw-cardface"><div class="nw-logo" style="color:inherit">NORTHWIND<i>.</i></div>' +
+          '<div><div class="nw-kicker" style="font-size:10px;opacity:.6">Gift card</div>' +
+          '<div class="amt" data-nw-out="amount">$50</div></div></div>' +
+          '<div class="nw-label">Value</div><div class="nw-amounts">' + (s.amounts || []).map(([v], i) =>
+            '<span class="nw-chip' + (i === 1 ? ' on' : '') + '" data-nw="amt" data-g="amt" data-amount="' + v + '">$' + v + '</span>').join('') + '</div>' +
+          '<div class="nw-note" style="margin-top:12px">Covers about <b data-nw-out="bags">2 bags</b> of 250 g.</div>' +
+          (s.buys ? '<div class="nw-rows" style="margin-top:18px">' + s.buys.map(([a, b]) =>
+            '<div class="nw-row"><span>' + esc(a) + '</span><b>' + esc(b) + '</b></div>').join('') + '</div>' : '') + '</div>' +
+          '<div><div class="nw-kick">' + esc(s.kicker) + '</div><h2 class="nw-h2" style="margin-top:8px">' + esc(s.title) + '</h2>' +
+          '<p class="nw-lead">' + esc(s.lead) + '</p>' +
+          '<div class="nw-rows" style="margin-top:18px">' + (s.rows || []).map(([a, b]) =>
+            '<div class="nw-row"><span>' + esc(a) + '</span><b>' + esc(b) + '</b></div>').join('') + '</div>' +
+          '<span class="nw-btn" style="margin-top:18px">' + esc(s.cta) + ' · <span data-nw-out="amount">$50</span></span></div></div>'
+      } else if (k === 'notfound') {
+        body = '<div class="nw-404"><div class="big">404</div>' + (s.img ? '' : '') +
+          '<h2 class="nw-h2">' + esc(s.title) + '</h2>' +
+          '<p class="nw-lead" style="margin-top:8px;text-align:center">' + esc(s.lead) + '</p>' +
+          '<div class="nw-sugs">' + (s.suggestions || []).map((x, i) =>
+            '<span class="nw-chip' + (i === 0 ? ' on' : '') + '">' + esc(x) + '</span>').join('') + '</div></div>' +
+          (s.img ? '<div class="nw-404shot">' + img(s.img) + '</div>' : '')
       }
-      return '<div class="st">' + chrome + '<div class="st-body">' + body + '</div></div>'
+      return '<div class="nw">' + chrome + nav + '<div class="nw-body">' + body + '</div>' + strip + '</div>'
     }
     case 'pt-poster':
       return (
@@ -9786,7 +10175,7 @@ function afTotals(base, groups) {
         '<div class="sd-split">' +
         '<div class="sd-split-media">' + imgTag(deck, s.img, 'sd-fill') + '</div>' +
         '<div class="sd-split-body">' +
-        '<h2 class="sd-h2">' + esc(s.title).replace(/\n/g, '<br>') + '</h2>' +
+        '<h2 class="sd-h2">' + esc(s.title).replace(/\n/g, '\n') + '</h2>' +
         paras(s.paras || []) +
         (s.bullets ? bulletList(s.bullets) : '') +
         '</div></div>'
@@ -9920,7 +10309,7 @@ function afTotals(base, groups) {
       return (
         '<div class="tk">' +
         '<div class="tk-band"><div class="tk-run">' + new Array(4).fill(esc(s.text)).join('<span>·</span>') + '</div></div>' +
-        '<div class="tk-body"><div class="tk-big">' + esc(s.big || '').replace(/\n/g, '<br>') + '</div></div>' +
+        '<div class="tk-body"><div class="tk-big">' + esc(s.big || '').replace(/\n/g, '\n') + '</div></div>' +
         '</div>'
       )
     case 'compare':

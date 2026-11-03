@@ -52,8 +52,8 @@ test('every case deck keeps its agreed page and image budget', () => {
       assert.ok(pages >= 8 && pages <= 12, `${deck.name}: 轮播 ${pages} 张，应为 8–12`)
       assert.ok(usedImages(deck).size >= 5 && usedImages(deck).size <= 8, `${deck.name}: 轮播应有 5–8 张配图`)
     } else if (deck.fmt === 'site') {
-      assert.ok(pages >= 5 && pages <= 8, `${deck.name}: 网站复刻 ${pages} 屏，应为 5–8`)
-      assert.ok(usedImages(deck).size <= 8, `${deck.name}: 网站复刻最多 8 张配图`)
+      assert.ok(pages >= 15 && pages <= 30, `${deck.name}: 网站复刻 ${pages} 屏，应为 15–30`)
+      assert.equal(usedImages(deck).size, 20, `${deck.name}: 网站复刻应有 20 张配图`)
     } else if (deck.fmt === 'image') {
       assert.ok(pages >= 4 && pages <= 8, `${deck.name}: 图片 ${pages} 张，应为 4–8`)
       assert.ok(usedImages(deck).size >= 3 && usedImages(deck).size <= 8, `${deck.name}: 图片组应有 3–8 张图`)
