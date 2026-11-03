@@ -439,6 +439,98 @@ const ROWS = {
   '换个关键词或分类试试。': ['Try another keyword or category.', '換個關鍵字或分類試試。', '別のキーワードやカテゴリをお試しください。', '다른 검색어나 카테고리를 시도해 보세요.', 'Versuchen Sie ein anderes Stichwort oder eine andere Kategorie.', 'Essayez un autre mot-clé ou une autre catégorie.', 'Prueba otra palabra clave o categoría.'],
   '用「%s」模版做一份提案，包含主色、层级和 3 个关键页面。': ['Build a proposal with the “%s” template, covering the primary color, hierarchy and 3 key pages.', '用「%s」範本做一份提案，包含主色、層級和 3 個關鍵頁面。', '「%s」テンプレートで提案を作成。メインカラー、階層、主要 3 ページを含めます。', '‘%s’ 템플릿으로 제안서를 만들어 주세요. 메인 컬러, 계층, 핵심 페이지 3개를 포함합니다.', 'Erstellen Sie mit der Vorlage „%s“ ein Angebot mit Hauptfarbe, Hierarchie und 3 Schlüsselseiten.', 'Créez une proposition avec le modèle « %s » : couleur principale, hiérarchie et 3 pages clés.', 'Crea una propuesta con la plantilla «%s»: color principal, jerarquía y 3 páginas clave.'],
 
+
+  // ── 连接器 / 模板引用 ──
+  '正在读取连接器目录…': ['Loading the connector catalog…', '正在讀取連接器目錄…', 'コネクタ一覧を読み込み中…', '커넥터 목록을 불러오는 중…', 'Konnektor-Katalog wird geladen…', 'Chargement du catalogue de connecteurs…', 'Cargando el catálogo de conectores…'],
+  '连接器目录没读到': ['Couldn’t load the connector catalog', '連接器目錄沒有讀到', 'コネクタ一覧を読み込めませんでした', '커넥터 목록을 불러오지 못했습니다', 'Konnektor-Katalog konnte nicht geladen werden', 'Impossible de charger le catalogue', 'No se pudo cargar el catálogo'],
+  '重新读取': ['Reload', '重新讀取', '再読み込み', '다시 불러오기', 'Neu laden', 'Recharger', 'Recargar'],
+  '还没有连接器': ['No connectors yet', '還沒有連接器', 'コネクタがまだありません', '아직 커넥터가 없습니다', 'Noch keine Konnektoren', 'Aucun connecteur pour l’instant', 'Aún no hay conectores'],
+  '后端没有返回目录条目': ['The backend returned an empty catalog', '後端沒有回傳目錄項目', 'バックエンドが一覧を返しませんでした', '백엔드가 목록을 반환하지 않았습니다', 'Das Backend hat keinen Katalog geliefert', 'Le backend n’a renvoyé aucun catalogue', 'El backend no devolvió el catálogo'],
+  '没有匹配的连接器': ['No matching connectors', '沒有符合的連接器', '一致するコネクタがありません', '일치하는 커넥터가 없습니다', 'Keine passenden Konnektoren', 'Aucun connecteur correspondant', 'No hay conectores coincidentes'],
+  '换个关键词或筛选条件试试': ['Try another keyword or filter', '換個關鍵字或篩選條件試試', '別のキーワードや絞り込みを試してください', '다른 검색어나 필터를 사용해 보세요', 'Andere Suchbegriffe oder Filter probieren', 'Essayez un autre mot-clé ou filtre', 'Prueba con otra palabra clave o filtro'],
+  '需重新授权': ['Reauthorize', '需重新授權', '再認証が必要', '다시 인증 필요', 'Neu autorisieren', 'Réautoriser', 'Volver a autorizar'],
+  '筛出 %s 项 · %s / %s 已连接': ['%s shown · %s / %s connected', '篩出 %s 項 · %s / %s 已連接', '%s 件 · %s / %s 接続済み', '%s개 표시 · %s / %s 연결됨', '%s Treffer · %s / %s verbunden', '%s affichés · %s / %s connectés', '%s mostrados · %s / %s conectados'],
+  '需要凭据': ['Needs credentials', '需要憑證', '認証情報が必要', '자격 증명 필요', 'Zugangsdaten nötig', 'Identifiants requis', 'Requiere credenciales'],
+  '演示数据': ['Demo data', '示範資料', 'デモデータ', '데모 데이터', 'Demodaten', 'Données de démo', 'Datos de demostración'],
+  '未连接': ['Not connected', '未連接', '未接続', '연결 안 됨', 'Nicht verbunden', 'Non connecté', 'Sin conectar'],
+  '未连接 · 需要 %s': ['Not connected · needs %s', '未連接 · 需要 %s', '未接続 · %s が必要', '연결 안 됨 · %s 필요', 'Nicht verbunden · %s erforderlich', 'Non connecté · %s requis', 'Sin conectar · requiere %s'],
+  '演示数据 · 无需凭据': ['Demo data · no credentials needed', '示範資料 · 無需憑證', 'デモデータ · 認証情報は不要', '데모 데이터 · 자격 증명 불필요', 'Demodaten · keine Zugangsdaten nötig', 'Données de démo · aucun identifiant requis', 'Datos de demostración · sin credenciales'],
+  '需要重新授权：%s': ['Reauthorization needed: %s', '需重新授權：%s', '再認証が必要：%s', '다시 인증 필요: %s', 'Neu autorisieren: %s', 'Réautorisation requise : %s', 'Hay que volver a autorizar: %s'],
+  '需要权限': ['Permissions needed', '需要權限', '必要な権限', '필요한 권한', 'Benötigte Berechtigungen', 'Autorisations requises', 'Permisos necesarios'],
+  '凭据': ['Credentials', '憑證', '認証情報', '자격 증명', 'Zugangsdaten', 'Identifiants', 'Credenciales'],
+  '（可选）': [' (optional)', '（選填）', '（任意）', ' (선택)', ' (optional)', ' (facultatif)', ' (opcional)'],
+  '去申请 →': ['Get one →', '去申請 →', '取得する →', '발급받기 →', 'Jetzt beantragen →', 'En obtenir un →', 'Obtener uno →'],
+  '允许写操作（创建、发送、部署这类会改动远端数据的能力）。不开也能连，只是写工具不会注册。': ['Allow write actions (creating, sending, deploying — anything that changes data on the other side). You can still connect; the write tools just won’t be registered.', '允許寫入操作（建立、傳送、部署這類會改動遠端資料的能力）。不開也能連，只是寫入工具不會註冊。', '書き込み操作（作成・送信・デプロイなど相手側のデータを変える操作）を許可します。オフでも接続でき、書き込みツールが登録されないだけです。', '쓰기 작업(생성, 전송, 배포처럼 상대 데이터를 바꾸는 기능)을 허용합니다. 끄더라도 연결은 되고, 쓰기 도구만 등록되지 않습니다.', 'Schreibaktionen erlauben (Erstellen, Senden, Deployen – alles, was Daten auf der Gegenseite ändert). Verbinden geht auch ohne; die Schreibwerkzeuge werden dann nur nicht registriert.', 'Autoriser les écritures (créer, envoyer, déployer — tout ce qui modifie les données distantes). Vous pouvez vous connecter sans : les outils d’écriture ne seront simplement pas enregistrés.', 'Permitir escrituras (crear, enviar, desplegar: todo lo que modifica datos remotos). Puedes conectar sin ello; simplemente no se registrarán las herramientas de escritura.'],
+  '连接后可用（%s）': ['Available once connected (%s)', '連接後可用（%s）', '接続後に使えるもの（%s）', '연결 후 사용 가능(%s)', 'Nach dem Verbinden verfügbar (%s)', 'Disponibles une fois connecté (%s)', 'Disponibles al conectar (%s)'],
+  '失败：%s': ['Failed: %s', '失敗：%s', '失敗：%s', '실패: %s', 'Fehlgeschlagen: %s', 'Échec : %s', 'Error: %s'],
+  '测试连接': ['Test connection', '測試連接', '接続をテスト', '연결 테스트', 'Verbindung testen', 'Tester la connexion', 'Probar conexión'],
+  '连接': ['Connect', '連接', '接続', '연결', 'Verbinden', 'Connecter', 'Conectar'],
+  '启用演示数据': ['Enable demo data', '啟用示範資料', 'デモデータを有効化', '데모 데이터 사용', 'Demodaten aktivieren', 'Activer les données de démo', 'Activar datos de demostración'],
+  '断开连接': ['Disconnect', '中斷連接', '接続を解除', '연결 해제', 'Trennen', 'Déconnecter', 'Desconectar'],
+  '无需凭据': ['No credentials needed', '無需憑證', '認証情報は不要', '자격 증명 불필요', 'Keine Zugangsdaten nötig', 'Aucun identifiant requis', 'Sin credenciales'],
+  '正在测试…': ['Testing…', '正在測試…', 'テスト中…', '테스트 중…', 'Wird getestet…', 'Test en cours…', 'Probando…'],
+  '通了 · %s（%s ms）': ['Reachable · %s (%s ms)', '通了 · %s（%s ms）', '接続できました · %s（%s ms）', '연결됨 · %s(%s ms)', 'Erreichbar · %s (%s ms)', 'Accessible · %s (%s ms)', 'Accesible · %s (%s ms)'],
+  '不通：%s': ['No connection: %s', '不通：%s', '接続できません：%s', '연결 실패: %s', 'Keine Verbindung: %s', 'Pas de connexion : %s', 'Sin conexión: %s'],
+  '正在连接…': ['Connecting…', '正在連接…', '接続中…', '연결 중…', 'Verbindung wird hergestellt…', 'Connexion…', 'Conectando…'],
+  '连接失败：%s': ['Connection failed: %s', '連接失敗：%s', '接続に失敗しました：%s', '연결 실패: %s', 'Verbindung fehlgeschlagen: %s', 'Échec de la connexion : %s', 'Error de conexión: %s'],
+  '已连接 %s，新增 %s 个工具': ['Connected %s, %s tools added', '已連接 %s，新增 %s 個工具', '%s に接続し、ツールを %s 個追加しました', '%s 연결됨, 도구 %s개 추가', '%s verbunden, %s Werkzeuge hinzugefügt', '%s connecté, %s outils ajoutés', '%s conectado, %s herramientas añadidas'],
+  '已断开 %s，相关工具已注销': ['Disconnected %s, its tools were removed', '已中斷 %s，相關工具已註銷', '%s を切断し、関連ツールを削除しました', '%s 연결 해제, 관련 도구 제거됨', '%s getrennt, zugehörige Werkzeuge entfernt', '%s déconnecté, outils associés retirés', '%s desconectado, herramientas retiradas'],
+  '已断开 %s': ['Disconnected %s', '已中斷 %s', '%s を切断しました', '%s 연결 해제됨', '%s getrennt', '%s déconnecté', '%s desconectado'],
+  '取消引用': ['Remove reference', '取消引用', '引用を解除', '참조 취소', 'Verweis entfernen', 'Retirer la référence', 'Quitar referencia'],
+  '引用': ['Reference', '引用', '引用', '참조', 'Verweisen', 'Référencer', 'Referenciar'],
+  '模板': ['Template', '範本', 'テンプレート', '템플릿', 'Vorlage', 'Modèle', 'Plantilla'],
+  '引用这套模板': ['Reference this template', '引用這套範本', 'このテンプレートを引用', '이 템플릿 참조', 'Diese Vorlage verweisen', 'Référencer ce modèle', 'Referenciar esta plantilla'],
+  '已引用模板「%s」，补一句需求一起发出去': ['Referenced “%s”. Add a sentence and send them together.', '已引用範本「%s」，補一句需求一起送出', '「%s」を引用しました。ひとこと要件を足して送信してください。', '‘%s’ 참조됨. 요구 사항을 한 줄 덧붙여 보내세요.', 'Vorlage „%s“ verwiesen. Ergänzen Sie einen Satz und senden Sie beides.', 'Modèle « %s » référencé. Ajoutez une phrase et envoyez le tout.', 'Plantilla «%s» referenciada. Añade una frase y envía todo junto.'],
+  '引用模板 %s': ['Reference template %s', '引用範本 %s', 'テンプレート %s を引用', '템플릿 %s 참조', 'Vorlage %s verweisen', 'Référencer le modèle %s', 'Referenciar la plantilla %s'],
+  '用「%s」这套模板做一份%s。': ['Use the “%s” template to make a %s.', '用「%s」這套範本做一份%s。', '「%s」テンプレートで%sを作成します。', '‘%s’ 템플릿으로 %s을(를) 만들어 주세요.', 'Erstellen Sie mit der Vorlage „%s“ ein %s.', 'Utilisez le modèle « %s » pour créer un %s.', 'Usa la plantilla «%s» para crear un %s.'],
+  '已连接的连接器': ['Connected connectors', '已連接的連接器', '接続済みのコネクタ', '연결된 커넥터', 'Verbundene Konnektoren', 'Connecteurs connectés', 'Conectores conectados'],
+  '运行时插件': ['Runtime plugins', '執行時外掛', '実行中のプラグイン', '실행 중인 플러그인', 'Laufende Plugins', 'Plugins actifs', 'Complementos activos'],
+  '目录里有 %s 个，随便挑一个打开': ['There are %s in the catalog — open any of them', '目錄裡有 %s 個，隨便挑一個打開', '一覧に %s 件あります。どれでも開けます', '목록에 %s개 있습니다. 아무거나 열어 보세요', '%s im Katalog – öffnen Sie einen davon', '%s dans le catalogue — ouvrez-en un', 'Hay %s en el catálogo: abre el que quieras'],
+  '连接器目录': ['Connector catalog', '連接器目錄', 'コネクタ一覧', '커넥터 목록', 'Konnektor-Katalog', 'Catalogue de connecteurs', 'Catálogo de conectores'],
+  '按分类筛选，看每个连接器要什么权限、连上能用哪些工具': ['Filter by category; each connector shows the permissions it needs and the tools it unlocks', '依分類篩選，看每個連接器需要什麼權限、連上後能用哪些工具', 'カテゴリで絞り込み、各コネクタに必要な権限と使えるツールを確認できます', '분류로 필터링하고 커넥터별 필요 권한과 사용 가능한 도구를 확인하세요', 'Nach Kategorie filtern; jeder Konnektor zeigt benötigte Berechtigungen und verfügbare Werkzeuge', 'Filtrez par catégorie : chaque connecteur indique les autorisations requises et les outils débloqués', 'Filtra por categoría: cada conector muestra los permisos que necesita y las herramientas que habilita'],
+  '前往连接器': ['Open connectors', '前往連接器', 'コネクタを開く', '커넥터로 이동', 'Zu den Konnektoren', 'Ouvrir les connecteurs', 'Ir a conectores'],
+  '暂无运行中的外部插件': ['No external plugins running', '暫無執行中的外部外掛', '実行中の外部プラグインはありません', '실행 중인 외부 플러그인이 없습니다', 'Keine externen Plugins aktiv', 'Aucun plugin externe actif', 'No hay complementos externos activos'],
+  '装载后出现在这里': ['They show up here once mounted', '裝載後會出現在這裡', 'マウントするとここに表示されます', '마운트하면 여기에 표시됩니다', 'Sie erscheinen hier, sobald sie eingebunden sind', 'Ils apparaissent ici une fois montés', 'Aparecen aquí al montarse'],
+  '运行中': ['Running', '執行中', '実行中', '실행 중', 'Läuft', 'En cours', 'En marcha'],
+  '该类型（%s）的运行时适配器还没接，连接会明确报错而不是静默成功。': ['No runtime adapter for this type (%s) yet — connecting fails loudly instead of silently succeeding.', '此類型（%s）的執行時轉接器還沒接，連接會明確報錯而不是默默成功。', 'このタイプ（%s）のランタイムアダプタは未実装です。接続は黙って成功せず、はっきりエラーになります。', '이 유형(%s)의 런타임 어댑터가 아직 없습니다. 연결하면 조용히 성공하지 않고 분명히 오류가 납니다.', 'Für diesen Typ (%s) gibt es noch keinen Laufzeit-Adapter – das Verbinden schlägt sichtbar fehl statt still zu gelingen.', 'Aucun adaptateur d’exécution pour ce type (%s) : la connexion échoue clairement au lieu de réussir en silence.', 'Aún no hay adaptador de ejecución para este tipo (%s): la conexión fallará de forma visible en lugar de fingir éxito.'],
+  '下载原文件': ['Download original', '下載原始檔案', '元ファイルをダウンロード', '원본 파일 다운로드', 'Original herunterladen', 'Télécharger l’original', 'Descargar original'],
+  '保存': ['Save', '儲存', '保存', '저장', 'Speichern', 'Enregistrer', 'Guardar'],
+  '保存中…': ['Saving…', '儲存中…', '保存中…', '저장 중…', 'Wird gespeichert…', 'Enregistrement…', 'Guardando…'],
+  '保存失败：%s': ['Save failed: %s', '儲存失敗：%s', '保存に失敗しました：%s', '저장 실패: %s', 'Speichern fehlgeschlagen: %s', 'Échec de l’enregistrement : %s', 'Error al guardar: %s'],
+  '先填接口地址': ['Fill in the endpoint first', '先填介面位址', 'まずエンドポイントを入力してください', '먼저 엔드포인트를 입력하세요', 'Bitte zuerst die Endpunkt-Adresse eintragen', 'Renseignez d’abord l’URL de l’API', 'Primero rellena la dirección del endpoint'],
+  '再点一次退出登录': ['Click again to sign out', '再點一次登出', 'もう一度クリックでログアウト', '한 번 더 누르면 로그아웃', 'Erneut klicken zum Abmelden', 'Cliquez à nouveau pour vous déconnecter', 'Haz clic otra vez para cerrar sesión'],
+  '加载失败：%s': ['Loading failed: %s', '載入失敗：%s', '読み込みに失敗しました：%s', '불러오기 실패: %s', 'Laden fehlgeschlagen: %s', 'Échec du chargement : %s', 'Error al cargar: %s'],
+  '参考图': ['Reference image', '參考圖', '参照画像', '참조 이미지', 'Referenzbild', 'Image de référence', 'Imagen de referencia'],
+  '取消': ['Cancel', '取消', 'キャンセル', '취소', 'Abbrechen', 'Annuler', 'Cancelar'],
+  '导入的模板': ['Imported template', '匯入的範本', '読み込んだテンプレート', '가져온 템플릿', 'Importierte Vorlage', 'Modèle importé', 'Plantilla importada'],
+  '已创建会话，等待第一条消息…': ['Session created — waiting for the first message…', '已建立工作階段，等待第一則訊息…', 'セッションを作成しました。最初のメッセージを待っています…', '세션이 만들어졌습니다. 첫 메시지를 기다리는 중…', 'Sitzung erstellt – wartet auf die erste Nachricht…', 'Session créée — en attente du premier message…', 'Sesión creada: esperando el primer mensaje…'],
+  '恢复本地账号': ['Restore local account', '還原本機帳號', 'ローカルアカウントを復元', '로컬 계정 복원', 'Lokales Konto wiederherstellen', 'Restaurer le compte local', 'Restaurar la cuenta local'],
+  '接口地址': ['Endpoint URL', '介面位址', 'エンドポイント URL', '엔드포인트 URL', 'Endpunkt-URL', 'URL de l’API', 'URL del endpoint'],
+  '接口地址不能为空': ['Endpoint URL is required', '介面位址不能為空', 'エンドポイント URL は必須です', '엔드포인트 URL은 필수입니다', 'Endpunkt-URL darf nicht leer sein', 'L’URL de l’API est obligatoire', 'La URL del endpoint es obligatoria'],
+  '模型名称': ['Model name', '模型名稱', 'モデル名', '모델 이름', 'Modellname', 'Nom du modèle', 'Nombre del modelo'],
+  '模型名称不能为空': ['Model name is required', '模型名稱不能為空', 'モデル名は必須です', '모델 이름은 필수입니다', 'Modellname darf nicht leer sein', 'Le nom du modèle est obligatoire', 'El nombre del modelo es obligatorio'],
+  '模板只存在这台机器的浏览器里，不会上传到服务器；删掉它不会影响案例库。': ['Templates live only in this browser on this machine — nothing is uploaded. Deleting one does not touch the case library.', '範本只存在這台機器的瀏覽器裡，不會上傳到伺服器；刪掉它不會影響案例庫。', 'テンプレートはこの端末のブラウザにだけ保存され、サーバーには送信されません。削除しても事例ライブラリには影響しません。', '템플릿은 이 기기의 브라우저에만 저장되며 서버로 전송되지 않습니다. 삭제해도 사례 라이브러리는 그대로입니다.', 'Vorlagen liegen nur in diesem Browser auf diesem Rechner – nichts wird hochgeladen. Löschen lässt die Beispielsammlung unberührt.', 'Les modèles restent dans ce navigateur, rien n’est envoyé. Les supprimer ne touche pas la bibliothèque d’exemples.', 'Las plantillas solo viven en este navegador; no se sube nada. Borrarlas no afecta a la biblioteca de ejemplos.'],
+  '没有匹配项': ['No matches', '沒有符合項目', '一致する項目がありません', '일치하는 항목이 없습니다', 'Keine Treffer', 'Aucun résultat', 'Sin coincidencias'],
+  '测试中…': ['Testing…', '測試中…', 'テスト中…', '테스트 중…', 'Wird getestet…', 'Test en cours…', 'Probando…'],
+  '测试失败：%s': ['Test failed: %s', '測試失敗：%s', 'テストに失敗しました：%s', '테스트 실패: %s', 'Test fehlgeschlagen: %s', 'Échec du test : %s', 'Error en la prueba: %s'],
+  '移除': ['Remove', '移除', '削除', '제거', 'Entfernen', 'Retirer', 'Quitar'],
+  '运行中…': ['Running…', '執行中…', '実行中…', '실행 중…', 'Läuft…', 'En cours…', 'En marcha…'],
+  '退出登录': ['Sign out', '登出', 'ログアウト', '로그아웃', 'Abmelden', 'Se déconnecter', 'Cerrar sesión'],
+  '高级配置': ['Advanced settings', '進階設定', '詳細設定', '고급 설정', 'Erweiterte Einstellungen', 'Paramètres avancés', 'Ajustes avanzados'],
+  '（仅支持 OpenAI 兼容协议 API）': [' (OpenAI-compatible APIs only)', '（僅支援 OpenAI 相容協定 API）', '（OpenAI 互換 API のみ）', ' (OpenAI 호환 API만 지원)', ' (nur OpenAI-kompatible APIs)', ' (API compatibles OpenAI uniquement)', ' (solo API compatibles con OpenAI)'],
+  '已选择 %s，点「运行」读取。': ['Selected %s — press Run to read it.', '已選擇 %s，點「執行」讀取。', '%s を選択しました。「実行」で読み取ります。', '%s 선택됨. ‘실행’을 누르면 읽습니다.', '%s ausgewählt – zum Einlesen „Ausführen“ drücken.', '%s sélectionné — cliquez sur « Exécuter » pour lire.', '%s seleccionado: pulsa «Ejecutar» para leerlo.'],
+  '再点一次确认删除「%s」': ['Click again to delete “%s”', '再點一次確認刪除「%s」', 'もう一度クリックで「%s」を削除', '한 번 더 누르면 ‘%s’ 삭제', 'Erneut klicken, um „%s“ zu löschen', 'Cliquez à nouveau pour supprimer « %s »', 'Haz clic otra vez para borrar «%s»'],
+  '已装载工具': ['Loaded tools', '已裝載工具', '読み込み済みツール', '로드된 도구', 'Geladene Werkzeuge', 'Outils chargés', 'Herramientas cargadas'],
+  '模板设置': ['Template settings', '範本設定', 'テンプレート設定', '템플릿 설정', 'Vorlagen-Einstellungen', 'Réglages du modèle', 'Ajustes de la plantilla'],
+  '正在读取专家预设…': ['Loading expert presets…', '正在讀取專家預設…', 'エキスパートプリセットを読み込み中…', '전문가 프리셋을 불러오는 중…', 'Experten-Presets werden geladen…', 'Chargement des presets d’experts…', 'Cargando presets de expertos…'],
+  '没有匹配的专家': ['No matching experts', '沒有符合的專家', '一致するエキスパートがいません', '일치하는 전문가가 없습니다', 'Keine passenden Experten', 'Aucun expert correspondant', 'No hay expertos coincidentes'],
+  '您正在查看此模板。只有编辑者才能编辑此模板的说明。': ['You are viewing this template. Only the editor can change its description.', '您正在檢視此範本。只有編輯者才能編輯此範本的說明。', 'このテンプレートを表示中です。説明を編集できるのは編集者だけです。', '이 템플릿을 보고 있습니다. 설명은 편집자만 수정할 수 있습니다.', 'Sie sehen diese Vorlage an. Nur die Bearbeiter können die Beschreibung ändern.', 'Vous consultez ce modèle. Seul l’éditeur peut modifier sa description.', 'Estás viendo esta plantilla. Solo el editor puede cambiar su descripción.'],
+  '上传模板或从案例库挑一套': ['Upload a template or pick one from the library', '上傳範本或從案例庫挑一套', 'テンプレートをアップロードするか、事例から選ぶ', '템플릿을 올리거나 사례에서 하나 고르세요', 'Vorlage hochladen oder aus der Sammlung wählen', 'Importez un modèle ou choisissez-en un', 'Sube una plantilla o elige una de la biblioteca'],
+  '第一次打开会慢一点': ['The first open takes a moment', '第一次開啟會慢一點', '初回は少し時間がかかります', '처음 열 때는 조금 느립니다', 'Der erste Aufruf dauert etwas', 'La première ouverture est un peu lente', 'La primera apertura tarda un poco'],
+  '换个关键词试试': ['Try another keyword', '換個關鍵字試試', '別のキーワードを試してください', '다른 검색어를 사용해 보세요', 'Anderes Stichwort probieren', 'Essayez un autre mot-clé', 'Prueba con otra palabra clave'],
+  '%s / %s 已连接': ['%s / %s connected', '%s / %s 已連接', '%s / %s 接続済み', '%s / %s 연결됨', '%s / %s verbunden', '%s / %s connectés', '%s / %s conectados'],
+  '读': ['Read', '讀', '読み取り', '읽기', 'Lesen', 'Lecture', 'Lectura'],
+  '写': ['Write', '寫', '書き込み', '쓰기', 'Schreiben', 'Écriture', 'Escritura'],
 }
 
 /** 源文案 → { en, 'zh-Hant', ja, … }，缺列时回退到英文。 */
@@ -503,10 +595,15 @@ export function resolveLanguage(pref) {
   return 'zh'
 }
 
+/** 取某语言下的译文（纯函数，供测试与 t() 共用）；源语言直接返回原文。 */
+export function translationOf(text, langId) {
+  if (langId === 'zh') return text
+  return DICT[text]?.[langId] ?? DICT[text]?.en ?? text
+}
+
 /** 翻译单个词条；源语言直接返回。 */
 export function t(text) {
-  if (lang === 'zh') return text
-  return DICT[text]?.[lang] ?? DICT[text]?.en ?? text
+  return translationOf(text, lang)
 }
 
 function translate(source, keyOverride) {

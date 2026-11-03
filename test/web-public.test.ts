@@ -10,6 +10,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { existsSync, readFileSync, readdirSync } from 'node:fs'
+import { translationOf } from '../apps/web/public/i18n.js'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -406,4 +407,33 @@ test('模板卡片右下角有「引用」，引用的东西会真的跟着消�
   assert.match(html, /function consumeRef\(text\)/)
   assert.ok((html.match(/consumeRef\(/g) || []).length >= 4, '三个发送入口都要带上引用')
   assert.match(html, /（引用模板：/)
+})
+
+test('界面里写死的中文文案都在词典里，切英文不会是中文', () => {
+  const html = read('index.html')
+  const keys = new Set<string>()
+  const add = (raw: string) => {
+    const key = raw.replace(/\\'/g, "'")
+    // 拼出来的半句（以冒号或引号结尾）没法整句匹配，这里只查完整的界面文案
+    if (!/[\u4e00-\u9fa5]/.test(key)) return
+    if (/[：:」『（(]$/.test(key)) return
+    if (/['+?]/.test(key)) return // 拼接片段，不是整句
+    if (key.includes('%s')) return
+    keys.add(key)
+  }
+  for (const match of html.matchAll(/\btf?\(\s*'((?:[^'\\]|\\.)*)'/g)) add(match[1]!)
+  for (const match of html.matchAll(/\.textContent\s*=\s*'((?:[^'\\]|\\.)*)'/g)) add(match[1]!)
+  for (const match of html.matchAll(/<b>([^<>{]+)<\/b>/g)) add(match[1]!)
+  for (const match of html.matchAll(/<span>([^<>{]+)<\/span>/g)) add(match[1]!)
+
+  // 账号昵称是内容，不是界面文案（对应节点上标了 data-no-i18n）
+  for (const content of ['星W']) keys.delete(content)
+  assert.ok(keys.size > 40, '应该扫到不少中文字面量，实际 ' + keys.size)
+  const missing = [...keys].filter((key) => translationOf(key, 'en') === key)
+  assert.deepEqual(missing, [], '这些文案没有译文：' + missing.join(' / '))
+
+  // 七种目标语言都要有东西，不能空着
+  for (const langId of ['en', 'zh-Hant', 'ja', 'ko', 'de', 'fr', 'es']) {
+    for (const key of keys) assert.ok(translationOf(key, langId).trim() !== '', key + ' @ ' + langId)
+  }
 })

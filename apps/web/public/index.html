@@ -5982,7 +5982,7 @@
     </button>
 
     <button class="me" id="meBtn" title="会员中心" aria-haspopup="dialog" aria-expanded="false" aria-label="会员中心">
-      <span class="me-av">星W</span>
+      <span class="me-av" data-no-i18n>星W</span>
       <span class="me-tag">会员</span>
     </button>
   </nav>
@@ -6731,9 +6731,9 @@
 <!-- 会员中心：图标栏底部头像弹出 -->
 <div class="acct" id="acctPop" role="dialog" aria-label="会员中心" hidden>
   <div class="acct-head">
-    <span class="acct-av">星W</span>
+    <span class="acct-av" data-no-i18n>星W</span>
     <span class="acct-id">
-      <b>星W</b>
+      <b data-no-i18n>星W</b>
       <em>本地工作区</em>
     </span>
   </div>
@@ -6903,7 +6903,7 @@ import { THEMES as BUNDLED_THEMES } from './themes.js'
  * 首屏与离线回落：启动后 `refreshLibrary()` 会把目录换成后端那份，换不到就
  * 继续用打包的这份——两边是同一种对象，渲染代码不需要知道数据从哪来。 */
 const LIB = { decks: BUNDLED_CASES, themes: BUNDLED_THEMES, source: 'bundle' }
-import { applyLanguage, resolveLanguage, startAutoTranslate, t } from './i18n.js'
+import { applyLanguage, currentLanguage, resolveLanguage, startAutoTranslate, t } from './i18n.js'
 const tplState = { fmt: 'all', cats: new Set(), q: '', sort: 'date', more: false }
 
 /* ── 模板引用：卡片右下角「引用」→ 输入框上方的引用卡 ──────
@@ -6937,9 +6937,9 @@ function refCardNode(deck) {
     '<span class="ref-thumbs">' + thumbs + '</span>' +
     '<span class="ref-meta">' +
       '<span class="ref-name"></span>' +
-      '<span class="ref-tag">' + iconSVG('templates', 11) + '模板</span>' +
+      '<span class="ref-tag">' + iconSVG('templates', 11) + t('模板') + '</span>' +
     '</span>' +
-    '<button class="ref-x" type="button" title="取消引用" aria-label="取消引用">' + iconSVG('close', 9) + '</button>'
+    '<button class="ref-x" type="button" title="' + t('取消引用') + '" aria-label="' + t('取消引用') + '">' + iconSVG('close', 9) + '</button>'
   card.querySelector('.ref-name').textContent = deck.name
   card.querySelector('.ref-x').onclick = (event) => { event.stopPropagation(); clearRef() }
   return card
@@ -6978,7 +6978,7 @@ function referenceTemplate(deck) {
   if (state.view !== 'chat') setView('home')
   const input = visiblePrompt()
   if (input) input.focus()
-  toast('已引用模板「' + deck.name + '」，补一句需求一起发出去', 'ok')
+  toast(tf('已引用模板「%s」，补一句需求一起发出去', deck.name), 'ok')
 }
 
 /** 发送前把引用拼进消息；发完清空，不留一个已经用过的引用卡。 */
@@ -6988,13 +6988,13 @@ function consumeRef(text) {
   if (!deck) return body
   REF.deck = null
   paintRefs()
-  const lead = body.trim() === '' ? '用「' + deck.name + '」这套模板做一份' + (deck.cat || '内容') + '。' : body
+  const lead = body.trim() === '' ? tf('用「%s」这套模板做一份%s。', deck.name, deck.cat || t('模板')) : body
   return lead + '\n\n（引用模板：' + deck.name + ' · ' + (deck.cat || '模板') + '）'
 }
 
 /** 卡片右下角的「引用」：卡片本身是 <button>，所以这里用 role=button 的 span。 */
 function refBadge(deck) {
-  return '<span class="tpl-ref" role="button" tabindex="0" aria-label="引用模板 ' + deck.name + '">引用</span>'
+  return '<span class="tpl-ref" role="button" tabindex="0" aria-label="' + tf('引用模板 %s', deck.name) + '">' + t('引用') + '</span>'
 }
 
 function bindRefBadge(card, deck) {
@@ -7502,7 +7502,7 @@ function renderCaseSide(deck) {
       '<div class="tv-row"><span class="tv-row-k">分类</span><span class="tv-row-v" data-no-i18n>' + deck.kind + '</span></div>' +
     '</div>' +
     '<div class="tv-uses">' +
-      '<button class="tv-ref" id="tvRef">' + iconSVG('templates', 13) + '引用这套模板</button>' +
+      '<button class="tv-ref" id="tvRef">' + iconSVG('templates', 13) + t('引用这套模板') + '</button>' +
       '<button class="tv-use" id="tvUse">使用模板</button>' +
     '</div>'
   $('tvRef').onclick = () => referenceTemplate(deck)
@@ -8064,6 +8064,12 @@ const state = {
 }
 const $ = (id) => document.getElementById(id)
 
+/** 带占位符的文案：`tf('已连接 %s，新增 %s 个工具', a, b)` 会先查词典再按顺序填值。 */
+function tf(key, ...values) {
+  let index = 0
+  return t(key).replace(/%s/g, () => String(values[index++] ?? ''))
+}
+
 /* ── 传输：SSE 下行 / POST 上行 ───────────────────────── */
 const clientId = (crypto.randomUUID && crypto.randomUUID()) || ('c-' + Date.now())
 let seq = 0
@@ -8567,6 +8573,13 @@ document.querySelectorAll('.sp-select').forEach((el) => {
 $('setLanguage').addEventListener('change', () => {
   applyLanguage($('setLanguage').value)
   syncNickname()
+  // 模板卡里的名字是内容（data-no-i18n 不翻译），但卡片上的「引用」和引用卡是界面文案，
+  // 切语言后重画一遍，别让它停在上一门语言里。
+  paintTemplates()
+  if (typeof paintTplGallery === 'function' && !$('viewTemplates').hidden) paintTplGallery()
+  if (typeof paintModeGallery === 'function' && state.mode) paintModeGallery()
+  paintRefs()
+  if (CNX.items.length > 0 && state.exTab === 'connectors') paintConnectors()
 })
 document.addEventListener('click', (event) => {
   const link = event.target.closest && event.target.closest('a[href]')
@@ -8882,7 +8895,7 @@ $('fileInput').onchange = (event) => {
   $('opSrcUpload').classList.add('on')
   $('opSrcPath').classList.remove('on')
   openOffice(key)
-  $('opResult').textContent = '已选择 ' + file.name + '，点「运行」读取。'
+  $('opResult').textContent = tf('已选择 %s，点「运行」读取。', file.name)
 }
 
 document.addEventListener('click', (event) => {
@@ -10330,8 +10343,9 @@ function paintConnectors() {
   if (count) {
     count.textContent = CNX.items.length === 0
       ? ''
-      : (CNX.filter === 'all' && !query ? '' : '筛出 ' + filtered.length + ' 项 · ') +
-        connected + ' / ' + CNX.items.length + ' 已连接'
+      : CNX.filter === 'all' && !query
+        ? tf('%s / %s 已连接', connected, CNX.items.length)
+        : tf('筛出 %s 项 · %s / %s 已连接', filtered.length, connected, CNX.items.length)
   }
 
   if (filtered.length === 0) {
@@ -10345,13 +10359,13 @@ function paintConnectors() {
 /* ── 连接器详情弹窗 ─────────────────────────────────── */
 function cnxStateText(item) {
   if (item.state === 'connected') {
-    const when = item.since ? new Date(item.since).toLocaleString('zh-CN', { hour12: false }) : ''
-    return '已连接' + (item.account ? ' · ' + item.account : '') + (when ? ' · ' + when : '')
+    const when = item.since ? new Date(item.since).toLocaleString(currentLanguage() === 'zh' ? 'zh-CN' : undefined, { hour12: false }) : ''
+    return t('已连接') + (item.account ? ' · ' + item.account : '') + (when ? ' · ' + when : '')
   }
-  if (item.state === 'error') return '需要重新授权：' + (item.error || '凭据失效')
-  if (item.demo) return '演示数据 · 无需凭据'
+  if (item.state === 'error') return tf('需要重新授权：%s', item.error || '—')
+  if (item.demo) return t('演示数据 · 无需凭据')
   const need = item.auth.filter((field) => field.required).map((field) => field.label)
-  return need.length ? '未连接 · 需要 ' + need.join('、') : '未连接'
+  return need.length ? tf('未连接 · 需要 %s', need.join(currentLanguage() === 'zh' ? '、' : ', ')) : t('未连接')
 }
 
 function closeConnector() {
@@ -10401,7 +10415,7 @@ function renderConnectorBody(item, log) {
   } else if (item.kind !== 'rest') {
     const banner = document.createElement('div')
     banner.className = 'cnx-banner'
-    banner.innerHTML = iconMark('plug', 13) + '<span>该类型（' + item.kind + '）的运行时适配器还没接，连接会明确报错而不是静默成功。</span>'
+    banner.innerHTML = iconMark('plug', 13) + '<span>' + tf('该类型（%s）的运行时适配器还没接，连接会明确报错而不是静默成功。', item.kind) + '</span>'
     body.appendChild(banner)
   }
 
@@ -10422,7 +10436,7 @@ function renderConnectorBody(item, log) {
       const wrap = document.createElement('div')
       wrap.className = 'mfm-field'
       const label = document.createElement('label')
-      label.textContent = field.label + (field.required ? '' : '（可选）')
+      label.textContent = field.label + (field.required ? '' : t('（可选）'))
       const input = document.createElement('input')
       input.className = 'mfm-input'
       input.type = field.type === 'password' ? 'password' : 'text'
@@ -10469,12 +10483,12 @@ function renderConnectorBody(item, log) {
 
   const toolsSec = document.createElement('div')
   toolsSec.className = 'cnx-sec'
-  toolsSec.innerHTML = '<b>连接后可用（' + item.tools.length + '）</b>' +
+  toolsSec.innerHTML = '<b>' + tf('连接后可用（%s）', item.tools.length) + '</b>' +
     '<div class="cnx-tools">' + item.tools.map((tool) => {
       const active = item.activeTools.includes(item.id + '.' + tool.name)
       return '<div class="cnx-tool">' +
         '<div class="cnx-tool-main"><code>' + item.id + '.' + tool.name + '</code><small>' + tool.desc + '</small></div>' +
-        '<span class="cnx-tag ' + (tool.write ? 'write' : 'read') + '">' + (tool.write ? '写' : '读') + '</span>' +
+        '<span class="cnx-tag ' + (tool.write ? 'write' : 'read') + '">' + t(tool.write ? '写' : '读') + '</span>' +
         (item.state === 'connected' && !active ? '<span class="cnx-tag">未注册</span>' : '') +
       '</div>'
     }).join('') + '</div>'
@@ -10486,7 +10500,7 @@ function renderConnectorBody(item, log) {
     logSec.innerHTML = '<b>最近调用</b><div class="cnx-log">' + log.map((entry) => {
       const when = new Date(entry.at).toLocaleTimeString('zh-CN', { hour12: false })
       return '<div><span>' + when + '</span><code>' + entry.tool + '</code><span>' + entry.ms + 'ms</span>' +
-        (entry.ok ? '<span>成功</span>' : '<span class="bad">失败' + (entry.error ? '：' + entry.error : '') + '</span>') + '</div>'
+        (entry.ok ? '<span>' + t('成功') + '</span>' : '<span class="bad">' + tf('失败：%s', entry.error || '—') + '</span>') + '</div>'
     }).join('') + '</div>'
     body.appendChild(logSec)
   }
@@ -10507,8 +10521,8 @@ function renderConnectorBody(item, log) {
       const result = await rpc('connectors.test', { id: item.id, secrets: collectSecrets() })
       msg.className = 'cnx-msg ' + (result.ok ? 'ok' : 'err')
       msg.textContent = result.ok
-        ? '通了 · ' + (result.account || '已验证') + '（' + result.ms + 'ms）'
-        : '不通：' + (result.error || '未知原因')
+        ? tf('通了 · %s（%s ms）', result.account || '—', result.ms)
+        : tf('不通：%s', result.error || '—')
     } catch (error) {
       msg.className = 'cnx-msg err'
       msg.textContent = error.message
@@ -10535,7 +10549,7 @@ function renderConnectorBody(item, log) {
       disconnect.disabled = true
       try {
         await rpc('connectors.disconnect', { id: item.id })
-        toast('已断开 ' + item.name + '，相关工具已注销', 'ok')
+        toast(tf('已断开 %s，相关工具已注销', item.name), 'ok')
         await loadConnectors(true)
         closeConnector()
         refreshToolsViews()
@@ -10560,13 +10574,13 @@ function renderConnectorBody(item, log) {
           secrets: collectSecrets(),
           allowWrite: Boolean(fields.__allowWrite && fields.__allowWrite.checked),
         })
-        toast('已连接 ' + item.name + '，新增 ' + result.tools.length + ' 个工具', 'ok')
+        toast(tf('已连接 %s，新增 %s 个工具', item.name, result.tools.length), 'ok')
         await loadConnectors(true)
         await openConnector(item.id)
         refreshToolsViews()
       } catch (error) {
         msg.className = 'cnx-msg err'
-        msg.textContent = '连接失败：' + error.message
+        msg.textContent = tf('连接失败：%s', error.message)
         connect.disabled = false
       }
     }
@@ -10984,7 +10998,7 @@ async function openPanel(id) {
   } catch (error) {
     const err = document.createElement('div')
     err.className = 'sp-soon'
-    err.textContent = '加载失败：' + error.message
+    err.textContent = tf('加载失败：%s', error.message)
     box.appendChild(err)
   }
 }
@@ -11471,7 +11485,7 @@ async function buildModelsPanel(box) {
         row.classList.add('confirm')
         trash.classList.add('danger')
         trash.title = '确认删除'
-        armText.textContent = '再点一次确认删除「' + item.name + '」'
+        armText.textContent = tf('再点一次确认删除「%s」', item.name)
         armed = window.setTimeout(disarm, 5000)
         return
       }
@@ -11688,7 +11702,7 @@ function openModelDialog(box, item, rerender) {
       msg.textContent = (result.ok ? '✓ ' : '✕ ') + result.message + ' · ' + result.ms + 'ms · ' + result.endpoint
     } catch (error) {
       msg.className = 'mfm-msg err'
-      msg.textContent = '测试失败：' + error.message
+      msg.textContent = tf('测试失败：%s', error.message)
     } finally {
       test.disabled = false
     }
@@ -11720,7 +11734,7 @@ function openModelDialog(box, item, rerender) {
       save.disabled = false
       save.textContent = '保存'
       msg.className = 'mfm-msg err'
-      msg.textContent = '保存失败：' + error.message
+      msg.textContent = tf('保存失败：%s', error.message)
     }
   }
 }
@@ -11755,7 +11769,7 @@ async function buildDevicesPanel(box) {
   const [{ items }, rows] = await Promise.all([rpc('connectors.list'), rpc('plugins.rows')])
   const connected = items.filter((item) => item.state === 'connected')
   const card = spCard()
-  if (connected.length === 0) card.append(spRow('还没有连接器', '目录里有 ' + items.length + ' 个，随便挑一个打开'))
+  if (connected.length === 0) card.append(spRow(t('还没有连接器'), tf('目录里有 %s 个，随便挑一个打开', items.length)))
   for (const item of connected) {
     const wrap = document.createElement('div')
     wrap.className = 'sp-inline'
@@ -11765,7 +11779,7 @@ async function buildDevicesPanel(box) {
         await rpc('connectors.disconnect', { id: item.id })
         await loadConnectors(true)
         refreshToolsViews()
-        toast('已断开 ' + item.name, 'ok')
+        toast(tf('已断开 %s', item.name), 'ok')
       } catch (error) { toast(error.message, 'err') }
       void openPanel('devices')
     }, 'danger'))
