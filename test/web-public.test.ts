@@ -14,7 +14,7 @@ import { translationOf } from '../apps/web/public/i18n.js'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { CASE_DECKS, slideHTML } from '../apps/web/public/cases.js'
+import { BRIEF_MARK, CASE_DECKS, deckPrompt, slideHTML } from '../apps/web/public/cases.js'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const publicDir = join(here, '..', 'apps', 'web', 'public')
@@ -215,20 +215,22 @@ test('没有「未接入」类占位控件', () => {
   assert.doesNotMatch(visible, />未接入</, '界面上不应出现「未接入」徽标')
 })
 
-test('模型列表每行的三个图标都接了真实行为，反馈不被设置窗口盖住', () => {
+test('模型列表每行的操作都接了真实行为，反馈不被设置窗口盖住', () => {
   const source = read('index.html')
 
   // 编辑：打开同一个添加/编辑弹窗，并把刷新后的行重新聚焦
-  assert.match(source, /pen\.onclick = \(\) => openModelDialog\(box, item, rerender\)/)
+  assert.match(source, /openModelDialog\(box, item, rerender\)/)
+  assert.match(source, /querySelector\('\[data-act="edit"\]'\)\.click\(\)/)
 
-  // 复制：复制接入配置（不含 Key），并在图标上给出对勾反馈
-  assert.match(source, /mdCopy\(modelConfigText\(item\)/)
-  assert.match(source, /link\.classList\.add\('copied'\)/)
+  // 「复制接入配置」已按需求移除：行里只留编辑 / 测试 / 删除
+  assert.doesNotMatch(source, /modelConfigText/)
+  assert.doesNotMatch(source, /mdCopy\(/)
+  assert.doesNotMatch(source, /\.md-ico/)
 
   // 删除：行内二次确认 + 真正调用 models.remove
   assert.match(source, /row\.classList\.add\('confirm'\)/)
   assert.match(source, /rpc\('models\.remove'/)
-  assert.match(source, /cancelArm\.onclick/)
+  assert.match(source, /disarm\(true\)/)
 
   // 提示条必须压在设置窗口（z-index:80）和模型弹窗（120）之上，且不挡点击
   const toast = source.match(/\.toast\{[^}]*\}/)
@@ -407,6 +409,240 @@ test('模板卡片右下角有「引用」，引用的东西会真的跟着消�
   assert.match(html, /function consumeRef\(text\)/)
   assert.ok((html.match(/consumeRef\(/g) || []).length >= 4, '三个发送入口都要带上引用')
   assert.match(html, /（引用模板：/)
+})
+
+test('设置每个栏目都不会白屏：先铺骨架，画完再撤', () => {
+  const html = read('index.html')
+
+  // 骨架组件本身
+  assert.match(html, /function spSkeleton\(rows = 3\)/)
+  assert.match(html, /\.sp-skel-row\{/)
+  assert.match(html, /prefers-reduced-motion[\s\S]{0,120}\.sp-skel-row i\{animation:none/)
+
+  // openPanel：清空之后立刻铺骨架，画完在 finally 里撤掉；万一什么都没画也不留白
+  const open = /async function openPanel\(id\) \{[\s\S]*?\n\}/.exec(html)
+  assert.ok(open, '缺 openPanel')
+  assert.match(open![0], /const skeleton = spSkeleton\(\)/)
+  assert.match(open![0], /skeleton\.remove\(\)/)
+  assert.match(open![0], /box\.childElementCount <= 1/)
+  assert.match(open![0], /暂时没有内容/)
+
+  // 应用管理页是静态壳 + 异步行，也要垫骨架
+  assert.match(html, /const shellRows = \$\('spRows'\)/)
+  assert.match(html, /if \(shellRows && shellRows\.childElementCount === 0/)
+
+  // 模型面板自己也有占位，但不能和外面的骨架叠两层
+  assert.match(html, /!host\.querySelector\(':scope > \.sp-skel'\)/)
+})
+
+test('刷新自定义模型列表不先清空面板，删一行不会白屏', () => {
+  const html = read('index.html')
+
+  // 内容装在面板自己的壳里，标题（openPanel 放的）不跟着换
+  assert.match(html, /let wrap = host\.querySelector\(':scope > \.md-wrap'\)/)
+  // 新内容先在离屏节点里拼，拼完一次性替换：中途面板上一直是旧内容
+  assert.match(html, /const box = mdNode\('div'\)/)
+  assert.match(html, /wrap\.replaceChildren\(\.\.\.box\.childNodes\)/)
+
+  // 刷新路径里不许再「先 innerHTML='' 再等两个 RPC」
+  const rerender = /const rerender = async \(editId\) => \{[\s\S]{0,500}?\n  \}/.exec(html)
+  assert.ok(rerender, '缺 rerender')
+  assert.doesNotMatch(rerender![0], /innerHTML = ''/, '刷新前不能清空面板')
+
+  // 删除成功先把那行摘掉，重建在后台做
+  assert.match(html, /row\.remove\(\)/)
+  // 数据没到时有占位，不是空白
+  assert.match(html, /正在读取自定义模型…/)
+})
+
+test('自定义模型每行三个操作：带字的按钮、真的测、删前先确认', () => {
+  const html = read('index.html')
+  assert.match(html, /function buildModelsPanel/)
+
+  // 三个操作都是 .md-btn（图标 + 文字），不再是三个猜不出含义的灰图标
+  assert.match(html, /const makeAction = \(label, icon, act\) =>/)
+  assert.match(html, /makeAction\('编辑', MD_PEN, 'edit'\)/)
+  assert.match(html, /makeAction\('测试', MD_BOLT, 'test'\)/)
+  assert.match(html, /makeAction\('删除', MD_TRASH, 'del'\)/)
+  assert.match(html, /btn\.dataset\.act = act/)
+  assert.match(html, /\.md-btn span\{display:none\}/, '窄屏要能退化成图标')
+
+  // 测试是真调用 models.test（后端会取本机存的 Key），结果直接挂在行里
+  assert.match(html, /rpc\('models\.test', \{\s*id: item\.id,/)
+  assert.match(html, /res\.className = 'md-res ' \+ \(ok \? 'ok' : 'err'\) \+ ' on'/)
+  // 成功给时延，失败给状态码，全文落在 title 与提示条
+  assert.match(html, /\? '✓ ' \+ ms \+ 'ms'/)
+  assert.match(html, /: '✕ ' \+ \(result && result\.status \? 'HTTP ' \+ result\.status : '未通过'\)/)
+  // 供应商模式的模型没存 baseUrl，按供应商表补齐；补不出来才提示，不拿空地址发请求
+  assert.match(html, /const baseUrl = \(item\.baseUrl \|\| \(preset && preset\.baseUrl\) \|\| ''\)\.trim\(\)/)
+  assert.match(html, /if \(baseUrl === ''\) \{/)
+  assert.match(html, /\.md-res\.ok\{/)
+  assert.match(html, /\.md-res\.err\{/)
+  assert.match(html, /res\.setAttribute\('aria-live', 'polite'\)/)
+  // 连点保护
+  assert.match(html, /if \(testing\) return/)
+  assert.match(html, /testBtn\.disabled = true/)
+
+  // 删除：先出确认条，三个按钮整组让位；Esc 和取消都能撤回
+  assert.match(html, /\.md-item\.confirm \.md-tools\{display:none\}/)
+  assert.match(html, /ask\.textContent = tf\('删除「%s」？', item\.name\)/)
+  assert.match(html, /if \(event\.key !== 'Escape' \|\| !row\.classList\.contains\('confirm'\)\) return/)
+  assert.match(html, /no\.focus\(\{ preventScroll: true \}\)/, '焦点给「取消」，回车不会误删')
+  // 旧的整行 arm 文案已经拆掉
+  assert.doesNotMatch(html, /md-arm/)
+})
+
+test('模板卡片上的「引用」是蓝底白字 + 加号，不是半透明黑条', () => {
+  const html = read('index.html')
+  const rule = /\.tpl-ref\{([^}]*)\}/.exec(html)
+  assert.ok(rule, '缺 .tpl-ref 样式')
+  assert.match(rule![1]!, /background:var\(--chip\)/, '引用要蓝底')
+  // 硬白：深色主题的 --on-accent 是深色字，用它就不白了
+  assert.match(rule![1]!, /color:#fff/, '引用要白字')
+  assert.doesNotMatch(rule![1]!, /rgba\(16,20,28/, '旧的半透明黑底要去掉')
+  assert.doesNotMatch(html, /\.tpl-ref\.dark/, 'dark 变体已废弃，别再留死规则')
+  // 加号在文字前面，且是装饰（aria-hidden），屏幕阅读器只念「引用」
+  assert.match(html, /<i class="tpl-plus" aria-hidden="true">\+<\/i>' \+ t\('引用'\)/)
+  assert.match(html, /\.tpl-ref \.tpl-plus\{/)
+
+  // 平时藏着，鼠标指到卡片才浮出来；触屏没有 hover，不加这条媒体查询就永远点不到
+  assert.match(html, /@media \(hover:hover\)\{/)
+  assert.match(html, /\.tpl-ref\{opacity:0;pointer-events:none\}/)
+  assert.match(html, /\.tpl:hover \.tpl-ref,\.tpl-card:hover \.tpl-ref,\.mgcard:hover \.tpl-ref,\.tpl-ref:focus-visible\{opacity:1;pointer-events:auto\}/)
+})
+
+test('首页只留一条标语：插图去掉，产品名 + 标语不超过 10 个字', () => {
+  const html = read('index.html')
+  const from = html.indexOf('id="heroHome"')
+  const hero = html.slice(from, html.indexOf('id="homeHello"', from))
+  assert.ok(from > 0 && hero.length > 0)
+  assert.doesNotMatch(hero, /<svg/, '首页 hero 不再放插图')
+  assert.doesNotMatch(html, /#heroHome \.art/, '插图的定位样式也要一起删掉')
+
+  // 一行两段：产品名（强调色）+ 标语（正文色）
+  const brand = /<span class="hero-brand">([^<]+)<\/span>/.exec(hero)
+  const tag = /<span class="hero-tag">([^<]+)<\/span>/.exec(hero)
+  assert.ok(brand && tag, 'hero 要有产品名和标语')
+  assert.equal(brand![1], 'DesignBuddy')
+  assert.ok(tag![1]!.length <= 10, '标语最多 10 个字：' + tag![1])
+  assert.match(html, /\.hero h1 \.hero-brand\{color:var\(--accent\)/, '产品名要区别于标语')
+  assert.ok(i18nJs.includes("'" + tag![1] + "':"), '标语要进词典，否则切英文会留中文')
+})
+
+test('「更多」悬浮菜单三项各占一行，图标不会被别处的同名类顶大', () => {
+  const html = read('index.html')
+  // 曾经：.mm-ico 在「您还可以制作」的卡片里又定义了一次（38px、无底色），
+  // 菜单里那三个 24px 图标被顶成 38px，撑破 36px 的行高，三项糊成一坨。
+  const iconDefs = (html.match(/^\s*\.mm-ico\{/gm) || []).length
+  assert.equal(iconDefs, 1, '.mm-ico 只能有一处定义，否则后一处会悄悄盖掉前一处')
+  assert.match(html, /\.mmcard-ico\{/, '卡片图标要用自己的类名')
+  assert.match(html, /querySelector\('\.mmcard-ico'\)/)
+
+  const heightOf = (block: string) => Number((block.match(/height:(\d+)px/) || [])[1] || 0)
+  const item = html.match(/\.mm-item\{([^}]*)\}/)
+  const icon = html.match(/\.mm-ico\{([^}]*)\}/)
+  assert.ok(item && icon)
+  assert.ok(heightOf(item![1]!) > heightOf(icon![1]!), '行高要大于图标高度，否则相邻两项会互相压住')
+
+  // 三项都是「图标 + 文字 + 右侧箭头」，且整块是浮层的一颗菜单
+  assert.equal((html.match(/class="mm-item"/g) || []).length, 3)
+  assert.equal((html.match(/class="mm-label"/g) || []).length, 3)
+  assert.equal((html.match(/mm-go"/g) || []).length, 3)
+  assert.match(html, /#moreMenu::before\{/, '贴边浮出的小三角只属于这颗菜单')
+})
+
+test('确认大纲之后的生成态：留在工作台，左栏说进度，右栏逐页补进来', () => {
+  const html = read('index.html')
+  // 不再跳屏：演示文稿逐页生成留在计划工作台里（原来会关掉工作台、跳到旧的生成工作台）
+  assert.match(html, /async function psBuildDeck\(\)/)
+  assert.doesNotMatch(html, /closePlanStudio\(\)\s*\n\s*await openStudioBuild/, '演示文稿不该再跳走')
+  assert.match(html, /await psBuildDeck\(\)/, '「生成」要真的走逐页生成')
+
+  // 左栏：内联「生成」→ 状态行 → 发送键变停止（停止是真的 deck.cancel，不是装饰）
+  assert.match(html, /class="ps-run"/)
+  assert.match(html, /function psStatusRow\(text\)/)
+  assert.match(html, /class="ps-wave"/)
+  assert.match(html, /function setStopMode\(on\)/)
+  assert.match(html, /classList\.toggle\('stop', on\)/)
+  assert.match(html, /rpc\('deck\.cancel'/)
+  assert.match(html, /async function psStopBuild\(\)/)
+
+  // 右栏：三列幻灯片墙——空槽位先摆主题，写好的填进去；顶栏正中是进度胶囊
+  assert.match(html, /function psPaintPage\(index, slide\)/)
+  assert.match(html, /function psGridReset\(\)/)
+  assert.match(html, /\.ps-grid\{[^}]*grid-template-columns:repeat\(3/)
+  assert.match(html, /\.ps-slot-body\.ghost\{/)
+  assert.match(html, /\.ps-slot\.active/, '正在写的那格要描边')
+  assert.match(html, /id="psProgress"/)
+  assert.match(html, /id="psProgressPct"/)
+  assert.match(html, /function psProgress\(show, pct, text\)/)
+  assert.match(html, /\.ps-build\.working\{/)
+  assert.match(html, /function psDoneDeck\(deck\)/)
+  // 顶栏另有一颗「演示」，完成之后才亮
+  assert.match(html, /id="psPlay"/)
+  assert.match(html, /function psPlay\(on\)/)
+
+  // 顶栏照截图：静态标签 + 分享 + 头像，中间那行副标题不再占位
+  assert.match(html, /id="psShare"/)
+  assert.doesNotMatch(html, /id="psSub"/, '副标题已按截图去掉')
+})
+
+test('外观三项设置在真生效：字号倍率、紧凑密度、等宽字体', () => {
+  const html = read('index.html')
+
+  // 字体大小：样式表统一写成 calc(Npx * var(--fs))，「字体大小」只改根节点上的倍率。
+  // 之前写的是 documentElement.style.fontSize，可全站字号都是 px，改根字号什么也没动。
+  assert.match(html, /--fs:1;/)
+  assert.match(html, /style\.setProperty\('--fs'/)
+  assert.match(html, /function fontScale\(size\)/)
+  assert.doesNotMatch(html, /documentElement\.style\.fontSize = size \+ 'px'\s*\n\s*\/\//)
+  const scaled = html.match(/calc\(\d+(?:\.\d+)?px\*var\(--fs,1\)\)/g) || []
+  assert.ok(scaled.length > 300, '字号倍率要覆盖主要界面，实际只有 ' + scaled.length + ' 处')
+
+  // 幻灯片画布是 960×540 的固定设计稿（按容器缩放），不能跟着用户字号走
+  const canvasLines = html.split('\n').filter((line) => line.includes('.sld'))
+  assert.ok(canvasLines.length > 50)
+  assert.ok(canvasLines.every((line) => !line.includes('var(--fs')), '幻灯片画布不该吃字号倍率')
+
+  // 界面密度：紧凑档要成规模（原来只有 sp-row / row / thread 三条，看出来像没生效）
+  const compact = (html.match(/body\.compact /g) || []).length
+  assert.ok(compact >= 25, '紧凑档规则太少，实际 ' + compact)
+  assert.match(html, /body\.classList\.toggle\('compact'/)
+
+  // 等宽字体：对话气泡、工具输出、代码块都要覆盖到（中文没等宽字形，西文与数字才看得出来）
+  for (const sel of ['body.mono .msg', 'body.mono .msg .body', 'body.mono .tool pre', 'body.mono code']) {
+    assert.ok(html.includes(sel), '缺了 ' + sel)
+  }
+  assert.match(html, /body\.classList\.toggle\('mono'/)
+
+  // 面板里放一块实时预览，三项都能当场看到效果
+  assert.match(html, /className = 'sp-preview'/)
+  assert.match(html, /const PREVIEW_SAMPLE/)
+  // 预览样例是内容不是界面文案，不该进词典；旁边那句说明要进
+  assert.ok(!html.includes("textContent = '" + '预览：8GB'))
+})
+
+test('引用模板往输入框里填的是完整提示词，不是一句占位', () => {
+  // 每套案例都能算出一份完整 brief：类型、页数、配色、逐页结构、内容要求
+  for (const deck of CASE_DECKS) {
+    const prompt = deckPrompt(deck)
+    assert.ok(prompt.includes(BRIEF_MARK), `${deck.name}: 缺少模板口径`)
+    assert.ok(prompt.includes(deck.name), `${deck.name}: 没提到模板名`)
+    assert.doesNotMatch(prompt, /undefined|\[object/, `${deck.name}: 提示词里漏了字段`)
+    assert.equal(prompt.split('\n').filter((line) => /^\d{2,3} /.test(line)).length, deck.slides.length, `${deck.name}: 逐页结构要一页不落`)
+    assert.match(prompt, new RegExp('共 ' + deck.slides.length + ' 页'), `${deck.name}: 页数不对`)
+    assert.ok(prompt.length >= 200, `${deck.name}: 提示词太短，只有 ${prompt.length} 字`)
+  }
+
+  // 界面：点引用 → 填进可见输入框；用户自己写的字不覆盖；发送后清空并复位高度
+  assert.match(indexHtml, /fillTemplatePrompt\(deckPrompt\(deck\)\)/)
+  assert.match(indexHtml, /function fillTemplatePrompt/)
+  assert.match(indexHtml, /function fitPromptBox/)
+  assert.match(indexHtml, /function resetPromptBox/)
+  assert.ok((indexHtml.match(/resetPromptBox\(/g) || []).length >= 4, '三个发送入口都要复位输入框')
+  assert.match(indexHtml, /useTemplate\(deck\)/, '「使用模板」也要用同一份提示词')
+  // 正文里已经带着完整 brief 时，不再补一句「引用模板：…」
+  assert.match(indexHtml, /if \(lead\.includes\(BRIEF_MARK\)\) return lead/)
 })
 
 test('界面里写死的中文文案都在词典里，切英文不会是中文', () => {

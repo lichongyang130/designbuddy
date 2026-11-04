@@ -28,6 +28,8 @@ import type { DeckEngine } from '../plugins/deck-engine.ts'
 import type { DeckRecord } from '../plugins/deck-engine.ts'
 import { estimateTokens } from '../core/usage.ts'
 import { errorMessage } from '../core/tools.ts'
+import { outlineFor } from '../core/outline.ts'
+import { createArtifact } from '../core/artifact.ts'
 import type { ToolRegistry } from '../core/tools.ts'
 import type { ClientFrame, HostFrame, Transport } from './protocol.ts'
 
@@ -54,6 +56,8 @@ export class HostServer {
   #transport: Transport
   #commands: HostCommands
   #detach: Disposer
+  /** 每份稿子的 deck-event 订阅：生成结束或被叫停时都要撤，别留下只听不用的监昕器。 */
+  #deckOffs = new Map<string, () => void>()
 
   constructor(ctx: Context, transport: Transport, commands: HostCommands = {}) {
     this.#ctx = ctx
@@ -272,30 +276,72 @@ export class HostServer {
           style: typeof params.style === 'string' ? params.style : undefined,
         })
         // 订阅只活这一份稿子：跑完就撤掉，不给长连接留订阅泄漏。
+        // 记在 #deckOffs 里，deck.build 沿用同一条订阅——否则事件会被两份订阅各回一次，
+        // 界面上同一页、同一个步骤会重复出现。
         let off: (() => void) | undefined
         off = decks.onEvent((record: DeckRecord, event) => {
           if (record.id !== started.id) return
           reply({ type: 'deck-event', deckId: record.id, event })
-          if (event.type === 'deck/done') off?.()
+          if (event.type === 'deck/done') {
+            off?.()
+            this.#deckOffs.delete(record.id)
+          }
         })
+        this.#deckOffs.set(started.id, off!)
         return { id: started.id, plan: started.plan }
       }
       case 'deck.build': {
         const decks = this.#ctx.require<DeckEngine>('decks')
         const id = String(params.id ?? '')
-        // 确认计划之后继续跑；订阅方式和 deck.start 一样，一跑完就撤。
-        let off: (() => void) | undefined
-        off = decks.onEvent((record: DeckRecord, event) => {
-          if (record.id !== id) return
-          reply({ type: 'deck-event', deckId: record.id, event })
-          if (event.type === 'deck/done') off?.()
-        })
+        // 确认计划之后继续跑：deck.start 那条订阅还活着就沿用它，
+        // 只有换了一个客户端来确认时才补订一条（同一份稿子绝不订两次）。
+        if (!this.#deckOffs.has(id)) {
+          let off: (() => void) | undefined
+          off = decks.onEvent((record: DeckRecord, event) => {
+            if (record.id !== id) return
+            reply({ type: 'deck-event', deckId: record.id, event })
+            if (event.type === 'deck/done') {
+              off?.()
+              this.#deckOffs.delete(id)
+            }
+          })
+          this.#deckOffs.set(id, off!)
+        }
         return decks.build(id)
+      }
+      case 'deck.cancel': {
+        // 逐页生成可以被叫停：引擎里本来就有 cancel()（关面板时会 abort），
+        // 这里把它接到 RPC 上，界面上的「停止」才是真的停止，而不是假装。
+        const decks = this.#ctx.require<DeckEngine>('decks')
+        const id = String(params.id ?? '')
+        const cancelled = decks.cancel(id)
+        // 被叫停不会有 deck/done，订阅得在这里撤，否则监听器会一直挂在引擎上。
+        this.#deckOffs.get(id)?.()
+        this.#deckOffs.delete(id)
+        return { id, cancelled }
       }
       case 'deck.revise': {
         const decks = this.#ctx.require<DeckEngine>('decks')
         const result = decks.revise(String(params.id ?? ''), String(params.instruction ?? ''))
         return { id: result.id, indexes: result.indexes, summary: result.summary, deck: result.deck }
+      }
+      case 'plan.outline': {
+        // 大纲先行：文档 / 轮播图 / 图片没有自己的生成引擎，但同样要先定结构。
+        // 纯函数，不进插件、不占状态——同一句需求算出来的大纲永远一样。
+        return outlineFor({
+          prompt: String(params.prompt ?? ''),
+          kind: String(params.kind ?? '文档'),
+          count: Number(params.count ?? 0) || undefined,
+          style: typeof params.style === 'string' ? params.style : undefined,
+        })
+      }
+      case 'create.artifact': {
+        // 大纲确认之后的真产出：docx / svg / zip 落盘，返回可下载的相对地址。
+        return createArtifact({
+          prompt: String(params.prompt ?? ''),
+          kind: String(params.kind ?? '文档'),
+          count: Number(params.count ?? 0) || undefined,
+        })
       }
       case 'deck.get': {
         const decks = this.#ctx.require<DeckEngine>('decks')

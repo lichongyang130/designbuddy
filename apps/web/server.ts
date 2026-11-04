@@ -17,6 +17,7 @@
 
 import { randomUUID } from 'node:crypto'
 import { readFile } from 'node:fs/promises'
+import { join, normalize } from 'node:path'
 import { createServer } from 'node:http'
 import type { IncomingMessage, ServerResponse } from 'node:http'
 
@@ -37,6 +38,8 @@ applyDefaultDataPaths()
 const app = await App.create({ profile: desktopProfile, modules: defaultModules, logger })
 
 const PUBLIC_DIR = new URL('./public/', import.meta.url)
+// 大纲确认后产出的成品目录，和 core/artifact 落盘用的是同一个（applyDefaultDataPaths 已设好）。
+const OUTPUT_DIR = process.env.DB_OUTPUT_DIR ?? join(process.cwd(), '.designbuddy', 'output')
 const MIME: Record<string, string> = {
   '.html': 'text/html; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8',
@@ -50,6 +53,12 @@ const MIME: Record<string, string> = {
   '.webp': 'image/webp',
   '.ico': 'image/x-icon',
   '.woff2': 'font/woff2',
+  // 大纲确认后的产出：docx / zip 走下载，svg 直接在页面里显示
+  '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  '.xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  '.pptx': 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+  '.zip': 'application/zip',
+  '.pdf': 'application/pdf',
 }
 
 async function serveStatic(pathname: string, res: ServerResponse): Promise<boolean> {
@@ -161,6 +170,41 @@ async function route(req: IncomingMessage, res: ServerResponse): Promise<void> {
 
   if (req.method === 'GET' && (url.pathname === '/' || url.pathname === '/index.html')) {
     if (await serveStatic('/', res)) return
+  }
+
+  // 产出的成品：docx 走下载，svg 直接内联（界面要用 <img> 当缩略图）。
+  if (req.method === 'GET' && url.pathname.startsWith('/output/')) {
+    let rel: string
+    try {
+      rel = decodeURIComponent(url.pathname.slice('/output/'.length))
+    } catch {
+      sendJson(res, 400, { error: '路径编码不合法' })
+      return
+    }
+    const safe = normalize(rel).replace(/^(\.\.[/\\])+/, '')
+    if (safe === '' || safe.includes('..')) {
+      sendJson(res, 400, { error: '路径不合法' })
+      return
+    }
+    try {
+      const body = await readFile(join(OUTPUT_DIR, safe))
+      const name = safe.slice(safe.lastIndexOf('/') + 1)
+      const dot = name.lastIndexOf('.')
+      const ext = dot >= 0 ? name.slice(dot).toLowerCase() : ''
+      const inline = ext === '.svg' || ext === '.png' || ext === '.jpg' || ext === '.jpeg' || ext === '.webp'
+      res.writeHead(200, {
+        'Content-Type': MIME[ext] ?? 'application/octet-stream',
+        'Content-Length': body.length,
+        // 中文文件名用 filename* 才不会被浏览器按 latin1 解码成乱码
+        'Content-Disposition': `${inline ? 'inline' : 'attachment'}; filename*=UTF-8''${encodeURIComponent(name)}`,
+        'Cache-Control': 'no-store',
+      })
+      res.end(body)
+      return
+    } catch {
+      sendJson(res, 404, { error: '没有这个产出：' + safe })
+      return
+    }
   }
 
   if (req.method === 'GET' && url.pathname === '/events') {

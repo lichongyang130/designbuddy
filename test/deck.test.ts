@@ -271,6 +271,64 @@ test('规划模式：先出计划等人确认，确认后才逐页生成', async
   assert.equal(events.filter((type) => type === 'deck/slide').length, 15)
 })
 
+test('引擎：cancel 之后不再出页，记录停在 cancelled', async (t) => {
+  const engine = new DeckEngine({ paceMs: 20 })
+  t.after(() => engine.dispose())
+
+  const events: DeckEvent[] = []
+  const stop = engine.onEvent((_record, event) => events.push(event))
+  const { id } = engine.start({ prompt: PROMPT, mode: 'plan' })
+  await new Promise((resolve) => setTimeout(resolve, 260))
+  engine.build(id)
+  await new Promise((resolve) => setTimeout(resolve, 120))
+
+  assert.equal(engine.cancel(id), true, '跑着的稿子应该能叫停')
+  const slidesAtCancel = events.filter((event) => event.type === 'deck/slide').length
+  assert.ok(slidesAtCancel < 15, '要在跑完之前叫停，这条测试才有意义')
+
+  await new Promise((resolve) => setTimeout(resolve, 300))
+  stop()
+  assert.equal(events.filter((event) => event.type === 'deck/slide').length, slidesAtCancel, '叫停之后不该再有页面')
+  assert.equal(events.some((event) => event.type === 'deck/done'), false, '叫停不是「假装完成」')
+  assert.equal(engine.get(id)?.status, 'cancelled')
+  assert.equal(engine.cancel(id), false, '已经停了再叫一次要老实返回 false')
+})
+
+test('端到端：deck.cancel 掐断事件流，记录停在 cancelled', async (t) => {
+  const app = await boot([designBundle])
+  t.after(() => app.dispose())
+  const { client: clientTransport, host: hostTransport } = createLoopback()
+  const server = new HostServer(app.ctx, hostTransport)
+  const client = new HostClient(clientTransport)
+  const frames: HostFrame[] = []
+  client.onFrame((frame) => frames.push(frame))
+
+  const started = (await client.request('deck.start', { prompt: PROMPT, mode: 'plan' })) as { id: string }
+  // 等计划段真的排完（视觉设计 done），再确认生成——别和规划段抢着跑
+  const deadline = Date.now() + 5000
+  while (Date.now() < deadline) {
+    const planned = frames.some((frame) => frame.type === 'deck-event' && frame.event.type === 'deck/stage' &&
+      frame.event.id === 'visual' && frame.event.status === 'done')
+    if (planned) break
+    await new Promise((resolve) => setTimeout(resolve, 30))
+  }
+
+  await client.request('deck.build', { id: started.id })
+  await new Promise((resolve) => setTimeout(resolve, 150))
+  const cancelled = (await client.request('deck.cancel', { id: started.id })) as { cancelled: boolean }
+  assert.equal(cancelled.cancelled, true)
+
+  const slides = () => frames.filter((frame) => frame.type === 'deck-event' && frame.event.type === 'deck/slide').length
+  const at = slides()
+  assert.ok(at > 0 && at < 15, '应该停在中间：已出 ' + at + ' 页')
+  await new Promise((resolve) => setTimeout(resolve, 400))
+  assert.equal(slides(), at, '叫停之后事件流要停住')
+
+  const got = (await client.request('deck.get', { id: started.id })) as { status: string }
+  assert.equal(got.status, 'cancelled')
+  server.dispose()
+})
+
 test('审核的六类检查：缺主视觉、连着三页一个版式都算问题', () => {
   const fromPlan = plan({ prompt: PROMPT })
   const deck = buildDeck(fromPlan)

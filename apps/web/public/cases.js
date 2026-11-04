@@ -11886,3 +11886,89 @@ export function slideHTML(deck, s, index) {
 export function deckSlides(deck) {
   return deck.slides.map((s, i) => ({ s, html: slideHTML(deck, s, i) }))
 }
+
+/* ── 模板提示词 ────────────────────────────────────────────────
+ * 每套模板的「完整提示词」从案例数据现算：类型、页数、配色口径、逐页结构、内容要求。
+ * 放在这里而不是 index.html，是因为它只依赖 deck 数据：界面（引用模板 → 填进输入框）
+ * 和测试都能用同一份，不用两边各写一遍。
+ * 这段文字属于内容（和 deck.name 一样），不进 i18n 词典。
+ */
+const PROMPT_TITLE_KEYS = ['title', 'head', 'big', 'name', 'q', 'quote', 'text', 'cap', 'note', 'kicker', 'line', 'sub']
+
+/** 提示词里这一节的标记：发送时据此判断「引用信息已经在正文里了」，不再补一句。 */
+export const BRIEF_MARK = '【模板口径】'
+
+/** 一页的标题片段：取第一个像标题的字段，过长时在标点处收口。 */
+function slideTitle(slide) {
+  for (const key of PROMPT_TITLE_KEYS) {
+    const value = slide[key]
+    if (typeof value !== 'string') continue
+    const text = value.trim().replace(/\s+/g, ' ')
+      // 数据里换行断开的两个汉字（「九点 之后」）拼回去，中文标题里不该有空格
+      .replace(/([\u4e00-\u9fa5])\s+([\u4e00-\u9fa5])/g, '$1$2')
+      .replace(/([，。、；：！？])\s+/g, '$1')
+    if (text === '') continue
+    if (text.length <= 30) return text
+    const cut = text.slice(0, 30)
+    const stop = Math.max(cut.lastIndexOf('，'), cut.lastIndexOf('。'), cut.lastIndexOf('·'))
+    return stop >= 8 ? cut.slice(0, stop) : cut + '…'
+  }
+  return ''
+}
+
+/** 逐页结构：01 封面 · 拱廊再生 —— 页数不变、顺序不变，全部列出来。 */
+export function deckPageLines(deck) {
+  const slides = deck.slides || []
+  const width = Math.max(2, String(slides.length).length)
+  return slides.map((slide, index) => {
+    const no = String(index + 1).padStart(width, '0')
+    const label = String(slide.label || '页面').trim()
+    const title = slideTitle(slide)
+    // 有些页的 label 本身就带着标题（「章节 01 · 现场」+ title「现场」），重复的就不再写一遍
+    const tail = title && title !== label && !label.includes(title) ? ' · ' + title : ''
+    return no + ' ' + label + tail
+  })
+}
+
+export function deckPrompt(deck) {
+  if (!deck) return ''
+  const slides = deck.slides || []
+  const lines = []
+  const kind = typeof deck.kind === 'string' && deck.kind.trim() !== '' ? '，做一份「' + deck.kind + '」' : '，做一份'
+  lines.push('用「' + deck.name + '」这套模板' + kind + (deck.cat || '演示文稿') + '。')
+  lines.push('')
+
+  lines.push(BRIEF_MARK)
+  const facts = []
+  if (deck.ratio) facts.push('比例 ' + deck.ratio)
+  facts.push('共 ' + slides.length + ' 页')
+  if (deck.colorway) facts.push('配色「' + deck.colorway + '」')
+  lines.push('- ' + facts.join('；') + '。')
+  const colors = []
+  if (deck.paper) colors.push('纸底 ' + deck.paper)
+  if (deck.ink) colors.push('正文 ' + deck.ink)
+  if (deck.accent) colors.push('强调 ' + deck.accent)
+  if (deck.second) colors.push('辅助 ' + deck.second)
+  if (colors.length > 0) lines.push('- ' + colors.join(' · ') + '。')
+  lines.push('- ' + (deck.display === 'serif' ? '标题用衬线体' : '标题用无衬线体') + (deck.mono ? '，说明文字用等宽小字' : '') + '，细线分隔、留白克制。')
+  const heads = [deck.runHead, deck.footLeft].filter((value) => typeof value === 'string' && value.trim() !== '')
+  if (heads.length > 0) lines.push('- 页眉页脚沿用「' + heads.join(' / ') + '」这种刊名式小字。')
+  // 案例描述里偶有「。，」这种连写，提示词里收一下，别让模型照抄
+  if (deck.desc) lines.push('- 风格：' + deck.desc.replace(/。，/g, '。').replace(/，\s+/g, '，'))
+  lines.push('')
+
+  lines.push('【页面结构】按这个顺序排，页数和顺序都不要改：')
+  lines.push(...deckPageLines(deck))
+
+  if (Array.isArray(deck.bestFor) && deck.bestFor.length > 0) {
+    lines.push('')
+    lines.push('【适合的内容】' + deck.bestFor.join('、') + '。')
+  }
+
+  lines.push('')
+  lines.push('【内容要求】')
+  lines.push('- 标题 14 字以内，每页正文不超过 3 条要点；数字和结论要具体，不写「赋能」「显著提升」这类空话。')
+  lines.push('- 需要图的页面注明版位（[整版图] / [图文分栏]），并给一句图注；没有图就排文字。')
+  lines.push('- 中文输出，保留这套模板的编号、页码与页脚节奏。')
+  return lines.join('\n')
+}
