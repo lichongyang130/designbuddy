@@ -32,12 +32,19 @@ export interface CustomModel {
   capabilities?: string[]
   /** 是否已经存过密钥（列表接口只回这个布尔值）。 */
   hasKey?: boolean
+  /**
+   * 请求由谁发出：
+   *   - 不填 → 服务端直接发（正常情况）；
+   *   - `browser` → 服务端出不了网时，交给用户浏览器代发，Key 也只留在浏览器里。
+   */
+  transport?: 'browser'
   createdAt: number
   updatedAt: number
 }
 
 export interface CustomModelInput {
   id?: string
+  transport?: 'browser' | ''
   apiKey?: string
   clearKey?: boolean
   capabilities?: string[]
@@ -138,6 +145,7 @@ export class ModelCatalog {
       existing.provider = (input.provider ?? existing.provider).trim() || existing.provider
       existing.baseUrl = input.baseUrl === undefined ? existing.baseUrl : (input.baseUrl.trim() || undefined)
       existing.apiKeyEnv = input.apiKeyEnv === undefined ? existing.apiKeyEnv : (input.apiKeyEnv.trim() || undefined)
+      if (input.transport !== undefined) existing.transport = input.transport === 'browser' ? 'browser' : undefined
       existing.updatedAt = now
       this.#write(items)
       this.#applyKey(existing.id, input)
@@ -154,6 +162,7 @@ export class ModelCatalog {
       provider: (input.provider ?? '').trim() || '自建',
       baseUrl: (input.baseUrl ?? '').trim() || undefined,
       apiKeyEnv: (input.apiKeyEnv ?? '').trim() || undefined,
+      transport: input.transport === 'browser' ? 'browser' : undefined,
       capabilities: Array.isArray(input.capabilities) ? input.capabilities.slice() : undefined,
       createdAt: now,
       updatedAt: now,

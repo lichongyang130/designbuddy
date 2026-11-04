@@ -134,15 +134,26 @@ export class OpenAiAdapter implements LlmAdapter {
     if (typeof request.temperature === 'number') body.temperature = request.temperature
     if (typeof request.maxTokens === 'number') body.max_tokens = request.maxTokens
 
-    const response = await this.#fetch(this.#baseUrl + '/chat/completions', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        authorization: `Bearer ${this.#apiKey}`,
-      },
-      body: JSON.stringify(body),
-      signal: request.signal,
-    })
+    let response: Response
+    try {
+      response = await this.#fetch(this.#baseUrl + '/chat/completions', {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          authorization: `Bearer ${this.#apiKey}`,
+        },
+        body: JSON.stringify(body),
+        signal: request.signal,
+      })
+    } catch (error) {
+      // fetch 自己的错误只有一句「fetch failed」，真正的原因在 cause 里：
+      // 证书不对、DNS 不通、代理拒绝……界面要能显示到这一层，否则用户没法自助排查。
+      const cause = (error as { cause?: { message?: string } }).cause
+      const name = error instanceof Error ? error.name : ''
+      if (name === 'AbortError') throw error
+      const raw = error instanceof Error ? error.message : String(error)
+      throw new Error(`网络错误：${raw}${cause?.message ? '（' + cause.message + '）' : ''}`)
+    }
 
     if (!response.ok || !response.body) {
       const detail = await response.text().catch(() => '')

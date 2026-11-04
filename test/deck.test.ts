@@ -7,6 +7,7 @@ import {
   buildDeck,
   deckId,
   outline,
+  pagesOf,
   plan,
   repair,
   revise,
@@ -43,10 +44,42 @@ test('需求分析：主题、用途、受众、页数、风格都从一句话�
   assert.deepEqual(brief.keys.slice(0, 2), ['AI', '智能办公产品'])
 })
 
-test('需求分析：页数被夹在 8–30，没写就用 15', () => {
+test('需求分析：页数被夹在 5–30，没写就用 15', () => {
   assert.equal(analyze({ prompt: '季度汇报' }).pages, 15)
-  assert.equal(analyze({ prompt: '季度汇报', pages: 3 }).pages, 8)
+  assert.equal(analyze({ prompt: '季度汇报', pages: 3 }).pages, 5)
   assert.equal(analyze({ prompt: '季度汇报', pages: 99 }).pages, 30)
+})
+
+test('需求分析：句子里写的页数优先用，照样夹在 5–30', () => {
+  assert.equal(pagesOf('给产品团队做一份季度复盘，10页'), 10, '「10页」以前被当成壳子剥掉，一律出 15 页')
+  assert.equal(pagesOf('做一份 8 页的融资路演材料'), 8)
+  assert.equal(pagesOf('20 页的季度方案'), 20)
+  assert.equal(pagesOf('6 页的复盘'), 6, '说几页就出几页：6 页的复盘很常见，以前被抬成 8 页')
+  assert.equal(pagesOf('3 页的短稿'), 5, '低于 5 页抬到 5（再少就讲不出开场—论据—行动）')
+  assert.equal(pagesOf('40 页的年度报告'), 30, '高于 30 页压到 30')
+  assert.equal(pagesOf('季度汇报'), 15, '没写页数还是 15')
+  assert.equal(pagesOf('10 页', 22), 22, '调用方明确给了页数就以调用方为准')
+})
+
+test('需求分析：主题只留名词短语，命令词和格式词都不进主题', () => {
+  const cases: [string, string][] = [
+    ['给产品团队做一份季度复盘，10页', '季度复盘'],
+    ['帮我做一份发布会 PPT', '发布会'],
+    ['为新员工写一份产品使用手册', '产品使用手册'],
+    ['做一份 8 页的融资路演材料，面向投资人', '融资路演'],
+  ]
+  for (const [prompt, topic] of cases) assert.equal(analyze({ prompt }).topic, topic, prompt)
+  assert.equal(analyze({ prompt: '给产品团队做一份季度复盘，10页' }).audience, '产品团队')
+  assert.equal(analyze({ prompt: '为新员工写一份产品使用手册' }).audience, '新员工')
+  assert.equal(analyze({ prompt: '帮我做一份发布会 PPT' }).audience, '客户与投资人', '没有受众时退回默认值，不能把「帮我」当受众')
+})
+
+test('生成：句子里写 10 页就出 10 页', async () => {
+  const events = await collect({ prompt: '给产品团队做一份季度复盘，10页', mode: 'express' })
+  const done = events.find((event) => event.type === 'deck/done')
+  assert.ok(done && done.type === 'deck/done', '没有 deck/done')
+  assert.equal(done.deck.slides.length, 10)
+  assert.equal(done.deck.name, '季度复盘', '封面标题是主题本身，不是整句需求')
 })
 
 test('大纲：页数对得上，开场固定第一页、行动号召固定最后一页', () => {
@@ -269,6 +302,64 @@ test('规划模式：先出计划等人确认，确认后才逐页生成', async
   stop()
   assert.equal(engine.get(id)?.status, 'done')
   assert.equal(events.filter((type) => type === 'deck/slide').length, 15)
+})
+
+test('引擎：cancel 之后不再出页，记录停在 cancelled', async (t) => {
+  const engine = new DeckEngine({ paceMs: 20 })
+  t.after(() => engine.dispose())
+
+  const events: DeckEvent[] = []
+  const stop = engine.onEvent((_record, event) => events.push(event))
+  const { id } = engine.start({ prompt: PROMPT, mode: 'plan' })
+  await new Promise((resolve) => setTimeout(resolve, 260))
+  engine.build(id)
+  await new Promise((resolve) => setTimeout(resolve, 120))
+
+  assert.equal(engine.cancel(id), true, '跑着的稿子应该能叫停')
+  const slidesAtCancel = events.filter((event) => event.type === 'deck/slide').length
+  assert.ok(slidesAtCancel < 15, '要在跑完之前叫停，这条测试才有意义')
+
+  await new Promise((resolve) => setTimeout(resolve, 300))
+  stop()
+  assert.equal(events.filter((event) => event.type === 'deck/slide').length, slidesAtCancel, '叫停之后不该再有页面')
+  assert.equal(events.some((event) => event.type === 'deck/done'), false, '叫停不是「假装完成」')
+  assert.equal(engine.get(id)?.status, 'cancelled')
+  assert.equal(engine.cancel(id), false, '已经停了再叫一次要老实返回 false')
+})
+
+test('端到端：deck.cancel 掐断事件流，记录停在 cancelled', async (t) => {
+  const app = await boot([designBundle])
+  t.after(() => app.dispose())
+  const { client: clientTransport, host: hostTransport } = createLoopback()
+  const server = new HostServer(app.ctx, hostTransport)
+  const client = new HostClient(clientTransport)
+  const frames: HostFrame[] = []
+  client.onFrame((frame) => frames.push(frame))
+
+  const started = (await client.request('deck.start', { prompt: PROMPT, mode: 'plan' })) as { id: string }
+  // 等计划段真的排完（视觉设计 done），再确认生成——别和规划段抢着跑
+  const deadline = Date.now() + 5000
+  while (Date.now() < deadline) {
+    const planned = frames.some((frame) => frame.type === 'deck-event' && frame.event.type === 'deck/stage' &&
+      frame.event.id === 'visual' && frame.event.status === 'done')
+    if (planned) break
+    await new Promise((resolve) => setTimeout(resolve, 30))
+  }
+
+  await client.request('deck.build', { id: started.id })
+  await new Promise((resolve) => setTimeout(resolve, 150))
+  const cancelled = (await client.request('deck.cancel', { id: started.id })) as { cancelled: boolean }
+  assert.equal(cancelled.cancelled, true)
+
+  const slides = () => frames.filter((frame) => frame.type === 'deck-event' && frame.event.type === 'deck/slide').length
+  const at = slides()
+  assert.ok(at > 0 && at < 15, '应该停在中间：已出 ' + at + ' 页')
+  await new Promise((resolve) => setTimeout(resolve, 400))
+  assert.equal(slides(), at, '叫停之后事件流要停住')
+
+  const got = (await client.request('deck.get', { id: started.id })) as { status: string }
+  assert.equal(got.status, 'cancelled')
+  server.dispose()
 })
 
 test('审核的六类检查：缺主视觉、连着三页一个版式都算问题', () => {

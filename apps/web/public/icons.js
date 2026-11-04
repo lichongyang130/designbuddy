@@ -114,13 +114,15 @@
     keyboard: '<rect x="3" y="6.6" width="18" height="10.8" rx="2.5"/><path d="M6.6 10h.01M9.9 10h.01M13.2 10h.01M16.5 10h.01M7.6 14h8.8"/>',
     help: '<circle cx="12" cy="12" r="8.4"/><path d="M9.7 9.9a2.3 2.3 0 1 1 3.1 2.2c-.6.25-.9.75-.9 1.35v.3"/><circle cx="12" cy="16.6" r=".9" fill="currentColor" stroke="none"/>',
     command: '<rect x="3.6" y="4.6" width="16.8" height="14.8" rx="2.7"/><path d="m7.6 9.6 3 2.5-3 2.5M12.6 15h4"/>',
-    microphone: '<rect x="9.4" y="3.4" width="5.2" height="10.2" rx="2.6"/><path d="M5.8 11.4a6.2 6.2 0 0 0 12.4 0"/><path d="M12 17.6V20.4"/>'
+    microphone: '<rect x="9.4" y="3.4" width="5.2" height="10.2" rx="2.6"/><path d="M5.8 11.4a6.2 6.2 0 0 0 12.4 0"/><path d="M12 17.6V20.4"/>',
+    undo: '<path d="M9.4 7.6h5.4a4.6 4.6 0 0 1 0 9.2H8.6"/><path d="M11.9 4.2 8.1 7.6l3.8 3.4"/>',
+    redo: '<path d="M14.6 7.6h-5.4a4.6 4.6 0 0 0 0 9.2h6.2"/><path d="M12.1 4.2l3.8 3.4-3.8 3.4"/>'
   }
 
   /* 图标总览页分组（icons.html 用） */
   var GROUPS = [
     ['图标栏', ['home', 'library', 'templates', 'theme', 'settings', 'more', 'user-plus', 'feedback']],
-    ['方向与基础', ['chevron-down', 'chevron-up', 'chevron-left', 'chevron-right', 'plus', 'close', 'search', 'filter', 'sort', 'refresh', 'check', 'square', 'arrow-left', 'send']],
+    ['方向与基础', ['chevron-down', 'chevron-up', 'chevron-left', 'chevron-right', 'plus', 'close', 'search', 'filter', 'sort', 'refresh', 'undo', 'redo', 'check', 'square', 'arrow-left', 'send']],
     ['操作', ['upload', 'import', 'paperclip', 'link', 'pen', 'wand', 'eraser', 'sparkle', 'sparkle-solid']],
     ['导航与容器', ['folder', 'message', 'panel', 'users', 'globe', 'code', 'trash', 'archive', 'clock', 'user', 'apps', 'grid', 'icons', 'layers', 'compass', 'layout', 'list', 'dots-vertical', 'circle', 'shapes']],
     ['内容类型', ['image', 'presentation', 'doc', 'phone', 'carousel']],

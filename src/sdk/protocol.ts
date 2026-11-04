@@ -42,8 +42,11 @@ export type ClientMethod =
   | 'approvals.respond'
   | 'deck.start'
   | 'deck.build'
+  | 'deck.cancel'
   | 'deck.revise'
   | 'deck.get'
+  | 'plan.outline'
+  | 'create.artifact'
 
 export interface ClientFrame {
   id: string

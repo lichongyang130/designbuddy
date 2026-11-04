@@ -1,3 +1,7 @@
+import { PURPOSE_SHELL, STYLE_SHELL, audienceOf, squeeze, subjectOf } from './subject.ts'
+
+export { audienceOf, subjectOf } from './subject.ts'
+
 /**
  * 演示文稿引擎的内核：需求分析 → 叙事规划 → 大纲 → 逐页文案与版式 → 质量审核。
  *
@@ -39,7 +43,7 @@ export type SlideKind =
 export interface DeckRequest {
   prompt: string
   mode?: DeckMode
-  /** 目标页数，默认 15；引擎会夹到 8–30。 */
+  /** 目标页数，默认 15；引擎会夹到 5–30。 */
   pages?: number
   audience?: string
   style?: string
@@ -115,6 +119,11 @@ export interface DeckPlan {
   design: DeckDesign
   /** 参与这一轮的 Agent（按执行顺序）。 */
   agents: { id: string; name: string; role: string }[]
+  /** 这份大纲是谁写的：模型 / 规则模板。界面据此标一行，不让人猜。 */
+  source?: 'llm' | 'rules'
+  model?: string
+  ms?: number
+  reason?: string
 }
 
 export type DeckSlide = { k: SlideKind; label: string } & Record<string, unknown>
@@ -161,30 +170,15 @@ export interface DeckIssue {
 
 /** 引擎推给界面的事件。界面照着画，不用猜正在发生什么。 */
 export type DeckEvent =
-  | { type: 'deck/plan'; plan: DeckPlan }
+  | { type: 'deck/plan'; plan: DeckPlan; upgraded?: boolean }
   | { type: 'deck/thinking'; agent: string; text: string }
   | { type: 'deck/stage'; id: string; status: 'start' | 'done'; detail?: string }
-  | { type: 'deck/slide'; index: number; total: number; slide: DeckSlide }
+  | { type: 'deck/slide'; index: number; total: number; slide: DeckSlide; copySource?: 'llm' | 'rules' }
   | { type: 'deck/qa'; issues: DeckIssue[]; score: number; pass: number }
   | { type: 'deck/done'; deck: GeneratedDeck }
   | { type: 'deck/patch'; instruction: string; indexes: number[]; summary: string }
 
 /* ── 1. 需求分析 ─────────────────────────────────────────── */
-
-/**
- * 从需求里剥属性：页数、受众、风格、用途、壳子词。
- * 中文没有空格，靠停用词切分得不到干净的「主题」，只能按「这些不是主题」来删。
- */
-const ATTRIBUTE_PATTERNS: RegExp[] = [
-  /\d+\s*(?:页|pages?|slides?)/gi,
-  /(?:面向|受众是|讲给|给)[^，。；,.;\n]*/g,
-  /(?:科技未来感|科技感|未来感|赛博|深色|暗色|极简|商务感|商务|正式|稳重|活力|高端|克制|年轻)/g,
-  /(?:商业发布会|发布会|产品发布|路演|融资|汇报|培训|分享会|宣讲|内部分享|提案)/g,
-  /(?:PPT|ppt|幻灯片|演示文稿|演示|材料|文档|报告|deck|slides?|presentation)/gi,
-  /(?:帮我|请|制作|做|生成|写|一份|一个|关于|的|要求|需要|风格|页数|用|以)/g,
-]
-
-const STOP_WORDS = ['的', '了', '和', '与', '及', '是', '在', '为', '把']
 
 const STYLE_KEYS: { key: DeckBrief['styleKey']; re: RegExp; label: string }[] = [
   { key: 'dark-tech', re: /科技|未来|赛博|深色|暗色|AI|智能|数字化/, label: '科技未来' },
@@ -267,25 +261,37 @@ export function seeded(seed: string, salt: number, min: number, max: number): nu
   return Math.round(min + unit * (max - min))
 }
 
+/** 页数的上下限：少于 5 页讲不出「开场—论据—行动」三段，多于 30 页现场根本翻不完。 */
+export const PAGE_MIN = 5
+export const PAGE_MAX = 30
+
+/**
+ * 页数：先看调用方给的，再看句子里写的「10 页 / 10页 / 10 slides」。
+ * 早先这里只读 request.pages，「10 页的复盘」照样出 15 页 —— 用户最直接的感受就是「生成不对」。
+ *
+ * 下限原本是 8，比现实更硬：一份 6 页的复盘很常见，而说 6 页却出 8 页，
+ * 用户看到的仍然是「不听我的」。骨架本来就能处理 5 页（开场 + 三条论据 + 行动）。
+ */
+export function pagesOf(prompt: string, wanted?: number): number {
+  const spoken = prompt.match(/(\d+)\s*(?:页|pages?|slides?|P\b)/i)?.[1]
+  const value = Number(wanted ?? (spoken === undefined ? NaN : Number(spoken)))
+  const pages = Number.isFinite(value) && value > 0 ? Math.round(value) : 15
+  return Math.min(PAGE_MAX, Math.max(PAGE_MIN, pages))
+}
+
 export function analyze(request: DeckRequest): DeckBrief {
   const prompt = request.prompt.trim()
-  const pages = Math.min(30, Math.max(8, Math.round(request.pages ?? 15)))
+  const pages = pagesOf(prompt, request.pages)
 
-  // 主题：先剥属性和壳子词，剩下的名词短语才是主题。
-  let stripped = prompt
-  for (const pattern of ATTRIBUTE_PATTERNS) stripped = stripped.replace(pattern, ' ')
-  stripped = stripped.replace(/[，。；、,.;:：""''（）()·\[\]【】]/g, ' ')
-  const words: string[] = []
-  for (const part of stripped.split(/\s+/)) {
-    const word = part.trim()
-    if (word === '' || /^\d+$/.test(word)) continue
-    if (STOP_WORDS.includes(word)) continue
-    if (words.includes(word)) continue
-    words.push(word)
-  }
-  let topic = words.join(' ').trim()
+  // 主题：剥命令/量词/格式后缀。用途词只在还剩别的内容时才剥，免得「发布会」变空。
+  const shelled = subjectOf(prompt)
+  const narrowed = squeeze(shelled.replace(PURPOSE_SHELL, ' ').replace(STYLE_SHELL, ' '))
+    .replace(/\s+/g, ' ')
+    .replace(/^[的了\s]+/, '')
+    .replace(/[的了]$/, '')
+    .trim()
+  let topic = narrowed.length >= 4 ? narrowed : shelled
   if (topic === '') {
-    // 全被剥掉了（例如「帮我做一份发布会 PPT」）：退回原句里最长的名词片段。
     topic = prompt.replace(/[，。；、,.;:]/g, ' ').split(/\s+/).filter((part) => part.length >= 2)[0] ?? '未命名主题'
   }
   topic = topic.slice(0, 40)
@@ -293,7 +299,7 @@ export function analyze(request: DeckRequest): DeckBrief {
   const styleRule = STYLE_KEYS.find((item) => item.re.test(prompt))
   const purposeRule = PURPOSE_RULES.find((item) => item.re.test(prompt))
 
-  const spoken = prompt.match(/(?:面向|受众是|讲给|给)([^，。；,.;\n]{2,24})/)?.[1]?.trim()
+  const spoken = audienceOf(prompt)
   const audience =
     request.audience?.trim() ||
     spoken ||
@@ -748,9 +754,102 @@ export function deckId(brief: DeckBrief): string {
   return 'gen-' + (h >>> 0).toString(36)
 }
 
-export function buildDeck(fromPlan: DeckPlan): GeneratedDeck {
+/** 模型写的这一页文案：字段都可选，缺的就保留模板。 */
+export interface PageCopy {
+  n: number
+  title?: string
+  /** 一句话主张：金句页 / 案例页用得上。 */
+  lead?: string
+  /** 正文要点：`h` 是小标题，`d` 是正文。 */
+  points?: { h?: string; d: string }[]
+}
+
+/**
+ * 把文案贴到骨架上。**只在字段本来就存在时写**，不给 slide 添新键——
+ * 渲染器按版式读字段，多出来的键不会画，但会让人误以为生效了。
+ * 贴完做一次容量校验：撑爆版式就整页退回模板（`applied: false`），宁可字少一点。
+ */
+export function applyCopy(slide: DeckSlide, copy: PageCopy): { slide: DeckSlide; applied: boolean } {
+  const next: DeckSlide = { ...slide }
+  let applied = false
+
+  if (copy.title && copy.title.length >= 2) {
+    if (typeof next.title === 'string' || next.k === 'section' || next.k === 'cover' || next.k === 'quote') {
+      next.title = copy.title
+      applied = true
+    }
+  }
+
+  if (copy.lead && typeof next.text === 'string') {
+    next.text = copy.lead
+    applied = true
+  }
+
+  const points = copy.points ?? []
+  if (points.length > 0) {
+    if (Array.isArray(next.cols)) {
+      const cols = next.cols as { t?: string; d?: string }[]
+      next.cols = cols.map((col, index) => {
+        const point = points[index]
+        if (!point) return col
+        applied = true
+        return { ...col, t: point.h ?? col.t, d: point.d }
+      })
+    } else if (Array.isArray(next.items)) {
+      const items = next.items as unknown[]
+      const objectItems = items.every((item) => item !== null && typeof item === 'object' && !Array.isArray(item))
+      if (objectItems) {
+        next.items = items.map((item, index) => {
+          const point = points[index]
+          if (!point) return item
+          applied = true
+          const row = item as Record<string, unknown>
+          return { ...row, t: point.h ?? row.t, d: point.d }
+        })
+      } else {
+        next.items = items.map((item, index) => {
+          const point = points[index]
+          if (!point || !Array.isArray(item)) return item
+          applied = true
+          const row = [...item]
+          // 三元组是 [值, 标签, 说明]：值留着（数字不能编），只换标签与说明。
+          if (row.length >= 3) {
+            if (point.h) row[1] = point.h
+            row[2] = point.d
+          } else if (row.length === 2) {
+            if (point.h) row[0] = point.h
+            row[1] = point.d
+          }
+          return row
+        })
+      }
+    } else if (Array.isArray(next.lines)) {
+      next.lines = points.slice(0, 3).map((point) => point.d)
+      applied = true
+    }
+  }
+
+  if (!applied) return { slide, applied: false }
+  if (textOfSlide(next).length > CAPACITY[next.k]) return { slide, applied: false }
+  return { slide: next, applied: true }
+}
+
+export interface BuildOptions {
+  /** 模型写好的逐页文案；没给的页保持模板文案。 */
+  copy?: Map<number, PageCopy>
+  /** 哪些页的文案来自模型（引擎据此在事件里标 copySource）。 */
+  copySource?: 'llm' | 'rules'
+}
+
+export function buildDeck(fromPlan: DeckPlan, options: BuildOptions = {}): GeneratedDeck {
   const { brief, design: theme, outline: items } = fromPlan
-  const slides = items.map((item) => slideFor(item, brief, items.length))
+  const slides = items.map((item, index) => {
+    const base = slideFor(item, brief, items.length)
+    const copy = options.copy?.get(item.n) ?? options.copy?.get(index + 1)
+    if (!copy) return options.copySource === 'llm' ? { ...base, src: 'rules' as const } : base
+    const result = applyCopy(base, { ...copy, n: item.n })
+    return result.applied ? { ...result.slide, src: 'llm' as const } : { ...base, src: 'rules' as const }
+  })
   return {
     id: deckId(brief),
     name: brief.topic,
@@ -786,7 +885,7 @@ export function buildDeck(fromPlan: DeckPlan): GeneratedDeck {
 
 /* ── 5. 质量审核 ─────────────────────────────────────────── */
 
-const CAPACITY: Record<SlideKind, number> = {
+export const CAPACITY: Record<SlideKind, number> = {
   cover: 90,
   toc: 220,
   section: 60,
@@ -989,6 +1088,21 @@ export interface StreamOptions {
    *   - `full`（默认）：一口气跑完。
    */
   phase?: 'full' | 'plan' | 'build'
+  /**
+   * 用这份计划代替当场按规则算的：模型改过大纲时，界面确认的那份必须和这里一致，
+   * 否则「大纲说第 4 页是痛点，生成的却是别的内容」。
+   */
+  plan?: DeckPlan
+  /** 这份计划是谁写的，事件里带出去，界面标「模型 / 规则模板」。 */
+  planSource?: 'llm' | 'rules'
+  /** 模型写好的逐页文案（`core/deck-copy` 产出）；没有就全走模板。 */
+  copy?: Map<number, PageCopy>
+  copySource?: 'llm' | 'rules'
+  /**
+   * 主观审核（逻辑跳跃、主张空泛、缺证据）交给模型：规则算不了这些。
+   * 客观项仍然由 `audit()` 负责，两者合并成一次 `deck/qa`。
+   */
+  review?: (deck: GeneratedDeck) => Promise<DeckIssue[]>
 }
 
 /**
@@ -999,7 +1113,7 @@ export async function* stream(request: DeckRequest, options: StreamOptions = {})
   const paceMode = request.mode ?? 'plan'
   const pace = request.paceMs ?? (paceMode === 'express' ? 30 : 90)
   const phase = options.phase ?? 'full'
-  const fromPlan = plan(request)
+  const fromPlan = options.plan ?? plan(request)
   const { brief } = fromPlan
   const aborted = () => options.signal?.aborted === true
 
@@ -1011,7 +1125,7 @@ export async function* stream(request: DeckRequest, options: StreamOptions = {})
     text: `这是一份${brief.purposeLabel}材料，不是功能说明。受众是${brief.audience}，${brief.pages} 页，走${brief.style}的视觉。`,
   }
   await sleep(pace)
-  yield { type: 'deck/plan', plan: fromPlan }
+  yield { type: 'deck/plan', plan: fromPlan, upgraded: options.planSource === 'llm' ? true : undefined }
   yield { type: 'deck/stage', id: 'intake', status: 'done', detail: `${brief.purposeLabel} · ${brief.audience} · ${brief.pages} 页` }
 
   if (paceMode === 'research') {
@@ -1046,11 +1160,12 @@ export async function* stream(request: DeckRequest, options: StreamOptions = {})
   if (phase === 'plan') return
 
   yield { type: 'deck/stage', id: 'builder', status: 'start' }
-  let deck = buildDeck(fromPlan)
+  let deck = buildDeck(fromPlan, { copy: options.copy, copySource: options.copySource })
   for (let index = 0; index < deck.slides.length; index += 1) {
     if (aborted()) return
     const slide = deck.slides[index]!
-    yield { type: 'deck/slide', index, total: deck.slides.length, slide }
+    const copySource = (slide as { src?: 'llm' | 'rules' }).src
+    yield { type: 'deck/slide', index, total: deck.slides.length, slide, copySource }
     if (index === 2 || index === Math.floor(deck.slides.length / 2)) {
       const item = fromPlan.outline[index]!
       yield { type: 'deck/thinking', agent: 'builder', text: `第 ${index + 1} 页用「${item.layout}」：${item.why}` }
@@ -1060,8 +1175,24 @@ export async function* stream(request: DeckRequest, options: StreamOptions = {})
   yield { type: 'deck/stage', id: 'builder', status: 'done', detail: `${deck.slides.length} 页已生成` }
 
   yield { type: 'deck/stage', id: 'qa', status: 'start' }
-  const repaired = repair(deck, brief)
+  let repaired = repair(deck, brief)
   deck = repaired.deck
+  if (options.review) {
+    try {
+      const extra = await options.review(deck)
+      if (extra.length > 0) {
+        // 客观项在前、主观项在后：规则能修的已经修过，模型提的多半是内容判断。
+        repaired = { deck, issues: [...repaired.issues, ...extra] }
+        yield {
+          type: 'deck/thinking',
+          agent: 'qa',
+          text: `模型另外提了 ${extra.length} 条：${extra.map((issue) => `第 ${issue.page} 页${issue.message}`).join('；')}`,
+        }
+      }
+    } catch {
+      /* 审核是加分项，失败就当没提过 */
+    }
+  }
   if (repaired.issues.length > 0) {
     yield {
       type: 'deck/thinking',

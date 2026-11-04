@@ -12,6 +12,8 @@ import { join } from 'node:path'
 
 export function applyDefaultDataPaths(cwd = process.cwd()): void {
   process.env.DB_SESSION_DIR ??= join(cwd, '.designbuddy', 'sessions')
+  // 大纲确认后产出的成品（docx / svg / zip）落在这里，web 的 /output/ 路由读同一个目录。
+  process.env.DB_OUTPUT_DIR ??= join(cwd, '.designbuddy', 'output')
   process.env.DB_USAGE_FILE ??= join(cwd, '.designbuddy', 'usage.jsonl')
   process.env.DB_MODELS_FILE ??= join(cwd, '.designbuddy', 'models.json')
   process.env.DB_CONNECTORS_FILE ??= join(cwd, '.designbuddy', 'connectors.json')

@@ -30,6 +30,8 @@ src/
 │   ├── credentials.ts       #   凭据文件（0600，只给后端读）
 │   ├── approvals.ts         #   写操作审批中介（默认拒绝、超时兜底）
 │   ├── deck.ts              #   演示文稿引擎：需求分析→大纲→视觉→逐页→审核→局部改
+│   ├── outline.ts          #   大纲先行：文档/轮播图/图片的结构派生（纯函数）
+│   ├── artifact.ts         #   大纲 → 真文件：docx / 每屏 SVG / zip（落盘 + 下载地址）
 │   ├── tools.ts             #   工具注册表 + 守卫管线
 │   ├── router.ts            #   AI Model Router（失败回退）
 │   ├── session.ts           #   append-only 会话日志

@@ -13,6 +13,8 @@ export interface ProbeInput {
   apiKey?: string
   model?: string
   timeoutMs?: number
+  /** 浏览器直连时传中转的 fetch：探测和真实调用走同一条路，测通了就是真通了。 */
+  fetchImpl?: typeof fetch
 }
 
 export interface ProbeResult {
@@ -51,7 +53,8 @@ export async function probeModel(input: ProbeInput): Promise<ProbeResult> {
   const controller = new AbortController()
   const timer = setTimeout(() => controller.abort(), input.timeoutMs ?? 8000)
   try {
-    const response = await fetch(endpoint, {
+    const doFetch = input.fetchImpl ?? fetch
+    const response = await doFetch(endpoint, {
       method: 'POST',
       headers: {
         'content-type': 'application/json',

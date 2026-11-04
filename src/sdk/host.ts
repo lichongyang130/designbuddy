@@ -28,8 +28,13 @@ import type { DeckEngine } from '../plugins/deck-engine.ts'
 import type { DeckRecord } from '../plugins/deck-engine.ts'
 import { estimateTokens } from '../core/usage.ts'
 import { errorMessage } from '../core/tools.ts'
+import { outlineWithLlm } from '../core/outline-llm.ts'
+import { JsonClient, hasLiveAdapter } from '../core/llm-json.ts'
+import type { ModelRuntime } from '../plugins/model-runtime.ts'
+import { createArtifact } from '../core/artifact.ts'
 import type { ToolRegistry } from '../core/tools.ts'
 import type { ClientFrame, HostFrame, Transport } from './protocol.ts'
+import type { BrowserRelay, RelayReplyInput } from '../core/llm-relay.ts'
 
 /**
  * App-layer actions the host is allowed to invoke.
@@ -54,6 +59,12 @@ export class HostServer {
   #transport: Transport
   #commands: HostCommands
   #detach: Disposer
+  /** 每份稿子的 deck-event 订阅：生成结束或被叫停时都要撤，别留下只听不用的监昕器。 */
+  #deckOffs = new Map<string, () => void>()
+  /** 模型返回的大纲按「类型 + 需求 + 段数」缓存，同一句需求连点两次不重复花钱。 */
+  #outlineCache = new Map<string, string>()
+  /** 这条连接作为浏览器中转的登记凭证：关连接时必须撤掉，否则请求会发给死人。 */
+  #relayOff: Disposer | null = null
 
   constructor(ctx: Context, transport: Transport, commands: HostCommands = {}) {
     this.#ctx = ctx
@@ -62,10 +73,49 @@ export class HostServer {
     this.#detach = transport.onFrame((frame: ClientFrame | HostFrame) => {
       if (isClientFrame(frame)) void this.#dispatch(frame)
     })
+    const relay = this.#relay()
+    if (relay) this.#relayOff = relay.attach({ send: (frame) => transport.send(frame) })
   }
 
   dispose(): void {
+    this.#relayOff?.()
+    this.#relayOff = null
     this.#detach()
+  }
+
+  #relay(): BrowserRelay | null {
+    return this.#ctx.has('llmRelay') ? this.#ctx.require<BrowserRelay>('llmRelay') : null
+  }
+
+  /** 设置页保存/删除之后把适配器对齐一次；没装 runtime 插件时安静跳过。 */
+  #syncModels(): ReturnType<ModelRuntime['sync']> | null {
+    if (!this.#ctx.has('modelRuntime')) return null
+    const runtime = this.#ctx.require<ModelRuntime>('modelRuntime')
+    return runtime.sync()
+  }
+
+  #modelRuntime(): ModelRuntime | null {
+    return this.#ctx.has('modelRuntime') ? this.#ctx.require<ModelRuntime>('modelRuntime') : null
+  }
+
+  /** 模型调用记账：谁、多少 token、多久、成没成。设置里的用量就是这些数字。 */
+  #account(kind: string, model: string, input: number | undefined, output: number | undefined, ms: number, status: string): void {
+    if (!this.#ctx.has('usage')) return
+    this.#ctx.require<UsageService>('usage').record({
+      at: Date.now(),
+      sessionId: kind,
+      presetId: kind,
+      model,
+      inputTokens: input ?? 0,
+      outputTokens: output ?? 0,
+      ms,
+      status,
+    })
+  }
+
+  #jsonClient(): JsonClient {
+    const router = this.#ctx.require<ModelRouter>('llm')
+    return new JsonClient({ router })
   }
 
   async #dispatch(frame: ClientFrame): Promise<void> {
@@ -149,10 +199,16 @@ export class HostServer {
       }
       case 'router.status': {
         const router = this.#ctx.require<ModelRouter>('llm')
+        const runtime = this.#modelRuntime()
         return {
           adapters: router.adapters().map((adapter) => ({ id: adapter.id, models: adapter.models })),
           policies: router.candidateKinds(),
           attempts: router.attempts,
+          /** 链上有没有真模型：界面用这个显示「已接入 / 规则模板」，不靠模型名猜。 */
+          live: hasLiveAdapter(router, 'planning'),
+          models: runtime ? runtime.status() : null,
+          /** 浏览器中转：在线与否决定「浏览器直连」的条目能不能用。 */
+          relay: this.#relay()?.stats() ?? null,
         }
       }
       case 'connectors.list': {
@@ -192,21 +248,50 @@ export class HostServer {
       }
       case 'models.save': {
         const catalog = this.#ctx.require<ModelCatalog>('models')
-        return catalog.save((params.model ?? params) as CustomModelInput)
+        const saved = catalog.save((params.model ?? params) as CustomModelInput)
+        // 保存即生效：立刻把新条目挂到路由上，不用重启。
+        const status = this.#syncModels()
+        const mounted = status ? status.mounted.some((item) => item.id === saved.id) : false
+        return {
+          ...saved,
+          mounted,
+          reason: status?.skipped.find((item) => item.id === saved.id)?.reason,
+        }
       }
       case 'models.test': {
         const catalog = this.#ctx.require<ModelCatalog>('models')
         const id = typeof params.id === 'string' ? params.id : ''
         const stored = id === '' ? undefined : catalog.key(id)
+        const browser = params.transport === 'browser'
+        const relay = this.#relay()
+        if (browser && !relay) {
+          return { ok: false, ms: 0, endpoint: String(params.baseUrl ?? ''), message: '浏览器中转没装上，改用服务端直连试试' }
+        }
         return probeModel({
           baseUrl: String(params.baseUrl ?? ''),
-          apiKey: typeof params.apiKey === 'string' && params.apiKey !== '' ? params.apiKey : stored,
+          // 浏览器直连：Key 由浏览器补，这里不能把自己那份当成真的发出去。
+          apiKey: browser ? undefined : (typeof params.apiKey === 'string' && params.apiKey !== '' ? params.apiKey : stored),
           model: typeof params.model === 'string' ? params.model : undefined,
+          fetchImpl: browser && relay ? (input, init) => relay.fetch(String(input), init) : undefined,
         })
+      }
+      case 'llm.reply': {
+        const relay = this.#relay()
+        if (!relay) return { ok: false, reason: '浏览器中转没装上' }
+        const accepted = relay.reply({
+          id: String(params.id ?? ''),
+          status: Number(params.status ?? 0),
+          body: typeof params.body === 'string' ? params.body : '',
+          headers: (params.headers ?? {}) as Record<string, string>,
+          error: typeof params.error === 'string' && params.error !== '' ? params.error : undefined,
+        })
+        return { ok: accepted }
       }
       case 'models.remove': {
         const catalog = this.#ctx.require<ModelCatalog>('models')
-        return { removed: catalog.remove(String(params.id ?? '')) }
+        const removed = catalog.remove(String(params.id ?? ''))
+        this.#syncModels()
+        return { removed }
       }
       case 'library.cases': {
         const library = this.#ctx.require<Library>('library')
@@ -272,30 +357,92 @@ export class HostServer {
           style: typeof params.style === 'string' ? params.style : undefined,
         })
         // 订阅只活这一份稿子：跑完就撤掉，不给长连接留订阅泄漏。
+        // 记在 #deckOffs 里，deck.build 沿用同一条订阅——否则事件会被两份订阅各回一次，
+        // 界面上同一页、同一个步骤会重复出现。
         let off: (() => void) | undefined
         off = decks.onEvent((record: DeckRecord, event) => {
           if (record.id !== started.id) return
           reply({ type: 'deck-event', deckId: record.id, event })
-          if (event.type === 'deck/done') off?.()
+          if (event.type === 'deck/done') {
+            off?.()
+            this.#deckOffs.delete(record.id)
+          }
         })
+        this.#deckOffs.set(started.id, off!)
         return { id: started.id, plan: started.plan }
       }
       case 'deck.build': {
         const decks = this.#ctx.require<DeckEngine>('decks')
         const id = String(params.id ?? '')
-        // 确认计划之后继续跑；订阅方式和 deck.start 一样，一跑完就撤。
-        let off: (() => void) | undefined
-        off = decks.onEvent((record: DeckRecord, event) => {
-          if (record.id !== id) return
-          reply({ type: 'deck-event', deckId: record.id, event })
-          if (event.type === 'deck/done') off?.()
-        })
+        // 确认计划之后继续跑：deck.start 那条订阅还活着就沿用它，
+        // 只有换了一个客户端来确认时才补订一条（同一份稿子绝不订两次）。
+        if (!this.#deckOffs.has(id)) {
+          let off: (() => void) | undefined
+          off = decks.onEvent((record: DeckRecord, event) => {
+            if (record.id !== id) return
+            reply({ type: 'deck-event', deckId: record.id, event })
+            if (event.type === 'deck/done') {
+              off?.()
+              this.#deckOffs.delete(id)
+            }
+          })
+          this.#deckOffs.set(id, off!)
+        }
         return decks.build(id)
+      }
+      case 'deck.cancel': {
+        // 逐页生成可以被叫停：引擎里本来就有 cancel()（关面板时会 abort），
+        // 这里把它接到 RPC 上，界面上的「停止」才是真的停止，而不是假装。
+        const decks = this.#ctx.require<DeckEngine>('decks')
+        const id = String(params.id ?? '')
+        const cancelled = decks.cancel(id)
+        // 被叫停不会有 deck/done，订阅得在这里撤，否则监听器会一直挂在引擎上。
+        this.#deckOffs.get(id)?.()
+        this.#deckOffs.delete(id)
+        return { id, cancelled }
       }
       case 'deck.revise': {
         const decks = this.#ctx.require<DeckEngine>('decks')
         const result = decks.revise(String(params.id ?? ''), String(params.instruction ?? ''))
         return { id: result.id, indexes: result.indexes, summary: result.summary, deck: result.deck }
+      }
+      case 'plan.outline': {
+        // 大纲先行：文档 / 轮播图 / 图片没有自己的生成引擎，但同样要先定结构。
+        // 有模型时由模型把骨架具体化，失败自动回落规则模板，并把「用的是谁」带回去。
+        const request = {
+          prompt: String(params.prompt ?? ''),
+          kind: String(params.kind ?? '文档'),
+          count: Number(params.count ?? 0) || undefined,
+          style: typeof params.style === 'string' ? params.style : undefined,
+        }
+        this.#syncModels()
+        const answer = await outlineWithLlm(request, {
+          client: this.#jsonClient(),
+          cache: this.#outlineCache,
+          cacheKey: `${request.kind}|${request.count ?? ''}|${request.prompt}`,
+        })
+        if (answer.model) {
+          this.#account('outline', answer.model, answer.inputTokens, answer.outputTokens, answer.ms, answer.source === 'llm' ? 'ok' : 'fallback')
+        }
+        if (this.#outlineCache.size > 40) {
+          const oldest = this.#outlineCache.keys().next().value
+          if (oldest !== undefined) this.#outlineCache.delete(oldest)
+        }
+        return {
+          ...answer.outline,
+          source: answer.source,
+          model: answer.model,
+          ms: answer.ms,
+          reason: answer.reason,
+        }
+      }
+      case 'create.artifact': {
+        // 大纲确认之后的真产出：docx / svg / zip 落盘，返回可下载的相对地址。
+        return createArtifact({
+          prompt: String(params.prompt ?? ''),
+          kind: String(params.kind ?? '文档'),
+          count: Number(params.count ?? 0) || undefined,
+        })
       }
       case 'deck.get': {
         const decks = this.#ctx.require<DeckEngine>('decks')
