@@ -26,6 +26,7 @@ import * as coreAgent from '../plugins/core-agent.ts'
 import * as coreAgentLoop from '../plugins/core-agent-loop.ts'
 import * as mockLlm from '../plugins/mock-llm.ts'
 import * as openaiLlm from '../plugins/openai-llm.ts'
+import * as modelRuntime from '../plugins/model-runtime.ts'
 import * as designMemory from '../plugins/design-memory.ts'
 import * as designExperts from '../plugins/design-experts.ts'
 import * as connectorFigma from '../plugins/connector-figma.ts'
@@ -55,14 +56,22 @@ export const coreBundle: Bundle = {
 }
 
 /**
- * Model adapters. 配了 `DB_LLM_API_KEY` 就接真实模型（OpenAI 兼容协议，DeepSeek
- * 默认），没配就退回 `mock-llm`——下游一行都不用改，这正是适配器层存在的意义。
+ * Model adapters.
+ *
+ * 三行都要挂，顺序就是优先级：
+ *   1. `mock-llm` **永远在**——它是链尾兜底，不是「没配 Key 时的替代品」。
+ *      以前是二选一，结果 Key 一写错整个演示就炸；
+ *   2. `openai-llm` 读环境变量三件套（`DB_LLM_API_KEY` / `_BASE_URL` / `_MODEL`），
+ *      没配 Key 时它自己 `return`，不占位置；
+ *   3. `model-runtime` 把「设置 → 模型」里存的条目实时挂上来，保存即生效、删掉即撤销。
  */
 export const modelBundle: Bundle = {
   name: 'models',
-  rows: process.env.DB_LLM_API_KEY
-    ? [{ id: 'models.openai', plugin: 'openai-llm' }]
-    : [{ id: 'models.mock', plugin: 'mock-llm' }],
+  rows: [
+    { id: 'models.mock', plugin: 'mock-llm' },
+    { id: 'models.openai', plugin: 'openai-llm' },
+    { id: 'models.runtime', plugin: 'model-runtime' },
+  ],
 }
 
 /** The DesignBuddy product layer. */
@@ -112,6 +121,7 @@ export const defaultModules: PluginModules = {
   'core-agent-loop': coreAgentLoop,
   'mock-llm': mockLlm,
   'openai-llm': openaiLlm,
+  'model-runtime': modelRuntime,
   'design-memory': designMemory,
   'design-experts': designExperts,
   'connector-figma': connectorFigma,

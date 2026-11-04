@@ -13,7 +13,8 @@
     "web": "node apps/web/server.ts",
     "web:preview": "HOST=0.0.0.0 PORT=5178 node apps/web/server.ts",
     "test": "node --test \"test/*.test.ts\"",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "llm:mock": "node tools/llm-gateway.ts"
   },
   "license": "MIT",
   "devDependencies": {

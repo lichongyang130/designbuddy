@@ -6,6 +6,66 @@
 
 ---
 
+## 0. 实施状态（2026-11-04）
+
+**P0 / P1 / P2 已经落地**（P3 未做），测试 206/206，离线可验：
+
+| 原计划 | 状态 | 落点 |
+| --- | --- | --- |
+| P0 运行时热接入 + 链尾兜底 | ✅ | `src/core/model-runtime.ts`（纯函数 `planMounts` / `chainFor`）、`src/plugins/model-runtime.ts`、`boot/profiles.ts`（mock 常驻） |
+| P1 大纲用模型 + 契约 + 回落 | ✅ | `src/core/llm-json.ts`、`src/core/outline-llm.ts`、`sdk/host.ts` 的 `plan.outline`、`outline.ts` 的 `withSections` |
+| P2 逐页文案用模型 | ✅ | `src/core/deck-copy.ts`、`deck.ts` 的 `applyCopy` / `copySource`、`plugins/deck-engine.ts` |
+| P3 主观审核 / 成本面板 / 状态点 | ⬜ | 未做（见 §3 P3） |
+
+### 现在怎么接（两条路，任选）
+
+**A. 在界面里接（推荐，保存即生效）**
+
+1. 设置 → 模型 → 添加模型；
+2. 供应商选一个（DeepSeek / OpenAI / Kimi / 通义 / 本地…），或「自定义」后手填接口地址；
+3. 填 API Key、模型名 → 保存；
+4. 面板顶部会写「**正在用 xxx 生成，保存即生效**」，行尾标 **已接入**；
+   没配好的一行会标 **未接入** 并把原因（没填地址 / 没有 Key）挂在悬停提示上。
+
+**B. 用环境变量（部署 / CI 更合适）**
+
+```bash
+DB_LLM_API_KEY=sk-… DB_LLM_BASE_URL=https://api.deepseek.com/v1 DB_LLM_MODEL=deepseek-chat npm run web:preview
+```
+
+### 没有外网时怎么验
+
+```bash
+npm run llm:mock      # 本地「联调网关」：一个假 OpenAI 端点，只回显请求里的骨架
+```
+
+然后在设置里添加：供应商「本地」、地址 `http://127.0.0.1:5179/v1`、Key 留空、模型名随便填。
+它会真的走 HTTP + SSE（和真模型同一条代码路径），只是对面是规则引擎代答——
+所以看到的是「链路通了」，**不是「模型写得真好」**。用完把这条删掉即可。
+
+### 和原计划的差异（有意为之）
+
+1. **`JsonClient` 不给 mock 兜底**：`LlmRequest.only` 把 `mock-*` 挡在结构化请求之外。
+   理由：mock 只会写散文，回不了 JSON；让它兜底会把「Key 错了 / 断网」淹成一句「模型没有返回 JSON」，
+   用户无从排查。对话类请求仍然保留 mock 兜底。
+2. **文案有总预算**（默认 12s，`copyFor({budgetMs})`）：超了就用手上已有的部分，其余页走模板。
+   宁可先看到页面出来，也不要对着空墙等。
+3. **降级可见**：大纲面板左上角「模型：deepseek-chat · 1.2s」/「规则模板 · 原因：…」；
+   生成时先报一句「正在让模型写逐页文案」，结束后报「逐页文案由 xxx 写好了 8 页」
+   或「逐页文案走规则模板（原因）」。
+
+### 还没做的
+
+- 演示文稿的**大纲阶段**（`deck.start` 的 narrative / outline）仍由 `core/deck` 的规则引擎算，
+  模型只接管逐页文案；要把大纲也交给模型，改 `deck-engine.ts` 的 `start()` 即可，接口已备好。
+- P3 的三件事：主观审核交给模型、按模型/用途的用量面板、顶栏 LLM 状态点。
+- 说明：本沙箱出口只放行 github / npm / pypi，`api.deepseek.com`、`api.hcnsec.cn` 之类**连不上**，
+  所以真实调用的验证要在你自己的机器上做；我这边验证的是「代码路径 + 假 fetch + 本地网关」。
+
+---
+
+---
+
 ## 1. 现状：哪些是真的，哪些只是看着像
 
 ### 1.1 已经能用（今天就能跑）

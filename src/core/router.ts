@@ -100,7 +100,9 @@ export class ModelRouter {
    * default, which is what lets a "design" and a "copy" route share one adapter.
    */
   async *stream(request: LlmRequest): AsyncIterable<LlmChunk> {
-    const chain = this.candidatesFor(request.kind)
+    const chain = request.only
+      ? request.only.filter((id) => this.#adapters.has(id))
+      : this.candidatesFor(request.kind)
     if (chain.length === 0) {
       throw new Error(`no llm adapter registered for route "${request.kind}"`)
     }

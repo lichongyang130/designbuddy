@@ -27,6 +27,10 @@ import type {
   GeneratedDeck,
   RevisionResult,
 } from '../core/deck.ts'
+import type { CopyAnswer } from '../core/deck-copy.ts'
+import { copyFor } from '../core/deck-copy.ts'
+import { JsonClient } from '../core/llm-json.ts'
+import { ModelRouter } from '../core/router.ts'
 
 export const name = 'decks'
 
@@ -38,6 +42,10 @@ export interface DeckRecord {
   events: DeckEvent[]
  /** `planned`：计划已经出来，等用户点「开始生成」。 */
   status: 'planned' | 'running' | 'done' | 'error' | 'cancelled'
+  /** 逐页文案是谁写的：模型 / 规则模板（界面标出来，不假装）。 */
+  copySource?: 'llm' | 'rules'
+  copyModel?: string
+  copyReason?: string
   error?: string
   startedAt: number
   finishedAt?: number
@@ -47,6 +55,10 @@ export interface DeckEngineOptions {
   historySize?: number
   /** 节流：每页之间的间隔，测试里传 0。 */
   paceMs?: number
+  /** 逐页文案的来源（接上模型时由 `core/deck-copy` 提供）；不传就全走模板。 */
+  copy?: (plan: DeckPlan) => Promise<CopyAnswer>
+  /** 一次生成的文案溯源，界面用来说明「这页是谁写的」。 */
+  onCopy?: (id: string, answer: CopyAnswer) => void
 }
 
 type Listener = (record: DeckRecord, event: DeckEvent) => void
@@ -57,11 +69,15 @@ export class DeckEngine {
   #controllers = new Map<string, AbortController>()
   #historySize: number
   #paceMs?: number
+  #copy?: (plan: DeckPlan) => Promise<CopyAnswer>
+  #onCopy?: (id: string, answer: CopyAnswer) => void
   #seq = 0
 
   constructor(options: DeckEngineOptions = {}) {
     this.#historySize = options.historySize ?? 12
     this.#paceMs = options.paceMs
+    this.#copy = options.copy
+    this.#onCopy = options.onCopy
   }
 
   onEvent(listener: Listener): Disposer {
@@ -175,8 +191,39 @@ export class DeckEngine {
         }
       }
     }
+    let copy: CopyAnswer | null = null
+    if (phase !== 'plan' && this.#copy) {
+      // 先报一句再等：文案要几秒，界面不能在这几秒里一动不动。
+      emit({ type: 'deck/thinking', agent: 'copy', text: '正在让模型写逐页文案，写完一页贴一页；没写到的先用模板顶住。' })
+      try {
+        copy = await this.#copy(record.plan)
+      } catch (error) {
+        copy = {
+          pages: new Map(),
+          source: 'rules',
+          calls: 0,
+          ms: 0,
+          reason: error instanceof Error ? error.message : String(error),
+        }
+      }
+      record.copySource = copy.source
+      record.copyModel = copy.model
+      record.copyReason = copy.reason
+      this.#onCopy?.(record.id, copy)
+      // 文案这一步要说出来：不然用户只看到「生成中」，不知道有的是模型写的、有的不是。
+      const note =
+        copy.source === 'llm'
+          ? `逐页文案由 ${copy.model ?? '模型'} 写好了 ${copy.pages.size} 页${copy.reason ? `（有 ${copy.reason} 的一批走了模板）` : ''}。`
+          : `逐页文案走规则模板${copy.reason ? `（${copy.reason}）` : ''}。`
+      emit({ type: 'deck/thinking', agent: 'copy', text: note })
+    }
     try {
-      for await (const event of stream(request, { signal: controller.signal, phase })) emit(event)
+      for await (const event of stream(request, {
+        signal: controller.signal,
+        phase,
+        copy: copy?.pages,
+        copySource: copy?.source,
+      })) emit(event)
       if (record.status === 'running') {
         // 中途被 abort 时 stream 直接 return，补一条明确的状态而不是假装成功。
         record.status = controller.signal.aborted ? 'cancelled' : phase === 'plan' ? 'planned' : 'done'
@@ -203,7 +250,18 @@ export class DeckEngine {
 }
 
 export function apply(ctx: Context): Disposer {
-  const engine = new DeckEngine()
+  // 有模型就让它写文案，没有（或调用失败）就自动回落模板——copyFor 内部保证不抛。
+  const router = ctx.has('llm') ? ctx.require<ModelRouter>('llm') : null
+  const client = router ? new JsonClient({ router, timeoutMs: 25_000 }) : null
+  const engine = new DeckEngine({
+    copy: client ? (plan) => copyFor(client, plan) : undefined,
+    onCopy: (id, answer) =>
+      ctx.logger.info(
+        `deck ${id}: 文案 ${answer.source}${answer.model ? ` / ${answer.model}` : ''}` +
+          (answer.reason ? ` (${answer.reason})` : '') +
+          ` · ${answer.calls} 次调用 · ${answer.ms}ms`,
+      ),
+  })
   ctx.provide('decks', engine)
   ctx.logger.info('decks: 演示文稿引擎已就绪（需求分析 → 策划 → 视觉 → 逐页 → 审核）')
   return () => engine.dispose()

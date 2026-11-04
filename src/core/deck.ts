@@ -168,7 +168,7 @@ export type DeckEvent =
   | { type: 'deck/plan'; plan: DeckPlan }
   | { type: 'deck/thinking'; agent: string; text: string }
   | { type: 'deck/stage'; id: string; status: 'start' | 'done'; detail?: string }
-  | { type: 'deck/slide'; index: number; total: number; slide: DeckSlide }
+  | { type: 'deck/slide'; index: number; total: number; slide: DeckSlide; copySource?: 'llm' | 'rules' }
   | { type: 'deck/qa'; issues: DeckIssue[]; score: number; pass: number }
   | { type: 'deck/done'; deck: GeneratedDeck }
   | { type: 'deck/patch'; instruction: string; indexes: number[]; summary: string }
@@ -742,9 +742,102 @@ export function deckId(brief: DeckBrief): string {
   return 'gen-' + (h >>> 0).toString(36)
 }
 
-export function buildDeck(fromPlan: DeckPlan): GeneratedDeck {
+/** 模型写的这一页文案：字段都可选，缺的就保留模板。 */
+export interface PageCopy {
+  n: number
+  title?: string
+  /** 一句话主张：金句页 / 案例页用得上。 */
+  lead?: string
+  /** 正文要点：`h` 是小标题，`d` 是正文。 */
+  points?: { h?: string; d: string }[]
+}
+
+/**
+ * 把文案贴到骨架上。**只在字段本来就存在时写**，不给 slide 添新键——
+ * 渲染器按版式读字段，多出来的键不会画，但会让人误以为生效了。
+ * 贴完做一次容量校验：撑爆版式就整页退回模板（`applied: false`），宁可字少一点。
+ */
+export function applyCopy(slide: DeckSlide, copy: PageCopy): { slide: DeckSlide; applied: boolean } {
+  const next: DeckSlide = { ...slide }
+  let applied = false
+
+  if (copy.title && copy.title.length >= 2) {
+    if (typeof next.title === 'string' || next.k === 'section' || next.k === 'cover' || next.k === 'quote') {
+      next.title = copy.title
+      applied = true
+    }
+  }
+
+  if (copy.lead && typeof next.text === 'string') {
+    next.text = copy.lead
+    applied = true
+  }
+
+  const points = copy.points ?? []
+  if (points.length > 0) {
+    if (Array.isArray(next.cols)) {
+      const cols = next.cols as { t?: string; d?: string }[]
+      next.cols = cols.map((col, index) => {
+        const point = points[index]
+        if (!point) return col
+        applied = true
+        return { ...col, t: point.h ?? col.t, d: point.d }
+      })
+    } else if (Array.isArray(next.items)) {
+      const items = next.items as unknown[]
+      const objectItems = items.every((item) => item !== null && typeof item === 'object' && !Array.isArray(item))
+      if (objectItems) {
+        next.items = items.map((item, index) => {
+          const point = points[index]
+          if (!point) return item
+          applied = true
+          const row = item as Record<string, unknown>
+          return { ...row, t: point.h ?? row.t, d: point.d }
+        })
+      } else {
+        next.items = items.map((item, index) => {
+          const point = points[index]
+          if (!point || !Array.isArray(item)) return item
+          applied = true
+          const row = [...item]
+          // 三元组是 [值, 标签, 说明]：值留着（数字不能编），只换标签与说明。
+          if (row.length >= 3) {
+            if (point.h) row[1] = point.h
+            row[2] = point.d
+          } else if (row.length === 2) {
+            if (point.h) row[0] = point.h
+            row[1] = point.d
+          }
+          return row
+        })
+      }
+    } else if (Array.isArray(next.lines)) {
+      next.lines = points.slice(0, 3).map((point) => point.d)
+      applied = true
+    }
+  }
+
+  if (!applied) return { slide, applied: false }
+  if (textOfSlide(next).length > CAPACITY[next.k]) return { slide, applied: false }
+  return { slide: next, applied: true }
+}
+
+export interface BuildOptions {
+  /** 模型写好的逐页文案；没给的页保持模板文案。 */
+  copy?: Map<number, PageCopy>
+  /** 哪些页的文案来自模型（引擎据此在事件里标 copySource）。 */
+  copySource?: 'llm' | 'rules'
+}
+
+export function buildDeck(fromPlan: DeckPlan, options: BuildOptions = {}): GeneratedDeck {
   const { brief, design: theme, outline: items } = fromPlan
-  const slides = items.map((item) => slideFor(item, brief, items.length))
+  const slides = items.map((item, index) => {
+    const base = slideFor(item, brief, items.length)
+    const copy = options.copy?.get(item.n) ?? options.copy?.get(index + 1)
+    if (!copy) return options.copySource === 'llm' ? { ...base, src: 'rules' as const } : base
+    const result = applyCopy(base, { ...copy, n: item.n })
+    return result.applied ? { ...result.slide, src: 'llm' as const } : { ...base, src: 'rules' as const }
+  })
   return {
     id: deckId(brief),
     name: brief.topic,
@@ -780,7 +873,7 @@ export function buildDeck(fromPlan: DeckPlan): GeneratedDeck {
 
 /* ── 5. 质量审核 ─────────────────────────────────────────── */
 
-const CAPACITY: Record<SlideKind, number> = {
+export const CAPACITY: Record<SlideKind, number> = {
   cover: 90,
   toc: 220,
   section: 60,
@@ -983,6 +1076,9 @@ export interface StreamOptions {
    *   - `full`（默认）：一口气跑完。
    */
   phase?: 'full' | 'plan' | 'build'
+  /** 模型写好的逐页文案（`core/deck-copy` 产出）；没有就全走模板。 */
+  copy?: Map<number, PageCopy>
+  copySource?: 'llm' | 'rules'
 }
 
 /**
@@ -1040,11 +1136,12 @@ export async function* stream(request: DeckRequest, options: StreamOptions = {})
   if (phase === 'plan') return
 
   yield { type: 'deck/stage', id: 'builder', status: 'start' }
-  let deck = buildDeck(fromPlan)
+  let deck = buildDeck(fromPlan, { copy: options.copy, copySource: options.copySource })
   for (let index = 0; index < deck.slides.length; index += 1) {
     if (aborted()) return
     const slide = deck.slides[index]!
-    yield { type: 'deck/slide', index, total: deck.slides.length, slide }
+    const copySource = (slide as { src?: 'llm' | 'rules' }).src
+    yield { type: 'deck/slide', index, total: deck.slides.length, slide, copySource }
     if (index === 2 || index === Math.floor(deck.slides.length / 2)) {
       const item = fromPlan.outline[index]!
       yield { type: 'deck/thinking', agent: 'builder', text: `第 ${index + 1} 页用「${item.layout}」：${item.why}` }

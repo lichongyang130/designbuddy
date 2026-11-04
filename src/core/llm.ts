@@ -49,6 +49,12 @@ export type RouteKind = 'planning' | 'design' | 'copy' | 'review' | string
 export interface LlmRequest {
   kind: RouteKind
   model?: string
+  /**
+   * 只用这些适配器（按此顺序），绕过 kind 的策略链。
+   * 要结构化输出的调用（`core/llm-json`）用它把 `mock-*` 挡在外面：
+   * mock 只会写散文，回不了 JSON，让它「兜底」只会把真实错误藏起来。
+   */
+  only?: readonly string[]
   messages: Message[]
   tools: ToolSchema[]
   temperature?: number

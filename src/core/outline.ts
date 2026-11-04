@@ -423,6 +423,49 @@ const EXTRA_SECTIONS: Record<OutlineKind, ExtraPool> = {
   ],
 }
 
+
+/**
+ * 用一份新的段列表重算整份大纲（数量、brief、清单、旁白、步骤一起变）。
+ *
+ * 单独拿出来的原因：大纲有两条来源——规则模板和模型。模型的输出只有 `sections`
+ * 和标题，其余字段必须由这一处统一算，否则「模型的 8 段」和「旁白里说的 10 章」
+ * 会对不上，界面就自相矛盾了。
+ */
+export function withSections(base: Outline, sections: OutlineSection[], title?: string): Outline {
+  const unit = base.unit
+  const topic = (title ?? base.title).slice(0, 28)
+  const list = sections.slice(0, 12).map((section, index) => ({
+    n: index + 1,
+    title: section.title,
+    points: section.points.map((point) => ({ ...point })),
+  }))
+  const count = list.length
+  const narration = [
+    `我把「${topic}」按${base.kindLabel}来做：${count} ${unit}，受众是${base.audience}。`,
+    `结构按「${base.shape}」排，每一${unit}解决一个问题，${unit}与${unit}之间是递进。`,
+    `大纲写好了，共 ${count} ${unit}。想改哪一${unit}直接在这里说；没问题就点右边「生成」。`,
+  ]
+  const steps: OutlineStep[] = [
+    { id: 'read', label: '读懂需求', detail: `${base.kindLabel} · ${base.audience}` },
+    { id: 'shape', label: '定结构', detail: base.shape },
+    { id: 'count', label: '排数量与节奏', detail: `${count} ${unit}` },
+  ]
+  const items = list.map((section) => {
+    const points = section.points.map((point) => point.text).join('；')
+    return `${section.n}. ${section.title} —— ${points}`
+  })
+  return {
+    ...base,
+    title: topic,
+    count,
+    sections: list,
+    brief: `${base.kindLabel} · ${count} ${unit} · 受众：${base.audience} · 结构：${base.shape}`,
+    narration,
+    steps,
+    items,
+  }
+}
+
 /* ── 主函数 ─────────────────────────────────────────── */
 
 export function outlineFor(request: OutlineRequest): Outline {
@@ -470,36 +513,22 @@ export function outlineFor(request: OutlineRequest): Outline {
         ? '钩子 → 痛点 → 方法 → 证据 → 行动'
         : '主视觉 → 材质 → 场景 → 变体'
 
-  const steps: OutlineStep[] = [
-    { id: 'read', label: '读懂需求', detail: `${spec.label} · ${audience}` },
-    { id: 'shape', label: '定结构', detail: `${shape}` },
-    { id: 'count', label: '排数量与节奏', detail: `${sections.length} ${spec.unit}` },
-  ]
-
-  const narration = [
-    `我把「${topic}」按${spec.label}来做：${sections.length} ${spec.unit}，受众是${audience}。`,
-    `结构按「${shape}」排，每一${spec.unit}解决一个问题，${spec.unit}与${spec.unit}之间是递进。`,
-    `大纲写好了，共 ${sections.length} ${spec.unit}。想改哪一${spec.unit}直接在这里说；没问题就点右边「生成」。`,
-  ]
-
-  const items = sections.map((section) => {
-    const points = section.points.map((point) => point.text).join('；')
-    return `${section.n}. ${section.title} —— ${points}`
-  })
-
-  return {
-    kind,
-    kindLabel: spec.label,
-    title: topic,
-    unit: spec.unit,
-    count: sections.length,
-    brief: `${spec.label} · ${sections.length} ${spec.unit} · 受众：${audience} · 结构：${shape}`,
-    audience,
-    shape,
+  return withSections(
+    {
+      kind,
+      kindLabel: spec.label,
+      title: topic,
+      unit: spec.unit,
+      count: sections.length,
+      brief: '',
+      audience,
+      shape,
+      sections,
+      narration: [],
+      steps: [],
+      items: [],
+      spec: request.style ? `${spec.label} · ${request.style}` : spec.label,
+    },
     sections,
-    narration,
-    steps,
-    items,
-    spec: request.style ? `${spec.label} · ${request.style}` : spec.label,
-  }
+  )
 }

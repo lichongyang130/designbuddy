@@ -5364,6 +5364,11 @@
   .md-dia svg{width:15px;height:15px}
   .md-nm{font-size:calc(14px*var(--fs,1));color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:0 1 auto;min-width:0}
   .md-tag{font-size:calc(12px*var(--fs,1));color:var(--fg-subtle);margin-left:2px;flex:none}
+  .md-live{display:flex;align-items:center;gap:8px;margin:0 2px 12px;padding:9px 12px;border-radius:10px;font-size:calc(12.5px*var(--fs,1));line-height:1.5;border:1px solid var(--line);color:var(--fg-subtle);background:var(--surface-2)}
+  .md-live::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--fg-subtle);flex:none;opacity:.7}
+  .md-live.on{color:var(--fg);border-color:color-mix(in srgb,var(--accent) 38%,var(--line))}
+  .md-live.on::before{background:var(--accent);opacity:1;box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 18%,transparent)}
+  .md-tag.on{color:var(--accent)}
   .md-tools{margin-left:auto;display:flex;align-items:center;gap:6px;flex:none}
 
   /* 行内三个操作：编辑 / 测试 / 删除，带字，不再是三个猜不出含义的灰图标 */
@@ -5707,6 +5712,11 @@
   .ps-paper li{font-size:calc(12.5px*var(--fs,1));line-height:1.7;color:var(--fg-muted)}
   .ps-paper .sign{margin:22px 0 0;padding-top:12px;border-top:1px solid var(--line);font-size:calc(11.5px*var(--fs,1));color:var(--fg-subtle)}
   .ps-empty{width:min(760px,100%);padding:40px 18px;text-align:center;color:var(--fg-subtle);font-size:calc(12.5px*var(--fs,1));line-height:1.8}
+  /* 大纲是谁写的：模型 / 规则模板。降级要看得见，不能让人以为这是模型写的。 */
+  .ps-src{width:min(760px,100%);display:flex;align-items:center;gap:7px;margin:0 4px 10px;font-size:calc(11.5px*var(--fs,1));color:var(--fg-subtle);line-height:1.5}
+  .ps-src i{width:6px;height:6px;border-radius:50%;background:var(--fg-subtle);flex:none;opacity:.7}
+  .ps-src.on{color:var(--fg)}
+  .ps-src.on i{background:var(--accent);opacity:1}
   .ps-foot{position:absolute;left:0;right:0;bottom:0;display:grid;place-items:center;padding:16px 18px 20px;
     background:linear-gradient(to top,var(--surface-3) 55%,transparent);pointer-events:none}
   .ps-build{pointer-events:auto;display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 30px;border:0;border-radius:99px;
@@ -8729,6 +8739,27 @@ function psCloseDeckPlan() {
 }
 
 /* 其余三种：三段式清单 + 三句话 + 大纲文档，全部来自 plan.outline。 */
+/**
+ * 这份大纲是谁写的：模型，还是规则模板（以及为什么回落）。
+ * 降级一定要写出来——不然用户会以为「模型写的也就这样」，其实是根本没连上。
+ */
+function psSourceNote(outline) {
+  const old = $('psDoc').querySelector('.ps-src')
+  if (old) old.remove()
+  const live = outline && outline.source === 'llm'
+  const note = document.createElement('div')
+  note.className = 'ps-src' + (live ? ' on' : '')
+  note.setAttribute('role', 'status')
+  const dot = document.createElement('i')
+  note.append(dot)
+  const text = document.createElement('span')
+  if (live) text.textContent = tf('模型：%s · %s', outline.model || '—', (Math.round((outline.ms || 0) / 100) / 10) + 's')
+  else if (outline && outline.reason) text.textContent = tf('规则模板 · 原因：%s', outline.reason)
+  else text.textContent = '规则模板'
+  note.append(text)
+  $('psDoc').prepend(note)
+}
+
 async function psApplyOutline(outline, seq) {
   if (seq !== PLAN.seq) return
   PLAN.outline = outline
@@ -8748,6 +8779,7 @@ async function psApplyOutline(outline, seq) {
   }
   psTool('已核对输出规格：' + outline.spec, outline.brief + '\n\n' + outline.items.slice(0, 3).join('\n'))
   psPaintDoc(outline.title + ' · ' + outline.count + ' ' + outline.unit + '大纲', outline.shape, outline.sections)
+  psSourceNote(outline)
   if (outline.narration[1]) psMsg('assistant', outline.narration[1])
   if (outline.narration[2]) psMsg('assistant', outline.narration[2])
   psCard()
@@ -13265,6 +13297,11 @@ async function buildModelsPanel(host) {
     rpc('router.status').catch(() => ({ adapters: [], policies: [], attempts: [] })),
   ])
   const served = new Set((adapters.adapters || []).flatMap((adapter) => adapter.models || []))
+  /* 运行时状态才是「接没接上」的判据：adapter 是按 id 挂的，不是按模型名猜的 */
+  const llmRuntime = adapters.models || null
+  const mountedIds = new Set(((llmRuntime && llmRuntime.mounted) || []).map((item) => item.id))
+  const skippedReason = new Map(((llmRuntime && llmRuntime.skipped) || []).map((item) => [item.id, item.reason]))
+  const liveModel = (llmRuntime && llmRuntime.mounted && llmRuntime.mounted[0]) || null
 
   /* 整块先拼在离屏容器里，拼完再一次性换上去。
    * 之前这里直接往面板上 append、刷新前先 innerHTML=''，删一行就会白屏到两个 RPC 都回来为止。 */
@@ -13286,6 +13323,19 @@ async function buildModelsPanel(host) {
   addBtn.type = 'button'
   head.append(info, addBtn)
   box.append(head)
+
+  /* 一行说清「现在生成是谁在写」：接了模型就写模型名，没接就写规则模板 */
+  const live = mdNode('div', 'md-live' + (adapters.live ? ' on' : ''))
+  live.setAttribute('role', 'status')
+  if (adapters.live && liveModel) {
+    live.textContent = tf('正在用 %s 生成，保存即生效', liveModel.model)
+    live.title = liveModel.baseUrl || ''
+  } else if (llmRuntime && llmRuntime.skipped && llmRuntime.skipped.length > 0) {
+    live.textContent = tf('还没有可用的模型，生成走规则模板：%s', llmRuntime.skipped[0].reason)
+  } else {
+    live.textContent = '当前生成走规则模板（还没有接入模型）'
+  }
+  box.append(live)
 
   if (catalog.error) {
     const warn = mdNode('div', 'sp-soon', 'models.json 读取失败：' + catalog.error)
@@ -13322,8 +13372,12 @@ async function buildModelsPanel(host) {
     const dia = mdNode('div', 'md-dia')
     dia.innerHTML = MD_DIAMOND
     const nm = mdNode('span', 'md-nm', item.name)
-    nm.title = item.model + ' · ' + (item.provider || '自建') + (served.has(item.model) ? ' · 当前有适配器提供' : '')
-    row.append(dia, nm, mdNode('span', 'md-tag', '自定义'))
+    const mounted = mountedIds.has(item.id)
+    const why = skippedReason.get(item.id)
+    nm.title = item.model + ' · ' + (item.provider || '自建') + (mounted ? ' · 已在路由上' : why ? ' · ' + why : '')
+    const tag = mdNode('span', 'md-tag' + (mounted ? ' on' : ''), mounted ? '已接入' : '未接入')
+    if (why) tag.title = why
+    row.append(dia, nm, tag)
 
     const tools = mdNode('div', 'md-tools')
 

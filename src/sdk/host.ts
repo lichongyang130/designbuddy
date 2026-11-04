@@ -28,7 +28,9 @@ import type { DeckEngine } from '../plugins/deck-engine.ts'
 import type { DeckRecord } from '../plugins/deck-engine.ts'
 import { estimateTokens } from '../core/usage.ts'
 import { errorMessage } from '../core/tools.ts'
-import { outlineFor } from '../core/outline.ts'
+import { outlineWithLlm } from '../core/outline-llm.ts'
+import { JsonClient, hasLiveAdapter } from '../core/llm-json.ts'
+import type { ModelRuntime } from '../plugins/model-runtime.ts'
 import { createArtifact } from '../core/artifact.ts'
 import type { ToolRegistry } from '../core/tools.ts'
 import type { ClientFrame, HostFrame, Transport } from './protocol.ts'
@@ -58,6 +60,8 @@ export class HostServer {
   #detach: Disposer
   /** 每份稿子的 deck-event 订阅：生成结束或被叫停时都要撤，别留下只听不用的监昕器。 */
   #deckOffs = new Map<string, () => void>()
+  /** 模型返回的大纲按「类型 + 需求 + 段数」缓存，同一句需求连点两次不重复花钱。 */
+  #outlineCache = new Map<string, string>()
 
   constructor(ctx: Context, transport: Transport, commands: HostCommands = {}) {
     this.#ctx = ctx
@@ -70,6 +74,22 @@ export class HostServer {
 
   dispose(): void {
     this.#detach()
+  }
+
+  /** 设置页保存/删除之后把适配器对齐一次；没装 runtime 插件时安静跳过。 */
+  #syncModels(): ReturnType<ModelRuntime['sync']> | null {
+    if (!this.#ctx.has('modelRuntime')) return null
+    const runtime = this.#ctx.require<ModelRuntime>('modelRuntime')
+    return runtime.sync()
+  }
+
+  #modelRuntime(): ModelRuntime | null {
+    return this.#ctx.has('modelRuntime') ? this.#ctx.require<ModelRuntime>('modelRuntime') : null
+  }
+
+  #jsonClient(): JsonClient {
+    const router = this.#ctx.require<ModelRouter>('llm')
+    return new JsonClient({ router })
   }
 
   async #dispatch(frame: ClientFrame): Promise<void> {
@@ -153,10 +173,14 @@ export class HostServer {
       }
       case 'router.status': {
         const router = this.#ctx.require<ModelRouter>('llm')
+        const runtime = this.#modelRuntime()
         return {
           adapters: router.adapters().map((adapter) => ({ id: adapter.id, models: adapter.models })),
           policies: router.candidateKinds(),
           attempts: router.attempts,
+          /** 链上有没有真模型：界面用这个显示「已接入 / 规则模板」，不靠模型名猜。 */
+          live: hasLiveAdapter(router, 'planning'),
+          models: runtime ? runtime.status() : null,
         }
       }
       case 'connectors.list': {
@@ -196,7 +220,15 @@ export class HostServer {
       }
       case 'models.save': {
         const catalog = this.#ctx.require<ModelCatalog>('models')
-        return catalog.save((params.model ?? params) as CustomModelInput)
+        const saved = catalog.save((params.model ?? params) as CustomModelInput)
+        // 保存即生效：立刻把新条目挂到路由上，不用重启。
+        const status = this.#syncModels()
+        const mounted = status ? status.mounted.some((item) => item.id === saved.id) : false
+        return {
+          ...saved,
+          mounted,
+          reason: status?.skipped.find((item) => item.id === saved.id)?.reason,
+        }
       }
       case 'models.test': {
         const catalog = this.#ctx.require<ModelCatalog>('models')
@@ -210,7 +242,9 @@ export class HostServer {
       }
       case 'models.remove': {
         const catalog = this.#ctx.require<ModelCatalog>('models')
-        return { removed: catalog.remove(String(params.id ?? '')) }
+        const removed = catalog.remove(String(params.id ?? ''))
+        this.#syncModels()
+        return { removed }
       }
       case 'library.cases': {
         const library = this.#ctx.require<Library>('library')
@@ -327,13 +361,30 @@ export class HostServer {
       }
       case 'plan.outline': {
         // 大纲先行：文档 / 轮播图 / 图片没有自己的生成引擎，但同样要先定结构。
-        // 纯函数，不进插件、不占状态——同一句需求算出来的大纲永远一样。
-        return outlineFor({
+        // 有模型时由模型把骨架具体化，失败自动回落规则模板，并把「用的是谁」带回去。
+        const request = {
           prompt: String(params.prompt ?? ''),
           kind: String(params.kind ?? '文档'),
           count: Number(params.count ?? 0) || undefined,
           style: typeof params.style === 'string' ? params.style : undefined,
+        }
+        this.#syncModels()
+        const answer = await outlineWithLlm(request, {
+          client: this.#jsonClient(),
+          cache: this.#outlineCache,
+          cacheKey: `${request.kind}|${request.count ?? ''}|${request.prompt}`,
         })
+        if (this.#outlineCache.size > 40) {
+          const oldest = this.#outlineCache.keys().next().value
+          if (oldest !== undefined) this.#outlineCache.delete(oldest)
+        }
+        return {
+          ...answer.outline,
+          source: answer.source,
+          model: answer.model,
+          ms: answer.ms,
+          reason: answer.reason,
+        }
       }
       case 'create.artifact': {
         // 大纲确认之后的真产出：docx / svg / zip 落盘，返回可下载的相对地址。
