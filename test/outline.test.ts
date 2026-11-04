@@ -28,11 +28,23 @@ test('outline: 页数写得进去、夹得住，段落编号从 1 连续', () =>
   assert.equal(many.sections.length, many.count)
 })
 
-test('outline: 数量多于模板时往方法段里加，不会出现第二个封面', () => {
+test('outline: 数量多于模板时补「还没讲到」的段落，不会出现第二个封面', () => {
   const outline = outlineFor({ prompt: '做一份 7 屏的轮播图', kind: '轮播图' })
   const covers = outline.sections.filter((section) => section.title.startsWith('封面'))
   assert.equal(covers.length, 1)
-  assert.ok(outline.sections.some((section) => section.title.includes('（二）')), '应该有一段是二')
+  const titles = outline.sections.map((section) => section.title)
+  assert.equal(new Set(titles).size, titles.length, '每一屏标题都不一样，实际 ' + titles.join(' / '))
+  assert.equal(outline.sections[0]!.title.startsWith('封面'), true, '第一屏还是封面')
+  assert.ok(titles.some((title) => title.startsWith('对比')), '缺了「还没讲到」的段落')
+})
+
+test('outline: 模板加补充段落都不够用时，才退回（二）轮次', () => {
+  const outline = outlineFor({ prompt: '做一份 12 屏的轮播图', kind: '轮播图' })
+  assert.equal(outline.count, 12)
+  assert.equal(outline.sections.length, 12)
+  const titles = outline.sections.map((section) => section.title)
+  assert.ok(titles.some((title) => title.includes('（二）')), '12 屏超过模板+补充段落，应该有轮次，实际 ' + titles.join(' / '))
+  assert.equal(outline.sections.filter((section) => section.title.startsWith('封面')).length, 1)
 })
 
 test('outline: 主题和受众是从需求里读出来的，不是写死的', () => {
@@ -40,6 +52,19 @@ test('outline: 主题和受众是从需求里读出来的，不是写死的', ()
   assert.equal(outline.audience, '新员工')
   assert.ok(outline.title.includes('产品使用手册'), '主题里应该留下被写的对象，实际 ' + outline.title)
   assert.ok(!outline.title.startsWith('帮我'), '壳子词要剥掉，实际 ' + outline.title)
+})
+
+test('outline: 标题与受众跟演示文稿共用同一份解析，命令词不进标题', () => {
+  const doc = outlineFor({ prompt: '给产品团队做一份季度复盘，10章', kind: '文档' })
+  assert.equal(doc.title, '季度复盘', '以前整句「给产品团队做一份季度复盘」都会进标题')
+  assert.equal(doc.audience, '产品团队')
+
+  const image = outlineFor({ prompt: '为新员工写一份产品使用手册', kind: '图片' })
+  assert.equal(image.title, '产品使用手册')
+  assert.equal(image.audience, '新员工', '「为 X」也是受众的说法，以前这里退回默认值')
+
+  const carousel = outlineFor({ prompt: '做一份 6 屏的轮播图，讲通勤咖啡', kind: '轮播图' })
+  assert.equal(carousel.title, '通勤咖啡', '第一句只剩类型词时，看下一句')
 })
 
 test('outline: 生成的提示词注入行覆盖每一段，带标题与要点', () => {

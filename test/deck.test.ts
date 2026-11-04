@@ -7,6 +7,7 @@ import {
   buildDeck,
   deckId,
   outline,
+  pagesOf,
   plan,
   repair,
   revise,
@@ -47,6 +48,37 @@ test('需求分析：页数被夹在 8–30，没写就用 15', () => {
   assert.equal(analyze({ prompt: '季度汇报' }).pages, 15)
   assert.equal(analyze({ prompt: '季度汇报', pages: 3 }).pages, 8)
   assert.equal(analyze({ prompt: '季度汇报', pages: 99 }).pages, 30)
+})
+
+test('需求分析：句子里写的页数优先用，照样夹在 8–30', () => {
+  assert.equal(pagesOf('给产品团队做一份季度复盘，10页'), 10, '「10页」以前被当成壳子剥掉，一律出 15 页')
+  assert.equal(pagesOf('做一份 8 页的融资路演材料'), 8)
+  assert.equal(pagesOf('20 页的季度方案'), 20)
+  assert.equal(pagesOf('3 页的短稿'), 8, '低于 8 页抬到 8')
+  assert.equal(pagesOf('40 页的年度报告'), 30, '高于 30 页压到 30')
+  assert.equal(pagesOf('季度汇报'), 15, '没写页数还是 15')
+  assert.equal(pagesOf('10 页', 22), 22, '调用方明确给了页数就以调用方为准')
+})
+
+test('需求分析：主题只留名词短语，命令词和格式词都不进主题', () => {
+  const cases: [string, string][] = [
+    ['给产品团队做一份季度复盘，10页', '季度复盘'],
+    ['帮我做一份发布会 PPT', '发布会'],
+    ['为新员工写一份产品使用手册', '产品使用手册'],
+    ['做一份 8 页的融资路演材料，面向投资人', '融资路演'],
+  ]
+  for (const [prompt, topic] of cases) assert.equal(analyze({ prompt }).topic, topic, prompt)
+  assert.equal(analyze({ prompt: '给产品团队做一份季度复盘，10页' }).audience, '产品团队')
+  assert.equal(analyze({ prompt: '为新员工写一份产品使用手册' }).audience, '新员工')
+  assert.equal(analyze({ prompt: '帮我做一份发布会 PPT' }).audience, '客户与投资人', '没有受众时退回默认值，不能把「帮我」当受众')
+})
+
+test('生成：句子里写 10 页就出 10 页', async () => {
+  const events = await collect({ prompt: '给产品团队做一份季度复盘，10页', mode: 'express' })
+  const done = events.find((event) => event.type === 'deck/done')
+  assert.ok(done && done.type === 'deck/done', '没有 deck/done')
+  assert.equal(done.deck.slides.length, 10)
+  assert.equal(done.deck.name, '季度复盘', '封面标题是主题本身，不是整句需求')
 })
 
 test('大纲：页数对得上，开场固定第一页、行动号召固定最后一页', () => {

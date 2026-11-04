@@ -1,3 +1,7 @@
+import { PURPOSE_SHELL, STYLE_SHELL, audienceOf, squeeze, subjectOf } from './subject.ts'
+
+export { audienceOf, subjectOf } from './subject.ts'
+
 /**
  * 演示文稿引擎的内核：需求分析 → 叙事规划 → 大纲 → 逐页文案与版式 → 质量审核。
  *
@@ -171,21 +175,6 @@ export type DeckEvent =
 
 /* ── 1. 需求分析 ─────────────────────────────────────────── */
 
-/**
- * 从需求里剥属性：页数、受众、风格、用途、壳子词。
- * 中文没有空格，靠停用词切分得不到干净的「主题」，只能按「这些不是主题」来删。
- */
-const ATTRIBUTE_PATTERNS: RegExp[] = [
-  /\d+\s*(?:页|pages?|slides?)/gi,
-  /(?:面向|受众是|讲给|给)[^，。；,.;\n]*/g,
-  /(?:科技未来感|科技感|未来感|赛博|深色|暗色|极简|商务感|商务|正式|稳重|活力|高端|克制|年轻)/g,
-  /(?:商业发布会|发布会|产品发布|路演|融资|汇报|培训|分享会|宣讲|内部分享|提案)/g,
-  /(?:PPT|ppt|幻灯片|演示文稿|演示|材料|文档|报告|deck|slides?|presentation)/gi,
-  /(?:帮我|请|制作|做|生成|写|一份|一个|关于|的|要求|需要|风格|页数|用|以)/g,
-]
-
-const STOP_WORDS = ['的', '了', '和', '与', '及', '是', '在', '为', '把']
-
 const STYLE_KEYS: { key: DeckBrief['styleKey']; re: RegExp; label: string }[] = [
   { key: 'dark-tech', re: /科技|未来|赛博|深色|暗色|AI|智能|数字化/, label: '科技未来' },
   { key: 'vivid', re: /活力|营销|发布|热烈|橙|红|年轻/, label: '活力发布' },
@@ -267,25 +256,30 @@ export function seeded(seed: string, salt: number, min: number, max: number): nu
   return Math.round(min + unit * (max - min))
 }
 
+/**
+ * 页数：先看调用方给的，再看句子里写的「10 页 / 10页 / 10 slides」。
+ * 早先这里只读 request.pages，「10 页的复盘」照样出 15 页 —— 用户最直接的感受就是「生成不对」。
+ */
+export function pagesOf(prompt: string, wanted?: number): number {
+  const spoken = prompt.match(/(\d+)\s*(?:页|pages?|slides?|P\b)/i)?.[1]
+  const value = Number(wanted ?? (spoken === undefined ? NaN : Number(spoken)))
+  const pages = Number.isFinite(value) && value > 0 ? Math.round(value) : 15
+  return Math.min(30, Math.max(8, pages))
+}
+
 export function analyze(request: DeckRequest): DeckBrief {
   const prompt = request.prompt.trim()
-  const pages = Math.min(30, Math.max(8, Math.round(request.pages ?? 15)))
+  const pages = pagesOf(prompt, request.pages)
 
-  // 主题：先剥属性和壳子词，剩下的名词短语才是主题。
-  let stripped = prompt
-  for (const pattern of ATTRIBUTE_PATTERNS) stripped = stripped.replace(pattern, ' ')
-  stripped = stripped.replace(/[，。；、,.;:：""''（）()·\[\]【】]/g, ' ')
-  const words: string[] = []
-  for (const part of stripped.split(/\s+/)) {
-    const word = part.trim()
-    if (word === '' || /^\d+$/.test(word)) continue
-    if (STOP_WORDS.includes(word)) continue
-    if (words.includes(word)) continue
-    words.push(word)
-  }
-  let topic = words.join(' ').trim()
+  // 主题：剥命令/量词/格式后缀。用途词只在还剩别的内容时才剥，免得「发布会」变空。
+  const shelled = subjectOf(prompt)
+  const narrowed = squeeze(shelled.replace(PURPOSE_SHELL, ' ').replace(STYLE_SHELL, ' '))
+    .replace(/\s+/g, ' ')
+    .replace(/^[的了\s]+/, '')
+    .replace(/[的了]$/, '')
+    .trim()
+  let topic = narrowed.length >= 4 ? narrowed : shelled
   if (topic === '') {
-    // 全被剥掉了（例如「帮我做一份发布会 PPT」）：退回原句里最长的名词片段。
     topic = prompt.replace(/[，。；、,.;:]/g, ' ').split(/\s+/).filter((part) => part.length >= 2)[0] ?? '未命名主题'
   }
   topic = topic.slice(0, 40)
@@ -293,7 +287,7 @@ export function analyze(request: DeckRequest): DeckBrief {
   const styleRule = STYLE_KEYS.find((item) => item.re.test(prompt))
   const purposeRule = PURPOSE_RULES.find((item) => item.re.test(prompt))
 
-  const spoken = prompt.match(/(?:面向|受众是|讲给|给)([^，。；,.;\n]{2,24})/)?.[1]?.trim()
+  const spoken = audienceOf(prompt)
   const audience =
     request.audience?.trim() ||
     spoken ||

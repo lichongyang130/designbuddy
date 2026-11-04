@@ -15,6 +15,8 @@
  * @module designbuddy/core/outline
  */
 
+import { audienceOf, subjectOf } from './subject.ts'
+
 export type OutlineKind = 'doc' | 'carousel' | 'image'
 
 export interface OutlinePoint {
@@ -269,14 +271,166 @@ function imageSections(topic: string, audience: string): OutlineSection[] {
   ]
 }
 
+/* ── 模板之外还该讲什么 ────────────────────────────────
+ * 用户要的段数常常比模板多。以前是逮着「做法与取舍」复制成（二）（三）（四）…，
+ * 十段文档里有五六段同名，看上去就像生成坏了。这里按类型各备一组「还没讲到」的段落，
+ * 先补这些；真不够了才退回（二）轮次。
+ */
+type ExtraPool = (topic: string, audience: string, tag: OutlinePoint['tag']) => OutlineSection[]
+
+const EXTRA_SECTIONS: Record<OutlineKind, ExtraPool> = {
+  doc: (topic, audience, tag) => [
+    {
+      n: 0,
+      title: '背景与范围',
+      points: [
+        { text: `这件事从哪来：一句话交代「${topic}」的由来` },
+        { text: `这份文档覆盖到哪里为止，边界外的内容指向哪份材料（受众：${audience}）` },
+      ],
+    },
+    {
+      n: 0,
+      title: '关键术语',
+      points: [
+        { text: '三到五个内部黑话，各写一句人话解释' },
+        { text: '同一个词在不同团队里指不同东西时，指名道姓写清楚' },
+      ],
+    },
+    {
+      n: 0,
+      title: '谁负责什么',
+      points: [
+        { text: '角色 - 职责 - 交付物，一张三列表就够' },
+        { text: '交接点在哪儿，交接时对方需要收到什么', tag },
+      ],
+    },
+    {
+      n: 0,
+      title: '时间表与里程碑',
+      points: [
+        { text: '按周排，每个里程碑写清「完成」的判定标准' },
+        { text: '哪个节点一旦晚了，后面的排期要跟着改' },
+      ],
+    },
+    {
+      n: 0,
+      title: '风险与应对',
+      points: [
+        { text: '最可能出问题的两件事，各写触发条件和应对动作' },
+        { text: '需要提前找谁拍板', tag },
+      ],
+    },
+    {
+      n: 0,
+      title: '常见问题',
+      points: [
+        { text: '把读者会追问的五个问题先答了，省一轮来回' },
+        { text: '答案里不要出现「视情况而定」' },
+      ],
+    },
+    {
+      n: 0,
+      title: '附录：资料与来源',
+      points: [
+        { text: '数据出处、访谈对象、参考资料，逐条列出' },
+        { text: '外部引用注明日期，方便下次复核' },
+      ],
+    },
+  ],
+  carousel: (topic, audience, tag) => [
+    {
+      n: 0,
+      title: '对比：之前 / 之后',
+      points: [
+        { text: '左右分屏，同一件事的两张照片式画面' },
+        { text: '对比要一眼看懂，不靠文字解释' },
+      ],
+    },
+    {
+      n: 0,
+      title: '细节放大',
+      points: [
+        { text: '把最重要的一个局部放大，一屏只讲一件事' },
+        { text: `受众（${audience}）在这一屏应该「哦」一下` },
+      ],
+    },
+    {
+      n: 0,
+      title: '用户原话',
+      points: [
+        { text: '一句真实用户说的话，原样引用，不改写' },
+        { text: '引号 + 头像/场景，不加评论' },
+      ],
+    },
+    {
+      n: 0,
+      title: '数据页：一个数字说话',
+      points: [
+        { text: '屏幕上只留一个数字，单位和口径写小字' },
+        { text: '数字要有出处，别用「提升显著」这种空话', tag },
+      ],
+    },
+    {
+      n: 0,
+      title: '常见疑问一屏',
+      points: [
+        { text: '挑最容易被问住的一个问题，正面回答' },
+        { text: '答不了的就写「还在验证」，别硬编' },
+      ],
+    },
+    {
+      n: 0,
+      title: '幕后：怎么做的',
+      points: [
+        { text: `「${topic}」背后的一两个具体动作，让人相信不是拼出来的` },
+        { text: '细节比结论更可信' },
+      ],
+    },
+  ],
+  image: (topic, audience) => [
+    {
+      n: 0,
+      title: '特写细节',
+      points: [
+        { text: `「${topic}」最能说明问题的一处细节，占满画面` },
+        { text: '质感靠光，不靠滤镜' },
+      ],
+    },
+    {
+      n: 0,
+      title: '场景中的人',
+      points: [
+        { text: `让受众（${audience}）看到自己：真实场景、真实手部动作` },
+        { text: '人物不必露脸，避免出戏' },
+      ],
+    },
+    {
+      n: 0,
+      title: '配色板 / 材质板',
+      points: [
+        { text: '主色一块、辅色两块，直接给色值' },
+        { text: '材质写清是纸、布、金属还是玻璃' },
+      ],
+    },
+    {
+      n: 0,
+      title: '变体：方图',
+      points: [
+        { text: '同主视觉切 1:1，留足安全区' },
+        { text: '方图适合投放，别直接裁横版' },
+      ],
+    },
+  ],
+}
+
 /* ── 主函数 ─────────────────────────────────────────── */
 
 export function outlineFor(request: OutlineRequest): Outline {
   const kind = kindOf(request.kind)
   const spec = KINDS[kind]
   const prompt = String(request.prompt ?? '').trim() || spec.label
-  const topic = cleanTopic(prompt)
-  const audience = readAudience(prompt, kind)
+  const topic = (subjectOf(prompt) || cleanTopic(prompt)).slice(0, 28)
+  const audience = audienceOf(prompt) || readAudience(prompt, kind)
   const count = readCount(prompt, kind, request.count)
   const tag = readTag(prompt)
 
@@ -287,27 +441,27 @@ export function outlineFor(request: OutlineRequest): Outline {
         ? carouselSections(topic, audience, tag)
         : imageSections(topic, audience)
 
-  // 数量与模板对不上时：多了就往「方法 / 做法」那一段里加，少了就从后面截——
-  // 不从第 1 段开始复制粘贴，否则第 6 屏会变成第 2 个封面。
-  const expandAt = Math.min(2, base.length - 1)
-  const extra = Math.max(0, count - base.length)
-  const sequence: { source: OutlineSection; round: number }[] = []
-  for (let i = 0; i < base.length; i += 1) {
-    sequence.push({ source: base[i]!, round: 0 })
-    if (i === expandAt) {
-      for (let k = 1; k <= extra; k += 1) sequence.push({ source: base[i]!, round: k })
-    }
-  }
-  const picked = sequence.slice(0, Math.max(2, count))
+  // 多了先补「还没讲到」的段落（EXTRA_SECTIONS），补完还差才用（二）轮次；少了从后面截。
+  // 不从第 1 段开始复制，也不逮着第 3 段复制六遍。
+  const need = Math.max(0, count - base.length)
+  const list: OutlineSection[] = base.slice()
+  const at = Math.max(1, list.length - 2)
+  const used = EXTRA_SECTIONS[kind](topic, audience, tag).slice(0, need)
+  list.splice(at, 0, ...used)
   const ROUNDS = ['二', '三', '四', '五', '六']
-  const sections: OutlineSection[] = picked.map((item, index) => {
-    const suffix = item.round === 0 ? '' : `（${ROUNDS[item.round - 1] ?? item.round + 1}）`
-    const points = item.source.points.map((point) => ({ ...point }))
-    if (item.round > 0) {
-      points.push({ text: `换一个角度展开，别和第 ${expandAt + 1} ${spec.unit}重复`, tag: '待确认' })
-    }
-    return { n: index + 1, title: item.source.title + suffix, points }
-  })
+  let round = 1
+  while (list.length < Math.max(2, count) && round <= ROUNDS.length) {
+    const source = base[Math.min(at, base.length - 1)]!
+    const points = source.points.map((point) => ({ ...point }))
+    points.push({ text: `换一个角度展开，别和第 ${at + 1} ${spec.unit}重复`, tag: '待确认' })
+    list.splice(at + used.length, 0, { n: 0, title: source.title + `（${ROUNDS[round - 1]}）`, points })
+    round += 1
+  }
+  const sections: OutlineSection[] = list.slice(0, Math.max(2, count)).map((section, index) => ({
+    n: index + 1,
+    title: section.title,
+    points: section.points,
+  }))
 
   const shape =
     kind === 'doc'
