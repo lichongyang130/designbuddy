@@ -28,6 +28,8 @@ export interface OutlineAnswer {
   /** 降级时为什么降级，界面照实显示。 */
   reason?: string
   calls?: number
+  inputTokens?: number
+  outputTokens?: number
 }
 
 const TAGS = new Set(['建议', '待补数据', '需确认'])
@@ -145,6 +147,8 @@ export async function outlineWithLlm(request: OutlineRequest, options: OutlineLl
       model: result.model,
       ms: Date.now() - started,
       calls: result.calls,
+      inputTokens: result.inputTokens,
+      outputTokens: result.outputTokens,
     }
   } catch (error) {
     const reason = error instanceof JsonCallError ? error.reason : errorMessage(error)

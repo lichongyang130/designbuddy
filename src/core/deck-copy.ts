@@ -27,6 +27,8 @@ export interface CopyAnswer {
   model?: string
   calls: number
   ms: number
+  inputTokens?: number
+  outputTokens?: number
   reason?: string
 }
 
@@ -124,6 +126,8 @@ export async function copyFor(
   const budget = options.budgetMs ?? 12_000
   let calls = 0
   let model: string | undefined
+  let inputTokens = 0
+  let outputTokens = 0
   const reasons: string[] = []
 
   for (let index = 0; index < items.length; index += batchSize) {
@@ -145,6 +149,8 @@ export async function copyFor(
       })
       calls += result.calls
       model = result.model
+      inputTokens += result.inputTokens
+      outputTokens += result.outputTokens
       for (const page of result.value) pages.set(page.n, page)
     } catch (error) {
       reasons.push(error instanceof JsonCallError ? error.reason : errorMessage(error))
@@ -154,5 +160,5 @@ export async function copyFor(
   if (pages.size === 0) {
     return { pages, source: 'rules', calls, ms: Date.now() - started, reason: reasons[0] ?? '模型没有返回可用文案' }
   }
-  return { pages, source: 'llm', model, calls, ms: Date.now() - started, reason: reasons[0] }
+  return { pages, source: 'llm', model, calls, ms: Date.now() - started, inputTokens, outputTokens, reason: reasons[0] }
 }

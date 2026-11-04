@@ -165,10 +165,13 @@
     border-radius:999px;padding:2px 8px;line-height:1.5;
   }
   .acct-note{font-size:calc(11.5px*var(--fs,1));line-height:1.5;color:var(--fg-muted)}
-  .acct-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;padding:8px 9px;border-radius:10px;background:var(--surface-2)}
+  .acct-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding:8px 9px;border-radius:10px;background:var(--surface-2)}
+  @media (max-width:420px){.acct-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
   .acct-grid > div{min-width:0}
   .acct-grid span{display:block;font-size:calc(10.5px*var(--fs,1));color:var(--fg-subtle)}
   .acct-grid b{display:block;margin-top:2px;font-size:calc(11.5px*var(--fs,1));font-weight:600;color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .acct-grid b.on{color:var(--accent)}
+  .acct-grid b.on::before{content:'';display:inline-block;width:5px;height:5px;margin-right:4px;border-radius:50%;background:var(--accent);vertical-align:1px}
   .acct-list{display:flex;flex-direction:column;gap:1px;padding-top:2px}
   .acct-list button{
     display:flex;align-items:center;gap:9px;height:32px;padding:0 8px;border-radius:8px;
@@ -7132,6 +7135,7 @@
     <div><span>语言</span><b id="acctLang">简体中文</b></div>
     <div><span>字号</span><b id="acctFont">16px</b></div>
     <div><span>今日额度</span><b id="acctQuota">—</b></div>
+    <div><span>模型</span><b id="acctModel">—</b></div>
   </div>
   <div class="acct-list">
     <button data-panel="profile">
@@ -8706,12 +8710,14 @@ function psDeckEvent(frame) {
   }
   if (ev.type === 'deck/plan') {
     PLAN.plan = ev.plan
-    psApplyDeckPlan(ev.plan)
+    // upgraded：模型把每页「讲什么」改过一遍。此时界面可能已经画过规则版，
+    // 允许覆盖一次——页数不变，只是标题与理由更具体。
+    psApplyDeckPlan(ev.plan, ev.upgraded === true)
   }
 }
 
-function psApplyDeckPlan(plan) {
-  if (PLAN.applied) return
+function psApplyDeckPlan(plan, upgrade) {
+  if (PLAN.applied && !upgrade) return
   PLAN.applied = true
   if (PLAN.pending) { PLAN.pending.remove(); PLAN.pending = null }
   const brief = plan.brief || {}
@@ -8721,6 +8727,11 @@ function psApplyDeckPlan(plan) {
   $('psTitle').textContent = PLAN.title
   $('psChipText').textContent = tf('演示文稿 · %s 页大纲', PLAN.count)
   psPaintDoc(PLAN.title + ' · ' + PLAN.count + ' 页大纲', plan.narrative || '', psDeckSections(plan))
+  psSourceNote(plan)
+  if (upgrade) {
+    // 覆盖时不重复说话：只重画大纲，卡片与清单都保持原来那份
+    return
+  }
   psTool('已按需求定了 ' + PLAN.count + ' 页的版式与配色',
     '主题：' + (brief.topic || '') + '\n用途：' + (brief.purposeLabel || '') +
     '\n受众：' + (brief.audience || '') + '\n风格：' + (brief.style || '') +
@@ -12612,6 +12623,31 @@ async function refreshUsage() {
   }
   paintAcct()
 }
+/** 「现在是谁在写」：绿点=真模型，灰点=规则模板。点开会员中心就能确认，不用去设置里翻。 */
+let llmStatus = null
+async function refreshLlm() {
+  try {
+    llmStatus = await rpc('router.status', {})
+  } catch {
+    llmStatus = null
+  }
+  paintAcct()
+}
+function paintLlm() {
+  const node = $('acctModel')
+  if (!node) return
+  const live = llmStatus && llmStatus.live
+  const model = ((llmStatus && llmStatus.models && llmStatus.models.mounted) || [])[0]
+  node.classList.toggle('on', !!live)
+  if (live && model) {
+    node.textContent = tf('已接入 · %s', model.model)
+    node.title = '接口：' + (model.baseUrl || '—') + '\n保存即生效，改了模型不用重启。'
+  } else {
+    node.textContent = '规则模板'
+    const skipped = ((llmStatus && llmStatus.models && llmStatus.models.skipped) || [])[0]
+    node.title = skipped ? '没有可用的模型：' + skipped.reason : '还没有接入模型，生成走规则模板。'
+  }
+}
 function paintAcct() {
   const quota = usageCache && usageCache.quota
   $('acctQuota').textContent = quota
@@ -12620,6 +12656,7 @@ function paintAcct() {
   $('acctQuota').title = quota ? '今日剩余 / 每日额度（tokens）' : '后端未连接，显示本机运行次数'
   $('acctLang').textContent = acctLangLabel()
   $('acctFont').textContent = state.prefs.fontSize + 'px'
+  paintLlm()
 }
 function openAcct() {
   const pop = $('acctPop')
@@ -12627,6 +12664,7 @@ function openAcct() {
   paintAcct()
   refreshUsage()
   pop.hidden = false
+  void refreshLlm()
   const rail = document.querySelector('.rail').getBoundingClientRect()
   const rect = btn.getBoundingClientRect()
   const width = pop.offsetWidth || 286

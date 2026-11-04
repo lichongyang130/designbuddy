@@ -87,6 +87,21 @@ export class HostServer {
     return this.#ctx.has('modelRuntime') ? this.#ctx.require<ModelRuntime>('modelRuntime') : null
   }
 
+  /** 模型调用记账：谁、多少 token、多久、成没成。设置里的用量就是这些数字。 */
+  #account(kind: string, model: string, input: number | undefined, output: number | undefined, ms: number, status: string): void {
+    if (!this.#ctx.has('usage')) return
+    this.#ctx.require<UsageService>('usage').record({
+      at: Date.now(),
+      sessionId: kind,
+      presetId: kind,
+      model,
+      inputTokens: input ?? 0,
+      outputTokens: output ?? 0,
+      ms,
+      status,
+    })
+  }
+
   #jsonClient(): JsonClient {
     const router = this.#ctx.require<ModelRouter>('llm')
     return new JsonClient({ router })
@@ -374,6 +389,9 @@ export class HostServer {
           cache: this.#outlineCache,
           cacheKey: `${request.kind}|${request.count ?? ''}|${request.prompt}`,
         })
+        if (answer.model) {
+          this.#account('outline', answer.model, answer.inputTokens, answer.outputTokens, answer.ms, answer.source === 'llm' ? 'ok' : 'fallback')
+        }
         if (this.#outlineCache.size > 40) {
           const oldest = this.#outlineCache.keys().next().value
           if (oldest !== undefined) this.#outlineCache.delete(oldest)

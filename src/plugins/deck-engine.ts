@@ -22,6 +22,7 @@ import {
 } from '../core/deck.ts'
 import type {
   DeckEvent,
+  DeckIssue,
   DeckPlan,
   DeckRequest,
   GeneratedDeck,
@@ -29,8 +30,12 @@ import type {
 } from '../core/deck.ts'
 import type { CopyAnswer } from '../core/deck-copy.ts'
 import { copyFor } from '../core/deck-copy.ts'
+import type { PlanLlmAnswer } from '../core/deck-plan-llm.ts'
+import { reviewWithLlm } from '../core/deck-review.ts'
+import { planWithLlm } from '../core/deck-plan-llm.ts'
 import { JsonClient } from '../core/llm-json.ts'
 import { ModelRouter } from '../core/router.ts'
+import type { UsageService } from '../core/usage.ts'
 
 export const name = 'decks'
 
@@ -44,6 +49,10 @@ export interface DeckRecord {
   status: 'planned' | 'running' | 'done' | 'error' | 'cancelled'
   /** 逐页文案是谁写的：模型 / 规则模板（界面标出来，不假装）。 */
   copySource?: 'llm' | 'rules'
+  /** 大纲是谁写的。 */
+  planSource?: 'llm' | 'rules'
+  planModel?: string
+  planReason?: string
   copyModel?: string
   copyReason?: string
   error?: string
@@ -57,6 +66,10 @@ export interface DeckEngineOptions {
   paceMs?: number
   /** 逐页文案的来源（接上模型时由 `core/deck-copy` 提供）；不传就全走模板。 */
   copy?: (plan: DeckPlan) => Promise<CopyAnswer>
+  /** 大纲的升级版本（模型改过 topic / goal / narrative）；不传就全走规则。 */
+  planUpgrade?: (request: DeckRequest) => Promise<PlanLlmAnswer>
+  /** 主观审核（逻辑 / 说服力）；不传就只用规则那套客观检查。 */
+  review?: (plan: DeckPlan, deck: GeneratedDeck) => Promise<DeckIssue[]>
   /** 一次生成的文案溯源，界面用来说明「这页是谁写的」。 */
   onCopy?: (id: string, answer: CopyAnswer) => void
 }
@@ -70,6 +83,8 @@ export class DeckEngine {
   #historySize: number
   #paceMs?: number
   #copy?: (plan: DeckPlan) => Promise<CopyAnswer>
+  #planUpgrade?: (request: DeckRequest) => Promise<PlanLlmAnswer>
+  #review?: (plan: DeckPlan, deck: GeneratedDeck) => Promise<DeckIssue[]>
   #onCopy?: (id: string, answer: CopyAnswer) => void
   #seq = 0
 
@@ -77,6 +92,8 @@ export class DeckEngine {
     this.#historySize = options.historySize ?? 12
     this.#paceMs = options.paceMs
     this.#copy = options.copy
+    this.#planUpgrade = options.planUpgrade
+    this.#review = options.review
     this.#onCopy = options.onCopy
   }
 
@@ -191,6 +208,34 @@ export class DeckEngine {
         }
       }
     }
+    // 规划阶段先把大纲交给模型改一遍（页数、版式不动），再把事件推出去：
+    // 界面第一次看到的就是模型写过的大纲，不会出现「先给一版、再偷偷换一版」。
+    if (phase !== 'build' && this.#planUpgrade && record.planSource === undefined) {
+      emit({ type: 'deck/thinking', agent: 'story', text: '正在让模型把大纲里每页「要讲什么」定准。' })
+      let upgraded: PlanLlmAnswer | null = null
+      try {
+        upgraded = await this.#planUpgrade(record.request)
+      } catch (error) {
+        upgraded = null
+        record.planReason = error instanceof Error ? error.message : String(error)
+      }
+      if (upgraded) {
+        record.plan = {
+          ...upgraded.plan,
+          source: upgraded.source,
+          model: upgraded.model,
+          ms: upgraded.ms,
+          reason: upgraded.reason,
+        }
+        record.planSource = upgraded.source
+        record.planModel = upgraded.model
+        record.planReason = upgraded.reason
+      } else {
+        record.plan = { ...record.plan, source: 'rules' }
+        record.planSource = 'rules'
+      }
+    }
+
     let copy: CopyAnswer | null = null
     if (phase !== 'plan' && this.#copy) {
       // 先报一句再等：文案要几秒，界面不能在这几秒里一动不动。
@@ -221,8 +266,12 @@ export class DeckEngine {
       for await (const event of stream(request, {
         signal: controller.signal,
         phase,
+        // 用户确认过的那份计划，逐页生成必须照着它来
+        plan: record.plan,
+        planSource: record.planSource,
         copy: copy?.pages,
         copySource: copy?.source,
+        review: this.#review ? (deck) => this.#review!(record.plan, deck) : undefined,
       })) emit(event)
       if (record.status === 'running') {
         // 中途被 abort 时 stream 直接 return，补一条明确的状态而不是假装成功。
@@ -253,8 +302,42 @@ export function apply(ctx: Context): Disposer {
   // 有模型就让它写文案，没有（或调用失败）就自动回落模板——copyFor 内部保证不抛。
   const router = ctx.has('llm') ? ctx.require<ModelRouter>('llm') : null
   const client = router ? new JsonClient({ router, timeoutMs: 25_000 }) : null
+  const usage = ctx.has('usage') ? ctx.require<UsageService>('usage') : null
+  const account = (model: string | undefined, tokens: { input?: number; output?: number }, ms: number, status: string) => {
+    if (!usage || !model) return
+    usage.record({
+      at: Date.now(),
+      sessionId: 'deck',
+      presetId: 'deck',
+      model,
+      inputTokens: tokens.input ?? 0,
+      outputTokens: tokens.output ?? 0,
+      ms,
+      status,
+    })
+  }
   const engine = new DeckEngine({
-    copy: client ? (plan) => copyFor(client, plan) : undefined,
+    planUpgrade: client
+      ? async (request) => {
+          const answer = await planWithLlm(request, client, { timeoutMs: 20_000 })
+          account(answer.model, { input: answer.inputTokens, output: answer.outputTokens }, answer.ms, answer.source === 'llm' ? 'ok' : 'fallback')
+          return answer
+        }
+      : undefined,
+    copy: client
+      ? async (plan) => {
+          const answer = await copyFor(client, plan)
+          account(answer.model, { input: answer.inputTokens, output: answer.outputTokens }, answer.ms, answer.source === 'llm' ? 'ok' : 'fallback')
+          return answer
+        }
+      : undefined,
+    review: client
+      ? async (currentPlan, deck) => {
+          const answer = await reviewWithLlm(currentPlan, deck, client, { timeoutMs: 15_000 })
+          account(answer.model, { input: answer.inputTokens, output: answer.outputTokens }, answer.ms, answer.source === 'llm' ? 'ok' : 'fallback')
+          return answer.issues
+        }
+      : undefined,
     onCopy: (id, answer) =>
       ctx.logger.info(
         `deck ${id}: 文案 ${answer.source}${answer.model ? ` / ${answer.model}` : ''}` +

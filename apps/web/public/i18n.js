@@ -617,6 +617,7 @@ const ROWS = {
   '已接入': ['Connected', '已接入', '接続済み', '연결됨', 'Verbunden', 'Connecté', 'Conectado'],
   '未接入': ['Not connected', '未接入', '未接続', '미연결', 'Nicht verbunden', 'Non connecté', 'Sin conectar'],
   '当前生成走规则模板（还没有接入模型）': ['Generation is using rule templates (no model connected yet)', '當前生成走規則範本（還沒有接入模型）', '現在の生成はルールテンプレートです（モデル未接続）', '현재 생성은 규칙 템플릿으로 동작합니다（모델 미연결）', 'Die Generierung nutzt Regelvorlagen (noch kein Modell verbunden)', 'La génération utilise des modèles de règles (aucun modèle connecté)', 'La generación usa plantillas de reglas (aún sin modelo conectado)'],
+  '已接入 · %s': ['Connected · %s', '已接入 · %s', '接続済み · %s', '연결됨 · %s', 'Verbunden · %s', 'Connecté · %s', 'Conectado · %s'],
   '规则模板': ['Rule templates', '規則範本', 'ルールテンプレート', '규칙 템플릿', 'Regelvorlagen', 'Modèles de règles', 'Plantillas de reglas'],
   '正在用 %s 生成，保存即生效': ['Generating with %s — saved changes apply immediately', '正在用 %s 生成，儲存即生效', '%s で生成中。保存するとすぐ反映されます', '%s(으)로 생성 중이며, 저장하면 즉시 적용됩니다', 'Generierung mit %s – Änderungen gelten sofort', 'Génération avec %s — les modifications s’appliquent aussitôt', 'Generando con %s — los cambios se aplican al guardar'],
   '还没有可用的模型，生成走规则模板：%s': ['No usable model yet — generation uses rule templates: %s', '還沒有可用的模型，生成走規則範本：%s', '利用できるモデルがないため、ルールテンプレートで生成します：%s', '사용 가능한 모델이 없어 규칙 템플릿으로 생성합니다: %s', 'Noch kein nutzbares Modell – Generierung mit Regelvorlagen: %s', 'Aucun modèle utilisable — génération avec les modèles de règles : %s', 'Aún no hay modelo usable: la generación usa plantillas de reglas: %s'],

@@ -119,6 +119,11 @@ export interface DeckPlan {
   design: DeckDesign
   /** 参与这一轮的 Agent（按执行顺序）。 */
   agents: { id: string; name: string; role: string }[]
+  /** 这份大纲是谁写的：模型 / 规则模板。界面据此标一行，不让人猜。 */
+  source?: 'llm' | 'rules'
+  model?: string
+  ms?: number
+  reason?: string
 }
 
 export type DeckSlide = { k: SlideKind; label: string } & Record<string, unknown>
@@ -165,7 +170,7 @@ export interface DeckIssue {
 
 /** 引擎推给界面的事件。界面照着画，不用猜正在发生什么。 */
 export type DeckEvent =
-  | { type: 'deck/plan'; plan: DeckPlan }
+  | { type: 'deck/plan'; plan: DeckPlan; upgraded?: boolean }
   | { type: 'deck/thinking'; agent: string; text: string }
   | { type: 'deck/stage'; id: string; status: 'start' | 'done'; detail?: string }
   | { type: 'deck/slide'; index: number; total: number; slide: DeckSlide; copySource?: 'llm' | 'rules' }
@@ -1076,9 +1081,21 @@ export interface StreamOptions {
    *   - `full`（默认）：一口气跑完。
    */
   phase?: 'full' | 'plan' | 'build'
+  /**
+   * 用这份计划代替当场按规则算的：模型改过大纲时，界面确认的那份必须和这里一致，
+   * 否则「大纲说第 4 页是痛点，生成的却是别的内容」。
+   */
+  plan?: DeckPlan
+  /** 这份计划是谁写的，事件里带出去，界面标「模型 / 规则模板」。 */
+  planSource?: 'llm' | 'rules'
   /** 模型写好的逐页文案（`core/deck-copy` 产出）；没有就全走模板。 */
   copy?: Map<number, PageCopy>
   copySource?: 'llm' | 'rules'
+  /**
+   * 主观审核（逻辑跳跃、主张空泛、缺证据）交给模型：规则算不了这些。
+   * 客观项仍然由 `audit()` 负责，两者合并成一次 `deck/qa`。
+   */
+  review?: (deck: GeneratedDeck) => Promise<DeckIssue[]>
 }
 
 /**
@@ -1089,7 +1106,7 @@ export async function* stream(request: DeckRequest, options: StreamOptions = {})
   const paceMode = request.mode ?? 'plan'
   const pace = request.paceMs ?? (paceMode === 'express' ? 30 : 90)
   const phase = options.phase ?? 'full'
-  const fromPlan = plan(request)
+  const fromPlan = options.plan ?? plan(request)
   const { brief } = fromPlan
   const aborted = () => options.signal?.aborted === true
 
@@ -1101,7 +1118,7 @@ export async function* stream(request: DeckRequest, options: StreamOptions = {})
     text: `这是一份${brief.purposeLabel}材料，不是功能说明。受众是${brief.audience}，${brief.pages} 页，走${brief.style}的视觉。`,
   }
   await sleep(pace)
-  yield { type: 'deck/plan', plan: fromPlan }
+  yield { type: 'deck/plan', plan: fromPlan, upgraded: options.planSource === 'llm' ? true : undefined }
   yield { type: 'deck/stage', id: 'intake', status: 'done', detail: `${brief.purposeLabel} · ${brief.audience} · ${brief.pages} 页` }
 
   if (paceMode === 'research') {
@@ -1151,8 +1168,24 @@ export async function* stream(request: DeckRequest, options: StreamOptions = {})
   yield { type: 'deck/stage', id: 'builder', status: 'done', detail: `${deck.slides.length} 页已生成` }
 
   yield { type: 'deck/stage', id: 'qa', status: 'start' }
-  const repaired = repair(deck, brief)
+  let repaired = repair(deck, brief)
   deck = repaired.deck
+  if (options.review) {
+    try {
+      const extra = await options.review(deck)
+      if (extra.length > 0) {
+        // 客观项在前、主观项在后：规则能修的已经修过，模型提的多半是内容判断。
+        repaired = { deck, issues: [...repaired.issues, ...extra] }
+        yield {
+          type: 'deck/thinking',
+          agent: 'qa',
+          text: `模型另外提了 ${extra.length} 条：${extra.map((issue) => `第 ${issue.page} 页${issue.message}`).join('；')}`,
+        }
+      }
+    } catch {
+      /* 审核是加分项，失败就当没提过 */
+    }
+  }
   if (repaired.issues.length > 0) {
     yield {
       type: 'deck/thinking',

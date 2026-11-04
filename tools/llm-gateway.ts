@@ -59,6 +59,28 @@ function answerOutline(user: string): unknown | null {
   }
 }
 
+/** 演示文稿大纲：骨架里每页已经有 n / role / layout / topic / goal，回显 topic 与 goal。 */
+function answerPlan(user: string): unknown | null {
+  const start = user.indexOf('[')
+  if (start < 0) return null
+  const json = extractJson(user.slice(start))
+  if (!json) return null
+  try {
+    const rows = JSON.parse(json) as { n?: number; topic?: string; goal?: string; layout?: string }[]
+    if (!Array.isArray(rows) || rows.length === 0 || typeof rows[0]?.n !== 'number') return null
+    return {
+      narrative: `按 ${rows.length} 页推进，每页解决一个疑问（联调网关回显，不是模型判断）`,
+      pages: rows.map((row) => ({
+        n: row.n,
+        topic: row.topic ?? `第 ${row.n} 页`,
+        goal: row.goal ?? `说清第 ${row.n} 页要解决的事`,
+      })),
+    }
+  } catch {
+    return null
+  }
+}
+
 /** 逐页文案：把骨架里的 topic / goal 变成标题与要点。 */
 function answerPages(user: string): unknown | null {
   const start = user.indexOf('[')
@@ -82,9 +104,16 @@ function answerPages(user: string): unknown | null {
 }
 
 function reply(user: string, system: string): string {
+  // 审稿：网关没有判断力，如实回「没问题」，而不是编几条出来
+  if (system.includes('审稿人')) return JSON.stringify({ issues: [] })
   if (system.includes('内容架构师') || user.includes('"sections"')) {
     const outline = answerOutline(user)
     if (outline) return JSON.stringify(outline)
+  }
+  // 大纲先行：演示文稿的大纲请求里也带着 "pages" 字样（输出格式里），所以先认骨架的 role/layout
+  if (system.includes('内容策划') || (user.includes('"role"') && user.includes('"layout"'))) {
+    const plan = answerPlan(user)
+    if (plan) return JSON.stringify(plan)
   }
   if (system.includes('演示的文案') || user.includes('"pages"')) {
     const pages = answerPages(user)

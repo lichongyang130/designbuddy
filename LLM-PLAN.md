@@ -15,7 +15,8 @@
 | P0 运行时热接入 + 链尾兜底 | ✅ | `src/core/model-runtime.ts`（纯函数 `planMounts` / `chainFor`）、`src/plugins/model-runtime.ts`、`boot/profiles.ts`（mock 常驻） |
 | P1 大纲用模型 + 契约 + 回落 | ✅ | `src/core/llm-json.ts`、`src/core/outline-llm.ts`、`sdk/host.ts` 的 `plan.outline`、`outline.ts` 的 `withSections` |
 | P2 逐页文案用模型 | ✅ | `src/core/deck-copy.ts`、`deck.ts` 的 `applyCopy` / `copySource`、`plugins/deck-engine.ts` |
-| P3 主观审核 / 成本面板 / 状态点 | ⬜ | 未做（见 §3 P3） |
+| P3 主观审核 / 用量 / 状态点 | ✅ | `src/core/deck-review.ts`、`usage.record` 记账、会员中心「模型」一格 |
+| 追加：演示文稿大纲用模型 | ✅ | `src/core/deck-plan-llm.ts`、`deck.ts` 的 `options.plan` / `upgraded` |
 
 ### 现在怎么接（两条路，任选）
 
@@ -56,9 +57,9 @@ npm run llm:mock      # 本地「联调网关」：一个假 OpenAI 端点，只
 
 ### 还没做的
 
-- 演示文稿的**大纲阶段**（`deck.start` 的 narrative / outline）仍由 `core/deck` 的规则引擎算，
-  模型只接管逐页文案；要把大纲也交给模型，改 `deck-engine.ts` 的 `start()` 即可，接口已备好。
-- P3 的三件事：主观审核交给模型、按模型/用途的用量面板、顶栏 LLM 状态点。
+- **对话式局部修改**（`deck.revise`）仍是规则匹配：用户说「第 3 页换个说法」，
+  目前按关键词改标题/换版式，还不是模型重写。接口一样，接一次 `JsonClient` 即可。
+- 每份产出的**成本估算**（按 token × 单价）：现在只有 token 数，没有折算成钱。
 - 说明：本沙箱出口只放行 github / npm / pypi，`api.deepseek.com`、`api.hcnsec.cn` 之类**连不上**，
   所以真实调用的验证要在你自己的机器上做；我这边验证的是「代码路径 + 假 fetch + 本地网关」。
 
