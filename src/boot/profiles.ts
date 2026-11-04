@@ -27,6 +27,7 @@ import * as coreAgentLoop from '../plugins/core-agent-loop.ts'
 import * as mockLlm from '../plugins/mock-llm.ts'
 import * as openaiLlm from '../plugins/openai-llm.ts'
 import * as modelRuntime from '../plugins/model-runtime.ts'
+import * as browserRelay from '../plugins/browser-relay.ts'
 import * as designMemory from '../plugins/design-memory.ts'
 import * as designExperts from '../plugins/design-experts.ts'
 import * as connectorFigma from '../plugins/connector-figma.ts'
@@ -70,6 +71,7 @@ export const modelBundle: Bundle = {
   rows: [
     { id: 'models.mock', plugin: 'mock-llm' },
     { id: 'models.openai', plugin: 'openai-llm' },
+    { id: 'models.relay', plugin: 'browser-relay' },
     { id: 'models.runtime', plugin: 'model-runtime' },
   ],
 }
@@ -122,6 +124,7 @@ export const defaultModules: PluginModules = {
   'mock-llm': mockLlm,
   'openai-llm': openaiLlm,
   'model-runtime': modelRuntime,
+  'browser-relay': browserRelay,
   'design-memory': designMemory,
   'design-experts': designExperts,
   'connector-figma': connectorFigma,

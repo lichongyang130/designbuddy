@@ -43,7 +43,7 @@ export type SlideKind =
 export interface DeckRequest {
   prompt: string
   mode?: DeckMode
-  /** 目标页数，默认 15；引擎会夹到 8–30。 */
+  /** 目标页数，默认 15；引擎会夹到 5–30。 */
   pages?: number
   audience?: string
   style?: string
@@ -261,15 +261,22 @@ export function seeded(seed: string, salt: number, min: number, max: number): nu
   return Math.round(min + unit * (max - min))
 }
 
+/** 页数的上下限：少于 5 页讲不出「开场—论据—行动」三段，多于 30 页现场根本翻不完。 */
+export const PAGE_MIN = 5
+export const PAGE_MAX = 30
+
 /**
  * 页数：先看调用方给的，再看句子里写的「10 页 / 10页 / 10 slides」。
  * 早先这里只读 request.pages，「10 页的复盘」照样出 15 页 —— 用户最直接的感受就是「生成不对」。
+ *
+ * 下限原本是 8，比现实更硬：一份 6 页的复盘很常见，而说 6 页却出 8 页，
+ * 用户看到的仍然是「不听我的」。骨架本来就能处理 5 页（开场 + 三条论据 + 行动）。
  */
 export function pagesOf(prompt: string, wanted?: number): number {
   const spoken = prompt.match(/(\d+)\s*(?:页|pages?|slides?|P\b)/i)?.[1]
   const value = Number(wanted ?? (spoken === undefined ? NaN : Number(spoken)))
   const pages = Number.isFinite(value) && value > 0 ? Math.round(value) : 15
-  return Math.min(30, Math.max(8, pages))
+  return Math.min(PAGE_MAX, Math.max(PAGE_MIN, pages))
 }
 
 export function analyze(request: DeckRequest): DeckBrief {

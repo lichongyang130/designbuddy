@@ -23,6 +23,8 @@ export interface MountEntry {
   model: string
   baseUrl: string
   apiKey: string
+  /** `browser` = 请求交给用户浏览器代发（服务端出不了网时）。 */
+  transport?: 'browser'
 }
 
 export interface SkippedEntry {
@@ -92,7 +94,11 @@ export function planMounts(input: PlanInput): MountPlan {
     ).replace(/\/+$/, '')
     const local = LOCAL_PROVIDERS.has(providerKey) || /^https?:\/\/(127\.0\.0\.1|localhost)/.test(baseUrl)
     const fromEnvName = model.apiKeyEnv ? (env(model.apiKeyEnv) ?? '').trim() : ''
-    const apiKey = input.keyOf(model.id) ?? (fromEnvName || (local ? 'local' : envKey))
+    // 浏览器直连：Key 存在用户浏览器里，服务端只留一个占位符（请求头由浏览器补）。
+    const browser = model.transport === 'browser'
+    const apiKey = browser
+      ? (input.keyOf(model.id) || 'browser')
+      : (input.keyOf(model.id) ?? (fromEnvName || (local ? 'local' : envKey)))
 
     if (baseUrl === '') {
       skipped.push({ id: model.id, name: model.name, reason: '没填接口地址（OpenAI 兼容的 base URL）' })
@@ -109,6 +115,7 @@ export function planMounts(input: PlanInput): MountPlan {
       model: model.model,
       baseUrl,
       apiKey,
+      transport: browser ? 'browser' : undefined,
     })
   }
 
@@ -118,7 +125,7 @@ export function planMounts(input: PlanInput): MountPlan {
     // 指纹里有跳过的条目：否则「新存了一个挂不上的模型」会被误判成「清单没变」，
     // 界面上就永远显示不出它为什么挂不上。
     signature: JSON.stringify({
-      mounts: mounts.map((mount) => [mount.adapterId, mount.model, mount.baseUrl, mount.apiKey.length]),
+      mounts: mounts.map((mount) => [mount.adapterId, mount.model, mount.baseUrl, mount.apiKey.length, mount.transport ?? '']),
       skipped: skipped.map((entry) => [entry.id, entry.reason]),
     }),
   }

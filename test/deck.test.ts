@@ -44,17 +44,18 @@ test('需求分析：主题、用途、受众、页数、风格都从一句话�
   assert.deepEqual(brief.keys.slice(0, 2), ['AI', '智能办公产品'])
 })
 
-test('需求分析：页数被夹在 8–30，没写就用 15', () => {
+test('需求分析：页数被夹在 5–30，没写就用 15', () => {
   assert.equal(analyze({ prompt: '季度汇报' }).pages, 15)
-  assert.equal(analyze({ prompt: '季度汇报', pages: 3 }).pages, 8)
+  assert.equal(analyze({ prompt: '季度汇报', pages: 3 }).pages, 5)
   assert.equal(analyze({ prompt: '季度汇报', pages: 99 }).pages, 30)
 })
 
-test('需求分析：句子里写的页数优先用，照样夹在 8–30', () => {
+test('需求分析：句子里写的页数优先用，照样夹在 5–30', () => {
   assert.equal(pagesOf('给产品团队做一份季度复盘，10页'), 10, '「10页」以前被当成壳子剥掉，一律出 15 页')
   assert.equal(pagesOf('做一份 8 页的融资路演材料'), 8)
   assert.equal(pagesOf('20 页的季度方案'), 20)
-  assert.equal(pagesOf('3 页的短稿'), 8, '低于 8 页抬到 8')
+  assert.equal(pagesOf('6 页的复盘'), 6, '说几页就出几页：6 页的复盘很常见，以前被抬成 8 页')
+  assert.equal(pagesOf('3 页的短稿'), 5, '低于 5 页抬到 5（再少就讲不出开场—论据—行动）')
   assert.equal(pagesOf('40 页的年度报告'), 30, '高于 30 页压到 30')
   assert.equal(pagesOf('季度汇报'), 15, '没写页数还是 15')
   assert.equal(pagesOf('10 页', 22), 22, '调用方明确给了页数就以调用方为准')

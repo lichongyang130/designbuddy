@@ -34,6 +34,7 @@ import type { ModelRuntime } from '../plugins/model-runtime.ts'
 import { createArtifact } from '../core/artifact.ts'
 import type { ToolRegistry } from '../core/tools.ts'
 import type { ClientFrame, HostFrame, Transport } from './protocol.ts'
+import type { BrowserRelay, RelayReplyInput } from '../core/llm-relay.ts'
 
 /**
  * App-layer actions the host is allowed to invoke.
@@ -62,6 +63,8 @@ export class HostServer {
   #deckOffs = new Map<string, () => void>()
   /** 模型返回的大纲按「类型 + 需求 + 段数」缓存，同一句需求连点两次不重复花钱。 */
   #outlineCache = new Map<string, string>()
+  /** 这条连接作为浏览器中转的登记凭证：关连接时必须撤掉，否则请求会发给死人。 */
+  #relayOff: Disposer | null = null
 
   constructor(ctx: Context, transport: Transport, commands: HostCommands = {}) {
     this.#ctx = ctx
@@ -70,10 +73,18 @@ export class HostServer {
     this.#detach = transport.onFrame((frame: ClientFrame | HostFrame) => {
       if (isClientFrame(frame)) void this.#dispatch(frame)
     })
+    const relay = this.#relay()
+    if (relay) this.#relayOff = relay.attach({ send: (frame) => transport.send(frame) })
   }
 
   dispose(): void {
+    this.#relayOff?.()
+    this.#relayOff = null
     this.#detach()
+  }
+
+  #relay(): BrowserRelay | null {
+    return this.#ctx.has('llmRelay') ? this.#ctx.require<BrowserRelay>('llmRelay') : null
   }
 
   /** 设置页保存/删除之后把适配器对齐一次；没装 runtime 插件时安静跳过。 */
@@ -196,6 +207,8 @@ export class HostServer {
           /** 链上有没有真模型：界面用这个显示「已接入 / 规则模板」，不靠模型名猜。 */
           live: hasLiveAdapter(router, 'planning'),
           models: runtime ? runtime.status() : null,
+          /** 浏览器中转：在线与否决定「浏览器直连」的条目能不能用。 */
+          relay: this.#relay()?.stats() ?? null,
         }
       }
       case 'connectors.list': {
@@ -249,11 +262,30 @@ export class HostServer {
         const catalog = this.#ctx.require<ModelCatalog>('models')
         const id = typeof params.id === 'string' ? params.id : ''
         const stored = id === '' ? undefined : catalog.key(id)
+        const browser = params.transport === 'browser'
+        const relay = this.#relay()
+        if (browser && !relay) {
+          return { ok: false, ms: 0, endpoint: String(params.baseUrl ?? ''), message: '浏览器中转没装上，改用服务端直连试试' }
+        }
         return probeModel({
           baseUrl: String(params.baseUrl ?? ''),
-          apiKey: typeof params.apiKey === 'string' && params.apiKey !== '' ? params.apiKey : stored,
+          // 浏览器直连：Key 由浏览器补，这里不能把自己那份当成真的发出去。
+          apiKey: browser ? undefined : (typeof params.apiKey === 'string' && params.apiKey !== '' ? params.apiKey : stored),
           model: typeof params.model === 'string' ? params.model : undefined,
+          fetchImpl: browser && relay ? (input, init) => relay.fetch(String(input), init) : undefined,
         })
+      }
+      case 'llm.reply': {
+        const relay = this.#relay()
+        if (!relay) return { ok: false, reason: '浏览器中转没装上' }
+        const accepted = relay.reply({
+          id: String(params.id ?? ''),
+          status: Number(params.status ?? 0),
+          body: typeof params.body === 'string' ? params.body : '',
+          headers: (params.headers ?? {}) as Record<string, string>,
+          error: typeof params.error === 'string' && params.error !== '' ? params.error : undefined,
+        })
+        return { ok: accepted }
       }
       case 'models.remove': {
         const catalog = this.#ctx.require<ModelCatalog>('models')

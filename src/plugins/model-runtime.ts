@@ -17,6 +17,7 @@ import { ModelCatalog } from '../core/models.ts'
 import type { MountPlan, MountEntry } from '../core/model-runtime.ts'
 import { chainFor, planMounts } from '../core/model-runtime.ts'
 import { OpenAiAdapter } from './openai-llm.ts'
+import type { BrowserRelay } from '../core/llm-relay.ts'
 
 export const name = 'modelRuntime'
 
@@ -41,10 +42,18 @@ export class ModelRuntime {
   #signature = ''
   #status: RuntimeStatus = { mounted: [], skipped: [], chain: [], live: false, syncedAt: 0 }
   #log: (message: string) => void
+  /** 浏览器中转；没装这个插件时为空，浏览器直连的条目会被跳过并说明原因。 */
+  #relay: BrowserRelay | null
 
-  constructor(options: { router: ModelRouter; catalog: ModelCatalog; log?: (message: string) => void }) {
+  constructor(options: {
+    router: ModelRouter
+    catalog: ModelCatalog
+    relay?: BrowserRelay | null
+    log?: (message: string) => void
+  }) {
     this.#router = options.router
     this.#catalog = options.catalog
+    this.#relay = options.relay ?? null
     this.#log = options.log ?? (() => {})
   }
 
@@ -110,6 +119,23 @@ export class ModelRuntime {
   }
 
   #mount(mount: MountEntry): void {
+    if (mount.transport === 'browser') {
+      const relay = this.#relay
+      if (!relay) throw new Error('这条是浏览器直连，但浏览器中转没装上')
+      this.#mounts.push(
+        this.#router.register(
+          new OpenAiAdapter({
+            id: mount.adapterId,
+            baseUrl: mount.baseUrl,
+            apiKey: mount.apiKey,
+            models: [mount.model],
+            // 服务端不发请求，交给连着页面的浏览器；Key 由浏览器自己补。
+            fetchImpl: (input, init) => relay.fetch(String(input), init),
+          }),
+        ),
+      )
+      return
+    }
     const adapter = new OpenAiAdapter({
       id: mount.adapterId,
       baseUrl: mount.baseUrl,
@@ -123,7 +149,12 @@ export class ModelRuntime {
 export function apply(ctx: Context): Disposer {
   const router = ctx.require<ModelRouter>('llm')
   const catalog = ctx.require<ModelCatalog>('models')
-  const runtime = new ModelRuntime({ router, catalog, log: (message) => ctx.logger.info(message) })
+  const runtime = new ModelRuntime({
+    router,
+    catalog,
+    relay: ctx.has('llmRelay') ? ctx.require<BrowserRelay>('llmRelay') : null,
+    log: (message) => ctx.logger.info(message),
+  })
   ctx.provide('modelRuntime', runtime)
   // 启动时对齐一次：环境变量里配了的、设置里存过的，开机就能用。
   runtime.sync()

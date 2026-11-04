@@ -2047,3 +2047,43 @@ const rerender = async (editId) => {
 - 实机（预览 5178 + 联调网关 5179）：`deck.start` 后的 `deck/plan` 事件 `upgraded: true`、
   `plan.source = "llm"`、narrative 来自模型；8 页生成 8/8 `copySource: "llm"`；
   `usage.summary()` 记到 6 次调用 / 4378 tokens。
+
+## 71. 让「在线用真模型」这件事真的成立（2026-11-04）
+
+用户手里有 Key 和 base URL，想在**这个预览里**直接用上真模型。之前只有一个答案：本机跑。
+这轮补上了第二个答案，并且顺手修掉一个「说了不听」的旧账。
+
+### 1. 浏览器中转（`core/llm-relay.ts` + `plugins/browser-relay.ts`）
+
+服务端出不了网（预览容器只放行 github/npm/pypi），但用户的浏览器是通的。
+于是把模型请求借道浏览器：
+
+```
+适配器 → BrowserRelay.fetch() → SSE 帧 `llm/fetch` → 页面 fetch() → RPC `llm.reply` → Response
+```
+
+- `BrowserRelay` 是 `fetch` 的同形实现，所以 `OpenAiAdapter({ fetchImpl })` 一行就能接上，
+  适配器、SSE 解析、降级链全都不用改；
+- 帧里**没有** `authorization`：Key 只存在浏览器 `localStorage`，服务端连看都看不到
+  （`transport: 'browser'` 的模型在 catalog 里只留一个占位符 `browser`）；
+- 连接断开即撤销登记，避免请求发给已经关掉的页面；超时/取消/对不上号的回话都有明确下场。
+
+### 2. 界面上的两处
+
+- 添加 / 编辑模型多了「浏览器直连（服务端出不了网时用）」，勾上后备注会改成
+  「Key 只存 localStorage，服务端不保存；要求该接口允许跨域」；
+- 模型行多一个「直连」标；上面那行状态在「模型挂上了但没有浏览器连着」时说清楚会回落模板。
+
+### 3. 「说 6 页就出 6 页」
+
+`pagesOf` 的下限一直是 8：用户写「6 页的复盘」，出来 8 页。轮廓生成器本来就能处理 5 页
+（开场 + 三条论据 + 行动），所以下限改为 **5–30**。这不是模型的锅，是硬编码。
+
+### 验收
+
+- `npm test` **221/221**（新增 5 条中转用例：没页面就报错、帧里不带 Key、超时与乱回话、
+  适配器→中转→浏览器→真 HTTP 全链路、直连模型无服务端 Key 也能挂上）；
+- 实机（预览 5178 + 冒充浏览器的脚本 `/tmp/fake_browser.mjs`）：
+  直连模型挂在 `http://relay.local/v1`（服务端 DNS 解析不到）→ 测试连接 ✓ HTTP 200、
+  服务端直连同一地址 ✕ `fetch failed`、生成 6 页 / 6 页模型文案 / 5 次中转，
+  `router.status().relay = {online:true, calls:5, failures:0}`。
