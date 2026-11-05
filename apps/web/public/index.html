@@ -235,6 +235,9 @@
 
   /* ── 主区 ─────────────────────────────────── */
   .main{display:flex;flex-direction:column;min-width:0;height:100%;background:var(--bg)}
+  .main.office-mode .topbar{display:none}
+  .office-workspace-view{flex:1;min-height:0;display:flex;overflow:hidden}
+  .office-workspace-view iframe{width:100%;height:100%;border:0;display:block}
   .topbar{
     height:64px;flex:none;display:flex;align-items:center;justify-content:space-between;
     padding:0 24px 0 20px;gap:10px;
@@ -5971,7 +5974,29 @@
   .g-img.lavender{background:linear-gradient(135deg,#ded7f8,#f1ecfc)}
   .g-img.amber{background:linear-gradient(135deg,#f6dfb8,#fdf0da)}
 
-  .beautify{width:100%;margin-top:18px;text-align:left}
+  .beautify{width:100%;margin-top:12px;text-align:left}
+  .office-mode-chip{display:flex;align-items:center;gap:8px}
+  .office-selection{color:var(--fg-muted);font-size:12px}
+  .office-upload-wrap{text-align:left}
+  .office-upload{display:inline-flex;align-items:center;gap:7px;max-width:100%;flex-wrap:wrap;min-height:60px;padding:10px 14px;border:2px dashed #d9d9df;border-radius:16px;background:transparent;color:var(--fg-muted);text-align:left}
+  .office-upload:hover,.office-upload.dragging{border-color:var(--accent);background:var(--accent-soft)}
+  .office-upload-title{font-size:13px;white-space:nowrap}
+  .office-file-badge{padding:2px 5px;border-radius:2px;background:var(--surface-2);color:var(--fg-muted);font-size:10px;line-height:1.4}
+  .office-upload-note{display:block;margin-top:5px;font-size:11px;color:var(--fg-muted);line-height:1.5}
+  .office-pains{width:100%;text-align:left;margin-top:26px}
+  .office-pains h2{margin:0 0 12px;color:var(--fg-muted);font-size:13px;font-weight:500}
+  .office-pain-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+  .office-pain{display:flex;align-items:center;gap:11px;text-align:left;padding:13px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--fg);font-size:13px;line-height:1.45;transition:border-color .15s,background .15s}
+  .office-pain:hover,.office-pain.on{border-color:var(--accent-line);background:var(--accent-soft)}
+  .office-pain .office-symbol{display:grid;place-items:center;flex:none;width:30px;height:30px;border-radius:9px;background:var(--accent-soft);color:var(--accent);font-size:16px}
+  .office-pain .office-arrow{margin-left:auto;color:var(--fg-muted)}
+  @media(max-width:520px){.office-pain-grid{grid-template-columns:1fr}.office-pains{margin-top:18px}}
+
+  .hero.mode.office-integrated{max-width:1200px;width:100%}
+  .beautify-back{color:var(--fg-muted);font-size:13px;margin:0 0 12px;padding:8px 0}
+  .beautify iframe{display:block;width:100%;height:100px;border:0;background:transparent}
+  html.office-tool-embed .rail,html.office-tool-embed .app > .side{display:none!important}
+  html.office-tool-embed .app{grid-template-columns:minmax(0,1fr)!important}
   .bhead{font-size:calc(13px*var(--fs,1));color:var(--fg-muted);margin-bottom:10px}
   .bgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
   .bcard{
@@ -6430,6 +6455,21 @@
     .sp{height:92vh}
   }
 </style>
+<link rel="stylesheet" href="/ppt-editor/editor.css">
+<link rel="stylesheet" href="/website-cases.css">
+<link rel="stylesheet" href="/social-cases.css">
+<link rel="stylesheet" href="/image-series-cases.css">
+<link rel="stylesheet" href="/artifact-cases.css">
+<link rel="stylesheet" href="/video-cases.css">
+<link rel="stylesheet" href="/hyper-cases.css">
+<link rel="stylesheet" href="/file-buddy.css">
+<link rel="stylesheet" href="/excel-assistant.css">
+<link rel="stylesheet" href="/word-assistant.css">
+<link rel="stylesheet" href="/collection.css">
+<script src="/vendor/excel-buddy/exceljs.min.js" defer></script>
+<script type="module" src="/excel-assistant.js"></script>
+<script type="module" src="/file-buddy.js"></script>
+<script type="module" src="/ppt-editor/index.js"></script>
 </head>
 <body>
 <script src="icons.js"></script>
@@ -6439,7 +6479,7 @@
   <nav class="rail">
     <div class="logo">D<i></i></div>
 
-    <button class="rbtn on" data-nav="home" title="首页">
+    <button class="rbtn on" id="navHome" data-nav="home" title="首页">
       <i class="ric"><svg class="ic" width="19" height="19" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-home"></use></svg></i>
       <span data-i18n-key="rail.home">首页</span>
     </button>
@@ -6448,6 +6488,7 @@
       <i class="ric"><svg class="ic" width="19" height="19" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-templates"></use></svg></i>
       <span data-i18n-key="rail.templates">模版</span>
     </button>
+
 
     <button class="rbtn" id="navCustom" data-nav="custom" title="主题">
       <i class="ric"><svg class="ic" width="19" height="19" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-theme"></use></svg></i>
@@ -6624,6 +6665,16 @@
           <label class="ts-opt extra" hidden><input type="checkbox" name="tplCat" value="作品集" /><span class="ts-box"></span><span class="ts-txt">作品集</span><i class="ts-count">57</i></label>
           <label class="ts-opt extra" hidden><input type="checkbox" name="tplCat" value="海报" /><span class="ts-box"></span><span class="ts-txt">海报</span><i class="ts-count">49</i></label>
           <label class="ts-opt extra" hidden><input type="checkbox" name="tplCat" value="简历" /><span class="ts-box"></span><span class="ts-txt">简历</span><i class="ts-count">44</i></label>
+          <label class="ts-opt extra" hidden><input type="checkbox" name="tplCat" value="品牌宣传" /><span class="ts-box"></span><span class="ts-txt">品牌宣传</span><i class="ts-count">1</i></label>
+          <label class="ts-opt extra" hidden><input type="checkbox" name="tplCat" value="产品营销" /><span class="ts-box"></span><span class="ts-txt">产品营销</span><i class="ts-count">1</i></label>
+          <label class="ts-opt extra" hidden><input type="checkbox" name="tplCat" value="知识科普" /><span class="ts-box"></span><span class="ts-txt">知识科普</span><i class="ts-count">1</i></label>
+          <label class="ts-opt extra" hidden><input type="checkbox" name="tplCat" value="商业数据" /><span class="ts-box"></span><span class="ts-txt">商业数据</span><i class="ts-count">1</i></label>
+          <label class="ts-opt extra" hidden><input type="checkbox" name="tplCat" value="旅游生活" /><span class="ts-box"></span><span class="ts-txt">旅游生活</span><i class="ts-count">1</i></label>
+          <label class="ts-opt extra" hidden><input type="checkbox" name="tplCat" value="餐饮美食" /><span class="ts-box"></span><span class="ts-txt">餐饮美食</span><i class="ts-count">1</i></label>
+          <label class="ts-opt extra" hidden><input type="checkbox" name="tplCat" value="时尚穿搭" /><span class="ts-box"></span><span class="ts-txt">时尚穿搭</span><i class="ts-count">1</i></label>
+          <label class="ts-opt extra" hidden><input type="checkbox" name="tplCat" value="励志语录" /><span class="ts-box"></span><span class="ts-txt">励志语录</span><i class="ts-count">1</i></label>
+          <label class="ts-opt extra" hidden><input type="checkbox" name="tplCat" value="房产商业" /><span class="ts-box"></span><span class="ts-txt">房产商业</span><i class="ts-count">1</i></label>
+          <label class="ts-opt extra" hidden><input type="checkbox" name="tplCat" value="科技发布" /><span class="ts-box"></span><span class="ts-txt">科技发布</span><i class="ts-count">1</i></label>
         </div>
         <button class="ts-more" id="tsMore">显示更多<i class="ts-count">11</i></button>
       </div>
@@ -6655,6 +6706,12 @@
         <div class="prompt">
           <div class="inner">
             <div class="refrow" id="refRowHome" hidden></div>
+            <div class="office-upload-wrap" id="officeUploadWrap" hidden>
+              <button type="button" class="office-upload" id="officeUpload" aria-label="添加办公文件">
+                <span class="office-upload-title">＋ 添加文件</span><span class="office-file-badge" title="请在演示文稿编辑器中另选">PPTX</span><span class="office-file-badge">DOCX</span><span class="office-file-badge">XLSX</span><span class="office-file-badge">PDF</span><span class="office-file-badge">TXT</span><span class="office-file-badge">CSV</span>
+              </button>
+              <span class="office-upload-note">PPTX 请在演示文稿编辑器中另选，暂不支持在此直接导入。</span>
+            </div>
             <textarea id="homePrompt" rows="2" placeholder="将此电子表格精简为 6 张幻灯片的演示文稿。仅绘制三个最重要的趋势，每张幻灯片展示一个趋势，并在结尾处说明这些数据对下一季度的意义。"></textarea>
             <div class="bar">
               <button class="icobtn" id="attach" title="添加文件">
@@ -6669,6 +6726,8 @@
                   </button>
                 </span>
               </div>
+              <div class="office-mode-chip" id="officeModeChip" hidden><span class="mchip"><span>智能办公</span><button class="mclear" id="officeModeClear" type="button" title="退出智能办公" aria-label="退出智能办公">×</button></span><span class="office-selection" id="officeSelection" hidden></span></div>
+              <input id="officeFiles" type="file" accept=".docx,.doc,.xlsx,.xls,.pdf,.txt,.csv" multiple hidden>
               <div class="grow"></div>
               <button class="icobtn" id="imagePickHome" title="图片">
                 <svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-image"></use></svg>
@@ -6680,6 +6739,7 @@
                 <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-send"></use></svg>
               </button>
             </div>
+            <div class="beautify" id="beautifyBox" hidden><iframe id="officeWorkspaceFrame" title="智能办公处理区" loading="lazy"></iframe></div>
           </div>
         </div>
 
@@ -6700,11 +6760,22 @@
             <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-image"></use></svg>
             图片
           </button>
-          <button class="chip" data-kind="美化">
+          <button class="chip" data-kind="智能办公">
             <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wand"></use></svg>
-            美化
+            智能办公
           </button>
         </div>
+        <section class="office-pains" id="officePains" hidden aria-label="常见办公难题">
+          <h2>这些工作，交给智能办公</h2>
+          <div class="office-pain-grid">
+            <button type="button" class="office-pain" data-office-task="collection"><span class="office-symbol">◇</span><span>部门材料没交齐，催办核对太费时</span><span class="office-arrow">↗</span></button>
+            <button type="button" class="office-pain" data-office-task="excel"><span class="office-symbol">▦</span><span>多张表格要合并，数据还要查错</span><span class="office-arrow">↗</span></button>
+            <button type="button" class="office-pain" data-office-task="word"><span class="office-symbol">▤</span><span>通知报告、PPT 汇报不知道怎么做</span><span class="office-arrow">↗</span></button>
+            <button type="button" class="office-pain" data-office-task="search"><span class="office-symbol">⌕</span><span>文件太多，想找的资料找不到</span><span class="office-arrow">↗</span></button>
+            <button type="button" class="office-pain" data-office-task="beautify"><span class="office-symbol">✦</span><span>文档和表格排版乱，不够美观</span><span class="office-arrow">↗</span></button>
+            <button type="button" class="office-pain" data-office-task="tasks"><span class="office-symbol">✓</span><span>领导交办的任务容易忘，进度不好跟</span><span class="office-arrow">↗</span></button>
+          </div>
+        </section>
       </div>
 
       <div class="hero mode" id="heroMode" hidden>
@@ -6835,29 +6906,6 @@
         </div>
 
 
-        <div class="beautify" id="beautifyBox" hidden>
-          <div class="bhead">美化方式</div>
-          <div class="bgrid">
-            <button class="bcard" data-act="style">
-              <span class="bico">
-                <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sparkle"></use></svg>
-              </span>
-              <span class="btxt"><b>更换视觉风格</b><small>全新的主题、字体和配色</small></span>
-            </button>
-            <button class="bcard" data-act="layout">
-              <span class="bico">
-                <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layout"></use></svg>
-              </span>
-              <span class="btxt"><b>重新设计布局</b><small>用更强大的布局重构卡片</small></span>
-            </button>
-            <button class="bcard" data-act="text">
-              <span class="bico">
-                <svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-eraser"></use></svg>
-              </span>
-              <span class="btxt"><b>精简文字</b><small>标题更清晰，文案更简洁</small></span>
-            </button>
-          </div>
-        </div>
       </div>
 
       <div class="tplwrap" id="tplwrap">
@@ -6866,6 +6914,48 @@
         <button class="alltpl" id="allTemplates">查看所有模板</button>
       </div>
     </section>
+
+    <section class="file-buddy" id="viewFileBuddy" hidden data-no-i18n>
+      <div class="fb-inner">
+        <div class="fb-head"><div><div class="fb-kicker"><span class="fb-dot"></span> PRIVATE WORKSPACE <span> / </span> P0</div><h1>文件管家<span>，</span><br>让找文件变简单。</h1><p>不记得文件名也没关系。选择文件夹后，用一句话搜索你的资料。</p></div><div class="fb-head-mark" aria-hidden="true"><span>✳</span><small>YOUR FILES<br>YOUR CONTROL</small></div></div>
+        <div class="fb-privacy"><span>◉</span><div><b>文件留在你的浏览器中</b><p>仅处理你主动选择的文件，不上传服务器；文件夹授权和索引只保留在当前页面内，刷新后需重新选择。</p></div></div>
+        <div class="fb-grid"><div class="fb-main">
+          <div class="fb-search-card"><div class="fb-section-label">01 / 描述你要找的文件</div><form id="fbSearchForm"><label class="fb-search"><span aria-hidden="true">⌕</span><input id="fbQuery" autocomplete="off" placeholder="例如：今年第三季度各部门提交的预算 Excel" aria-label="描述要找的文件"><button type="submit">搜索 <span>↗</span></button></label></form><div class="fb-examples"><span>试试看</span><button type="button" data-fb-example="今年第三季度各部门提交的预算 Excel">第三季度预算</button><button type="button" data-fb-example="市场部合同 Word">市场部合同</button><button type="button" data-fb-example="项目报告 PDF">项目报告</button></div></div>
+          <div class="fb-results-head"><div><span class="fb-section-label">02 / 搜索结果</span><h2 id="fbResultTitle">准备好开始了吗？</h2></div><div class="fb-result-controls"><label for="fbSourceFilter">来源</label><select id="fbSourceFilter"><option value="all">全部来源</option><option value="computer">电脑</option><option value="wechat">微信</option><option value="email">邮箱</option><option value="cloud">网盘</option></select><span id="fbCount" class="fb-count">等待搜索</span></div></div>
+          <div id="fbInterpretation" class="fb-interpretation" hidden></div><div id="fbResults" class="fb-results"><div class="fb-empty"><div class="fb-empty-icon">⌕</div><b>先选择你想搜索的文件</b><p>添加文件或文件夹后，输入关键词或完整的一句话。</p></div></div>
+        </div><aside class="fb-sidebar"><div class="fb-side-top"><span class="fb-section-label">YOUR SOURCES</span><span class="fb-live">● 本地导入</span></div><h2>连接文件来源</h2><p>选择已保存到电脑的文件；仅标记来源，不会连接账户。</p><div id="fbSourceList" class="fb-source-list"></div><p id="fbStatus" class="fb-status" role="status" aria-live="polite">尚未选择文件</p><input id="fbFolder" type="file" webkitdirectory multiple hidden><input id="fbFiles" type="file" accept=".xlsx,.xls,.docx,.doc,.pdf,.txt,.csv" multiple hidden><button id="fbClear" class="fb-clear" type="button" disabled>清除全部索引</button><div class="fb-divider"></div><div class="fb-notes"><b>当前版本</b><p>本版使用规则匹配，不调用大模型；微信、邮箱、网盘仅支持本地导入，不会登录账号或自动同步。旧版 Office、扫描 PDF 等可能只能匹配文件信息。最多 1000 个文件；超过 20 MB 的文件仅索引文件信息，PDF 最多读取前 30 页。</p><p>在支持文件系统访问的浏览器中，可授权文件夹并手动重新扫描；页面刷新后需重新授权。其他浏览器可使用文件夹导入。浏览器只能打开或下载副本，不能直接打开原路径。</p></div></aside></div>
+        <div class="fb-bottom"><span>DESIGNBUDDY / FILE BUDDY</span><span>PRIVATE BY DESIGN · 当前页面会话</span></div>
+      </div>
+    </section>
+
+    <section class="excel-assistant" id="viewExcelAssistant" hidden data-no-i18n><div class="eb-wrap">
+      <header class="eb-header"><div><div class="eb-eyebrow">DESIGNBUDDY / SPREADSHEET WORKSPACE</div><h1>Excel 助手<span>。</span></h1><p>把分散的表格整理成可核对、可复用的工作簿。</p></div><div class="eb-private">◉ &nbsp; 浏览器本地处理<br><small>原文件不会被修改或上传</small></div></header>
+      <div class="eb-layout"><main class="eb-main">
+        <section class="eb-card"><div class="eb-step">01 <span>选择 Excel 文件</span></div><div class="eb-upload"><div><strong>将多个工作簿放在一起</strong><p>支持 .xlsx，单个文件不超过 20 MB；最多 20 个文件、合计 20000 条数据。第一行视为表头。</p></div><button type="button" id="ebAddFiles">＋ 添加文件</button></div><input type="file" id="ebFileInput" accept=".xlsx" multiple hidden><div id="ebFileStatus" class="eb-hint" role="status" aria-live="polite">还没有添加文件。</div></section>
+        <section class="eb-card"><div class="eb-step">02 <span>选择工作表并确认字段</span></div><p class="eb-intro">系统按表头建议映射；请逐表核对。隐藏工作表默认不选，部门和预算金额必须映射。</p><div id="ebSheets" class="eb-sheets"><div class="eb-empty">添加文件后，在这里选择工作表并确认字段。</div></div></section>
+        <section class="eb-card"><div class="eb-step">03 <span>设定检查与统计口径</span></div><div class="eb-settings"><label>币种 <select id="ebCurrency"><option value="CNY">人民币 CNY</option><option value="USD">美元 USD</option></select></label><label>输入金额单位 <select id="ebUnit"><option value="元">基本单位（元 / 美元）</option><option value="万元">万基本单位（万元 / 万美元）</option></select></label></div><div class="eb-check-title">疑似重复依据 <small>至少选择一项；只标记，不删除</small></div><div class="eb-checks"><label><input type="checkbox" data-eb-duplicate="department" checked> 部门</label><label><input type="checkbox" data-eb-duplicate="person" checked> 姓名</label><label><input type="checkbox" data-eb-duplicate="date" checked> 日期</label><label><input type="checkbox" data-eb-duplicate="amount" checked> 金额</label></div><div class="eb-info">未映射币种或单位时，按上方选择处理；有对应列但不一致的行不计入汇总。疑似重复行不会删除，符合统计条件时仍会计入；选中的查重字段须在每个工作表映射。原文件公式只读取缓存值，不会重新计算；汇总表使用引用“计入汇总金额”的公式。</div><div class="eb-actions"><button type="button" id="ebAnalyze" class="eb-primary">检查并预览 ↗</button><button type="button" id="ebSaveRules">保存当前规则</button><button type="button" id="ebDeleteRules">删除已存规则</button></div><div id="ebRuleStatus" class="eb-hint" role="status"></div></section>
+        <section class="eb-card eb-output"><div class="eb-output-head"><div><div class="eb-step">04 <span>预览与导出</span></div><p class="eb-intro">确认映射和统计口径后，生成新工作簿。</p></div><button type="button" id="ebExport" class="eb-primary" disabled>下载工作簿 ↓</button></div><div id="ebResult" class="eb-empty">还没有分析结果。</div></section>
+      </main><aside class="eb-side"><div class="eb-side-top">WORKFLOW / 01—04</div><h2>让每一份数据<br>都有来处。</h2><p>合并后保留来源文件、工作表和原始行号，便于回查。</p><div class="eb-side-rule"></div><div class="eb-side-item"><i>01</i><div><strong>不覆盖原表</strong><small>输出为新的 XLSX 文件。</small></div></div><div class="eb-side-item"><i>02</i><div><strong>问题不静默处理</strong><small>异常和重复行单独列出。</small></div></div><div class="eb-side-item"><i>03</i><div><strong>本地处理</strong><small>数据不发送到服务器或大模型。</small></div></div><div class="eb-side-note">此版本以规则进行字段建议，不是 AI 自动理解。仅支持第一行表头；需要用户核对映射和统计口径。</div></aside></div>
+    </div></section>
+
+    <section class="collection" id="viewCollection" hidden data-no-i18n><div class="cm-wrap">
+      <header class="cm-header"><div><div class="cm-eyebrow">DESIGNBUDDY / COLLECTION WORKSPACE</div><h1>部门资料收集<i>。</i></h1><p>一份台账，掌握各部门提交、核对与催办进度。</p></div><div class="cm-badge">◉ 本地管理 · 人工确认</div></header>
+      <div class="cm-layout"><aside class="cm-panel"><div class="cm-step">01 / TASK SETUP</div><h2>创建收集任务</h2><p class="cm-note">每行一个部门；每行一类材料，可用竖线填写文件后缀和内容关键词。</p><label for="cmTitle">任务名称</label><input id="cmTitle" placeholder="例如：11 月部门工作总结" maxlength="120"><label for="cmDeadline">截止时间</label><input id="cmDeadline" type="datetime-local"><label for="cmDeptInput">部门名单 · 每行一个</label><textarea id="cmDeptInput" rows="6" placeholder="综合部&#10;财务部&#10;人事部"></textarea><label for="cmRequirementInput">必交材料 · 每行一类</label><textarea id="cmRequirementInput" rows="5" placeholder="工作总结 | docx&#10;项目进度表 | xlsx"></textarea><p class="cm-small">示例：工作总结 | docx,pdf | 本月工作,下月计划。关键词仅做机械匹配，不代表完整性审核。</p><div class="cm-actions"><button type="button" id="cmCreate" class="primary">＋ 创建任务</button><button type="button" id="cmUpdate">更新当前任务</button></div><label for="cmTask">切换任务</label><select id="cmTask"><option value="">选择任务</option></select><div class="cm-actions"><button type="button" id="cmEdit">载入任务设置</button><button type="button" id="cmClone">复制任务设置</button><button type="button" id="cmDelete">删除任务</button></div><p id="cmStatus" role="status" aria-live="polite" class="cm-note">正在读取本地数据…</p><p class="cm-note">任务和文件副本保存在当前浏览器；清除浏览器数据可能丢失。请备份原文件与导出的进度表。此版不连接邮箱、网盘或微信，也不会自动发送催办。</p></aside>
+      <main class="cm-main" id="cmWorkspace" hidden><section class="cm-card"><div class="cm-step">02 / OVERVIEW</div><h2 id="cmTaskTitle"></h2><p id="cmTaskMeta" class="cm-small"></p><div id="cmStats" class="cm-stats"></div><p class="cm-small">仅人工确认归属并设为当前版本的文件计入台账；“已齐全”仅代表必交项存在且基础检查无提示，不代表内容已审核通过。</p><div class="cm-table-wrap"><table class="cm-table"><thead><tr><th>部门</th><th>回复（手动）</th><th>材料状态</th><th>缺少材料</th><th>基础检查提示</th><th>待确认</th></tr></thead><tbody id="cmDepartments"></tbody></table></div><div class="cm-actions"><button type="button" id="cmExport">导出进度 CSV ↓</button><button type="button" id="cmExportFiles">导出材料清单 CSV ↓</button></div></section>
+      <section class="cm-card"><div class="cm-step">03 / MATERIALS</div><h2>导入与核对材料</h2><p class="cm-small">支持 DOCX、XLSX、PDF、TXT、CSV 等；仅基于文件名建议部门和材料类别，不识别实际提交人或提交时间。最多 100 个文件、单个 10 MB、每任务总计 50 MB。AI 辅助检查需用户确认后发送材料文字到配置的模型服务，结果仅供人工审核。</p><div class="cm-actions"><button type="button" id="cmPick" class="primary">＋ 导入文件</button><button type="button" id="cmFolderPick">导入文件夹</button></div><input type="file" id="cmInput" multiple hidden><input type="file" id="cmFolderInput" webkitdirectory multiple hidden><div id="cmFiles"></div></section>
+      <section class="cm-card"><div class="cm-step">04 / FOLLOW UP</div><h2>生成催办内容</h2><p class="cm-small">基于当前台账生成文字，检查后复制到你使用的渠道。不会自动发送；记录催办仅表示你手动登记。</p><label for="cmReminderMode">催办对象</label><select id="cmReminderMode"><option value="missing">缺少材料的部门</option><option value="reply">未确认回复的部门</option><option value="issues">基础检查有问题的部门</option></select><div class="cm-actions"><button type="button" id="cmNotice">生成收集通知</button><button type="button" id="cmReminder" class="primary">生成催办</button><button type="button" id="cmCopy">复制内容</button><button type="button" id="cmRecord">手动记录已催办</button></div><label for="cmReminderText">可编辑的催办文字</label><textarea id="cmReminderText" rows="8" placeholder="生成后可修改，再自行发送。"></textarea></section>
+      <section class="cm-card"><div class="cm-step">05 / SUMMARY</div><h2>生成汇总初稿</h2><p class="cm-small">本地进度汇总只统计台账。AI 汇总只使用人工确认的当前版本，发送前需确认；提取文字可能不完整，最多合计 12000 字。结果必须逐项核对。</p><div class="cm-actions"><button type="button" id="cmSummaryLocal">生成本地进度汇总</button><button type="button" id="cmSummaryAI" class="primary">✦ AI 汇总已确认材料</button></div><label for="cmSummary">可编辑的汇总初稿</label><textarea id="cmSummary" rows="9" placeholder="生成后可编辑、复制到 Word 助手。"></textarea></section>
+      <section class="cm-card"><div class="cm-step">06 / ACTIVITY</div><h2>操作记录</h2><div id="cmLog" class="cm-output"></div><p class="cm-small">显示最近 30 条；导入时间与文件修改时间都不能证明真实提交时间。</p></section></main></div>
+    </div></section>
+
+    <section class="word-assistant" id="viewWordAssistant" hidden data-no-i18n><div class="wa-wrap">
+      <header class="wa-head"><div><div class="wa-kicker">DESIGNBUDDY / DOCUMENT WORKSPACE</div><h1>Word 助手<i>。</i></h1><p>从需求到文稿，先起草、再核对，最后导出可编辑的 Word。</p></div><div class="wa-head-note">A4 排版预设 <small>内容与规范仍需人工审核</small></div></header>
+      <div class="wa-layout"><aside class="wa-setup"><div class="wa-step">01 / 起草准备</div><label>文种<select id="waKind"><option>通知</option><option>请示</option><option>报告</option><option>会议纪要</option></select></label><label>写作需求<textarea id="waBrief" rows="4" placeholder="例如：通知各部门在本周五前提交下季度预算，并说明提交要求"></textarea></label><label>参考文字 <small>可选，最多 12000 字</small><textarea id="waReference" rows="4" placeholder="可粘贴旧文档中可公开使用的参考内容"></textarea></label><div class="wa-ref-actions"><button type="button" id="waPickReference">导入 DOCX / TXT</button><input id="waReferenceFile" type="file" accept=".docx,.txt" hidden></div><div id="waRefStatus" class="wa-hint">参考文件仅提取文字，不保留原格式、图片或表格结构。</div><button id="waAI" type="button" class="wa-primary wa-wide">✦ AI 起草</button><button id="waTemplate" type="button" class="wa-secondary wa-wide">生成本地草稿框架</button><div class="wa-privacy">AI 起草会将需求和参考文字发送给所配置的模型服务；本地框架、检查和导出不发送文档内容。请勿输入未经授权的敏感信息。</div><div id="waStatus" class="wa-hint" role="status" aria-live="polite"></div><div id="waSuggestion" class="wa-suggestion" hidden><strong>AI 草稿建议</strong><pre id="waSuggestionText"></pre><button id="waApply" type="button">应用到编辑区</button></div></aside>
+      <main class="wa-main"><div class="wa-card"><div class="wa-card-head"><div><div class="wa-step">02 / 编辑文稿</div><h2>文稿内容</h2></div><button type="button" id="waCheck">检查文字与格式</button></div><div class="wa-editor-grid"><label>标题<input id="waTitle" maxlength="500" placeholder="请输入文稿标题"></label><label>主送单位<input id="waRecipient" maxlength="500" placeholder="例如：各部门"></label><label class="wa-full">正文<textarea id="waBody" rows="13" maxlength="30000" placeholder="每段使用换行分隔；一、和（一）开头的段落会按层级显示。"></textarea></label><label>落款单位<input id="waSignature" maxlength="500" placeholder="请输入落款单位"></label><label>成文日期<input id="waDate" maxlength="100" placeholder="例如：2026年11月4日"></label></div></div>
+      <div class="wa-card"><div class="wa-card-head"><div><div class="wa-step">03 / 版式设置</div><h2>A4 排版预设</h2></div><button type="button" id="waResetFormat">恢复预设</button></div><div class="wa-format"><label>标题字体<select id="waTitleFont"><option value="方正小标宋简体">方正小标宋简体</option><option value="小标宋">小标宋</option><option value="宋体">宋体</option><option value="黑体">黑体</option></select></label><label>标题磅值<input type="number" id="waTitleSize" min="14" max="30" step="1" value="22"></label><label>正文字体<select id="waFont"><option value="仿宋_GB2312">仿宋_GB2312</option><option value="仿宋">仿宋</option><option value="宋体">宋体</option></select></label><label>正文磅值<input type="number" id="waSize" min="10" max="24" step="1" value="16"></label><label>固定行距（磅）<input type="number" id="waLine" min="18" max="48" step="1" value="28"></label><label>上边距（mm）<input type="number" id="waTop" min="10" max="50" value="37"></label><label>下边距（mm）<input type="number" id="waBottom" min="10" max="50" value="35"></label><label>左边距（mm）<input type="number" id="waLeft" min="10" max="50" value="28"></label><label>右边距（mm）<input type="number" id="waRight" min="10" max="50" value="26"></label></div><p class="wa-format-note">预设参考常见公文排版习惯，非完整标准符合性校验；标题预设 22 磅、方正小标宋简体。实际字体、分页及版式以 Word/WPS 和单位要求为准。</p></div>
+      <div class="wa-card"><div class="wa-card-head"><div><div class="wa-step">04 / 审核与导出</div><h2>检查结果</h2></div><button type="button" id="waDownload" class="wa-primary">下载 DOCX ↓</button></div><div id="waChecks" class="wa-checks">点击“检查文字与格式”查看提示。</div></div></main>
+      <aside class="wa-preview"><div class="wa-preview-label">LIVE PREVIEW <small>预览为近似效果，实际分页以 Word/WPS 为准</small></div><div id="waPaper" class="wa-paper"><div id="waPaperTitle" class="wa-paper-title">文稿标题</div><div id="waPaperRecipient" class="wa-paper-recipient"></div><div id="waPaperBody" class="wa-paper-body">正文将在这里显示。</div><div id="waPaperSignature" class="wa-paper-signature"></div><div id="waPaperDate" class="wa-paper-date"></div></div></aside></div>
+    </div></section>
 
     <!-- 模版库（探索模板） -->
     <section class="tplpage" id="viewTemplates" hidden>
@@ -7021,6 +7111,7 @@
           <button class="cn-filter" data-cnf="demo">演示数据</button>
           <span class="cn-count" id="cnCount"></span>
         </div>
+        <div class="cn-file-sources" id="cnFileSources" hidden data-no-i18n><div class="cn-file-head">文件管家 · 本地导入入口</div><p>将已保存到电脑的文件分类导入文件管家；这些入口不连接微信、邮箱或网盘账户，不计入已连接数量。</p><div class="cn-grid" id="cnFileSourceCards"></div></div>
         <div class="cn-grid" id="cnGrid"></div>
       </div>
     </section>
@@ -7525,13 +7616,18 @@
 
 <script type="module">
 import { BRIEF_MARK, CASE_DECKS as BUNDLED_CASES, deckPrompt, slideHTML, esc } from './cases.js'
+import { handleArtifactAction } from './artifact-cases.js'
 import { THEMES as BUNDLED_THEMES } from './themes.js'
+import { handleSiteAction } from './website-cases.js'
 
 /* 案例库与主题目录的真实来源是后端（core.library）。前端这两份 import 只是
  * 首屏与离线回落：启动后 `refreshLibrary()` 会把目录换成后端那份，换不到就
  * 继续用打包的这份——两边是同一种对象，渲染代码不需要知道数据从哪来。 */
 const LIB = { decks: BUNDLED_CASES, themes: BUNDLED_THEMES, source: 'bundle' }
 import { applyLanguage, currentLanguage, resolveLanguage, startAutoTranslate, t } from './i18n.js'
+import { FILE_SOURCES } from './file-buddy-sources.js'
+import { mountWordAssistant } from './word-assistant.js'
+import { mountCollection } from './collection.js'
 const tplState = { fmt: 'all', cats: new Set(), q: '', sort: 'date', more: false }
 
 /* ── 模板引用：卡片右下角「引用」→ 输入框上方的引用卡 ──────
@@ -8096,14 +8192,14 @@ function metaUnit(deck) {
   return deck.fmt === 'card' ? ' 张卡片'
     : deck.fmt === 'image' ? ' 张图'
     : deck.fmt === 'audio' ? ' 段音频'
-    : deck.fmt === 'video' ? ' 帧画面'
+    : deck.fmt === 'video' ? (deck.videoStory ? ' 个视频场景' : ' 帧画面')
     : deck.fmt === 'hyper' ? ' 帧'
     : deck.fmt === 'site' || deck.fmt === 'artifact' ? ' 屏'
     : ' 个界面'
 }
 
 function deckCoverHTML(deck) {
-  return '<div class="' + boxClass(deck) + '">' + slideHTML(deck, deck.slides[0]) + '</div>'
+  return '<div class="' + boxClass(deck) + '">' + slideHTML(deck, deck.slides[0], 0, !!(deck.videoStory || deck.hyperStory)) + '</div>'
 }
 
 function paintTplGallery() {
@@ -8589,7 +8685,7 @@ function psGridReset() {
   PLAN.pages = []
   PLAN.bundle = null
   const items = (PLAN.plan && PLAN.plan.outline) || []
-  const total = Math.max(items.length, PLAN.count || 0)
+  const total = PLAN.deck ? PLAN.deck.slides.length : Math.max(items.length, PLAN.count || 0, PLAN.total || 0)
   const cells = []
   for (let index = 0; index < total; index += 1) {
     const topic = (items[index] && items[index].topic) || ''
@@ -8855,6 +8951,7 @@ function psDoneDeck(deck) {
   PLAN.deck = deck
   PLAN.slides = deck.slides.slice()
   PLAN.total = deck.slides.length
+  psGridReset()
   PLAN.done = PLAN.total
   deck.slides.forEach((slide, index) => psPaintPage(index, slide))
   for (const item of psRailItems()) item.classList.remove('run')
@@ -8879,6 +8976,7 @@ function psDoneDeck(deck) {
     }
   }
   if (!LIB.decks.some((item) => item.id === deck.id)) LIB.decks.unshift(deck)
+  if (window.mountPptEditor) window.PPT_EDITOR = window.mountPptEditor(deck, rpc)
 }
 
 /** 停止：真的调 deck.cancel 掐掉生成，已出的页留在原地。 */
@@ -8907,6 +9005,8 @@ async function psBuildDeck() {
   PLAN.slides = []
   PLAN.total = PLAN.count
   PLAN.done = 0
+  document.getElementById('planStudio').classList.remove('pe-active')
+  window.PPT_EDITOR = null
   PLAN.deck = null
   PLAN.score = 0
   PLAN.view = 'page'
@@ -9200,6 +9300,10 @@ async function psPlan() {
 }
 
 function openPlanStudio(prompt, kind) {
+  document.getElementById('planStudio').classList.remove('pe-active', 'pe-ai-collapsed')
+  document.querySelector('.ps-right .pe-shell')?.remove()
+  document.querySelector('.ps-right .pe-reopen')?.remove()
+  window.PPT_EDITOR = null
   bindPlanOnce()
   PLAN.open = true
   PLAN.kind = kind
@@ -9254,6 +9358,14 @@ async function psAskOnce() {
   if (PLAN.busy) return
   input.value = ''
   psMsg('user', text)
+  if (PLAN.deck) {
+    try {
+      if (!window.PPT_EDITOR) throw new Error('请先打开编辑器并选择文字')
+      const result = await window.PPT_EDITOR.reviseSelected(text)
+      psMsg('assistant', result)
+    } catch (error) { psMsg('assistant', error.message) }
+    return
+  }
   PLAN.prompt = PLAN.prompt + '\n' + text
   PLAN.pending = psMsg('assistant', '按这句重排大纲…')
   await psPlan()
@@ -9615,12 +9727,18 @@ function renderCase() {
   const slide = deck.slides[caseState.i]
   $('tvStage').innerHTML = '<div class="' + boxClass(deck) + '">' + slideHTML(deck, slide, caseState.i) + '</div>'
   paintCalcs($('tvStage'))
+  $('tvStage').querySelectorAll('.video-story video, .hyper-story video').forEach(video => video.addEventListener('error', () => { const notice = video.parentElement.querySelector('.vs-error'); if (notice) notice.hidden = false }, { once: true }))
+  if (deck.fmt === 'site' && !deck.siteConfig) {
+    $('tvStage').querySelectorAll('.nw-links span, .nw-links b, .nw-logo, .nw-cart, .bw-navitem, .bw-logo, .bw-basket, .wl-nav span, .wl-nav b, .wl-logo, .nw-btn, .bw-btn, .wl-btn').forEach(el => {
+      if (!el.closest('[data-nw], [data-bw]')) { el.setAttribute('role', 'button'); el.tabIndex = 0; el.style.cursor = 'pointer' }
+    })
+  }
   const thumbs = $('tvThumbs')
   if (thumbs.dataset.deck !== deck.id) {
     thumbs.dataset.deck = deck.id
     thumbs.innerHTML = deck.slides.map((sl, i) =>
       '<button class="tv-th' + fmtClass(deck) + '" data-i="' + i + '" title="' + sl.label + '">' +
-      '<div class="' + boxClass(deck) + '">' + slideHTML(deck, sl, i) + '</div><span>' + sl.label + '</span></button>'
+      '<div class="' + boxClass(deck) + '">' + slideHTML(deck, sl, i, !!(deck.videoStory || deck.hyperStory)) + '</div><span>' + sl.label + '</span></button>'
     ).join('')
     thumbs.querySelectorAll('.tv-th').forEach((el) => {
       el.onclick = () => gotoCasePage(Number(el.dataset.i))
@@ -9633,6 +9751,48 @@ function renderCase() {
   $('tvPrev').disabled = caseState.i === 0
   $('tvNext').disabled = caseState.i === all.length - 1
   scheduleCanvasScale()
+}
+
+// Website prototypes act only in the large stage, never in nested thumbnails.
+function handleReplicaControl(event) {
+  const control = event.target.closest?.('[data-rc]')
+  if (!control || !control.closest('#tvStage')) return
+  if (event.type === 'keydown' && event.key !== 'Enter' && event.key !== ' ') return
+  event.preventDefault()
+  event.stopPropagation()
+  const stage = $('tvStage')
+  const inputs = Object.fromEntries([...stage.querySelectorAll('[data-rc-input]')].map(el => [el.dataset.rcInput, el.value]))
+  const result = handleSiteAction(caseState.deck, caseState.i, control.dataset.rc, control.dataset.value, inputs)
+  if (result?.navigate != null) gotoCasePage(result.navigate)
+  else if (result?.refresh) renderCase()
+  else if (result?.notice) toast(result.notice)
+}
+function handleLegacySiteNavigation(event) {
+  const deck = caseState.deck
+  if (!deck || deck.fmt !== 'site' || deck.siteConfig) return
+  if (event.type === 'keydown' && event.key !== 'Enter' && event.key !== ' ') return
+  const target = event.target.closest?.('.nw-links span, .nw-links b, .nw-logo, .nw-cart, .bw-navitem, .bw-logo, .bw-basket, .wl-nav span, .wl-nav b, .wl-logo, .nw-btn, .bw-btn, .wl-btn')
+  if (!target || target.closest('[data-nw], [data-bw]')) return
+  const text = target.textContent.trim().toLowerCase()
+  const nav = deck.id === 'northwind'
+    ? {coffee:'/shop',subscribe:'/subscribe',sourcing:'/sourcing',brew:'/brew',journal:'/journal',visit:'/visit'}
+    : deck.id === 'wavelength' ? {schedule:'/schedule',shows:'/shows',listen:'/listen',archive:'/archive',events:'/events',shop:'/shop'} : {}
+  let path = target.querySelector('i')?.textContent.trim()
+  if (!path || path[0] !== '/') path = nav[text]
+  if (target.matches('.nw-logo,.bw-logo,.wl-logo')) path = '/'
+  else if (target.matches('.nw-cart,.bw-basket')) path = '/cart'
+  else if (!path && /shop the roast|four models|see the schedule|listen live|book a fit|subscribe/.test(text)) {
+    if (/shop the roast/.test(text)) path = '/shop'
+    else if (/four models/.test(text)) path = '/bikes'
+    else if (/see the schedule/.test(text)) path = '/schedule'
+    else if (/listen live/.test(text)) path = '/listen'
+    else if (/book a fit/.test(text)) path = '/fit'
+    else if (/subscribe/.test(text)) path = '/subscribe'
+  }
+  event.preventDefault()
+  const index = deck.slides.findIndex(slide => slide.path === path)
+  if (index >= 0) gotoCasePage(index)
+  else if (target.matches('.nw-btn,.bw-btn,.wl-btn')) toast('Prototype action only — no order, payment or booking is sent.')
 }
 
 function renderCaseSide(deck) {
@@ -9656,6 +9816,20 @@ function renderCaseSide(deck) {
     '</div>'
   $('tvRef').onclick = () => referenceTemplate(deck)
   $('tvUse').onclick = () => useTemplate(deck)
+  if (!deck.fmt || deck.fmt === 'deck') {
+  const edit = document.createElement('button')
+  edit.className = 'tv-ref'
+  edit.textContent = t('编辑幻灯片')
+  edit.onclick = () => {
+    if (!window.mountPptEditor) return
+    bindPlanOnce()
+    PLAN.open = true; PLAN.kind = '演示文稿'; PLAN.deck = deck; PLAN.deckId = ''; PLAN.busy = false; PLAN.building = false
+    $('psThread').innerHTML = ''; $('psAsk').value = ''
+    $('planStudio').hidden = false
+    window.PPT_EDITOR = window.mountPptEditor(deck, rpc)
+  }
+  $('tvSide').querySelector('.tv-uses').append(edit)
+  }
   $('tvCopy').onclick = () => {
     const url = location.origin + location.pathname + '#case/' + deck.id
     copyText(url).then(
@@ -9938,13 +10112,51 @@ function wireDocView() {
   })
 }
 
+function handleArtifactControl(event) {
+  const control = event.target.closest?.('[data-art-action]')
+  if (!control || !control.closest('#tvStage') || !caseState.deck?.artifactLive) return
+  if (event.type === 'keydown' && event.key !== 'Enter' && event.key !== ' ') return
+  event.preventDefault()
+  event.stopPropagation()
+  const result = handleArtifactAction(caseState.deck, caseState.i, control.dataset.artAction, control.dataset.value)
+  if (result?.navigate != null) gotoCasePage(result.navigate)
+  else if (result?.refresh) renderCase()
+}
+
 function wireCaseView() {
+  $('tvStage').addEventListener('click', handleArtifactControl)
+  $('tvStage').addEventListener('keydown', handleArtifactControl)
+  // Touch navigation is limited to carousel and image previews and requires a clear horizontal swipe.
+  let carouselTouch = null
+  $('tvStage').addEventListener('touchstart', event => {
+    if ((caseState.deck?.fmt !== 'card' && caseState.deck?.fmt !== 'image') || event.touches.length !== 1) { carouselTouch = null; return }
+    carouselTouch = {x:event.touches[0].clientX, y:event.touches[0].clientY}
+  }, {passive:true})
+  $('tvStage').addEventListener('touchend', event => {
+    if (!carouselTouch || (caseState.deck?.fmt !== 'card' && caseState.deck?.fmt !== 'image') || event.changedTouches.length !== 1) { carouselTouch = null; return }
+    const dx=event.changedTouches[0].clientX-carouselTouch.x, dy=event.changedTouches[0].clientY-carouselTouch.y
+    carouselTouch = null
+    if (Math.abs(dx)>50 && Math.abs(dx)>Math.abs(dy)*1.4) gotoCasePage(caseState.i+(dx<0?1:-1))
+  }, {passive:true})
+  $('tvStage').addEventListener('touchcancel', () => { carouselTouch = null }, {passive:true})
+  $('tvStage').addEventListener('click', handleLegacySiteNavigation)
+  $('tvStage').addEventListener('keydown', handleLegacySiteNavigation)
+  $('tvStage').addEventListener('click', handleReplicaControl)
+  $('tvStage').addEventListener('keydown', handleReplicaControl)
+  $('tvStage').addEventListener('keydown', event => {
+    if (event.key === 'Enter' && event.target.matches('[data-rc-input="query"]')) {
+      event.preventDefault()
+      const result = handleSiteAction(caseState.deck, caseState.i, 'search', '', {query:event.target.value})
+      if (result?.refresh) renderCase()
+    }
+  })
   $('tvBack').onclick = closeCase
   $('tvClose').onclick = closeCase
   $('tvPrev').onclick = () => gotoCasePage(caseState.i - 1)
   $('tvNext').onclick = () => gotoCasePage(caseState.i + 1)
   document.addEventListener('keydown', (ev) => {
     if ($('tplView').hidden) return
+    if (ev.target.matches('input, textarea, select, [contenteditable=true]') && ev.key !== 'Escape') return
     if (ev.key === 'Escape') closeCase()
     else if (ev.key === 'ArrowLeft') gotoCasePage(caseState.i - 1)
     else if (ev.key === 'ArrowRight') gotoCasePage(caseState.i + 1)
@@ -10221,6 +10433,11 @@ const state = {
   prefs: loadPrefs(),
 }
 const $ = (id) => document.getElementById(id)
+let officeActive = false
+let officePriorExpertVisible = false
+let officeSelectedTask = ''
+let officeSuggestedGoal = ''
+const homeOriginalPlaceholder = $('homePrompt').placeholder
 
 /** 带占位符的文案：`tf('已连接 %s，新增 %s 个工具', a, b)` 会先查词典再按顺序填值。 */
 function tf(key, ...values) {
@@ -10473,21 +10690,29 @@ function setView(view) {
   $('viewChat').classList.toggle('on', view === 'chat')
   $('viewExperts').hidden = view !== 'experts'
   $('viewTemplates').hidden = view !== 'templates'
+  $('viewFileBuddy').hidden = view !== 'filebuddy'
+  $('viewExcelAssistant').hidden = view !== 'excel'
+  $('viewWordAssistant').hidden = view !== 'word'
+  $('viewCollection').hidden = view !== 'collection'
   const main = document.querySelector('.main')
   main.classList.toggle('experts-mode', view === 'experts')
   main.classList.toggle('tpl-mode', view === 'templates')
+  main.classList.toggle('filebuddy-mode', view === 'filebuddy')
+  main.classList.toggle('excel-mode', view === 'excel')
+  main.classList.toggle('word-mode', view === 'word')
+  main.classList.toggle('collection-mode', view === 'collection')
   const isTpl = view === 'templates'
   const isCus = view === 'themes'
   document.querySelector('.app').classList.toggle('app-tpl', isTpl)
   document.querySelector('.app').classList.toggle('app-custom', isCus)
   // 对话界面不收侧栏：只留图标栏 + 答案区两列（CSS 里 .app-focus 决定列宽）
-  document.querySelector('.app').classList.toggle('app-focus', view === 'chat')
+  document.querySelector('.app').classList.toggle('app-focus', view === 'chat' || view === 'filebuddy' || view === 'excel' || view === 'word' || view === 'collection')
   document.querySelector('.side').hidden = isTpl || isCus
   $('sideTemplates').hidden = !isTpl
   $('sideCustom').hidden = !isCus
   $('viewThemes').hidden = !isCus
   main.classList.toggle('theme-mode', isCus)
-  const activeNav = view === 'templates' ? 'templates' : view === 'themes' ? 'custom' : view === 'home' ? 'home' : null
+  const activeNav = ['home', 'collection', 'word', 'excel', 'filebuddy'].includes(view) ? 'home' : view === 'templates' ? 'templates' : view === 'themes' ? 'custom' : null
   document.querySelectorAll('.rail .rbtn').forEach((btn) => btn.classList.toggle('on', btn.dataset.nav === activeNav))
   if (view === 'chat') $('chatPrompt').focus()
 }
@@ -10682,6 +10907,7 @@ async function send(prompt, kind) {
 }
 
 function sendFromHome() {
+  if (officeActive) { const goal = $('homePrompt').value.trim(); if (!goal) { $('homePrompt').focus(); toast('输入需求，或选择下方一个办公难题。'); return } sendOffice(officeSelectedTask ? {action:'task-start', task:officeSelectedTask, goal} : {action:'start', goal}); return }
   const input = $('homePrompt')
   const text = input.value
   if (text.trim() === '' && !REF.deck) {
@@ -10840,7 +11066,7 @@ function syncWorkspace() {
   el.textContent = name === '' ? '我的工作区' : name + ' 的工作区'
   $('wsAvatar').textContent = (name === '' ? 'D' : name.slice(0, 1)).toUpperCase()
 }
-$('attach').onclick = (event) => { event.stopPropagation(); openPlusMenu($('attach')) }
+$('attach').onclick = (event) => { event.stopPropagation(); if (officeActive) $('officeFiles').click(); else openPlusMenu($('attach')) }
 document.querySelectorAll('.bcard').forEach((card) => {
   card.onclick = () => {
     const presets = {
@@ -10913,7 +11139,7 @@ $('attachChat').onclick = (event) => { event.stopPropagation(); openPlusMenu($('
 $('modelPick').onclick = (event) => { event.stopPropagation(); openEffort($('modelPick')) }
 document.querySelectorAll('.chip').forEach((chip) => {
   // 五个类型都进同一个创建页；图片的风格/尺寸选择留在输入区右侧的图片按钮里
-  chip.onclick = () => enterMode(chip.dataset.kind)
+  chip.onclick = () => { if (chip.dataset.kind === '智能办公') { openSmartOffice(); return } leaveSmartOffice(); enterMode(chip.dataset.kind) }
 })
 /* 未接入入口：统一徽标或隐藏，不再点击后弹提示 */
 
@@ -11991,6 +12217,7 @@ function setHidden(el, hidden) {
 }
 
 function enterMode(kind) {
+  leaveSmartOffice()
   state.mode = kind
   const beautify = kind === '美化'
   const fileMode = beautify
@@ -12004,11 +12231,12 @@ function enterMode(kind) {
   $('modeChipIcon').innerHTML = CHIP_ICONS[kind] || CHIP_ICONS['演示文稿']
 
   // 头图、标题、输入区形态按类型切换（美化 / 导入共用照片头图与文件区）
-  setHidden($('artPhoto'), !fileMode)
+  $('heroMode').classList.toggle('office-integrated', beautify)
+  setHidden(document.querySelector('#heroMode .mode-prompt'), beautify)
+  setHidden($('artPhoto'), true)
   setHidden(document.querySelector('#heroMode .art.wide'), fileMode)
-  $('modeTitle').textContent = fileMode ? '今天您想要创作什么？' : content.title
+  $('modeTitle').textContent = beautify ? '美化 · 智能办公' : content.title
   setHidden($('dropzone'), !fileMode)
-  setHidden($('beautifyBox'), !beautify)
   setHidden($('modeExamples'), fileMode)
 
   // 图片模式有自己的三个参数胶囊 + 「您还可以制作」，不显示模板区与封面墙
@@ -12039,9 +12267,11 @@ function enterMode(kind) {
 }
 
 function exitMode() {
+  leaveSmartOffice()
   state.mode = null
   setHidden($('heroHome'), false)
   setHidden($('heroMode'), true)
+  $('heroMode').classList.remove('office-integrated')
   setHidden($('tplwrap'), false)
   setHidden($('modeBack'), true)
   document.querySelectorAll('.bcard').forEach((card) => card.classList.remove('on'))
@@ -12610,6 +12840,20 @@ function paintConnectors() {
   grid.innerHTML = ''
   const query = state.exQuery.trim().toLowerCase()
   const connected = CNX.items.filter((item) => item.state === 'connected').length
+  const sourceCards = $('cnFileSourceCards')
+  const sources = CNX.filter === 'all' ? FILE_SOURCES.filter(item => !query || (item.name + ' ' + item.description).toLowerCase().includes(query)) : []
+  $('cnFileSources').hidden = sources.length === 0
+  sourceCards.replaceChildren()
+  for (const source of sources) {
+    const card = document.createElement('button')
+    card.type = 'button'; card.className = 'cn-card cn-file-card'
+    const main = document.createElement('span'); main.className = 'cn-main'
+    const title = document.createElement('span'); title.className = 'cn-nm'; title.textContent = source.name
+    const desc = document.createElement('span'); desc.className = 'cn-desc'; desc.textContent = source.description + ' · 本地导入'
+    main.append(title, desc); card.append(main)
+    card.onclick = () => { closeSettings(); exitMode(); setView('filebuddy'); window.dispatchEvent(new CustomEvent('filebuddy:source', {detail: source.id})) }
+    sourceCards.appendChild(card)
+  }
 
   if (CNX.loading && CNX.items.length === 0) {
     const empty = document.createElement('div')
@@ -13006,11 +13250,7 @@ function switchExTab(tab) {
 function openExperts(tab) {
   closeSettings()
   exitMode()
-  document.querySelector('.main').classList.add('experts-mode')
-  $('viewExperts').hidden = false
-  $('viewHome').classList.add('off')
-  $('viewChat').classList.remove('on')
-  state.view = 'experts'
+  setView('experts')
   switchExTab(tab || 'experts')
   if (state.presets.length === 0) void loadPresets()
 }
@@ -13213,9 +13453,78 @@ $('exSort').addEventListener('click', (event) => {
   document.querySelectorAll('#exSort button').forEach((el) => el.classList.toggle('on', el === btn))
   paintExperts()
 })
-document.querySelector('.rail [data-nav="home"]').onclick = () => {
-  closeSettings(); exitMode(); setView('home')
+$('navHome').onclick = () => { closeSettings(); exitMode(); setView('home') }
+function openSmartOffice() {
+  closeSettings(); officePriorExpertVisible = !$('xpertChipHome').hidden; officeActive = true
+  setHidden($('xpertChipHome'), true); setHidden($('refRowHome'), true)
+  setHidden($('officeModeChip'), false); setHidden($('officeUploadWrap'), false); setHidden($('officePains'), false); setHidden($('chips'), true); setHidden($('tplwrap'), true); setHidden($('imagePickHome'), true); setHidden($('modelPick'), true)
+  $('homePrompt').placeholder = '添加要导入的文件，或从下方选择任务'
+  $('homePrompt').focus()
+  if (REF.deck) toast('智能办公不会使用首页已引用的模板；请在这里重新选择文件。')
 }
+function leaveSmartOffice() {
+  if (!officeActive) return
+  officeActive = false; officeSelectedTask = ''; officeSuggestedGoal = ''; setHidden($('officeModeChip'), true); setHidden($('officeUploadWrap'), true); setHidden($('officeSelection'), true); setHidden($('officePains'), true); setHidden($('beautifyBox'), true); setHidden($('chips'), false); setHidden($('imagePickHome'), false); setHidden($('modelPick'), false)
+  $('homePrompt').placeholder = homeOriginalPlaceholder
+  setHidden($('xpertChipHome'), !officePriorExpertVisible); paintRefs()
+  setHidden($('tplwrap'), false)
+  document.querySelectorAll('.office-pain').forEach(button => button.classList.remove('on'))
+}
+function sendOffice(payload) {
+  const frame = $('officeWorkspaceFrame')
+  setHidden($('beautifyBox'), false)
+  const message = {type:'office-workspace:open', ...payload}
+  if (frame.dataset.workspaceReady === 'yes') frame.contentWindow?.postMessage(message, location.origin)
+  else {
+    if (!frame._pendingOffice) frame._pendingOffice = []
+    frame._pendingOffice.push(message)
+    if (!frame.getAttribute('src')) frame.src = '/office-workspace/index.html?embedded=1&inline=1'
+  }
+}
+$('officeModeClear').onclick = leaveSmartOffice
+function receiveOfficeFiles(values) {
+  const files=Array.from(values || []), accepted=files.filter(file=>/\.(docx|doc|xlsx|xls|pdf|txt|csv)$/i.test(file.name))
+  if (accepted.length) sendOffice({action:'files',files:accepted})
+  if (accepted.length!==files.length) toast('部分文件暂不支持直接导入；PPTX 请在演示文稿编辑器中另选。')
+}
+$('officeUpload').onclick = () => $('officeFiles').click()
+$('officeFiles').onchange = event => { receiveOfficeFiles(event.target.files); event.target.value='' }
+$('officeUpload').addEventListener('dragover', event => { event.preventDefault(); $('officeUpload').classList.add('dragging') })
+$('officeUpload').addEventListener('dragleave', () => $('officeUpload').classList.remove('dragging'))
+$('officeUpload').addEventListener('drop', event => { event.preventDefault(); $('officeUpload').classList.remove('dragging'); receiveOfficeFiles(event.dataTransfer?.files) })
+for (const button of document.querySelectorAll('[data-office-task]')) button.onclick = () => {
+  document.querySelectorAll('.office-pain').forEach(item => item.classList.toggle('on', item === button))
+  const task=button.dataset.officeTask
+  const names={collection:'收材料',excel:'处理表格',word:'写文档',search:'找资料',beautify:'美化文件',ppt:'做汇报',tasks:'记任务、跟进'}
+  const examples={collection:'帮我收集各部门材料，核对漏交并生成催办',excel:'帮我合并部门表格，检查数据并汇总',word:'帮我写一份工作通知或报告',search:'帮我在已选文件中查找相关资料',beautify:'帮我调整文档或表格的排版样式',ppt:'帮我制作和编辑汇报演示文稿',tasks:'帮我记录领导交办的工作任务并跟进进度'}
+  const input=$('homePrompt')
+  if (!input.value.trim() || input.value===officeSuggestedGoal) { input.value=examples[task] || ''; officeSuggestedGoal=input.value; input.dispatchEvent(new Event('input',{bubbles:true})) }
+  else officeSuggestedGoal=''
+  officeSelectedTask=task
+  $('officeSelection').textContent=names[task] || ''; setHidden($('officeSelection'), false)
+  if ($('officeWorkspaceFrame').getAttribute('src') && !$('beautifyBox').hidden) sendOffice({action:'dismiss'})
+  input.focus(); input.scrollIntoView?.({behavior:'smooth',block:'center'})
+}
+
+window.addEventListener('app:open-collection', () => { closeSettings(); exitMode(); setView('collection') })
+window.addEventListener('app:open-word', () => { closeSettings(); exitMode(); setView('word') })
+window.addEventListener('app:open-excel', () => { closeSettings(); exitMode(); setView('excel') })
+window.addEventListener('app:open-filebuddy', () => { closeSettings(); exitMode(); setView('filebuddy') })
+window.addEventListener('app:open-ppt', () => { closeSettings(); exitMode(); setView('templates') })
+// Accept layout and readiness messages only from the same-origin workspace iframe.
+window.addEventListener('message', (event) => {
+  const frame = $('officeWorkspaceFrame')
+  if (event.origin !== location.origin || event.source !== frame.contentWindow) return
+  const message = event.data
+  if (!message) return
+  if (message.type === 'office-workspace:resize') { const height=Number(message.height); if (Number.isFinite(height)) frame.style.height = `${Math.max(0,Math.min(100000,Math.ceil(height)))}px`; return }
+  if (message.type === 'office-workspace:ready') {
+    frame.dataset.workspaceReady = 'yes'
+    for (const pending of frame._pendingOffice || []) frame.contentWindow.postMessage(pending, location.origin)
+    frame._pendingOffice = []
+    return
+  }
+})
 /* ── 设置窗口 ─────────────────────────────────────────── */
 const SP_ICONS = {
   gear: '<svg class="ic" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-settings"></use></svg>',
@@ -14684,6 +14993,8 @@ paintThemes()
 }
 wireCaseView()
 wireDocView()
+mountWordAssistant(rpc)
+mountCollection(rpc)
 paintSessions()
 paintActivity()
 renderOfficeCards()
@@ -14692,6 +15003,7 @@ paintModeGallery()
 paintMakeMore()
 paintImgOpts()
 paintXpertChip()
+if (new URLSearchParams(location.search).get('officeEmbed') === '1') document.documentElement.classList.add('office-tool-embed')
 
 await connected
 try {

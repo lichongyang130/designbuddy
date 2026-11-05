@@ -5,7 +5,8 @@ import { dirname, resolve } from 'node:path'
 
 import { listFormulas, numberFormulas, readDocx, writeDocx } from './docx.ts'
 import type { DocxBlock } from './docx.ts'
-import { readPptx, formatPptx } from './pptx.ts'
+import { readPptx, formatPptx, writePptx } from './pptx.ts'
+import type { PptxDeckInput } from './pptx.ts'
 import { readXlsx, formatXlsx, writeXlsx } from './xlsx.ts'
 import type { SheetInput } from './xlsx.ts'
 import { readPdf, formatPdf } from './pdf.ts'
@@ -96,6 +97,16 @@ export async function writeXlsxOp(input: FileInput & { outputPath?: string; shee
   const buffer = writeXlsx(sheets)
   const saved = await saveOutput(input.outputPath, buffer)
   return `已写入 ${sheets.length} 个工作表\n${saved}`
+}
+
+export async function writePptxOp(input: { outputPath?: string; deck?: PptxDeckInput }): Promise<string> {
+  if (!input.outputPath) throw new Error('需要 outputPath（保存位置）')
+  if (!input.deck || !Array.isArray(input.deck.slides) || input.deck.slides.length === 0) {
+    throw new Error('没有可写入的幻灯片内容')
+  }
+  const buffer = writePptx(input.deck)
+  const saved = await saveOutput(input.outputPath, buffer)
+  return `已写入 ${input.deck.slides.length} 页幻灯片\n${saved}`
 }
 
 export async function docxFormulasOp(input: FileInput & { action?: string; outputPath?: string; start?: number }): Promise<string> {

@@ -16,8 +16,10 @@ import {
   readPptxOp,
   readXlsxOp,
   writeDocxOp,
+  writePptxOp,
   writeXlsxOp,
 } from '../office/index.ts'
+import type { PptxDeckInput } from '../office/pptx.ts'
 
 export const name = 'office-tools'
 
@@ -198,6 +200,32 @@ export function apply(ctx: Context): void {
             action: typeof args.action === 'string' ? args.action : 'list',
             outputPath: typeof args.outputPath === 'string' ? args.outputPath : undefined,
             start: typeof args.start === 'number' ? args.start : undefined,
+          })
+        } catch (error) {
+          return failure(error)
+        }
+      },
+    }),
+  )
+
+  ctx.effect(() =>
+    tools.register({
+      name: 'office.write_pptx',
+      description: '生成 PPTX：写出可在 WPS / PowerPoint 中继续编辑的演示文稿文件',
+      parameters: {
+        type: 'object',
+        properties: {
+          outputPath: { type: 'string', description: '保存到的本地路径（.pptx）' },
+          deck: { type: 'object', description: '演示文稿结构：{ title, ratio, theme, slides }' },
+        },
+        required: ['outputPath', 'deck'],
+      },
+      timeoutMs: 25_000,
+      execute: async (args) => {
+        try {
+          return await writePptxOp({
+            outputPath: String(args.outputPath ?? ''),
+            deck: args.deck as PptxDeckInput | undefined,
           })
         } catch (error) {
           return failure(error)

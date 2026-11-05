@@ -4,7 +4,7 @@ import assert from 'node:assert/strict'
 import { unzip, zip } from '../src/office/zip.ts'
 import { readDocx, writeDocx, listFormulas, numberFormulas } from '../src/office/docx.ts'
 import { readXlsx, writeXlsx } from '../src/office/xlsx.ts'
-import { readPptx } from '../src/office/pptx.ts'
+import { readPptx, writePptx } from '../src/office/pptx.ts'
 import { readPdf } from '../src/office/pdf.ts'
 
 test('zip 往返保留文件名与内容', () => {
@@ -94,4 +94,69 @@ test('xlsx 公式可写入并按公式读回', () => {
   const buffer = writeXlsx([{ name: '计算', rows: [['1', '2'], ['=SUM(A1:B1)']] }])
   const sheets = readXlsx(buffer)
   assert.equal(sheets[0]?.rows[1]?.[0], '=SUM(A1:B1)')
+})
+
+test('pptx 写出完整 OOXML 包：文本框、形状、表格、图表与演讲者备注可读回', () => {
+  const buffer = writePptx({
+    title: '赤道算力融资路演',
+    ratio: '16:9',
+    theme: { paper: '#fbfaf6', ink: '#141412', accent: '#1f4fff', second: '#9a6a2f' },
+    slides: [
+      {
+        title: '封面',
+        transition: { type: 'fade', durationMs: 500 },
+        notes: '大家好，今天由我介绍赤道算力的下一代架构。',
+        elements: [
+          { type: 'text', x: 80, y: 200, w: 900, h: 90, text: '赤道算力 · 2026 融资路演', style: { fontSize: 44, bold: true, color: '#141412' } },
+          { type: 'shape', shape: 'roundRect', x: 80, y: 320, w: 260, h: 56, text: 'A 轮路演材料', style: { fill: '#1f4fff', color: '#ffffff', radius: 12 } },
+        ],
+      },
+      {
+        title: '数据与表格',
+        elements: [
+          { type: 'text', x: 80, y: 48, w: 800, h: 52, text: '核心指标与成本拆分', style: { fontSize: 28, bold: true } },
+          {
+            type: 'table',
+            x: 80,
+            y: 130,
+            w: 520,
+            h: 220,
+            headerRow: true,
+            zebra: true,
+            rows: [
+              ['科目', '占比', '金额'],
+              ['算力集群', '62%', '3,100 万'],
+              ['网络调度', '38%', '1,900 万'],
+            ],
+          },
+          {
+            type: 'chart',
+            chartType: 'column',
+            chartTitle: '季度吞吐增长',
+            x: 640,
+            y: 130,
+            w: 540,
+            h: 320,
+            categories: ['Q1', 'Q2', 'Q3', 'Q4'],
+            series: [{ name: '吞吐量', values: [120, 210, 340, 520] }],
+          },
+        ],
+      },
+    ],
+  })
+
+  const files = unzip(buffer)
+  assert.ok(files.has('[Content_Types].xml'))
+  assert.ok(files.has('ppt/presentation.xml'))
+  assert.ok(files.has('ppt/slides/slide1.xml'))
+  assert.ok(files.has('ppt/slides/slide2.xml'))
+  assert.ok(files.has('ppt/notesSlides/notesSlide1.xml'))
+
+  const parsed = readPptx(buffer)
+  assert.equal(parsed.slides.length, 2)
+  assert.equal(parsed.slides[0]?.title, '赤道算力 · 2026 融资路演')
+  assert.match(parsed.slides[0]?.notes ?? '', /下一代架构/)
+  assert.ok(parsed.slides[1]?.lines.includes('核心指标与成本拆分'))
+  assert.ok(parsed.slides[1]?.lines.includes('算力集群'))
+  assert.ok(parsed.slides[1]?.lines.includes('季度吞吐增长'))
 })

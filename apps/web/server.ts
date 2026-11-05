@@ -16,7 +16,7 @@
  */
 
 import { randomUUID } from 'node:crypto'
-import { readFile } from 'node:fs/promises'
+import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { join, normalize } from 'node:path'
 import { createServer } from 'node:http'
 import type { IncomingMessage, ServerResponse } from 'node:http'
@@ -25,6 +25,8 @@ import { App } from '../../src/boot/app.ts'
 import { applyDefaultDataPaths } from '../../src/boot/paths.ts'
 import { defaultModules, desktopProfile } from '../../src/boot/profiles.ts'
 import { Logger } from '../../src/kernel/index.ts'
+import { writePptx } from '../../src/office/pptx.ts'
+import type { PptxDeckInput } from '../../src/office/pptx.ts'
 import { HostServer } from '../../src/sdk/host.ts'
 import type { ClientFrame, HostFrame, Transport } from '../../src/sdk/protocol.ts'
 
@@ -59,9 +61,11 @@ const MIME: Record<string, string> = {
   '.pptx': 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
   '.zip': 'application/zip',
   '.pdf': 'application/pdf',
+  '.mp4': 'video/mp4',
+  '.mp3': 'audio/mpeg',
 }
 
-async function serveStatic(pathname: string, res: ServerResponse): Promise<boolean> {
+async function serveStatic(pathname: string, res: ServerResponse, req?: IncomingMessage): Promise<boolean> {
   let rel: string
   try {
     rel = decodeURIComponent(pathname === '/' ? 'index.html' : pathname.replace(/^\/+/, ''))
@@ -74,8 +78,28 @@ async function serveStatic(pathname: string, res: ServerResponse): Promise<boole
   try {
     // 每次请求都重读：页面与演示数据没有指纹文件名，缓存会导致改完看不到
     const body = await readFile(new URL(rel, PUBLIC_DIR))
+    // Native media controls need byte ranges to seek reliably. Keep the normal
+    // static path unchanged for non-media and reject unsatisfiable media ranges.
+    if (ext === '.mp4' && req?.headers.range) {
+      const match = /^bytes=(\d*)-(\d*)$/.exec(req.headers.range)
+      if (match && (match[1] || match[2])) {
+        const suffix = !match[1]
+        const start = suffix ? Math.max(0, body.length - Number(match[2])) : Number(match[1])
+        const end = suffix ? body.length - 1 : Math.min(body.length - 1, match[2] ? Number(match[2]) : body.length - 1)
+        if (!Number.isSafeInteger(start) || !Number.isSafeInteger(end) || start > end || start >= body.length) {
+          res.writeHead(416, { 'Content-Range': `bytes */${body.length}` })
+          res.end()
+          return true
+        }
+        res.writeHead(206, { 'Content-Type': 'video/mp4', 'Accept-Ranges': 'bytes', 'Content-Range': `bytes ${start}-${end}/${body.length}`, 'Content-Length': end - start + 1, 'Cache-Control': 'no-store, must-revalidate' })
+        res.end(body.subarray(start, end + 1))
+        return true
+      }
+    }
     res.writeHead(200, {
       'Content-Type': MIME[ext] ?? 'application/octet-stream',
+      'Content-Length': body.length,
+      ...(ext === '.mp4' ? { 'Accept-Ranges': 'bytes' } : {}),
       'Cache-Control': 'no-store, must-revalidate',
     })
     res.end(body)
@@ -230,6 +254,56 @@ async function route(req: IncomingMessage, res: ServerResponse): Promise<void> {
     return
   }
 
+  // 导出真 .pptx：把前端场景图（含本地图片自动内嵌）编译成 OOXML 包落盘并返回下载地址
+  if (req.method === 'POST' && url.pathname === '/export/pptx') {
+    let payload: { filename?: string; deck?: PptxDeckInput }
+    try {
+      payload = JSON.parse(await readBody(req)) as { filename?: string; deck?: PptxDeckInput }
+    } catch {
+      sendJson(res, 400, { error: '请求 JSON 格式不合法' })
+      return
+    }
+    if (!payload.deck || !Array.isArray(payload.deck.slides) || payload.deck.slides.length === 0) {
+      sendJson(res, 400, { error: '没有可导出的幻灯片页面' })
+      return
+    }
+
+    // 解析本地静态图（例如 cases/arcade/01.jpg）以便直接打入 ppt/media/
+    for (const slide of payload.deck.slides) {
+      for (const el of slide.elements ?? []) {
+        if (el.type === 'image' && el.src && !el.src.startsWith('data:') && !el.src.startsWith('http')) {
+          const cleanRel = el.src.replace(/^\/+/, '')
+          if (!cleanRel.includes('..') && /\.(png|jpe?g)$/i.test(cleanRel)) {
+            try {
+              el.imageBuffer = await readFile(new URL(cleanRel, PUBLIC_DIR))
+              el.imageExt = /\.png$/i.test(cleanRel) ? 'png' : 'jpeg'
+            } catch {
+              /* 找不到本地图时由 writePptx 自动回落占位图形 */
+            }
+          }
+        }
+      }
+    }
+
+    const buffer = writePptx(payload.deck)
+    const rawName = (payload.filename || payload.deck.title || 'presentation')
+      .replace(/[\\/:*?"<>|\u0000-\u001f]+/g, '-')
+      .replace(/\.pptx$/i, '')
+      .trim()
+      .slice(0, 60) || 'presentation'
+    const fileName = `${rawName}.pptx`
+    const savedRel = `pptx-${Date.now().toString(36)}-${fileName}`
+    await mkdir(OUTPUT_DIR, { recursive: true })
+    await writeFile(join(OUTPUT_DIR, savedRel), buffer)
+    sendJson(res, 200, {
+      ok: true,
+      name: fileName,
+      bytes: buffer.length,
+      url: `/output/${encodeURIComponent(savedRel)}`,
+    })
+    return
+  }
+
   if (url.pathname === '/health') {
     // presets 数量进健康检查：空着的时候能一眼看出是插件没挂上还是前端没取到
     let presets = 0
@@ -262,7 +336,7 @@ async function route(req: IncomingMessage, res: ServerResponse): Promise<void> {
     return
   }
 
-  if (req.method === 'GET' && (await serveStatic(url.pathname, res))) return
+  if (req.method === 'GET' && (await serveStatic(url.pathname, res, req))) return
 
   sendJson(res, 404, { error: 'not found' })
 }

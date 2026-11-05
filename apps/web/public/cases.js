@@ -1,3 +1,16 @@
+import { HYPER_CASES, renderHyperCase } from './hyper-cases.js'
+import { VIDEO_CASES, renderVideoStory } from './video-cases.js'
+import { ARTIFACT_CASES, renderArtifactCase } from './artifact-cases.js'
+import { FIFTY_IMAGE_SERIES_CASES } from './image-series-fifty.js'
+import { BATCH_IMAGE_SERIES_CASES } from './image-series-batch.js'
+import { THIRD_IMAGE_SERIES_CASES } from './image-series-third.js'
+import { MORE_IMAGE_SERIES_CASES } from './image-series-more.js'
+import { IMAGE_SERIES_CASES, renderImageSeries } from './image-series-cases.js'
+import { MORE_ENGLISH_SOCIAL_CASES } from './social-long-english-more.js'
+import { ENGLISH_SOCIAL_LONG_CASES } from './social-long-english.js'
+import { SOCIAL_LONG_CASES, renderSocialLong } from './social-long-cases.js'
+import { SOCIAL_CASES, renderSocialCase } from './social-cases.js'
+import { SITE_CASES, renderSiteCase, extendLegacySiteCases } from './website-cases.js'
 // 模版案例库（演示文稿）
 // 每个案例 = 一套 16:9 演示文稿，10–15 个界面（页），至少 5 张本地配图。
 // 配图放在 public/cases/<id>/<nn>.jpg，全部本地文件，不引用任何外链。
@@ -10238,6 +10251,29 @@ export const CASE_DECKS = [
   }
 ]
 
+// Extend the original fridge story with visual notes before its closing card.
+const fridgeCase = CASE_DECKS.find(d => d.id === 'fridge')
+if (fridgeCase) {
+  const captions = [
+    '把食材从袋子里拿出来，是看清这一周计划的第一步。',
+    '处理食材前，先整理台面与工具，留出可以工作的空间。',
+    '按实际需要准备，避免多买或多做；这些画面为补充视觉示例。',
+    '检查食材状态，并根据食材特性选择合适的保存方式。',
+    '让容易忘记的食材保持可见，减少在角落里被忽略的机会。',
+    '以手边已有的食材安排一餐，不必为每道菜增加新的购买。',
+    '整理、分装和标记可以帮助了解什么时候需要先使用。',
+    '一顿饭也可以从剩余食材出发，根据实际状态安全处理。',
+    '记录一周的变化，在下一次采购之前回看哪些选择真正用得上。',
+  ]
+  const additions = captions.map((cap, i) => ({k:'sc-img', label:`补充图 ${i+1}`, no:`NOTE.${String(i+1).padStart(2,'0')}`, img:String(i+7).padStart(2,'0'), cap, foot:'视觉补充 · 生活场景示例'}))
+  fridgeCase.slides.splice(fridgeCase.slides.length-1, 0, ...additions)
+  fridgeCase.desc=fridgeCase.desc.replace('十一张卡','二十张卡')
+  fridgeCase.how=fridgeCase.how.replace('十一张卡','二十张卡')
+}
+
+extendLegacySiteCases(CASE_DECKS)
+CASE_DECKS.push(...SITE_CASES, ...SOCIAL_CASES, ...SOCIAL_LONG_CASES, ...ENGLISH_SOCIAL_LONG_CASES, ...MORE_ENGLISH_SOCIAL_CASES, ...IMAGE_SERIES_CASES, ...MORE_IMAGE_SERIES_CASES, ...THIRD_IMAGE_SERIES_CASES, ...BATCH_IMAGE_SERIES_CASES, ...FIFTY_IMAGE_SERIES_CASES, ...ARTIFACT_CASES, ...VIDEO_CASES, ...HYPER_CASES)
+
 /* ── 渲染 ─────────────────────────────────────────────
    固定 960×540 画布，外层用容器宽度换算缩放，卡片 / 大图 / 缩略图共用同一套。 */
 
@@ -10329,7 +10365,7 @@ function bulletList(items) {
   return '<ul class="sd-ul">' + items.map((x) => '<li>' + esc(x) + '</li>').join('') + '</ul>'
 }
 
-export function slideInner(deck, s, index) {
+export function slideInner(deck, s, index, thumbnail = false) {
   const paras = (list) => '<div class="sd-paras">' + list.map((p) => '<p>' + esc(p) + '</p>').join('') + '</div>'
 
   /* ── 文档页型（A4 竖版）：run 是页眉，d-pad 是正文版心 ── */
@@ -10354,6 +10390,18 @@ export function slideInner(deck, s, index) {
   }
 
   switch (s.k) {
+    case 'hyper-story':
+      return renderHyperCase(deck, s, index, thumbnail)
+    case 'video-story':
+      return renderVideoStory(deck, s, index, thumbnail)
+    case 'artifact-live':
+      return renderArtifactCase(deck, s, index)
+    case 'image-series':
+      return renderImageSeries(deck, s, index)
+    case 'social-long':
+      return renderSocialLong(deck, s, index)
+    case 'social-commercial':
+      return renderSocialCase(deck, s, index)
     case 'dcover':
       return (
         '<div class="d-cover">' +
@@ -10793,6 +10841,7 @@ function afTotals(base, groups) {
       }
       return '<div class="au">' + body + '</div>'
     }
+    case 'replica-page': return renderSiteCase(deck, s, index || 0)
     case 'nw-page': {
       const NAV = [['/', 'Coffee'], ['/subscribe', 'Subscribe'], ['/sourcing', 'Sourcing'],
         ['/brew', 'Brew'], ['/journal', 'Journal'], ['/visit', 'Visit']]
@@ -11872,7 +11921,7 @@ export function slideTheme(deck) {
     : "ui-sans-serif,system-ui,'PingFang SC',sans-serif")
 }
 
-export function slideHTML(deck, s, index) {
+export function slideHTML(deck, s, index, thumbnail = false) {
   const folio = deck.folio
     ? '<div class="sd-folio"><span>' + esc(deck.footLeft || deck.name) + '</span>' +
       '<span>' + esc(String((index || 0) + 1).padStart(2, '0')) + '</span></div>'
@@ -11880,7 +11929,7 @@ export function slideHTML(deck, s, index) {
   const fmtCls = deck.fmt && deck.fmt !== 'deck' ? ' ' + deck.fmt : ''
   return '<div class="sld k-' + deck.id + fmtCls + (deck.imgLine ? ' sld-line' : '') + '" data-k="' + s.k + '" style="' + slideTheme(deck) +
     (typeof s.at === 'number' ? ';--at:' + s.at : '') + '">' +
-    slideInner(deck, s, index) + folio + '</div>'
+    slideInner(deck, s, index, thumbnail) + folio + '</div>'
 }
 
 export function deckSlides(deck) {

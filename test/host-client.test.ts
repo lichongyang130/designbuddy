@@ -224,3 +224,25 @@ test('approvals.respond 认不出过期 id 时返回 accepted:false', async (t) 
   }
   assert.deepEqual(answer, { id: 'ap-never-existed', accepted: false })
 })
+
+test('word drafting requires valid input and a real model instead of returning a fake AI result', async (t) => {
+  const { client, app } = await harness()
+  t.after(() => app.dispose())
+  await assert.rejects(() => client.request('word.assist', { brief: '', kind: '通知' }), /填写/)
+  await assert.rejects(() => client.request('word.assist', { brief: '请草拟一份通知', kind: '通知' }), /需要可用的语言模型/)
+})
+
+test('word drafting uses the configured model and returns an editable proposal', async (t) => {
+  const { client, app } = await harness()
+  t.after(() => app.dispose())
+  const { ModelRouter } = await import('../src/core/router.ts')
+  const router = app.ctx.require<InstanceType<typeof ModelRouter>>('llm')
+  let requestText = ''
+  router.register({ id: 'test-word-live', models: ['fake-model'], async *stream(request) {
+    requestText = request.messages.map(m => m.content.map(p => p.type === 'text' ? p.text : '').join('')).join('\n')
+    yield { type: 'text-delta', text: JSON.stringify({title:'预算通知',recipient:'各部门',body:'请按要求提交预算。',signature:'［待填写］',date:'［待填写］'}) }
+  } })
+  router.setPolicy('copy', ['test-word-live'])
+  const answer = await client.request('word.assist', { brief:'提醒各部门提交预算',kind:'通知',reference:'旧材料' }) as { title:string; body:string; source:string }
+  assert.equal(answer.source,'llm');assert.equal(answer.title,'预算通知');assert.match(answer.body,/预算/);assert.match(requestText,/不得杜撰/);assert.match(requestText,/旧材料/)
+})

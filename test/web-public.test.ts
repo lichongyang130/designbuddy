@@ -63,18 +63,18 @@ test('every case deck keeps its agreed page and image budget', () => {
       assert.ok(pages >= 15 && pages <= 20, `${deck.name}: 文档 ${pages} 页，应为 15–20`)
       assert.equal(usedImages(deck).size, 10, `${deck.name}: 文档应有 10 张配图`)
     } else if (deck.fmt === 'card') {
-      assert.ok(pages >= 8 && pages <= 12, `${deck.name}: 轮播 ${pages} 张，应为 8–12`)
-      assert.ok(usedImages(deck).size >= 5 && usedImages(deck).size <= 8, `${deck.name}: 轮播应有 5–8 张配图`)
+      assert.ok(deck.socialLong ? pages >= 35 && pages <= 50 : pages >= 3 && pages <= 20, `${deck.name}: 轮播 ${pages} 张，长篇应为 35–50，短篇应为 3–20`)
+      assert.ok(usedImages(deck).size >= 15, `${deck.name}: 轮播应有至少 15 张配图`)
     } else if (deck.fmt === 'site') {
-      assert.ok(pages >= 20 && pages <= 30, `${deck.name}: 网站复刻 ${pages} 屏，应为 20–30`)
+      assert.ok(pages >= 25 && pages <= 50, `${deck.name}: 网站复刻 ${pages} 屏，应为 25–50`)
       const imgs = usedImages(deck).size
-      assert.ok(imgs >= 10 && imgs <= 15, `${deck.name}: 网站复刻应有 10–15 张配图，现在 ${imgs}`)
+      assert.ok(imgs >= 15 && imgs <= 20, `${deck.name}: 网站复刻应有 15–20 张配图，现在 ${imgs}`)
     } else if (deck.fmt === 'image') {
-      assert.ok(pages >= 4 && pages <= 8, `${deck.name}: 图片 ${pages} 张，应为 4–8`)
-      assert.ok(usedImages(deck).size >= 3 && usedImages(deck).size <= 8, `${deck.name}: 图片组应有 3–8 张图`)
+      assert.ok(deck.imageSeries ? pages >= 35 && pages <= 50 : pages >= 4 && pages <= 8, `${deck.name}: 长篇图片应为 35–50，原有图片组为 4–8`)
+      assert.ok(deck.imageSeries ? usedImages(deck).size >= 15 : usedImages(deck).size >= 3 && usedImages(deck).size <= 8, `${deck.name}: 长篇图片应有至少 15 张实际配图`)
     } else if (deck.fmt === 'artifact') {
-      assert.ok(pages >= 4 && pages <= 8, `${deck.name}: 实时产物 ${pages} 屏，应为 4–8`)
-      assert.ok(usedImages(deck).size <= 3, `${deck.name}: 实时产物最多 3 张配图`)
+      assert.ok(deck.artifactLive ? pages === 36 : pages >= 4 && pages <= 8, `${deck.name}: 新实时产物应为 36 屏，旧案例为 4–8 屏`)
+      assert.ok(deck.artifactLive ? usedImages(deck).size >= 15 : usedImages(deck).size <= 3, `${deck.name}: 新实时产物至少 15 张图片，旧案例最多 3 张`)
     } else if (deck.fmt === 'video') {
       assert.ok(pages >= 3 && pages <= 6, `${deck.name}: 视频 ${pages} 帧，应为 3–6`)
       assert.ok(usedImages(deck).size >= 2 && usedImages(deck).size <= 8, `${deck.name}: 视频应有 2–8 张画面`)
@@ -671,5 +671,23 @@ test('界面里写死的中文文案都在词典里，切英文不会是中文',
   // 七种目标语言都要有东西，不能空着
   for (const langId of ['en', 'zh-Hant', 'ja', 'ko', 'de', 'fr', 'es']) {
     for (const key of keys) assert.ok(translationOf(key, langId).trim() !== '', key + ' @ ' + langId)
+  }
+})
+
+test('case interaction listeners are installed during bootstrap after DOM helper initialization', () => {
+  const helper = indexHtml.indexOf('const $ = (id) => document.getElementById(id)')
+  const wireStart = indexHtml.indexOf('function wireCaseView() {')
+  const wireEnd = indexHtml.indexOf('\n}', wireStart)
+  const boot = indexHtml.lastIndexOf('\nwireCaseView()')
+  assert.ok(helper >= 0 && boot > helper, 'bootstrap must initialize the DOM helper before wiring events')
+  const wire = indexHtml.slice(wireStart, wireEnd)
+  for (const listener of [
+    "$('tvStage').addEventListener('click', handleLegacySiteNavigation)",
+    "$('tvStage').addEventListener('keydown', handleLegacySiteNavigation)",
+    "$('tvStage').addEventListener('click', handleReplicaControl)",
+    "$('tvStage').addEventListener('keydown', handleReplicaControl)",
+  ]) {
+    assert.ok(wire.includes(listener), `listener should be deferred to wireCaseView: ${listener}`)
+    assert.equal(indexHtml.split(listener).length - 1, 1, 'listener must not also be registered at module top level')
   }
 })
