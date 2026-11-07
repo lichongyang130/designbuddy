@@ -6,6 +6,7 @@
  *   文档   → `.docx`（复用 `office/docx` 的最小可用包，Word / WPS 能直接打开）
  *   轮播图 → 每屏一张 1080×1350 的 SVG，外加一个把这些屏打包的 `.zip`
  *   图片   → 每张 1600×1200 的 SVG，同样打一个 `.zip`
+ *   演示文稿 → `.pptx`（复用 `office/pptx` 的 OOXML 生成器，PowerPoint / WPS / Keynote 可直接打开继续编辑）
  *
  * 为什么是 SVG 而不是 PNG：这个进程里没有光栅化器，假装能出 PNG 只会出错图。
  * SVG 是矢量、可无损放大、浏览器能直接显示，界面另外提供「下载 PNG」——
@@ -13,6 +14,9 @@
  *
  * 所有内容都从 `core/outline` 的结构化字段派生（标题 / 每一屏的要点），
  * 因此**同一句需求产出的文件字节一致**，测试可以直接断言。
+ *
+ * 演示文稿走 `core/deck` 引擎（需求分析 → 叙事规划 → 大纲 → 逐页 → 审核），
+ * 再把 `GeneratedDeck` 适配成统一 `PptPresentation`，最后输出 `.pptx`。
  *
  * @module designbuddy/core/artifact
  */
@@ -26,6 +30,10 @@ import { zip } from '../office/zip.ts'
 import { escapeXml } from '../office/xml.ts'
 import { outlineFor } from './outline.ts'
 import type { Outline, OutlineKind, OutlineSection } from './outline.ts'
+import { plan, buildDeck } from './deck.ts'
+import type { DeckRequest } from './deck.ts'
+import { generatedDeckToPresentation } from './deck-to-pptx.ts'
+import { writePresentation } from './deck-renderer.ts'
 
 export interface ArtifactRequest {
   prompt: string
@@ -40,7 +48,7 @@ export interface ArtifactFile {
   bytes: number
   /** 相对地址，浏览器直接 GET；下载与否由界面决定 */
   url: string
-  /** 能在 <img> 里直接显示的，给界面做缩略图 */
+  /** 能在  里直接显示的，给界面做缩略图 */
   inline: boolean
 }
 
@@ -220,7 +228,7 @@ function svg(width: number, height: number, body: string): string {
 /* ── 落盘 ─────────────────────────────────────────────────── */
 
 function slugOf(title: string): string {
-  const clean = title.replace(/[\\/:*?"<>|\s]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40)
+  const clean = title.replace(/[\/:*?"<>|\s]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40)
   return clean === '' ? 'designbuddy' : clean
 }
 
@@ -239,6 +247,13 @@ export function outputDir(cwd = process.cwd()): string {
  * 返回的 `url` 是相对的 `output/<id>/<name>`，由 web server 的 `/output/` 路由取。
  */
 export async function createArtifact(request: ArtifactRequest, dir = outputDir()): Promise<Artifact> {
+  const kind = request.kind
+
+  /* ── 演示文稿：走 deck 引擎 → 生成 PPTX ── */
+  if (/^deck|ppt|presentation$/i.test(kind)) {
+    return createDeckArtifact(request, dir)
+  }
+
   const outline = outlineFor(request)
   const id = nextId()
   const slug = slugOf(outline.title)
@@ -296,6 +311,81 @@ export async function createArtifact(request: ArtifactRequest, dir = outputDir()
     title: outline.title,
     unit: outline.unit,
     count: outline.count,
+    summary,
+    files,
+    outline,
+  }
+}
+
+/* ── 演示文稿：deck 引擎 → PPTX ───────────────────────────── */
+
+interface DeckArtifactRequest extends ArtifactRequest {
+  pages?: number
+  audience?: string
+  style?: string
+}
+
+async function createDeckArtifact(request: ArtifactRequest, dir: string): Promise<Artifact> {
+  const deckRequest: DeckRequest = {
+    prompt: request.prompt,
+    pages: request.count,
+    audience: (request as DeckArtifactRequest).audience,
+    style: (request as DeckArtifactRequest).style,
+  }
+
+  const fromPlan = plan(deckRequest)
+  const deck = buildDeck(fromPlan)
+  const presentation = generatedDeckToPresentation(deck)
+  const buffer = writePresentation(presentation)
+
+  const id = nextId()
+  const slug = slugOf(deck.name)
+  const name = `${slug}.pptx`
+  const target = join(dir, id)
+  await mkdir(target, { recursive: true })
+  await writeFile(join(target, name), buffer)
+
+  const files: ArtifactFile[] = [
+    {
+      name,
+      mime: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+      bytes: buffer.length,
+      url: `output/${id}/${encodeURIComponent(name)}`,
+      inline: false,
+    },
+  ]
+
+  const size = (bytes: number) => (bytes >= 1024 ? (bytes / 1024).toFixed(1) + ' KB' : bytes + ' B')
+  const summary = `${deck.slides.length} 页 · ${size(buffer.length)} · PPTX · ${deck.style}`
+
+  // 复用 outline 的结构做正文预览：每页标题作为一段
+  const outline: Outline = {
+    kind: 'doc',
+    kindLabel: '演示文稿',
+    title: deck.name,
+    unit: '页',
+    count: deck.slides.length,
+    brief: deck.desc,
+    audience: '',
+    shape: '开场 → 论据 → 能力 → 证据 → 行动',
+    sections: deck.slides.map((slide, index) => ({
+      n: index + 1,
+      title: String((slide as { title?: string }).title ?? slide.label ?? `第 ${index + 1} 页`),
+      points: [],
+    })),
+    narration: [],
+    steps: [],
+    items: [],
+    spec: 'deck',
+  }
+
+  return {
+    id,
+    kind: 'doc',
+    kindLabel: '演示文稿',
+    title: deck.name,
+    unit: '页',
+    count: deck.slides.length,
     summary,
     files,
     outline,

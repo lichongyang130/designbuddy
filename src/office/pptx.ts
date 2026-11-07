@@ -364,7 +364,7 @@ function textBodyXml(text: string, style: PptxElementStyle = {}, defaultValign: 
 
   return (
     `<p:txBody>` +
-    `<a:bodyPr wrap="square" rtlCol="0" anchor="${anchor}" lIns="${pad}" tIns="${pad}" rIns="${pad}" bIns="${pad}"><a:spAutoFit/></a:bodyPr>` +
+    `<a:bodyPr wrap="square" rtlCol="0" anchor="${anchor}" lIns="${pad}" tIns="${pad}" rIns="${pad}" bIns="${pad}"><a:normAutofit fontScale="90000"/></a:bodyPr>` +
     `<a:lstStyle/>` +
     paras +
     `</p:txBody>`
@@ -848,6 +848,18 @@ export function writePptx(deck: PptxDeckInput): Buffer {
       bgXml = `<p:bg><p:bgPr><a:solidFill><a:srgbClr val="${bgHex}"/></a:solidFill><a:effectLst/></p:bgPr></p:bg>`
     }
 
+    // 稳定 ID 映射：把 PptElementInput.id（稳定字符串 ID）映射到 OOXML 中必须的整数 cNvPr id，
+    // 保证同一模型多次生成时，同一元素的 cNvPr id 保持不变，便于第二阶段在线编辑和局部修改。
+    const stableIdToInt = new Map<string, number>()
+    let nextStableIntId = 2
+    for (const slide of slides) {
+      for (const el of slide.elements ?? []) {
+        if (el.id && !stableIdToInt.has(el.id)) {
+          stableIdToInt.set(el.id, nextStableIntId++)
+        }
+      }
+    }
+
     let shapeId = 2
     const shapesXml: string[] = []
 
@@ -857,14 +869,15 @@ export function writePptx(deck: PptxDeckInput): Buffer {
         linkId = nextRelId()
         slideRels.push({ id: linkId, type: 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink', target: el.hyperlink, external: true })
       }
+      const xmlId = el.id ? stableIdToInt.get(el.id)! : shapeId++
       if (el.type === 'image') {
         const inline = el.imageBuffer && el.imageExt ? { buffer: el.imageBuffer, ext: el.imageExt } : extractDataUrlImage(el.src)
         if (inline) {
           const rId = embedImage(inline.buffer, inline.ext)
-          shapesXml.push(picElementXml(shapeId++, el.id ?? `图片-${shapeId}`, rId, el, linkId))
+          shapesXml.push(picElementXml(xmlId, el.id ?? `图片-${xmlId}`, rId, el, linkId))
         } else {
           shapesXml.push(
-            shapeElementXml(shapeId++, el.id ?? `图位-${shapeId}`, {
+            shapeElementXml(xmlId, el.id ?? `图位-${xmlId}`, {
               type: 'shape',
               shape: 'roundRect',
               x: el.x,
@@ -877,13 +890,13 @@ export function writePptx(deck: PptxDeckInput): Buffer {
           )
         }
       } else if (el.type === 'table') {
-        shapesXml.push(tableElementXml(shapeId++, el.id ?? `表格-${shapeId}`, el, accentHex))
+        shapesXml.push(tableElementXml(xmlId, el.id ?? `表格-${xmlId}`, el, accentHex))
       } else if (el.type === 'chart') {
-        const res = chartGroupXml(shapeId, el, chartPalette, inkHex, mutedHex, ruleHex)
-        shapeId = res.nextId
+        const res = chartGroupXml(xmlId, el, chartPalette, inkHex, mutedHex, ruleHex)
+        shapeId = Math.max(shapeId, res.nextId)
         shapesXml.push(res.xml)
       } else {
-        shapesXml.push(shapeElementXml(shapeId++, el.id ?? `元素-${shapeId}`, el, linkId))
+        shapesXml.push(shapeElementXml(xmlId, el.id ?? `元素-${xmlId}`, el, linkId))
       }
     }
 
