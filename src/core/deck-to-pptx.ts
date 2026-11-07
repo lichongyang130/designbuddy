@@ -12,6 +12,7 @@
 
 import type { GeneratedDeck, SlideKind } from './deck.ts'
 import { SLIDE_WIDTH_PX, SLIDE_HEIGHT_PX } from './deck-model.ts'
+import { escapeXml } from '../office/xml.ts'
 import type {
   PptPresentation,
   PptSlide,
@@ -120,8 +121,22 @@ function elImage(id: string, x: number, y: number, w: number, h: number, src?: s
  *
  * - `data:image/...;base64,...` → 真实图片元素（src=data URL，由 renderer 解析为 ppt/media 嵌入）
  * - `#art:xxx` → 矢量艺术（纯图形，不依赖外部图片）
- * - 普通 URL → 图片元素（src 指向 URL；写入时若无法解析为二进制会降级为占位形状）
+ * - `#img:keyword` → 商业级占位图（基于关键词生成 SVG data URL，不依赖外部网络）
+ * - 普通 URL → 图片元素（src 指向 URL；写入时 renderer 会先下载再内联）
  */
+
+/** 基于关键词生成 SVG 占位图 data URL（不依赖外部网络，可直接嵌入 PPTX）。 */
+function placeholderImage(keyword: string, w: number, h: number): string {
+  const svg = `
+<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
+  <rect width="${w}" height="${h}" fill="#F3F4F6"/>
+  <text x="${w / 2}" y="${h / 2 - 10}" font-family="sans-serif" font-size="14" fill="#6B7280" text-anchor="middle">${escapeXml(keyword)}</text>
+  <text x="${w / 2}" y="${h / 2 + 12}" font-family="sans-serif" font-size="12" fill="#9CA3AF" text-anchor="middle">${w}×${h}</text>
+</svg>
+`.trim()
+  return `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`
+}
+
 function imageOrArt(
   id: string,
   x: number,
@@ -145,6 +160,13 @@ function imageOrArt(
     const art = img.replace(/^#art:/, '')
     const { elements: artEls, next } = artElements(deck, slideIndex, counter, art, theme)
     return { elements: artEls, next }
+  }
+
+  if (img.startsWith('#img:')) {
+    const keyword = img.replace(/^#img:/, '')
+    const dataUrl = placeholderImage(keyword, w, h)
+    const el = elImage(`el-${slideId(deck, slideIndex)}-${counter}`, x, y, w, h, dataUrl)
+    return { elements: [el], next: counter + 1 }
   }
 
   const el = elImage(`el-${slideId(deck, slideIndex)}-${counter}`, x, y, w, h, img)

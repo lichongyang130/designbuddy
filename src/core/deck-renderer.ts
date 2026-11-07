@@ -107,7 +107,7 @@ function shapeStyleToPptxGenJS(style: PptShapeStyle = {}): PptxGenJS.ShapeProps 
 }
 
 /** 把单个统一模型元素渲染到 PptxGenJS Slide 上 */
-function elementToPptxGenJS(slide: PptxGenJS.Slide, el: PptElement): void {
+async function elementToPptxGenJS(slide: PptxGenJS.Slide, el: PptElement): Promise<void> {
   const base: Record<string, unknown> = {
     x: pxToInches(el.x),
     y: pxToInches(el.y),
@@ -146,12 +146,17 @@ function elementToPptxGenJS(slide: PptxGenJS.Slide, el: PptElement): void {
         const buf = Buffer.from(el.imageBuffer)
         imgOpts.data = `image/${el.imageExt ?? 'png'};base64,${buf.toString('base64')}`
       } else if (el.src) {
-        // data URL → 内联 base64；普通 URL → 外部路径
+        // data URL → 内联 base64；普通 URL → 先下载再内联（避免 pptxgenjs 在 Node 中无法取远程图）
         const m = /^data:image\/(png|jpe?g);base64,([\s\S]+)$/i.exec(el.src)
         if (m) {
           imgOpts.data = `image/${m[1] === 'png' ? 'png' : 'jpeg'};base64,${m[2]}`
         } else {
-          imgOpts.path = el.src
+          try {
+            const dataUrl = await downloadImageAsDataUrl(el.src)
+            imgOpts.data = dataUrl
+          } catch {
+            imgOpts.path = el.src
+          }
         }
       }
       slide.addImage(imgOpts)
@@ -323,7 +328,7 @@ export async function writePresentation(presentation: PptPresentation): Promise<
 
     // 元素
     for (const el of slide.elements) {
-      elementToPptxGenJS(s, el)
+      await elementToPptxGenJS(s, el)
     }
   }
 
@@ -336,4 +341,42 @@ export async function writePresentation(presentation: PptPresentation): Promise<
 
   // 注入 slide transition（PptxGenJS 不支持，通过 ZIP 后处理注入）
   return injectTransitions(pptxBuf, presentation)
+}
+
+/** 远程图片缓存：URL → data URL，避免重复下载同一张图片。 */
+const imageDataUrlCache = new Map<string, string>()
+
+/** 下载远程图片并转为 data URL。失败时抛出错误，由调用方回退到 path。 */
+async function downloadImageAsDataUrl(imageUrl: string): Promise<string> {
+  // 命中缓存直接返回
+  const cached = imageDataUrlCache.get(imageUrl)
+  if (cached) return cached
+
+  const res = await fetch(imageUrl, {
+    headers: { 'User-Agent': 'DesignBuddy/1.0 (image-download)' },
+  })
+  if (!res.ok) {
+    throw new Error(`HTTP ${res.status} for ${imageUrl}`)
+  }
+  const arrayBuffer = await res.arrayBuffer()
+  const buf = Buffer.from(arrayBuffer)
+
+  // 推断 MIME 类型
+  const contentType = res.headers.get('content-type') ?? ''
+  let mime = 'image/png'
+  if (contentType.includes('jpeg') || contentType.includes('jpg')) mime = 'image/jpeg'
+  else if (contentType.includes('png')) mime = 'image/png'
+  else if (contentType.includes('gif')) mime = 'image/gif'
+  else if (contentType.includes('webp')) mime = 'image/webp'
+  else {
+    // 通过文件扩展名推断
+    if (/\.jpe?g$/i.test(imageUrl)) mime = 'image/jpeg'
+    else if (/\.png$/i.test(imageUrl)) mime = 'image/png'
+    else if (/\.gif$/i.test(imageUrl)) mime = 'image/gif'
+    else if (/\.webp$/i.test(imageUrl)) mime = 'image/webp'
+  }
+
+  const dataUrl = `${mime};base64,${buf.toString('base64')}`
+  imageDataUrlCache.set(imageUrl, dataUrl)
+  return dataUrl
 }
