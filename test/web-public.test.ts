@@ -544,10 +544,10 @@ test('「更多」悬浮菜单三项各占一行，图标不会被别处的同�
   assert.ok(item && icon)
   assert.ok(heightOf(item![1]!) > heightOf(icon![1]!), '行高要大于图标高度，否则相邻两项会互相压住')
 
-  // 三项都是「图标 + 文字 + 右侧箭头」，且整块是浮层的一颗菜单
-  assert.equal((html.match(/class="mm-item"/g) || []).length, 3)
-  assert.equal((html.match(/class="mm-label"/g) || []).length, 3)
-  assert.equal((html.match(/mm-go"/g) || []).length, 3)
+  // 四项都是「图标 + 文字 + 右侧箭头」（含 PPT 编辑器入口），且整块是浮层的一颗菜单
+  assert.equal((html.match(/class="mm-item"/g) || []).length, 4)
+  assert.equal((html.match(/class="mm-label"/g) || []).length, 4)
+  assert.equal((html.match(/mm-go"/g) || []).length, 4)
   assert.match(html, /#moreMenu::before\{/, '贴边浮出的小三角只属于这颗菜单')
 })
 
