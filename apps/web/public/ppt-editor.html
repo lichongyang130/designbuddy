@@ -1,0 +1,930 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DesignBuddy · PPT 编辑工作台</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:ui-sans-serif,system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    font-size:13px;color:#1f2937;background:#f3f4f6;overflow:hidden
+  }
+  button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+  input,select,textarea{font:inherit;color:inherit}
+  .ic{display:inline-block;width:16px;height:16px;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+  /* ── 布局 ────────────────────────────── */
+  .app{height:100vh;display:flex;flex-direction:column}
+  .app-body{flex:1;display:flex;overflow:hidden}
+
+  /* 顶部工具栏 */
+  .topbar{
+    height:52px;flex:none;display:flex;align-items:center;justify-content:space-between;
+    padding:0 16px;gap:8px;background:#fff;border-bottom:1px solid #e5e7eb;
+  }
+  .top-left{display:flex;align-items:center;gap:12px}
+  .top-right{display:flex;align-items:center;gap:8px}
+  .btn{
+    display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:6px;
+    border:1px solid #d1d5db;background:#fff;color:#1f2937;font-size:12.5px;
+    transition:background .1s,border-color .1s;
+  }
+  .btn:hover{background:#f9fafb;border-color:#9ca3af}
+  .btn.primary{background:#2563eb;color:#fff;border-color:#2563eb}
+  .btn.primary:hover{background:#1d4ed8}
+  .btn.danger{background:#dc2626;color:#fff;border-color:#dc2626}
+  .btn.danger:hover{background:#b91c1c}
+  .btn.small{height:28px;padding:0 10px;font-size:12px}
+  .btn .ic{width:14px;height:14px}
+  .btn-group{display:flex;gap:4px;border:1px solid #d1d5db;border-radius:6px;overflow:hidden;background:#fff}
+  .btn-group .btn{border:0;border-right:1px solid #d1d5db;border-radius:0}
+  .btn-group .btn:last-child{border-right:0}
+  .btn-group .btn.active{background:#eff6ff;border-color:#2563eb;color:#2563eb}
+
+  /* 工作区三栏 */
+  .sidebar{
+    width:260px;flex:none;background:#fff;border-right:1px solid #e5e7eb;
+    display:flex;flex-direction:column;overflow:hidden
+  }
+  .canvas-area{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;background:#e5e7eb}
+  .props{
+    width:320px;flex:none;background:#fff;border-left:1px solid #e5e7eb;
+    display:flex;flex-direction:column;overflow:hidden
+  }
+
+  /* ── 左侧：幻灯片列表 ─────────────────── */
+  .slides-header{
+    height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;
+    padding:0 14px;border-bottom:1px solid #e5e7eb;background:#f9fafb
+  }
+  .slides-header .title{font-size:13px;font-weight:600;color:#111827}
+  .slides-list{flex:1;overflow-y:auto}
+  .slide-item{
+    display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid #e5e7eb;
+    cursor:pointer;transition:background .1s;position:relative
+  }
+  .slide-item:hover{background:#f3f4f6}
+  .slide-item.active{background:#dbeafe;border-color:#bfdbfe}
+  .slide-thumb{
+    width:64px;height:36px;flex:none;border:1px solid #d1d5db;border-radius:4px;
+    background:#fff;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;
+    font-size:10px;color:#6b7280
+  }
+  .slide-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .slide-info{flex:1;min-width:0}
+  .slide-no{font-size:11px;color:#6b7280;margin-bottom:2px}
+  .slide-title{font-size:13px;color:#111827;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .slide-kind{font-size:10px;color:#9ca3af;margin-top:2px}
+  .add-slide{display:flex;align-items:center;justify-content:center;gap:6px;height:40px;flex:none;
+    border-top:1px solid #e5e7eb;background:#f9fafb;color:#4b5563;font-size:12.5px}
+  .add-slide:hover{background:#e5e7eb;color:#111827}
+
+  /* ── 中间：编辑画布 ──────────────────── */
+  .canvas-header{
+    height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;
+    padding:0 16px;border-bottom:1px solid #e5e7eb;background:#fff
+  }
+  .canvas-info{display:flex;align-items:center;gap:12px}
+  .canvas-size{font-size:12px;color:#6b7280}
+  .canvas-wrap{flex:1;overflow:auto;display:flex;align-items:center;justify-content:center;position:relative}
+  .canvas{
+    position:relative;width:1280px;height:720px;background:#fff;
+    box-shadow:0 10px 40px rgba(0,0,0,.15);transform-origin:0 0;
+    user-select:none
+  }
+  .canvas-grid{
+    position:absolute;inset:0;
+    background-image:linear-gradient(to right,#e5e7eb 1px,transparent 1px),linear-gradient(to bottom,#e5e7eb 1px,transparent 1px);
+    background-size:40px 40px;pointer-events:none
+  }
+  .canvas-elt{
+    position:absolute;box-sizing:border-box;background:#fff;border:1px solid transparent;
+    cursor:move;user-select:none;overflow:hidden;outline:none
+  }
+  .canvas-elt.selected{box-shadow:0 0 0 2px #2563eb}
+  .canvas-elt.selected::after{
+    content:"";position:absolute;inset:-4px;border:2px dashed #2563eb;border-radius:4px;pointer-events:none
+  }
+  .canvas-elt-text{white-space:pre-wrap;word-wrap:break-word;overflow:hidden}
+  .canvas-elt-img{width:100%;height:100%;object-fit:cover;display:block}
+  .canvas-elt-shape{border-radius:var(--rr,0)}
+  .resize-handle{
+    position:absolute;width:8px;height:8px;background:#2563eb;border:1px solid #fff;z-index:2;
+    display:none
+  }
+  .canvas-elt.selected .resize-handle{display:block}
+  .rh-nw{top:-4px;left:-4px;cursor:nwse-resize}
+  .rh-ne{top:-4px;right:-4px;cursor:nesw-resize}
+  .rh-sw{bottom:-4px;left:-4px;cursor:nesw-resize}
+  .rh-se{bottom:-4px;right:-4px;cursor:nwse-resize}
+
+  /* ── 右侧：属性面板 ──────────────────── */
+  .props-header{
+    height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;
+    padding:0 14px;border-bottom:1px solid #e5e7eb;background:#f9fafb
+  }
+  .props-empty,.props-single,.props-multi{
+    flex:1;overflow-y:auto;padding:16px
+  }
+  .props-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:#6b7280}
+  .section{margin-bottom:16px}
+  .section:last-child{margin-bottom:0}
+  .section-title{font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+  .field{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+  .field label{font-size:12px;color:#374151;font-weight:500}
+  .field input,.field select,.field textarea{
+    width:100%;height:30px;padding:0 8px;border:1px solid #d1d5db;border-radius:4px;background:#fff
+  }
+  .field input:focus,.field select:focus,.field textarea:focus{border-color:#2563eb;outline:2px solid #dbeafe}
+  .field textarea{min-height:60px;resize:vertical}
+  .field.row{flex-direction:row;align-items:center}
+  .field.row > *{flex:1}
+  .field.row .w-half{width:48%}
+  .chk{display:flex;align-items:center;gap:6px}
+  .chk input{width:16px;height:16px;flex:none}
+  .btn-row{display:flex;gap:8px;margin-top:12px}
+
+  /* 多选提示 */
+  .multi-hint{padding:12px 16px;background:#fef3c7;border:1px solid #f59e0b;border-radius:6px;font-size:12px;color:#92400e;margin-bottom:16px}
+
+  /* 提示 */
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+    background:#111827;color:#fff;padding:8px 14px;border-radius:6px;font-size:13px;
+    opacity:0;transition:opacity .2s;pointer-events:none;z-index:100}
+  .toast.show{opacity:1}
+
+  .hidden{display:none !important}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="top-left">
+      <div class="btn-group">
+        <button class="btn active" data-tool="select" title="选择 (V)"><svg class="ic" viewBox="0 0 24 24"><path d="M3 5a2 2 0 012-2h3.1a2 2 0 011.6.8l-1.4 2.8a2 2 0 00.3 1.1l2.5 3.5c.2.3.5.7.9.7h4a2 2 0 012 2v2.1"/></svg>选择</button>
+        <button class="btn" data-tool="text" title="文本 (T)"><svg class="ic" viewBox="0 0 24 24"><path d="M14.5 2a3 3 0 013 3v1a4 4 0 00-4 4h-4a4 4 0 00-4-4v-1a3 3 0 013-3z"/></svg>文本</button>
+        <button class="btn" data-tool="shape" title="形状"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/></svg>形状</button>
+        <button class="btn" data-tool="image" title="图片"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>图片</button>
+        <button class="btn" data-tool="table" title="表格"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>表格</button>
+      </div>
+      <div class="btn btn-group" style="margin-left:8px">
+        <button class="btn small" data-action="undo" title="撤销 (Ctrl+Z)"><svg class="ic" viewBox="0 0 24 24"><path d="M3 10a1.66 1.66 0 001.66-1.66l.77-.43 6 11 .77-.43A1.66 1.66 0 0012 18a1.66 1.66 0 001-3.34 1 1 0 01-1-1v-1A2 2 0 0115 11h3"/></svg></button>
+        <button class="btn small" data-action="redo" title="重做 (Ctrl+Y)"><svg class="ic" viewBox="0 0 24 24"><path d="M21 14a2 2 0 01-2 2h-3.1a2 2 0 01-1.6-.8l1.4-2.8a2 2 0 00-.3-1.1l-2.5-3.5c-.2-.3-.5-.7-.9-.7h-4a2 2 0 01-2-2v-2.1"/></svg></button>
+      </div>
+    </div>
+    <div class="top-right">
+      <span class="canvas-size" id="canvasSize">1280 × 720 px · 16:9</span>
+      <button class="btn primary" id="btnExport" title="导出 PPTX"><svg class="ic" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>导出 PPTX</button>
+    </div>
+  </div>
+
+  <div class="app-body">
+    <div class="sidebar">
+      <div class="slides-header">
+        <span class="title">幻灯片</span>
+        <button class="btn small" id="btnAddSlide" title="新增幻灯片"><svg class="ic" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+      </div>
+      <div class="slides-list" id="slidesList"></div>
+      <div class="add-slide" id="btnAddSlideBar" title="新增幻灯片"><svg class="ic" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>新增幻灯片</div>
+    </div>
+
+    <div class="canvas-area">
+      <div class="canvas-header">
+        <div class="canvas-info">
+          <span id="canvasSelInfo">未选中</span>
+          <span class="canvas-size" id="canvasZoom">100%</span>
+        </div>
+      </div>
+      <div class="canvas-wrap" id="canvasWrap">
+        <div class="canvas" id="canvas">
+          <div class="canvas-grid"></div>
+          <div class="canvas-elt-container" id="eltContainer"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="props">
+      <div class="props-header">
+        <span class="title">属性</span>
+      </div>
+      <div class="props-empty" id="propsEmpty">
+        <svg class="ic" style="width:48px;height:48px;opacity:.4" viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 17 17 23 15.79 13.89"/></svg>
+        <div style="margin-top:8px">未选中元素</div>
+        <div style="font-size:11px;color:#9ca3af;margin-top:4px">点击画布上的元素进行编辑</div>
+      </div>
+      <div class="props-single hidden" id="propsSingle">
+        <div class="section">
+          <div class="section-title">位置与大小</div>
+          <div class="field">
+            <label>X</label>
+            <input type="number" id="pX" step="1">
+          </div>
+          <div class="field">
+            <label>Y</label>
+            <input type="number" id="pY" step="1">
+          </div>
+          <div class="field row">
+            <div class="field w-half">
+              <label>宽</label>
+              <input type="number" id="pW" step="1">
+            </div>
+            <div class="field w-half">
+              <label>高</label>
+              <input type="number" id="pH" step="1">
+            </div>
+          </div>
+          <div class="field">
+            <label>旋转 (度)</label>
+            <input type="number" id="pRotation" step="1">
+          </div>
+        </div>
+        <div class="section">
+          <div class="section-title">文本内容</div>
+          <div class="field">
+            <label>内容</label>
+            <textarea id="pText" rows="3"></textarea>
+          </div>
+          <div class="field">
+            <label>字号</label>
+            <input type="number" id="pFontSize" step="1">
+          </div>
+          <div class="field row">
+            <div class="field w-half chk">
+              <label><input type="checkbox" id="pBold"> 加粗</label>
+            </div>
+            <div class="field w-half chk">
+              <label><input type="checkbox" id="pItalic"> 斜体</label>
+            </div>
+          </div>
+          <div class="field">
+            <label>颜色</label>
+            <input type="color" id="pColor">
+          </div>
+          <div class="field">
+            <label>对齐</label>
+            <select id="pAlign">
+              <option value="left">左对齐</option>
+              <option value="center">居中</option>
+              <option value="right">右对齐</option>
+            </select>
+          </div>
+        </div>
+        <div class="section">
+          <div class="section-title">形状样式</div>
+          <div class="field">
+            <label>填充色</label>
+            <input type="color" id="pFill">
+          </div>
+          <div class="field">
+            <label>透明度</label>
+            <input type="number" id="pOpacity" min="0" max="100" step="1">
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn danger small" id="btnDeleteEl">删除元素</button>
+        </div>
+      </div>
+      <div class="props-multi hidden" id="propsMulti">
+        <div class="multi-hint">已选中 <b id="multiCount">0</b> 个元素，可批量移动</div>
+        <div class="section">
+          <div class="section-title">批量位置</div>
+          <div class="field">
+            <label>X</label>
+            <input type="number" id="mX" step="1">
+          </div>
+          <div class="field">
+            <label>Y</label>
+            <input type="number" id="mY" step="1">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ========================================================================
+   PPT 编辑工作台 — 状态与模型
+   ======================================================================== */
+
+const APP = {
+  // 统一模型（PptPresentation，16:9，1280×720）
+  presentation: {
+    id: 'presentation-' + Date.now().toString(36),
+    title: '我的演示文稿',
+    author: 'DesignBuddy',
+    ratio: '16:9',
+    theme: {
+      paper: '#FFFFFF', ink: '#111827', accent: '#2563eb',
+      second: '#059669', muted: '#6b7280', rule: '#e5e7eb',
+      font: { display: 'sans', mono: 'ui-monospace,Menlo,monospace' }
+    },
+    slides: []
+  },
+  selectedElementId: null,
+  selectedSlideId: null,
+  history: [],      // 撤销栈（存快照）
+  future: [],       // 重做栈
+  tool: 'select',   // select | text | shape | image | table
+  dragging: null,   // {eltId, startX, startY, startW, startH, mouseX, mouseY}
+  resizing: null,   // {eltId, handle, ...}
+  skipInput: false  // 输入框同步时跳过渲染，避免死循环
+}
+
+/* ========================================================================
+   工具函数
+   ======================================================================== */
+
+function $(id){return document.getElementById(id)}
+function el(tag,cls){const e=document.createElement(tag);if(cls)e.className=cls;return e}
+function escapeXml(str){return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+function clone(obj){return JSON.parse(JSON.stringify(obj))}
+function pushHistory(){
+  APP.history.push(clone(APP.presentation))
+  if(APP.history.length>50)APP.history.shift()
+  APP.future=[]
+}
+function undo(){
+  if(APP.history.length===0)return
+  APP.future.push(clone(APP.presentation))
+  APP.presentation=APP.history.pop()
+  renderAll()
+}
+function redo(){
+  if(APP.future.length===0)return
+  APP.history.push(clone(APP.presentation))
+  APP.presentation=APP.future.pop()
+  renderAll()
+}
+
+function findElement(presentation,elementId){
+  for(let sIdx=0;sIdx<presentation.slides.length;sIdx++){
+    const slide=presentation.slides[sIdx]
+    for(let eIdx=0;eIdx<slide.elements.length;eIdx++){
+      if(slide.elements[eIdx].id===elementId)return {slide,element:slide.elements[eIdx],slideIndex:sIdx,elementIndex:eIdx}
+    }
+  }
+  return null
+}
+function findSlide(presentation,slideId){
+  for(let i=0;i<presentation.slides.length;i++){
+    if(presentation.slides[i].id===slideId)return {slide:presentation.slides[i],index:i}
+  }
+  return null
+}
+
+/* ========================================================================
+   初始示例数据（首次打开时提供一份可编辑的演示文稿）
+   ======================================================================== */
+
+function newElement(id,x,y,w,h,text,style){
+  return {id,type:'text',x,y,w,h,text,style:style||{fontSize:24,bold:true,color:'#111827',align:'left',valign:'top'}}
+}
+function newShape(id,x,y,w,h,shape,style){
+  return {id,type:'shape',x,y,w,h,shape:shape||'rect',style:style||{fill:'#2563eb',opacity:1}}
+}
+function newImage(id,x,y,w,h,src){
+  return {id,type:'image',x,y,w,h,src:src||''}
+}
+function newTable(id,x,y,w,h,rows){
+  return {id,type:'table',x,y,w,h,rows:rows||[['标题','值'],['A','100'],['B','200']]}
+}
+
+function initDemo(){
+  const theme=APP.presentation.theme
+  const M=88,CW=1280-M*2
+  const slides=[]
+
+  // 封面
+  slides.push({
+    id:'slide-1',layout:'cover',title:'封面',
+    background:{color:theme.paper},
+    elements:[
+      newElement('el-1-1',M,180,CW,80,'商业演示文稿',{fontSize:44,bold:true,color:theme.ink,align:'left',valign:'middle'}),
+      newElement('el-1-2',M,280,CW,34,'副标题：这里是副标题说明',{fontSize:18,color:theme.muted,align:'left',valign:'middle'}),
+      newShape('el-1-3',M,360,80,4,'rect',{fill:theme.accent,opacity:1}),
+    ]
+  })
+
+  // 内容页
+  slides.push({
+    id:'slide-2',layout:'statement',title:'内容页',
+    background:{color:theme.paper},
+    elements:[
+      newElement('el-2-1',M,60,CW,44,'核心观点',{fontSize:28,bold:true,color:theme.ink,align:'left',valign:'top'}),
+      newElement('el-2-2',M,140,CW,200,'这是正文内容。可以在右侧属性面板中修改文本、字号、颜色和对齐方式。\n支持多行文本编辑，每个元素都有稳定 ID，便于局部修改。',{fontSize:18,color:theme.ink,align:'left',valign:'top',lineHeight:1.5}),
+      newShape('el-2-3',M,400,200,120,'rect',{fill:theme.second,opacity:1}),
+      newElement('el-2-4',M,400,200,120,'亮色块',{fontSize:16,bold:true,color:'#fff',align:'center',valign:'middle'}),
+    ]
+  })
+
+  // 数据页（图表占位）
+  slides.push({
+    id:'slide-3',layout:'stats',title:'数据页',
+    background:{color:theme.paper},
+    elements:[
+      newElement('el-3-1',M,60,CW,44,'关键指标',{fontSize:28,bold:true,color:theme.ink,align:'left',valign:'top'}),
+      newElement('el-3-2',M,140,200,80,'85%',{fontSize:48,bold:true,color:theme.accent,align:'left',valign:'middle'}),
+      newElement('el-3-3',M,230,200,30,'达成率',{fontSize:14,color:theme.muted,align:'left',valign:'top'}),
+    ]
+  })
+
+  APP.presentation.slides=slides
+  APP.selectedSlideId=slides[0].id
+  APP.selectedElementId=null
+}
+
+/* ========================================================================
+   渲染
+   ======================================================================== */
+
+function renderAll(){
+  renderSlideList()
+  renderCanvas()
+  renderProps()
+  updateCanvasInfo()
+}
+
+function renderSlideList(){
+  const list=$('slidesList')
+  list.innerHTML=''
+  for(const slide of APP.presentation.slides){
+    const item=el('div','slide-item'+(slide.id===APP.selectedSlideId?' active':''))
+    item.onclick=()=>{selectSlide(slide.id)}
+    item.innerHTML=
+      '<div class="slide-thumb">'+slide.elements.length+'</div>'+
+      '<div class="slide-info">'+
+        '<div class="slide-no">'+(APP.presentation.slides.indexOf(slide)+1)+'</div>'+
+        '<div class="slide-title">'+escapeXml(slide.title||'无标题')+'</div>'+
+        '<div class="slide-kind">'+slide.layout+'</div>'+
+      '</div>'
+    list.appendChild(item)
+  }
+}
+
+function renderCanvas(){
+  const canvas=$('canvas')
+  const container=$('eltContainer')
+  canvas.innerHTML='<div class="canvas-grid"></div><div class="canvas-elt-container" id="eltContainer"></div>'
+  const slide=APP.presentation.slides.find(s=>s.id===APP.selectedSlideId)
+  if(!slide)return
+  for(const el of slide.elements){
+    const div=el('div','canvas-elt'+(el.id===APP.selectedElementId?' selected':''))
+    div.style.left=el.x+'px'
+    div.style.top=el.y+'px'
+    div.style.width=el.w+'px'
+    div.style.height=el.h+'px'
+    if(el.rotation)div.style.transform='rotate('+el.rotation+'deg)'
+    div.dataset.id=el.id
+    div.dataset.type=el.type
+    div.title=escapeXml(el.id)
+
+    if(el.type==='text'){
+      div.classList.add('canvas-elt-text')
+      div.style.color=el.style?.color||'#000'
+      div.style.fontSize=(el.style?.fontSize||18)+'px'
+      if(el.style?.bold)div.style.fontWeight='bold'
+      if(el.style?.italic)div.style.fontStyle='italic'
+      div.style.textAlign=el.style?.align||'left'
+      div.style.display='flex'
+      div.style.alignItems=el.style?.valign==='middle'?'center':el.style?.valign==='bottom'?'flex-end':'flex-start'
+      div.style.justifyContent=el.style?.align==='center'?'center':el.style?.align==='right'?'flex-end':'flex-start'
+      div.style.padding='4px'
+      div.textContent=el.text||''
+      div.onclick=(e)=>{e.stopPropagation();selectElement(el.id)}
+      div.ondblclick=(e)=>{e.stopPropagation();startTextEdit(div,el)}
+    }else if(el.type==='shape'){
+      div.classList.add('canvas-elt-shape')
+      div.style.background=el.style?.fill||'transparent'
+      if(el.style?.opacity!==undefined)div.style.opacity=el.style.opacity
+      div.style.borderRadius=(el.style?.radius||0)+'px'
+      if(el.shape==='ellipse')div.style.borderRadius='50%'
+      div.onclick=(e)=>{e.stopPropagation();selectElement(el.id)}
+    }else if(el.type==='image'){
+      div.style.background='#e5e7eb'
+      div.style.display='flex'
+      div.style.alignItems='center'
+      div.style.justifyContent='center'
+      div.style.color='#9ca3af'
+      div.style.fontSize='12px'
+      div.textContent=el.src?'图片':'[图片]'
+      div.onclick=(e)=>{e.stopPropagation();selectElement(el.id)}
+    }else if(el.type==='table'){
+      div.style.background='#fff'
+      div.style.border='1px solid #d1d5db'
+      div.style.fontSize='12px'
+      div.textContent='[表格]'
+      div.onclick=(e)=>{e.stopPropagation();selectElement(el.id)}
+    }
+
+    // 缩放手柄
+    for(const [h,c] of [['nw','rh-nw'],['ne','rh-ne'],['sw','rh-sw'],['se','rh-se']]){
+      const hd=el('div','resize-handle '+c)
+      hd.dataset.handle=h
+      hd.onmousedown=(e)=>{e.stopPropagation();startResize(el.id,h,e)}
+      div.appendChild(hd)
+    }
+
+    container.appendChild(div)
+  }
+
+  // 画布点击空白处取消选择
+  canvas.onclick=(e)=>{
+    if(e.target===canvas||e.target.classList.contains('canvas-grid')){
+      selectElement(null)
+    }
+  }
+}
+
+function startTextEdit(div,modelEl){
+  const input=el('textarea')
+  input.value=modelEl.text||''
+  input.style.position='absolute'
+  input.style.left=div.style.left
+  input.style.top=div.style.top
+  input.style.width=div.style.width
+  input.style.height=div.style.height
+  input.style.fontSize=div.style.fontSize
+  input.style.color=div.style.color
+  input.style.fontWeight=div.style.fontWeight
+  input.style.fontStyle=div.style.fontStyle
+  input.style.textAlign=div.style.textAlign
+  input.style.background='transparent'
+  input.style.border='1px solid #2563eb'
+  input.style.outline='none'
+  input.style.resize='none'
+  input.style.zIndex='10'
+  div.parentNode.insertBefore(input,div)
+  div.style.display='none'
+  input.focus()
+  input.onblur=()=>{
+    const v=input.value
+    editElement(modelEl.id,{text:v})
+    div.textContent=v
+    div.style.display=''
+    input.remove()
+  }
+  input.onkeydown=(e)=>{
+    if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();input.blur()}
+  }
+}
+
+function renderProps(){
+  const empty=$('propsEmpty')
+  const single=$('propsSingle')
+  const multi=$('propsMulti')
+  empty.classList.add('hidden')
+  single.classList.add('hidden')
+  multi.classList.add('hidden')
+
+  if(!APP.selectedElementId){
+    empty.classList.remove('hidden')
+    return
+  }
+  const found=findElement(APP.presentation,APP.selectedElementId)
+  if(!found){empty.classList.remove('hidden');return}
+
+  // 多选检测（简化：当前仅支持单选属性编辑）
+  single.classList.remove('hidden')
+  const el=found.element
+
+  // 位置大小
+  $('pX').value=el.x
+  $('pY').value=el.y
+  $('pW').value=el.w
+  $('pH').value=el.h
+  $('pRotation').value=el.rotation||0
+
+  if(el.type==='text'){
+    $('pText').value=el.text||''
+    $('pFontSize').value=el.style?.fontSize||18
+    $('pBold').checked=!!el.style?.bold
+    $('pItalic').checked=!!el.style?.italic
+    $('pColor').value=el.style?.color||'#000000'
+    $('pAlign').value=el.style?.align||'left'
+  }
+  if(el.type==='shape'){
+    $('pFill').value=el.style?.fill||'#ffffff'
+    $('pOpacity').value=Math.round((el.style?.opacity||1)*100)
+  }
+
+  // 绑定输入（单向：模型 → UI，skipInput 防止循环）
+  const inputs=[$('pX'),$('pY'),$('pW'),$('pH'),$('pRotation'),$('pText'),$('pFontSize'),$('pColor'),$('pAlign'),$('pFill'),$('pOpacity'),$('pBold'),$('pItalic')]
+  for(const inp of inputs){
+    const ev=inp.type==='checkbox'?'onchange':'oninput'
+    inp[ev]=()=>{
+      if(APP.skipInput)return
+      const v=inp.type==='checkbox'?inp.checked:inp.value
+      let nv=v
+      if(inp.id==='pOpacity')nv=Number(v)/100
+      if(['pX','pY','pW','pH','pRotation','pFontSize'].includes(inp.id))nv=Number(v)
+      const upd={}
+      if(inp.id==='pX')upd.x=nv
+      else if(inp.id==='pY')upd.y=nv
+      else if(inp.id==='pW')upd.w=nv
+      else if(inp.id==='pH')upd.h=nv
+      else if(inp.id==='pRotation')upd.rotation=nv
+      else if(inp.id==='pText')upd.text=nv
+      else if(inp.id==='pFontSize'){upd.style={fontSize:nv}}
+      else if(inp.id==='pColor'){upd.style={color:nv}}
+      else if(inp.id==='pAlign'){upd.style={align:nv}}
+      else if(inp.id==='pBold'){upd.style={bold:nv}}
+      else if(inp.id==='pItalic'){upd.style={italic:nv}}
+      else if(inp.id==='pFill'){upd.shapeStyle={fill:nv}}
+      else if(inp.id==='pOpacity'){upd.shapeStyle={opacity:nv}}
+      editElement(APP.selectedElementId,upd)
+    }
+  }
+}
+
+/* ========================================================================
+   编辑操作（不可变，基于 deck-edit.ts 语义）
+   ======================================================================== */
+
+function editElement(elementId,updates){
+  const found=findElement(APP.presentation,elementId)
+  if(!found)return
+  pushHistory()
+  const slides=[...APP.presentation.slides]
+  const slide={...found.slide}
+  const elements=[...slide.elements]
+  const el={...found.element}
+  if(updates.x!==undefined)el.x=updates.x
+  if(updates.y!==undefined)el.y=updates.y
+  if(updates.w!==undefined)el.w=updates.w
+  if(updates.h!==undefined)el.h=updates.h
+  if(updates.rotation!==undefined)el.rotation=updates.rotation
+  if(updates.text!==undefined)el.text=updates.text
+  if(updates.style)el.style={...el.style,...updates.style}
+  if(updates.shapeStyle)el.style={...el.style,...updates.shapeStyle}
+  elements[found.elementIndex]=el
+  slide.elements=elements
+  slides[found.slideIndex]=slide
+  APP.presentation={...APP.presentation,slides}
+  renderCanvas()
+  renderProps()
+}
+
+function addElement(el){
+  const slide=APP.presentation.slides.find(s=>s.id===APP.selectedSlideId)
+  if(!slide)return
+  pushHistory()
+  slide.elements=[...slide.elements,el]
+  selectElement(el.id)
+  renderAll()
+}
+
+function addSlide(){
+  pushHistory()
+  const slide={
+    id:'slide-'+Date.now().toString(36),
+    layout:'blank',
+    title:'新幻灯片',
+    background:{color:APP.presentation.theme.paper},
+    elements:[]
+  }
+  APP.presentation.slides.push(slide)
+  selectSlide(slide.id)
+  renderAll()
+}
+
+function selectSlide(slideId){
+  APP.selectedSlideId=slideId
+  APP.selectedElementId=null
+  renderAll()
+}
+
+function selectElement(elementId){
+  APP.selectedElementId=elementId
+  renderCanvas()
+  renderProps()
+}
+
+function deleteSelected(){
+  if(!APP.selectedElementId)return
+  const found=findElement(APP.presentation,APP.selectedElementId)
+  if(!found)return
+  pushHistory()
+  const slides=[...APP.presentation.slides]
+  const slide={...found.slide}
+  slide.elements=slide.elements.filter((_,i)=>i!==found.elementIndex)
+  slides[found.slideIndex]=slide
+  APP.presentation={...APP.presentation,slides}
+  APP.selectedElementId=null
+  renderAll()
+}
+
+/* ========================================================================
+   交互：拖拽移动 / 调整大小
+   ======================================================================== */
+
+function startMove(eltId,e){
+  const found=findElement(APP.presentation,eltId)
+  if(!found)return
+  APP.dragging={
+    eltId,startX:found.element.x,startY:found.element.y,
+    mouseX:e.clientX,mouseY:e.clientY
+  }
+  selectElement(eltId)
+}
+
+function startResize(eltId,handle,e){
+  const found=findElement(APP.presentation,eltId)
+  if(!found)return
+  APP.resizing={
+    eltId,handle,startX:found.element.x,startY:found.element.y,
+    startW:found.element.w,startH:found.element.h,
+    mouseX:e.clientX,mouseY:e.clientY
+  }
+  selectElement(eltId)
+}
+
+function onMouseMove(e){
+  if(APP.dragging){
+    const dx=e.clientX-APP.dragging.mouseX
+    const dy=e.clientY-APP.dragging.mouseY
+    editElement(APP.dragging.eltId,{x:APP.dragging.startX+dx,y:APP.dragging.startY+dy})
+  }
+  if(APP.resizing){
+    const dx=e.clientX-APP.resizing.mouseX
+    const dy=e.clientY-APP.resizing.mouseY
+    const upd={}
+    if(APP.resizing.handle==='se'){upd.w=Math.max(20,APP.resizing.startW+dx);upd.h=Math.max(20,APP.resizing.startH+dy)}
+    else if(APP.resizing.handle==='nw'){upd.x=APP.resizing.startX+dx;upd.y=APP.resizing.startY+dy;upd.w=Math.max(20,APP.resizing.startW-dx);upd.h=Math.max(20,APP.resizing.startH-dy)}
+    else if(APP.resizing.handle==='ne'){upd.y=APP.resizing.startY+dy;upd.w=Math.max(20,APP.resizing.startW+dx);upd.h=Math.max(20,APP.resizing.startH-dy)}
+    else if(APP.resizing.handle==='sw'){upd.x=APP.resizing.startX+dx;upd.w=Math.max(20,APP.resizing.startW-dx);upd.h=Math.max(20,APP.resizing.startH+dy)}
+    editElement(APP.resizing.eltId,upd)
+  }
+}
+function onMouseUp(){APP.dragging=null;APP.resizing=null}
+
+window.addEventListener('mousemove',onMouseMove)
+window.addEventListener('mouseup',onMouseUp)
+
+/* 画布元素鼠标按下：开始移动（不在 render 里绑，避免频繁重绑） */
+document.addEventListener('mousedown',(e)=>{
+  const elt=e.target.closest('.canvas-elt')
+  if(elt&&!e.target.classList.contains('resize-handle')){
+    e.stopPropagation()
+    startMove(elt.dataset.id,e)
+  }
+})
+
+/* ========================================================================
+   工具栏与动作
+   ======================================================================== */
+
+function setTool(tool){
+  APP.tool=tool
+  document.querySelectorAll('.btn-group .btn').forEach(b=>{
+    b.classList.toggle('active',b.dataset.tool===tool)
+  })
+  if(tool!=='select')selectElement(null)
+}
+
+function addText(){
+  const slide=APP.presentation.slides.find(s=>s.id===APP.selectedSlideId)
+  if(!slide)return
+  pushHistory()
+  const el=newElement('el-'+Date.now().toString(36),300,200,300,80,'新文本',{fontSize:24,color:'#111827',align:'left',valign:'top'})
+  slide.elements=[...slide.elements,el]
+  selectElement(el.id)
+  renderAll()
+}
+function addShape(){
+  const slide=APP.presentation.slides.find(s=>s.id===APP.selectedSlideId)
+  if(!slide)return
+  pushHistory()
+  const el=newShape('el-'+Date.now().toString(36),400,250,150,100,'rect',{fill:'#2563eb',opacity:1})
+  slide.elements=[...slide.elements,el]
+  selectElement(el.id)
+  renderAll()
+}
+function addImage(){
+  const url=prompt('图片地址（data URL 或 http(s) URL）')
+  if(!url)return
+  const slide=APP.presentation.slides.find(s=>s.id===APP.selectedSlideId)
+  if(!slide)return
+  pushHistory()
+  const el=newImage('el-'+Date.now().toString(36),450,200,200,150,url)
+  slide.elements=[...slide.elements,el]
+  selectElement(el.id)
+  renderAll()
+}
+function addTable(){
+  const slide=APP.presentation.slides.find(s=>s.id===APP.selectedSlideId)
+  if(!slide)return
+  pushHistory()
+  const el=newTable('el-'+Date.now().toString(36),350,200,400,200,[['项目','数值'],['A','100'],['B','200']])
+  slide.elements=[...slide.elements,el]
+  selectElement(el.id)
+  renderAll()
+}
+
+function exportPptx(){
+  if(APP.presentation.slides.length===0){toast('没有幻灯片');return}
+  const btn=$('btnExport')
+  const old=btn.textContent
+  btn.textContent='导出中…';btn.disabled=true
+  fetch('/export/pptx-model',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({filename:APP.presentation.title,presentation:APP.presentation})
+  })
+  .then(r=>r.json())
+  .then(data=>{
+    btn.textContent=old;btn.disabled=false
+    if(data.ok){toast('导出成功：'+data.name);openDownload(data.url)}
+    else toast('导出失败：'+data.error,'err')
+  })
+  .catch(err=>{btn.textContent=old;btn.disabled=false;toast('导出失败：'+err.message,'err')})
+}
+
+function openDownload(url){
+  const a=el('a')
+  a.href=url
+  a.download=''
+  document.body.append(a)
+  a.click()
+  a.remove()
+}
+
+function toast(msg,kind){
+  const t=$('toast')
+  t.textContent=msg
+  t.className='toast show'+(kind==='err'?' err':'')
+  setTimeout(()=>t.classList.remove('show'),2500)
+}
+
+/* ========================================================================
+   键盘快捷键
+   ======================================================================== */
+window.addEventListener('keydown',(e)=>{
+  if(e.ctrlKey||e.metaKey){
+    if(e.key==='z'){e.preventDefault();undo()}
+    else if(e.key==='y'){e.preventDefault();redo()}
+    else if(e.key==='c'){} // 复制待扩展
+    else if(e.key==='v'){} // 粘贴待扩展
+  }
+  if(e.key==='Delete'||e.key==='Backspace'){
+    if(document.activeElement.tagName==='INPUT'||document.activeElement.tagName==='TEXTAREA')return
+    deleteSelected()
+  }
+  if(e.key==='v'&&(e.ctrlKey||e.metaKey)){} // 粘贴
+  if(e.key==='Escape')selectElement(null)
+  // 工具快捷键
+  if(!e.ctrlKey&&!e.metaKey){
+    if(e.key==='v')setTool('select')
+    else if(e.key==='t')setTool('text')
+    else if(e.key==='s')setTool('shape')
+    else if(e.key==='i')setTool('image')
+    else if(e.key==='g')setTool('table')
+  }
+})
+
+/* ========================================================================
+   UI 事件绑定
+   ======================================================================== */
+
+// 工具选择
+document.querySelectorAll('.btn-group .btn[data-tool]').forEach(b=>{
+  b.onclick=()=>setTool(b.dataset.tool)
+})
+
+// 新增幻灯片
+$('btnAddSlide').onclick=addSlide
+$('btnAddSlideBar').onclick=addSlide
+
+// 删除元素
+$('btnDeleteEl').onclick=deleteSelected
+
+// 导出
+$('btnExport').onclick=exportPptx
+
+// 撤销/重做
+document.querySelectorAll('[data-action]').forEach(b=>{
+  b.onclick=()=>{if(b.dataset.action==='undo')undo();else if(b.dataset.action==='redo')redo()}
+})
+
+// 属性面板多选批量（简化：X/Y 批量设置）
+$('mX').oninput=function(){if(APP.skipInput)return;const v=Number(this.value);for(const id of getSelectedIds())editElement(id,{x:v})}
+$('mY').oninput=function(){if(APP.skipInput)return;const v=Number(this.value);for(const id of getSelectedIds())editElement(id,{y:v})}
+
+function getSelectedIds(){
+  return APP.selectedElementId?[APP.selectedElementId]:[]
+}
+
+/* ========================================================================
+   启动
+   ======================================================================== */
+initDemo()
+renderAll()
+toast('PPT 编辑工作台已就绪 · 拖拽元素移动，双击文本编辑，Ctrl+Z 撤销')
+</script>
+</body>
+</html>
