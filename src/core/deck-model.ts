@@ -175,8 +175,9 @@ export interface PptChartElement extends PptElementBase {
   chartTitle?: string
   categories: string[]
   series: PptChartSeries[]
-  showValues?: boolean
-  showLegend?: boolean
+  showValues?: boolean   // 数据标签（显示数值）
+  showLegend?: boolean   // 是否显示图例
+  legendPos?: 'b' | 'l' | 'r' | 't' | 'tr'  // 图例位置：bottom/left/right/top/topRight
 }
 
 export type PptElement = PptTextElement | PptShapeElement | PptImageElement | PptTableElement | PptChartElement

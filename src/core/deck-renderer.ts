@@ -239,12 +239,13 @@ async function elementToPptxGenJS(slide: PptxGenJS.Slide, el: PptElement): Promi
         values: s.values,
         ...(s.color ? { color: stripHash(s.color) } : {}),
       }))
-      const opts: PptxGenJS.IChartOpts = {
-        ...(base as PptxGenJS.IChartOpts),
-        chartTitle: chartEl.chartTitle ? { text: chartEl.chartTitle } : undefined,
-        showValue: chartEl.showValues ?? false,
-        showLegend: chartEl.showLegend ?? true,
-      } as PptxGenJS.IChartOpts
+    const opts: PptxGenJS.IChartOpts = {
+      ...(base as PptxGenJS.IChartOpts),
+      chartTitle: chartEl.chartTitle ? { text: chartEl.chartTitle } : undefined,
+      showValue: chartEl.showValues ?? false,
+      showLegend: chartEl.showLegend ?? true,
+      ...(chartEl.legendPos ? { legendPos: chartEl.legendPos } : {}),
+    } as PptxGenJS.IChartOpts
       slide.addChart(chartType, chartData as unknown as never[], opts)
       break
     }
