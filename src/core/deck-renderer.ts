@@ -444,15 +444,16 @@ export async function writePresentation(presentation: PptPresentation): Promise<
       await elementToPptxGenJS(s, el)
     }
 
-    // 自动页码：封面与结束页不显示，其余页右下角显示「当前页 / 总页数」
+    // 自动页码与日期页脚：封面与结束页不显示，其余页底部显示「日期 | 当前页 / 总页数」
     const isCoverOrEnd = slide.layout === 'cover' || slide.layout === 'end'
     if (!isCoverOrEnd) {
       const idx = presentation.slides.indexOf(slide)
       const total = presentation.slides.length
-      s.addText(`${idx + 1} / ${total}`, {
-        x: pxToInches(CW - 100),
+      const today = new Date().toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-')
+      s.addText(`${today}  |  ${idx + 1} / ${total}`, {
+        x: pxToInches(CW - 210),
         y: pxToInches(690),
-        w: pxToInches(90),
+        w: pxToInches(200),
         h: pxToInches(24),
         fontSize: 11,
         color: stripHash(presentation.theme.muted),
