@@ -40,6 +40,19 @@ function pxToInches(px: number): number {
   return px / 96
 }
 
+/** 统一模型图表类型 → PptxGenJS CHART_NAME */
+function mapChartType(chartType: PptChartElement['chartType']): PptxGenJS.CHART_NAME {
+  const map: Record<string, PptxGenJS.CHART_NAME> = {
+    column: 'bar',
+    bar: 'bar',
+    line: 'line',
+    area: 'area',
+    pie: 'pie',
+    donut: 'doughnut',
+  }
+  return map[chartType] ?? 'bar'
+}
+
 /** 统一模型形状名 → PptxGenJS SHAPE_NAME 字符串 */
 function shapeNameOf(shape: PptShapeElement['shape']): string {
   const map: Record<string, string> = {
@@ -156,15 +169,22 @@ function elementToPptxGenJS(slide: PptxGenJS.Slide, el: PptElement): void {
       break
     }
     case 'chart': {
-      // 图表在统一模型中的结构与 PptxGenJS 不完全一致，先降级为文本占位，
-      // 避免渲染失败；第二阶段可接入 PptxGenJS 原生图表 API
-      slide.addText(
-        `[图表：${(el as PptChartElement).chartTitle ?? ''}]`,
-        {
-          ...(base as PptxGenJS.TextPropsOptions),
-          ...textStyleToPptxGenJS((el as PptChartElement).style),
-        },
-      )
+      const chartEl = el as PptChartElement
+      const chartType = mapChartType(chartEl.chartType)
+      // PptxGenJS 数据格式：每个系列一项，包含 labels(类别)、name(系列名)、values(数值)
+      const chartData = chartEl.series.map((s, si) => ({
+        labels: chartEl.categories,
+        name: s.name,
+        values: s.values,
+        ...(s.color ? { color: stripHash(s.color) } : {}),
+      }))
+      const opts: PptxGenJS.IChartOpts = {
+        ...(base as PptxGenJS.IChartOpts),
+        chartTitle: chartEl.chartTitle ? { text: chartEl.chartTitle } : undefined,
+        showValue: chartEl.showValues ?? false,
+        showLegend: chartEl.showLegend ?? true,
+      } as PptxGenJS.IChartOpts
+      slide.addChart(chartType, chartData as unknown as never[], opts)
       break
     }
   }

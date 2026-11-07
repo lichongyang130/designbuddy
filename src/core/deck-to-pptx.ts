@@ -18,6 +18,7 @@ import type {
   PptElement,
   PptTextElement,
   PptShapeElement,
+  PptChartElement,
   PptTheme,
 } from './deck-model.ts'
 
@@ -413,32 +414,34 @@ function barsSlide(
   }
 
   const items = (s.items ?? []).slice(0, 4)
-  const max = s.max ?? 100
-  const barH = 26
-  const gap = 30
-  const startY = 160
-  const maxBarW = CW * 0.6
-
-  items.forEach((item, i) => {
+  const categories = items.map((item) => {
     const row = Array.isArray(item) ? item : [String(item), 0]
-    const label = String(row[0] ?? '')
-    const value = Number(row[1]) || 0
-    const y = startY + i * (barH + gap)
-    const pct = Math.min(1, value / max)
-
-    elements.push(elText(`el-${slide}-${c++}`, M, y, 180, barH, label, theme, {
-      fontSize: 13, color: theme.ink, valign: 'middle',
-    }))
-    elements.push(elShape(`el-${slide}-${c++}`, M + 180, y + 6, maxBarW * pct, barH - 12, 'roundRect', theme, {
-      fill: theme.accent, radius: 6,
-    }))
-    elements.push(elText(`el-${slide}-${c++}`, M + 180 + maxBarW * pct + 8, y, 100, barH, String(value) + (s.unit ?? ''), theme, {
-      fontSize: 12, bold: true, color: theme.muted, valign: 'middle',
-    }))
+    return String(row[0] ?? '')
   })
+  const values = items.map((item) => {
+    const row = Array.isArray(item) ? item : [String(item), 0]
+    return Number(row[1]) || 0
+  })
+  const max = s.max ?? 100
+
+  // 原生图表对象（非形状模拟），PptxGenJS 会渲染为真正的 PowerPoint 图表
+  elements.push({
+    id: `el-${slide}-${c++}`,
+    type: 'chart',
+    x: M,
+    y: 160,
+    w: CW,
+    h: 220,
+    chartType: 'bar',
+    chartTitle: s.title,
+    categories,
+    series: [{ name: s.unit ?? '数值', values }],
+    showValues: true,
+    showLegend: false,
+  } as PptChartElement)
 
   if (s.note) {
-    elements.push(elText(`el-${slide}-${c++}`, M, startY + items.length * (barH + gap) + 10, CW, 30, s.note, theme, {
+    elements.push(elText(`el-${slide}-${c++}`, M, 400, CW, 30, s.note, theme, {
       fontSize: 11, color: theme.muted,
     }))
   }
