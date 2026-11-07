@@ -27,6 +27,10 @@ import { defaultModules, desktopProfile } from '../../src/boot/profiles.ts'
 import { Logger } from '../../src/kernel/index.ts'
 import { writePptx } from '../../src/office/pptx.ts'
 import type { PptxDeckInput } from '../../src/office/pptx.ts'
+import { writePresentation } from '../../src/core/deck-renderer.ts'
+import type { PptPresentation } from '../../src/core/deck-model.ts'
+import { generatePptxBuffer } from '../../src/core/ppt-generator.ts'
+import type { GeneratePptxInput } from '../../src/core/ppt-generator.ts'
 import { HostServer } from '../../src/sdk/host.ts'
 import type { ClientFrame, HostFrame, Transport } from '../../src/sdk/protocol.ts'
 
@@ -301,6 +305,79 @@ async function route(req: IncomingMessage, res: ServerResponse): Promise<void> {
       bytes: buffer.length,
       url: `/output/${encodeURIComponent(savedRel)}`,
     })
+    return
+  }
+
+  // 导出前端编辑器产出的 PptPresentation 模型 → 原生 .pptx
+  if (req.method === 'POST' && url.pathname === '/export/pptx-model') {
+    let payload: { filename?: string; presentation?: PptPresentation }
+    try {
+      payload = JSON.parse(await readBody(req)) as { filename?: string; presentation?: PptPresentation }
+    } catch {
+      sendJson(res, 400, { error: '请求 JSON 格式不合法' })
+      return
+    }
+    if (!payload.presentation || !Array.isArray(payload.presentation.slides) || payload.presentation.slides.length === 0) {
+      sendJson(res, 400, { error: '没有可导出的幻灯片' })
+      return
+    }
+
+    try {
+      const buffer = await writePresentation(payload.presentation)
+      const rawName = (payload.filename || payload.presentation.title || 'presentation')
+        .replace(/[\\/:*?"<>|\u0000-\u001f]+/g, '-')
+        .replace(/\.pptx$/i, '')
+        .trim()
+        .slice(0, 60) || 'presentation'
+      const fileName = `${rawName}.pptx`
+      const savedRel = `pptx-${Date.now().toString(36)}-${fileName}`
+      await mkdir(OUTPUT_DIR, { recursive: true })
+      await writeFile(join(OUTPUT_DIR, savedRel), buffer)
+      sendJson(res, 200, {
+        ok: true,
+        name: fileName,
+        bytes: buffer.length,
+        url: `/output/${encodeURIComponent(savedRel)}`,
+      })
+    } catch (error) {
+      sendJson(res, 500, { error: 'PPTX 生成失败：' + String(error) })
+    }
+    return
+  }
+
+  // 文字→商业级 PPT：根据提示词生成 7 页商业模板并导出原生 .pptx
+  if (req.method === 'POST' && url.pathname === '/generate/pptx-from-text') {
+    let payload: GeneratePptxInput
+    try {
+      payload = JSON.parse(await readBody(req)) as GeneratePptxInput
+    } catch {
+      sendJson(res, 400, { error: '请求 JSON 格式不合法' })
+      return
+    }
+    if (!payload.prompt) {
+      sendJson(res, 400, { error: '缺少 prompt 参数' })
+      return
+    }
+
+    try {
+      const result = await generatePptxBuffer(payload)
+      if (!result.ok) {
+        sendJson(res, 500, { error: result.error || 'PPTX 生成失败' })
+        return
+      }
+      const savedRel = `pptx-${Date.now().toString(36)}-${result.name}`
+      await mkdir(OUTPUT_DIR, { recursive: true })
+      await writeFile(join(OUTPUT_DIR, savedRel), result.buffer!)
+      sendJson(res, 200, {
+        ok: true,
+        name: result.name,
+        bytes: result.bytes,
+        url: `/output/${encodeURIComponent(savedRel)}`,
+        presentation: result.presentation,
+      })
+    } catch (error) {
+      sendJson(res, 500, { error: 'PPTX 生成失败：' + String(error) })
+    }
     return
   }
 
