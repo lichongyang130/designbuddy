@@ -117,11 +117,21 @@ function shapeStyleToPptxGenJS(style: PptShapeStyle = {}): PptxGenJS.ShapeProps 
         ...(style.strokeDash ? { dashType: style.strokeDash } : {}),
       }
     : undefined
+  const shadow = style.shadow
+    ? {
+        type: style.shadow.type ?? 'outer',
+        ...(style.shadow.color ? { color: stripHash(style.shadow.color) } : {}),
+        ...(style.shadow.alpha !== undefined ? { alpha: style.shadow.alpha } : {}),
+        ...(style.shadow.offset !== undefined ? { offset: style.shadow.offset } : {}),
+        ...(style.shadow.blur !== undefined ? { blur: style.shadow.blur } : {}),
+      }
+    : undefined
   return {
     fill,
     line,
     rectRadius: style.radius,
     ...(style.opacity !== undefined ? { transparency: Math.round(style.opacity * 100) } : {}),
+    ...(shadow ? { shadow } : {}),
   } as PptxGenJS.ShapeProps
 }
 

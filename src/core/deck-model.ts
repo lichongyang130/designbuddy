@@ -114,6 +114,13 @@ export interface PptShapeStyle {
   strokeDash?: 'solid' | 'dashed' | 'dotted'
   radius?: number                      // 圆角 px，rect/roundRect 有效
   opacity?: number                     // 0-1
+  shadow?: {                           // 形状阴影
+    type?: 'outer' | 'inner' | 'none'  // 阴影类型
+    color?: string                     // #RRGGBB
+    alpha?: number                     // 透明度 0-100
+    offset?: number                    // 偏移角度 0-359
+    blur?: number                      // 模糊半径
+  }
 }
 
 export interface PptElementBase {
