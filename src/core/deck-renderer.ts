@@ -272,7 +272,14 @@ function slideBackgroundToPptxGenJS(
     return
   }
   if (bg.gradient) {
+    // PptxGenJS 4.0.1 不直接支持 slide 背景 gradient，先用 from 色做 solid 占位，
+    // 并将 gradient 元数据挂到 slide 对象上，供 writePresentation 尾部的 injectGradients 注入 <a:gradFill>。
     slide.background = { color: stripHash(bg.gradient.from) }
+    ;(slide as any)._gradient = {
+      from: stripHash(bg.gradient.from),
+      to: stripHash(bg.gradient.to),
+      angle: bg.gradient.angle ?? 90,
+    }
     return
   }
   slide.background = { color: stripHash(bg.color ?? theme.paper) }
@@ -340,6 +347,57 @@ function injectTransitions(buf: Buffer, presentation: PptPresentation): Buffer {
 
     // transition 插入在 </p:clrMapOvr> 之后，</p:sld> 之前
     const modified = xml.replace(/<p:clrMapOvr[\s\S]*?<\/p:clrMapOvr>/, (m) => m + tXml)
+    entries.push({ name, data: Buffer.from(modified, 'utf8') })
+  }
+
+  return zip(entries)
+}
+
+/** slide 背景 gradient → 注入 <a:gradFill>（PptxGenJS 不直接支持） */
+function injectGradients(buf: Buffer, presentation: PptPresentation): Buffer {
+  const files = unzip(buf)
+  const entries: { name: string; data: Buffer }[] = []
+
+  for (const [name, data] of files) {
+    if (!name.startsWith('ppt/slides/slide') || !name.endsWith('.xml')) {
+      entries.push({ name, data })
+      continue
+    }
+
+    const slideNo = Number(name.match(/slide(\d+)\.xml$/)![1])
+    const slide = presentation.slides[slideNo - 1]
+    const gradient = slide.background?.gradient
+    if (!gradient) {
+      entries.push({ name, data })
+      continue
+    }
+
+    const xml = data.toString('utf8')
+    const from = stripHash(gradient.from)
+    const to = stripHash(gradient.to)
+    const ang = Math.round((gradient.angle ?? 90) * 60000)
+
+    const gradXml = [
+      '<a:gradFill rotWithShape="1">',
+      '  <a:gsLst>',
+      `    <a:gs pos="0"><a:srgbClr val="${from}"/></a:gs>`,
+      `    <a:gs pos="100000"><a:srgbClr val="${to}"/></a:gs>`,
+      '  </a:gsLst>',
+      `  <a:lin ang="${ang}" scaled="0"/>`,
+      '</a:gradFill>',
+    ].join('\n')
+
+    // 将 <p:bg><p:bgPr> 中的 <a:solidFill> 替换为 <a:gradFill>
+    const modified = xml.replace(
+      /(<p:bg>\s*<p:bgPr>\s*)<a:solidFill>[\s\S]*?<\/a:solidFill>(\s*<\/p:bgPr>\s*<\/p:bg>)/,
+      (m, pre, post) => `${pre}<a:gradFill rotWithShape="1">
+  <a:gsLst>
+    <a:gs pos="0"><a:srgbClr val="${from}"/></a:gs>
+    <a:gs pos="100000"><a:srgbClr val="${to}"/></a:gs>
+  </a:gsLst>
+  <a:lin ang="${ang}" scaled="0"/></a:gradFill>${post}`
+    )
+
     entries.push({ name, data: Buffer.from(modified, 'utf8') })
   }
 
@@ -468,7 +526,12 @@ export async function writePresentation(presentation: PptPresentation): Promise<
   const pptxBuf = Buffer.from(buf)
 
   // 注入 slide transition（PptxGenJS 不支持，通过 ZIP 后处理注入）
-  return injectTransitions(pptxBuf, presentation)
+  let finalBuf = injectTransitions(pptxBuf, presentation)
+
+  // 注入 slide 背景 gradient（PptxGenJS 不直接支持）
+  finalBuf = injectGradients(finalBuf, presentation)
+
+  return finalBuf
 }
 
 /** 远程图片缓存：URL → data URL，避免重复下载同一张图片。 */

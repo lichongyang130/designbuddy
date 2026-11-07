@@ -988,9 +988,10 @@ export async function generatedDeckToPresentation(deck: GeneratedDeck): Promise<
     const slide = deck.slides[i]
     const builder = BUILDERS[slide.k] ?? end
     const result = await builder(deck, i, theme, counter)
-    // 从 GeneratedDeck 的 slide 中读取 transition 字段（存储在 Record<string, unknown> 中）
+    // 从 GeneratedDeck 的 slide 中读取 background（含 gradient）与 transition 字段
+    const slideBg = (slide as { background?: { color?: string; gradient?: { from: string; to: string; angle?: number } } }).background
     const transition = (slide as { transition?: { type?: string; durationMs?: number } }).transition
-    slides.push({ ...result.slide, ...(transition ? { transition } : {}) })
+    slides.push({ ...result.slide, ...(slideBg ? { background: slideBg } : {}), ...(transition ? { transition } : {}) })
     counter = result.counter
   }
 
