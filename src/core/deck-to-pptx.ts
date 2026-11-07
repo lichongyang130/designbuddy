@@ -119,6 +119,63 @@ function elImage(id: string, x: number, y: number, w: number, h: number, src?: s
   return { id, type: 'image', x, y, w, h, src }
 }
 
+/** 将长文本按字符数平均切分成多列，每列一个文本片段（PptxGenJS 不支持 text columns，故在模型层拆分）。 */
+function splitIntoColumns(text: string, count: number): string[] {
+  if (!text || count <= 1) return [text]
+  const len = text.length
+  const perCol = Math.ceil(len / count)
+  const cols: string[] = []
+  for (let i = 0; i < count; i++) {
+    cols.push(text.slice(i * perCol, (i + 1) * perCol))
+  }
+  return cols.filter(Boolean)
+}
+
+/** 生成多列并排的文本元素（模型层多列方案，PptxGenJS 渲染时各列各自独立）。 */
+function elTextColumns(
+  idBase: string,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  text: string,
+  theme: PptTheme,
+  colCount: number,
+  opts: {
+    fontSize?: number
+    bold?: boolean
+    color?: string
+    align?: 'left' | 'center' | 'right' | 'justify'
+    valign?: 'top' | 'middle' | 'bottom'
+    bullet?: boolean
+    lineHeight?: number
+    fill?: string
+    radius?: number
+  } = {},
+  counter: number,
+): { elements: PptElement[]; nextCounter: number } {
+  const cols = splitIntoColumns(text, colCount)
+  const gap = 24 // 列间距 px
+  const colW = (w - gap * (cols.length - 1)) / cols.length
+  const elements: PptElement[] = []
+  let c = counter
+  cols.forEach((colText, i) => {
+    const colX = x + i * (colW + gap)
+    elements.push(elText(`el-${idBase}-${c++}`, colX, y, colW, h, colText, theme, {
+      fontSize: opts.fontSize,
+      bold: opts.bold,
+      color: opts.color ?? theme.ink,
+      align: opts.align ?? 'left',
+      valign: opts.valign ?? 'top',
+      bullet: opts.bullet,
+      lineHeight: opts.lineHeight,
+      fill: opts.fill,
+      radius: opts.radius,
+    }))
+  })
+  return { elements, nextCounter: c }
+}
+
 /** 从 `img` 字段创建图片元素或矢量艺术。
  *
  * - `data:image/...;base64,...` → 真实图片元素（src=data URL，由 renderer 解析为 ppt/media 嵌入）
@@ -380,11 +437,22 @@ function statementSlide(
 ): { slide: PptSlide; counter: number } {
   const slide = slideId(deck, index)
   const s = deck.slides[index] as { text?: string; foot?: string }
-  const elements: PptElement[] = [
-    elText(`el-${slide}-${counter++}`, M, 260, CW, 100, s.text || '', theme, {
+  const text = s.text || ''
+  const elements: PptElement[] = []
+
+  // 长文本（>120 字符）自动拆成 2 列并排显示，PptxGenJS 不支持 text columns 故在模型层拆分
+  if (text.length > 120) {
+    const { elements: cols, nextCounter } = elTextColumns(`el-${slide}`, M, 260, CW, 100, text, theme, 2, {
       fontSize: 32, bold: true, color: theme.ink, align: 'center', valign: 'middle', lineHeight: 1.3,
-    }),
-  ]
+    }, counter)
+    elements.push(...cols)
+    counter = nextCounter
+  } else {
+    elements.push(elText(`el-${slide}-${counter++}`, M, 260, CW, 100, text, theme, {
+      fontSize: 32, bold: true, color: theme.ink, align: 'center', valign: 'middle', lineHeight: 1.3,
+    }))
+  }
+
   if (s.foot) {
     elements.push(elText(`el-${slide}-${counter++}`, M, 380, CW, 34, s.foot, theme, { fontSize: 14, color: theme.muted, align: 'center' }))
   }
