@@ -95,6 +95,7 @@ function textStyleToPptxGenJS(style: PptTextStyle = {}): PptxGenJS.TextPropsOpti
     italic: style.italic,
     underline: style.underline,
     color: stripHash(style.color),
+    highlight: stripHash(style.highlight),
     align: style.align,
     valign: style.valign,
     lineSpacingMultiple: style.lineHeight,
