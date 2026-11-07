@@ -30,6 +30,7 @@ import type {
   PptTextStyle,
   PptShapeStyle,
 } from './deck-model.ts'
+import { imageSource } from './image-source.ts'
 
 function stripHash(color: string | undefined): string | undefined {
   if (!color) return undefined
@@ -329,6 +330,64 @@ export async function writePresentation(presentation: PptPresentation): Promise<
     // 元素
     for (const el of slide.elements) {
       await elementToPptxGenJS(s, el)
+    }
+
+    // 尝试将图片下载并缓存到本地（离线复用、版权追溯）
+    for (const el of slide.elements) {
+      if (el.type === 'image' && el.src && !/^data:image/i.test(el.src)) {
+        try {
+          const buf = await imageSource.downloadCached(el.src)
+          imageSource.saveToCache(el.src, buf)
+        } catch {
+          // 下载失败不影响主流程
+        }
+      }
+    }
+  }
+
+  // 收集所有图片署名信息，用于生成版权清单页
+  const imageAttributions: { attribution: string; source: string; license: string }[] = []
+  for (const slide of presentation.slides) {
+    for (const el of slide.elements) {
+      if (el.type === 'image' && el.attribution) {
+        imageAttributions.push({
+          attribution: el.attribution,
+          source: el.source ?? 'unknown',
+          license: el.license ?? 'cc0',
+        })
+      }
+    }
+  }
+
+  // 如果有图片署名，自动追加一张“图片版权清单”页
+  if (imageAttributions.length > 0) {
+    const creditsSlide = pptx.addSlide()
+    creditsSlide.background = { color: stripHash(presentation.theme.paper) }
+
+    creditsSlide.addText('图片版权清单', {
+      x: pxToInches(M),
+      y: pxToInches(60),
+      w: pxToInches(CW),
+      h: pxToInches(50),
+      fontSize: 24,
+      bold: true,
+      color: stripHash(presentation.theme.ink),
+      align: 'left',
+    } as PptxGenJS.TextPropsOptions)
+
+    let y = 140
+    for (const attr of imageAttributions) {
+      creditsSlide.addText(`• ${attr.attribution}`, {
+        x: pxToInches(M),
+        y: pxToInches(y),
+        w: pxToInches(CW),
+        h: pxToInches(30),
+        fontSize: 12,
+        color: stripHash(presentation.theme.muted),
+        align: 'left',
+      } as PptxGenJS.TextPropsOptions)
+      y += 32
+      if (y > 650) break // 避免超出页面
     }
   }
 

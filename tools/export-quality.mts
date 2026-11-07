@@ -32,6 +32,7 @@ const theme = {
   second: '#0F766E',
   muted: '#6B7280',
   rule: '#E5E7EB',
+  font: { display: 'sans', mono: 'mono' },
 } as const
 
 const slides: any[] = [
@@ -68,7 +69,7 @@ const slides: any[] = [
 const deck = { id: 'export-quality', name: 'DesignBuddy 导出质量验证', by: 'QA', ratio: '16:9', theme, slides } as any
 
 console.log('=== 第一轮：deck-to-pptx 全版式 → .pptx ===')
-const presentation = generatedDeckToPresentation(deck)
+const presentation = await generatedDeckToPresentation(deck)
 const pptx = await writePresentation(presentation)
 
 const dir = 'output/export-quality'
@@ -160,7 +161,7 @@ check(/<a:ext cx="2857500" cy="1905000"/.test(slideXml2), '图片对象尺寸独
 console.log('')
 console.log('=== 第三轮：4:3 比例尺寸验证 ===')
 const deck43 = { ...deck, ratio: '4:3' as const } as any
-const pres43 = generatedDeckToPresentation(deck43)
+const pres43 = await generatedDeckToPresentation(deck43)
 const pptx43 = await writePresentation(pres43)
 const files43 = unzip(pptx43)
 const presXml43 = files43.get('ppt/presentation.xml')!.toString('utf8')
@@ -183,7 +184,7 @@ const imgDeck = {
   ],
 } as any
 // 给 statement 页的文本元素加 hyperlink（通过修改 deck-to-pptx 后的 presentation 直接注入）
-const imgPres = generatedDeckToPresentation(imgDeck)
+const imgPres = await generatedDeckToPresentation(imgDeck)
 const statementSlide = imgPres.slides[2]
 if (statementSlide.elements[0]) {
   statementSlide.elements[0].hyperlink = 'https://example.com'

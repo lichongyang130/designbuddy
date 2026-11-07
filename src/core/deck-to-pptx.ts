@@ -12,7 +12,6 @@
 
 import type { GeneratedDeck, SlideKind } from './deck.ts'
 import { SLIDE_WIDTH_PX, SLIDE_HEIGHT_PX } from './deck-model.ts'
-import { escapeXml } from '../office/xml.ts'
 import type {
   PptPresentation,
   PptSlide,
@@ -20,8 +19,11 @@ import type {
   PptTextElement,
   PptShapeElement,
   PptChartElement,
+  PptImageElement,
   PptTheme,
 } from './deck-model.ts'
+import { escapeXml } from '../office/xml.ts'
+import { imageSource } from './image-source.ts'
 
 /** 估算中英文混合文本在给定框内是否会溢出，并在需要时自动缩小 fontSize。 */
 function fitFontSize(text: string, w: number, h: number, fontSize: number, lineHeight: number): number {
@@ -137,7 +139,7 @@ function placeholderImage(keyword: string, w: number, h: number): string {
   return `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`
 }
 
-function imageOrArt(
+async function imageOrArt(
   id: string,
   x: number,
   y: number,
@@ -148,11 +150,18 @@ function imageOrArt(
   slideIndex: number,
   counter: number,
   theme: PptTheme,
-): { elements: PptElement[]; next: number } {
+): Promise<{ elements: PptElement[]; next: number }> {
   if (!img) return { elements: [], next: counter }
 
   if (/^data:image\/(png|jpe?g|gif|webp);base64,/i.test(img)) {
-    const el = elImage(`el-${slideId(deck, slideIndex)}-${counter}`, x, y, w, h, img)
+    const el: PptImageElement = {
+      id: `el-${slideId(deck, slideIndex)}-${counter}`,
+      type: 'image',
+      x, y, w, h,
+      src: img,
+      source: 'dataurl',
+      license: 'cc0',
+    }
     return { elements: [el], next: counter + 1 }
   }
 
@@ -165,11 +174,59 @@ function imageOrArt(
   if (img.startsWith('#img:')) {
     const keyword = img.replace(/^#img:/, '')
     const dataUrl = placeholderImage(keyword, w, h)
-    const el = elImage(`el-${slideId(deck, slideIndex)}-${counter}`, x, y, w, h, dataUrl)
+    const el: PptImageElement = {
+      id: `el-${slideId(deck, slideIndex)}-${counter}`,
+      type: 'image',
+      x, y, w, h,
+      src: dataUrl,
+      source: 'placeholder',
+      license: 'cc0',
+      attribution: `Illustration: ${keyword}`,
+    }
     return { elements: [el], next: counter + 1 }
   }
 
-  const el = elImage(`el-${slideId(deck, slideIndex)}-${counter}`, x, y, w, h, img)
+  if (img.startsWith('#photo:')) {
+    const keyword = img.replace(/^#photo:/, '')
+    try {
+      const assets = await imageSource.search(keyword, w, h, 1)
+      if (assets.length > 0) {
+        const asset = assets[0]
+        const el: PptImageElement = {
+          id: `el-${slideId(deck, slideIndex)}-${counter}`,
+          type: 'image',
+          x, y, w, h,
+          src: asset.url,
+          source: asset.source,
+          license: asset.license,
+          attribution: asset.attribution,
+        }
+        return { elements: [el], next: counter + 1 }
+      }
+    } catch {
+      // 商业源不可用，降级到 SVG 占位
+    }
+    const dataUrl = placeholderImage(keyword, w, h)
+    const el: PptImageElement = {
+      id: `el-${slideId(deck, slideIndex)}-${counter}`,
+      type: 'image',
+      x, y, w, h,
+      src: dataUrl,
+      source: 'placeholder',
+      license: 'cc0',
+      attribution: `Illustration: ${keyword}`,
+    }
+    return { elements: [el], next: counter + 1 }
+  }
+
+  const el: PptImageElement = {
+    id: `el-${slideId(deck, slideIndex)}-${counter}`,
+    type: 'image',
+    x, y, w, h,
+    src: img,
+    source: 'url',
+    license: 'cc0',
+  }
   return { elements: [el], next: counter + 1 }
 }
 
@@ -239,12 +296,12 @@ function artElements(
   return { elements, next: i }
 }
 
-function coverSlide(
+async function coverSlide(
   deck: GeneratedDeck,
   index: number,
   theme: PptTheme,
   counter: number,
-): { slide: PptSlide; counter: number } {
+): Promise<{ slide: PptSlide; counter: number }> {
   const slide = slideId(deck, index)
   const elements: PptElement[] = []
   let c = counter
@@ -272,7 +329,7 @@ function coverSlide(
 
   // 主视觉
   const s = deck.slides[index] as { img?: string; notes?: string }
-  const { elements: imgEls, next: imgNext } = imageOrArt(
+  const { elements: imgEls, next: imgNext } = await imageOrArt(
     `el-${slide}-${c++}`, SLIDE_WIDTH_PX - 340, 200, 300, 300, s.img, deck, index, c, theme,
   )
   elements.push(...imgEls)
@@ -281,12 +338,12 @@ function coverSlide(
   return { slide: { id: slide, title: deck.slides[index]!.title, layout: 'cover', elements, background: { color: theme.paper }, notes: s.notes }, counter: c }
 }
 
-function sectionSlide(
+async function sectionSlide(
   deck: GeneratedDeck,
   index: number,
   theme: PptTheme,
   counter: number,
-): { slide: PptSlide; counter: number } {
+): Promise<{ slide: PptSlide; counter: number }> {
   const slide = slideId(deck, index)
   const elements: PptElement[] = []
   let c = counter
@@ -306,7 +363,7 @@ function sectionSlide(
     elements.push(elText(`el-${slide}-${c++}`, M + 220, 320, CW - 220, 40, s.note, theme, { fontSize: 16, color: theme.muted }))
   }
 
-  const { elements: imgEls, next: imgNext } = imageOrArt(
+  const { elements: imgEls, next: imgNext } = await imageOrArt(
     `el-${slide}-${c++}`, SLIDE_WIDTH_PX - 340, 200, 300, 300, s.img, deck, index, c, theme,
   )
   elements.push(...imgEls)
@@ -698,12 +755,12 @@ function tocSlide(
   return { slide: { id: slide, title: '目录', layout: 'toc', elements, background: { color: theme.paper } }, counter: c }
 }
 
-function endSlide(
+async function endSlide(
   deck: GeneratedDeck,
   index: number,
   theme: PptTheme,
   counter: number,
-): { slide: PptSlide; counter: number } {
+): Promise<{ slide: PptSlide; counter: number }> {
   const slide = slideId(deck, index)
   const s = deck.slides[index] as { title?: string; lines?: string[]; mark?: string }
   const elements: PptElement[] = []
@@ -881,53 +938,61 @@ function ctaSlide(
   return endSlide(deck, index, theme, counter)
 }
 
-const BUILDERS: Record<SlideKind, (deck: GeneratedDeck, index: number, theme: PptTheme, counter: number) => { slide: PptSlide; counter: number }> = {
+/** 把同步 slide builder 包装成 async，统一 BUILDERS 类型。 */
+function asyncify(
+  fn: (deck: GeneratedDeck, index: number, theme: PptTheme, counter: number) => { slide: PptSlide; counter: number }
+): (deck: GeneratedDeck, index: number, theme: PptTheme, counter: number) => Promise<{ slide: PptSlide; counter: number }> {
+  return async (deck, index, theme, counter) => fn(deck, index, theme, counter)
+}
+
+const BUILDERS: Record<SlideKind, (deck: GeneratedDeck, index: number, theme: PptTheme, counter: number) => Promise<{ slide: PptSlide; counter: number }>> = {
   cover: coverSlide,
-  toc: tocSlide,
+  toc: asyncify(tocSlide),
   section: sectionSlide,
-  statement: statementSlide,
-  stats: statsSlide,
-  columns: columnsSlide,
-  bars: barsSlide,
-  steps: stepsSlide,
-  metric: metricSlide,
-  table: tableSlide,
-  timeline: timelineSlide,
-  quote: quoteSlide,
+  statement: asyncify(statementSlide),
+  stats: asyncify(statsSlide),
+  columns: asyncify(columnsSlide),
+  bars: asyncify(barsSlide),
+  steps: asyncify(stepsSlide),
+  metric: asyncify(metricSlide),
+  table: asyncify(tableSlide),
+  timeline: asyncify(timelineSlide),
+  quote: asyncify(quoteSlide),
   end: endSlide,
-  context: contextSlide,
-  pain: painSlide,
-  product: productSlide,
-  capability: capabilitySlide,
-  architecture: architectureSlide,
-  demo: demoSlide,
-  workflow: workflowSlide,
-  document: documentSlide,
-  data: dataSlide,
-  business: businessSlide,
-  compare: compareSlide,
-  matrix: matrixSlide,
-  trend: trendSlide,
-  case: caseSlide,
-  cta: ctaSlide,
+  context: asyncify(contextSlide),
+  pain: asyncify(painSlide),
+  product: asyncify(productSlide),
+  capability: asyncify(capabilitySlide),
+  architecture: asyncify(architectureSlide),
+  demo: asyncify(demoSlide),
+  workflow: asyncify(workflowSlide),
+  document: asyncify(documentSlide),
+  data: asyncify(dataSlide),
+  business: asyncify(businessSlide),
+  compare: asyncify(compareSlide),
+  matrix: asyncify(matrixSlide),
+  trend: asyncify(trendSlide),
+  case: asyncify(caseSlide),
+  cta: asyncify(ctaSlide),
 }
 
 /** 把 `GeneratedDeck` 转成统一 `PptPresentation`，可直接交给 `writePresentation()`。
  * 旧的 `fmt: 'deck'` 字段、色板、页边距等全部带入，每页元素都有稳定 id。
  */
-export function generatedDeckToPresentation(deck: GeneratedDeck): PptPresentation {
+export async function generatedDeckToPresentation(deck: GeneratedDeck): Promise<PptPresentation> {
   const theme = themeOf(deck)
   const slides: PptSlide[] = []
   let counter = 1
 
-  deck.slides.forEach((slide, index) => {
+  for (let i = 0; i < deck.slides.length; i += 1) {
+    const slide = deck.slides[i]
     const builder = BUILDERS[slide.k] ?? end
-    const result = builder(deck, index, theme, counter)
+    const result = await builder(deck, i, theme, counter)
     // 从 GeneratedDeck 的 slide 中读取 transition 字段（存储在 Record<string, unknown> 中）
     const transition = (slide as { transition?: { type?: string; durationMs?: number } }).transition
     slides.push({ ...result.slide, ...(transition ? { transition } : {}) })
     counter = result.counter
-  })
+  }
 
   return {
     id: deck.id,

@@ -145,6 +145,12 @@ export interface PptImageElement extends PptElementBase {
   src?: string
   imageBuffer?: Uint8Array
   imageExt?: 'png' | 'jpeg'
+  /** 图片署名（版权合规，导出时可渲染到 PPT 备注或版权清单页） */
+  attribution?: string
+  /** 素材来源（unsplash/pexels/local/placeholder） */
+  source?: string
+  /** 许可证类型 */
+  license?: string
 }
 
 export interface PptTableElement extends PptElementBase {
