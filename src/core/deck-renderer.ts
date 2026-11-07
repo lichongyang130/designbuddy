@@ -16,6 +16,8 @@
  */
 
 import PptxGenJS from 'pptxgenjs'
+import http from 'node:http'
+import https from 'node:https'
 import { unzip, zip } from '../office/zip.ts'
 import type {
   PptPresentation,
@@ -41,6 +43,11 @@ function stripHash(color: string | undefined): string | undefined {
 function pxToInches(px: number): number {
   return px / 96
 }
+
+/** 幻灯片页边距（px，对应 deck-to-pptx.ts 中的 M） */
+const M = 88
+/** 内容宽度（px，对应 deck-to-pptx.ts 中的 CW） */
+const CW = 1280 - M * 2
 
 /** 统一模型图表类型 → PptxGenJS CHART_NAME */
 function mapChartType(chartType: PptChartElement['chartType']): PptxGenJS.CHART_NAME {
@@ -147,18 +154,54 @@ async function elementToPptxGenJS(slide: PptxGenJS.Slide, el: PptElement): Promi
         const buf = Buffer.from(el.imageBuffer)
         imgOpts.data = `image/${el.imageExt ?? 'png'};base64,${buf.toString('base64')}`
       } else if (el.src) {
-        // data URL → 内联 base64；普通 URL → 先下载再内联（避免 pptxgenjs 在 Node 中无法取远程图）
-        const m = /^data:image\/(png|jpe?g);base64,([\s\S]+)$/i.exec(el.src)
+        // data URL → 内联 base64。PptxGenJS 仅支持位图（png/jpeg/gif/webp），不支持 SVG。
+        // SVG 占位图（#img:keyword）在 renderer 中回退为占位文本。
+        const m = /^data:image\/([\w+.-]+);base64,([\s\S]+)$/i.exec(el.src)
         if (m) {
-          imgOpts.data = `image/${m[1] === 'png' ? 'png' : 'jpeg'};base64,${m[2]}`
-        } else {
-          try {
-            const dataUrl = await downloadImageAsDataUrl(el.src)
-            imgOpts.data = dataUrl
-          } catch {
-            imgOpts.path = el.src
+          const mime = m[1]!.toLowerCase()
+          if (mime === 'svg+xml') {
+            // SVG 不被 PptxGenJS addImage 支持，回退为占位文本
+            slide.addText('[图片]', {
+              x: pxToInches(el.x),
+              y: pxToInches(el.y),
+              w: pxToInches(el.w),
+              h: pxToInches(el.h),
+              fontSize: 12,
+              color: '#6B7280',
+              align: 'center',
+              valign: 'middle',
+            } as PptxGenJS.TextPropsOptions)
+            break
           }
+          imgOpts.data = el.src
+        } else {
+          // 普通 URL：回退为占位文本，避免网络依赖导致导出失败。
+          // 真实商业图片请使用 #photo:keyword（Unsplash/Pexels）或 #img:keyword（SVG 占位）。
+          slide.addText('[图片]', {
+            x: pxToInches(el.x),
+            y: pxToInches(el.y),
+            w: pxToInches(el.w),
+            h: pxToInches(el.h),
+            fontSize: 12,
+            color: '#6B7280',
+            align: 'center',
+            valign: 'middle',
+          } as PptxGenJS.TextPropsOptions)
+          break
         }
+      } else {
+        // 没有图片源：回退为占位文本
+        slide.addText('[图片]', {
+          x: pxToInches(el.x),
+          y: pxToInches(el.y),
+          w: pxToInches(el.w),
+          h: pxToInches(el.h),
+          fontSize: 12,
+          color: '#6B7280',
+          align: 'center',
+          valign: 'middle',
+        } as PptxGenJS.TextPropsOptions)
+        break
       }
       slide.addImage(imgOpts)
       break
@@ -405,37 +448,54 @@ export async function writePresentation(presentation: PptPresentation): Promise<
 /** 远程图片缓存：URL → data URL，避免重复下载同一张图片。 */
 const imageDataUrlCache = new Map<string, string>()
 
-/** 下载远程图片并转为 data URL。失败时抛出错误，由调用方回退到 path。 */
+/** 下载远程图片并转为 data URL。失败时抛出错误，由调用方回退到占位文本。 */
 async function downloadImageAsDataUrl(imageUrl: string): Promise<string> {
   // 命中缓存直接返回
   const cached = imageDataUrlCache.get(imageUrl)
   if (cached) return cached
 
-  const res = await fetch(imageUrl, {
-    headers: { 'User-Agent': 'DesignBuddy/1.0 (image-download)' },
+  return new Promise<string>((resolve, reject) => {
+    const url = new URL(imageUrl)
+    const client = url.protocol === 'https:' ? https : http
+    const req = client.get(url, {
+      headers: { 'User-Agent': 'DesignBuddy/1.0 (image-download)' },
+    }, (res) => {
+      if (res.statusCode! < 200 || res.statusCode! >= 300) {
+        reject(new Error(`HTTP ${res.statusCode} for ${imageUrl}`))
+        res.resume()
+        return
+      }
+      const chunks: Buffer[] = []
+      res.on('data', (chunk: Buffer) => chunks.push(chunk))
+      res.on('end', () => {
+        const buf = Buffer.concat(chunks)
+        if (buf.length === 0) {
+          reject(new Error(`Empty response for ${imageUrl}`))
+          return
+        }
+        const contentType = (res.headers['content-type'] as string) ?? ''
+        let mime = 'image/png'
+        if (contentType.includes('jpeg') || contentType.includes('jpg')) mime = 'image/jpeg'
+        else if (contentType.includes('png')) mime = 'image/png'
+        else if (contentType.includes('gif')) mime = 'image/gif'
+        else if (contentType.includes('webp')) mime = 'image/webp'
+        else if (/^image\/svg\+xml$/i.test(contentType)) mime = 'image/svg+xml'
+        else {
+          if (/\.jpe?g$/i.test(imageUrl)) mime = 'image/jpeg'
+          else if (/\.png$/i.test(imageUrl)) mime = 'image/png'
+          else if (/\.gif$/i.test(imageUrl)) mime = 'image/gif'
+          else if (/\.webp$/i.test(imageUrl)) mime = 'image/webp'
+        }
+
+        const dataUrl = `${mime};base64,${buf.toString('base64')}`
+        imageDataUrlCache.set(imageUrl, dataUrl)
+        resolve(dataUrl)
+      })
+      res.on('error', reject)
+    })
+    req.on('error', reject)
+    req.setTimeout(10000, () => {
+      req.destroy(new Error('Timeout'))
+    })
   })
-  if (!res.ok) {
-    throw new Error(`HTTP ${res.status} for ${imageUrl}`)
-  }
-  const arrayBuffer = await res.arrayBuffer()
-  const buf = Buffer.from(arrayBuffer)
-
-  // 推断 MIME 类型
-  const contentType = res.headers.get('content-type') ?? ''
-  let mime = 'image/png'
-  if (contentType.includes('jpeg') || contentType.includes('jpg')) mime = 'image/jpeg'
-  else if (contentType.includes('png')) mime = 'image/png'
-  else if (contentType.includes('gif')) mime = 'image/gif'
-  else if (contentType.includes('webp')) mime = 'image/webp'
-  else {
-    // 通过文件扩展名推断
-    if (/\.jpe?g$/i.test(imageUrl)) mime = 'image/jpeg'
-    else if (/\.png$/i.test(imageUrl)) mime = 'image/png'
-    else if (/\.gif$/i.test(imageUrl)) mime = 'image/gif'
-    else if (/\.webp$/i.test(imageUrl)) mime = 'image/webp'
-  }
-
-  const dataUrl = `${mime};base64,${buf.toString('base64')}`
-  imageDataUrlCache.set(imageUrl, dataUrl)
-  return dataUrl
 }
