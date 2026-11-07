@@ -1,0 +1,1517 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DesignBuddy · PPT 编辑工作台</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:ui-sans-serif,system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    font-size:13px;color:#1f2937;background:#f3f4f6;overflow:hidden
+  }
+  button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+  input,select,textarea{font:inherit;color:inherit}
+  .ic{display:inline-block;width:16px;height:16px;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+  /* ── 布局 ────────────────────────────── */
+  .app{height:100vh;display:flex;flex-direction:column}
+  .app-body{flex:1;display:flex;overflow:hidden}
+
+  /* 顶部工具栏 */
+  .topbar{
+    height:52px;flex:none;display:flex;align-items:center;justify-content:space-between;
+    padding:0 16px;gap:8px;background:#fff;border-bottom:1px solid #e5e7eb;
+  }
+  .top-left{display:flex;align-items:center;gap:12px}
+  .top-right{display:flex;align-items:center;gap:8px}
+  .btn{
+    display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:6px;
+    border:1px solid #d1d5db;background:#fff;color:#1f2937;font-size:12.5px;
+    transition:background .1s,border-color .1s;
+  }
+  .btn:hover{background:#f9fafb;border-color:#9ca3af}
+  .btn.primary{background:#2563eb;color:#fff;border-color:#2563eb}
+  .btn.primary:hover{background:#1d4ed8}
+  .btn.danger{background:#dc2626;color:#fff;border-color:#dc2626}
+  .btn.danger:hover{background:#b91c1c}
+  .btn.small{height:28px;padding:0 10px;font-size:12px}
+  .btn .ic{width:14px;height:14px}
+  .btn-group{display:flex;gap:4px;border:1px solid #d1d5db;border-radius:6px;overflow:hidden;background:#fff}
+  .btn-group .btn{border:0;border-right:1px solid #d1d5db;border-radius:0}
+  .btn-group .btn:last-child{border-right:0}
+  .btn-group .btn.active{background:#eff6ff;border-color:#2563eb;color:#2563eb}
+
+  /* 工作区三栏 */
+  .sidebar{
+    width:260px;flex:none;background:#fff;border-right:1px solid #e5e7eb;
+    display:flex;flex-direction:column;overflow:hidden
+  }
+  .canvas-area{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;background:#e5e7eb}
+  .props{
+    width:320px;flex:none;background:#fff;border-left:1px solid #e5e7eb;
+    display:flex;flex-direction:column;overflow:hidden
+  }
+
+  /* ── 左侧：幻灯片列表 ─────────────────── */
+  .slides-header{
+    height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;
+    padding:0 14px;border-bottom:1px solid #e5e7eb;background:#f9fafb
+  }
+  .slides-header .title{font-size:13px;font-weight:600;color:#111827}
+  .slides-list{flex:1;overflow-y:auto}
+  .slide-item{
+    display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid #e5e7eb;
+    cursor:pointer;transition:background .1s;position:relative
+  }
+  .slide-item:hover{background:#f3f4f6}
+  .slide-item.active{background:#dbeafe;border-color:#bfdbfe}
+  .slide-thumb{
+    width:64px;height:36px;flex:none;border:1px solid #d1d5db;border-radius:4px;
+    background:#fff;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;
+    font-size:10px;color:#6b7280
+  }
+  .slide-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .slide-info{flex:1;min-width:0}
+  .slide-no{font-size:11px;color:#6b7280;margin-bottom:2px}
+  .slide-title{font-size:13px;color:#111827;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .slide-kind{font-size:10px;color:#9ca3af;margin-top:2px}
+  .add-slide{display:flex;align-items:center;justify-content:center;gap:6px;height:40px;flex:none;
+    border-top:1px solid #e5e7eb;background:#f9fafb;color:#4b5563;font-size:12.5px}
+  .add-slide:hover{background:#e5e7eb;color:#111827}
+
+  /* ── 中间：编辑画布 ──────────────────── */
+  .canvas-header{
+    height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;
+    padding:0 16px;border-bottom:1px solid #e5e7eb;background:#fff
+  }
+  .canvas-info{display:flex;align-items:center;gap:12px}
+  .canvas-size{font-size:12px;color:#6b7280}
+  .canvas-wrap{flex:1;overflow:auto;display:flex;align-items:center;justify-content:center;position:relative}
+  .canvas{
+    position:relative;width:1280px;height:720px;background:#fff;
+    box-shadow:0 10px 40px rgba(0,0,0,.15);transform-origin:0 0;
+    user-select:none
+  }
+  .canvas-grid{
+    position:absolute;inset:0;
+    background-image:linear-gradient(to right,#e5e7eb 1px,transparent 1px),linear-gradient(to bottom,#e5e7eb 1px,transparent 1px);
+    background-size:40px 40px;pointer-events:none
+  }
+  .canvas-elt{
+    position:absolute;box-sizing:border-box;background:#fff;border:1px solid transparent;
+    cursor:move;user-select:none;overflow:hidden;outline:none
+  }
+  .canvas-elt.selected{box-shadow:0 0 0 2px #2563eb}
+  .canvas-elt.selected::after{
+    content:"";position:absolute;inset:-4px;border:2px dashed #2563eb;border-radius:4px;pointer-events:none
+  }
+  .canvas-elt-text{white-space:pre-wrap;word-wrap:break-word;overflow:hidden}
+  .canvas-elt-img{width:100%;height:100%;object-fit:cover;display:block}
+  .canvas-elt-shape{border-radius:var(--rr,0)}
+  .resize-handle{
+    position:absolute;width:8px;height:8px;background:#2563eb;border:1px solid #fff;z-index:2;
+    display:none
+  }
+  .canvas-elt.selected .resize-handle{display:block}
+  .rh-nw{top:-4px;left:-4px;cursor:nwse-resize}
+  .rh-ne{top:-4px;right:-4px;cursor:nesw-resize}
+  .rh-sw{bottom:-4px;left:-4px;cursor:nesw-resize}
+  .rh-se{bottom:-4px;right:-4px;cursor:nwse-resize}
+
+  /* ── 右侧：属性面板 ──────────────────── */
+  .props-header{
+    height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;
+    padding:0 14px;border-bottom:1px solid #e5e7eb;background:#f9fafb
+  }
+  .props-empty,.props-single,.props-multi{
+    flex:1;overflow-y:auto;padding:16px
+  }
+  .props-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:#6b7280}
+  .section{margin-bottom:16px}
+  .section:last-child{margin-bottom:0}
+  .section-title{font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+  .field{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+  .field label{font-size:12px;color:#374151;font-weight:500}
+  .field input,.field select,.field textarea{
+    width:100%;height:30px;padding:0 8px;border:1px solid #d1d5db;border-radius:4px;background:#fff
+  }
+  .field input:focus,.field select:focus,.field textarea:focus{border-color:#2563eb;outline:2px solid #dbeafe}
+  .field textarea{min-height:60px;resize:vertical}
+  .field.row{flex-direction:row;align-items:center}
+  .field.row > *{flex:1}
+  .field.row .w-half{width:48%}
+  .chk{display:flex;align-items:center;gap:6px}
+  .chk input{width:16px;height:16px;flex:none}
+  .btn-row{display:flex;gap:8px;margin-top:12px}
+
+  /* 多选提示 */
+  .multi-hint{padding:12px 16px;background:#fef3c7;border:1px solid #f59e0b;border-radius:6px;font-size:12px;color:#92400e;margin-bottom:16px}
+
+  /* 提示 */
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+    background:#111827;color:#fff;padding:8px 14px;border-radius:6px;font-size:13px;
+    opacity:0;transition:opacity .2s;pointer-events:none;z-index:100}
+  .toast.show{opacity:1}
+
+  .hidden{display:none !important}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="top-left">
+      <div class="btn-group">
+        <button class="btn active" data-tool="select" title="选择 (V)"><svg class="ic" viewBox="0 0 24 24"><path d="M3 5a2 2 0 012-2h3.1a2 2 0 011.6.8l-1.4 2.8a2 2 0 00.3 1.1l2.5 3.5c.2.3.5.7.9.7h4a2 2 0 012 2v2.1"/></svg>选择</button>
+        <button class="btn" data-tool="text" title="文本 (T)"><svg class="ic" viewBox="0 0 24 24"><path d="M14.5 2a3 3 0 013 3v1a4 4 0 00-4 4h-4a4 4 0 00-4-4v-1a3 3 0 013-3z"/></svg>文本</button>
+        <button class="btn" data-tool="shape" title="形状"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/></svg>形状</button>
+        <button class="btn" data-tool="chart" title="图表"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10"/><line x1="7" y1="21" x2="7" y2="11"/><line x1="12" y1="17" x2="12" y2="11"/><line x1="17" y1="13" x2="17" y2="11"/></svg>图表</button>
+        <button class="btn" data-tool="image" title="图片"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>图片</button>
+        <button class="btn" data-tool="table" title="表格"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>表格</button>
+      </div>
+      <div class="btn btn-group" style="margin-left:8px">
+        <button class="btn small" data-action="undo" title="撤销 (Ctrl+Z)"><svg class="ic" viewBox="0 0 24 24"><path d="M3 10a1.66 1.66 0 001.66-1.66l.77-.43 6 11 .77-.43A1.66 1.66 0 0012 18a1.66 1.66 0 001-3.34 1 1 0 01-1-1v-1A2 2 0 0115 11h3"/></svg></button>
+        <button class="btn small" data-action="redo" title="重做 (Ctrl+Y)"><svg class="ic" viewBox="0 0 24 24"><path d="M21 14a2 2 0 01-2 2h-3.1a2 2 0 01-1.6-.8l1.4-2.8a2 2 0 00-.3-1.1l-2.5-3.5c-.2-.3-.5-.7-.9-.7h-4a2 2 0 01-2-2v-2.1"/></svg></button>
+      </div>
+      <div class="btn btn-group" style="margin-left:8px">
+        <button class="btn small" id="btnCopy" title="复制 (Ctrl+C)"><svg class="ic" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 5h6V5H5zM5 19h6v-6H5z"/></svg></button>
+        <button class="btn small" id="btnPaste" title="粘贴 (Ctrl+V)"><svg class="ic" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 5h6V5H5zM5 19h6v-6H5z"/></svg></button>
+        <button class="btn small" id="btnBringFront" title="置顶"><svg class="ic" viewBox="0 0 24 24"><polyline points="15 3 9 9 15 15"/></svg></button>
+        <button class="btn small" id="btnSendBack" title="置底"><svg class="ic" viewBox="0 0 24 24"><polyline points="9 21 15 15 9 9"/></svg></button>
+      </div>
+      <div class="btn btn-group" style="margin-left:8px">
+        <button class="btn small" id="btnAlignLeft" title="左对齐"><svg class="ic" viewBox="0 0 24 24"><line x1="11" y1="5" x2="11" y2="19"/><line x1="6" y1="9" x2="11" y2="9"/><line x1="6" y1="15" x2="11" y2="15"/></svg></button>
+        <button class="btn small" id="btnAlignCenter" title="水平居中"><svg class="ic" viewBox="0 0 24 24"><line x1="6" y1="12" x2="18" y2="12"/><line x1="12" y1="5" x2="12" y2="19"/></svg></button>
+        <button class="btn small" id="btnAlignRight" title="右对齐"><svg class="ic" viewBox="0 0 24 24"><line x1="13" y1="5" x2="13" y2="19"/><line x1="13" y1="9" x2="18" y2="9"/><line x1="13" y1="15" x2="18" y2="15"/></svg></button>
+        <button class="btn small" id="btnAlignTop" title="顶对齐"><svg class="ic" viewBox="0 0 24 24"><line x1="5" y1="11" x2="19" y2="11"/><line x1="9" y1="6" x2="9" y2="11"/><line x1="15" y1="6" x2="15" y2="11"/></svg></button>
+        <button class="btn small" id="btnAlignMiddle" title="垂直居中"><svg class="ic" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><line x1="12" y1="6" x2="12" y2="19"/></svg></button>
+        <button class="btn small" id="btnAlignBottom" title="底对齐"><svg class="ic" viewBox="0 0 24 24"><line x1="5" y1="13" x2="19" y2="13"/><line x1="9" y1="13" x2="9" y2="18"/><line x1="15" y1="13" x2="15" y2="18"/></svg></button>
+        <button class="btn small" id="btnDistributeH" title="水平分布"><svg class="ic" viewBox="0 0 24 24"><line x1="5" y1="11" x2="19" y2="11"/><line x1="7" y1="7" x2="7" y2="15"/><line x1="12" y1="7" x2="12" y2="15"/><line x1="17" y1="7" x2="17" y2="15"/></svg></button>
+        <button class="btn small" id="btnDistributeV" title="垂直分布"><svg class="ic" viewBox="0 0 24 24"><line x1="11" y1="5" x2="11" y2="19"/><line x1="7" y1="7" x2="15" y2="7"/><line x1="7" y1="12" x2="15" y2="12"/><line x1="7" y1="17" x2="15" y2="17"/></svg></button>
+      </div>
+    </div>
+    <div class="top-right">
+      <span class="canvas-size" id="canvasSize">1280 × 720 px · 16:9</span>
+      <button class="btn primary" id="btnExport" title="导出 PPTX"><svg class="ic" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>导出 PPTX</button>
+    </div>
+  </div>
+
+  <div class="app-body">
+    <div class="sidebar">
+      <div class="slides-header">
+        <span class="title">幻灯片</span>
+        <button class="btn small" id="btnAddSlide" title="新增幻灯片"><svg class="ic" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+      </div>
+      <div class="slides-list" id="slidesList"></div>
+      <div class="add-slide" id="btnAddSlideBar" title="新增幻灯片"><svg class="ic" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>新增幻灯片</div>
+    </div>
+
+    <div class="canvas-area">
+      <div class="canvas-header">
+        <div class="canvas-info">
+          <span id="canvasSelInfo">未选中</span>
+          <span class="canvas-size" id="canvasZoom">100%</span>
+        </div>
+      </div>
+      <div class="canvas-wrap" id="canvasWrap">
+        <div class="canvas" id="canvas">
+          <div class="canvas-grid"></div>
+          <div class="canvas-elt-container" id="eltContainer"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="props">
+      <div class="props-header">
+        <span class="title">属性</span>
+      </div>
+      <div class="props-empty" id="propsEmpty">
+        <svg class="ic" style="width:48px;height:48px;opacity:.4" viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 17 17 23 15.79 13.89"/></svg>
+        <div style="margin-top:8px">未选中元素</div>
+        <div style="font-size:11px;color:#9ca3af;margin-top:4px">点击画布上的元素进行编辑</div>
+        <div class="section" id="propsBg" style="margin-top:16px;padding-top:12px;border-top:1px solid #e5e7eb;display:none">
+          <div class="section-title">幻灯片背景</div>
+          <div class="field">
+            <label>类型</label>
+            <select id="bgType">
+              <option value="color">实色</option>
+              <option value="gradient">渐变</option>
+              <option value="image">图片</option>
+            </select>
+          </div>
+          <div class="field" id="bgColorRow">
+            <label>颜色</label>
+            <input type="color" id="bgColor">
+          </div>
+          <div class="field hidden" id="bgGradFromRow">
+            <label>渐变起始色</label>
+            <input type="color" id="bgGradFrom">
+          </div>
+          <div class="field hidden" id="bgGradToRow">
+            <label>渐变结束色</label>
+            <input type="color" id="bgGradTo">
+          </div>
+          <div class="field hidden" id="bgImageRow">
+            <label>图片 URL</label>
+            <input type="text" id="bgImageUrl" placeholder="https://.../image.jpg">
+          </div>
+        </div>
+      </div>
+      <div class="props-single hidden" id="propsSingle">
+        <div class="section">
+          <div class="section-title">位置与大小</div>
+          <div class="field">
+            <label>X</label>
+            <input type="number" id="pX" step="1">
+          </div>
+          <div class="field">
+            <label>Y</label>
+            <input type="number" id="pY" step="1">
+          </div>
+          <div class="field row">
+            <div class="field w-half">
+              <label>宽</label>
+              <input type="number" id="pW" step="1">
+            </div>
+            <div class="field w-half">
+              <label>高</label>
+              <input type="number" id="pH" step="1">
+            </div>
+          </div>
+          <div class="field">
+            <label>旋转 (度)</label>
+            <input type="number" id="pRotation" step="1">
+          </div>
+        </div>
+        <div class="section">
+          <div class="section-title">文本内容</div>
+          <div class="field">
+            <label>内容</label>
+            <textarea id="pText" rows="3"></textarea>
+          </div>
+          <div class="field">
+            <label>字号</label>
+            <input type="number" id="pFontSize" step="1">
+          </div>
+          <div class="field row">
+            <div class="field w-half chk">
+              <label><input type="checkbox" id="pBold"> 加粗</label>
+            </div>
+            <div class="field w-half chk">
+              <label><input type="checkbox" id="pItalic"> 斜体</label>
+            </div>
+            <div class="field w-half chk">
+              <label><input type="checkbox" id="pUnderline"> 下划线</label>
+            </div>
+          </div>
+          <div class="field">
+            <label>颜色</label>
+            <input type="color" id="pColor">
+          </div>
+          <div class="field">
+            <label>高亮色</label>
+            <input type="color" id="pHighlight">
+          </div>
+          <div class="field">
+            <label>行间距</label>
+            <input type="number" id="pLineSpacing" step="0.1" min="0" max="5">
+          </div>
+          <div class="field">
+            <label>对齐</label>
+            <select id="pAlign">
+              <option value="left">左对齐</option>
+              <option value="center">居中</option>
+              <option value="right">右对齐</option>
+            </select>
+          </div>
+        </div>
+        <div class="section">
+          <div class="section-title">形状样式</div>
+          <div class="field">
+            <label>填充色</label>
+            <input type="color" id="pFill">
+          </div>
+          <div class="field">
+            <label>透明度</label>
+            <input type="number" id="pOpacity" min="0" max="100" step="1">
+          </div>
+        </div>
+        <div class="section">
+          <div class="section-title">图片</div>
+          <div class="field">
+            <label>图片地址</label>
+            <input type="text" id="pImgSrc" placeholder="https://.../image.jpg">
+          </div>
+        </div>
+        <div class="section hidden" id="propsTableEditor">
+          <div class="section-title">表格单元格（双击画布表格亦可编辑）</div>
+          <div id="tableCells"></div>
+        </div>
+        <div class="section hidden" id="propsChartEditor">
+          <div class="section-title">图表数据</div>
+          <div class="field">
+            <label>类型</label>
+            <select id="chartKind">
+              <option value="bar">柱状图</option>
+              <option value="line">折线图</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>类别（逗号分隔）</label>
+            <input type="text" id="chartLabels" placeholder="A, B, C">
+          </div>
+          <div class="field">
+            <label>数值（逗号分隔）</label>
+            <input type="text" id="chartData" placeholder="100, 200, 150">
+          </div>
+          <div class="field">
+            <label>图例</label>
+            <input type="text" id="chartLegend" placeholder="数值">
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn danger small" id="btnDeleteEl">删除元素</button>
+        </div>
+      </div>
+      <div class="props-multi hidden" id="propsMulti">
+        <div class="multi-hint">已选中 <b id="multiCount">0</b> 个元素，可批量编辑</div>
+        <div class="section">
+          <div class="section-title">批量位置/大小</div>
+          <div class="field">
+            <label>X</label>
+            <input type="number" id="mX" step="1">
+          </div>
+          <div class="field">
+            <label>Y</label>
+            <input type="number" id="mY" step="1">
+          </div>
+          <div class="field">
+            <label>W</label>
+            <input type="number" id="mW" step="1">
+          </div>
+          <div class="field">
+            <label>H</label>
+            <input type="number" id="mH" step="1">
+          </div>
+          <div class="field">
+            <label>旋转</label>
+            <input type="number" id="mRotation" step="1">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ========================================================================
+   PPT 编辑工作台 — 状态与模型
+   ======================================================================== */
+
+const APP = {
+  // 统一模型（PptPresentation，16:9，1280×720）
+  presentation: {
+    id: 'presentation-' + Date.now().toString(36),
+    title: '我的演示文稿',
+    author: 'DesignBuddy',
+    ratio: '16:9',
+    theme: {
+      paper: '#FFFFFF', ink: '#111827', accent: '#2563eb',
+      second: '#059669', muted: '#6b7280', rule: '#e5e7eb',
+      font: { display: 'sans', mono: 'ui-monospace,Menlo,monospace' }
+    },
+    slides: []
+  },
+  selectedElementIds: [],   // 多选集合（全文唯一元素 ID）
+  primaryElementId: null,   // 主要选中元素（用于显示详细属性面板）
+  selectedSlideId: null,
+  history: [],      // 撤销栈（存快照）
+  future: [],       // 重做栈
+  tool: 'select',   // select | text | shape | image | table
+  dragging: null,   // {eltId, startX, startY, startW, startH, mouseX, mouseY}
+  resizing: null,   // {eltId, handle, ...}
+  skipInput: false, // 输入框同步时跳过渲染，避免死循环
+  clipboard: []     // 复制的元素快照（供粘贴）
+}
+
+/* ========================================================================
+   工具函数
+   ======================================================================== */
+
+function $(id){return document.getElementById(id)}
+function el(tag,cls){const e=document.createElement(tag);if(cls)e.className=cls;return e}
+function escapeXml(str){return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+function clone(obj){return JSON.parse(JSON.stringify(obj))}
+function pushHistory(){
+  APP.history.push(clone(APP.presentation))
+  if(APP.history.length>50)APP.history.shift()
+  APP.future=[]
+}
+function undo(){
+  if(APP.history.length===0)return
+  APP.future.push(clone(APP.presentation))
+  APP.presentation=APP.history.pop()
+  renderAll()
+}
+function redo(){
+  if(APP.future.length===0)return
+  APP.history.push(clone(APP.presentation))
+  APP.presentation=APP.future.pop()
+  renderAll()
+}
+
+function findElement(presentation,elementId){
+  for(let sIdx=0;sIdx<presentation.slides.length;sIdx++){
+    const slide=presentation.slides[sIdx]
+    for(let eIdx=0;eIdx<slide.elements.length;eIdx++){
+      if(slide.elements[eIdx].id===elementId)return {slide,element:slide.elements[eIdx],slideIndex:sIdx,elementIndex:eIdx}
+    }
+  }
+  return null
+}
+function findSlide(presentation,slideId){
+  for(let i=0;i<presentation.slides.length;i++){
+    if(presentation.slides[i].id===slideId)return {slide:presentation.slides[i],index:i}
+  }
+  return null
+}
+
+/** 当前选中的全部元素（在当前幻灯片范围内） */
+function getSelectedElements(){
+  const slide=APP.presentation.slides.find(s=>s.id===APP.selectedSlideId)
+  if(!slide)return []
+  return APP.selectedElementIds.map(id=>slide.elements.find(e=>e.id===id)).filter(Boolean)
+}
+
+/** 是否只选中一个元素 */
+function isSingleSelection(){
+  return APP.selectedElementIds.length===1 && !!APP.primaryElementId
+}
+
+/* ========================================================================
+   初始示例数据（首次打开时提供一份可编辑的演示文稿）
+   ======================================================================== */
+
+function newElement(id,x,y,w,h,text,style){
+  return {id,type:'text',x,y,w,h,text,style:style||{fontSize:24,bold:true,color:'#111827',align:'left',valign:'top'}}
+}
+function newShape(id,x,y,w,h,shape,style){
+  return {id,type:'shape',x,y,w,h,shape:shape||'rect',style:style||{fill:'#2563eb',opacity:1}}
+}
+function newImage(id,x,y,w,h,src){
+  return {id,type:'image',x,y,w,h,src:src||''}
+}
+function newTable(id,x,y,w,h,rows){
+  return {id,type:'table',x,y,w,h,rows:rows||[['标题','值'],['A','100'],['B','200']]}
+}
+
+function initDemo(){
+  const theme=APP.presentation.theme
+  const M=88,CW=1280-M*2
+  const slides=[]
+
+  // 封面
+  slides.push({
+    id:'slide-1',layout:'cover',title:'封面',
+    background:{color:theme.paper},
+    elements:[
+      newElement('el-1-1',M,180,CW,80,'商业演示文稿',{fontSize:44,bold:true,color:theme.ink,align:'left',valign:'middle'}),
+      newElement('el-1-2',M,280,CW,34,'副标题：这里是副标题说明',{fontSize:18,color:theme.muted,align:'left',valign:'middle'}),
+      newShape('el-1-3',M,360,80,4,'rect',{fill:theme.accent,opacity:1}),
+    ]
+  })
+
+  // 内容页
+  slides.push({
+    id:'slide-2',layout:'statement',title:'内容页',
+    background:{color:theme.paper},
+    elements:[
+      newElement('el-2-1',M,60,CW,44,'核心观点',{fontSize:28,bold:true,color:theme.ink,align:'left',valign:'top'}),
+      newElement('el-2-2',M,140,CW,200,'这是正文内容。可以在右侧属性面板中修改文本、字号、颜色和对齐方式。\n支持多行文本编辑，每个元素都有稳定 ID，便于局部修改。',{fontSize:18,color:theme.ink,align:'left',valign:'top',lineHeight:1.5}),
+      newShape('el-2-3',M,400,200,120,'rect',{fill:theme.second,opacity:1}),
+      newElement('el-2-4',M,400,200,120,'亮色块',{fontSize:16,bold:true,color:'#fff',align:'center',valign:'middle'}),
+    ]
+  })
+
+  // 数据页（图表占位）
+  slides.push({
+    id:'slide-3',layout:'stats',title:'数据页',
+    background:{color:theme.paper},
+    elements:[
+      newElement('el-3-1',M,60,CW,44,'关键指标',{fontSize:28,bold:true,color:theme.ink,align:'left',valign:'top'}),
+      newElement('el-3-2',M,140,200,80,'85%',{fontSize:48,bold:true,color:theme.accent,align:'left',valign:'middle'}),
+      newElement('el-3-3',M,230,200,30,'达成率',{fontSize:14,color:theme.muted,align:'left',valign:'top'}),
+    ]
+  })
+
+  APP.presentation.slides=slides
+  APP.selectedSlideId=slides[0].id
+  deselectAll()
+}
+
+/* ========================================================================
+   渲染
+   ======================================================================== */
+
+function renderAll(){
+  renderSlideList()
+  renderCanvas()
+  renderProps()
+  updateCanvasInfo()
+}
+
+function renderSlideList(){
+  const list=$('slidesList')
+  list.innerHTML=''
+  for(const slide of APP.presentation.slides){
+    const item=el('div','slide-item'+(slide.id===APP.selectedSlideId?' active':''))
+    item.onclick=()=>{selectSlide(slide.id)}
+    item.innerHTML=
+      '<div class="slide-thumb">'+slide.elements.length+'</div>'+
+      '<div class="slide-info">'+
+        '<div class="slide-no">'+(APP.presentation.slides.indexOf(slide)+1)+'</div>'+
+        '<div class="slide-title">'+escapeXml(slide.title||'无标题')+'</div>'+
+        '<div class="slide-kind">'+slide.layout+'</div>'+
+      '</div>'
+    list.appendChild(item)
+  }
+}
+
+function renderCanvas(){
+  const canvas=$('canvas')
+  const container=$('eltContainer')
+  canvas.innerHTML='<div class="canvas-grid"></div><div class="canvas-elt-container" id="eltContainer"></div>'
+  const slide=APP.presentation.slides.find(s=>s.id===APP.selectedSlideId)
+  if(!slide)return
+  const isSelected=(id)=>APP.selectedElementIds.includes(id)
+  const isPrimary=APP.primaryElementId
+
+  for(const el of slide.elements){
+    const sel=isSelected(el.id)
+    const div=el('div','canvas-elt'+(sel?' selected':''))
+    div.style.left=el.x+'px'
+    div.style.top=el.y+'px'
+    div.style.width=el.w+'px'
+    div.style.height=el.h+'px'
+    if(el.rotation)div.style.transform='rotate('+el.rotation+'deg)'
+    div.dataset.id=el.id
+    div.dataset.type=el.type
+    div.title=escapeXml(el.id)
+
+    if(el.type==='text'){
+      div.classList.add('canvas-elt-text')
+      div.style.color=el.style?.color||'#000'
+      div.style.fontSize=(el.style?.fontSize||18)+'px'
+      if(el.style?.bold)div.style.fontWeight='bold'
+      if(el.style?.italic)div.style.fontStyle='italic'
+      div.style.textAlign=el.style?.align||'left'
+      div.style.display='flex'
+      div.style.alignItems=el.style?.valign==='middle'?'center':el.style?.valign==='bottom'?'flex-end':'flex-start'
+      div.style.justifyContent=el.style?.align==='center'?'center':el.style?.align==='right'?'flex-end':'flex-start'
+      div.style.padding='4px'
+      div.textContent=el.text||''
+      div.onclick=(e)=>{e.stopPropagation();toggleSelectElement(el.id,e)}
+      div.ondblclick=(e)=>{e.stopPropagation();startTextEdit(div,el)}
+    }else if(el.type==='shape'){
+      div.classList.add('canvas-elt-shape')
+      div.style.background=el.style?.fill||'transparent'
+      if(el.style?.opacity!==undefined)div.style.opacity=el.style.opacity
+      div.style.borderRadius=(el.style?.radius||0)+'px'
+      if(el.shape==='ellipse')div.style.borderRadius='50%'
+      div.onclick=(e)=>{e.stopPropagation();toggleSelectElement(el.id,e)}
+    }else if(el.type==='image'){
+      div.style.display='flex'
+      div.style.alignItems='center'
+      div.style.justifyContent='center'
+      div.style.overflow='hidden'
+      div.style.border='1px solid #d1d5db'
+      div.style.background='#e5e7eb'
+      div.style.color='#9ca3af'
+      div.style.fontSize='12px'
+      div.innerHTML=''
+      const img=document.createElement('img')
+      img.style.width='100%'
+      img.style.height='100%'
+      img.style.objectFit='cover'
+      img.style.display='block'
+      img.src=el.src||''
+      img.alt='图片'
+      img.onerror=()=>{div.style.display='flex';div.style.alignItems='center';div.style.justifyContent='center';div.textContent=el.src?'[图片加载失败]':'[图片]'}
+      img.onload=()=>{div.style.display='';div.textContent=''}
+      div.appendChild(img)
+      if(!el.src)div.textContent='[图片]'
+      div.onclick=(e)=>{e.stopPropagation();toggleSelectElement(el.id,e)}
+    }else if(el.type==='table'){
+      div.style.background='#fff'
+      div.style.border='1px solid #d1d5db'
+      div.style.overflow='hidden'
+      div.style.fontSize='12px'
+      div.innerHTML=''
+      const tbl=document.createElement('table')
+      tbl.style.borderCollapse='collapse'
+      tbl.style.width='100%'
+      tbl.style.height='100%'
+      for(const row of el.rows||[]){
+        const tr=document.createElement('tr')
+        for(const cell of row){
+          const td=document.createElement('td')
+          td.style.border='1px solid #d1d5db'
+          td.style.padding='4px 6px'
+          td.textContent=cell
+          td.onclick=(ev)=>{ev.stopPropagation();editTableCell(el.id,row,cell)}
+          tr.appendChild(td)
+        }
+        tbl.appendChild(tr)
+      }
+      div.appendChild(tbl)
+      div.onclick=(e)=>{e.stopPropagation();toggleSelectElement(el.id,e)}
+    }else if(el.type==='chart'){
+      div.style.background='#fff'
+      div.style.border='1px solid #d1d5db'
+      div.style.overflow='hidden'
+      div.innerHTML=''
+      const svg=renderChartSvg(el)
+      div.appendChild(svg)
+      div.onclick=(e)=>{e.stopPropagation();toggleSelectElement(el.id,e)}
+    }
+
+    // 缩放手柄：仅主选元素显示
+    if(el.id===isPrimary){
+      for(const [h,c] of [['nw','rh-nw'],['ne','rh-ne'],['sw','rh-sw'],['se','rh-se']]){
+        const hd=el('div','resize-handle '+c)
+        hd.dataset.handle=h
+        hd.onmousedown=(e)=>{e.stopPropagation();startResize(el.id,h,e)}
+        div.appendChild(hd)
+      }
+    }
+
+    container.appendChild(div)
+  }
+
+  // 画布点击空白处取消选择
+  canvas.onclick=(e)=>{
+    if(e.target===canvas||e.target.classList.contains('canvas-grid')){
+      deselectAll()
+    }
+  }
+}
+
+function startTextEdit(div,modelEl){
+  const input=el('textarea')
+  input.value=modelEl.text||''
+  input.style.position='absolute'
+  input.style.left=div.style.left
+  input.style.top=div.style.top
+  input.style.width=div.style.width
+  input.style.height=div.style.height
+  input.style.fontSize=div.style.fontSize
+  input.style.color=div.style.color
+  input.style.fontWeight=div.style.fontWeight
+  input.style.fontStyle=div.style.fontStyle
+  input.style.textAlign=div.style.textAlign
+  input.style.background='transparent'
+  input.style.border='1px solid #2563eb'
+  input.style.outline='none'
+  input.style.resize='none'
+  input.style.zIndex='10'
+  div.parentNode.insertBefore(input,div)
+  div.style.display='none'
+  input.focus()
+  input.onblur=()=>{
+    const v=input.value
+    editElement(modelEl.id,{text:v})
+    div.textContent=v
+    div.style.display=''
+    input.remove()
+  }
+  input.onkeydown=(e)=>{
+    if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();input.blur()}
+  }
+}
+
+function renderProps(){
+  const empty=$('propsEmpty')
+  const single=$('propsSingle')
+  const multi=$('propsMulti')
+  empty.classList.add('hidden')
+  single.classList.add('hidden')
+  multi.classList.add('hidden')
+
+  const ids=APP.selectedElementIds
+  if(ids.length===0){
+    empty.classList.remove('hidden')
+    // 无元素选中时，展示当前幻灯片背景编辑
+    const slide=APP.presentation.slides.find(s=>s.id===APP.selectedSlideId)
+    const bg=$('propsBg')
+    if(slide&&bg){
+      const b=slide.background||{color:APP.presentation.theme.paper}
+      bg.style.display=''
+      $('bgType').value=b.type||'color'
+      $('bgColor').value=b.color||'#ffffff'
+      $('bgGradFrom').value=b.from||'#2563eb'
+      $('bgGradTo').value=b.to||'#ffffff'
+      $('bgImageUrl').value=b.src||''
+      // 行显隐
+      const show=(id,on)=>{document.getElementById(id).style.display=on?'':'hidden'}
+      const t=b.type||'color'
+      show('bgColorRow',t==='color')
+      show('bgGradFromRow',t==='gradient')
+      show('bgGradToRow',t==='gradient')
+      show('bgImageRow',t==='image')
+      // 绑定（一次性，避免重复绑定）
+      if(!bg._bound){
+        bg._bound=true
+        const applyBg=(upd)=>{pushHistory();const s={...APP.presentation.slides.find(s=>s.id===APP.selectedSlideId)};s.background={...s.background,...upd};const slides=[...APP.presentation.slides];slides[slides.findIndex(x=>x.id===APP.selectedSlideId)]=s;APP.presentation={...APP.presentation,slides};renderCanvas()}
+        $('bgType').onchange=()=>{const t=$('bgType').value;document.getElementById('bgColorRow').style.display=t==='color'?'':'hidden';document.getElementById('bgGradFromRow').style.display=t==='gradient'?'':'hidden';document.getElementById('bgGradToRow').style.display=t==='gradient'?'':'hidden';document.getElementById('bgImageRow').style.display=t==='image'?'':'hidden';applyBg({type:t})}
+        $('bgColor').oninput=()=>applyBg({color:$('bgColor').value})
+        $('bgGradFrom').oninput=()=>applyBg({from:$('bgGradFrom').value})
+        $('bgGradTo').oninput=()=>applyBg({to:$('bgGradTo').value})
+        $('bgImageUrl').oninput=()=>applyBg({src:$('bgImageUrl').value})
+      }
+    }
+    return
+  }
+  if(ids.length===1){
+    const found=findElement(APP.presentation,ids[0])
+    if(!found){empty.classList.remove('hidden');return}
+    single.classList.remove('hidden')
+    document.getElementById('propsTableEditor').classList.add('hidden')
+    document.getElementById('propsChartEditor').classList.add('hidden')
+    const el=found.element
+
+    // 位置大小
+    $('pX').value=el.x
+    $('pY').value=el.y
+    $('pW').value=el.w
+    $('pH').value=el.h
+    $('pRotation').value=el.rotation||0
+
+    if(el.type==='text'){
+      $('pText').value=el.text||''
+      $('pFontSize').value=el.style?.fontSize||18
+      $('pBold').checked=!!el.style?.bold
+      $('pItalic').checked=!!el.style?.italic
+      $('pUnderline').checked=!!el.style?.underline
+      $('pColor').value=el.style?.color||'#000000'
+      $('pHighlight').value=el.style?.highlight||'#ffffff'
+      $('pAlign').value=el.style?.align||'left'
+      $('pLineSpacing').value=el.style?.lineSpacing||''
+    }
+    if(el.type==='shape'){
+      $('pFill').value=el.style?.fill||'#ffffff'
+      $('pOpacity').value=Math.round((el.style?.opacity||1)*100)
+    }
+    if(el.type==='image'){
+      $('pImgSrc').value=el.src||''
+    }
+    if(el.type==='table'){
+      const container=$('tableCells')
+      container.innerHTML=''
+      const tbl=document.createElement('table')
+      tbl.style.borderCollapse='collapse'
+      tbl.style.fontSize='12px'
+      for(let r=0;r<(el.rows||[]).length;r++){
+        const tr=document.createElement('tr')
+        for(let c=0;c<(el.rows[r]||[]).length;c++){
+          const td=document.createElement('td')
+          td.style.border='1px solid #d1d5db'
+          td.style.padding='4px 6px'
+          const input=document.createElement('input')
+          input.value=el.rows[r][c]
+          input.style.width='100%'
+          input.style.border='none'
+          input.style.background='transparent'
+          input.oninput=()=>{editTableCell(el.id,el.rows[r],input.value)}
+          td.appendChild(input)
+          tr.appendChild(td)
+        }
+        tbl.appendChild(tr)
+      }
+      container.appendChild(tbl)
+      document.getElementById('propsTableEditor').classList.remove('hidden')
+    }
+    if(el.type==='chart'){
+      const spec=el.spec||{}
+      $('chartKind').value=spec.kind||'bar'
+      $('chartLabels').value=(spec.labels||[]).join(', ')
+      $('chartData').value=((spec.datasets||[])[0]&&spec.datasets[0].data||[]).join(', ')
+      $('chartLegend').value=(spec.datasets||[])[0]?.label||''
+      document.getElementById('propsChartEditor').classList.remove('hidden')
+      // 一次性绑定
+      if(!$('chartEditorBound')){
+        $('chartEditorBound')// 占位
+        const applyChart=()=>{
+          const labels=$('chartLabels').value.split(',').map(s=>s.trim()).filter(Boolean)
+          const data=$('chartData').value.split(',').map(s=>s.trim()).filter(Boolean).map(Number)
+          const legend=$('chartLegend').value||'数值'
+          const kind=$('chartKind').value
+          pushHistory()
+          const f=findElement(APP.presentation,ids[0])
+          if(!f)return
+          const slide={...f.slide},elements=[...slide.elements],el2={...f.element}
+          el2.spec={kind,labels,datasets:[{label:legend,data}]}
+          elements[f.elementIndex]=el2
+          slide.elements=elements
+          const slides=[...APP.presentation.slides]
+          slides[f.slideIndex]=slide
+          APP.presentation={...APP.presentation,slides}
+          renderCanvas()
+          renderProps()
+        }
+        for(const id of ['chartKind','chartLabels','chartData','chartLegend']){
+          $(id).onchange=applyChart
+          $(id).oninput=applyChart
+        }
+        Object.defineProperty($('chartEditorBound'),'bound',{value:true})
+      }
+    }
+
+    // 绑定输入（单向：模型 → UI，skipInput 防止循环）
+    const inputs=[$('pX'),$('pY'),$('pW'),$('pH'),$('pRotation'),$('pText'),$('pFontSize'),$('pColor'),$('pHighlight'),$('pAlign'),$('pLineSpacing'),$('pBold'),$('pItalic'),$('pUnderline'),$('pImgSrc')]
+    for(const inp of inputs){
+      const ev=inp.type==='checkbox'?'onchange':'oninput'
+      inp[ev]=()=>{
+        if(APP.skipInput)return
+        const v=inp.type==='checkbox'?inp.checked:inp.value
+        let nv=v
+        if(inp.id==='pOpacity')nv=Number(v)/100
+        if(['pX','pY','pW','pH','pRotation','pFontSize','pLineSpacing'].includes(inp.id))nv=Number(v)
+        const upd={}
+        if(inp.id==='pX')upd.x=nv
+        else if(inp.id==='pY')upd.y=nv
+        else if(inp.id==='pW')upd.w=nv
+        else if(inp.id==='pH')upd.h=nv
+        else if(inp.id==='pRotation')upd.rotation=nv
+        else if(inp.id==='pText')upd.text=nv
+        else if(inp.id==='pFontSize'){upd.style={fontSize:nv}}
+        else if(inp.id==='pColor'){upd.style={color:nv}}
+        else if(inp.id==='pHighlight'){upd.style={highlight:nv}}
+        else if(inp.id==='pAlign'){upd.style={align:nv}}
+        else if(inp.id==='pLineSpacing'){upd.style={lineSpacing:nv}}
+        else if(inp.id==='pBold'){upd.style={bold:nv}}
+        else if(inp.id==='pItalic'){upd.style={italic:nv}}
+        else if(inp.id==='pUnderline'){upd.style={underline:nv}}
+        else if(inp.id==='pImgSrc'){upd.src=nv}
+        else if(inp.id==='pFill'){upd.shapeStyle={fill:nv}}
+        else if(inp.id==='pOpacity'){upd.shapeStyle={opacity:nv}}
+        editElement(ids[0],upd)
+      }
+    }
+    return
+  }
+
+  // 多选批量属性面板
+  multi.classList.remove('hidden')
+  $('multiCount').textContent=ids.length
+  const els=getSelectedElements()
+  // 显示第一个元素的值作为参考（若不一致显示空）
+  const first=els[0]
+  const same=(key)=>els.every(e=>e[key]===first[key])
+  const styleSame=(key)=>els.every(e=>(e.style&&e.style[key])===first.style?.[key])
+
+  $('mX').value=same('x')?first.x:''
+  $('mY').value=same('y')?first.y:''
+  $('mW').value=same('w')?first.w:''
+  $('mH').value=same('h')?first.h:''
+  $('mRotation').value=same('rotation')?(first.rotation||0):''
+
+  // 批量位置大小输入绑定
+  const mInputs=[$('mX'),$('mY'),$('mW'),$('mH'),$('mRotation')]
+  for(const inp of mInputs){
+    inp.oninput=()=>{
+      if(APP.skipInput)return
+      const v=inp.value
+      const nv=v===''?undefined:Number(v)
+      if(nv===undefined)return
+      const upd={}
+      if(inp.id==='mX')upd.x=nv
+      else if(inp.id==='mY')upd.y=nv
+      else if(inp.id==='mW')upd.w=nv
+      else if(inp.id==='mH')upd.h=nv
+      else if(inp.id==='mRotation')upd.rotation=nv
+      for(const id of ids)editElement(id,upd)
+    }
+  }
+}
+
+/* ========================================================================
+   编辑操作（不可变，基于 deck-edit.ts 语义）
+   ======================================================================== */
+
+function editElement(elementId,updates){
+  const ids=Array.isArray(elementId)?elementId:[elementId]
+  if(ids.length===0)return
+  // 批量编辑只记录一次历史记录
+  pushHistory()
+  const slides=[...APP.presentation.slides]
+  for(const id of ids){
+    const found=findElement(APP.presentation,id)
+    if(!found)continue
+    const slide={...slides[found.slideIndex]}
+    const elements=[...slide.elements]
+    const el={...found.element}
+    if(updates.x!==undefined)el.x=updates.x
+    if(updates.y!==undefined)el.y=updates.y
+    if(updates.w!==undefined)el.w=updates.w
+    if(updates.h!==undefined)el.h=updates.h
+    if(updates.rotation!==undefined)el.rotation=updates.rotation
+    if(updates.text!==undefined)el.text=updates.text
+    if(updates.style)el.style={...el.style,...updates.style}
+    if(updates.shapeStyle)el.style={...el.style,...updates.shapeStyle}
+    elements[found.elementIndex]=el
+    slide.elements=elements
+    slides[found.slideIndex]=slide
+  }
+  APP.presentation={...APP.presentation,slides}
+  renderCanvas()
+  renderProps()
+}
+
+function addElement(el){
+  const slide=APP.presentation.slides.find(s=>s.id===APP.selectedSlideId)
+  if(!slide)return
+  pushHistory()
+  slide.elements=[...slide.elements,el]
+  selectElement(el.id)
+  renderAll()
+}
+
+/* ========================================================================
+   剪贴板：复制/粘贴（带 20px 偏移，避免完全重叠）
+   ======================================================================== */
+function copySelected(){
+  const els=getSelectedElements()
+  if(els.length===0)return
+  APP.clipboard=els.map(e=>({
+    ...e,
+    id:'el-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,6),
+    x:e.x+20,y:e.y+20
+  }))
+  showToast('已复制 '+els.length+' 个元素')
+}
+
+function pasteSelected(){
+  if(APP.clipboard.length===0)return
+  const slide=APP.presentation.slides.find(s=>s.id===APP.selectedSlideId)
+  if(!slide)return
+  pushHistory()
+  const ids=[]
+  for(const c of APP.clipboard){
+    slide.elements=[...slide.elements,c]
+    ids.push(c.id)
+  }
+  APP.presentation={...APP.presentation}
+  selectElement(ids[0],false)
+  // 多选全部粘贴的元素
+  APP.selectedElementIds=ids
+  APP.primaryElementId=ids[ids.length-1]
+  renderAll()
+  showToast('已粘贴 '+ids.length+' 个元素')
+}
+
+function editTableCell(tableId,row,cellText){
+  const v=prompt('编辑单元格内容',cellText)
+  if(v===null)return
+  const found=findElement(APP.presentation,tableId)
+  if(!found)return
+  pushHistory()
+  const slide={...found.slide}
+  const elements=[...slide.elements]
+  const el={...found.element}
+  const rows=[...el.rows]
+  const rIdx=rows.indexOf(row)
+  if(rIdx<0)return
+  const rowCopy=[...row]
+  const cIdx=rowCopy.indexOf(cellText)
+  if(cIdx<0)return
+  rowCopy[cIdx]=v
+  rows[rIdx]=rowCopy
+  el.rows=rows
+  elements[found.elementIndex]=el
+  slide.elements=elements
+  const slides=[...APP.presentation.slides]
+  slides[found.slideIndex]=slide
+  APP.presentation={...APP.presentation,slides}
+  renderCanvas()
+  renderProps()
+}
+
+/* ========================================================================
+   元素层级：置顶/置底/上一层/下一层
+   ======================================================================== */
+function bringToFront(){
+  reorderSelected(1)
+}
+function sendToBack(){
+  reorderSelected(-1)
+}
+function reorderSelected(direction){
+  const ids=APP.selectedElementIds
+  if(ids.length===0)return
+  const slide=APP.presentation.slides.find(s=>s.id===APP.selectedSlideId)
+  if(!slide)return
+  pushHistory()
+  const elements=[...slide.elements]
+  // 按当前在数组中的顺序处理；direction=1 向后移（置顶），-1 向前移（置底）
+  const ordered=[...ids].sort((a,b)=>{
+    const ia=elements.findIndex(e=>e.id===a)
+    const ib=elements.findIndex(e=>e.id===b)
+    return ia-ib
+  })
+  for(const id of ordered){
+    const idx=elements.findIndex(e=>e.id===id)
+    if(idx<0)continue
+    const targetIdx=direction>0?Math.min(idx+1,elements.length-1):Math.max(idx-1,0)
+    if(targetIdx===idx)continue
+    const el=elements.splice(idx,1)[0]
+    elements.splice(targetIdx,0,el)
+  }
+  slide.elements=elements
+  const slides=[...APP.presentation.slides]
+  slides[slides.findIndex(s=>s.id===APP.selectedSlideId)]=slide
+  APP.presentation={...APP.presentation,slides}
+  renderCanvas()
+  renderProps()
+}
+
+/* ========================================================================
+   对齐与分布（基于当前选中元素的边框）
+   ======================================================================== */
+function alignSelected(mode){
+  const els=getSelectedElements()
+  if(els.length<2)return
+  const slide=APP.presentation.slides.find(s=>s.id===APP.selectedSlideId)
+  if(!slide)return
+  pushHistory()
+  const xs=els.map(e=>e.x),ys=els.map(e=>e.y)
+  const minX=Math.min(...xs),maxX=Math.max(...xs)
+  const minY=Math.min(...ys),maxY=Math.max(...ys)
+  const cx=(minX+maxX)/2,cy=(minY+maxY)/2
+  const canvasCx=CANVAS_W/2,canvasCy=CANVAS_H/2
+  const elements=[...slide.elements]
+  for(const el of els){
+    const e=elements.find(x=>x.id===el.id)
+    if(!e)continue
+    const nx=e.x,ny=e.y
+    let fx=nx,fy=ny
+    if(mode==='left')fx=minX
+    else if(mode==='center')fx=cx-(e.w/2)
+    else if(mode==='right')fx=maxX-e.w
+    else if(mode==='top')fy=minY
+    else if(mode==='middle')fy=cy-(e.h/2)
+    else if(mode==='bottom')fy=maxY-e.h
+    else if(mode==='canvasCenter'){fx=canvasCx-e.w/2;fy=canvasCy-e.h/2}
+    e.x=Math.round(fx);e.y=Math.round(fy)
+  }
+  slide.elements=elements
+  const slides=[...APP.presentation.slides]
+  slides[slides.findIndex(s=>s.id===APP.selectedSlideId)]=slide
+  APP.presentation={...APP.presentation,slides}
+  renderCanvas()
+  renderProps()
+}
+
+function distributeSelected(mode){
+  const els=getSelectedElements()
+  if(els.length<3)return
+  const slide=APP.presentation.slides.find(s=>s.id===APP.selectedSlideId)
+  if(!slide)return
+  pushHistory()
+  const elements=[...slide.elements]
+  const sorted=[...els].sort((a,b)=>(mode==='h'?a.x:a.y)-(mode==='h'?b.x:b.y))
+  const first=sorted[0],last=sorted[sorted.length-1]
+  const start=mode==='h'?first.x:first.y
+  const end=mode==='h'?(last.x+last.w):(last.y+last.h)
+  const span=end-start
+  const count=sorted.length
+  if(count<3||span<=0)return
+  const step=span/(count-1)
+  for(let i=1;i<count-1;i++){
+    const el=elements.find(x=>x.id===sorted[i].id)
+    if(!el)continue
+    const target=start+step*i
+    if(mode==='h')el.x=Math.round(target-el.w/2+(first.w/2))
+    else el.y=Math.round(target-el.h/2+(first.h/2))
+  }
+  slide.elements=elements
+  const slides=[...APP.presentation.slides]
+  slides[slides.findIndex(s=>s.id===APP.selectedSlideId)]=slide
+  APP.presentation={...APP.presentation,slides}
+  renderCanvas()
+  renderProps()
+}
+
+function addSlide(){
+  pushHistory()
+  const slide={
+    id:'slide-'+Date.now().toString(36),
+    layout:'blank',
+    title:'新幻灯片',
+    background:{color:APP.presentation.theme.paper},
+    elements:[]
+  }
+  APP.presentation.slides.push(slide)
+  selectSlide(slide.id)
+  renderAll()
+}
+
+function selectSlide(slideId){
+  APP.selectedSlideId=slideId
+  APP.selectedElementIds=[]
+  APP.primaryElementId=null
+  renderAll()
+}
+
+function selectElement(elementId, multi=false){
+  if(multi){
+    // Shift+点击：在选中集合中添加/移除
+    const idx=APP.selectedElementIds.indexOf(elementId)
+    if(idx>=0) APP.selectedElementIds.splice(idx,1)
+    else APP.selectedElementIds.push(elementId)
+    APP.primaryElementId=APP.selectedElementIds.length>0?APP.selectedElementIds[APP.selectedElementIds.length-1]:null
+  }else{
+    APP.selectedElementIds=[elementId]
+    APP.primaryElementId=elementId
+  }
+  renderCanvas()
+  renderProps()
+}
+
+function toggleSelectElement(elementId, e){
+  selectElement(elementId, !!e.shiftKey)
+}
+
+function deselectAll(){
+  APP.selectedElementIds=[]
+  APP.primaryElementId=null
+  renderCanvas()
+  renderProps()
+}
+
+function deleteSelected(){
+  if(APP.selectedElementIds.length===0)return
+  pushHistory()
+  const slides=[...APP.presentation.slides]
+  const slideIdx=slides.findIndex(s=>s.id===APP.selectedSlideId)
+  if(slideIdx<0)return
+  const slide={...slides[slideIdx]}
+  slide.elements=slide.elements.filter(el=>!APP.selectedElementIds.includes(el.id))
+  slides[slideIdx]=slide
+  APP.presentation={...APP.presentation,slides}
+  APP.selectedElementIds=[]
+  APP.primaryElementId=null
+  renderAll()
+}
+
+/* ========================================================================
+   交互：拖拽移动 / 调整大小
+   ======================================================================== */
+
+function startMove(eltId,e){
+  const found=findElement(APP.presentation,eltId)
+  if(!found)return
+  // 多选时，拖拽任一选中元素会移动全部选中元素
+  const ids=APP.selectedElementIds.includes(eltId)?APP.selectedElementIds:[eltId]
+  APP.dragging={
+    ids,starts:ids.map(id=>{const f=findElement(APP.presentation,id);return {id,x:f.element.x,y:f.element.y}}),
+    mouseX:e.clientX,mouseY:e.clientY
+  }
+  if(!APP.selectedElementIds.includes(eltId)) selectElement(eltId,false)
+}
+
+function startResize(eltId,handle,e){
+  const found=findElement(APP.presentation,eltId)
+  if(!found)return
+  APP.resizing={
+    eltId,handle,startX:found.element.x,startY:found.element.y,
+    startW:found.element.w,startH:found.element.h,
+    mouseX:e.clientX,mouseY:e.clientY
+  }
+  selectElement(eltId,false)
+}
+
+function onMouseMove(e){
+  if(APP.dragging){
+    const dx=e.clientX-APP.dragging.mouseX
+    const dy=e.clientY-APP.dragging.mouseY
+    APP.dragging.starts.forEach(({id,x,y})=>{
+      editElement(id,{x:x+dx,y:y+dy})
+    })
+  }
+  if(APP.resizing){
+    const dx=e.clientX-APP.resizing.mouseX
+    const dy=e.clientY-APP.resizing.mouseY
+    const upd={}
+    if(APP.resizing.handle==='se'){upd.w=Math.max(20,APP.resizing.startW+dx);upd.h=Math.max(20,APP.resizing.startH+dy)}
+    else if(APP.resizing.handle==='nw'){upd.x=APP.resizing.startX+dx;upd.y=APP.resizing.startY+dy;upd.w=Math.max(20,APP.resizing.startW-dx);upd.h=Math.max(20,APP.resizing.startH-dy)}
+    else if(APP.resizing.handle==='ne'){upd.y=APP.resizing.startY+dy;upd.w=Math.max(20,APP.resizing.startW+dx);upd.h=Math.max(20,APP.resizing.startH-dy)}
+    else if(APP.resizing.handle==='sw'){upd.x=APP.resizing.startX+dx;upd.w=Math.max(20,APP.resizing.startW-dx);upd.h=Math.max(20,APP.resizing.startH+dy)}
+    editElement(APP.resizing.eltId,upd)
+  }
+}
+function onMouseUp(){APP.dragging=null;APP.resizing=null}
+
+window.addEventListener('mousemove',onMouseMove)
+window.addEventListener('mouseup',onMouseUp)
+
+/* 画布元素鼠标按下：开始移动（不在 render 里绑，避免频繁重绑） */
+document.addEventListener('mousedown',(e)=>{
+  const elt=e.target.closest('.canvas-elt')
+  if(elt&&!e.target.classList.contains('resize-handle')){
+    e.stopPropagation()
+    toggleSelectElement(elt.dataset.id,e)
+    startMove(elt.dataset.id,e)
+  }
+})
+
+/* ========================================================================
+   工具栏与动作
+   ======================================================================== */
+
+function setTool(tool){
+  APP.tool=tool
+  document.querySelectorAll('.btn-group .btn').forEach(b=>{
+    b.classList.toggle('active',b.dataset.tool===tool)
+  })
+  if(tool!=='select'){
+    APP.selectedElementIds=[]
+    APP.primaryElementId=null
+    if(tool==='chart')addChart()
+  }
+  renderCanvas()
+  renderProps()
+}
+
+function addText(){
+  const slide=APP.presentation.slides.find(s=>s.id===APP.selectedSlideId)
+  if(!slide)return
+  pushHistory()
+  const el=newElement('el-'+Date.now().toString(36),300,200,300,80,'新文本',{fontSize:24,color:'#111827',align:'left',valign:'top'})
+  slide.elements=[...slide.elements,el]
+  selectElement(el.id)
+  renderAll()
+}
+function addShape(){
+  const slide=APP.presentation.slides.find(s=>s.id===APP.selectedSlideId)
+  if(!slide)return
+  pushHistory()
+  const el=newShape('el-'+Date.now().toString(36),400,250,150,100,'rect',{fill:'#2563eb',opacity:1})
+  slide.elements=[...slide.elements,el]
+  selectElement(el.id)
+  renderAll()
+}
+function addImage(){
+  const url=prompt('图片地址（data URL 或 http(s) URL）')
+  if(!url)return
+  const slide=APP.presentation.slides.find(s=>s.id===APP.selectedSlideId)
+  if(!slide)return
+  pushHistory()
+  const el=newImage('el-'+Date.now().toString(36),450,200,200,150,url)
+  slide.elements=[...slide.elements,el]
+  selectElement(el.id)
+  renderAll()
+}
+function addTable(){
+  const slide=APP.presentation.slides.find(s=>s.id===APP.selectedSlideId)
+  if(!slide)return
+  pushHistory()
+  const el=newTable('el-'+Date.now().toString(36),350,200,400,200,[['项目','数值'],['A','100'],['B','200']])
+  slide.elements=[...slide.elements,el]
+  selectElement(el.id)
+  renderAll()
+}
+
+function newChart(id,x,y,w,h,spec){
+  return {id,type:'chart',x,y,w,h,spec:spec||{kind:'bar',labels:['A','B','C'],datasets:[{label:'数值',data:[100,200,150]}]}}
+}
+function addChart(){
+  const slide=APP.presentation.slides.find(s=>s.id===APP.selectedSlideId)
+  if(!slide)return
+  pushHistory()
+  const el=newChart('el-'+Date.now().toString(36),400,200,400,250)
+  slide.elements=[...slide.elements,el]
+  selectElement(el.id)
+  renderAll()
+}
+
+/* 图表 SVG 渲染（简化柱状图/折线图） */
+function renderChartSvg(el){
+  const spec=el.spec||{kind:'bar',labels:[],datasets:[{label:'',data:[]}]}
+  const labels=spec.labels||[]
+  const datasets=spec.datasets||[]
+  const w=el.w,h=el.h
+  const padding=30
+  const chartW=w-padding*2,chartH=h-padding*2
+  // 收集所有数值
+  const allValues=datasets.flatMap(d=>d.data||[])
+  const maxV=allValues.length?Math.max(...allValues):1
+  const minV=allValues.length?Math.min(...allValues):0
+  const range=maxV-minV||1
+  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg')
+  svg.setAttribute('width',w)
+  svg.setAttribute('height',h)
+  svg.style.display='block'
+  if(spec.kind==='bar'){
+    const barW=chartW/(labels.length*2)
+    datasets.forEach((ds,di)=>{
+      ds.data.forEach((val,i)=>{
+        const x=padding+i*(chartW/labels.length)+di*barW+2
+        const barH=(val-minV)/range*chartH
+        const rect=document.createElementNS('http://www.w3.org/2000/svg','rect')
+        rect.setAttribute('x',x)
+        rect.setAttribute('y',h-padding-barH)
+        rect.setAttribute('width',Math.max(4,barW-2))
+        rect.setAttribute('height',Math.max(2,barH))
+        rect.setAttribute('fill',di===0?'#2563eb':(di===1?'#059669':'#d97706'))
+        svg.appendChild(rect)
+      })
+    })
+    // 轴标签
+    labels.forEach((lab,i)=>{
+      const text=document.createElementNS('http://www.w3.org/2000/svg','text')
+      text.setAttribute('x',padding+i*(chartW/labels.length)+chartW/labels.length/2)
+      text.setAttribute('y',h-padding+15)
+      text.setAttribute('text-anchor','middle')
+      text.setAttribute('font-size','10')
+      text.setAttribute('fill','#6b7280')
+      text.textContent=lab
+      svg.appendChild(text)
+    })
+  }else if(spec.kind==='line'){
+    datasets.forEach((ds,di)=>{
+      const points=ds.data.map((val,i)=>{
+        const x=padding+i*(chartW/(labels.length-1||1))
+        const y=h-padding-((val-minV)/range*chartH)
+        return `${x},${y}`
+      }).join(' ')
+      const polyline=document.createElementNS('http://www.w3.org/2000/svg','polyline')
+      polyline.setAttribute('points',points)
+      polyline.setAttribute('fill','none')
+      polyline.setAttribute('stroke',di===0?'#2563eb':(di===1?'#059669':'#d97706'))
+      polyline.setAttribute('stroke-width','2')
+      svg.appendChild(polyline)
+    })
+  }
+  return svg
+}
+
+function exportPptx(){
+  if(APP.presentation.slides.length===0){toast('没有幻灯片');return}
+  const btn=$('btnExport')
+  const old=btn.textContent
+  btn.textContent='导出中…';btn.disabled=true
+  fetch('/export/pptx-model',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({filename:APP.presentation.title,presentation:APP.presentation})
+  })
+  .then(r=>r.json())
+  .then(data=>{
+    btn.textContent=old;btn.disabled=false
+    if(data.ok){toast('导出成功：'+data.name);openDownload(data.url)}
+    else toast('导出失败：'+data.error,'err')
+  })
+  .catch(err=>{btn.textContent=old;btn.disabled=false;toast('导出失败：'+err.message,'err')})
+}
+
+function openDownload(url){
+  const a=el('a')
+  a.href=url
+  a.download=''
+  document.body.append(a)
+  a.click()
+  a.remove()
+}
+
+function toast(msg,kind){
+  const t=$('toast')
+  t.textContent=msg
+  t.className='toast show'+(kind==='err'?' err':'')
+  setTimeout(()=>t.classList.remove('show'),2500)
+}
+
+/* ========================================================================
+   键盘快捷键
+   ======================================================================== */
+window.addEventListener('keydown',(e)=>{
+  if(e.ctrlKey||e.metaKey){
+    if(e.key==='z'){e.preventDefault();undo()}
+    else if(e.key==='y'){e.preventDefault();redo()}
+    else if(e.key==='c'){e.preventDefault();copySelected()}
+    else if(e.key==='v'){e.preventDefault();pasteSelected()}
+  }
+  if(e.key==='Delete'||e.key==='Backspace'){
+    if(document.activeElement.tagName==='INPUT'||document.activeElement.tagName==='TEXTAREA')return
+    deleteSelected()
+  }
+  if(e.key==='Escape')deselectAll()
+  // 工具快捷键
+  if(!e.ctrlKey&&!e.metaKey){
+    if(e.key==='v')setTool('select')
+    else if(e.key==='t')setTool('text')
+    else if(e.key==='s')setTool('shape')
+    else if(e.key==='c')setTool('chart')
+    else if(e.key==='i')setTool('image')
+    else if(e.key==='g')setTool('table')
+  }
+})
+
+/* ========================================================================
+   UI 事件绑定
+   ======================================================================== */
+
+// 工具选择
+document.querySelectorAll('.btn-group .btn[data-tool]').forEach(b=>{
+  b.onclick=()=>setTool(b.dataset.tool)
+})
+
+// 新增幻灯片
+$('btnAddSlide').onclick=addSlide
+$('btnAddSlideBar').onclick=addSlide
+
+// 删除元素
+$('btnDeleteEl').onclick=deleteSelected
+
+// 导出
+$('btnExport').onclick=exportPptx
+
+// 复制/粘贴
+$('btnCopy').onclick=copySelected
+$('btnPaste').onclick=pasteSelected
+
+// 撤销/重做
+document.querySelectorAll('[data-action]').forEach(b=>{
+  b.onclick=()=>{if(b.dataset.action==='undo')undo();else if(b.dataset.action==='redo')redo()}
+})
+
+// 层级
+$('btnBringFront').onclick=bringToFront
+$('btnSendBack').onclick=sendToBack
+
+// 对齐/分布
+$('btnAlignLeft').onclick=()=>alignSelected('left')
+$('btnAlignCenter').onclick=()=>alignSelected('center')
+$('btnAlignRight').onclick=()=>alignSelected('right')
+$('btnAlignTop').onclick=()=>alignSelected('top')
+$('btnAlignMiddle').onclick=()=>alignSelected('middle')
+$('btnAlignBottom').onclick=()=>alignSelected('bottom')
+$('btnDistributeH').onclick=()=>distributeSelected('h')
+$('btnDistributeV').onclick=()=>distributeSelected('v')
+
+function getSelectedIds(){
+  return APP.selectedElementIds
+}
+
+/* ========================================================================
+   启动
+   ======================================================================== */
+initDemo()
+renderAll()
+toast('PPT 编辑工作台已就绪 · 拖拽元素移动，双击文本编辑，Ctrl+Z 撤销')
+</script>
+</body>
+</html>
