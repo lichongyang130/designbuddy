@@ -16,6 +16,7 @@
  */
 
 import PptxGenJS from 'pptxgenjs'
+import { unzip, zip } from '../office/zip.ts'
 import type {
   PptPresentation,
   PptSlide,
@@ -219,6 +220,74 @@ function slideBackgroundToPptxGenJS(
   slide.background = { color: stripHash(bg.color ?? theme.paper) }
 }
 
+/** transition durationMs → PPTX spd 属性值 */
+function transitionSpeed(durationMs?: number): 'fast' | 'med' | 'slow' {
+  const d = durationMs ?? 1000
+  if (d <= 500) return 'fast'
+  if (d <= 2000) return 'med'
+  return 'slow'
+}
+
+/** transition type → PPTX transition XML 子元素 */
+interface SlideTransitionOpt {
+  type?: string
+  durationMs?: number
+}
+function transitionXmlBody(type: SlideTransitionOpt | undefined): string {
+  if (!type || type.type === 'none') return ''
+  const spd = `spd="${transitionSpeed(type.durationMs)}"`
+  const dir = 'dir="l"'
+  switch (type.type) {
+    case 'fade':
+      return `<p:transition ${spd}><p:fade/></p:transition>`
+    case 'push':
+      return `<p:transition ${spd}><p:push ${dir}/></p:transition>`
+    case 'wipe':
+      return `<p:transition ${spd}><p:wipe dir="r"/></p:transition>`
+    case 'zoom':
+      return `<p:transition ${spd}><p:zoom/></p:transition>`
+    case 'morph':
+      return `<p:transition ${spd}><p:morph/></p:transition>`
+    default:
+      return `<p:transition ${spd}/>`
+  }
+}
+
+/** 为 PptxGenJS 生成的 .pptx ZIP 注入 slide transition 元素。
+ *
+ * PptxGenJS 4.0.1 不支持 slide transition API，这里在 ZIP 打包后做最小化后处理：
+ * 解压 → 为每个 slide XML 注入 <p:transition> → 重新打包。
+ * 这不违反"不手写全部 OOXML"的架构决策：文字/形状/图片/表格/图表等仍由 PptxGenJS 生成，
+ * 仅 transition 这一个小功能通过后处理注入。
+ */
+function injectTransitions(buf: Buffer, presentation: PptPresentation): Buffer {
+  const files = unzip(buf)
+  const entries: { name: string; data: Buffer }[] = []
+
+  for (const [name, data] of files) {
+    if (!name.startsWith('ppt/slides/slide') || !name.endsWith('.xml')) {
+      entries.push({ name, data })
+      continue
+    }
+
+    const slideNo = Number(name.match(/slide(\d+)\.xml$/)![1])
+    const slide = presentation.slides[slideNo - 1]
+    const xml = data.toString('utf8')
+    const tXml = transitionXmlBody(slide?.transition)
+
+    if (!tXml) {
+      entries.push({ name, data })
+      continue
+    }
+
+    // transition 插入在 </p:clrMapOvr> 之后，</p:sld> 之前
+    const modified = xml.replace(/<p:clrMapOvr[\s\S]*?<\/p:clrMapOvr>/, (m) => m + tXml)
+    entries.push({ name, data: Buffer.from(modified, 'utf8') })
+  }
+
+  return zip(entries)
+}
+
 /**
  * 把统一 PPT 模型直接写成 `.pptx` Buffer。
  * 内部使用 PptxGenJS 生成原生 PowerPoint 对象（文字/形状/图片/表格均为独立对象）。
@@ -263,5 +332,8 @@ export async function writePresentation(presentation: PptPresentation): Promise<
   })
 
   const buf = result instanceof Uint8Array ? result : new Uint8Array(0)
-  return Buffer.from(buf)
+  const pptxBuf = Buffer.from(buf)
+
+  // 注入 slide transition（PptxGenJS 不支持，通过 ZIP 后处理注入）
+  return injectTransitions(pptxBuf, presentation)
 }

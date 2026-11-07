@@ -901,7 +901,9 @@ export function generatedDeckToPresentation(deck: GeneratedDeck): PptPresentatio
   deck.slides.forEach((slide, index) => {
     const builder = BUILDERS[slide.k] ?? end
     const result = builder(deck, index, theme, counter)
-    slides.push(result.slide)
+    // 从 GeneratedDeck 的 slide 中读取 transition 字段（存储在 Record<string, unknown> 中）
+    const transition = (slide as { transition?: { type?: string; durationMs?: number } }).transition
+    slides.push({ ...result.slide, ...(transition ? { transition } : {}) })
     counter = result.counter
   })
 
