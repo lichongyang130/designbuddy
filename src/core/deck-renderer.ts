@@ -70,10 +70,19 @@ function shapeNameOf(shape: PptShapeElement['shape']): string {
     ellipse: 'oval',
     line: 'line',
     arrowRight: 'rightArrow',
+    arrowLeft: 'leftArrow',
+    arrowUp: 'upArrow',
+    arrowDown: 'downArrow',
     chevron: 'chevron',
     diamond: 'diamond',
+    triangle: 'triangle',
+    star5: 'star5',
+    pentagon: 'pentagon',
+    hexagon: 'hexagon',
+    parallelogram: 'parallelogram',
     pill: 'roundRect',
     badge: 'roundRect',
+    frame: 'rect',
   }
   return map[shape] ?? 'rect'
 }
@@ -373,6 +382,23 @@ export async function writePresentation(presentation: PptPresentation): Promise<
     // 元素
     for (const el of slide.elements) {
       await elementToPptxGenJS(s, el)
+    }
+
+    // 自动页码：封面与结束页不显示，其余页右下角显示「当前页 / 总页数」
+    const isCoverOrEnd = slide.layout === 'cover' || slide.layout === 'end'
+    if (!isCoverOrEnd) {
+      const idx = presentation.slides.indexOf(slide)
+      const total = presentation.slides.length
+      s.addText(`${idx + 1} / ${total}`, {
+        x: pxToInches(CW - 100),
+        y: pxToInches(690),
+        w: pxToInches(90),
+        h: pxToInches(24),
+        fontSize: 11,
+        color: stripHash(presentation.theme.muted),
+        align: 'right',
+        valign: 'bottom',
+      } as PptxGenJS.TextPropsOptions)
     }
 
     // 尝试将图片下载并缓存到本地（离线复用、版权追溯）
