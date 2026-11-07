@@ -98,7 +98,8 @@ function textStyleToPptxGenJS(style: PptTextStyle = {}): PptxGenJS.TextPropsOpti
     highlight: stripHash(style.highlight),
     align: style.align,
     valign: style.valign,
-    lineSpacingMultiple: style.lineHeight,
+    // 行间距默认 1.2，避免未定义导致行距过紧或异常；PptxGenJS fit: 'shrink' 会自动缩小字体防止溢出
+    lineSpacingMultiple: style.lineHeight ?? 1.2,
     charSpacing: style.letterSpacing,
     bullet: style.bullet,
     fit: 'shrink',
