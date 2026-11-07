@@ -336,7 +336,7 @@ async function createDeckArtifact(request: ArtifactRequest, dir: string): Promis
   const fromPlan = plan(deckRequest)
   const deck = buildDeck(fromPlan)
   const presentation = generatedDeckToPresentation(deck)
-  const buffer = writePresentation(presentation)
+  const buffer = await writePresentation(presentation)
 
   const id = nextId()
   const slug = slugOf(deck.name)
